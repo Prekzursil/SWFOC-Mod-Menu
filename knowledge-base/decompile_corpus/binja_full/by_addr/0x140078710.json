@@ -1,0 +1,7 @@
+{
+  "addr": "0x140078710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007872c        int64_t rax\n14007872c        if (*(arg1 + 0x254) == 1)\n14007873e        int64_t* rcx = *(SteamInternal_ContextInit(&data_140a10e00) + 0x20)\n140078745        rax = (*(*rcx + 0x70))(rcx, arg2)\n14007874e        if (rax != 0)\n140078757        int64_t rdx_1 = *(arg1 + 0x120)\n14007875e        if (rdx_1 != 0)\n140078763        SteamAPI_UnregisterCallResult(arg1 + 0x110, rdx_1)\n140078770        *(arg1 + 0x120) = rax\n140078777        *(arg1 + 0x130) = sub_140072bf0\n14007877e        *(arg1 + 0x128) = arg1\n140078782        SteamAPI_RegisterCallResult(arg1 + 0x110, rax)\n140078788        int64_t rax_3\n140078788        rax_3.b = 1\n14007878a        *(arg1 + 0x254) = 5\n1400787a3        return rax_3\n1400787a9        rax.b = 0\n1400787b5        return rax",
+  "fetched_at": "2026-04-26T16:56:47Z"
+}

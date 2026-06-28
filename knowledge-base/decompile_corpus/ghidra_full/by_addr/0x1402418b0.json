@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402418b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1402418b0(float *param_1,float param_2,float param_3,float param_4)\n\n{\n  uint uVar1;\n  uint uVar2;\n  float fVar3;\n  uint uVar4;\n  double dVar5;\n  \n  param_1[1] = param_3;\n  *param_1 = param_2;\n  dVar5 = ceil((double)((param_3 - param_2) / param_4 - _DAT_140855a28));\n  fVar3 = 0.0;\n  uVar2 = 0;\n  uVar4 = (uint)(longlong)((float)dVar5 + DAT_1407ffaf8);\n  if (uVar4 != 0) {\n    uVar1 = 1;\n    do {\n      uVar2 = uVar2 + uVar1;\n      fVar3 = (float)((int)fVar3 + 1);\n      uVar1 = uVar1 << 1 | (uint)((int)uVar1 < 0);\n    } while (uVar2 < uVar4);\n  }\n  param_1[3] = fVar3;\n  param_1[2] = (param_1[1] - *param_1) / (float)(uVar2 - 1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:46Z"
+}

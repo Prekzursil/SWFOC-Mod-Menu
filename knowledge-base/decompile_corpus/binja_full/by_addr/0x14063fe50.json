@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063fe50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063fe6c        if (arg2 != 0 && arg3 != 0)\n14063fe72        void* rsi_1 = arg2[0x31]\n14063fe86        if (rsi_1 != 0 && *(rsi_1 + 8) == 0)\n14063fe9d        *(rsi_1 + 0x18) = arg3\n14063fea5        *(rsi_1 + 0x10) = *(arg3 + 0x50)\n14063feac        *(rsi_1 + 0x38) = arg5\n14063feb3        *(rsi_1 + 0x3c) = arg8\n14063feb6        *(rsi_1 + 0x28) = arg6\n14063febb        *(rsi_1 + 0x4c) = arg7\n14063fec0        *(rsi_1 + 0x30) = arg4\n14063fec6        *(rsi_1 + 0x40) = *arg9\n14063fecc        *(rsi_1 + 0x44) = arg9[1]\n14063fed2        *(rsi_1 + 0x48) = arg9[2]\n14063fee8        void* rdi = arg1 + 0x18\n14063feec        if (arg1 == 0)\n14063feec        rdi = nullptr\n14063ff04        sub_140220e90(sub_140058570(), arg3 + 0x38, rdi, 0x28)\n14063ff09        *(rsi_1 + 8) = 1\n14063ff24        int64_t rdx_2\n14063ff24        rdx_2.b = 1\n14063ff35        *(rsi_1 + 0xc) = float.s(zx.q(data_140b0a320)) f/ _mm_cvtepi32_ps(zx.o(data_140b0a340)).d\n14063ff3a        sub_14063f060(arg2, rdx_2, 0)\n14063ff44        int64_t rax_9\n14063ff44        rax_9.b = 1\n14063ff55        return rax_9\n14063ff5b        int64_t rax\n14063ff5b        rax.b = 0\n14063ff62        return rax",
+  "fetched_at": "2026-04-26T17:02:54Z"
+}

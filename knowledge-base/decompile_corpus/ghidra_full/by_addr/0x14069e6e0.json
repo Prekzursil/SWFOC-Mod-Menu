@@ -1,0 +1,7 @@
+{
+  "addr": "0x14069e6e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall IsCampaignGameClass::vfunction11(void)\n\n{\n  undefined8 *puVar1;\n  undefined1 uVar2;\n  int iVar3;\n  longlong *plVar4;\n  longlong lVar5;\n  longlong *plVar6;\n  longlong *local_res20;\n  \n  plVar4 = (longlong *)FUN_140769c58(0x18);\n  if (plVar4 == (longlong *)0x0) {\n    return (longlong *)0x0;\n  }\n  iVar3 = DAT_140b153fc;\n  if (DAT_140b15418 != (longlong *)0x0) {\n    iVar3 = (**(code **)(*DAT_140b15418 + 0xe0))(DAT_140b15418);\n  }\n  if (iVar3 != 0) {\n    lVar5 = FUN_14028aa00(&DAT_140b153e0,DAT_140b15418);\n    uVar2 = 0;\n    if (lVar5 == 0) goto LAB_14069e744;\n  }\n  uVar2 = 1;\nLAB_14069e744:\n  *(undefined4 *)(plVar4 + 1) = 0;\n  *plVar4 = (longlong)&LuaValue<bool,5>::vftable;\n  *(undefined1 *)(plVar4 + 2) = uVar2;\n  plVar6 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n           ::\n           ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                     ();\n  local_res20 = plVar4;\n  (**(code **)*plVar4)(plVar4);\n  puVar1 = (undefined8 *)plVar6[3];\n  if (puVar1 == (undefined8 *)plVar6[4]) {\n    FUN_140144900(plVar6 + 2,puVar1,&local_res20);\n  }\n  else {\n    *puVar1 = plVar4;\n    (**(code **)*plVar4)(plVar4);\n    plVar6[3] = plVar6[3] + 8;\n  }\n  (**(code **)(*plVar4 + 8))(plVar4);\n  return plVar6;\n}",
+  "fetched_at": "2026-04-26T17:21:05Z"
+}

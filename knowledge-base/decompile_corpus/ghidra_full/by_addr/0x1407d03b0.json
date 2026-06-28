@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d03b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_1407d03b0(undefined8 param_1)\n\n{\n  char *pcVar1;\n  \n  FUN_1407b9540(param_1,\"LUA_PATH\");\n  FUN_1407b8e90(param_1,0xffffd8ef);\n  pcVar1 = (char *)FUN_1407b9cc0(param_1,0xffffffff);\n  FUN_1407b9ab0(param_1,0xfffffffe);\n  if (pcVar1 != (char *)0x0) {\n    return pcVar1;\n  }\n  pcVar1 = common_getenv<char>(\"LUA_PATH\");\n  if (pcVar1 == (char *)0x0) {\n    pcVar1 = \"?;?.lua\";\n  }\n  return pcVar1;\n}",
+  "fetched_at": "2026-04-26T18:58:01Z"
+}

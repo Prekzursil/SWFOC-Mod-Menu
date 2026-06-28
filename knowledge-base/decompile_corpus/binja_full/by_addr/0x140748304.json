@@ -1,0 +1,7 @@
+{
+  "addr": "0x140748304",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140748304        return DeleteCriticalSection(lpCriticalSection) __tailcall",
+  "fetched_at": "2026-04-26T17:29:32Z"
+}

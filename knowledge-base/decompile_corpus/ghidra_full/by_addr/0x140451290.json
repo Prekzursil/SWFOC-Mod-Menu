@@ -1,0 +1,7 @@
+{
+  "addr": "0x140451290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventObjectiveTimeoutClass::vfunction8(StoryEventObjectiveTimeoutClass *this)\n\n{\n  int iVar1;\n  StoryEventClass_data *pSVar2;\n  float fVar3;\n  \n  if (*(char *)((longlong)&this[1].SignalGeneratorClass_data.offset_0x8 + 4) != '\\0') {\n    FUN_140467540(\"\\n!!! STORY_ELAPSED is already initialized when activated\\r\\n\");\n  }\n  iVar1 = 0;\n  if (DAT_140b15418 != 0) {\n    iVar1 = *(int *)(DAT_140b15418 + 0x10);\n  }\n  pSVar2 = &this->StoryEventClass_data;\n  fVar3 = (float)iVar1 * DAT_140b0a344;\n  *(undefined1 *)((longlong)&this[1].SignalGeneratorClass_data.offset_0x8 + 4) = 1;\n  *(float *)&this[1].SignalGeneratorClass_data = fVar3;\n  if (0xf < (ulonglong)(this->StoryEventClass_data).offset_0x18) {\n    pSVar2 = (StoryEventClass_data *)pSVar2->offset_0x0;\n  }\n  FUN_140467540(\"STORY_OBJECTIVE_TIMEOUT %s starting timer at time %f, end time %f\\r\\n\",pSVar2,\n                (double)*(float *)&this[1].SignalGeneratorClass_data,\n                (double)(*(float *)&this[1].SignalGeneratorClass_data.offset_0x8 +\n                        *(float *)&this[1].SignalGeneratorClass_data));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:20Z"
+}

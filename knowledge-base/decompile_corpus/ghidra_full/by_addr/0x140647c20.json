@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647c20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nAIBuildTaskClass::vfunction1_for_SignalGeneratorClass(AIBuildTaskClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((AIBuildTaskClass *)&this[-1].offset_0x90,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:23Z"
+}

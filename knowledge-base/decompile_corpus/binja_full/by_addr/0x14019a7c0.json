@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019a7c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019a7c4        void* rax = arg2\n14019a7d6        if (arg3 * 0x24 u>= 0x1000)\n14019a7d8        void* rcx = *(rax - 8)\n14019a7eb        if (rax - rcx - 8 u> 0x1f)\n14019a7fc        _invalid_parameter_noinfo_noreturn()\n14019a7fc        noreturn\n14019a7ed        rax = rcx\n14019a7f7        return j_sub_1407864b8(rax) __tailcall",
+  "fetched_at": "2026-04-26T17:24:44Z"
+}

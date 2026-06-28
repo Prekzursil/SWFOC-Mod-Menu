@@ -1,0 +1,7 @@
+{
+  "addr": "0x140207350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<bool_(__cdecl*)(class_PacketClass*___ptr64,void*___ptr64)> * __thiscall\nDynamicVectorClass<bool_(__cdecl*)(class_PacketClass*___ptr64,void*___ptr64)>::\nscalar_deleting_destructor\n          (DynamicVectorClass<bool_(__cdecl*)(class_PacketClass*___ptr64,void*___ptr64)> *this,\n          uint param_1)\n\n{\n  ~DynamicVectorClass<bool_(__cdecl*)(class_PacketClass*___ptr64,void*___ptr64)>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:57:04Z"
+}

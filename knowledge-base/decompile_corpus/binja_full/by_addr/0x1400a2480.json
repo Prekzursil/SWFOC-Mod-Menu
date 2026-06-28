@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a2480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400a248e        void* rax = operator new(0x20)\n1400a249a        int64_t var_28 = 0x1f\n1400a24a8        int64_t var_20 = 0x1f\n1400a24b1        __builtin_strncpy(rax, \"IDC_STRATEGIC_GAME_SPEED_SLIDER\", 0x20)\n1400a24ea        int32_t rdx = data_140a113c0\n1400a24f0        void* var_38 = rax\n1400a24f5        uint128_t zmm0 = sub_1401c8fc0(&data_140a78510, rdx, &var_38)\n1400a2506        if (var_20 u>= 0x10)\n1400a2508        void* rcx_1 = var_38\n1400a2510        void* rax_1 = rcx_1\n1400a251a        if (var_20 + 1 u>= 0x1000)\n1400a251c        rcx_1 = *(rcx_1 - 8)\n1400a252f        if (rax_1 - rcx_1 - 8 u> 0x1f)\n1400a255d        _invalid_parameter_noinfo_noreturn()\n1400a255d        noreturn\n1400a2531        j_sub_1407864b8(rcx_1)\n1400a255c        return zx.q(int.d(sub_1401d5fd0(zmm0, (zx.o(0)).q.d, 4f, 5)))",
+  "fetched_at": "2026-04-26T16:58:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ee8d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ee8e8        int64_t i = 0xe\n1407ee8ed        char* rdi = &data_140b0a2e0\n1407ee901        int64_t* j = *(rdi - 0x18)\n1407ee905        rdi = &rdi[-0x18]\n1407ee909        i -= 1\n1407ee90f        if (j != 0)\n1407ee915        int64_t rsi_1 = *(rdi + 8)\n1407ee91c        while (j != rsi_1)\n1407ee920        void* rcx_2 = *j\n1407ee926        if (rcx_2 != 0)\n1407ee93a        if (((j[2] - rcx_2) & 0xfffffffffffffff8) u>= 0x1000)\n1407ee93c        void* r8_1 = *(rcx_2 - 8)\n1407ee94f        if (rcx_2 - r8_1 - 8 u> 0x1f)\n1407ee94f        goto label_1407ee9ed\n1407ee955        rcx_2 = r8_1\n1407ee958        j_sub_1407864b8(rcx_2)\n1407ee95d        __builtin_memset(j, 0, 0x18)\n1407ee968        j = &j[5]\n1407ee971        void* r8_3 = *rdi\n1407ee97e        int64_t rax_2\n1407ee97e        int64_t rdx_5\n1407ee97e        rdx_5:rax_2 = muls.dp.q(0x6666666666666667, *(rdi + 0x10) - r8_3)\n1407ee981        int64_t rdx_6 = rdx_5 s>> 4\n1407ee99e        if ((rdx_6 + (rdx_6 u>> 0x3f)) * 0x28 u>= 0x1000)\n1407ee9a0        void* rcx_5 = *(r8_3 - 8)\n1407ee9b3        if (r8_3 - rcx_5 - 8 u> 0x1f)\n1407ee9ed        label_1407ee9ed:\n1407ee9ed        _invalid_parameter_noinfo_noreturn()\n1407ee9ed        noreturn\n1407ee9b5        r8_3 = rcx_5\n1407ee9bb        j_sub_1407864b8(r8_3)\n1407ee9c0        __builtin_memset(rdi, 0, 0x18)\n1407ee9ce        do while (i != 0)\n1407ee9ec        return ",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

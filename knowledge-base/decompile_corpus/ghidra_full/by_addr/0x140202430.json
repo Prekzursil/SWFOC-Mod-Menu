@@ -1,0 +1,7 @@
+{
+  "addr": "0x140202430",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * FUN_140202430(uint *param_1)\n\n{\n  uint uVar1;\n  \n  uVar1 = *param_1;\n  FUN_140048ec0(&DAT_140a7c1b0,\"%d.%d.%d.%d:%u\",uVar1 >> 0x18,uVar1 >> 0x10 & 0xff,uVar1 >> 8 & 0xff\n                ,uVar1 & 0xff,(short)param_1[1]);\n  return &DAT_140a7c1b0;\n}",
+  "fetched_at": "2026-04-26T17:55:53Z"
+}

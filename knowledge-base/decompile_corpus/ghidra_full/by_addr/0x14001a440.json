@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a440(void)\n\n{\n  DistributeMoneyEventClass::DistributeMoneyEventClass((DistributeMoneyEventClass *)&DAT_140b38780);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078091c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _splitpath\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl _splitpath(char *_FullPath,char *_Drive,char *_Dir,char *_Filename,char *_Ext)\n\n{\n  char *local_48;\n  ulonglong local_40;\n  char *local_38;\n  ulonglong local_30;\n  char *local_28;\n  ulonglong local_20;\n  char *local_18;\n  ulonglong local_10;\n  \n  local_40 = (ulonglong)(-(uint)(_Drive != (char *)0x0) & 3);\n  local_30 = -(ulonglong)(_Dir != (char *)0x0) & 0x100;\n  local_20 = -(ulonglong)(_Filename != (char *)0x0) & 0x100;\n  local_18 = _Ext;\n  local_10 = -(ulonglong)(_Ext != (char *)0x0) & 0x100;\n  local_48 = _Drive;\n  local_38 = _Dir;\n  local_28 = _Filename;\n  common_splitpath_internal<char,class_<lambda_53a6356d19cc262edbc98b4248a685b4>,class_<lambda_040cbb5784310d69116e1bf4e70bcac8>_>\n            (_FullPath,&local_48,0,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:01Z"
+}

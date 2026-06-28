@@ -1,0 +1,7 @@
+{
+  "addr": "0x140200710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140200721        if (arg2 == 0)\n140200725        arg1[3] = 0xf\n14020072d        *arg1 = 0\n140200733        arg1[2] = 0\n14020073e        return arg1\n140200747        int64_t rbx = -1\n140200756        rbx += 1\n14020075e        do while (arg2[rbx] != 0)\n140200782        int32_t rax_1 = WideCharToMultiByte(0xfde9, 0, arg2, rbx.d, nullptr, 0, nullptr, nullptr)\n140200788        int64_t r15 = sx.q(rax_1)\n14020078d        if (rax_1 != 0)\n1402007ab        PSTR lpMultiByteStr_1\n1402007ab        uint128_t* rcx = &lpMultiByteStr_1\n1402007b0        lpMultiByteStr_1 = nullptr\n1402007b5        int64_t var_28_1 = 0\n1402007ba        int64_t var_20_1 = 0xf\n1402007c7        if (r15 u> 0xf)\n1402007ed        sub_140057b80(rcx, r15, 0, r15, 0)\n1402007cc        var_28_1 = r15\n1402007d3        memset(rcx, 0, r15)\n1402007d8        *(&lpMultiByteStr_1 + r15) = 0\n1402007f8        PSTR lpMultiByteStr = &lpMultiByteStr_1\n140200805        if (var_20_1 u>= 0x10)\n140200805        lpMultiByteStr = lpMultiByteStr_1\n140200824        WideCharToMultiByte(0xfde9, 0, arg2, rbx.d, lpMultiByteStr, r15.d, nullptr, nullptr)\n14020083c        *arg1 = lpMultiByteStr_1.o\n14020083f        *(arg1 + 0x10) = var_28_1.o\n14020078f        *arg1 = 0\n140200792        arg1[3] = 0xf\n14020079a        arg1[2] = 0\n14020085d        return arg1",
+  "fetched_at": "2026-04-26T17:27:41Z"
+}

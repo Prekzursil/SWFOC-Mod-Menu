@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f00b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGUIGadgetPushbuttonClass::vfunction5(GUIGadgetPushbuttonClass *this,undefined4 param_2)\n\n{\n  undefined1 *puVar1;\n  \n  (**(code **)(*(longlong *)&(this->GUIGadgetPushbuttonClass_data).field_0x8 + 0x40))();\n  puVar1 = &(this->GUIGadgetPushbuttonClass_data).field_0x98;\n  (**(code **)(*(longlong *)puVar1 + 0x40))(puVar1,param_2);\n  puVar1 = &(this->GUIGadgetPushbuttonClass_data).field_0x128;\n  (**(code **)(*(longlong *)puVar1 + 0x40))(puVar1,param_2);\n  puVar1 = &(this->GUIGadgetPushbuttonClass_data).field_0x298;\n                    /* WARNING: Could not recover jumptable at 0x0001401f0105. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*(longlong *)puVar1 + 0x40))(puVar1,param_2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:49Z"
+}

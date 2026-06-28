@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079acc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079acd9        void var_138\n14079acd9        int64_t rax_1 = __security_cookie ^ &var_138\n14079ace7        void* rax_2\n14079ace7        int32_t rdx\n14079ace7        rax_2, rdx = __acrt_getptd()\n14079ad1d        void var_108\n14079ad1d        uint64_t result\n14079ad1d        if (__acrt_GetLocaleInfoEx(arg1, (sbb.d(rdx, rdx, *(rax_2 + 0xb0) != 0) & 0xfffff002) + 0x1001, &var_108, 0x78) != 0)\n14079ad36        if (_wcsicmp(*(rax_2 + 0x98), &var_108) == 0)\n14079ad38        int64_t r9_1 = -1\n14079ad3c        r9_1 += 1\n14079ad44        do while (arg1[r9_1] != 0)\n14079ad5f        if (wcsncpy_s(rax_2 + 0x2f0, 0x55, arg1, r9_1 + 1) != 0)\n14079ad98        int64_t var_118 = 0\n14079ada4        _invoke_watson()\n14079ada4        noreturn\n14079ad61        *(rax_2 + 0xa8) |= 4\n14079ad6d        result = zx.q(not.d(*(rax_2 + 0xa8) u>> 2)) & 1\n14079ad1f        *(rax_2 + 0xa8) = 0\n14079ad22        result = 1\n14079ad7b        __security_check_cookie(rax_1 ^ &var_138)\n14079ad94        return result",
+  "fetched_at": "2026-04-26T17:32:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140722db4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceReinforceBlockStatus::vfunction1(SpaceReinforceBlockStatus *this,uint param_1)\n\n{\n  scalar_deleting_destructor((SpaceReinforceBlockStatus *)&this[-1].offset_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001f760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nConsoleCommand * __thiscall\nSwitchSidesCommand::scalar_deleting_destructor(SwitchSidesCommand *this,uint param_1)\n\n{\n  ConsoleCommand::~ConsoleCommand((ConsoleCommand *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x28);\n  }\n  return (ConsoleCommand *)this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:42Z"
+}

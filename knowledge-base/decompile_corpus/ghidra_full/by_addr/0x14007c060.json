@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007c060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* CCallbackImpl<32> member function inherited by\n   CCallback<class_SteamPeerLobbyClass,struct_LobbyChatUpdate_t,0> */\n\nundefined8 __thiscall CCallbackImpl<32>::vfunction3(void)\n\n{\n  return 0x20;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:00Z"
+}

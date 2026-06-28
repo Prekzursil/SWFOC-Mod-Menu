@@ -1,0 +1,7 @@
+{
+  "addr": "0x140194640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019464f        PSGSI1::`scalar deleting destructor'(arg1)\n140194657        if ((arg2 & 1) != 0)\n140194661        j_sub_1407864b8(arg1)\n140194673        return arg1",
+  "fetched_at": "2026-04-26T17:24:25Z"
+}

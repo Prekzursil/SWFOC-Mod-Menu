@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054ceb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WeaponBehaviorClass::vfunction11(WeaponBehaviorClass *this,undefined **param_1)\n\n{\n  BehaviorClass::vfunction11((BehaviorClass *)this,param_1);\n  *(WeaponBehaviorClass **)(param_1[0x1e] + 0x80) = this;\n  FUN_14054cb00(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:37:40Z"
+}

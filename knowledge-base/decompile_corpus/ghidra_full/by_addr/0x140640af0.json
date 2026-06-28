@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640af0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_140640af0(longlong param_1)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  \n  lVar1 = *(longlong *)(*(longlong *)(param_1 + 0x28) + 0xa8);\n  if (lVar1 == 0) {\n    return 0;\n  }\n  if (*(float *)(lVar1 + 0xe8) <= 0.0) {\n    uVar2 = FUN_140372560(*(undefined4 *)(lVar1 + 0xec));\n    return uVar2;\n  }\n  return (ulonglong)(uint)*(float *)(lVar1 + 0xe8);\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:05Z"
+}

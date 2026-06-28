@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769524",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769524        wchar16 srcStr[0x8]\n140769524        srcStr[0] = arg1\n14076953f        int16_t charType\n14076953f        BOOL rax = GetStringTypeW(1, &srcStr, 1, &charType)\n140769545        int16_t rax_1 = (neg.d(rax)).w\n140769553        return sbb.w(rax_1, rax_1, rax != 0) & charType",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403712a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403712a3        if (arg2 u<= 5)\n1403712b2        int32_t* rax_3 = arg1 + (sx.q(arg2) + 0x132) * 0x18\n1403712c2        int32_t temp0_1\n1403712b9        if (*rax_3 s> 0)\n1403712dd        return arg1 + ((zx.q(arg2) * 3 + 0x394) << 3)\n1403712bb        rax_3 -= 0x18\n1403712bf        temp0_1 = arg2\n1403712bf        arg2 -= 1\n1403712c2        do while (temp0_1 - 1 s>= 0)\n1403712cb        return arg1 + 0x1c88",
+  "fetched_at": "2026-04-26T17:15:31Z"
+}

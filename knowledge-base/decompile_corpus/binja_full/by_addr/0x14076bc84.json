@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076bc84",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076bc98        int32_t var_24\n14076bc98        __builtin_memset(&var_24, 0, 0x14)\n14076bcb5        int64_t rbx = arg4[1]\n14076bcb9        char var_28 = 0\n14076bcbd        int64_t arg_8 = arg2\n14076bcc6        *(__vcrt_getptd() + 0x60) = rbx\n14076bcd3        *(__vcrt_getptd() + 0x68) = *(arg1 + 0x38)\n14076bcd7        void* rax_2 = __vcrt_getptd()\n14076bce9        char var_48 = 0\n14076bcfb        FH4::DecompFuncInfo(zx.q(*arg4[7]) + *(rax_2 + 0x60), &var_28, arg4[1], *arg4[2], 0)\n14076bd20        var_48.q = &var_28\n14076bd42        return sub_14076f6e8(arg1, &arg_8, arg3, arg4, var_48, 0, 0, 0)",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

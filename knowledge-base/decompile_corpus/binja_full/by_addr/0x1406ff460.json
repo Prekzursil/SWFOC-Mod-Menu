@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ff466        struct SpecialAbilityClass::GalaxyWideUpgradeAbilityClass::VTable** result = arg1\n1406ff469        sub_14048c780(arg1)\n1406ff475        *result = &GalaxyWideUpgradeAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406ff486        result[1] = &GalaxyWideUpgradeAbilityClass::`vftable'{for `RefCountClass'}\n1406ff48a        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x2f])\n1406ff496        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x31])\n1406ff49e        result[8].w = 1\n1406ff4a4        *(result + 0x3c) = 3\n1406ff4b0        return result",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

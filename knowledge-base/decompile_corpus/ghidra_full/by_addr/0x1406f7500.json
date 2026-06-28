@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f7500",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall EarthquakeAttackAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Earthquake_Attack_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:48:52Z"
+}

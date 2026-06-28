@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cbbd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall SquadronCombatantClass::vfunction27(SquadronCombatantClass *this)\n\n{\n  return 0.0 < *(float *)&this->offset_0x48;\n}",
+  "fetched_at": "2026-04-26T17:40:53Z"
+}

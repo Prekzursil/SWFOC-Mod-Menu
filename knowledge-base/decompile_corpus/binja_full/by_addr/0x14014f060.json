@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014f060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014f070        uint32_t result = GetCurrentThreadId()\n14014f085        if (result == data_140a155d0 && data_140a62740 != 0)\n14014f125        return result\n14014f091        sub_14012fd80(arg1, arg2)\n14014f096        int128_t zmm2_1 = *(arg1 + 0xa0)\n14014f0a3        *(arg1 + 0x20) = arg2\n14014f0ae        *(arg1 + 0x164) = 0\n14014f0b5        int32_t rax = *(arg2 + 0x2e0)\n14014f0bb        *(arg1 + 0x14c) = 0\n14014f0c1        *(arg1 + 0xe4) = 0\n14014f0ca        *(arg1 + 0x148) = rax\n14014f0d8        int32_t zmm1_1 = *(arg1 + 0x9c)\n14014f0e0        int32_t arg_18 = *(arg1 + 0x98)\n14014f0ee        int32_t var_18 = *(arg1 + 0xa4)\n14014f0fc        int32_t arg_1c = zmm1_1\n14014f10a        int32_t var_10_1 = *(arg1 + 0xac)\n14014f110        int32_t var_14_1 = *(arg1 + 0xa8)\n14014f116        return sub_140150760(arg1, &var_18, zmm2_1, &arg_18)",
+  "fetched_at": "2026-04-26T17:22:02Z"
+}

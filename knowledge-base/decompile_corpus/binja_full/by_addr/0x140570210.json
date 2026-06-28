@@ -1,0 +1,7 @@
+{
+  "addr": "0x140570210",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140570219        char var_10 = 1\n14057022c        int64_t var_18 = arg2\n140570234        *arg1 = &std::exception::`vftable'\n14057023c        *(arg1 + 8) = zx.o(0)\n14057023f        __std_exception_copy(&var_18, &arg1[1])\n14057024b        *arg1 = &std::range_error::`vftable'{for `std::runtime_error'}\n140570256        return arg1",
+  "fetched_at": "2026-04-26T17:34:56Z"
+}

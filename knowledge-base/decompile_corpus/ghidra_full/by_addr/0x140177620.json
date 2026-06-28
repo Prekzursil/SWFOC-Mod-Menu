@@ -1,0 +1,7 @@
+{
+  "addr": "0x140177620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nint FUN_140177620(int param_1,int param_2)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  iVar2 = 0;\n  if (DAT_140a6e720 != (undefined8 *)0x0) {\n    GetWindowRect(DAT_140a6e658,(LPRECT)&DAT_140a6e668);\n    GetClientRect(DAT_140a6e658,(LPRECT)&DAT_140a6e678);\n    GetWindowRect((HWND)*DAT_140a6e720,(LPRECT)(DAT_140a6e720 + 2));\n    GetClientRect((HWND)*DAT_140a6e720,(LPRECT)(DAT_140a6e720 + 4));\n    DAT_140a6e734 = DAT_140a6e734 + 1;\n    DAT_140a6d421 = DAT_140a6e734 == 0;\n    if ((DAT_140a6e734 == 1) && (DAT_140a6d428 != '\\0')) {\n      FUN_1401a7370(2);\n    }\n    if ((DAT_140a6e734 == 0) && (DAT_140a6d428 != '\\0')) {\n      FUN_1401a7370(1);\n    }\n    DAT_140a6d430 = param_1;\n    if (param_1 == -1) {\n      DAT_140a6d430 = DAT_140a6e680 - _DAT_140a6e678;\n    }\n    DAT_140a6d434 = param_2;\n    if (param_2 == -1) {\n      DAT_140a6d434 = DAT_140a6e684 - _DAT_140a6e67c;\n    }\n    if ((DAT_140a6d480 != 0) && (iVar2 = FUN_140179dc0(), iVar2 < 0)) {\n      if (iVar2 != -0x7789fe84) {\n        iVar2 = -0x7dfffff4;\n      }\n      FUN_14017a460(iVar2,1);\n    }\n    iVar1 = DAT_140a6e734;\n    DAT_140a6e734 = DAT_140a6e734 + -1;\n    DAT_140a6d421 = DAT_140a6e734 == 0;\n    if ((DAT_140a6e734 == 0) && (DAT_140a6d428 != '\\0')) {\n      FUN_1401a7370(iVar1);\n    }\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T17:27:27Z"
+}

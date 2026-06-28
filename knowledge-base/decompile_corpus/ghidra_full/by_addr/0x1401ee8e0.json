@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ee8e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetTextClass member function inherited by GUIGadgetIMELocaleIndicatorClass */\n\nvoid __thiscall GUIGadgetTextClass::vfunction22(GUIGadgetTextClass *this,undefined8 param_1)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  longlong lVar3;\n  \n  iVar2 = 0;\n  if (0 < (this->GUIGadgetTextClass_data).offset_0x10) {\n    lVar3 = 0;\n    do {\n      plVar1 = *(longlong **)(lVar3 + (this->GUIGadgetTextClass_data).offset_0x8);\n      (**(code **)(*plVar1 + 0x28))(plVar1,param_1);\n      iVar2 = iVar2 + 1;\n      lVar3 = lVar3 + 8;\n    } while (iVar2 < (this->GUIGadgetTextClass_data).offset_0x10);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ee950",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ee968        struct GUIGadgetClass::GUIGadgetPushbuttonClass::VTable** result = arg1\n1401ee96b        sub_1401e3c30(arg1)\n1401ee97e        *result = &GUIGadgetPushbuttonClass::`vftable'{for `GUIGadgetClass'}\n1401ee981        sub_140260490(&result[0x14])\n1401ee98d        sub_140260490(&result[0x26])\n1401ee999        sub_140260490(&result[0x38])\n1401ee9a8        __builtin_memset(&result[0x4a], 0, 0xe0)\n1401eea6c        sub_14025b330(&result[0x66])\n1401eea78        sub_1401f92f0(&result[0x7f])\n1401eea84        sub_1401f92f0(&result[0x81])\n1401eea89        result[0x13].d = 2\n1401eeaa2        sub_14025c490(data_140a619f0, &result[0x14])\n1401eeab5        sub_14025c490(data_140a619f0, &result[0x38])\n1401eeac8        sub_14025c490(data_140a619f0, &result[0x26])\n1401eeadb        sub_14025c490(data_140a619f0, &result[0x66])\n1401eeae0        int64_t* rcx_10 = result[0x62]\n1401eeaea        if (rcx_10 != 0)\n1401eeaef        (*(*rcx_10 + 8))(rcx_10)\n1401eeaf2        result[0x62] = 0\n1401eeaf9        int64_t* rcx_11 = result[0x63]\n1401eeb03        if (rcx_11 != 0)\n1401eeb08        (*(*rcx_11 + 8))(rcx_11)\n1401eeb0b        result[0x63] = 0\n1401eeb12        int64_t* rcx_12 = result[0x64]\n1401eeb1c        if (rcx_12 != 0)\n1401eeb21        (*(*rcx_12 + 8))(rcx_12)\n1401eeb24        result[0x64] = 0\n1401eeb2e        sub_1401e3ed0(result)\n1401eeb45        result[0x83] = 0\n1401eeb55        return result",
+  "fetched_at": "2026-04-26T17:27:15Z"
+}

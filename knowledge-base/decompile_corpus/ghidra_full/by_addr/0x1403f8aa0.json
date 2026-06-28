@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f8aa0",
+  "tool": "ghidra",
+  "fact_id": "rva_buildpad_check_slots",
+  "body": "\nundefined4 FUN_1403f8aa0(undefined8 param_1,longlong param_2)\n\n{\n  return *(undefined4 *)(*(longlong *)(param_2 + 0xb8) + 0x130);\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:32Z"
+}

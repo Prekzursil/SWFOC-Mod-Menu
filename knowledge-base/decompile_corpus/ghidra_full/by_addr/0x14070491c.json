@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070491c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nIonCannonShotAttackAbilityClass::vfunction3_for_RefCountClass\n          (IonCannonShotAttackAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((IonCannonShotAttackAbilityClass *)&this[-1].SpecialAbilityClass_data.offset_0xd0,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:13Z"
+}

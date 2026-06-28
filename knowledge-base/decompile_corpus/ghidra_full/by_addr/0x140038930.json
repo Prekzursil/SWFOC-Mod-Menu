@@ -1,0 +1,7 @@
+{
+  "addr": "0x140038930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140038930(longlong param_1)\n\n{\n  FUN_14003e8b0();\n  FUN_140041680(param_1);\n  if (*(DynamicVectorClass<class_GameObjectClass*___ptr64> **)(param_1 + 0x890) !=\n      (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) {\n    DynamicVectorClass<class_GameObjectClass*___ptr64>::\n    ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n              (*(DynamicVectorClass<class_GameObjectClass*___ptr64> **)(param_1 + 0x890),'\\x01');\n    *(undefined8 *)(param_1 + 0x890) = 0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:03Z"
+}

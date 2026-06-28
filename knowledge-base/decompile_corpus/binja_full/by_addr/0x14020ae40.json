@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020ae40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020ae59        float i_2 = arg1[2] f- arg2[2]\n14020ae5e        float i_1 = arg1[1] f- arg2[1]\n14020ae63        float i = *arg1 - *arg2\n14020ae6b        int128_t zmm6 = arg3\n14020ae6e        if (not(arg3.d f< 90f))\n14020ae70        zmm6 = 0x3c23d70a\n14020ae8b        if (not(i <= 180f))\n14020ae90        i = i - 360f\n14020ae97        do while (i > 180f)\n14020aea4        if (not(-180f < i))\n14020aea6        i = i + 360f\n14020aead        do while (-180f >= i)\n14020aec6        int64_t result\n14020aec6        if (not((i & 0x7fffffff) f> zmm6.d))\n14020aecb        if (not(i_1 <= 180f))\n14020aed0        i_1 = i_1 - 360f\n14020aed7        do while (i_1 > 180f)\n14020aedc        if (not(-180f < i_1))\n14020aee0        i_1 = i_1 + 360f\n14020aee7        do while (-180f >= i_1)\n14020af00        if (not((i_1 & 0x7fffffff) f> zmm6.d))\n14020af05        if (not(i_2 <= 180f))\n14020af07        i_2 = i_2 - 360f\n14020af0e        do while (i_2 > 180f)\n14020af13        if (not(-180f < i_2))\n14020af15        i_2 = i_2 + 360f\n14020af1c        do while (-180f >= i_2)\n14020af35        if (not((i_2 & 0x7fffffff) f> zmm6.d))\n14020af37        result.b = 1\n14020af41        return result\n14020af46        result.b = 0\n14020af4c        return result",
+  "fetched_at": "2026-04-26T17:28:08Z"
+}

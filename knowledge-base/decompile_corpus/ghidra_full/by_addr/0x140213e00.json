@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213e00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* FileClass member function inherited by RAMFileClass */\n\nundefined1 ** __thiscall FileClass::vfunction11(FileClass *this)\n\n{\n  undefined1 **ppuVar1;\n  \n  ppuVar1 = &(this->FileClass_data).offset_0x18;\n  if (0xf < (this->FileClass_data).offset_0x30) {\n    ppuVar1 = (undefined1 **)*ppuVar1;\n  }\n  return ppuVar1;\n}",
+  "fetched_at": "2026-04-26T18:00:08Z"
+}

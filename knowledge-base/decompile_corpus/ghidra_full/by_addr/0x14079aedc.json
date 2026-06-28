@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079aedc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    TranslateName\n   \n   Library: Visual Studio 2019 Release */\n\nbool TranslateName(longlong param_1,int param_2,longlong *param_3)\n\n{\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  \n  iVar3 = 0;\n  iVar2 = 1;\n  if (-1 < param_2) {\n    do {\n      if (iVar2 == 0) {\n        return true;\n      }\n      iVar1 = (iVar3 + param_2) / 2;\n      iVar2 = _wcsicmp((wchar_t *)*param_3,*(wchar_t **)((longlong)iVar1 * 0x10 + param_1));\n      if (iVar2 == 0) {\n        *param_3 = param_1 + 8 + (longlong)iVar1 * 0x10;\n      }\n      else if (iVar2 < 0) {\n        param_2 = iVar1 + -1;\n      }\n      else {\n        iVar3 = iVar1 + 1;\n      }\n    } while (iVar3 <= param_2);\n  }\n  return iVar2 == 0;\n}",
+  "fetched_at": "2026-04-26T18:53:49Z"
+}

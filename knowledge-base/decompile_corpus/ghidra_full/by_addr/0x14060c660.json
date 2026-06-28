@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060c660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall AutoResolveClass::vfunction16(AutoResolveClass *this,int param_1,uint param_2)\n\n{\n  int *piVar1;\n  undefined1 *puVar2;\n  ulonglong uVar3;\n  ulonglong uVar4;\n  \n  uVar3 = 0;\n  piVar1 = &(this->AutoResolveClass_data).offset_0x78;\n  uVar4 = uVar3;\n  while (*piVar1 != param_1) {\n    uVar4 = (ulonglong)((int)uVar4 + 1);\n    uVar3 = uVar3 + 1;\n    piVar1 = piVar1 + 0x2e;\n    if (1 < (longlong)uVar3) {\n      return 0;\n    }\n  }\n  puVar2 = (undefined1 *)(&(this->AutoResolveClass_data).offset_0x78 + (longlong)(int)uVar4 * 0x2e);\n  if (puVar2 == (undefined1 *)0x0) {\n    return 0;\n  }\n  if ((ulonglong)(*(longlong *)(puVar2 + 0x60) - *(longlong *)(puVar2 + 0x58) >> 3) <=\n      (ulonglong)param_2) {\n    return 0;\n  }\n  return *(undefined8 *)(*(longlong *)(puVar2 + 0x58) + (ulonglong)param_2 * 8);\n}",
+  "fetched_at": "2026-04-26T17:26:14Z"
+}

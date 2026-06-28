@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl _CallSETranslator<class __FrameHandler4>(struct EHExceptionRecord * __ptr64,unsigned\n   __int64 * __ptr64,struct _CONTEXT * __ptr64,struct _xDISPATCHER_CONTEXT * __ptr64,struct\n   FH4::FuncInfo4 * __ptr64,unsigned long,unsigned __int64 * __ptr64,int)\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl\n_CallSETranslator<class___FrameHandler4>\n          (EHExceptionRecord *param_1,__uint64 *param_2,_CONTEXT *param_3,\n          _xDISPATCHER_CONTEXT *param_4,FuncInfo4 *param_5,ulong param_6,__uint64 *param_7,\n          int param_8)\n\n{\n  EHExceptionRecord *local_20;\n  _CONTEXT *local_18;\n  \n  local_20 = param_1;\n  local_18 = param_3;\n  FUN_14076d8ec();\n  (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(*(undefined4 *)param_1,&local_20);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:10:32Z"
+}

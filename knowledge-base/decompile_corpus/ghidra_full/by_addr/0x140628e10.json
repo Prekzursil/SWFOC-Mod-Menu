@@ -1,0 +1,7 @@
+{
+  "addr": "0x140628e10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WallBehaviorClass::vfunction14(WallBehaviorClass *this,undefined8 param_1)\n\n{\n  _guard_check_icall();\n  FUN_140628e60(this,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:31:28Z"
+}

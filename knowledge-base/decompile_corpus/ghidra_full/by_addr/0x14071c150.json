@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall BlastAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Blast_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:57:53Z"
+}

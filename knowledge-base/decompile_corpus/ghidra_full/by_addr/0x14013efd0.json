@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013efd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14013efd0(undefined8 param_1)\n\n{\n  ulonglong uVar1;\n  longlong *plVar2;\n  \n  if (DAT_140a626b8 == '\\0') {\n    uVar1 = FUN_140176160(param_1,0,0,0,1,800,600,0x3c,0);\n    if ((char)uVar1 == '\\0') goto LAB_14013f0a7;\n    FUN_14017b110();\n    FUN_140195820();\n    DAT_140a626bd = 1;\n    DAT_140a626b8 = '\\x01';\n  }\n  if (DAT_140a626b9 == '\\0') {\n    uVar1 = FUN_140176560();\n    if ((int)uVar1 < 0) {\nLAB_14013f0a7:\n      return uVar1 & 0xffffffffffffff00;\n    }\n    FUN_14017ba90();\n    DAT_140a626b9 = '\\x01';\n    if ((DAT_140a626b0 == (longlong *)0x0) &&\n       (plVar2 = (longlong *)FUN_140186210(), DAT_140a626b0 != plVar2)) {\n      if (DAT_140a626b0 != (longlong *)0x0) {\n        (**(code **)(*DAT_140a626b0 + 8))();\n      }\n      DAT_140a626b0 = plVar2;\n      if (plVar2 != (longlong *)0x0) {\n        (**(code **)*plVar2)(plVar2);\n      }\n    }\n  }\n  uVar1 = FUN_140176bd0(param_1);\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T17:17:26Z"
+}

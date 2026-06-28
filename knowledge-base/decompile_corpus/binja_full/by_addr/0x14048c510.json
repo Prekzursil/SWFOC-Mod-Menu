@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048c510",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048c51e        while (*(arg1 + 0x38) != 0)\n14048c534        int64_t* rbx_2 = **(arg1 + 0x30)\n14048c537        int64_t* rsi_1 = rbx_2[3]\n14048c53e        if (rsi_1 != 0)\n14048c543        sub_140322b40(rsi_1)\n14048c550        j_sub_1407864b8(rsi_1)\n14048c563        int32_t rcx_4 = (rbx_2[2].d ^ 0xdeadbeef) & 0x7fffffff\n14048c582        int32_t rax_2 = rcx_4 u/ 0x1f31d * 0xb14\n14048c589        int32_t rcx_6 = rcx_4 u% 0x1f31d * 0x41a7\n14048c58f        int32_t rcx_7 = rcx_6 - rax_2\n14048c591        int32_t rax_3 = rcx_7 + 0x7fffffff\n14048c597        if (rcx_6 - rax_2 s>= 0)\n14048c597        rax_3 = rcx_7\n14048c5a5        int64_t* rdx_6 = ((sx.q(rax_3) & *(arg1 + 0x58)) << 4) + *(arg1 + 0x40)\n14048c5a9        int64_t rax_4 = *rdx_6\n14048c5b0        if (rdx_6[1] != rbx_2)\n14048c5d1        if (rax_4 == rbx_2)\n14048c5d6        *rdx_6 = *rbx_2\n14048c5b5        if (rax_4 != rbx_2)\n14048c5c8        rdx_6[1] = rbx_2[1]\n14048c5b7        int64_t rax_5 = *(arg1 + 0x30)\n14048c5bb        *rdx_6 = rax_5\n14048c5be        rdx_6[1] = rax_5\n14048c5d9        void* rcx_8 = *rbx_2\n14048c5e1        *(arg1 + 0x38) -= 1\n14048c5e9        *rbx_2[1] = rcx_8\n14048c5f0        *(rcx_8 + 8) = rbx_2[1]\n14048c5f7        j_sub_1407864b8(rbx_2)\n14048c618        *(arg1 + 0x70) = *(arg1 + 0x68)\n14048c621        return sub_14048b820(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:28:46Z"
+}

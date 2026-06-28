@@ -1,0 +1,7 @@
+{
+  "addr": "0x14039ae40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039ae50        void* result\n14039ae50        if ((arg1[0x74].b & 2) == 0)\n14039ae5e        int64_t rax_1 = (*(*arg1 + 0x10))(arg1, 4)\n14039ae64        if (rax_1 != 0)\n14039ae76        return sub_140434630(rax_1, arg1)\n14039ae82        int64_t rax_4 = (*(*arg1 + 0x10))(arg1, 5)\n14039ae88        if (rax_4 != 0)\n14039ae9a        return sub_1404f3f50(rax_4, arg1)\n14039aea6        int64_t* rcx_3 = data_140b31020\n14039aec9        int64_t var_10_1 = 0xf\n14039aed2        int64_t var_18_1 = 0xd\n14039aedb        void* var_28\n14039aedb        __builtin_strncpy(&var_28, \"NonCombatHero\", 0xe)\n14039aee9        int64_t arg_8\n14039aee9        (*(*rcx_3 + 8))(rcx_3, &var_28, &arg_8)\n14039aef5        if (var_10_1 u>= 0x10)\n14039aef7        void* rcx_4 = var_28\n14039aeff        void* rax_7 = rcx_4\n14039af09        if (var_10_1 + 1 u>= 0x1000)\n14039af0b        rcx_4 = *(rcx_4 - 8)\n14039af1e        if (rax_7 - rcx_4 - 8 u> 0x1f)\n14039af4a        _invalid_parameter_noinfo_noreturn()\n14039af4a        noreturn\n14039af20        j_sub_1407864b8(rcx_4)\n14039af38        if ((arg_8 & *(arg1[0x53] + 0x1648)) != 0)\n14039af3a        result.b = 1\n14039af41        return result\n14039af42        result.b = 0\n14039af49        return result",
+  "fetched_at": "2026-04-26T17:23:53Z"
+}

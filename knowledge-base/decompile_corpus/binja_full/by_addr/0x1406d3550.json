@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d3550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d3574        if (*(arg1 + 0x98) == 0 || data_140b31900 == 0)\n1406d3683        int64_t rax\n1406d3683        rax.b = 0\n1406d368c        return rax\n1406d3586        *arg3 = 0\n1406d35a0        int32_t i = 0\n1406d35a4        if (((data_140a16fd8 - data_140a16fd0) s>> 3).d s> 0)\n1406d35b9        void* rax_4 = sub_140294bc0(&data_140a16fd0, i)\n1406d35c4        if (rax_4 != 0 && sub_1402823e0(rax_4, *(arg1 + 0x98)) != 0)\n1406d35eb        void* rax_7 = *(*(data_140b31900 + 0x88) + (sx.q(*(rax_4 + 0x48)) << 3))\n1406d35ef        void* rdx_3 = *(rax_7 + 0x10)\n1406d35fa        if (rdx_3 != rax_7 + 8)\n1406d3600        while (true)\n1406d3600        void* rax_8 = *(rdx_3 + 0x18)\n1406d3607        void* rcx_2 = rax_8 - 0x18\n1406d360b        if (rax_8 == 0)\n1406d360b        rcx_2 = nullptr\n1406d3624        if (rcx_2 != 0 && *(rcx_2 + 0x38e) != 0xff && *(rcx_2 + 0x36f) == 0xff)\n1406d3652        int32_t arg_8 = 0\n1406d3656        sub_140397540(rcx_2, &arg_8)\n1406d3665        *arg3 = _mm_cvtepi32_pd(zx.q(arg_8))\n1406d3665        break\n1406d3626        rdx_3 = *(rdx_3 + 8)\n1406d362d        if (rdx_3 == rax_7 + 8)\n1406d362d        goto label_1406d3636\n1406d362d        break\n1406d3636        label_1406d3636:\n1406d3636        i += 1\n1406d3645        do while (i s< ((data_140a16fd8 - data_140a16fd0) s>> 3).d)\n1406d366f        int32_t rax_3\n1406d366f        rax_3.b = 1\n1406d3682        return rax_3",
+  "fetched_at": "2026-04-26T17:25:36Z"
+}

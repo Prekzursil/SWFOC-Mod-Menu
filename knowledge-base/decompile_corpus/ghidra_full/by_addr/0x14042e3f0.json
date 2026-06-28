@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042e3f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalBuildObjectsBehaviorClass * __thiscall\nTacticalBuildObjectsBehaviorClass::vfunction4(TacticalBuildObjectsBehaviorClass *this,int param_1)\n\n{\n  TacticalBuildObjectsBehaviorClass *pTVar1;\n  \n  pTVar1 = (TacticalBuildObjectsBehaviorClass *)0x0;\n  if (param_1 == 0x29) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T17:49:58Z"
+}

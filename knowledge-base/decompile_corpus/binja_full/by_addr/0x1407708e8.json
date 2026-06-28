@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407708e8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770906        int64_t rax = *(arg1 + 8)\n14077090a        int64_t rbp\n14077090a        rbp.b = 0\n14077090d        int64_t r14\n14077090d        r14.b = 0\n140770910        int64_t arg_8 = rax\n140770914        int32_t rdi = 0\n140770916        int64_t* r12 = arg4\n14077091f        int64_t rsi = rax - 1\n140770923        int64_t r15 = rsi\n140770928        if (*arg1 s> 0)\n140770931        while (true)\n140770931        if (rdi == arg2)\n140770933        rsi = rax\n140770936        rbp.b = 1\n14077093c        if (rdi == arg3)\n14077093e        r15 = rax\n140770941        r14.b = 1\n14077094c        if (rbp.b != 0 && r14.b != 0)\n14077094c        break\n140770956        FH4::UWMap4::ReadEntry(arg1, &arg_8)\n14077095b        rdi += 1\n14077095f        if (rdi s>= *arg1)\n14077095f        break\n140770961        rax = arg_8\n140770968        r12 = arg4\n14077096d        int128_t* rax_1 = *r12\n140770971        r12[1] = rsi\n140770979        *rax_1 = *arg1\n140770980        rax_1[1] = *(arg1 + 0x10)\n14077098c        int128_t* rcx_1 = *arg5\n14077098f        arg5[1] = r15\n140770996        *rcx_1 = *arg1\n1407709a2        rcx_1[1] = *(arg1 + 0x10)\n1407709b5        return arg5",
+  "fetched_at": "2026-04-26T17:30:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078f156        uint32_t rcx = data_140a44db0\n14078f15f        if (rcx == 0xffffffff)\n14078f15f        goto label_14078f180\n14078f161        void** result_1 = __acrt_FlsGetValue(rcx)\n14078f166        void** result = result_1\n14078f16c        if (result_1 == 0)\n14078f176        rcx = data_140a44db0\n14078f180        label_14078f180:\n14078f187        if (__acrt_FlsSetValue(rcx, -1) != 0)\n14078f193        void** result_2 = _calloc_base(1, 0x3c8)\n14078f198        uint32_t rcx_1 = data_140a44db0\n14078f19e        result = result_2\n14078f1a4        if (result_2 != 0)\n14078f1c0        if (__acrt_FlsSetValue(rcx_1, result) != 0)\n14078f1d7        construct_ptd_array(result)\n14078f1de        _free_base(0)\n14078f1e3        label_14078f1e3:\n14078f1e6        if (result != 0)\n14078f1f0        return result\n14078f1ca        __acrt_FlsSetValue(data_140a44db0, 0)\n14078f1af        _free_base(result)\n14078f1a8        __acrt_FlsSetValue(rcx_1, 0)\n14078f1af        _free_base(nullptr)\n14078f172        if (result_1 != -1)\n14078f172        goto label_14078f1e3\n14078f1f1        abort()\n14078f1f1        noreturn",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

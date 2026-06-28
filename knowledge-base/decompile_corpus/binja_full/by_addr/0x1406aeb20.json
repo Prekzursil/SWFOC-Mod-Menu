@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406aeb20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406aeb26        struct BlockingStatus::MovementBlockStatus::VTable** result = arg1\n1406aeb29        sub_1407d8d80(arg1)\n1406aeb37        *result = &MovementBlockStatus::`vftable'{for `BlockingStatus'}\n1406aeb41        result[6] = &MovementBlockStatus::`vftable'{for `SignalListenerClass'}\n1406aeb48        result[7] = 0\n1406aeb4c        result[8].w = 0\n1406aeb50        result[9] = 0\n1406aeb54        result[0xa] = 0\n1406aeb5d        return result",
+  "fetched_at": "2026-04-26T17:24:33Z"
+}

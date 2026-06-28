@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alRenderTask member function inherited by alMeshRenderTask\n   alRenderTask member function inherited by alD3dTerrainRenderTask\n   alRenderTask member function inherited by alD3dWaterRenderTask\n   alRenderTask member function inherited by alD3dTerrainDecorationRenderTask\n   alRenderTask member function inherited by alSimpleRenderTask\n   alRenderTask member function inherited by al3DCableRenderTask\n   alRenderTask member function inherited by alLightningBoltRenderTask */\n\nundefined * __thiscall alRenderTask::vfunction2(void)\n\n{\n  return &DAT_140a62870;\n}",
+  "fetched_at": "2026-04-26T17:14:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406598b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406598ba        int64_t* rbx = arg1[1]\n1406598c1        int64_t r10 = *arg1\n1406598da        int64_t rax\n1406598da        int64_t rdx\n1406598da        rdx:rax = muls.dp.q(0x2aaaaaaaaaaaaaab, rbx - r10)\n1406598e7        uint64_t rax_2 = rdx s>> 2 u>> 0x3f\n1406598eb        int64_t r8_4 = (rbx - r10) s/ 0x18\n1406598f1        if (arg2 u< r8_4)\n1406598fc        int64_t* rdi = r10 + arg2 * 0x18\n140659909        int64_t rax_4 = sub_14050c680(rdi, rbx)\n14065990e        arg1[1] = rdi\n140659921        return rax_4\n140659922        if (arg2 u> r8_4)\n14065992e        int64_t rax_5\n14065992e        int64_t rdx_2\n14065992e        rdx_2:rax_5 = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[2] - r10)\n140659931        int64_t rdx_3 = rdx_2 s>> 2\n140659942        if (arg2 u> rdx_3 + (rdx_3 u>> 0x3f))\n14065995e        return sub_140652cf0(arg1, arg2)\n14065995f        int64_t i_1 = arg2 - r8_4\n140659962        if (arg2 != r8_4)\n140659983        int64_t i\n140659970        __builtin_memset(rbx, 0, 0x18)\n14065997b        rbx = &rbx[3]\n14065997f        i = i_1\n14065997f        i_1 -= 1\n140659983        do while (i != 1)\n14065998e        rax_2 = sub_14050c680(rbx, rbx)\n140659993        arg1[1] = rbx\n1406599a1        return rax_2",
+  "fetched_at": "2026-04-26T17:07:09Z"
+}

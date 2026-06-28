@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c0b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c0b6d        int32_t i = 0\n1401c0b74        if (*(arg1 + 0x48) s> 0)\n1401c0b7b        int64_t* rsi_1 = nullptr\n1401c0b84        int64_t rcx = *(rsi_1 + *(arg1 + 0x40))\n1401c0b8b        if (rcx != 0)\n1401c0b92        sub_1401c0b50(rcx, 1)\n1401c0b97        i += 1\n1401c0b99        rsi_1 = &rsi_1[1]\n1401c0ba0        do while (i s< *(arg1 + 0x48))\n1401c0ba7        int64_t lpMem = *(arg1 + 0x40)\n1401c0bb2        *(arg1 + 0x38) = &DynamicVectorClass<class XMLDatabase::XMLNodeClass* __ptr64>::`vftable'\n1401c0bb9        if (lpMem != 0)\n1401c0bc2        if ((*(arg1 + 0x4c) & 0x80000000) == 0)\n1401c0bdd        j_sub_1407864b8(lpMem)\n1401c0bd2        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1401c0be2        *(arg1 + 0x4c) &= 0x80000000\n1401c0be9        *(arg1 + 0x40) = 0\n1401c0bed        *(arg1 + 0x48) = 0\n1401c0bf1        int64_t lpMem_1 = *(arg1 + 0x28)\n1401c0bfc        *(arg1 + 0x20) = &DynamicVectorClass<class XMLDatabase::XMLAttributeClass>::`vftable'\n1401c0c03        if (lpMem_1 != 0)\n1401c0c0c        if ((*(arg1 + 0x34) & 0x80000000) == 0)\n1401c0c27        j_sub_1407864b8(lpMem_1)\n1401c0c1c        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem_1)\n1401c0c2c        *(arg1 + 0x34) &= 0x80000000\n1401c0c33        *(arg1 + 0x28) = 0\n1401c0c37        *(arg1 + 0x30) = 0\n1401c0c4e        if ((arg2 & 1) != 0)\n1401c0c58        j_sub_1407864b8(arg1)\n1401c0c65        return arg1",
+  "fetched_at": "2026-04-26T17:26:09Z"
+}

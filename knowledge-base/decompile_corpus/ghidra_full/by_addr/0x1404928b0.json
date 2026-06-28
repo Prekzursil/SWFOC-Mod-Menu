@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404928b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404928b0(longlong param_1)\n\n{\n  DynamicVectorClass<class_GameObjectClass*___ptr64> *this;\n  HANDLE hHeap;\n  \n  this = *(DynamicVectorClass<class_GameObjectClass*___ptr64> **)(param_1 + 8);\n  if (this != (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) {\n    if ((*(uint *)(param_1 + 0x14) & 0x80000000) == 0) {\n      DynamicVectorClass<class_GameObjectClass*___ptr64>::\n      ~DynamicVectorClass<class_GameObjectClass*___ptr64>(this,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,this);\n    }\n    *(uint *)(param_1 + 0x14) = *(uint *)(param_1 + 0x14) & 0x80000000;\n    *(undefined8 *)(param_1 + 8) = 0;\n    *(undefined4 *)(param_1 + 0x10) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:12Z"
+}

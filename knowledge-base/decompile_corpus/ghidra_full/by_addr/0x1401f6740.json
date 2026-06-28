@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f6740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401f6740(longlong param_1)\n\n{\n  char cVar1;\n  BOOL BVar2;\n  int iVar3;\n  HANDLE hMem;\n  LPCWSTR lpString;\n  \n  FUN_1401f4300();\n  BVar2 = OpenClipboard((HWND)0x0);\n  if (BVar2 != 0) {\n    hMem = GetClipboardData(0xd);\n    if ((hMem != (HANDLE)0x0) && (lpString = GlobalLock(hMem), lpString != (LPCWSTR)0x0)) {\n      cVar1 = FUN_1401d27c0(param_1 + 0x298,*(undefined4 *)(param_1 + 0x2c4),lpString,0xffffffff);\n      if (cVar1 != '\\0') {\n        iVar3 = lstrlenW(lpString);\n        FUN_1401f67f0(param_1,iVar3 + *(int *)(param_1 + 0x2c4),1);\n      }\n      GlobalUnlock(hMem);\n    }\n    CloseClipboard();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:42Z"
+}

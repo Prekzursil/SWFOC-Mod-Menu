@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f9980",
+  "tool": "ghidra",
+  "fact_id": "rva_ability_energy_weapon",
+  "body": "\nEnergyWeaponAttackAbilityClass * __thiscall\nEnergyWeaponAttackAbilityClass::EnergyWeaponAttackAbilityClass(EnergyWeaponAttackAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1401f93e0(&(this->EnergyWeaponAttackAbilityClass_data).field_0xc,0,0,0,0xff);\n  (this->EnergyWeaponAttackAbilityClass_data).offset_0x40 = 0xf;\n  (this->EnergyWeaponAttackAbilityClass_data).offset_0x1c = 0;\n  (this->EnergyWeaponAttackAbilityClass_data).offset_0x28 = 0;\n  (this->EnergyWeaponAttackAbilityClass_data).offset_0x38 = 0;\n  (this->EnergyWeaponAttackAbilityClass_data).offset_0x4 = 0;\n  (this->EnergyWeaponAttackAbilityClass_data).offset_0x0 = 0;\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 9;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:17Z"
+}

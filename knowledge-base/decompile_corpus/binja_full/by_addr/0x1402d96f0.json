@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d96f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402d9701        int64_t rsi = sx.q(arg3)\n1402d9704        *arg1 = &DynamicVectorClass<struct BlipStruct>::`vftable'\n1402d970d        uint32_t rax_1 = zx.d(arg2) << 0x1f\n1402d9710        arg1[1] = 0\n1402d9718        arg1[2].d = 0\n1402d971f        *(arg1 + 0x14) = rax_1\n1402d9725        if (arg3 != 0)\n1402d972c        int64_t rax_3\n1402d972c        if (rax_1 s>= 0)\n1402d975b        uint64_t rax_4 = 0x28 * rsi\n1402d9765        if (mulu.dp.q(0x28, rsi) u>> 0x40 != zx.o(0))\n1402d9765        rax_4 = -1\n1402d976c        rax_3 = j_operator new(rax_4)\n1402d9749        rax_3 = HeapAlloc(GetProcessHeap(), HEAP_NONE, rsi * 0x28)\n1402d9771        arg1[1] = rax_3\n1402d9779        *(arg1 + 0x14) &= 0x80000000\n1402d9780        *(arg1 + 0x14) |= rsi.d & 0x7fffffff\n1402d9783        arg1[2].d = 0\n1402d9797        return arg1",
+  "fetched_at": "2026-04-26T17:22:34Z"
+}

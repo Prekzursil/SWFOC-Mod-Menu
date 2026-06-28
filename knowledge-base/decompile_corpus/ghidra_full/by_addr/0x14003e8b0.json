@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003e8b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14003e8b0(longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  \n  lVar3 = *(longlong *)(param_1 + 0x8f0);\n  plVar4 = (longlong *)0x0;\n  lVar2 = *(longlong *)(param_1 + 0x8e8);\n  plVar1 = plVar4;\n  if (lVar3 - lVar2 >> 3 != 0) {\n    do {\n      lVar3 = *(longlong *)(lVar2 + (longlong)plVar1 * 8);\n      if (lVar3 != 0) {\n        FUN_140428680(lVar3);\n        thunk_FUN_1407864b8(lVar3,0x18);\n      }\n      lVar3 = *(longlong *)(param_1 + 0x8f0);\n      plVar1 = (longlong *)(ulonglong)((int)plVar1 + 1);\n      lVar2 = *(longlong *)(param_1 + 0x8e8);\n    } while (plVar1 < (longlong *)(lVar3 - lVar2 >> 3));\n  }\n  if (lVar3 - lVar2 >> 3 != 0) {\n    *(longlong *)(param_1 + 0x8f0) = lVar2;\n  }\n  plVar1 = plVar4;\n  if (DAT_140b15418 != (longlong *)0x0) {\n    plVar1 = (longlong *)(**(code **)(*DAT_140b15418 + 0x100))();\n  }\n  lVar3 = *(longlong *)(param_1 + 0x900);\n  if (*(longlong *)(param_1 + 0x908) - lVar3 >> 3 != 0) {\n    do {\n      if (plVar1 != (longlong *)0x0) {\n        (**(code **)(*plVar1 + 0x30))(plVar1,*(undefined8 *)(lVar3 + (longlong)plVar4 * 8));\n      }\n      lVar3 = *(longlong *)(param_1 + 0x900);\n      plVar4 = (longlong *)(ulonglong)((int)plVar4 + 1);\n    } while (plVar4 < (longlong *)(*(longlong *)(param_1 + 0x908) - lVar3 >> 3));\n  }\n  FUN_140048df0(param_1 + 0x900,0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:22Z"
+}

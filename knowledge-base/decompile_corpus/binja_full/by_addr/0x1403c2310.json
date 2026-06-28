@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c2310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c2325        sub_1404c2f70(arg1, arg2, arg3)\n1403c232a        void* rax = *(arg2 + 0xb0)\n1403c2335        if (*(rax + 0x60) == 0)\n1403c233a        *(rax + 0x60) = 1\n1403c2341        sub_1403c2440(arg1, arg2, arg3.b)\n1403c234a        if (*(arg1 + 0x40) != 0)\n1403c234a        goto label_1403c2360\n1403c2353        if (*(arg2 + 0x3a7) != 0)\n1403c2369        label_1403c2369:\n1403c236d        if (*(arg1 + 0x40) != 0)\n1403c2375        sub_1403c1d80(arg1, arg2)\n1403c237a        *(arg1 + 0x40) = 0\n1403c235b        sub_1403c19c0(arg1, arg2)\n1403c2360        label_1403c2360:\n1403c2367        if (*(arg2 + 0x3a7) != 0)\n1403c2367        goto label_1403c2369\n1403c2384        sub_1403c2710(arg1, arg2)\n1403c2393        float zmm6 = *(arg1 + 0x54) * 2f\n1403c23a6        float zmm2 = zmm6 f* data_140b0a344\n1403c23d3        float zmm3 = zmm2 * 0.479999989f * zmm2 + zmm2 + 1f\n1403c23d7        float zmm1 = zmm2 * 0.234999999f * zmm2 * zmm2\n1403c23e0        zmm2 = *(arg1 + 0x44) f- *(arg1 + 0x48)\n1403c23ee        float zmm4 = 1f / (zmm3 + zmm1)\n1403c23fe        zmm3 = (zmm2 * zmm6 f+ *(arg1 + 0x4c)) f* data_140b0a344\n1403c2423        zmm1 = (*(arg1 + 0x4c) - zmm3 * zmm6) * zmm4\n1403c2427        *(arg1 + 0x44) = (zmm3 + zmm2) * zmm4 f+ *(arg1 + 0x48)\n1403c242c        *(arg1 + 0x4c) = zmm1\n1403c243b        return 0x650000",
+  "fetched_at": "2026-04-26T17:24:40Z"
+}

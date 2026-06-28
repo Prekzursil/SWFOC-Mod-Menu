@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404049e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404049ea        void* rsi = *(*(arg1 + 0x28) + 0x110)\n1404049f4        if (rsi == 0)\n1404049fe        return zx.o(0)\n140404a04        int32_t i = 0\n140404a18        int128_t result = 0xbf800000\n140404a1e        if (*(rsi + 0x18) s> 0)\n140404a25        int64_t* rdi_1 = nullptr\n140404a34        int64_t* rdx_1 = *(rdi_1 + *(rsi + 0x10))\n140404a3b        if (rdx_1 != 0)\n140404a3d        void* rcx = rdx_1[0x53]\n140404a47        if (rcx != 0)\n140404a49        int128_t result_1\n140404a49        float zmm7_1\n140404a49        result_1, result, zmm7_1 = sub_140371160(rcx, rdx_1)\n140404a4e        result.d f- zmm7_1\n140404a51        if (is_unordered.d(result.d, zmm7_1))\n140404a58        if (not(result.d f<= result_1.d))\n140404a5a        result = result_1\n140404a58        if (result.d f== zmm7_1 || not(result.d f<= result_1.d))\n140404a5a        result = result_1\n140404a5d        i += 1\n140404a5f        rdi_1 = &rdi_1[1]\n140404a66        do while (i s< *(rsi + 0x18))\n140404a84        return result",
+  "fetched_at": "2026-04-26T17:25:44Z"
+}

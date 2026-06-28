@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070bd00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070bd06        struct SpecialAbilityClass::ReduceTechnologyPriceAbilityClass::VTable** result = arg1\n14070bd09        sub_14048c780(arg1)\n14070bd15        result[0x2f].d = 0\n14070bd1f        *result = &ReduceTechnologyPriceAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070bd29        result[1] = &ReduceTechnologyPriceAbilityClass::`vftable'{for `RefCountClass'}\n14070bd30        result[8].w = 1\n14070bd36        *(result + 0x3c) = 3\n14070bd42        return result",
+  "fetched_at": "2026-04-26T17:27:29Z"
+}

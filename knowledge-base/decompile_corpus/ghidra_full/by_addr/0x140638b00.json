@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638b00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nbyte __thiscall CombatantBehaviorClass::vfunction27(CombatantBehaviorClass *this)\n\n{\n  return ~(*(byte *)(this->offset_0x18 + 0x74) >> 1) & 1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:32Z"
+}

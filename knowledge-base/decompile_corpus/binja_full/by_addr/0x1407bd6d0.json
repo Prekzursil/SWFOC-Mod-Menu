@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bd6d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bd6f1        uint64_t rax_4\n1407bd6d2        *(arg2 + 9) |= 1\n1407bd6d6        uint32_t rax_1 = zx.d(*(arg2 + 8))\n1407bd6dd        if (rax_1 == 5)\n1407bd723        rax_4 = *arg1\n1407bd726        *(arg2 + 0x30) = rax_4\n1407bd72a        *arg1 = arg2\n1407bd72a        break\n1407bd6e2        if (rax_1 == 6)\n1407bd718        void* rax_7 = *arg1\n1407bd71b        *(arg2 + 0x10) = rax_7\n1407bd71f        *arg1 = arg2\n1407bd722        return rax_7\n1407bd6e4        rax_4 = zx.q(rax_1 - 7)\n1407bd6e7        if (rax_1 != 7)\n1407bd6f5        int32_t temp3_1 = rax_4.d\n1407bd6f5        rax_4 = zx.q(rax_4.d - 1)\n1407bd6f8        if (temp3_1 == 1)\n1407bd70a        void* rax_6 = *arg1\n1407bd70d        *(arg2 + 0xb8) = rax_6\n1407bd714        *arg1 = arg2\n1407bd717        return rax_6\n1407bd6fd        if (rax_4.d != 1)\n1407bd6f8        break\n1407bd6ff        void* rax_5 = *arg1\n1407bd702        *(arg2 + 0x68) = rax_5\n1407bd706        *arg1 = arg2\n1407bd709        return rax_5\n1407bd6e9        arg2 = *(arg2 + 0x10)\n1407bd6f1        do while ((*(arg2 + 9) & 0x11) == 0)\n1407bd72d        return rax_4",
+  "fetched_at": "2026-04-26T17:33:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406905c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceFreeStoreClass::vfunction22_for_LuaUserVar(SpaceFreeStoreClass *this)\n\n{\n  int iVar1;\n  longlong lVar2;\n  undefined8 local_18;\n  undefined4 local_10;\n  \n  AIFreeStoreClass::vfunction22_for_LuaUserVar((AIFreeStoreClass *)this);\n  lVar2 = FUN_1405f55e0(*(undefined8 *)(*(longlong *)&this->field_0x38 + 0x28));\n  if (lVar2 != 0) {\n    local_18 = 0;\n    local_10 = 0;\n    lVar2 = FUN_1402a9ff0(*(undefined8 *)(lVar2 + 0x18),0xffffffff,0xffffffff,0xffffffff,&local_18,0\n                          ,0x7fffffff,0xffffffff);\n    if ((lVar2 != 0) && (iVar1 = *(int *)(lVar2 + 0x10), 0 < (longlong)iVar1)) {\n      lVar2 = 0;\n      do {\n        (*this->vftablePtr->vfunction20_for_LuaUserVar)(this);\n        lVar2 = lVar2 + 1;\n      } while (lVar2 < iVar1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:17:27Z"
+}

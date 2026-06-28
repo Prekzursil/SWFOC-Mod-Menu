@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402bd2f0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_select_object_engine",
+  "body": "1402bd305        int64_t* result = sub_1402aca60(arg1, arg2)\n1402bd310        if (result == 0)\n1402bd35b        return result\n1402bd31b        sub_1402bd360(arg1, result, arg3, arg4)\n1402bd334        sub_14032f1b0(data_140b15418 + 0xa0, result, arg3)\n1402bd34b        return result",
+  "fetched_at": "2026-04-26T16:43:14Z"
+}

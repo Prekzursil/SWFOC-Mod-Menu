@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013bb00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013bb10        *arg1 = &alEmitter::`vftable'{for `alRenderable'}\n14013bb1a        arg1[2] = &alEmitter::`vftable'{for `MultiLinkedListMember'}\n14013bb25        arg1[4] = &alEmitter::`vftable'{for `CullObjectClass'}\n14013bb29        int64_t* rcx = arg1[0x19]\n14013bb33        if (rcx != 0)\n14013bb38        (*(*rcx + 8))(rcx)\n14013bb3b        arg1[0x19] = 0\n14013bb4f        sub_140172a60(arg1[0x1a], 0)\n14013bb54        int64_t* rcx_2 = arg1[0x19]\n14013bb5e        if (rcx_2 != 0)\n14013bb63        (*(*rcx_2 + 8))(rcx_2)\n14013bb66        arg1[0x19] = 0\n14013bb7a        sub_140172a60(arg1[0x1a], 1)\n14013bb7f        int64_t* rcx_4 = arg1[0x1a]\n14013bb89        if (rcx_4 != 0)\n14013bb8e        (*(*rcx_4 + 8))(rcx_4)\n14013bb91        arg1[0x1a] = 0\n14013bb9c        int64_t* rcx_5 = arg1[0x19]\n14013bba6        if (rcx_5 != 0)\n14013bbab        (*(*rcx_5 + 8))(rcx_5)\n14013bbb6        return sub_14013f770(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:14:54Z"
+}

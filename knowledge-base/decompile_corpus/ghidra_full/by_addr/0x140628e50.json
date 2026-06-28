@@ -1,0 +1,7 @@
+{
+  "addr": "0x140628e50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "WallBehaviorClass * __thiscall WallBehaviorClass::vfunction4(WallBehaviorClass *this,int param_1)\n\n{\n  WallBehaviorClass *pWVar1;\n  \n  pWVar1 = (WallBehaviorClass *)0x0;\n  if (param_1 == 0x17) {\n    pWVar1 = this;\n  }\n  return pWVar1;\n}",
+  "fetched_at": "2026-04-26T17:31:30Z"
+}

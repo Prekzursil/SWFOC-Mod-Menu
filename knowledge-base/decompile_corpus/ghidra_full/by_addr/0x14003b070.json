@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003b070",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nbool FUN_14003b070(undefined8 param_1,undefined8 param_2)\n\n{\n  char cVar1;\n  \n  cVar1 = FUN_14039ad40(param_2);\n  return cVar1 == '\\0';\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:14Z"
+}

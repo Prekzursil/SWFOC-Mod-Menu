@@ -1,0 +1,7 @@
+{
+  "addr": "0x140733400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14073341a        int128_t zmm7\n14073341a        int128_t var_28 = zmm7\n140733425        int64_t arg_8\n140733425        int64_t arg_20\n140733425        void* result\n140733425        if (*(arg1 + 0x98) != 0)\n14073342b        int32_t rdx = data_140a43c64\n140733436        zmm7 = zx.o(0)\n14073343c        arg_20 = (zx.o(0)).q\n140733442        sub_1405f3ff0(arg2, rdx, &arg_20)\n140733447        int32_t rdx_1 = data_140a43c60\n140733455        arg_8 = -1\n14073345e        sub_1405f4780(arg2, rdx_1, &arg_8)\n14073346a        result = sub_140396380(*(arg1 + 0x98))\n140733475        if (*(arg1 + 0x98) == 0 || result == 0)\n1407334d7        *arg3 = 0\n1407334de        result.b = 0\n140733483        if ((arg_8 & *(result + 0x1648)) != 0)\n140733496        float zmm1_1[0x2] = 0x3f800000\n1407334a9        zmm1_1[0] = 1f - sub_140396df0(*(arg1 + 0x98))\n1407334b6        double zmm6_1 = 1.0 - _mm_cvtps_pd(zmm1_1) f* arg_20\n1407334ba        int32_t zmm0_2\n1407334ba        zmm0_2, result = sub_140370e60(result)\n1407334c2        zmm7.q = fconvert.d(zmm0_2)\n1407334c6        zmm7.q = zmm7.q f* zmm6_1\n1407334cf        *arg3 = zmm7.q\n1407334d3        result.b = 1\n1407334f4        return result",
+  "fetched_at": "2026-04-26T17:29:01Z"
+}

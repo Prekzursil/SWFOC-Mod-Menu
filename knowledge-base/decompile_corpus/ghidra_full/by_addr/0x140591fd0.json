@@ -1,0 +1,7 @@
+{
+  "addr": "0x140591fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BarrageAreaBehaviorClass * __thiscall\nBarrageAreaBehaviorClass::vfunction4(BarrageAreaBehaviorClass *this,int param_1)\n\n{\n  BarrageAreaBehaviorClass *pBVar1;\n  \n  pBVar1 = (BarrageAreaBehaviorClass *)0x0;\n  if (param_1 == 0x1d) {\n    pBVar1 = this;\n  }\n  return pBVar1;\n}",
+  "fetched_at": "2026-04-26T18:42:12Z"
+}

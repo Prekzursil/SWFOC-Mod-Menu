@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaReinforceCommandClass::vfunction5(void)\n\n{\n  return &DAT_140a44660;\n}",
+  "fetched_at": "2026-04-26T18:37:12Z"
+}

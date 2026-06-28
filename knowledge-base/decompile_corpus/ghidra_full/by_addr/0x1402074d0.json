@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402074d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1402074d0(uint *param_1,longlong param_2)\n\n{\n  char cVar1;\n  uint uVar2;\n  \n  if (param_2 != 0) {\n    cVar1 = FUN_1402051c0(param_2,param_1[1]);\n    if (cVar1 != '\\0') {\n      FUN_140205220(param_2);\n      uVar2 = FUN_1402043b0(param_2,param_1[1]);\n      FUN_140205240(param_2);\n      if (uVar2 == (param_1[2] & *param_1)) {\n        return 1;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:57:09Z"
+}

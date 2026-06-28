@@ -1,0 +1,7 @@
+{
+  "addr": "0x140797f08",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_initialize_multibyte\n   \n   Library: Visual Studio 2019 Release */\n\nundefined8 __acrt_initialize_multibyte(void)\n\n{\n  undefined8 uVar1;\n  \n  if (DAT_140b3cbcc == '\\0') {\n    DAT_140b3cbb8 = &DAT_140a454a0;\n    DAT_140b3cbc0 = &DAT_140a45160;\n    DAT_140b3cbb0 = &DAT_140a45390;\n    uVar1 = FUN_14078f150();\n    FUN_140797c90(0xfffffffd,1,uVar1,&DAT_140b3cbc0);\n    DAT_140b3cbcc = '\\x01';\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:53:31Z"
+}

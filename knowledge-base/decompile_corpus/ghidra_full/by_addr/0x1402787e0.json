@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402787e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TeletypeTextClass::vfunction12_for_DrawPrimitiveClass(TeletypeTextClass *this)\n\n{\n  longlong *local_res8 [4];\n  \n  DrawTextClass::vfunction12((DrawTextClass *)this);\n  if ((this->TeletypeTextClass_data).offset_0x98 != '\\0') {\n    local_res8[0] = &(this->TeletypeTextClass_data).offset_0x58;\n    FUN_140046fc0(&PTR_vftable_140a16ce8,local_res8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:57Z"
+}

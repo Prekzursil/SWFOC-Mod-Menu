@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042f2c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042f2d3        *arg1 = &AbilityCountdownBehaviorClass::`vftable'{for `BehaviorClass'}\n14042f2e0        arg1[1] = &AbilityCountdownBehaviorClass::`vftable'{for `RefCountClass'}\n14042f2eb        arg1[3] = &AbilityCountdownBehaviorClass::`vftable'{for `SignalListenerClass'}\n14042f2ef        sub_1404c3310(arg1)\n14042f2f7        if ((arg2 & 1) != 0)\n14042f301        j_sub_1407864b8(arg1)\n14042f313        return arg1",
+  "fetched_at": "2026-04-26T17:26:48Z"
+}

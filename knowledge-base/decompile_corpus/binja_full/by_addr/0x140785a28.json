@@ -1,0 +1,7 @@
+{
+  "addr": "0x140785a28",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140785a4d        uint64_t rsi = arg3\n140785a50        int64_t result_1 = arg2\n140785a7b        if ((arg2 == 0 && arg3 != 0) || arg4 == 0 || arg5 == 0)\n140785a62        *_errno() = 0x16\n140785a68        _invalid_parameter_noinfo()\n140785a6d        return 0\n140785a85        int64_t rbx_3 = (arg3 - 1) * arg4 + arg2\n140785a8b        if (arg2 u<= rbx_3)\n140785a90        while (true)\n140785a90        uint64_t r15_2 = rsi u>> 1\n140785a93        int64_t result\n140785a93        if (r15_2 == 0)\n140785b00        if (rsi == 0)\n140785b00        break\n140785b15        result = result_1\n140785b1a        if (arg5(arg1, result_1) != 0)\n140785b1a        return 0\n140785a9a        bool cond:0_1 = (rsi.b & 1) != 0\n140785a9e        rsi = r15_2 - 1\n140785aa5        if (cond:0_1)\n140785aa5        rsi = r15_2\n140785ab0        result = rsi * arg4 + result_1\n140785ad6        int32_t rax_4 = arg5(arg1, result)\n140785ac0        if (rax_4 != 0)\n140785ac2        if (rax_4 s>= 0)\n140785acc        result_1 = result + arg4\n140785ad0        rsi = r15_2\n140785ac7        rbx_3 = result - arg4\n140785ad6        if (result_1 u> rbx_3)\n140785ad6        break\n140785ad6        continue\n140785adb        return result\n140785ad8        return 0",
+  "fetched_at": "2026-04-26T17:31:15Z"
+}

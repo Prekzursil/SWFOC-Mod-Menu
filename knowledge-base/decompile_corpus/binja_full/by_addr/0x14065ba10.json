@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065ba10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065ba30        if (*(arg1 + 0x98) != 0)\n14065ba36        int32_t rdx = data_140a43ed0\n14065ba44        int32_t arg_8 = 0xffffffff\n14065ba4c        sub_1405f3f00(arg2, rdx, &arg_8)\n14065ba56        if (arg_8 != 0xffffffff)\n14065ba5c        int64_t* rcx_1 = *(arg1 + 0x98)\n14065ba89        if (sub_1403f85e0((*(*rcx_1 + 0x10))(rcx_1, 3), *(arg1 + 0x98)) != *(*(*(arg2 + 0x58) + 0x50) + 0x68))\n14065ba8b        *arg3 = 0\n14065ba92        int64_t rax_3\n14065ba92        rax_3.b = 1\n14065baa3        return rax_3\n14065bad4        *arg3 = fconvert.d(sub_14053bb20(sub_140559b40(*(*(arg1 + 0x98) + 0xd0), arg_8), 0, nullptr))\n14065bad8        int64_t* rcx_7 = *(arg1 + 0x98)\n14065baf4        int64_t rax_7\n14065baf4        float zmm0_1\n14065baf4        rax_7, zmm0_1 = sub_140401ba0((*(*rcx_7 + 0x10))(rcx_7, 6), *(arg1 + 0x98), arg_8)\n14065bafc        rax_7.b = 1\n14065bb06        *arg3 = fconvert.d(zmm0_1) f+ *arg3\n14065bb19        return rax_7\n14065bb1f        void* rax\n14065bb1f        rax.b = 0\n14065bb2b        return rax",
+  "fetched_at": "2026-04-26T17:07:38Z"
+}

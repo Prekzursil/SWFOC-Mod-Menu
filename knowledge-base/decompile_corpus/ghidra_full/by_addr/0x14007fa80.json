@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007fa80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14007fa80(void)\n\n{\n  int local_res8 [2];\n  longlong local_res10 [3];\n  \n  local_res8[0] = 0;\n  local_res10[0] = 0;\n  thunk_FUN_140178df0(local_res10,local_res8);\n  if ((local_res10[0] != 0) && (local_res8[0] != 0)) {\n    FUN_140056400(&PTR_vftable_140a10b18);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:18Z"
+}

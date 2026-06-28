@@ -1,0 +1,7 @@
+{
+  "addr": "0x14039bcb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039bcb9        int64_t* rcx = data_140b15418\n14039bcc3        if (rcx == 0 || (*(*rcx + 0xf8))(rcx).b != 0)\n14039bcd4        return \n14039bcda        int64_t* rax = arg1[0x56]\n14039bced        if (rax != 0 && rax[0x69].b != 0xff)\n14039bce4        return \n14039bcff        if (*(arg1 + 0x333) == 0xff)\n14039bd54        label_14039bd54:\n14039bd54        int64_t* rcx_4 = data_140b15418\n14039bd5e        rax = (*(*rcx_4 + 0x228))(rcx_4)\n14039bd6a        if (rax != 0 && sub_140425e30().b != 0 && sub_140426140(rax, arg1) == 0)\n14039bd8e        struct MovementCoordinatorClass::SpaceMovementCoordinatorClass::VTable** rax_6 = sub_140426010(rax)\n14039bd99        struct MovementCoordinatorClass::SpaceMovementCoordinatorClass::VTable* r8_1 = *rax_6\n14039bd9c        r8_1->__offset(0x40).q(rax_6, arg1, r8_1)\n14039bd0c        rax = (*(*arg1 + 0x10))(arg1, 1)\n14039bd15        if (rax != 0)\n14039bd1b        int64_t* rcx_2 = data_140b15418\n14039bd2a        int32_t rsi_1\n14039bd2a        if (rcx_2 != 0)\n14039bd3d        rsi_1 = (*(*rcx_2 + 0xe0))(rcx_2)\n14039bd2c        rsi_1 = data_140b153fc\n14039bd3f        int64_t rdx_1 = *rax\n14039bd52        if ((*(rdx_1 + 0x238))(rax, rdx_1).d == rsi_1)\n14039bd52        goto label_14039bd54\n14039bdaa        return ",
+  "fetched_at": "2026-04-26T17:23:55Z"
+}

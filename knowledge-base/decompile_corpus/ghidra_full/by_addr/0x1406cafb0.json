@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cafb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* AIGoalSystemClass member function inherited by SpaceGoalSystemClass\n   AIGoalSystemClass member function inherited by GalacticGoalSystemClass */\n\nvoid __thiscall AIGoalSystemClass::vfunction8(AIGoalSystemClass *this)\n\n{\n  FUN_140615680(&(this->AIGoalSystemClass_data).field_0x158);\n  FUN_140721820(&this->AIGoalSystemClass_data);\n  FUN_140721820(&(this->AIGoalSystemClass_data).field_0xa0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e8e20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e8e31        arg1[4] = 0xf\n1405e8e3b        *arg1 = &ActionClass::`vftable'{for `IXMLLoadableClass'}\n1405e8e3e        arg1[1] = 0\n1405e8e45        arg1[3] = 0\n1405e8e4d        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&arg1[5])\n1405e8e56        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&arg1[7])\n1405e8e62        arg1[9].d = 0xffffffff\n1405e8e69        arg1[0xa] = &LinearInterpolator::`vftable'{for `Interpolator'}\n1405e8e6d        arg1[0xf] = &LinearInterpolator::`vftable'{for `Interpolator'}\n1405e8e74        *(arg1 + 0x4c) = 0\n1405e8e77        arg1[0xb].b = 0\n1405e8e7b        __builtin_memset(&arg1[0xc], 0, 0x18)\n1405e8e87        arg1[0x10].b = 0\n1405e8e8e        __builtin_memset(&arg1[0x11], 0, 0x40)\n1405e8ed0        return arg1",
+  "fetched_at": "2026-04-26T17:38:30Z"
+}

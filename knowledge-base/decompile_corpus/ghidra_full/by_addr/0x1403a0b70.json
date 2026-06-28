@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a0b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1403a0b70(longlong param_1,longlong param_2)\n\n{\n  undefined8 *puVar1;\n  undefined8 *puVar2;\n  float fVar3;\n  \n  if ((((*(longlong *)(param_1 + 0x298) != 0) && (param_2 != 0)) &&\n      (*(longlong *)(param_2 + 0x298) != 0)) && (*(longlong *)(param_1 + 0x100) != 0)) {\n    fVar3 = (float)FUN_1405324d0();\n    if (fVar3 < *(float *)(*(longlong *)(param_1 + 0x100) + 0x88)) {\n      puVar2 = (undefined8 *)(*(longlong *)(param_2 + 0x298) + 0xf8);\n      if (0xf < *(ulonglong *)(*(longlong *)(param_2 + 0x298) + 0x110)) {\n        puVar2 = (undefined8 *)*puVar2;\n      }\n      puVar1 = (undefined8 *)(*(longlong *)(param_1 + 0x298) + 0xf8);\n      if (0xf < *(ulonglong *)(*(longlong *)(param_1 + 0x298) + 0x110)) {\n        puVar1 = (undefined8 *)*puVar1;\n      }\n      FUN_140025760(\"%s has narrowly evaded detection by %s!\\n\",puVar1,puVar2);\n      return 0;\n    }\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:31:54Z"
+}

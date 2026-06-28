@@ -1,0 +1,7 @@
+{
+  "addr": "0x140499ac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140499ad1        int32_t rdx = *(arg1 + 0x10)\n140499ad7        int32_t r8_2 = (*(arg1 + 0x14) * 2) s>> 1\n140499ae0        if (rdx s>= r8_2)\n140499af5        int32_t rdx_3 = r8_2 s/ 0xa\n140499afe        if (rdx_3 s< 0xa)\n140499afe        rdx_3 = 0xa\n140499b07        sub_1404a9ec0(arg1, rdx_3 + r8_2, 0, 1)\n140499b0c        rdx = *(arg1 + 0x10)\n140499b19        int32_t* rcx_1 = sx.q(rdx) * 0x54 + *(arg1 + 8)\n140499b1d        *(arg1 + 0x10) = rdx + 1\n140499b27        *rcx_1 = *arg2\n140499b2c        rcx_1[1] = arg2[1]\n140499b32        rcx_1[2] = arg2[2]\n140499b38        rcx_1[3] = arg2[3]\n140499b3e        rcx_1[4] = arg2[4]\n140499b44        rcx_1[5] = arg2[5]\n140499b4a        rcx_1[6] = arg2[6]\n140499b50        rcx_1[7] = arg2[7]\n140499b56        rcx_1[8] = arg2[8]\n140499b5c        rcx_1[9] = arg2[9]\n140499b62        rcx_1[0xa] = arg2[0xa]\n140499b68        rcx_1[0xb] = arg2[0xb]\n140499b6e        rcx_1[0xc] = arg2[0xc]\n140499b74        rcx_1[0xd] = arg2[0xd]\n140499b7a        rcx_1[0xe] = arg2[0xe]\n140499b80        rcx_1[0xf] = arg2[0xf]\n140499b86        rcx_1[0x10] = arg2[0x10]\n140499b8c        rcx_1[0x11] = arg2[0x11]\n140499b92        rcx_1[0x12] = arg2[0x12]\n140499b98        rcx_1[0x13] = arg2[0x13]\n140499b9f        rcx_1[0x14].b = arg2[0x14].b\n140499ba6        *(rcx_1 + 0x51) = *(arg2 + 0x51)\n140499bad        *(rcx_1 + 0x52) = *(arg2 + 0x52)\n140499bb7        return 1",
+  "fetched_at": "2026-04-26T17:29:17Z"
+}

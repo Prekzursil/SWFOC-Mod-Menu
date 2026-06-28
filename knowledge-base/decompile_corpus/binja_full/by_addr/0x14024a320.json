@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024a320        void* r11 = data_140b09e08\n14024a334        int32_t r9_2 = (arg1 ^ 0xdeadbeef) & 0x7fffffff\n14024a34d        void* rdx_1 = *(r11 + 8)\n14024a35f        int32_t rax_1 = r9_2 u/ 0x1f31d * 0xb14\n14024a366        int32_t rcx = r9_2 u% 0x1f31d * 0x41a7\n14024a36d        int32_t rcx_1 = rcx - rax_1\n14024a36f        int32_t rax_2 = rcx_1 + 0x7fffffff\n14024a375        if (rcx - rax_1 s>= 0)\n14024a375        rax_2 = rcx_1\n14024a387        int64_t* rax_4 = *(r11 + 0x18) + ((sx.q(rax_2) & *(r11 + 0x30)) << 4)\n14024a38a        void* const rcx_5 = rax_4[1]\n14024a391        void* const rax_6\n14024a391        if (rcx_5 != rdx_1)\n14024a39e        while (arg1 s< *(rcx_5 + 0x10))\n14024a3a3        if (rcx_5 == *rax_4)\n14024a3a3        goto label_14024a393\n14024a3a5        rcx_5 = *(rcx_5 + 8)\n14024a3b5        if (*(rcx_5 + 0x10) s< arg1)\n14024a3b5        rcx_5 = nullptr\n14024a3b9        rax_6 = rcx_5\n14024a393        label_14024a393:\n14024a393        rax_6 = nullptr\n14024a3bf        if (rax_6 == 0)\n14024a3bf        rax_6 = rdx_1\n14024a3c6        if (rax_6 != rdx_1)\n14024a3d2        jump(*(rax_6 + 0x18))\n14024a3ca        return 0",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

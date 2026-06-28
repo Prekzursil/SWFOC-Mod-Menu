@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _msize_base\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 _msize_base(longlong param_1)\n\n{\n  ulong *puVar1;\n  undefined8 uVar2;\n  \n  if (param_1 == 0) {\n    puVar1 = __doserrno();\n    *puVar1 = 0x16;\n    FUN_1407711ac();\n    return 0xffffffffffffffff;\n  }\n                    /* WARNING: Could not recover jumptable at 0x0001407930b2. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  uVar2 = HeapSize(DAT_140b3cc00,0,param_1);\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:52:58Z"
+}

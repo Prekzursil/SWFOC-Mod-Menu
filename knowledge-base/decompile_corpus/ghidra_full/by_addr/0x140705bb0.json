@@ -1,0 +1,7 @@
+{
+  "addr": "0x140705bb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nPersonalFlameThrowerAbilityClass::vfunction31_for_IXMLLoadableClass\n          (PersonalFlameThrowerAbilityClass *this,longlong *param_1,longlong param_2)\n\n{\n  char cVar1;\n  ulonglong uVar2;\n  longlong *plVar3;\n  longlong lVar4;\n  \n  uVar2 = (*this->vftablePtr->vfunction6_for_IXMLLoadableClass)(this,(longlong)param_1,param_2);\n  if ((char)uVar2 != '\\0') {\n    lVar4 = param_1[0x20];\n    uVar2 = 0;\n    if (lVar4 != 0) {\n      if (*(int *)(lVar4 + 0x130) != 0) {\nLAB_140705ca2:\n        return CONCAT71((int7)((ulonglong)lVar4 >> 8),1);\n      }\n      plVar3 = (longlong *)(**(code **)(*param_1 + 0x10))(param_1,1);\n      if ((plVar3 == (longlong *)0x0) ||\n         (uVar2 = (**(code **)(*plVar3 + 0x1a8))(plVar3), (char)uVar2 == '\\0')) {\n        cVar1 = FUN_14039b1a0(param_2);\n        lVar4 = param_2;\n        if (cVar1 != '\\0') {\n          lVar4 = *(longlong *)(param_2 + 0x2b0);\n        }\n        uVar2 = FUN_14048d820(this,param_1,lVar4,0);\n        if (((char)uVar2 != '\\0') &&\n           (uVar2 = FUN_14048e100(this,param_1,lVar4,0), (char)uVar2 == '\\0')) {\n          FUN_14048cca0(this,param_1,param_2,0,0);\n          FUN_14063f060(param_1,1);\n          *(undefined4 *)(param_1[0x20] + 0x130) = 1;\n          lVar4 = FUN_1403a9840(param_1,0x10);\n          goto LAB_140705ca2;\n        }\n      }\n    }\n  }\n  return uVar2 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:52:27Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b6db0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b6dbf        if (arg2 == 0)\n1404b6dc8        return 0\n1404b6dd5        struct IRootClass::RootClass::VTable** result = sub_1404b6e80(arg1, arg2, arg1 + 0x150, arg3)\n1404b6de0        if (result != 0)\n1404b6de5        sub_1404bdaa0(arg1)\n1404b6df7        return result",
+  "fetched_at": "2026-04-26T17:29:57Z"
+}

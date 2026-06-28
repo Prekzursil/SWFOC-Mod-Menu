@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404778c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404778c0(undefined8 param_1,AIGoalProposalFunctionSetClass *param_2,\n                  AIGoalProposalFunctionSetClass *param_3)\n\n{\n  for (; param_2 != param_3;\n      param_2 = (AIGoalProposalFunctionSetClass *)\n                &param_2[2].DatabaseObjectManagerClass<class_AIGoalProposalFunctionClass>_data) {\n    AIGoalProposalFunctionSetClass::~AIGoalProposalFunctionSetClass(param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:02Z"
+}

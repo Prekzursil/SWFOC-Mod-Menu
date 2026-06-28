@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407069e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407069e0(undefined8 param_1,longlong param_2)\n\n{\n  SignalDispatcherClass *this;\n  longlong lVar1;\n  undefined **local_res10;\n  undefined8 local_18;\n  undefined4 local_10;\n  \n  FUN_14048e920();\n  local_18 = 0;\n  local_10 = 0;\n  FUN_14038a350(param_2,0x22,0,&local_18,0xffffffff,0x3fffff);\n  lVar1 = param_2 + 0x38;\n  if (param_2 == 0) {\n    lVar1 = 0;\n  }\n  if (DAT_140a10b50 == (SignalDispatcherClass *)0x0) {\n    this = (SignalDispatcherClass *)FUN_140769c58(0x78);\n    if (this == (SignalDispatcherClass *)0x0) {\n      DAT_140a10b50 = (SignalDispatcherClass *)0x0;\n    }\n    else {\n      DAT_140a10b50 = SignalDispatcherClass::~SignalDispatcherClass(this);\n    }\n    local_res10 = &PTR_vftable_140a10b48;\n    if (DAT_140a7bc10 == DAT_140a7bc18) {\n      FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,&local_res10);\n    }\n    else {\n      *DAT_140a7bc10 = &PTR_vftable_140a10b48;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n    }\n  }\n  FUN_140220ed0(DAT_140a10b50,lVar1,0x29);\n  lVar1 = *(longlong *)(param_2 + 0x100);\n  if (lVar1 != 0) {\n    if (*(char *)(lVar1 + 0x28c) != '\\0') {\n      FUN_1403a9840(param_2,0x22);\n    }\n    *(undefined8 *)(lVar1 + 0x280) = 0;\n    *(undefined4 *)(lVar1 + 0x288) = 0xffffffff;\n    *(undefined1 *)(lVar1 + 0x28c) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:43Z"
+}

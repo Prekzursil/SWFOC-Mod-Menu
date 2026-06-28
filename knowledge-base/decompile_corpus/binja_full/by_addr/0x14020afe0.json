@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020afe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020afe4        uint32_t zmm0[0x4] = *(arg1 + 8)\n14020afe9        zmm0[0] = zmm0[0] f- *(arg2 + 8)\n14020b00e        if (not(zmm0[0] f<= 180f))\n14020b010        zmm0[0] = zmm0[0] f- 360f\n14020b017        do while (zmm0[0] f> 180f)\n14020b024        if (not(-180f f< zmm0[0]))\n14020b026        zmm0[0] = zmm0[0] f+ 360f\n14020b02d        do while (-180f f>= zmm0[0])\n14020b02f        zmm0[0].q = fconvert.d(zmm0[0])\n14020b038        uint32_t zmm6[0x4] = sub_1407760bc(zmm0)\n14020b03b        uint32_t zmm0_1[0x4] = zx.o(0)\n14020b03e        zmm0_1[0].q = fconvert.d(arg3.d)\n14020b055        int64_t result\n14020b055        result.b = sub_1407760bc(zmm0_1) f> zmm6[0].q\n14020b05c        return result",
+  "fetched_at": "2026-04-26T17:28:08Z"
+}

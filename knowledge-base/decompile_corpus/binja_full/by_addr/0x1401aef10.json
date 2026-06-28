@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401aef10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401aef21        if (*(arg1 + 0x68) == 0)\n1401aef21        return \n1401aef38        if (*(arg1 + 0x60) u>= 0x10)\n1401aef3a        *(arg1 + 0x48)\n1401aef49        int64_t* rcx_1 = *(arg1 + 0x68)\n1401aef55        void var_98\n1401aef55        (*(*rcx_1 + 0x18))(rcx_1, &var_98)\n1401aef58        int32_t rdi_1 = 0\n1401aef5e        int32_t var_90\n1401aef5e        if (var_90 u<= 0)\n1401aef5e        return \n1401aef80        int64_t* rcx_2 = *(arg1 + 0x68)\n1401aef8c        int64_t rax_3 = (*(*rcx_2 + 0x40))(rcx_2, 0, zx.q(rdi_1))\n1401aef8f        int64_t* rcx_3 = *(arg1 + 0x68)\n1401aef9e        int64_t r9_1 = *rcx_3\n1401aefa1        int64_t var_a8\n1401aefa1        int64_t var_80\n1401aefa1        (*(r9_1 + 0x20))(rcx_3, rax_3, &var_80, r9_1, var_a8)\n1401aefb8        var_a8 = rax_3\n1401aefc2        int32_t rbx_1 = 0\n1401aefc8        int32_t var_5c\n1401aefc8        if (var_5c u> 0)\n1401aefd0        int64_t* rcx_5 = *(arg1 + 0x68)\n1401aefdd        int64_t rax_5 = (*(*rcx_5 + 0x90))(rcx_5, rax_3, zx.q(rbx_1))\n1401aefe3        int64_t* rcx_6 = *(arg1 + 0x68)\n1401aeff2        int64_t r9_2 = *rcx_6\n1401aeff5        int64_t var_48\n1401aeff5        (*(r9_2 + 0x20))(rcx_6, rax_5, &var_48, r9_2, var_a8)\n1401af00f        rbx_1 += 1\n1401af015        do while (rbx_1 u< var_5c)\n1401af017        rdi_1 += 1\n1401af01d        do while (rdi_1 u< var_90)\n1401af043        return ",
+  "fetched_at": "2026-04-26T17:25:33Z"
+}

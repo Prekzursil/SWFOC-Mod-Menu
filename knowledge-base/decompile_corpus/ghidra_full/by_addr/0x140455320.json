@@ -1,0 +1,7 @@
+{
+  "addr": "0x140455320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventMovieDoneClass::vfunction4(StoryEventMovieDoneClass *this)\n\n{\n  FUN_140455db0(this,0,0);\n  DAT_140b0a354 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140797e50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    struct __crt_multibyte_data * __ptr64 __cdecl update_thread_multibyte_data_internal(struct\n   __acrt_ptd * __ptr64 const,struct __crt_multibyte_data * __ptr64 * __ptr64 const)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\n__crt_multibyte_data * __cdecl\nupdate_thread_multibyte_data_internal(__acrt_ptd *param_1,__crt_multibyte_data **param_2)\n\n{\n  int iVar1;\n  __crt_multibyte_data *p_Var2;\n  \n  if (((*(uint *)(param_1 + 0x3a8) & DAT_140a44f90) == 0) || (*(longlong *)(param_1 + 0x90) == 0)) {\n    __acrt_lock(5);\n    p_Var2 = *(__crt_multibyte_data **)(param_1 + 0x88);\n    if (p_Var2 != *param_2) {\n      if (p_Var2 != (__crt_multibyte_data *)0x0) {\n        LOCK();\n        iVar1 = *(int *)p_Var2;\n        *(int *)p_Var2 = *(int *)p_Var2 + -1;\n        UNLOCK();\n        if ((iVar1 == 1) && (p_Var2 != (__crt_multibyte_data *)&DAT_140a45160)) {\n          _free_base();\n        }\n      }\n      p_Var2 = *param_2;\n      *(__crt_multibyte_data **)(param_1 + 0x88) = p_Var2;\n      LOCK();\n      *(int *)p_Var2 = *(int *)p_Var2 + 1;\n      UNLOCK();\n    }\n    __acrt_unlock(5);\n  }\n  else {\n    p_Var2 = *(__crt_multibyte_data **)(param_1 + 0x88);\n  }\n  if (p_Var2 != (__crt_multibyte_data *)0x0) {\n    return p_Var2;\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_140788f54();\n}",
+  "fetched_at": "2026-04-26T18:53:31Z"
+}

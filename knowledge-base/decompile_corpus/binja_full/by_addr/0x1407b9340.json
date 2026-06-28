@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9340",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_pushcclosure",
+  "body": "1407b934f        void* r9 = arg1[4]\n1407b9356        int64_t rdi = sx.q(arg3)\n1407b9364        if (*(r9 + 0x74) u>= *(r9 + 0x70))\n1407b9366        sub_1407bc850(arg1)\n1407b9373        int64_t* rax_1 = sub_1407ba280(arg1, rdi.d, arg2)\n1407b937e        int64_t result = rdi << 4\n1407b9382        arg1[2] -= result\n1407b9386        int32_t* rcx_1 = arg1[2]\n1407b938c        if (rdi.d != 0)\n1407b9399        void* rcx_3 = result + 0x28 + rax_1\n1407b93bc        int32_t i\n1407b93a4        rcx_3 -= 0x10\n1407b93a8        void* rdx_2 = arg1[2] + -0x28 - rax_1\n1407b93ae        *rcx_3 = *(rdx_2 + rcx_3)\n1407b93b0        result = *(rdx_2 + rcx_3 + 8)\n1407b93b5        *(rcx_3 + 8) = result\n1407b93b9        i = rdi.d\n1407b93b9        rdi = zx.q(rdi.d - 1)\n1407b93bc        do while (i != 1)\n1407b93be        rcx_1 = arg1[2]\n1407b93c7        *rcx_1 = 6\n1407b93cd        *(rcx_1 + 8) = rax_1\n1407b93d1        arg1[2] += 0x10\n1407b93e0        return result",
+  "fetched_at": "2026-04-26T16:44:29Z"
+}

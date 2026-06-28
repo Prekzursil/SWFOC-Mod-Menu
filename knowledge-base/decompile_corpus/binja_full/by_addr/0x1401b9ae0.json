@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b9ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b9aea        int64_t lpMem = arg1[1]\n1401b9aee        struct DynamicVectorClass<class alD3dTerrainPatch::DualPass* __ptr64>::VTable* const result = &DynamicVectorClass<class alD3dTerrainPatch::DualPass* __ptr64>::`vftable'\n1401b9af5        *arg1 = &DynamicVectorClass<class alD3dTerrainPatch::DualPass* __ptr64>::`vftable'\n1401b9afe        if (lpMem != 0)\n1401b9b07        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1401b9b22        j_sub_1407864b8(lpMem)\n1401b9b17        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1401b9b27        result = nullptr\n1401b9b29        *(arg1 + 0x14) &= 0x80000000\n1401b9b30        arg1[1] = 0\n1401b9b34        arg1[2].d = 0\n1401b9b41        return result",
+  "fetched_at": "2026-04-26T17:25:54Z"
+}

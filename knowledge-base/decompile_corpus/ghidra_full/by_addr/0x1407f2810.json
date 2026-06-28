@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f2810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FUN_1407f2810(void)\n\n{\n                    /* inlined constructor or destructor (approx location) for CubicInterpolator */\n  PTR_vftable_140a2a570 = (undefined *)&CubicInterpolator::vftable;\n  FUN_1401415b0(&DAT_140a2a580);\n                    /* inlined constructor or destructor (approx location) for Interpolator */\n  PTR_vftable_140a2a548 = (undefined *)&CubicInterpolator::vftable;\n  PTR_vftable_140a2a570 = (undefined *)&Interpolator::vftable;\n  FUN_1401415b0(&DAT_140a2a558);\n  PTR_vftable_140a2a548 = (undefined *)&Interpolator::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:31Z"
+}

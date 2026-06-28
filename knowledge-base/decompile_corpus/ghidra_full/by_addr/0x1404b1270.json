@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b1270",
+  "tool": "ghidra",
+  "fact_id": "rva_galactic_mode_ctor",
+  "body": "\nGalacticModeClass * __thiscall GalacticModeClass::GalacticModeClass(GalacticModeClass *this)\n\n{\n  GameModeClass::GameModeClass((GameModeClass *)this);\n  this->vftablePtr = &vftable;\n  (this->GalacticModeClass_data).offset_0x318 = 0;\n  (this->GalacticModeClass_data).offset_0x320 = 0;\n  (this->GalacticModeClass_data).offset_0x328 = 0;\n  (this->GalacticModeClass_data).offset_0x330 = 0;\n  (this->GalacticModeClass_data).offset_0x340 = 0;\n  (this->GalacticModeClass_data).offset_0x350 = 0;\n  (this->GalacticModeClass_data).offset_0x360 = 0;\n  (this->GalacticModeClass_data).offset_0x338 = 1;\n  (this->GalacticModeClass_data).offset_0x358 = 0xf;\n  (this->GalacticModeClass_data).offset_0x368 = 1;\n  (this->GalacticModeClass_data).offset_0x36c = 0x3fffff;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:45Z"
+}

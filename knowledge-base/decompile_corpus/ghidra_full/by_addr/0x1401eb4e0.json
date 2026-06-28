@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401eb4e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetCustomImageClass::vfunction25(GUIGadgetCustomImageClass *this)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  longlong lVar4;\n  uint uVar5;\n  \n  plVar1 = &(this->GUIGadgetCustomImageClass_data).offset_0xa0;\n  lVar4 = (this->GUIGadgetCustomImageClass_data).offset_0xa8 - *plVar1;\n  uVar5 = 0;\n  lVar2 = lVar4 >> 0x3f;\n  if (lVar4 / 0x90 + lVar2 != lVar2) {\n    uVar3 = 0;\n    do {\n      FUN_14025c490(DAT_140a619f0,uVar3 * 0x90 + *plVar1);\n      uVar5 = uVar5 + 1;\n      uVar3 = (ulonglong)uVar5;\n    } while (uVar3 < (ulonglong)\n                     (((this->GUIGadgetCustomImageClass_data).offset_0xa8 - *plVar1) / 0x90));\n  }\n  FUN_1401d2060(plVar1,0);\n  FUN_14025c490(DAT_140a619f0,&this->GUIGadgetCustomImageClass_data);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetCustomImageClass_data).field_0x148);\n  if ((this->GUIGadgetCustomImageClass_data).offset_0x210 != '\\0') {\n    (this->GUIGadgetCustomImageClass_data).offset_0x210 = '\\0';\n    FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetCustomImageClass_data).field_0xb8);\n  }\n  plVar1 = (this->GUIGadgetCustomImageClass_data).offset_0x130;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->GUIGadgetCustomImageClass_data).offset_0x130 = (longlong *)0x0;\n  }\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:08Z"
+}

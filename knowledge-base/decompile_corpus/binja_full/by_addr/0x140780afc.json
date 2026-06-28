@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780afc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140780b0b        int64_t i_1 = arg3\n140780b0e        char* rdi = arg2\n140780b11        char* rsi = arg1\n140780b3c        if (arg1 == 0 || arg2 == 0 || i_1 u> 0x7fffffff)\n140780b1e        *_errno() = 0x16\n140780b24        _invalid_parameter_noinfo()\n140780b29        return 0x7fffffff\n140780b41        if (i_1 == 0)\n140780b43        return 0\n140780b4f        void* var_28\n140780b4f        _LocaleUpdate::_LocaleUpdate(&var_28, arg4)\n140780b59        void* var_20\n140780b59        int64_t r8 = *(var_20 + 0x110)\n140780b84        uint32_t rcx_1\n140780b84        uint32_t rdx_1\n140780b84        int64_t i\n140780b60        uint64_t rax_3 = zx.q(*rsi)\n140780b63        rsi = &rsi[1]\n140780b66        rdx_1 = zx.d(*(rax_3 + r8))\n140780b6b        uint64_t rax_4 = zx.q(*rdi)\n140780b6e        rdi = &rdi[1]\n140780b71        rcx_1 = zx.d(*(rax_4 + r8))\n140780b7a        if (rdx_1 != rcx_1)\n140780b7a        break\n140780b7e        if (rdx_1 == 0)\n140780b7e        break\n140780b80        i = i_1\n140780b80        i_1 -= 1\n140780b84        do while (i != 1)\n140780b8b        char var_10\n140780b8b        if (var_10 != 0)\n140780b8d        void* rcx_2 = var_28\n140780b92        *(rcx_2 + 0x3a8) &= 0xfffffffd\n140780ba8        return zx.q(rdx_1 - rcx_1)",
+  "fetched_at": "2026-04-26T17:31:06Z"
+}

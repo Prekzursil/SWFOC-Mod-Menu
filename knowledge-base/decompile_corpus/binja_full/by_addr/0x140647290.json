@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406472a6        void* rcx = arg1[5]\n1406472ad        char rax = *(rcx + 0x3a0)\n1406472b6        if ((rax & 0x10) == 0)\n1406472c4        void* const i = &data_1408b38f0\n1406472cb        *(rcx + 0x3a0) = rax | 0x10\n1406472e0        int64_t* rcx_1 = arg1[5]\n1406472e9        int64_t* rax_2 = (*(*rcx_1 + 0x10))(rcx_1, zx.q(*i))\n1406472ef        if (rax_2 != 0)\n1406472f1        int64_t rdx_1 = *rax_2\n1406472f7        (*(rdx_1 + 0xc0))(rax_2, rdx_1)\n1406472fd        i += 4\n140647304        do while (i s< &data_1408b3900)\n140647316        (*(*arg1 + 0xb8))(arg1)\n140647327        if (sub_14039b140(arg1[5]) != 0)\n140647335        sub_140592d00(arg1[5], 0.300000012f)\n14064733a        void* rcx_6 = arg1[5]\n14064733e        void* result = *(rcx_6 + 0x2b8)\n140647354        arg1[6].d = *(*(result + 0x20) + 0x10) + arg2\n14064735f        if (arg3 == 0)\n140647373        return result\n140647369        return sub_14038d580(rcx_6, arg3) __tailcall",
+  "fetched_at": "2026-04-26T17:04:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140689920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TacticalSellEventClass::vfunction5(TacticalSellEventClass *this)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  \n  plVar1 = (longlong *)\n           FUN_1402aca60(*(undefined8 *)(DAT_140b15418 + 0x18),\n                         (this->TacticalSellEventClass_data).offset_0x0);\n  if (plVar1 != (longlong *)0x0) {\n    lVar2 = (**(code **)(*plVar1 + 0x10))(plVar1,0x2b);\n    if (lVar2 != 0) {\n      FUN_1405248b0(lVar2,plVar1);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:19Z"
+}

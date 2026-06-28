@@ -1,0 +1,7 @@
+{
+  "addr": "0x140763214",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140763228        *arg1 = &std::time_put<char>::`vftable'{for `std::locale::facet'}\n140763231        free(arg1[2])\n14076323d        *arg1 = &std::_Facet_base::`vftable'\n140763243        if ((arg2 & 1) != 0)\n14076324d        j_sub_1407864b8(arg1)\n14076325f        return arg1",
+  "fetched_at": "2026-04-26T17:30:10Z"
+}

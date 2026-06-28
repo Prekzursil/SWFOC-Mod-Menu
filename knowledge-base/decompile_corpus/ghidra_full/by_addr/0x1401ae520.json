@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ae520",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dEffect::vfunction10(alD3dEffect *this)\n\n{\n  if (this->offset_0x68 != 0) {\n                    /* WARNING: Could not recover jumptable at 0x0001401ae52e. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*(longlong *)this->offset_0x60 + 0x200))();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:16Z"
+}

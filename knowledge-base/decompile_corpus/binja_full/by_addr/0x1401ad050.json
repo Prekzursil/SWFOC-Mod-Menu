@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ad050",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ad05e        struct alD3dSimpleEngineParam::alD3dEyePosParam::VTable** result = operator new(0x10)\n1401ad066        if (result == 0)\n1401ad081        return result\n1401ad06f        result[1] = arg1\n1401ad073        *result = &alD3dEyePosParam::`vftable'{for `alD3dSimpleEngineParam'}\n1401ad07b        return result",
+  "fetched_at": "2026-04-26T17:25:26Z"
+}

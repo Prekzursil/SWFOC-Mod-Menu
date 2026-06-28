@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058ba40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_14058ba40(longlong param_1)\n\n{\n  longlong lVar1;\n  bool bVar2;\n  longlong lVar3;\n  int iVar4;\n  int iVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  \n  lVar1 = *(longlong *)(*(longlong *)(param_1 + 0x28) + 0x1a0);\n  if (lVar1 == 0) {\n    return DAT_140800804;\n  }\n  bVar2 = false;\n  iVar5 = 0;\n  fVar8 = 0.0;\n  while( true ) {\n    lVar3 = *(longlong *)(param_1 + 0x28);\n    if (*(longlong *)(lVar3 + 0x2d0) == 0) {\n      iVar4 = 0;\n    }\n    else {\n      iVar4 = *(int *)(*(longlong *)(lVar3 + 0x2d0) + 0x10);\n    }\n    if (iVar4 <= iVar5) break;\n    lVar3 = FUN_140396cb0(lVar3,iVar5);\n    if (*(char *)(*(longlong *)(lVar3 + 0x20) + 0x4d) != '\\0') {\n      bVar2 = true;\n      fVar6 = 0.0;\n      if (0.0 <= *(float *)(lVar3 + 0x28)) {\n        fVar6 = *(float *)(lVar3 + 0x28);\n      }\n      fVar8 = fVar8 + fVar6;\n    }\n    iVar5 = iVar5 + 1;\n  }\n  if (!bVar2) {\n    fVar8 = *(float *)(lVar3 + 0x5c);\n  }\n  fVar7 = (float)FUN_140396420(lVar3);\n  fVar6 = *(float *)(lVar1 + 0xc);\n  if (fVar6 != 0.0) {\n    return (fVar8 + fVar7) / fVar6;\n  }\n  return DAT_140800804;\n}",
+  "fetched_at": "2026-04-26T18:41:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061e690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nWalkLocomotorBehaviorClass::vfunction11\n          (WalkLocomotorBehaviorClass *this,undefined **param_1,char param_2)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  undefined **ppuVar3;\n  undefined *puVar4;\n  \n  BehaviorClass::vfunction11((BehaviorClass *)this,param_1);\n  if ((param_2 != '\\0') && (this->offset_0x18[0x15] != (undefined *)0x0)) {\n    FUN_140559250(this->offset_0x18[0x15],0x16);\n    (*this->vftablePtr->vfunction96)(this,(undefined4 *)(this->offset_0x18 + 0xf));\n    ppuVar3 = this->offset_0x18;\n    if (ppuVar3 != (undefined **)0x0) {\n      uVar1 = *(undefined4 *)(ppuVar3 + 0x11);\n      uVar2 = *(undefined4 *)((longlong)ppuVar3 + 0x8c);\n      puVar4 = ppuVar3[0x15];\n      if (puVar4 != (undefined *)0x0) {\n        *(undefined4 *)(puVar4 + 0x268) = *(undefined4 *)((longlong)ppuVar3 + 0x84);\n        *(undefined4 *)(puVar4 + 0x26c) = uVar1;\n        *(undefined4 *)(puVar4 + 0x270) = uVar2;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:40Z"
+}

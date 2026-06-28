@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b0590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_SetMarkerIDEventClass,53>::vfunction2(void)\n\n{\n  return 0x35;\n}",
+  "fetched_at": "2026-04-26T18:43:36Z"
+}

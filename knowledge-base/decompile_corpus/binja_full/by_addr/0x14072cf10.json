@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072cf10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14072cf16        void* rax = *(arg1 + 0xa8)\n14072cf20        int64_t rdx = *(arg1 + 0xf0)\n14072cf2d        float var_18\n14072cf2d        void* r8\n14072cf2d        if (rax == 0)\n14072cf89        if (rdx != 0)\n14072cf89        goto label_14072cf57\n14072cf9b        void* rax_3 = *(arg2 + 0x58)\n14072cfa7        var_18 = *(arg1 + 0xa0) / 2f f+ *(arg1 + 0x98)\n14072cfc5        float var_14_2 = *(arg1 + 0xa4) / 2f f+ *(arg1 + 0x9c)\n14072cfcb        r8 = *(rax_3 + 0x50)\n14072cf34        var_18 = *(rax + 0x78)\n14072cf3f        int32_t var_14_1 = (*(rax + 0x7c)).d\n14072cf4d        float var_10_1 = *(rax + 0x80)\n14072cf57        label_14072cf57:\n14072cf57        r8 = *(*(arg2 + 0x58) + 0x50)\n14072cf5e        if (rdx != 0)\n14072cf6e        int64_t rax_2\n14072cf6e        float zmm0_1\n14072cf6e        zmm0_1, rax_2 = sub_140653e90(data_140b31900, arg1 + 0xb0, r8)\n14072cf76        rax_2.b = 1\n14072cf7c        *arg3 = fconvert.d(zmm0_1)\n14072cf85        return rax_2\n14072cfdb        int64_t rax_4\n14072cfdb        float zmm0_2\n14072cfdb        zmm0_2, rax_4 = sub_140653ff0(data_140b31900, &var_18, r8)\n14072cfe3        rax_4.b = 1\n14072cfe9        *arg3 = fconvert.d(zmm0_2)\n14072cff2        return rax_4",
+  "fetched_at": "2026-04-26T17:28:44Z"
+}

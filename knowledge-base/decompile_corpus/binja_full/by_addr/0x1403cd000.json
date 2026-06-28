@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403cd000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403cd018        void* result = sub_14034c770(arg2, 1)\n1403cd020        if (result.d == 0xffffffff)\n1403cd04e        void* rbx_1 = *(sx.q(sub_14034c770(arg2, 0)) * 0x188 + *(arg1 + 0xde0))\n1403cd057        void* lpMem = nullptr\n1403cd061        int64_t var_18_1 = 0\n1403cd066        struct DynamicVectorClass<class CorruptionChoiceProperties>::VTable* const var_28 = &DynamicVectorClass<class CorruptionChoiceProperties>::`vftable'\n1403cd06b        sub_14052b690(&var_28, 0, rbx_1)\n1403cd086        int128_t zmm6\n1403cd086        sub_1403c6eb0(arg1, &var_28, 0x3fffff, rbx_1, zmm6, 1)\n1403cd08b        result = lpMem\n1403cd090        var_28 = &DynamicVectorClass<class CorruptionChoiceProperties>::`vftable'\n1403cd098        if (result != 0)\n1403cd0a2        if ((var_18_1:4.d & 0x80000000) != 0)\n1403cd0c9        return HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1403cd0ca        int64_t i_1 = *(result - 8)\n1403cd0d6        void* rdi_2 = i_1 * 0x68 + result\n1403cd0dc        if (i_1 != 0)\n1403cd0f0        int64_t i\n1403cd0e0        rdi_2 -= 0x68\n1403cd0e7        sub_140522dd0(rdi_2)\n1403cd0ec        i = i_1\n1403cd0ec        i_1 -= 1\n1403cd0f0        do while (i != 1)\n1403cd0f2        *(result - 8)\n1403cd100        return j_sub_1407864b8(result - 8)\n1403cd114        return result",
+  "fetched_at": "2026-04-26T17:24:51Z"
+}

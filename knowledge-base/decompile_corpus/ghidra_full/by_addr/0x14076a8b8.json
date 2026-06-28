@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a8b8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __scrt_is_ucrt_dll_in_use\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nbool __scrt_is_ucrt_dll_in_use(void)\n\n{\n  return DAT_140b44ebc != 0;\n}",
+  "fetched_at": "2026-04-26T18:10:10Z"
+}

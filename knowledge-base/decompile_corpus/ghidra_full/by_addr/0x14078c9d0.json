@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c9d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    void __cdecl uninitialize_environment_internal<char>(char * __ptr64 * __ptr64 & __ptr64)\n    void __cdecl uninitialize_environment_internal<wchar_t>(wchar_t * __ptr64 * __ptr64 & __ptr64)\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid uninitialize_environment_internal<>(longlong *param_1)\n\n{\n  if (*param_1 != DAT_140b3c448) {\n    free_environment<>();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:04Z"
+}

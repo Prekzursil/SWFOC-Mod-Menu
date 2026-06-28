@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703828",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nIncomeStreamAbilityClass::vfunction3_for_RefCountClass(IncomeStreamAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((IncomeStreamAbilityClass *)&this[-1].IncomeStreamAbilityClass_data.offset_0x8,param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:55Z"
+}

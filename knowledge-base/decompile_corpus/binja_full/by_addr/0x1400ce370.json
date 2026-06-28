@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400ce370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400ce37b        if (data_140a6207d == 0)\n1400ce37b        return \n1400ce391        sub_1401c1d20(&data_140a78510, data_140a11adc, 1)\n1400ce396        bool cond:0_1 = data_140a6207e == 0\n1400ce39d        data_140a11adc = 0xffffffff\n1400ce3a7        if (not(cond:0_1))\n1400ce3af        sub_1400ba3e0(data_140a11ae0)\n1400ce3b4        data_140a6207d = 0\n1400ce3bf        return \n1400ce3c8        if (data_1409cf058 == 0)\n1400ce3cf        struct CCallbackImpl<24>::CCallback<class SteamPeerLobbyClass, struct LobbyInvite_t, 0>::VTable** rax_2\n1400ce3cf        int512_t zmm0_1\n1400ce3cf        rax_2, zmm0_1 = operator new(0x350)\n1400ce3d7        if (rax_2 == 0)\n1400ce3ea        data_1409cf058 = 0\n1400ce3e1        data_1409cf058 = sub_14006ca10(rax_2, zmm0_1)\n1400ce3f5        int32_t* rdx_2 = data_140a7bc10\n1400ce403        bool cond:1_1 = rdx_2 == data_140a7bc18\n1400ce40a        void** arg_8 = &data_1409cf050\n1400ce40f        if (cond:1_1)\n1400ce42a        sub_14001ded0(&data_140a7bc08, rdx_2, &arg_8)\n1400ce411        *rdx_2 = &data_1409cf050\n1400ce414        data_140a7bc10 += 8\n1400ce43c        sub_14006ed20(data_1409cf058, data_140a11ae0)\n1400ce441        data_140a6207d = 0\n1400ce44c        return ",
+  "fetched_at": "2026-04-26T17:01:31Z"
+}

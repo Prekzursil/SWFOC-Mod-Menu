@@ -1,0 +1,7 @@
+{
+  "addr": "0x140686ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStoppedVsStoppedCollisionClass::vfunction2_for_AIDiagnosticsClass\n          (StoppedVsStoppedCollisionClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x10);\n  if (puVar1 != (undefined8 *)0x0) {\n    *puVar1 = &StoppedVsStoppedCollisionDiagnosticsNodeClass::vftable;\n    puVar1[1] = &this[-1].offset_0xc8;\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:43Z"
+}

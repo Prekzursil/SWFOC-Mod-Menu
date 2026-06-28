@@ -1,0 +1,7 @@
+{
+  "addr": "0x140537390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nRevealBehaviorClass::vfunction27(RevealBehaviorClass *this,undefined **param_1,longlong param_2)\n\n{\n  if ((param_1 == this->offset_0x18) && (param_2 != 0)) {\n    FUN_140365630(DAT_140b15418,*(undefined4 *)(param_2 + 0x58),param_1,0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:30:19Z"
+}

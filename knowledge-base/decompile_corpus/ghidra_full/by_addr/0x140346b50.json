@@ -1,0 +1,7 @@
+{
+  "addr": "0x140346b50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140346b50(void)\n\n{\n  char cVar1;\n  \n  if (DAT_140b2a07c != 2) {\n    if (DAT_140b2a07c == 3) {\n      cVar1 = FUN_14028afb0(&DAT_140b153e0);\n      if (cVar1 != '\\0') goto LAB_140346b74;\n    }\n    return;\n  }\nLAB_140346b74:\n  FUN_1402e7e40(&DAT_140b27f60);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:31Z"
+}

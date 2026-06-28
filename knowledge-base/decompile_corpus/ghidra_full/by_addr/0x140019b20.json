@@ -1,0 +1,7 @@
+{
+  "addr": "0x140019b20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nEventFactoryClass<class_FrameSyncEventClass,17>::EventFactoryClass<class_FrameSyncEventClass,17>\n          (void)\n\n{\n  BaseEventFactoryClass::BaseEventFactoryClass((BaseEventFactoryClass *)&DAT_140b318d0);\n  DAT_140b318d0 = &vftable;\n  atexit((_func_5014 *)&LAB_1407f34c0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:01Z"
+}

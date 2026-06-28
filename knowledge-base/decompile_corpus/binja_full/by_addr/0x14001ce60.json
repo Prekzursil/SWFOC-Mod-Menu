@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001ce60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001ce6c        return sub_140689200(0xe, \"Unit_Damaged\") __tailcall",
+  "fetched_at": "2026-04-26T16:51:23Z"
+}

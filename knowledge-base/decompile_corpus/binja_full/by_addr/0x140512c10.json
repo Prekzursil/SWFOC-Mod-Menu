@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140512c17        int32_t rdx = 0\n140512c19        void* const i = &data_14087bdb0\n140512c30        while (i s< \"INVALID_EVENT_TYPE\")\n140512c25        if (*i == arg1)\n140512c45        return (&data_14087bdb8)[sx.q(rdx) * 2]\n140512c27        rdx += 1\n140512c29        i += 0x10\n140512c39        return \"UNKNOWN EVENT TYPE\"",
+  "fetched_at": "2026-04-26T17:32:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nuint FUN_140791130(void)\n\n{\n  undefined1 auVar1 [16];\n  undefined1 auVar2 [16];\n  undefined1 auVar3 [16];\n  undefined1 auVar4 [16];\n  double dVar5;\n  double dVar6;\n  double dVar7;\n  undefined1 auVar8 [16];\n  undefined1 in_ZMM0 [64];\n  undefined1 auVar9 [16];\n  undefined1 auVar10 [16];\n  undefined1 auVar11 [16];\n  undefined1 auVar12 [16];\n  \n  auVar8._8_8_ = _UNK_1408d7088;\n  auVar8._0_8_ = DAT_1408d7080;\n  auVar1._8_8_ = 0;\n  auVar1._0_8_ = DAT_1408d7060;\n  auVar1 = vfmadd132sd_fma(in_ZMM0._0_16_,_DAT_1408d70a0,auVar1);\n  dVar6 = auVar1._0_8_ - (double)DAT_1408d70a0;\n  auVar9._8_8_ = 0;\n  auVar9._0_8_ = dVar6;\n  auVar2._8_8_ = 0;\n  auVar2._0_8_ = DAT_1408d7070;\n  auVar2 = vfnmadd132sd_fma(auVar9,in_ZMM0._0_16_,auVar2);\n  dVar5 = dVar6 * DAT_1408d7080;\n  auVar10._8_8_ = 0;\n  auVar10._0_8_ = dVar6;\n  auVar11._8_8_ = 0;\n  auVar11._0_8_ = dVar5;\n  auVar1 = vfmsub213sd_fma(auVar10,auVar8,auVar11);\n  dVar7 = auVar2._0_8_ - dVar5;\n  auVar3._8_8_ = 0;\n  auVar3._0_8_ = DAT_1408d7080;\n  auVar3 = vfnmadd231sd_fma(auVar2,auVar10,auVar3);\n  auVar4._8_8_ = 0;\n  auVar4._0_8_ = DAT_1408d7090;\n  auVar12._8_8_ = 0;\n  auVar12._0_8_ = ((dVar7 - auVar3._0_8_) + ((auVar2._0_8_ - dVar7) - dVar5)) - auVar1._0_8_;\n  vfnmadd132sd_fma(auVar10,auVar12,auVar4);\n  return (int)dVar6 & 3;\n}",
+  "fetched_at": "2026-04-26T18:52:42Z"
+}

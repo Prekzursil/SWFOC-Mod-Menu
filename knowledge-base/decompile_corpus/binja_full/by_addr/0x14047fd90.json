@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fd90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047fd96        LRESULT result = *(arg1 + 8)\n14047fd9d        *(arg1 + 0x38) = 0\n14047fda4        if (result != 0)\n14047fda6        HWND hWnd = *(result + 0x30)\n14047fdad        if (hWnd != 0)\n14047fdb9        result = SendMessageA(hWnd, 0x10, 0, 0)\n14047fdbf        int64_t* rcx = *(arg1 + 8)\n14047fdc6        if (rcx != 0)\n14047fdcb        result = (*(*rcx + 8))(rcx)\n14047fdce        *(arg1 + 8) = 0\n14047fddb        return result",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

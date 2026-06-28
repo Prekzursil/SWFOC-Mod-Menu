@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cde4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078cde4(undefined8 param_1)\n\n{\n  _register_onexit_function(&DAT_140b3c458,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140497460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140497468        int32_t r10 = 0\n14049746b        int64_t rcx = *arg1\n140497471        int32_t i_1 = 0\n140497482        if ((arg1[1] - rcx) s>> 3 != 0)\n140497484        uint64_t i = 0\n140497490        void* rcx_1 = *(rcx + (i << 3))\n14049749a        if (*(rcx_1 + 0x2c) == *(arg2 + 0x50))\n1404974a0        *(rcx_1 + 0x2c) = *(arg3 + 0x50)\n1404974a3        rcx = *arg1\n1404974a6        i_1 += 1\n1404974b0        i = zx.q(i_1)\n1404974ba        do while (i u< (arg1[1] - rcx) s>> 3)\n1404974bc        int64_t rcx_3 = arg1[3]\n1404974c7        int64_t result = (arg1[4] - rcx_3) s>> 3\n1404974ce        if (result != 0)\n1404974d0        uint64_t rdx = 0\n1404974d3        void* rcx_2 = *(rcx_3 + (rdx << 3))\n1404974dd        if (*(rcx_2 + 0x2c) == *(arg2 + 0x50))\n1404974e3        *(rcx_2 + 0x2c) = *(arg3 + 0x50)\n1404974e6        rcx_3 = arg1[3]\n1404974ea        r10 += 1\n1404974f4        rdx = zx.q(r10)\n1404974f7        result = (arg1[4] - rcx_3) s>> 3\n1404974fe        do while (rdx u< result)\n140497505        return result",
+  "fetched_at": "2026-04-26T17:29:13Z"
+}

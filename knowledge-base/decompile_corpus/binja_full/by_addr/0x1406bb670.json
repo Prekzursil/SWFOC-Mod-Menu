@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bb670",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bb68a        int64_t* result = *(arg1 + 0x50)\n1406bb69b        void** i = *result\n1406bb6a1        if (i != result)\n1406bb6aa        result = sub_14066efe0(i[2], arg2)\n1406bb6b1        if (result.b != 0)\n1406bb6b3        int32_t rcx_1 = i[3].d\n1406bb6b6        bool cond:0_1 = rcx_1 s<= 0\n1406bb6b8        if (rcx_1 s>= 0)\n1406bb6b8        goto label_1406bb6c4\n1406bb6bc        result = zx.q(neg.d(rcx_1))\n1406bb6c0        if (arg4 s>= result.d)\n1406bb6cc        label_1406bb6cc:\n1406bb6cc        result = zx.q(arg4)\n1406bb6d3        if (arg3 == 0)\n1406bb6d3        result = zx.q(neg.d(arg4))\n1406bb6d6        i[3].d = result.d\n1406bb6c2        cond:0_1 = rcx_1 s<= 0\n1406bb6c4        label_1406bb6c4:\n1406bb6c8        if (not(cond:0_1) && arg4 s>= rcx_1)\n1406bb6c4        goto label_1406bb6cc\n1406bb6de        if (arg4 == 0xffffffff)\n1406bb6e0        i[3].d = arg4\n1406bb6e3        i = *i\n1406bb6ea        do while (i != *(arg1 + 0x50))\n1406bb706        return result",
+  "fetched_at": "2026-04-26T17:24:54Z"
+}

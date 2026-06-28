@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071aac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071aacf        struct SpecialAbilityClass::DrainLifeAbilityClass::VTable** result = arg1\n14071aad2        sub_14048c780(arg1)\n14071aae0        *result = &DrainLifeAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071aaf1        result[0x2f] = 0\n14071aaff        result[1] = &DrainLifeAbilityClass::`vftable'{for `RefCountClass'}\n14071ab07        result[0x30].d = 0\n14071ab0d        result[0x31] = 0\n14071ab14        result[0x34] = 0xf\n14071ab1f        result[0x33] = 0xf\n14071ab2a        memcpy(&result[0x31], \"Force_Lightning\", 0xf)\n14071ab3e        *(result + 0x197) = 0\n14071ab45        result[0x38] = 0xf\n14071ab50        result[0x37] = 8\n14071ab5b        __builtin_strncpy(&result[0x35], \"B_HAND_L\", 9)\n14071ab73        result[0x3c] = 0xf\n14071ab7e        result[0x3b] = 8\n14071ab89        __builtin_strncpy(&result[0x39], \"B_PELVIS\", 9)\n14071ab9a        result[0x3d].d = 0\n14071aba5        *(result + 0x1ec) = 0xffffffff\n14071abaf        result[0x3e].b = 1\n14071abb6        result[8].w = 1\n14071abbc        *(result + 0x3c) = 9\n14071abc8        return result",
+  "fetched_at": "2026-04-26T17:28:04Z"
+}

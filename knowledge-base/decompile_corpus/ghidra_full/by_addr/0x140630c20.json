@@ -1,0 +1,7 @@
+{
+  "addr": "0x140630c20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSelfDestructBehaviorClass::vfunction7(SelfDestructBehaviorClass *this,longlong param_1,int param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  undefined8 local_18;\n  undefined4 local_10;\n  \n  BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n  lVar2 = (**(code **)(*this->offset_0x18 + 0x10))(this->offset_0x18,0x46);\n  if (lVar2 != 0) {\n    cVar1 = FUN_14042f7a0(lVar2,0x27);\n    if (cVar1 != '\\0') {\n      (*this->vftablePtr->vfunction25)(this);\n      local_18 = 0;\n      local_10 = 0;\n      FUN_1403a3e20(param_1,0x27,1,&local_18,0x3fffff);\n      FUN_14039bdb0(param_1,1,param_1,param_1,0xffffffff,*(undefined4 *)(param_1 + 0x58));\n    }\n  }\n  return 0x650000;\n}",
+  "fetched_at": "2026-04-26T17:33:25Z"
+}

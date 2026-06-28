@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _ctrlfp\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nuint _ctrlfp(uint param_1,uint param_2)\n\n{\n  uint uVar1;\n  uint uVar2;\n  \n  uVar1 = _get_fpsr();\n  uVar2 = (~param_2 | 0xffff807f) & uVar1 | param_1 & param_2;\n  if ((DAT_140a44f80 == '\\0') || ((uVar2 & 0x40) == 0)) {\n    FUN_14079d110(uVar2 & 0xffffffbf);\n  }\n  else {\n    FUN_14079d110();\n  }\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:44Z"
+}

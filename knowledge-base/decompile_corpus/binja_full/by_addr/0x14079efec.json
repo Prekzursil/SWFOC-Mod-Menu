@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079efec",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079effb        int32_t arg_8 = arg1\n14079f00e        int64_t rdi = sx.q(arg1)\n14079f014        if (rdi.d != 0xfffffffe)\n14079f03c        uint64_t r13_1\n14079f03c        int64_t r15_2\n14079f03c        if (arg1 s>= 0 && rdi.d u< data_140b3c8d0)\n14079f048        r15_2 = rdi s>> 6\n14079f056        r13_1 = (zx.q(rdi.d) & 0x3f) * 9\n14079f064        if (arg1 s< 0 || rdi.d u>= data_140b3c8d0 || (*((&data_140b3c4d0)[r15_2] + (r13_1 << 3) + 0x38) & 1) == 0)\n14079f0d5        *__doserrno() = 0\n14079f0dd        *_errno() = 9\n14079f06d        if (arg3 u<= 0x7fffffff)\n14079f086        __acrt_lowio_unlock_fh(rdi.d)\n14079f08b        int32_t rbx_1 = -1\n14079f09f        if ((*((&data_140b3c4d0)[r15_2] + (r13_1 << 3) + 0x38) & 1) != 0)\n14079f0c3        rbx_1 = _read_nolock(rdi.d, arg2, arg3)\n14079f0a6        *_errno() = 9\n14079f0b1        *__doserrno() = 0\n14079f0c7        sub_1407990bc(rdi.d)\n14079f0cc        return zx.q(rbx_1)\n14079f074        *__doserrno() = 0\n14079f07c        *_errno() = 0x16\n14079f0e3        _invalid_parameter_noinfo()\n14079f01b        *__doserrno() = 0\n14079f023        *_errno() = 9\n14079f0e8        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:32:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a410",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a410(void)\n\n{\n  DrainLifeAbilityClass *this;\n  \n  this = (DrainLifeAbilityClass *)FUN_140769c58(0x1f8);\n  if (this != (DrainLifeAbilityClass *)0x0) {\n    DrainLifeAbilityClass::DrainLifeAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:45Z"
+}

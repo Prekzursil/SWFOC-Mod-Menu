@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dc3a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404dc3c2        sscanf_s(&data_140b31a58, \"OBJECT_%d\", zx.q(*(arg2 + 0x50)))\n1404dc3c9        arg1[3] = 0xf\n1404dc3d1        *arg1 = 0\n1404dc3d4        void* r8_1 = -ffffffffffffffff\n1404dc3db        arg1[2] = 0\n1404dc3e0        r8_1 += 1\n1404dc3e7        do while (*(&data_140b31a58 + r8_1) != 0)\n1404dc3ef        sub_140022730(arg1, &data_140b31a58, r8_1)\n1404dc401        return arg1",
+  "fetched_at": "2026-04-26T17:31:13Z"
+}

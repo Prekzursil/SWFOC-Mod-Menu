@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017d1e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dVertexType<class_alD3dVertB4I4NU2>::vfunction8\n          (alD3dVertexType<class_alD3dVertB4I4NU2> *this,longlong param_1,undefined4 *param_2)\n\n{\n  *param_2 = *(undefined4 *)(param_1 + 0x20);\n  param_2[1] = *(undefined4 *)(param_1 + 0x24);\n  param_2[2] = *(undefined4 *)(param_1 + 0x28);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:51Z"
+}

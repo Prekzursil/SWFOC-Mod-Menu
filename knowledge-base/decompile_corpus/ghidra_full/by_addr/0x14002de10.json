@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002de10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 * FUN_14002de10(undefined8 *param_1,undefined8 param_2,longlong *param_3)\n\n{\n  longlong lVar1;\n  \n  *param_1 = param_2;\n  lVar1 = *param_3;\n  param_1[1] = lVar1;\n  if (lVar1 != 0) {\n    (*(code *)**(undefined8 **)(lVar1 + 0x40))(lVar1 + 0x40);\n  }\n  param_1[2] = 0;\n  *(undefined1 *)(param_1 + 3) = 0;\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:34Z"
+}

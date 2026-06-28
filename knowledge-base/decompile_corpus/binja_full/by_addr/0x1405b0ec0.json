@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b0ec0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b0ec6        uint128_t zmm6\n1405b0ec6        uint128_t var_18 = zmm6\n1405b0ed6        int512_t result\n1405b0ed6        if (arg1 != 0 && arg2 != 0)\n1405b0edf        result.o = 0x3f800000\n1405b0eef        zmm6 = _mm_cvtepi32_ps(zx.o(*(*(arg2 + 0x298) + 0x2358)))\n1405b0ef5        if (not(1f f>= zmm6.d))\n1405b0efe        void* rax_2 = sub_14028a890(&data_140b153e0)\n1405b0f06        if (rax_2 != 0)\n1405b0f08        int64_t rcx = *(rax_2 + 0xb8)\n1405b0f12        if (rcx != 0)\n1405b0f1b        void* rax_3 = *(arg1 + 0x298)\n1405b0f22        if (*(rcx + 0x2f4) != 0xffffffff)\n1405b0f24        zmm6.d = zmm6.d f* *(rax_3 + 0x23e4)\n1405b0f2c        result.o = zmm6\n1405b0f39        return result\n1405b0f3a        zmm6.d = zmm6.d f* *(rax_3 + 0x23e0)\n1405b0f42        result.o = zmm6\n1405b0f4f        return result\n1405b0f55        result.o = zx.o(0)\n1405b0f5d        return result",
+  "fetched_at": "2026-04-26T17:37:16Z"
+}

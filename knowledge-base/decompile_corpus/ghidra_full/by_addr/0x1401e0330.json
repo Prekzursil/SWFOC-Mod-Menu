@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e0330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1401e0330(char *param_1)\n\n{\n  char cVar1;\n  char cVar2;\n  int iVar3;\n  undefined **ppuVar4;\n  longlong lVar5;\n  char *pcVar6;\n  \n  ppuVar4 = &PTR_DAT_140a13778;\n  iVar3 = DAT_140a13780;\n  while (iVar3 != 0) {\n    lVar5 = FUN_14076c698(param_1,*ppuVar4);\n    if (lVar5 != 0) {\n      return *(undefined4 *)(ppuVar4 + 1);\n    }\n    iVar3 = *(int *)(ppuVar4 + 3);\n    ppuVar4 = ppuVar4 + 2;\n  }\n  ppuVar4 = &PTR_s_DS_SETFONT_140a137b0;\n  iVar3 = DAT_140a137b8;\n  do {\n    if (iVar3 == 0) {\n      return 0;\n    }\n    pcVar6 = param_1;\n    do {\n      cVar1 = *pcVar6;\n      cVar2 = pcVar6[(longlong)*ppuVar4 - (longlong)param_1];\n      if (cVar1 != cVar2) break;\n      pcVar6 = pcVar6 + 1;\n    } while (cVar2 != '\\0');\n    if (cVar1 == cVar2) {\n      return *(undefined4 *)(ppuVar4 + 1);\n    }\n    iVar3 = *(int *)(ppuVar4 + 3);\n    ppuVar4 = ppuVar4 + 2;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T17:50:50Z"
+}

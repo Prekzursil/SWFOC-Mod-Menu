@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eeda0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407eeda7        data_140a16dd8 = &SingletonInstance<class TheShipNamesManagerClass>::`vftable'{for `SingletonManager'}\n1407eedae        return &SingletonInstance<class TheShipNamesManagerClass>::`vftable'{for `SingletonManager'}",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

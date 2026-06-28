@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b2cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: static bool __cdecl __FrameHandler3::ExecutionInCatch(struct _xDISPATCHER_CONTEXT *\n   __ptr64,struct _s_FuncInfo const * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nbool __cdecl __FrameHandler3::ExecutionInCatch(_xDISPATCHER_CONTEXT *param_1,_s_FuncInfo *param_2)\n\n{\n  int iVar1;\n  _s_TryBlockMapEntry *p_Var2;\n  \n  iVar1 = FUN_14076dad0(param_2,param_1);\n  p_Var2 = CatchTryBlock(param_2,iVar1);\n  return p_Var2 != (_s_TryBlockMapEntry *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:10:34Z"
+}

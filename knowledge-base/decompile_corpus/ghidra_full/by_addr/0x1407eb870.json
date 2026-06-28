@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eb870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407eb870(void)\n\n{\n  if (DAT_140a6eb50 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x0001407eb87f. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*DAT_140a6eb50 + 8))();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140604300",
+  "tool": "binary_ninja",
+  "fact_id": "rva_lua_set_black_market_tutorial",
+  "body": "140604318        int64_t* rbx_1\n140604318        if (arg3 != 0)\n14060431a        rbx_1 = *(arg3 + 0x10)\n14060432b        char const* const rdx\n14060432b        if (arg3 == 0 || ((*(arg3 + 0x18) - rbx_1) & 0xfffffffffffffff8) == 0)\n140604398        rdx = \"PlayerWrapper::Lua_Set_Black_Market_Tutorial -- Missing required parameter.\"\n14060432d        int64_t* rbx_2 = *rbx_1\n140604333        if (rbx_2 != 0)\n14060433b        void* i\n14060433b        i, arg3 = (*(*rbx_2 + 0x20))(rbx_2)\n140604341        while (i != 0)\n140604353        if (i == &data_140a157b0)\n14060436d        (**rbx_2)(rbx_2)\n140604377        *(*(arg1 + 0x28) + 0x448) = rbx_2[2].b\n140604383        (*(*rbx_2 + 8))(rbx_2)\n140604397        return 0\n140604355        i = *(i + 8)\n14060435e        rdx = \"PlayerWrapper::Lua_Set_Black_Market_Tutorial -- invalid type for parameter 1.  Expected boolean.\"\n1406043a2        sub_140248190(arg2, rdx, arg3)\n1406043b8        return 0",
+  "fetched_at": "2026-04-26T16:44:03Z"
+}

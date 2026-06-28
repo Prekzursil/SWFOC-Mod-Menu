@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2b90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404c2b90(void)\n\n{\n  BeaconBehaviorClass *this;\n  \n  this = (BeaconBehaviorClass *)FUN_140769c58(0x48);\n  if (this != (BeaconBehaviorClass *)0x0) {\n    BeaconBehaviorClass::BeaconBehaviorClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:44Z"
+}

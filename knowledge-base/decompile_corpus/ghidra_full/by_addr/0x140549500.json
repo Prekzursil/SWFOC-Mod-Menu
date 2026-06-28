@@ -1,0 +1,7 @@
+{
+  "addr": "0x140549500",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ShieldBehaviorClass * __thiscall\nShieldBehaviorClass::vfunction4(ShieldBehaviorClass *this,int param_1)\n\n{\n  ShieldBehaviorClass *pSVar1;\n  \n  pSVar1 = (ShieldBehaviorClass *)0x0;\n  if (param_1 == 0x10) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T18:37:27Z"
+}

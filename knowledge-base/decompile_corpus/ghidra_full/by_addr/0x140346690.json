@@ -1,0 +1,7 @@
+{
+  "addr": "0x140346690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140346690(longlong param_1,longlong param_2,undefined8 param_3)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  if ((((param_1 != 0) && (param_2 != 0)) && (param_1 != param_2)) &&\n     (lVar3 = FUN_14034c770(param_2,0), lVar2 = DAT_140a18fe8, lVar3 != 0)) {\n    if (*(int *)(param_2 + 0xa8) - 0x74U < 4) {\n      FUN_1403d02e0(&DAT_140b27f60,param_1,param_2);\n      return;\n    }\n    iVar1 = *(int *)(param_1 + 0xa8);\n    lVar3 = DAT_140a196f0;\n    if (((iVar1 == 0x74) || (lVar3 = DAT_140a1a0c8, iVar1 == 0x75)) ||\n       (lVar3 = DAT_140a1aaa0, iVar1 == 0x76)) {\n      if (lVar3 != 0) {\n        FUN_1403d0790(&DAT_140b27f60,lVar3,param_2,param_3);\n      }\n    }\n    else if (((iVar1 == 0x77) && (DAT_140a18fe8 != 0)) &&\n            (lVar3 = FUN_14034c770(param_2,0), lVar3 != 0)) {\n      if (2 < *(int *)(param_2 + 0xa8) - 0x74U) {\n        FUN_1403d6c50(&DAT_140b27f60,lVar2,param_2,0);\n        return;\n      }\n      FUN_1403d4460(&DAT_140b27f60,param_2);\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:18Z"
+}

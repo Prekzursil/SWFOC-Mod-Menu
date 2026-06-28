@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071a200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071a221        if (arg2 != 0 && arg3 != 0)\n14071a227        int64_t rbp_1 = *(arg1 + 0x188)\n14071a231        if (rbp_1 != 0)\n14071a237        void* rax = arg2[0x54]\n14071a246        int32_t rdi = -1\n14071a258        if (rax != 0 && *(arg1 + 0x1a8) != 0)\n14071a25a        void* rdi_1 = arg1 + 0x198\n14071a266        if (*(rdi_1 + 0x18) u>= 0x10)\n14071a268        rdi_1 = *rdi_1\n14071a27e        rdi = sub_14012d2a0(sub_1402648b0(rax), rdi_1)\n14071a287        int64_t* var_58\n14071a287        sub_140549d70(&var_58, 0)\n14071a28c        int32_t var_40 = rdi\n14071a295        var_58 = arg2\n14071a29a        rdi.b = 0\n14071a29d        int64_t var_20 = rbp_1\n14071a2a2        int64_t* var_38 = arg3\n14071a2a7        struct IRootClass::RootClass::VTable** rax_3\n14071a2a7        int512_t zmm1\n14071a2a7        int512_t zmm2\n14071a2a7        int128_t zmm6\n14071a2a7        rax_3, zmm1, zmm2, zmm6 = sub_14054ade0(&var_58)\n14071a2af        if (rax_3 != 0)\n14071a2b9        zmm1, zmm2, zmm6 = sub_1403a9840(arg2, 0x40)\n14071a2be        rdi.b = 1\n14071a2c8        if (*(arg3 + 0x343) != 0xff)\n14071a2cf        sub_140391310(arg3, 1, zmm2, zmm1, zmm6)\n14071a2f1        return zx.q(rdi.b)\n14071a2f7        int64_t result\n14071a2f7        result.b = 0\n14071a305        return result",
+  "fetched_at": "2026-04-26T17:28:01Z"
+}

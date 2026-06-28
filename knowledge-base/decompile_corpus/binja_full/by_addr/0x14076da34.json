@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076da34",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076da42        int32_t result = *(sx.q(*(arg3 + 0x1c)) + *arg1)\n14076da49        if (result != 0xfffffffe)\n14076da5a        return result\n14076da51        return __FrameHandler3::StateFromIp(arg3, arg2, *arg2)",
+  "fetched_at": "2026-04-26T17:30:29Z"
+}

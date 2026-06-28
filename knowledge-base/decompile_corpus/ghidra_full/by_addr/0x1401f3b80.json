@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f3b80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetIMEEditboxClass::vfunction10(GUIGadgetIMEEditboxClass *this)\n\n{\n  GUIGadgetEditboxClass::vfunction10((GUIGadgetEditboxClass *)this);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetEditboxClass_data).field_0x1a8);\n  FUN_14025c190(DAT_140a619f0,&(this->GUIGadgetIMEEditboxClass_data).offset_0x108);\n  FUN_14025c190(DAT_140a619f0,&(this->GUIGadgetIMEEditboxClass_data).field_0x88);\n  FUN_14025c190(DAT_140a619f0,&(this->GUIGadgetIMEEditboxClass_data).offset_0xc8);\n  FUN_14025c190(DAT_140a619f0,&(this->GUIGadgetIMEEditboxClass_data).offset_0x48);\n  FUN_1401f6d30(this);\n  FUN_14025c190(DAT_140a619f0,&(this->GUIGadgetEditboxClass_data).field_0x1a8);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:26Z"
+}

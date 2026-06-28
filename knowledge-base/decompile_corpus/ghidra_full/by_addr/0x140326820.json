@@ -1,0 +1,7 @@
+{
+  "addr": "0x140326820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140326820(undefined8 param_1,undefined8 param_2)\n\n{\n  FUN_140327b10(\"STORY - Starting a land battle\\r\\n\");\n  FUN_14032e5f0(param_1,0x19,0,param_2,DAT_140b30428);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:07Z"
+}

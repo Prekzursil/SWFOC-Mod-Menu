@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006a1e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006a1e0        void* rcx_2 = *(arg1 + 0x10)\n14006a1e7        if (rcx_2 != 0)\n14006a1e7        return sub_14006b950(rcx_2) __tailcall\n14006a1fe        if (data_140a10df8 != 0 && data_140a61b38 != 0)\n14006a1fe        return SteamAPI_RunCallbacks(rcx_2) __tailcall\n14006a204        return ",
+  "fetched_at": "2026-04-26T16:55:54Z"
+}

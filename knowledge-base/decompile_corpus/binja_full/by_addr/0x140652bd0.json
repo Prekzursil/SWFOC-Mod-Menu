@@ -1,0 +1,7 @@
+{
+  "addr": "0x140652bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140652bd5        int64_t* arg_8 = arg1\n140652bef        int64_t rbx = 0x3fffffffffffffff\n140652bfc        if (arg2 u> 0x3fffffffffffffff)\n140652ce9        sub_140022630()\n140652ce9        noreturn\n140652c09        int64_t r15_2 = (arg1[1] - *arg1) s>> 2\n140652c14        int64_t rcx_2 = (arg1[2] - *arg1) s>> 2\n140652c1b        uint64_t rdx_1 = rcx_2 u>> 1\n140652c27        if (rcx_2 u<= 0x3fffffffffffffff - rdx_1)\n140652c29        rbx = rdx_1 + rcx_2\n140652c30        if (rbx u< arg2)\n140652c30        rbx = arg2\n140652c34        int64_t arg_20 = rbx\n140652c42        int32_t* rax_1 = sub_140048c40(arg1, rbx)\n140652c4a        int32_t* var_50 = rax_1\n140652c4f        void* rcx_4 = &rax_1[r15_2]\n140652c56        int64_t i = arg2 - r15_2\n140652c59        int64_t i_1 = i\n140652c60        int32_t arg_10 = 0\n140652c69        if (*arg3 != 0)\n140652c7c        void* var_48_1 = rcx_4\n140652c81        void* var_40_1 = rcx_4\n140652c86        int64_t* var_38_1 = arg1\n140652c93        while (i != 0)\n140652c97        *rcx_4 = *arg3\n140652c99        rcx_4 += 4\n140652c9d        void* var_40_2 = rcx_4\n140652ca2        i -= 1\n140652ca5        int64_t i_2 = i\n140652cac        void* var_48_2 = rcx_4\n140652c75        memset(rcx_4, 0, i << 2)\n140652cb5        int32_t* rdx_4 = *arg1\n140652cbe        memcpy(rax_1, rdx_4, arg1[1] - rdx_4)\n140652ce4        return sub_140048380(arg1, rax_1, arg2, rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:06:23Z"
+}

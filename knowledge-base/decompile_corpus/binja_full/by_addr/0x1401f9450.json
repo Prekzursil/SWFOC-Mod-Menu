@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f9450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f9456        arg1[3] = arg5\n1401f945b        *arg1 = arg2\n1401f945f        arg1[1] = arg3\n1401f9464        arg1[2] = arg4\n1401f9469        return arg5",
+  "fetched_at": "2026-04-26T17:27:28Z"
+}

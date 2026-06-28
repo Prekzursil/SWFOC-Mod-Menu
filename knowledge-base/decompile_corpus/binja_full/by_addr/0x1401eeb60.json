@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401eeb60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401eeb73        *arg1 = &GUIGadgetPushbuttonClass::`vftable'{for `GUIGadgetClass'}\n1401eeb79        sub_1401efff0(arg1)\n1401eeb9d        sub_14025b390(&arg1[0x66])\n1401eeba2        int64_t* rcx_3 = arg1[0x65]\n1401eebac        if (rcx_3 != 0)\n1401eebb1        (*(*rcx_3 + 8))(rcx_3)\n1401eebb4        int64_t* rcx_4 = arg1[0x64]\n1401eebbe        if (rcx_4 != 0)\n1401eebc3        (*(*rcx_4 + 8))(rcx_4)\n1401eebc6        int64_t* rcx_5 = arg1[0x63]\n1401eebd0        if (rcx_5 != 0)\n1401eebd5        (*(*rcx_5 + 8))(rcx_5)\n1401eebd8        int64_t* rcx_6 = arg1[0x62]\n1401eebe2        if (rcx_6 != 0)\n1401eebe7        (*(*rcx_6 + 8))(rcx_6)\n1401eebf1        sub_140260500(&arg1[0x38])\n1401eebfd        sub_140260500(&arg1[0x26])\n1401eec09        sub_140260500(&arg1[0x14])\n1401eec11        sub_1401e3cb0(arg1)\n1401eec1a        if ((arg2 & 1) != 0)\n1401eec24        j_sub_1407864b8(arg1)\n1401eec36        return arg1",
+  "fetched_at": "2026-04-26T17:27:15Z"
+}

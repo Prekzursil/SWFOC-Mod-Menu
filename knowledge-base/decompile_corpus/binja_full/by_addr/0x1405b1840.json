@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b1840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b1846        struct SpecialAbilityClass::GalacticSabotageAbilityClass::VTable** result = arg1\n1405b1849        sub_14048c780(arg1)\n1405b1855        result[0x2f].d = 0\n1405b185f        *result = &GalacticSabotageAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1405b1869        result[1] = &GalacticSabotageAbilityClass::`vftable'{for `RefCountClass'}\n1405b1870        *(result + 0x17c) = 0\n1405b1877        result[0x30].d = 0\n1405b1881        *(result + 0x18c) = 0x40000000\n1405b188b        result[8].w = 0x101\n1405b1891        *(result + 0x3c) = 6\n1405b189d        return result",
+  "fetched_at": "2026-04-26T17:37:21Z"
+}

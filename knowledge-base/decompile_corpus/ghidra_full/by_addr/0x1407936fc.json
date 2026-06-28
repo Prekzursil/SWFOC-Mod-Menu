@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407936fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_FlsSetValue\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_FlsSetValue(DWORD param_1,LPVOID param_2)\n\n{\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(6,\"FlsSetValue\",(module_id *)&DAT_1408d8230,(module_id *)&DAT_1408d8238)\n  ;\n  if (pvVar1 == (void *)0x0) {\n    TlsSetValue(param_1,param_2);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140618e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SlicerAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Slicer_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:28:29Z"
+}

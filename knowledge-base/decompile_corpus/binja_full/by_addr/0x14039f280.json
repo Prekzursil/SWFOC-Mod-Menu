@@ -1,0 +1,7 @@
+{
+  "addr": "0x14039f280",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039f280        bool cond:0 = arg1[0x54] != 0\n14039f288        *(arg1 + 0x39f) = 1\n14039f28f        if (cond:0)\n14039f28f        return sub_14038c730(arg1) __tailcall\n14039f295        return ",
+  "fetched_at": "2026-04-26T17:23:57Z"
+}

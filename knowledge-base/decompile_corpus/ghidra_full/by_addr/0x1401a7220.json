@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a7220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401a7220(HKEY param_1,LPCSTR param_2,LPBYTE param_3,undefined4 param_4)\n\n{\n  LSTATUS LVar1;\n  DWORD local_18;\n  DWORD local_14 [3];\n  \n  local_18 = 4;\n  LVar1 = RegQueryValueExA(param_1,param_2,(LPDWORD)0x0,local_14,param_3,&local_18);\n  if ((LVar1 != 0) && (*(undefined4 *)param_3 = param_4, local_14[0] == 4)) {\n    return 0;\n  }\n  return 0x80004005;\n}",
+  "fetched_at": "2026-04-26T17:39:45Z"
+}

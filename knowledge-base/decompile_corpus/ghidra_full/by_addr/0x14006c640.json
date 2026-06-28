@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006c640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* CCallbackImpl<8> member function inherited by\n   CCallback<class_SteamCallbacksImpl,struct_P2PSessionRequest_t,0> */\n\nvoid __thiscall CCallbackImpl<8>::vfunction1(CCallbackImpl<8> *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014006c643. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction2)();\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406325c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406325cb        struct BehaviorClass::SpaceObstacleBehaviorClass::VTable** result = operator new(0x40)\n1406325d6        if (result == 0)\n14063260e        return result\n1406325db        sub_1404c32d0(result)\n1406325e7        *result = &SpaceObstacleBehaviorClass::`vftable'{for `BehaviorClass'}\n1406325f1        result[1] = &SpaceObstacleBehaviorClass::`vftable'{for `RefCountClass'}\n1406325fc        result[3] = &SpaceObstacleBehaviorClass::`vftable'{for `SignalListenerClass'}\n140632608        return result",
+  "fetched_at": "2026-04-26T17:24:15Z"
+}

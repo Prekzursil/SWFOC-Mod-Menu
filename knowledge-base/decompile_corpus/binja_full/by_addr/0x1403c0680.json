@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c0680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c069e        int32_t rsi = 0\n1403c06aa        if (sub_140395b00(arg2) s> 0)\n1403c0782        int32_t rax_16\n1403c06ba        int64_t* rax_1 = sub_140395af0(arg2, rsi.b)\n1403c06bf        int64_t r8 = *arg2\n1403c06d4        if (rax_1 != (*(r8 + 0x10))(arg2, 7, r8))\n1403c06da        int64_t r8_1 = *arg2\n1403c06ec        if (rax_1 != (*(r8_1 + 0x10))(arg2, 2, r8_1) && rax_1 != (*(*arg2 + 0x10))(arg2, 0x19) && rax_1 != (*(*arg2 + 0x10))(arg2, 0x36) && rax_1 != (*(*arg2 + 0x10))(arg2, 0x29) && rax_1 != (*(*arg2 + 0x10))(arg2, 0x2a) && rax_1 != (*(*arg2 + 0x10))(arg2, 0x2b))\n1403c0755        if (arg3 == 1)\n1403c075d        (*(*rax_1 + 0xc0))(rax_1)\n1403c0768        if (arg3 == 0)\n1403c0770        (*(*rax_1 + 0xb8))(rax_1)\n1403c0779        rsi += 1\n1403c077b        rax_16 = sub_140395b00(arg2)\n1403c0782        do while (rsi s< rax_16)\n1403c078d        int64_t* rcx_12 = *(arg1 + 0x28)\n1403c0794        int64_t* result = (*(*rcx_12 + 0xe0))(rcx_12)\n1403c07a7        if (result.d == 2)\n1403c07a9        int64_t* rcx_13 = arg2[0x56]\n1403c07b3        if (rcx_13 != 0)\n1403c07bd        result = (*(*rcx_13 + 0x10))(rcx_13, 0x16)\n1403c07c6        if (result != 0)\n1403c07cc        if (arg3 == 1)\n1403c07db        jump(*(*result + 0xc0))\n1403c07e5        if (arg3 == 0)\n1403c07ea        return (*(*result + 0xb8))()\n1403c07fa        return result",
+  "fetched_at": "2026-04-26T17:24:37Z"
+}

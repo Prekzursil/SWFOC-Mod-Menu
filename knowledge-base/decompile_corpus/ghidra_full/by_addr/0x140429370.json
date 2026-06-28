@@ -1,0 +1,7 @@
+{
+  "addr": "0x140429370",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalSpecialAbilityWithDummyTargetEventClass * __thiscall\nSetUnitAbilityModeEventClass::scalar_deleting_destructor\n          (SetUnitAbilityModeEventClass *this,uint param_1)\n\n{\n  DynamicVectorClass<int>::~DynamicVectorClass<int>\n            ((DynamicVectorClass<int> *)&(this->ScheduledEventClass_data).offset_0x8);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (SetUnitAbilityModeEventClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x268);\n  }\n  return (TacticalSpecialAbilityWithDummyTargetEventClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:48:33Z"
+}

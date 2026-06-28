@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076aa5c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076aa62        HMODULE result = GetModuleHandleW(nullptr)\n14076aa75        int32_t* rcx_2\n14076aa75        if (result != 0 && result->unused.w == 0x5a4d)\n14076aa7b        rcx_2 = result * 2\n14076aaa1        if (result == 0 || result->unused.w != 0x5a4d || *rcx_2 != 0x4550 || rcx_2[6].w != 0x20b || rcx_2[0x21] u<= 0xe || rcx_2[0x3e] == 0)\n14076aaa7        result.b = 0\n14076aaa3        result.b = 1\n14076aaad        return result",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

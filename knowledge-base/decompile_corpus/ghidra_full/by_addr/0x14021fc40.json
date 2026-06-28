@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fc40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14021fc40(undefined8 *param_1,LPCSTR param_2,BYTE *param_3)\n\n{\n  BYTE *lpData;\n  \n  if ((HKEY)*param_1 != (HKEY)0x0) {\n    lpData = param_3;\n    if (7 < *(ulonglong *)(param_3 + 0x18)) {\n      lpData = *(BYTE **)param_3;\n    }\n    RegSetValueExA((HKEY)*param_1,param_2,0,3,lpData,(int)*(undefined8 *)(param_3 + 0x10) * 2 + 2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:01Z"
+}

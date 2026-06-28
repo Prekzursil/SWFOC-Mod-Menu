@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222f50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\ndouble FUN_140222f50(void)\n\n{\n  LARGE_INTEGER local_res8 [4];\n  \n  if (DAT_140a7e2e8 == 0) {\n    FUN_140222e20();\n  }\n  QueryPerformanceCounter(local_res8);\n  return (double)(local_res8[0].QuadPart - _DAT_140a7e300) / (double)_DAT_140a7e2f0;\n}",
+  "fetched_at": "2026-04-26T18:04:08Z"
+}

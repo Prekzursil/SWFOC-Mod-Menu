@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a1078",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _clearfp\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nuint __cdecl _clearfp(void)\n\n{\n  uint uVar1;\n  uint uVar2;\n  uint uVar3;\n  uint uVar4;\n  \n  uVar1 = _get_fpsr();\n  _fclrf();\n  uVar4 = 0;\n  if ((uVar1 & 0x3f) != 0) {\n    uVar2 = (uVar1 & 1) << 4;\n    uVar4 = uVar2 | 8;\n    if ((uVar1 & 4) == 0) {\n      uVar4 = uVar2;\n    }\n    uVar2 = uVar4 | 4;\n    if ((uVar1 & 8) == 0) {\n      uVar2 = uVar4;\n    }\n    uVar3 = uVar2 | 2;\n    if ((uVar1 & 0x10) == 0) {\n      uVar3 = uVar2;\n    }\n    uVar4 = uVar3 | 1;\n    if ((uVar1 & 0x20) == 0) {\n      uVar4 = uVar3;\n    }\n    if ((uVar1 & 2) != 0) {\n      uVar4 = uVar4 | 0x80000;\n    }\n  }\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T18:54:20Z"
+}

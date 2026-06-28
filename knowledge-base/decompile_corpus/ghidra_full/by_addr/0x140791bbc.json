@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791bbc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_LCMapStringA\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_LCMapStringA(__crt_locale_pointers *param_1,wchar_t *param_2,ulong param_3,char *param_4\n                        ,int param_5,char *param_6,int param_7,int param_8,int param_9)\n\n{\n  longlong local_28;\n  __crt_locale_pointers local_20 [16];\n  char local_10;\n  \n  _LocaleUpdate::_LocaleUpdate((_LocaleUpdate *)&local_28,param_1);\n  __acrt_LCMapStringA_stat(local_20,param_2,param_3,param_4,param_5,param_6,param_7,param_8,param_9)\n  ;\n  if (local_10 != '\\0') {\n    *(uint *)(local_28 + 0x3a8) = *(uint *)(local_28 + 0x3a8) & 0xfffffffd;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e3670",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e3699        sub_140253a40(&data_140b31ad0, sx.q(((data_140a16fd8 - data_140a16fd0) s>> 3).d))\n1404e36ba        sub_1404e5070(&data_140b31ae8, sx.q(((data_140a16fd8 - data_140a16fd0) s>> 3).d))\n1404e36c6        int32_t rbp = 0\n1404e36cf        int32_t result = ((data_140a16fd8 - data_140a16fd0) s>> 3).d\n1404e36d5        if (result s> 0)\n1404e36f9        void* rax_8 = sub_140294bc0(&data_140a16fd0, rbp)\n1404e3704        if (rax_8 != 0)\n1404e3706        int64_t r8_1 = *arg1\n1404e3709        int32_t rbx_1 = 0\n1404e371a        if ((arg1[1] - r8_1) s>> 5 u> 1)\n1404e3720        char* rdx_3 = *(rax_8 + 0x68)\n1404e3729        if (*(rdx_3 + 0x18) u>= 0x10)\n1404e372b        rdx_3 = *rdx_3\n1404e3734        char* rcx_5 = (zx.q(rbx_1) << 5) + r8_1\n1404e373c        if (*(rcx_5 + 0x18) u>= 0x10)\n1404e373e        rcx_5 = *rcx_5\n1404e3741        int32_t rax_9\n1404e3741        char r8_2\n1404e3741        rax_9, r8_2 = _stricmp(rcx_5, rdx_3)\n1404e3748        if (rax_9 == 0)\n1404e3772        sub_1404e31d0((zx.q(rbx_1 + 1) << 5) + *arg1, rax_8, r8_2)\n1404e3772        break\n1404e374a        r8_1 = *arg1\n1404e374d        rbx_1 += 2\n1404e3761        do while (zx.q(rbx_1 + 1) u< (arg1[1] - r8_1) s>> 5)\n1404e377e        rbp += 1\n1404e3787        result = ((data_140a16fd8 - data_140a16fd0) s>> 3).d\n1404e378d        do while (rbp s< result)\n1404e37a7        return result",
+  "fetched_at": "2026-04-26T17:31:22Z"
+}

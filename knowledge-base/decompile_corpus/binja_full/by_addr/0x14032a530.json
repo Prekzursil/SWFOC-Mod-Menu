@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032a530",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032a538        int64_t result = sx.q(*(arg1 + 0xc8))\n14032a53f        int32_t rsi = 0\n14032a546        if (result.d s> 0)\n14032a556        int64_t result_1 = result\n14032a55e        int64_t rdi_1 = 0\n14032a565        int64_t r12_1 = arg2[2]\n14032a56e        char** r13_1 = *(arg1 + 0xc0)\n14032a57a        char** rbx_1 = r13_1\n14032a57d        int64_t r15_1 = arg2[3]\n14032a581        int64_t* rdx = arg2\n14032a588        if (r15_1 u>= 0x10)\n14032a58a        rdx = *arg2\n14032a592        char* rcx = rbx_1\n14032a595        if (rbx_1[3] u>= 0x10)\n14032a597        rcx = *rbx_1\n14032a59a        int64_t r8_1 = rbx_1[2]\n14032a5a1        if (r8_1 == r12_1)\n14032a5a3        result = memcmp(rcx, rdx, r8_1)\n14032a5aa        if (result.d == 0)\n14032a5c8        r13_1[sx.q(rsi) * 0xa + 8].d = 1\n14032a5d8        return sub_1402fdef0(&data_140b27f60, 1)\n14032a5ac        rsi += 1\n14032a5ae        rdi_1 += 1\n14032a5b1        rbx_1 = &rbx_1[0xa]\n14032a5b8        do while (rdi_1 s< result_1)\n14032a602        return result",
+  "fetched_at": "2026-04-26T17:01:45Z"
+}

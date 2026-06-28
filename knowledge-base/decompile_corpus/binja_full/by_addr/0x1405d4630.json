@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d4630",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405d4660        int128_t zmm0\n1405d4660        int512_t zmm10\n1405d4660        zmm0, zmm10 = sub_1405d1d30(arg2)\n1405d4665        int64_t* result = *(arg4 + 8)\n1405d4669        zmm10.o = zmm0\n1405d466d        void** rbx = *result\n1405d4673        if (rbx == result)\n1405d46fc        label_1405d46fc:\n1405d46fc        result.b = 1\n1405d468a        while (true)\n1405d468a        *(rbx + 0x14)\n1405d468f        rbx[3].d\n1405d4699        *(rbx + 0x1c)\n1405d469f        result = sub_1402aca60(*(data_140b15418 + 0x18), rbx[2].d)\n1405d46a7        if (result != 0)\n1405d46ac        float zmm0_1\n1405d46ac        float zmm7_1\n1405d46ac        float zmm8_1\n1405d46ac        float zmm9_1\n1405d46ac        float zmm10_1\n1405d46ac        zmm0_1, zmm7_1, zmm8_1, zmm9_1, zmm10_1 = sub_1405d1d30(result)\n1405d46bd        float zmm1_1 = arg3[1] - zmm8_1\n1405d46c7        zmm0_1 = *arg3 - zmm7_1\n1405d46cb        float zmm2_1 = arg3[2] - zmm9_1\n1405d46e9        int32_t zmm0_2\n1405d46e9        int32_t zmm6_2\n1405d46e9        result, zmm0_2, zmm6_2 = sqrtf(zmm0_1 * zmm0_1 + zmm1_1 * zmm1_1 + zmm2_1 * zmm2_1)\n1405d46f1        if (zmm6_2 f> zmm0_2)\n1405d4729        result.b = 0\n1405d472b        break\n1405d46f3        rbx = *rbx\n1405d46fa        if (rbx == *(arg4 + 8))\n1405d46fa        goto label_1405d46fc\n1405d4728        return result",
+  "fetched_at": "2026-04-26T17:38:00Z"
+}

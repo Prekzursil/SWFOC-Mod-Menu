@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d7eb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGameObjectPerceptualEvaluatorClass::~GameObjectPerceptualEvaluatorClass\n          (GameObjectPerceptualEvaluatorClass *this)\n\n{\n  undefined **ppuVar1;\n  undefined8 uVar2;\n  \n  ppuVar1 = (this->SignalListenerClass_data).offset_0x0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  if (ppuVar1 != (undefined **)0x0) {\n    uVar2 = FUN_140058570();\n    FUN_140220eb0(uVar2,ppuVar1 + 7,&this->vftablePtr,0);\n    FUN_14064ed10(this,DAT_140a43c74);\n    (this->SignalListenerClass_data).offset_0x0 = (undefined **)0x0;\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (GameObjectPerceptualEvaluatorClass_vftable2 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  PerceptualEvaluatorClass::~PerceptualEvaluatorClass((PerceptualEvaluatorClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:34Z"
+}

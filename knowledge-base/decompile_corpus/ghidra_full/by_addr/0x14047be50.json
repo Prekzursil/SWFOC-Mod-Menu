@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047be50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_14047be50(longlong *param_1,char *param_2)\n\n{\n  int iVar1;\n  char *_Str1;\n  char *_Str2;\n  char *pcVar2;\n  longlong lVar3;\n  int iVar4;\n  \n  if ((*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) +\n               0xd4) < DAT_140b311bc) && (_Init_thread_header(&DAT_140b311bc), DAT_140b311bc == -1))\n  {\n    atexit(FUN_1407f25f0);\n    _Init_thread_footer(&DAT_140b311bc);\n  }\n  iVar4 = 0;\n  if (0 < (int)param_1[1]) {\n    lVar3 = 0;\n    do {\n      pcVar2 = (char *)(*param_1 + lVar3);\n      if (pcVar2 != (char *)0x0) {\n        _Str2 = param_2;\n        if (0xf < *(ulonglong *)(param_2 + 0x18)) {\n          _Str2 = *(char **)param_2;\n        }\n        _Str1 = pcVar2;\n        if (0xf < *(ulonglong *)(pcVar2 + 0x18)) {\n          _Str1 = *(char **)pcVar2;\n        }\n        iVar1 = _stricmp(_Str1,_Str2);\n        if (iVar1 == 0) {\n          return pcVar2;\n        }\n      }\n      iVar4 = iVar4 + 1;\n      lVar3 = lVar3 + 0xf0;\n    } while (iVar4 < (int)param_1[1]);\n  }\n  return (char *)&DAT_140a2a190;\n}",
+  "fetched_at": "2026-04-26T17:59:34Z"
+}

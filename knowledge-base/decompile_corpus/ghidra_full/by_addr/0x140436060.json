@@ -1,0 +1,7 @@
+{
+  "addr": "0x140436060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ControlGroupEventClass * __thiscall\nControlGroupEventClass::ControlGroupEventClass(ControlGroupEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->ControlGroupEventClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  (this->ControlGroupEventClass_data).offset_0x4 = 0;\n  (this->EventClass_data).offset_0x8 = 0x1e;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:51:36Z"
+}

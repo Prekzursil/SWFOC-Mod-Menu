@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405ea820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall MoveActionClass::vfunction10(MoveActionClass *this)\n\n{\n  undefined8 in_RAX;\n  longlong lVar1;\n  longlong *plVar2;\n  \n  if ((this->ActionClass_data).offset_0x98 != 0) {\n    if (*(char *)((longlong)&(this->MoveActionClass_data).offset_0x18 + 5) == '\\x01') {\n      FUN_14038f8d0();\n    }\n    if (0.0 < *(float *)&(this->MoveActionClass_data).offset_0x4) {\n      FUN_14038f8b0((this->ActionClass_data).offset_0x98);\n    }\n    in_RAX = FUN_1403a8e50((this->ActionClass_data).offset_0x98,0);\n    if (*(char *)((longlong)&(this->MoveActionClass_data).offset_0x18 + 4) == '\\x01') {\n      lVar1 = (**(code **)(*DAT_140b15418 + 0x228))();\n      in_RAX = 0;\n      if (lVar1 != 0) {\n        in_RAX = FUN_1403a9910((this->ActionClass_data).offset_0x98,lVar1,1);\n      }\n    }\n    if (*(char *)&(this->MoveActionClass_data).offset_0x20 == '\\x01') {\n      plVar2 = (longlong *)(this->ActionClass_data).offset_0x98;\n      plVar2 = (longlong *)(**(code **)(*plVar2 + 0x10))(plVar2,1);\n      in_RAX = 0;\n      if (plVar2 != (longlong *)0x0) {\n        in_RAX = (**(code **)(*plVar2 + 0x200))(plVar2);\n      }\n    }\n  }\n  return CONCAT71((int7)((ulonglong)in_RAX >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:46:25Z"
+}

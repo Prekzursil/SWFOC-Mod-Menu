@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004a3d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nfloat * FUN_14004a3d0(longlong param_1,float *param_2,int param_3,float *param_4)\n\n{\n  longlong lVar1;\n  bool bVar2;\n  longlong lVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  \n  lVar1 = *(longlong *)(param_1 + 0x38);\n  lVar3 = (longlong)param_3 * 0x40;\n  if (((*(float *)(lVar3 + 0xc + lVar1) != *param_4) ||\n      (*(float *)(lVar3 + 0x10 + lVar1) != param_4[1])) &&\n     ((*(float *)(param_1 + 0x48) != *(float *)(param_1 + 0x50) ||\n      (*(float *)(param_1 + 0x4c) != *(float *)(param_1 + 0x54))))) {\n    fVar7 = *(float *)(lVar3 + 0xc + lVar1);\n    fVar6 = *(float *)(lVar3 + 0x10 + lVar1);\n    bVar2 = *(float *)(param_1 + 0x60) * *(float *)(param_1 + 0x5c) <= ABS(fVar7 - *param_4);\n    if (!bVar2) {\n      fVar7 = *param_4;\n    }\n    fVar4 = fVar6 - param_4[1];\n    fVar5 = *(float *)(param_1 + 0x60) * *(float *)(param_1 + 0x5c);\n    if (ABS(fVar4) < fVar5) {\n      fVar6 = param_4[1];\n    }\n    if ((bVar2) || (fVar5 <= ABS(fVar4))) {\n      fVar6 = (param_4[1] - *(float *)(lVar3 + 0x10 + lVar1)) * *(float *)(param_1 + 0x5c) +\n              *(float *)(lVar3 + 0x10 + lVar1);\n      fVar7 = (*param_4 - *(float *)(lVar3 + 0xc + lVar1)) * *(float *)(param_1 + 0x5c) +\n              *(float *)(lVar3 + 0xc + lVar1);\n    }\n    *param_2 = fVar7;\n    param_2[1] = fVar6;\n    return param_2;\n  }\n  *param_2 = *param_4;\n  param_2[1] = param_4[1];\n  return param_2;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f57c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f57c7        return \"UnitAIBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:31:42Z"
+}

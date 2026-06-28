@@ -1,0 +1,7 @@
+{
+  "addr": "0x140541080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8 __thiscall\nLuaAllowLocalizedSFX::vfunction11(LuaAllowLocalizedSFX *this,undefined8 param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  char cVar2;\n  undefined *puVar3;\n  char *pcVar4;\n  \n  cVar2 = (**(code **)(*DAT_140b15418 + 0xf0))();\n  if (cVar2 == '\\0') {\n    FUN_140248190(param_1,\"LuaAllowLocalizedSFX -- Command only valid in a land tactical game.\");\n    return 0;\n  }\n  if (*(longlong *)(param_2 + 0x18) - (longlong)*(longlong **)(param_2 + 0x10) >> 3 == 0) {\n    pcVar4 = \"LuaAllowLocalizedSFX -- Expected bool parameter 1\";\n  }\n  else {\n    plVar1 = (longlong *)**(longlong **)(param_2 + 0x10);\n    if (plVar1 != (longlong *)0x0) {\n      for (puVar3 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar3 != (undefined *)0x0;\n          puVar3 = *(undefined **)(puVar3 + 8)) {\n        if (puVar3 == &DAT_140a157b0) {\n          (**(code **)*plVar1)(plVar1);\n          DAT_140b27ee0 = (undefined1)plVar1[2];\n          _DAT_140b27ee4 = 3;\n          (**(code **)(*plVar1 + 8))(plVar1);\n          return 0;\n        }\n      }\n    }\n    pcVar4 = \"LuaAllowLocalizedSFX -- invalid type for parameter 1.  Expected bool.\";\n  }\n  FUN_140248190(param_1,pcVar4);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:07Z"
+}

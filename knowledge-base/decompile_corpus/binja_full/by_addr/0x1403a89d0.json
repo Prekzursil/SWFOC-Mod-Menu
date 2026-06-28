@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a89d0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_set_hp",
+  "body": "1403a89de        *(arg1 + 0x5c)\n1403a8a00        *(arg1 + 0x5c) = _mm_max_ss(0, arg2.d)\n1403a8a0c        uint64_t result\n1403a8a0c        int64_t zmm0_1\n1403a8a0c        float zmm6_1\n1403a8a0c        zmm0_1, result, zmm6_1 = sub_1403727a0(*(arg1 + 0x298), arg1)\n1403a8a19        int64_t temp0_2 = _mm_min_ss(zmm0_1.d, __maxss_xmmss_memss(0, *(arg1 + 0x5c)).d)\n1403a8a1d        zmm6_1 f- temp0_2.d\n1403a8a20        *(arg1 + 0x5c) = temp0_2.d\n1403a8a27        if (is_unordered.d(zmm6_1, temp0_2.d) || not(zmm6_1 f== temp0_2.d))\n1403a8a29        result = zx.q(data_140a286f0)\n1403a8a32        if (*(arg1 + 0x50) == result.d)\n1403a8a34        *(arg1 + 0x3a0) |= 1\n1403a8a3e        if (not(0f f<= temp0_2.d))\n1403a8a4a        result = sub_140294bc0(&data_140a16fd0, *(arg1 + 0x58))\n1403a8a5d        if (result != 0 && *(result + 0x40) u>= 8)\n1403a8a5f        *(result + 0x28)\n1403a8a72        int64_t* rdx_3 = *(arg1 + 0x298) + 0xf8\n1403a8a7e        if (rdx_3[3] u>= 0x10)\n1403a8a80        *rdx_3\n1403a8a8f        *(arg1 + 0x50)\n1403a8a9e        int64_t var_40_1 = fconvert.d(arg2.d)\n1403a8aa4        int64_t var_48_1 = _mm_cvtps_pd(*(arg1 + 0x5c))\n1403a8aaf        *(arg1 + 0x5c)\n1403a8acb        return result",
+  "fetched_at": "2026-04-26T16:43:28Z"
+}

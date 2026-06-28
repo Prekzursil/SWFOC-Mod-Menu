@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f550",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall SpecialAbilityActionClass::vfunction9(SpecialAbilityActionClass *this)\n\n{\n  if (((this->ActionClass_data).offset_0x98 != 0) && ((this->ActionClass_data).offset_0xa0 != 0)) {\n    return (this->SpecialAbilityActionClass_data).offset_0x28;\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:58:54Z"
+}

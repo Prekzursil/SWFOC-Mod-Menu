@@ -1,0 +1,7 @@
+{
+  "addr": "0x140689ad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AllyEventClass * __thiscall AllyEventClass::AllyEventClass(AllyEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->AllyEventClass_data).offset_0x0 = 0xffffffff;\n  this->vftablePtr = &vftable;\n  (this->EventClass_data).offset_0x8 = 0x23;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:15:26Z"
+}

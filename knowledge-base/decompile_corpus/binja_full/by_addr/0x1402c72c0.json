@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c72c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402c72d1        struct Interpolator::VTable** result = arg1\n1402c72d4        *arg1 = &CubicInterpolator::`vftable'{for `Interpolator'}\n1402c72dd        sub_1401415b0(&arg1[2])\n1402c72e9        *result = &Interpolator::`vftable'\n1402c72ef        if ((arg2 & 1) != 0)\n1402c72f9        j_sub_1407864b8(result)\n1402c730b        return result",
+  "fetched_at": "2026-04-26T17:33:31Z"
+}

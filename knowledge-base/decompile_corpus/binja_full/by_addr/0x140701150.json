@@ -1,0 +1,7 @@
+{
+  "addr": "0x140701150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070115a        struct SpecialAbilityClass::HackAbilityClass::VTable** result = arg1\n14070115d        sub_14048c780(arg1)\n140701172        result[0x2f] = 0\n140701179        *result = &HackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070118a        result[0x30] = 0\n140701191        result[1] = &HackAbilityClass::`vftable'{for `RefCountClass'}\n140701195        result[0x32] = 0\n140701199        result[0x33] = 0xf\n1407011a1        sub_140022730(&result[0x30], \"Hack_Electicity_Zaps\", 0x14)\n1407011a6        result[0x34] = 0\n1407011b4        result[0x37] = 0xf\n1407011c9        result[0x36] = 0\n1407011db        __builtin_memcpy(&result[0x3a], \"\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x0f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x01\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\", 0x18)\n1407011e6        __builtin_strncpy(&result[0x38], \"B_Turret\", 9)\n140701208        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x3d])\n140701210        result[8].w = 1\n140701216        *(result + 0x3c) = 0xb\n140701227        return result",
+  "fetched_at": "2026-04-26T17:27:01Z"
+}

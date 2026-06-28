@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063fd30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063fd3b        struct BehaviorClass::VehicleThiefBehaviorClass::VTable** result = operator new(0x40)\n14063fd46        if (result == 0)\n14063fd7e        return result\n14063fd4b        sub_1404c32d0(result)\n14063fd57        *result = &VehicleThiefBehaviorClass::`vftable'{for `BehaviorClass'}\n14063fd61        result[1] = &VehicleThiefBehaviorClass::`vftable'{for `RefCountClass'}\n14063fd6c        result[3] = &VehicleThiefBehaviorClass::`vftable'{for `SignalListenerClass'}\n14063fd78        return result",
+  "fetched_at": "2026-04-26T17:02:46Z"
+}

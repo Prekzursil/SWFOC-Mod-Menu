@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019ded0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FUN_14019ded0(void *this)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n                    /* inlined constructor or destructor (approx location) for alRawAnim */\n  *(alRawAnim_vftable **)this = &alRawAnim::vftable;\n                    /* inlined constructor or destructor (approx location) for\n                       DynamicVectorClass<class_alRawAnim::alRawJointAnim> */\n  *(DynamicVectorClass<class_alRawAnim::alRawJointAnim>_vftable **)((longlong)this + 0x38) =\n       &DynamicVectorClass<class_alRawAnim::alRawJointAnim>::vftable;\n  FUN_14019f2f0();\n  uVar1 = *(ulonglong *)((longlong)this + 0x28);\n  if (0xf < uVar1) {\n    lVar2 = *(longlong *)((longlong)this + 0x10);\n    lVar3 = lVar2;\n    if (0xfff < uVar1 + 1) {\n      lVar3 = *(longlong *)(lVar2 + -8);\n      if (0x1f < (lVar2 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar2 - lVar3,uVar1 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar3);\n  }\n                    /* inlined constructor or destructor (approx location) for RefCountClass */\n  *(undefined8 *)((longlong)this + 0x20) = 0;\n  *(undefined8 *)((longlong)this + 0x28) = 0xf;\n  *(undefined1 *)((longlong)this + 0x10) = 0;\n  *(RefCountClass_vftable **)this = &RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140277de4        *arg1 = &DrawLineSegmentClass::`vftable'{for `DrawPrimitiveClass'}\n140277df0        arg1[8] = &DrawLineSegmentClass::`vftable'{for `RefCountClass'}\n140277df4        void* rcx = arg1[7]\n140277dfb        if (rcx != 0)\n140277e00        sub_14025c490(rcx, arg1)\n140277e0f        arg1[8] = &RefCountClass::`vftable'{for `IRefCountClass'}\n140277e13        sub_14026edd0(arg1)\n140277e1c        if ((arg2 & 1) != 0)\n140277e26        j_sub_1407864b8(arg1)\n140277e38        return arg1",
+  "fetched_at": "2026-04-26T17:31:57Z"
+}

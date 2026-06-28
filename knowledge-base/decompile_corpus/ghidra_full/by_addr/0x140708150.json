@@ -1,0 +1,7 @@
+{
+  "addr": "0x140708150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPlanetIncomeBonusAbilityClass::vfunction30_for_IXMLLoadableClass\n          (PlanetIncomeBonusAbilityClass *this)\n\n{\n  undefined ***pppuVar1;\n  undefined1 local_108 [256];\n  \n  CorruptionAbilityClass::vfunction30_for_IXMLLoadableClass((CorruptionAbilityClass *)this);\n  if (*(float *)&(this->PlanetIncomeBonusAbilityClass_data).offset_0x0 <= DAT_14080080c &&\n      DAT_14080080c != *(float *)&(this->PlanetIncomeBonusAbilityClass_data).offset_0x0) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_108,\"Error: (%s) Percentage_Income_Modifier cannot be less than -1.0\",\n                  pppuVar1);\n    FUN_1402149d0(local_108);\n    *(undefined4 *)&(this->PlanetIncomeBonusAbilityClass_data).offset_0x0 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b0740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalBribeAbilityClass * __thiscall\nTacticalBribeAbilityClass::scalar_deleting_destructor\n          (TacticalBribeAbilityClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: TacticalBribeAbilityClass::~TacticalBribeAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1404c47c0(&(this->TacticalBribeAbilityClass_data).field_0x40);\n  FUN_1404c47c0(&(this->TacticalBribeAbilityClass_data).field_0x30);\n  FUN_1404c4770(&(this->TacticalBribeAbilityClass_data).field_0x18);\n  FUN_1404c4770(&(this->TacticalBribeAbilityClass_data).field_0x8);\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x1c8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:38Z"
+}

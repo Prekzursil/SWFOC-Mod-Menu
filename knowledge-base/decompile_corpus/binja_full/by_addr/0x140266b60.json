@@ -1,0 +1,7 @@
+{
+  "addr": "0x140266b60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140266b73        *arg1 = &ReferenceListClass<class ModelClass>::`vftable'{for `GenericMultiLinkedList'}\n140266b81        if (sub_14012ef50(arg1) != 0)\n140266baf        int64_t i\n140266b8b        int64_t* arg_8\n140266b8b        void* rax_1 = sub_14020ac80(arg1, &arg_8)\n140266b9c        if (rax_1 != 0 && rax_1 != 0x10)\n140266ba1        (*(*(rax_1 - 0x10) + 8))(rax_1 - 0x10)\n140266ba7        i = sub_14012ef50(arg1)\n140266baf        do while (i != 0)\n140266bb4        sub_14020a960(arg1)\n140266bbd        if ((arg2 & 1) != 0)\n140266bc7        j_sub_1407864b8(arg1)\n140266bd9        return arg1",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

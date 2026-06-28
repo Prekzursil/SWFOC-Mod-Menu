@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b3900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b3914        int32_t i = 0\n1404b3916        *(arg1 + 0x60) = *(arg2 + 0x10)\n1404b3919        char r12 = arg4\n1404b3929        if (*(arg2 + 0x10) s> 0)\n1404b392f        int32_t rdx = *(arg1 + 0x58)\n1404b3940        int64_t rsi_1 = 0\n1404b3958        int32_t r14_1 = *(*(*(arg2 + 8) + rsi_1) + 0x50)\n1404b3962        int32_t rcx_3 = (*(arg1 + 0x5c) * 2) s>> 1\n1404b3966        if (rdx s>= rcx_3)\n1404b397a        int32_t rdx_3 = rcx_3 s/ 0xa\n1404b397f        if (rdx_3 s< 0xa)\n1404b397f        rdx_3 = 0xa\n1404b398c        sub_140021ec0(arg1 + 0x48, rdx_3 + rcx_3, 0, 1)\n1404b3991        rdx = *(arg1 + 0x58)\n1404b3999        i += 1\n1404b399e        rsi_1 += 8\n1404b39a2        *(*(arg1 + 0x50) + (sx.q(rdx) << 2)) = r14_1\n1404b39a6        *(arg1 + 0x58) += 1\n1404b39aa        rdx = *(arg1 + 0x58)\n1404b39b1        do while (i s< *(arg2 + 0x10))\n1404b39b3        r12 = arg4\n1404b39c8        *(arg1 + 0x64) = arg3\n1404b39cc        uint64_t result\n1404b39cc        result.b = 1\n1404b39ce        *(arg1 + 0x68) = r12\n1404b39de        return result",
+  "fetched_at": "2026-04-26T17:29:50Z"
+}

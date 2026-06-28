@@ -1,0 +1,7 @@
+{
+  "addr": "0x140038f80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140038f80(undefined8 param_1,ulonglong param_2,ulonglong param_3,undefined1 param_4)\n\n{\n  DynamicVectorClass<class_SmartPtr<class_TextureClass>_> *this;\n  ulonglong uVar1;\n  ulonglong uVar2;\n  undefined **local_res20;\n  \n  if ((uint)param_2 < 0x35) {\n    uVar1 = param_2 & 0xffffffff;\n    if (DAT_1409cf1c0 == (DynamicVectorClass<class_SmartPtr<class_TextureClass>_> *)0x0) {\n      uVar2 = param_3;\n      this = (DynamicVectorClass<class_SmartPtr<class_TextureClass>_> *)FUN_140769c58(0x10c8);\n      if (this == (DynamicVectorClass<class_SmartPtr<class_TextureClass>_> *)0x0) {\n        DAT_1409cf1c0 = (DynamicVectorClass<class_SmartPtr<class_TextureClass>_> *)0x0;\n      }\n      else {\n        DAT_1409cf1c0 =\n             DynamicVectorClass<class_SmartPtr<class_TextureClass>_>::\n             DynamicVectorClass<class_SmartPtr<class_TextureClass>_>(this,param_2,uVar2,param_4);\n      }\n      local_res20 = &PTR_vftable_1409cf1b8;\n      if (DAT_140a7bc10 == DAT_140a7bc18) {\n        FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,&local_res20);\n      }\n      else {\n        *DAT_140a7bc10 = &PTR_vftable_1409cf1b8;\n        DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      }\n    }\n    FUN_140263070(DAT_1409cf1c0,uVar1,param_3 & 0xff);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:05Z"
+}

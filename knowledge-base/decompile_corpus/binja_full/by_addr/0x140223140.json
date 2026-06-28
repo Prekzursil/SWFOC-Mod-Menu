@@ -1,0 +1,7 @@
+{
+  "addr": "0x140223140",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140223146        int32_t rax = *(arg1 + 0x1bc)\n140223151        if (rax != 0)\n140223198        *(arg1 + 0x1bc) = rax + 1\n1402231a3        return rax + 1\n14022315a        *arg1 = 0\n14022315f        int64_t result = CoInitialize(nullptr)\n140223165        *(arg1 + 0x1bc) += 1\n14022316b        __builtin_memset(&arg1[0xa], 0, 0x18)\n140223177        arg1[0x26] = 0\n14022317e        arg1[0x25].b = 0\n140223185        *(arg1 + 0x12c) = 0\n140223195        return result",
+  "fetched_at": "2026-04-26T17:29:16Z"
+}

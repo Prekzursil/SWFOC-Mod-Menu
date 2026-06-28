@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140635e77        return \"GarrisonableBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:00:05Z"
+}

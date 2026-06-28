@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403901e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403901e0(longlong param_1)\n\n{\n  AffectedByShieldDataPackClass *pAVar1;\n  \n  if (*(longlong *)(param_1 + 0x170) == 0) {\n    pAVar1 = (AffectedByShieldDataPackClass *)FUN_140769c58(0x20);\n    if (pAVar1 != (AffectedByShieldDataPackClass *)0x0) {\n      pAVar1 = AffectedByShieldDataPackClass::AffectedByShieldDataPackClass(pAVar1);\n      *(AffectedByShieldDataPackClass **)(param_1 + 0x170) = pAVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x170) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:31Z"
+}

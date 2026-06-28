@@ -1,0 +1,7 @@
+{
+  "addr": "0x140762370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140762395        int64_t rsi\n140762395        rsi.b = 1\n140762398        int16_t result\n140762398        if (arg1[1].b == 0)\n14076239a        int64_t* rcx = *arg1\n1407623a0        if (rcx != 0)\n1407623a6        int16_t* rdx = *rcx[7]\n1407623b5        if (rdx == 0 || *rcx[0xa] s<= 0)\n14076241c        result = (*(*rcx + 0x30))()\n1407623b7        result = *rdx\n1407623cd        if (rcx == 0 || 0xffff == result)\n1407623d5        *arg1 = 0\n1407623cf        *(arg1 + 0xa) = result\n1407623d9        arg1[1].b = 1\n1407623e1        if (arg2[1].b == 0)\n1407623e3        int64_t* rcx_1 = *arg2\n1407623e9        if (rcx_1 != 0)\n1407623ef        int16_t* rdx_1 = *rcx_1[7]\n1407623fe        if (rdx_1 == 0 || *rcx_1[0xa] s<= 0)\n14076241c        result = (*(*rcx_1 + 0x30))()\n140762400        result = *rdx_1\n140762416        if (rcx_1 == 0 || 0xffff == result)\n14076241e        *arg2 = 0\n140762418        *(arg2 + 0xa) = result\n140762422        arg2[1].b = 1\n14076242a        if (*arg1 != 0)\n140762438        if (*arg2 == 0)\n14076243a        rsi.b = 0\n140762430        if (*arg2 != 0)\n14076243a        rsi.b = 0\n140762442        result.b = rsi.b\n140762455        return result",
+  "fetched_at": "2026-04-26T17:30:09Z"
+}

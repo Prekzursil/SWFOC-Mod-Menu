@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c5f30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c5f3f        int64_t lpMem = arg1[1]\n1403c5f4a        *arg1 = &DynamicVectorClass<struct UIMarkerHeaderData>::`vftable'\n1403c5f55        if (lpMem != 0)\n1403c5f5e        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1403c5f79        j_sub_1407864b8(lpMem)\n1403c5f6e        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1403c5f80        *(arg1 + 0x14) &= 0x80000000\n1403c5f87        arg1[1] = 0\n1403c5f8b        arg1[2].d = 0\n1403c5f92        if ((arg2 & 1) != 0)\n1403c5f9c        j_sub_1407864b8(arg1)\n1403c5fb3        return arg1",
+  "fetched_at": "2026-04-26T17:24:46Z"
+}

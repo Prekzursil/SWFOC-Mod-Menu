@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023af60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid __thiscall\nDatabaseUIntConversionClass::~DatabaseUIntConversionClass(DatabaseUIntConversionClass *this)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  ulonglong uVar3;\n  longlong *plVar4;\n  longlong *plVar5;\n  \n  this->vftablePtr = &vftable;\n  plVar2 = DAT_140b09358;\n  plVar5 = (longlong *)*DAT_140b09358;\n  if (plVar5 != DAT_140b09358) {\n    while ((DatabaseUIntConversionClass *)plVar5[6] != this) {\n      plVar5 = (longlong *)*plVar5;\n      if (plVar5 == DAT_140b09358) {\n        return;\n      }\n    }\n    uVar3 = FUN_14011f9c0(&DAT_140b09350,plVar5 + 2);\n    plVar4 = (longlong *)(DAT_140b09368 + (uVar3 & _DAT_140b09380) * 0x10);\n    if ((longlong *)plVar4[1] == plVar5) {\n      if ((longlong *)*plVar4 == plVar5) {\n        *plVar4 = (longlong)plVar2;\n        plVar4[1] = (longlong)plVar2;\n      }\n      else {\n        plVar4[1] = plVar5[1];\n      }\n    }\n    else if ((longlong *)*plVar4 == plVar5) {\n      *plVar4 = *plVar5;\n    }\n    lVar1 = *plVar5;\n    _DAT_140b09360 = _DAT_140b09360 + -1;\n    *(longlong *)plVar5[1] = lVar1;\n    *(longlong *)(lVar1 + 8) = plVar5[1];\n    FUN_140144c90(&DAT_140b09358,plVar5);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:15Z"
+}

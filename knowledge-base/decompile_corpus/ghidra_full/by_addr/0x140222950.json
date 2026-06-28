@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222950",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall RAMFileClass::vfunction2(RAMFileClass *this,uint param_1)\n\n{\n  ulonglong in_RAX;\n  HANDLE hHeap;\n  LPVOID pvVar1;\n  \n  if (param_1 < 2) {\n    if ((this->RAMFileClass_data).offset_0x0 == (LPVOID)0x0) {\n      hHeap = GetProcessHeap();\n      pvVar1 = HeapAlloc(hHeap,0,0x10000);\n      (this->RAMFileClass_data).offset_0x0 = pvVar1;\n      (this->RAMFileClass_data).offset_0x10 = 0x10000;\n    }\n    (this->RAMFileClass_data).offset_0x14 = 1;\n    *(undefined4 *)&(this->RAMFileClass_data).offset_0x8 = 0;\n    if (param_1 == 1) {\n      *(undefined4 *)((longlong)&(this->RAMFileClass_data).offset_0x8 + 4) = 0;\n    }\n    (this->FileClass_data).offset_0x0 = param_1;\n    return 1;\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:03:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140624300",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TerrainTextureModificationBehaviorClass * __thiscall\nTerrainTextureModificationBehaviorClass::vfunction4\n          (TerrainTextureModificationBehaviorClass *this,int param_1)\n\n{\n  TerrainTextureModificationBehaviorClass *pTVar1;\n  \n  pTVar1 = (TerrainTextureModificationBehaviorClass *)0x0;\n  if (param_1 == 0x3f) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T17:30:41Z"
+}

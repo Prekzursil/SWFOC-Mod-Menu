@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d4e4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl <lambda_2a444430fde8c29194d880d93eed5e8f>::operator()(void)const __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __thiscall\n<lambda_2a444430fde8c29194d880d93eed5e8f>::operator()\n          (<lambda_2a444430fde8c29194d880d93eed5e8f> *this)\n\n{\n  longlong lVar1;\n  __crt_seh_guarded_call<void> local_res8 [8];\n  undefined4 local_res10 [2];\n  undefined4 local_res18 [2];\n  undefined8 local_38;\n  undefined8 local_30;\n  undefined8 local_28;\n  undefined8 local_20;\n  undefined8 local_18;\n  \n  lVar1 = _calloc_base(1,0x158);\n  **(longlong **)this = lVar1;\n  _free_base(0);\n  if (lVar1 != 0) {\n    local_38 = *(undefined8 *)this;\n    local_30 = *(undefined8 *)(this + 8);\n    local_28 = *(undefined8 *)(this + 0x10);\n    local_20 = *(undefined8 *)(this + 0x18);\n    local_18 = *(undefined8 *)(this + 0x20);\n    local_res10[0] = 4;\n    local_res18[0] = 4;\n    __crt_seh_guarded_call<void>::\n    operator()<class_<lambda_1d892b297fdedeee07ed8124eeb2f2fa>,class_<lambda_ffc046909424fd52df0ac47e64813305>&___ptr64,class_<lambda_01a7098693036236037e7cdb9bca3d73>_>\n              (local_res8,(<lambda_1d892b297fdedeee07ed8124eeb2f2fa> *)local_res18,\n               (<lambda_ffc046909424fd52df0ac47e64813305> *)&local_38,\n               (<lambda_01a7098693036236037e7cdb9bca3d73> *)local_res10);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401d2060(longlong *param_1,ulonglong param_2)\n\n{\n  longlong lVar1;\n  TextureRectClass *this;\n  TextureRectClass *pTVar2;\n  TextureRectClass *this_00;\n  longlong lVar3;\n  ulonglong uVar4;\n  undefined1 local_res8 [8];\n  \n  this = (TextureRectClass *)param_1[1];\n  lVar3 = *param_1;\n  lVar1 = ((longlong)this - lVar3) / 0x12 + ((longlong)this - lVar3 >> 0x3f);\n  uVar4 = (lVar1 >> 3) - (lVar1 >> 0x3f);\n  if (param_2 < uVar4) {\n    pTVar2 = (TextureRectClass *)(param_2 * 0x90 + lVar3);\n    for (this_00 = pTVar2; this_00 != this;\n        this_00 = (TextureRectClass *)&(this_00->RefCountClass_data).offset_0x48) {\n      (*this_00->vftablePtr->deleting_destructor_for_DrawPrimitiveClass)(this_00,0);\n    }\n    param_1[1] = (longlong)pTVar2;\n    return;\n  }\n  if (uVar4 < param_2) {\n    if ((ulonglong)((param_1[2] - lVar3) / 0x90) < param_2) {\n      FUN_1401ca3e0(param_1,param_2,local_res8);\n      return;\n    }\n    for (lVar3 = param_2 - uVar4; lVar3 != 0; lVar3 = lVar3 + -1) {\n      TextureRectClass::TextureRectClass(this);\n      this = (TextureRectClass *)&(this->RefCountClass_data).offset_0x48;\n    }\n    param_1[1] = (longlong)this;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:19Z"
+}

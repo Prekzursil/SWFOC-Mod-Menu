@@ -1,0 +1,958 @@
+{
+  "format": "json",
+  "functions": [
+    {
+      "addr": "0x1407fb870",
+      "name": "sub_1407FB870",
+      "prototype": "void __cdecl()",
+      "size": "0x65",
+      "comments": {
+        "0x1407fb89a": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FB870 (.text @ 0x1407fb870):\n1407fb870  sub rsp, 28h\n1407fb874  mov rcx, cs:qword_140B3B2C8\n1407fb87b  test rcx, rcx\n1407fb87e  jz loc_1407FB8CA\n1407fb880  mov rdx, qword ptr cs:xmmword_140B3B2D0+8\n1407fb887  mov rax, rcx\n1407fb88a  sub rdx, rcx\n1407fb88d  and rdx, 0FFFFFFFFFFFFFFFCh\n1407fb891  cmp rdx, 1000h\n1407fb898  jb loc_1407FB8AF\n1407fb89a  mov rcx, [rcx-8]\n1407fb89e  add rdx, 27h\n1407fb8a2  sub rax, rcx\n1407fb8a5  add rax, 0FFFFFFFFFFFFFFF8h\n1407fb8a9  cmp rax, 1Fh\n1407fb8ad  ja loc_1407FB8CF\n1407fb8af  call j_j_free\n1407fb8b4  xorps xmm0, xmm0\n1407fb8b7  mov cs:qword_140B3B2C8, 0\n1407fb8c2  movdqu cs:xmmword_140B3B2D0, xmm0\n1407fb8ca  add rsp, 28h\n1407fb8ce  retn\n1407fb8cf  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FB870()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3B2C8; /*0x1407fb874*/\n  if ( qword_140B3B2C8 ) /*0x1407fb87e*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3B2D0 + 1) - qword_140B3B2C8) & 0xFFFFFFFFFFFFFFFCuLL) >= 0x1000 ) /*0x1407fb898*/\n    {\n      v0 = *(void **)(qword_140B3B2C8 - 8); /*0x1407fb89a*/\n      if ( (unsigned __int64)(qword_140B3B2C8 - (_QWORD)v0 - 8) > 0x1F ) /*0x1407fb8ad*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fb8cf*/\n    }\n    j_j_free(v0); /*0x1407fb8af*/\n    qword_140B3B2C8 = 0; /*0x1407fb8b7*/\n    xmmword_140B3B2D0 = 0; /*0x1407fb8c2*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x140735232",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2de8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fb874",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fb8e0",
+      "name": "sub_1407FB8E0",
+      "prototype": "void __cdecl()",
+      "size": "0x65",
+      "comments": {
+        "0x1407fb90a": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FB8E0 (.text @ 0x1407fb8e0):\n1407fb8e0  sub rsp, 28h\n1407fb8e4  mov rcx, cs:qword_140B3B248\n1407fb8eb  test rcx, rcx\n1407fb8ee  jz loc_1407FB93A\n1407fb8f0  mov rdx, qword ptr cs:xmmword_140B3B250+8\n1407fb8f7  mov rax, rcx\n1407fb8fa  sub rdx, rcx\n1407fb8fd  and rdx, 0FFFFFFFFFFFFFFFCh\n1407fb901  cmp rdx, 1000h\n1407fb908  jb loc_1407FB91F\n1407fb90a  mov rcx, [rcx-8]\n1407fb90e  add rdx, 27h\n1407fb912  sub rax, rcx\n1407fb915  add rax, 0FFFFFFFFFFFFFFF8h\n1407fb919  cmp rax, 1Fh\n1407fb91d  ja loc_1407FB93F\n1407fb91f  call j_j_free\n1407fb924  xorps xmm0, xmm0\n1407fb927  mov cs:qword_140B3B248, 0\n1407fb932  movdqu cs:xmmword_140B3B250, xmm0\n1407fb93a  add rsp, 28h\n1407fb93e  retn\n1407fb93f  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FB8E0()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3B248; /*0x1407fb8e4*/\n  if ( qword_140B3B248 ) /*0x1407fb8ee*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3B250 + 1) - qword_140B3B248) & 0xFFFFFFFFFFFFFFFCuLL) >= 0x1000 ) /*0x1407fb908*/\n    {\n      v0 = *(void **)(qword_140B3B248 - 8); /*0x1407fb90a*/\n      if ( (unsigned __int64)(qword_140B3B248 - (_QWORD)v0 - 8) > 0x1F ) /*0x1407fb91d*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fb93f*/\n    }\n    j_j_free(v0); /*0x1407fb91f*/\n    qword_140B3B248 = 0; /*0x1407fb927*/\n    xmmword_140B3B250 = 0; /*0x1407fb932*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x140735467",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2df4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fb8e4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fb950",
+      "name": "sub_1407FB950",
+      "prototype": "void __cdecl()",
+      "size": "0x65",
+      "comments": {
+        "0x1407fb97a": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FB950 (.text @ 0x1407fb950):\n1407fb950  sub rsp, 28h\n1407fb954  mov rcx, cs:qword_140B3B268\n1407fb95b  test rcx, rcx\n1407fb95e  jz loc_1407FB9AA\n1407fb960  mov rdx, qword ptr cs:xmmword_140B3B270+8\n1407fb967  mov rax, rcx\n1407fb96a  sub rdx, rcx\n1407fb96d  and rdx, 0FFFFFFFFFFFFFFFCh\n1407fb971  cmp rdx, 1000h\n1407fb978  jb loc_1407FB98F\n1407fb97a  mov rcx, [rcx-8]\n1407fb97e  add rdx, 27h\n1407fb982  sub rax, rcx\n1407fb985  add rax, 0FFFFFFFFFFFFFFF8h\n1407fb989  cmp rax, 1Fh\n1407fb98d  ja loc_1407FB9AF\n1407fb98f  call j_j_free\n1407fb994  xorps xmm0, xmm0\n1407fb997  mov cs:qword_140B3B268, 0\n1407fb9a2  movdqu cs:xmmword_140B3B270, xmm0\n1407fb9aa  add rsp, 28h\n1407fb9ae  retn\n1407fb9af  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FB950()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3B268; /*0x1407fb954*/\n  if ( qword_140B3B268 ) /*0x1407fb95e*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3B270 + 1) - qword_140B3B268) & 0xFFFFFFFFFFFFFFFCuLL) >= 0x1000 ) /*0x1407fb978*/\n    {\n      v0 = *(void **)(qword_140B3B268 - 8); /*0x1407fb97a*/\n      if ( (unsigned __int64)(qword_140B3B268 - (_QWORD)v0 - 8) > 0x1F ) /*0x1407fb98d*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fb9af*/\n    }\n    j_j_free(v0); /*0x1407fb98f*/\n    qword_140B3B268 = 0; /*0x1407fb997*/\n    xmmword_140B3B270 = 0; /*0x1407fb9a2*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407356c5",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2e00",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fb954",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fb9c0",
+      "name": "sub_1407FB9C0",
+      "prototype": "void __cdecl()",
+      "size": "0x65",
+      "comments": {
+        "0x1407fb9ea": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FB9C0 (.text @ 0x1407fb9c0):\n1407fb9c0  sub rsp, 28h\n1407fb9c4  mov rcx, cs:qword_140B3B2E8\n1407fb9cb  test rcx, rcx\n1407fb9ce  jz loc_1407FBA1A\n1407fb9d0  mov rdx, qword ptr cs:xmmword_140B3B2F0+8\n1407fb9d7  mov rax, rcx\n1407fb9da  sub rdx, rcx\n1407fb9dd  and rdx, 0FFFFFFFFFFFFFFF8h\n1407fb9e1  cmp rdx, 1000h\n1407fb9e8  jb loc_1407FB9FF\n1407fb9ea  mov rcx, [rcx-8]\n1407fb9ee  add rdx, 27h\n1407fb9f2  sub rax, rcx\n1407fb9f5  add rax, 0FFFFFFFFFFFFFFF8h\n1407fb9f9  cmp rax, 1Fh\n1407fb9fd  ja loc_1407FBA1F\n1407fb9ff  call j_j_free\n1407fba04  xorps xmm0, xmm0\n1407fba07  mov cs:qword_140B3B2E8, 0\n1407fba12  movdqu cs:xmmword_140B3B2F0, xmm0\n1407fba1a  add rsp, 28h\n1407fba1e  retn\n1407fba1f  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FB9C0()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3B2E8; /*0x1407fb9c4*/\n  if ( qword_140B3B2E8 ) /*0x1407fb9ce*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3B2F0 + 1) - qword_140B3B2E8) & 0xFFFFFFFFFFFFFFF8uLL) >= 0x1000 ) /*0x1407fb9e8*/\n    {\n      v0 = *(void **)(qword_140B3B2E8 - 8); /*0x1407fb9ea*/\n      if ( (unsigned __int64)(qword_140B3B2E8 - (_QWORD)v0 - 8) > 0x1F ) /*0x1407fb9fd*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fba1f*/\n    }\n    j_j_free(v0); /*0x1407fb9ff*/\n    qword_140B3B2E8 = 0; /*0x1407fba07*/\n    xmmword_140B3B2F0 = 0; /*0x1407fba12*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407362b9",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2e0c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fb9c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fba30",
+      "name": "sub_1407FBA30",
+      "prototype": "void __cdecl()",
+      "size": "0xe8",
+      "comments": {
+        "0x1407fba92": {
+          "regular": "Block"
+        },
+        "0x1407fbae8": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBA30 (.text @ 0x1407fba30):\n1407fba30  push rbx\n1407fba32  sub rsp, 20h\n1407fba36  mov rbx, cs:qword_140B3B368\n1407fba3d  test rbx, rbx\n1407fba40  jz loc_1407FBB0C\n1407fba46  mov [rsp+28h+arg_0], rsi\n1407fba4b  xor esi, esi\n1407fba4d  mov [rsp+28h+arg_8], rdi\n1407fba52  mov rdi, qword ptr cs:xmmword_140B3B370\n1407fba59  cmp rbx, rdi\n1407fba5c  jz loc_1407FBAB9\n1407fba5e  xchg ax, ax\n1407fba60  mov rdx, [rbx+18h]\n1407fba64  cmp rdx, 10h\n1407fba68  jb loc_1407FBA9A\n1407fba6a  mov rcx, [rbx]\n1407fba6d  inc rdx\n1407fba70  cmp rdx, 1000h\n1407fba77  jb loc_1407FBA95\n1407fba79  mov r8, [rcx-8]\n1407fba7d  add rdx, 27h\n1407fba81  sub rcx, r8\n1407fba84  lea rax, [rcx-8]\n1407fba88  cmp rax, 1Fh\n1407fba8c  ja loc_1407FBB12\n1407fba92  mov rcx, r8\n1407fba95  call j_j_free\n1407fba9a  mov [rbx+10h], rsi\n1407fba9e  mov qword ptr [rbx+18h], 0Fh\n1407fbaa6  mov [rbx], sil\n1407fbaa9  add rbx, 20h\n1407fbaad  cmp rbx, rdi\n1407fbab0  jnz loc_1407FBA60\n1407fbab2  mov rbx, cs:qword_140B3B368\n1407fbab9  mov rdx, qword ptr cs:xmmword_140B3B370+8\n1407fbac0  mov rax, rbx\n1407fbac3  sub rdx, rbx\n1407fbac6  and rdx, 0FFFFFFFFFFFFFFE0h\n1407fbaca  cmp rdx, 1000h\n1407fbad1  jb loc_1407FBAE8\n1407fbad3  mov rbx, [rbx-8]\n1407fbad7  add rdx, 27h\n1407fbadb  sub rax, rbx\n1407fbade  add rax, 0FFFFFFFFFFFFFFF8h\n1407fbae2  cmp rax, 1Fh\n1407fbae6  ja loc_1407FBB12\n1407fbae8  mov rcx, rbx\n1407fbaeb  call j_j_free\n1407fbaf0  mov rdi, [rsp+28h+arg_8]\n1407fbaf5  xorps xmm0, xmm0\n1407fbaf8  mov cs:qword_140B3B368, rsi\n1407fbaff  mov rsi, [rsp+28h+arg_0]\n1407fbb04  movdqu cs:xmmword_140B3B370, xmm0\n1407fbb0c  add rsp, 20h\n1407fbb10  pop rbx\n1407fbb11  retn\n1407fbb12  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FBA30()\n{\n  char *v0; // rbx\n  char *v1; // rdi\n  unsigned __int64 v2; // rdx\n  _QWORD *v3; // rcx\n  char *v4; // rax\n\n  v0 = (char *)qword_140B3B368; /*0x1407fba36*/\n  if ( qword_140B3B368 ) /*0x1407fba40*/\n  {\n    v1 = (char *)xmmword_140B3B370; /*0x1407fba52*/\n    if ( qword_140B3B368 != (void *)xmmword_140B3B370 ) /*0x1407fba5c*/\n    {\n      do /*0x1407fbab0*/\n      {\n        v2 = *((_QWORD *)v0 + 3); /*0x1407fba60*/\n        if ( v2 >= 0x10 ) /*0x1407fba68*/\n        {\n          v3 = *(_QWORD **)v0; /*0x1407fba6a*/\n          if ( v2 + 1 >= 0x1000 ) /*0x1407fba77*/\n          {\n            if ( (unsigned __int64)v3 - *(v3 - 1) - 8 > 0x1F ) /*0x1407fba8c*/\n              goto LABEL_14; /*0x1407fba8c*/\n            v3 = (_QWORD *)*(v3 - 1); /*0x1407fba92*/\n          }\n          j_j_free(v3); /*0x1407fba95*/\n        }\n        *((_QWORD *)v0 + 2) = 0; /*0x1407fba9a*/\n        *((_QWORD *)v0 + 3) = 15; /*0x1407fba9e*/\n        *v0 = 0; /*0x1407fbaa6*/\n        v0 += 32; /*0x1407fbaa9*/\n      }\n      while ( v0 != v1 ); /*0x1407fbab0*/\n      v0 = (char *)qword_140B3B368; /*0x1407fbab2*/\n    }\n    v4 = v0; /*0x1407fbac0*/\n    if ( ((*((_QWORD *)&xmmword_140B3B370 + 1) - (_QWORD)v0) & 0xFFFFFFFFFFFFFFE0uLL) >= 0x1000 ) /*0x1407fbad1*/\n    {\n      v0 = *((char **)v0 - 1); /*0x1407fbad3*/\n      if ( (unsigned __int64)(v4 - v0 - 8) > 0x1F ) /*0x1407fbae6*/\nLABEL_14:\n        invalid_parameter_noinfo_noreturn(); /*0x1407fbb12*/\n    }\n    j_j_free(v0); /*0x1407fbaeb*/\n    qword_140B3B368 = nullptr; /*0x1407fbaf8*/\n    xmmword_140B3B370 = 0; /*0x1407fbb04*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x140735dba",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f88",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f98",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2fb0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2e18",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fba32",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbb20",
+      "name": "sub_1407FBB20",
+      "prototype": "void __cdecl()",
+      "size": "0xe8",
+      "comments": {
+        "0x1407fbb82": {
+          "regular": "Block"
+        },
+        "0x1407fbbd8": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBB20 (.text @ 0x1407fbb20):\n1407fbb20  push rbx\n1407fbb22  sub rsp, 20h\n1407fbb26  mov rbx, cs:qword_140B3B308\n1407fbb2d  test rbx, rbx\n1407fbb30  jz loc_1407FBBFC\n1407fbb36  mov [rsp+28h+arg_0], rsi\n1407fbb3b  xor esi, esi\n1407fbb3d  mov [rsp+28h+arg_8], rdi\n1407fbb42  mov rdi, qword ptr cs:xmmword_140B3B310\n1407fbb49  cmp rbx, rdi\n1407fbb4c  jz loc_1407FBBA9\n1407fbb4e  xchg ax, ax\n1407fbb50  mov rdx, [rbx+18h]\n1407fbb54  cmp rdx, 10h\n1407fbb58  jb loc_1407FBB8A\n1407fbb5a  mov rcx, [rbx]\n1407fbb5d  inc rdx\n1407fbb60  cmp rdx, 1000h\n1407fbb67  jb loc_1407FBB85\n1407fbb69  mov r8, [rcx-8]\n1407fbb6d  add rdx, 27h\n1407fbb71  sub rcx, r8\n1407fbb74  lea rax, [rcx-8]\n1407fbb78  cmp rax, 1Fh\n1407fbb7c  ja loc_1407FBC02\n1407fbb82  mov rcx, r8\n1407fbb85  call j_j_free\n1407fbb8a  mov [rbx+10h], rsi\n1407fbb8e  mov qword ptr [rbx+18h], 0Fh\n1407fbb96  mov [rbx], sil\n1407fbb99  add rbx, 20h\n1407fbb9d  cmp rbx, rdi\n1407fbba0  jnz loc_1407FBB50\n1407fbba2  mov rbx, cs:qword_140B3B308\n1407fbba9  mov rdx, qword ptr cs:xmmword_140B3B310+8\n1407fbbb0  mov rax, rbx\n1407fbbb3  sub rdx, rbx\n1407fbbb6  and rdx, 0FFFFFFFFFFFFFFE0h\n1407fbbba  cmp rdx, 1000h\n1407fbbc1  jb loc_1407FBBD8\n1407fbbc3  mov rbx, [rbx-8]\n1407fbbc7  add rdx, 27h\n1407fbbcb  sub rax, rbx\n1407fbbce  add rax, 0FFFFFFFFFFFFFFF8h\n1407fbbd2  cmp rax, 1Fh\n1407fbbd6  ja loc_1407FBC02\n1407fbbd8  mov rcx, rbx\n1407fbbdb  call j_j_free\n1407fbbe0  mov rdi, [rsp+28h+arg_8]\n1407fbbe5  xorps xmm0, xmm0\n1407fbbe8  mov cs:qword_140B3B308, rsi\n1407fbbef  mov rsi, [rsp+28h+arg_0]\n1407fbbf4  movdqu cs:xmmword_140B3B310, xmm0\n1407fbbfc  add rsp, 20h\n1407fbc00  pop rbx\n1407fbc01  retn\n1407fbc02  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FBB20()\n{\n  char *v0; // rbx\n  char *v1; // rdi\n  unsigned __int64 v2; // rdx\n  _QWORD *v3; // rcx\n  char *v4; // rax\n\n  v0 = (char *)qword_140B3B308; /*0x1407fbb26*/\n  if ( qword_140B3B308 ) /*0x1407fbb30*/\n  {\n    v1 = (char *)xmmword_140B3B310; /*0x1407fbb42*/\n    if ( qword_140B3B308 != (void *)xmmword_140B3B310 ) /*0x1407fbb4c*/\n    {\n      do /*0x1407fbba0*/\n      {\n        v2 = *((_QWORD *)v0 + 3); /*0x1407fbb50*/\n        if ( v2 >= 0x10 ) /*0x1407fbb58*/\n        {\n          v3 = *(_QWORD **)v0; /*0x1407fbb5a*/\n          if ( v2 + 1 >= 0x1000 ) /*0x1407fbb67*/\n          {\n            if ( (unsigned __int64)v3 - *(v3 - 1) - 8 > 0x1F ) /*0x1407fbb7c*/\n              goto LABEL_14; /*0x1407fbb7c*/\n            v3 = (_QWORD *)*(v3 - 1); /*0x1407fbb82*/\n          }\n          j_j_free(v3); /*0x1407fbb85*/\n        }\n        *((_QWORD *)v0 + 2) = 0; /*0x1407fbb8a*/\n        *((_QWORD *)v0 + 3) = 15; /*0x1407fbb8e*/\n        *v0 = 0; /*0x1407fbb96*/\n        v0 += 32; /*0x1407fbb99*/\n      }\n      while ( v0 != v1 ); /*0x1407fbba0*/\n      v0 = (char *)qword_140B3B308; /*0x1407fbba2*/\n    }\n    v4 = v0; /*0x1407fbbb0*/\n    if ( ((*((_QWORD *)&xmmword_140B3B310 + 1) - (_QWORD)v0) & 0xFFFFFFFFFFFFFFE0uLL) >= 0x1000 ) /*0x1407fbbc1*/\n    {\n      v0 = *((char **)v0 - 1); /*0x1407fbbc3*/\n      if ( (unsigned __int64)(v4 - v0 - 8) > 0x1F ) /*0x1407fbbd6*/\nLABEL_14:\n        invalid_parameter_noinfo_noreturn(); /*0x1407fbc02*/\n    }\n    j_j_free(v0); /*0x1407fbbdb*/\n    qword_140B3B308 = nullptr; /*0x1407fbbe8*/\n    xmmword_140B3B310 = 0; /*0x1407fbbf4*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407362ef",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f08",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f18",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f30",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2e48",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbb22",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbc10",
+      "name": "sub_1407FBC10",
+      "prototype": "void __cdecl()",
+      "size": "0xe8",
+      "comments": {
+        "0x1407fbc72": {
+          "regular": "Block"
+        },
+        "0x1407fbcc8": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBC10 (.text @ 0x1407fbc10):\n1407fbc10  push rbx\n1407fbc12  sub rsp, 20h\n1407fbc16  mov rbx, cs:qword_140B3B348\n1407fbc1d  test rbx, rbx\n1407fbc20  jz loc_1407FBCEC\n1407fbc26  mov [rsp+28h+arg_0], rsi\n1407fbc2b  xor esi, esi\n1407fbc2d  mov [rsp+28h+arg_8], rdi\n1407fbc32  mov rdi, qword ptr cs:xmmword_140B3B350\n1407fbc39  cmp rbx, rdi\n1407fbc3c  jz loc_1407FBC99\n1407fbc3e  xchg ax, ax\n1407fbc40  mov rdx, [rbx+18h]\n1407fbc44  cmp rdx, 10h\n1407fbc48  jb loc_1407FBC7A\n1407fbc4a  mov rcx, [rbx]\n1407fbc4d  inc rdx\n1407fbc50  cmp rdx, 1000h\n1407fbc57  jb loc_1407FBC75\n1407fbc59  mov r8, [rcx-8]\n1407fbc5d  add rdx, 27h\n1407fbc61  sub rcx, r8\n1407fbc64  lea rax, [rcx-8]\n1407fbc68  cmp rax, 1Fh\n1407fbc6c  ja loc_1407FBCF2\n1407fbc72  mov rcx, r8\n1407fbc75  call j_j_free\n1407fbc7a  mov [rbx+10h], rsi\n1407fbc7e  mov qword ptr [rbx+18h], 0Fh\n1407fbc86  mov [rbx], sil\n1407fbc89  add rbx, 20h\n1407fbc8d  cmp rbx, rdi\n1407fbc90  jnz loc_1407FBC40\n1407fbc92  mov rbx, cs:qword_140B3B348\n1407fbc99  mov rdx, qword ptr cs:xmmword_140B3B350+8\n1407fbca0  mov rax, rbx\n1407fbca3  sub rdx, rbx\n1407fbca6  and rdx, 0FFFFFFFFFFFFFFE0h\n1407fbcaa  cmp rdx, 1000h\n1407fbcb1  jb loc_1407FBCC8\n1407fbcb3  mov rbx, [rbx-8]\n1407fbcb7  add rdx, 27h\n1407fbcbb  sub rax, rbx\n1407fbcbe  add rax, 0FFFFFFFFFFFFFFF8h\n1407fbcc2  cmp rax, 1Fh\n1407fbcc6  ja loc_1407FBCF2\n1407fbcc8  mov rcx, rbx\n1407fbccb  call j_j_free\n1407fbcd0  mov rdi, [rsp+28h+arg_8]\n1407fbcd5  xorps xmm0, xmm0\n1407fbcd8  mov cs:qword_140B3B348, rsi\n1407fbcdf  mov rsi, [rsp+28h+arg_0]\n1407fbce4  movdqu cs:xmmword_140B3B350, xmm0\n1407fbcec  add rsp, 20h\n1407fbcf0  pop rbx\n1407fbcf1  retn\n1407fbcf2  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FBC10()\n{\n  char *v0; // rbx\n  char *v1; // rdi\n  unsigned __int64 v2; // rdx\n  _QWORD *v3; // rcx\n  char *v4; // rax\n\n  v0 = (char *)qword_140B3B348; /*0x1407fbc16*/\n  if ( qword_140B3B348 ) /*0x1407fbc20*/\n  {\n    v1 = (char *)xmmword_140B3B350; /*0x1407fbc32*/\n    if ( qword_140B3B348 != (void *)xmmword_140B3B350 ) /*0x1407fbc3c*/\n    {\n      do /*0x1407fbc90*/\n      {\n        v2 = *((_QWORD *)v0 + 3); /*0x1407fbc40*/\n        if ( v2 >= 0x10 ) /*0x1407fbc48*/\n        {\n          v3 = *(_QWORD **)v0; /*0x1407fbc4a*/\n          if ( v2 + 1 >= 0x1000 ) /*0x1407fbc57*/\n          {\n            if ( (unsigned __int64)v3 - *(v3 - 1) - 8 > 0x1F ) /*0x1407fbc6c*/\n              goto LABEL_14; /*0x1407fbc6c*/\n            v3 = (_QWORD *)*(v3 - 1); /*0x1407fbc72*/\n          }\n          j_j_free(v3); /*0x1407fbc75*/\n        }\n        *((_QWORD *)v0 + 2) = 0; /*0x1407fbc7a*/\n        *((_QWORD *)v0 + 3) = 15; /*0x1407fbc7e*/\n        *v0 = 0; /*0x1407fbc86*/\n        v0 += 32; /*0x1407fbc89*/\n      }\n      while ( v0 != v1 ); /*0x1407fbc90*/\n      v0 = (char *)qword_140B3B348; /*0x1407fbc92*/\n    }\n    v4 = v0; /*0x1407fbca0*/\n    if ( ((*((_QWORD *)&xmmword_140B3B350 + 1) - (_QWORD)v0) & 0xFFFFFFFFFFFFFFE0uLL) >= 0x1000 ) /*0x1407fbcb1*/\n    {\n      v0 = *((char **)v0 - 1); /*0x1407fbcb3*/\n      if ( (unsigned __int64)(v4 - v0 - 8) > 0x1F ) /*0x1407fbcc6*/\nLABEL_14:\n        invalid_parameter_noinfo_noreturn(); /*0x1407fbcf2*/\n    }\n    j_j_free(v0); /*0x1407fbccb*/\n    qword_140B3B348 = nullptr; /*0x1407fbcd8*/\n    xmmword_140B3B350 = 0; /*0x1407fbce4*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407366d7",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f48",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f58",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c2f70",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2e78",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbc12",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbd00",
+      "name": "sub_1407FBD00",
+      "prototype": "void __cdecl()",
+      "size": "0x65",
+      "comments": {
+        "0x1407fbd2a": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBD00 (.text @ 0x1407fbd00):\n1407fbd00  sub rsp, 28h\n1407fbd04  mov rcx, cs:qword_140B3B388\n1407fbd0b  test rcx, rcx\n1407fbd0e  jz loc_1407FBD5A\n1407fbd10  mov rdx, qword ptr cs:xmmword_140B3B390+8\n1407fbd17  mov rax, rcx\n1407fbd1a  sub rdx, rcx\n1407fbd1d  and rdx, 0FFFFFFFFFFFFFFF8h\n1407fbd21  cmp rdx, 1000h\n1407fbd28  jb loc_1407FBD3F\n1407fbd2a  mov rcx, [rcx-8]\n1407fbd2e  add rdx, 27h\n1407fbd32  sub rax, rcx\n1407fbd35  add rax, 0FFFFFFFFFFFFFFF8h\n1407fbd39  cmp rax, 1Fh\n1407fbd3d  ja loc_1407FBD5F\n1407fbd3f  call j_j_free\n1407fbd44  xorps xmm0, xmm0\n1407fbd47  mov cs:qword_140B3B388, 0\n1407fbd52  movdqu cs:xmmword_140B3B390, xmm0\n1407fbd5a  add rsp, 28h\n1407fbd5e  retn\n1407fbd5f  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FBD00()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3B388; /*0x1407fbd04*/\n  if ( qword_140B3B388 ) /*0x1407fbd0e*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3B390 + 1) - qword_140B3B388) & 0xFFFFFFFFFFFFFFF8uLL) >= 0x1000 ) /*0x1407fbd28*/\n    {\n      v0 = *(void **)(qword_140B3B388 - 8); /*0x1407fbd2a*/\n      if ( (unsigned __int64)(qword_140B3B388 - (_QWORD)v0 - 8) > 0x1F ) /*0x1407fbd3d*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fbd5f*/\n    }\n    j_j_free(v0); /*0x1407fbd3f*/\n    qword_140B3B388 = 0; /*0x1407fbd47*/\n    xmmword_140B3B390 = 0; /*0x1407fbd52*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x140735df0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2ea8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbd04",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbd70",
+      "name": "sub_1407FBD70",
+      "prototype": "void __cdecl()",
+      "size": "0x38",
+      "comments": {
+        "0x1407fbd8f": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBD70 (.text @ 0x1407fbd70):\n1407fbd70  push rbx\n1407fbd72  sub rsp, 20h\n1407fbd76  mov rbx, cs:qword_140B09E08\n1407fbd7d  test rbx, rbx\n1407fbd80  jz loc_1407FBD97\n1407fbd82  mov rcx, rbx\n1407fbd85  call sub_14007B260\n1407fbd8a  mov edx, 40h\n1407fbd8f  mov rcx, rbx\n1407fbd92  call j_j_free\n1407fbd97  mov cs:qword_140B09E08, 0\n1407fbda2  add rsp, 20h\n1407fbda6  pop rbx\n1407fbda7  retn",
+      "code": "void __fastcall sub_1407FBD70()\n{\n  void *v0; // rbx\n\n  v0 = qword_140B09E08; /*0x1407fbd76*/\n  if ( qword_140B09E08 ) /*0x1407fbd80*/\n  {\n    sub_14007B260((__int64)qword_140B09E08); /*0x1407fbd85*/\n    j_j_free(v0); /*0x1407fbd92*/\n  }\n  qword_140B09E08 = nullptr; /*0x1407fbd97*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d346",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2eb4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbd72",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbdb0",
+      "name": "sub_1407FBDB0",
+      "prototype": "void __cdecl()",
+      "size": "0x38",
+      "comments": {
+        "0x1407fbdcf": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBDB0 (.text @ 0x1407fbdb0):\n1407fbdb0  push rbx\n1407fbdb2  sub rsp, 20h\n1407fbdb6  mov rbx, cs:qword_140B09E08\n1407fbdbd  test rbx, rbx\n1407fbdc0  jz loc_1407FBDD7\n1407fbdc2  mov rcx, rbx\n1407fbdc5  call sub_14007B260\n1407fbdca  mov edx, 40h\n1407fbdcf  mov rcx, rbx\n1407fbdd2  call j_j_free\n1407fbdd7  mov cs:qword_140B09E08, 0\n1407fbde2  add rsp, 20h\n1407fbde6  pop rbx\n1407fbde7  retn",
+      "code": "void __fastcall sub_1407FBDB0()\n{\n  void *v0; // rbx\n\n  v0 = qword_140B09E08; /*0x1407fbdb6*/\n  if ( qword_140B09E08 ) /*0x1407fbdc0*/\n  {\n    sub_14007B260((__int64)qword_140B09E08); /*0x1407fbdc5*/\n    j_j_free(v0); /*0x1407fbdd2*/\n  }\n  qword_140B09E08 = nullptr; /*0x1407fbdd7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d416",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2ec0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbdb2",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbdf0",
+      "name": "sub_1407FBDF0",
+      "prototype": "void __cdecl()",
+      "size": "0x38",
+      "comments": {
+        "0x1407fbe0f": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBDF0 (.text @ 0x1407fbdf0):\n1407fbdf0  push rbx\n1407fbdf2  sub rsp, 20h\n1407fbdf6  mov rbx, cs:qword_140B09E08\n1407fbdfd  test rbx, rbx\n1407fbe00  jz loc_1407FBE17\n1407fbe02  mov rcx, rbx\n1407fbe05  call sub_14007B260\n1407fbe0a  mov edx, 40h\n1407fbe0f  mov rcx, rbx\n1407fbe12  call j_j_free\n1407fbe17  mov cs:qword_140B09E08, 0\n1407fbe22  add rsp, 20h\n1407fbe26  pop rbx\n1407fbe27  retn",
+      "code": "void __fastcall sub_1407FBDF0()\n{\n  void *v0; // rbx\n\n  v0 = qword_140B09E08; /*0x1407fbdf6*/\n  if ( qword_140B09E08 ) /*0x1407fbe00*/\n  {\n    sub_14007B260((__int64)qword_140B09E08); /*0x1407fbe05*/\n    j_j_free(v0); /*0x1407fbe12*/\n  }\n  qword_140B09E08 = nullptr; /*0x1407fbe17*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d4e6",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2ecc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbdf2",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbe30",
+      "name": "sub_1407FBE30",
+      "prototype": "void __cdecl()",
+      "size": "0x38",
+      "comments": {
+        "0x1407fbe4f": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBE30 (.text @ 0x1407fbe30):\n1407fbe30  push rbx\n1407fbe32  sub rsp, 20h\n1407fbe36  mov rbx, cs:qword_140B09E08\n1407fbe3d  test rbx, rbx\n1407fbe40  jz loc_1407FBE57\n1407fbe42  mov rcx, rbx\n1407fbe45  call sub_14007B260\n1407fbe4a  mov edx, 40h\n1407fbe4f  mov rcx, rbx\n1407fbe52  call j_j_free\n1407fbe57  mov cs:qword_140B09E08, 0\n1407fbe62  add rsp, 20h\n1407fbe66  pop rbx\n1407fbe67  retn",
+      "code": "void __fastcall sub_1407FBE30()\n{\n  void *v0; // rbx\n\n  v0 = qword_140B09E08; /*0x1407fbe36*/\n  if ( qword_140B09E08 ) /*0x1407fbe40*/\n  {\n    sub_14007B260((__int64)qword_140B09E08); /*0x1407fbe45*/\n    j_j_free(v0); /*0x1407fbe52*/\n  }\n  qword_140B09E08 = nullptr; /*0x1407fbe57*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d5b6",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2ed8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbe32",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbe70",
+      "name": "sub_1407FBE70",
+      "prototype": "void __cdecl()",
+      "size": "0x38",
+      "comments": {
+        "0x1407fbe8f": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBE70 (.text @ 0x1407fbe70):\n1407fbe70  push rbx\n1407fbe72  sub rsp, 20h\n1407fbe76  mov rbx, cs:qword_140B09E08\n1407fbe7d  test rbx, rbx\n1407fbe80  jz loc_1407FBE97\n1407fbe82  mov rcx, rbx\n1407fbe85  call sub_14007B260\n1407fbe8a  mov edx, 40h\n1407fbe8f  mov rcx, rbx\n1407fbe92  call j_j_free\n1407fbe97  mov cs:qword_140B09E08, 0\n1407fbea2  add rsp, 20h\n1407fbea6  pop rbx\n1407fbea7  retn",
+      "code": "void __fastcall sub_1407FBE70()\n{\n  void *v0; // rbx\n\n  v0 = qword_140B09E08; /*0x1407fbe76*/\n  if ( qword_140B09E08 ) /*0x1407fbe80*/\n  {\n    sub_14007B260((__int64)qword_140B09E08); /*0x1407fbe85*/\n    j_j_free(v0); /*0x1407fbe92*/\n  }\n  qword_140B09E08 = nullptr; /*0x1407fbe97*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d686",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2ee4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbe72",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbeb0",
+      "name": "sub_1407FBEB0",
+      "prototype": "void __cdecl()",
+      "size": "0x38",
+      "comments": {
+        "0x1407fbecf": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBEB0 (.text @ 0x1407fbeb0):\n1407fbeb0  push rbx\n1407fbeb2  sub rsp, 20h\n1407fbeb6  mov rbx, cs:qword_140B09E08\n1407fbebd  test rbx, rbx\n1407fbec0  jz loc_1407FBED7\n1407fbec2  mov rcx, rbx\n1407fbec5  call sub_14007B260\n1407fbeca  mov edx, 40h\n1407fbecf  mov rcx, rbx\n1407fbed2  call j_j_free\n1407fbed7  mov cs:qword_140B09E08, 0\n1407fbee2  add rsp, 20h\n1407fbee6  pop rbx\n1407fbee7  retn",
+      "code": "void __fastcall sub_1407FBEB0()\n{\n  void *v0; // rbx\n\n  v0 = qword_140B09E08; /*0x1407fbeb6*/\n  if ( qword_140B09E08 ) /*0x1407fbec0*/\n  {\n    sub_14007B260((__int64)qword_140B09E08); /*0x1407fbec5*/\n    j_j_free(v0); /*0x1407fbed2*/\n  }\n  qword_140B09E08 = nullptr; /*0x1407fbed7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d756",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2ef0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbeb2",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbef0",
+      "name": "sub_1407FBEF0",
+      "prototype": "void __cdecl()",
+      "size": "0xe8",
+      "comments": {
+        "0x1407fbf52": {
+          "regular": "Block"
+        },
+        "0x1407fbfa8": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBEF0 (.text @ 0x1407fbef0):\n1407fbef0  push rbx\n1407fbef2  sub rsp, 20h\n1407fbef6  mov rbx, cs:qword_140B3B430\n1407fbefd  test rbx, rbx\n1407fbf00  jz loc_1407FBFCC\n1407fbf06  mov [rsp+28h+arg_0], rsi\n1407fbf0b  xor esi, esi\n1407fbf0d  mov [rsp+28h+arg_8], rdi\n1407fbf12  mov rdi, qword ptr cs:xmmword_140B3B438\n1407fbf19  cmp rbx, rdi\n1407fbf1c  jz loc_1407FBF79\n1407fbf1e  xchg ax, ax\n1407fbf20  mov rdx, [rbx+18h]\n1407fbf24  cmp rdx, 10h\n1407fbf28  jb loc_1407FBF5A\n1407fbf2a  mov rcx, [rbx]\n1407fbf2d  inc rdx\n1407fbf30  cmp rdx, 1000h\n1407fbf37  jb loc_1407FBF55\n1407fbf39  mov r8, [rcx-8]\n1407fbf3d  add rdx, 27h\n1407fbf41  sub rcx, r8\n1407fbf44  lea rax, [rcx-8]\n1407fbf48  cmp rax, 1Fh\n1407fbf4c  ja loc_1407FBFD2\n1407fbf52  mov rcx, r8\n1407fbf55  call j_j_free\n1407fbf5a  mov [rbx+10h], rsi\n1407fbf5e  mov qword ptr [rbx+18h], 0Fh\n1407fbf66  mov [rbx], sil\n1407fbf69  add rbx, 20h\n1407fbf6d  cmp rbx, rdi\n1407fbf70  jnz loc_1407FBF20\n1407fbf72  mov rbx, cs:qword_140B3B430\n1407fbf79  mov rdx, qword ptr cs:xmmword_140B3B438+8\n1407fbf80  mov rax, rbx\n1407fbf83  sub rdx, rbx\n1407fbf86  and rdx, 0FFFFFFFFFFFFFFE0h\n1407fbf8a  cmp rdx, 1000h\n1407fbf91  jb loc_1407FBFA8\n1407fbf93  mov rbx, [rbx-8]\n1407fbf97  add rdx, 27h\n1407fbf9b  sub rax, rbx\n1407fbf9e  add rax, 0FFFFFFFFFFFFFFF8h\n1407fbfa2  cmp rax, 1Fh\n1407fbfa6  ja loc_1407FBFD2\n1407fbfa8  mov rcx, rbx\n1407fbfab  call j_j_free\n1407fbfb0  mov rdi, [rsp+28h+arg_8]\n1407fbfb5  xorps xmm0, xmm0\n1407fbfb8  mov cs:qword_140B3B430, rsi\n1407fbfbf  mov rsi, [rsp+28h+arg_0]\n1407fbfc4  movdqu cs:xmmword_140B3B438, xmm0\n1407fbfcc  add rsp, 20h\n1407fbfd0  pop rbx\n1407fbfd1  retn\n1407fbfd2  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FBEF0()\n{\n  char *v0; // rbx\n  char *v1; // rdi\n  unsigned __int64 v2; // rdx\n  _QWORD *v3; // rcx\n  char *v4; // rax\n\n  v0 = (char *)qword_140B3B430; /*0x1407fbef6*/\n  if ( qword_140B3B430 ) /*0x1407fbf00*/\n  {\n    v1 = (char *)xmmword_140B3B438; /*0x1407fbf12*/\n    if ( qword_140B3B430 != (void *)xmmword_140B3B438 ) /*0x1407fbf1c*/\n    {\n      do /*0x1407fbf70*/\n      {\n        v2 = *((_QWORD *)v0 + 3); /*0x1407fbf20*/\n        if ( v2 >= 0x10 ) /*0x1407fbf28*/\n        {\n          v3 = *(_QWORD **)v0; /*0x1407fbf2a*/\n          if ( v2 + 1 >= 0x1000 ) /*0x1407fbf37*/\n          {\n            if ( (unsigned __int64)v3 - *(v3 - 1) - 8 > 0x1F ) /*0x1407fbf4c*/\n              goto LABEL_14; /*0x1407fbf4c*/\n            v3 = (_QWORD *)*(v3 - 1); /*0x1407fbf52*/\n          }\n          j_j_free(v3); /*0x1407fbf55*/\n        }\n        *((_QWORD *)v0 + 2) = 0; /*0x1407fbf5a*/\n        *((_QWORD *)v0 + 3) = 15; /*0x1407fbf5e*/\n        *v0 = 0; /*0x1407fbf66*/\n        v0 += 32; /*0x1407fbf69*/\n      }\n      while ( v0 != v1 ); /*0x1407fbf70*/\n      v0 = (char *)qword_140B3B430; /*0x1407fbf72*/\n    }\n    v4 = v0; /*0x1407fbf80*/\n    if ( ((*((_QWORD *)&xmmword_140B3B438 + 1) - (_QWORD)v0) & 0xFFFFFFFFFFFFFFE0uLL) >= 0x1000 ) /*0x1407fbf91*/\n    {\n      v0 = *((char **)v0 - 1); /*0x1407fbf93*/\n      if ( (unsigned __int64)(v4 - v0 - 8) > 0x1F ) /*0x1407fbfa6*/\nLABEL_14:\n        invalid_parameter_noinfo_noreturn(); /*0x1407fbfd2*/\n    }\n    j_j_free(v0); /*0x1407fbfab*/\n    qword_140B3B430 = nullptr; /*0x1407fbfb8*/\n    xmmword_140B3B438 = 0; /*0x1407fbfc4*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14073ec76",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c39d8",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c39e8",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c3a00",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2efc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbef2",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fbfe0",
+      "name": "sub_1407FBFE0",
+      "prototype": "void __cdecl()",
+      "size": "0xe8",
+      "comments": {
+        "0x1407fc042": {
+          "regular": "Block"
+        },
+        "0x1407fc098": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FBFE0 (.text @ 0x1407fbfe0):\n1407fbfe0  push rbx\n1407fbfe2  sub rsp, 20h\n1407fbfe6  mov rbx, cs:qword_140B3B450\n1407fbfed  test rbx, rbx\n1407fbff0  jz loc_1407FC0BC\n1407fbff6  mov [rsp+28h+arg_0], rsi\n1407fbffb  xor esi, esi\n1407fbffd  mov [rsp+28h+arg_8], rdi\n1407fc002  mov rdi, qword ptr cs:xmmword_140B3B458\n1407fc009  cmp rbx, rdi\n1407fc00c  jz loc_1407FC069\n1407fc00e  xchg ax, ax\n1407fc010  mov rdx, [rbx+18h]\n1407fc014  cmp rdx, 10h\n1407fc018  jb loc_1407FC04A\n1407fc01a  mov rcx, [rbx]\n1407fc01d  inc rdx\n1407fc020  cmp rdx, 1000h\n1407fc027  jb loc_1407FC045\n1407fc029  mov r8, [rcx-8]\n1407fc02d  add rdx, 27h\n1407fc031  sub rcx, r8\n1407fc034  lea rax, [rcx-8]\n1407fc038  cmp rax, 1Fh\n1407fc03c  ja loc_1407FC0C2\n1407fc042  mov rcx, r8\n1407fc045  call j_j_free\n1407fc04a  mov [rbx+10h], rsi\n1407fc04e  mov qword ptr [rbx+18h], 0Fh\n1407fc056  mov [rbx], sil\n1407fc059  add rbx, 20h\n1407fc05d  cmp rbx, rdi\n1407fc060  jnz loc_1407FC010\n1407fc062  mov rbx, cs:qword_140B3B450\n1407fc069  mov rdx, qword ptr cs:xmmword_140B3B458+8\n1407fc070  mov rax, rbx\n1407fc073  sub rdx, rbx\n1407fc076  and rdx, 0FFFFFFFFFFFFFFE0h\n1407fc07a  cmp rdx, 1000h\n1407fc081  jb loc_1407FC098\n1407fc083  mov rbx, [rbx-8]\n1407fc087  add rdx, 27h\n1407fc08b  sub rax, rbx\n1407fc08e  add rax, 0FFFFFFFFFFFFFFF8h\n1407fc092  cmp rax, 1Fh\n1407fc096  ja loc_1407FC0C2\n1407fc098  mov rcx, rbx\n1407fc09b  call j_j_free\n1407fc0a0  mov rdi, [rsp+28h+arg_8]\n1407fc0a5  xorps xmm0, xmm0\n1407fc0a8  mov cs:qword_140B3B450, rsi\n1407fc0af  mov rsi, [rsp+28h+arg_0]\n1407fc0b4  movdqu cs:xmmword_140B3B458, xmm0\n1407fc0bc  add rsp, 20h\n1407fc0c0  pop rbx\n1407fc0c1  retn\n1407fc0c2  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FBFE0()\n{\n  char *v0; // rbx\n  char *v1; // rdi\n  unsigned __int64 v2; // rdx\n  _QWORD *v3; // rcx\n  char *v4; // rax\n\n  v0 = (char *)qword_140B3B450; /*0x1407fbfe6*/\n  if ( qword_140B3B450 ) /*0x1407fbff0*/\n  {\n    v1 = (char *)xmmword_140B3B458; /*0x1407fc002*/\n    if ( qword_140B3B450 != (void *)xmmword_140B3B458 ) /*0x1407fc00c*/\n    {\n      do /*0x1407fc060*/\n      {\n        v2 = *((_QWORD *)v0 + 3); /*0x1407fc010*/\n        if ( v2 >= 0x10 ) /*0x1407fc018*/\n        {\n          v3 = *(_QWORD **)v0; /*0x1407fc01a*/\n          if ( v2 + 1 >= 0x1000 ) /*0x1407fc027*/\n          {\n            if ( (unsigned __int64)v3 - *(v3 - 1) - 8 > 0x1F ) /*0x1407fc03c*/\n              goto LABEL_14; /*0x1407fc03c*/\n            v3 = (_QWORD *)*(v3 - 1); /*0x1407fc042*/\n          }\n          j_j_free(v3); /*0x1407fc045*/\n        }\n        *((_QWORD *)v0 + 2) = 0; /*0x1407fc04a*/\n        *((_QWORD *)v0 + 3) = 15; /*0x1407fc04e*/\n        *v0 = 0; /*0x1407fc056*/\n        v0 += 32; /*0x1407fc059*/\n      }\n      while ( v0 != v1 ); /*0x1407fc060*/\n      v0 = (char *)qword_140B3B450; /*0x1407fc062*/\n    }\n    v4 = v0; /*0x1407fc070*/\n    if ( ((*((_QWORD *)&xmmword_140B3B458 + 1) - (_QWORD)v0) & 0xFFFFFFFFFFFFFFE0uLL) >= 0x1000 ) /*0x1407fc081*/\n    {\n      v0 = *((char **)v0 - 1); /*0x1407fc083*/\n      if ( (unsigned __int64)(v4 - v0 - 8) > 0x1F ) /*0x1407fc096*/\nLABEL_14:\n        invalid_parameter_noinfo_noreturn(); /*0x1407fc0c2*/\n    }\n    j_j_free(v0); /*0x1407fc09b*/\n    qword_140B3B450 = nullptr; /*0x1407fc0a8*/\n    xmmword_140B3B458 = 0; /*0x1407fc0b4*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14073eec7",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c3a18",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c3a28",
+            "type": "data"
+          },
+          {
+            "addr": "0x1409c3a40",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f2c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fbfe2",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc0c8",
+      "name": "sub_1407FC0C8",
+      "prototype": "void __cdecl()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_1407FC0C8 (.text @ 0x1407fc0c8):\n1407fc0c8  lea rcx, unk_140B3B470\n1407fc0cf  jmp unknown_libname_19",
+      "code": "void __fastcall sub_1407FC0C8()\n{\n  unknown_libname_19(); /*0x1407fc0cf*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d778",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f50",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc0cf",
+            "type": "code"
+          },
+          {
+            "addr": "0x140b3b470",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc0d4",
+      "name": "unknown_libname_90",
+      "prototype": null,
+      "size": "0x5b",
+      "comments": {
+        "0x1407fc115": {
+          "regular": "Block"
+        }
+      },
+      "asm": "unknown_libname_90 (.text @ 0x1407fc0d4):\n1407fc0d4  push rbx\n1407fc0d6  sub rsp, 20h\n1407fc0da  jmp loc_1407FC11D\n1407fc0dc  mov rax, [rbx]\n1407fc0df  mov rcx, [rbx+8]\n1407fc0e3  mov cs:qword_140B3B608, rax\n1407fc0ea  mov rax, [rcx]\n1407fc0ed  mov rax, [rax+10h]\n1407fc0f1  call cs:__guard_dispatch_icall_fptr\n1407fc0f7  mov rcx, rax\n1407fc0fa  test rax, rax\n1407fc0fd  jz loc_1407FC110\n1407fc0ff  mov rdx, [rax]\n1407fc102  mov rax, [rdx]\n1407fc105  mov edx, 1\n1407fc10a  call cs:__guard_dispatch_icall_fptr\n1407fc110  mov edx, 10h\n1407fc115  mov rcx, rbx\n1407fc118  call j_j_free\n1407fc11d  mov rbx, cs:qword_140B3B608\n1407fc124  test rbx, rbx\n1407fc127  jnz loc_1407FC0DC\n1407fc129  add rsp, 20h\n1407fc12d  pop rbx\n1407fc12e  retn",
+      "code": "// Microsoft VisualC v14 64bit runtime\nvoid unknown_libname_90()\n{\n  __int64 v0; // rcx\n  void (__fastcall ***v1)(_QWORD, __int64); // rax\n  void *v2; // rbx\n\n  while ( 1 ) /*0x1407fc11d*/\n  {\n    v2 = qword_140B3B608; /*0x1407fc11d*/\n    if ( !qword_140B3B608 ) /*0x1407fc127*/\n      break; /*0x1407fc127*/\n    v0 = *((_QWORD *)qword_140B3B608 + 1); /*0x1407fc0df*/\n    qword_140B3B608 = *(void **)qword_140B3B608; /*0x1407fc0e3*/\n    v1 = (void (__fastcall ***)(_QWORD, __int64))(*(__int64 (__fastcall **)(__int64))(*(_QWORD *)v0 + 16LL))(v0); /*0x1407fc0f1*/\n    if ( v1 ) /*0x1407fc0fd*/\n      (**v1)(v1, 1); /*0x1407fc10a*/\n    j_j_free(v2); /*0x1407fc118*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d794",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f5c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc0d6",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc130",
+      "name": "??__Fclassic_locale@std@@YAXXZ",
+      "prototype": "void __cdecl()",
+      "size": "0x3e",
+      "comments": {},
+      "asm": "??__Fclassic_locale@std@@YAXXZ (.text @ 0x1407fc130):\n1407fc130  sub rsp, 28h\n1407fc134  mov rcx, cs:qword_140B3B5F8\n1407fc13b  test rcx, rcx\n1407fc13e  jz loc_1407FC169\n1407fc140  mov rax, [rcx]\n1407fc143  mov rax, [rax+10h]\n1407fc147  call cs:__guard_dispatch_icall_fptr\n1407fc14d  mov r8, rax\n1407fc150  test rax, rax\n1407fc153  jz loc_1407FC169\n1407fc155  mov rcx, [rax]\n1407fc158  mov edx, 1\n1407fc15d  mov rax, [rcx]\n1407fc160  mov rcx, r8\n1407fc163  call cs:__guard_dispatch_icall_fptr\n1407fc169  add rsp, 28h\n1407fc16d  retn",
+      "code": "void __fastcall std::`dynamic atexit destructor for 'classic_locale''()\n{\n  void (__fastcall ***v0)(_QWORD, __int64); // rax\n\n  if ( qword_140B3B5F8 ) /*0x1407fc13e*/\n  {\n    v0 = (void (__fastcall ***)(_QWORD, __int64))(*(__int64 (__fastcall **)(__int64))(*(_QWORD *)qword_140B3B5F8 + 16LL))(qword_140B3B5F8); /*0x1407fc147*/\n    if ( v0 ) /*0x1407fc153*/\n      (**v0)(v0, 1); /*0x1407fc163*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d788",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f68",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc134",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc170",
+      "name": "unknown_libname_91",
+      "prototype": "void __cdecl()",
+      "size": "0x3e",
+      "comments": {
+        "0x1407fc17d": {
+          "regular": "Ptr"
+        }
+      },
+      "asm": "unknown_libname_91 (.text @ 0x1407fc170):\n1407fc170  sub rsp, 28h\n1407fc174  jmp loc_1407FC19C\n1407fc176  lea rcx, qword_140B3B6C0\n1407fc17d  mov rcx, [rcx+rax*8]\n1407fc181  inc rax\n1407fc184  mov cs:qword_140A44B50, rax\n1407fc18b  call cs:DecodePointer\n1407fc191  test rax, rax\n1407fc194  jz loc_1407FC19C\n1407fc196  call cs:__guard_dispatch_icall_fptr\n1407fc19c  mov rax, cs:qword_140A44B50\n1407fc1a3  cmp rax, 0Ah\n1407fc1a7  jb loc_1407FC176\n1407fc1a9  add rsp, 28h\n1407fc1ad  retn",
+      "code": "// Microsoft VisualC v14 64bit runtime\n// Hidden C++ exception states: #wind=1\nvoid __fastcall unknown_libname_91()\n{\n  void *v0; // rcx\n  void (*v1)(void); // rax\n\n  while ( (unsigned __int64)qword_140A44B50 < 0xA ) /*0x1407fc1a7*/\n  {\n    v0 = (void *)qword_140B3B6C0[qword_140A44B50++]; /*0x1407fc17d*/\n    v1 = (void (*)(void))DecodePointer(v0); /*0x1407fc18b*/\n    if ( v1 ) /*0x1407fc194*/\n      v1(); /*0x1407fc196*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d7c0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f74",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc174",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc1b0",
+      "name": "sub_1407FC1B0",
+      "prototype": "void __cdecl()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_1407FC1B0 (.text @ 0x1407fc1b0):\n1407fc1b0  lea rcx, unk_140B3B6B0\n1407fc1b7  jmp unknown_libname_19",
+      "code": "void __fastcall sub_1407FC1B0()\n{\n  unknown_libname_19(); /*0x1407fc1b7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d7b0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc1b7",
+            "type": "code"
+          },
+          {
+            "addr": "0x140b3b6b0",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc1c0",
+      "name": "sub_1407FC1C0",
+      "prototype": null,
+      "size": "0x65",
+      "comments": {
+        "0x1407fc1fc": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FC1C0 (.text @ 0x1407fc1c0):\n1407fc1c0  sub rsp, 28h\n1407fc1c4  mov rcx, cs:qword_140B3CC38\n1407fc1cb  test rcx, rcx\n1407fc1ce  jz loc_1407FC21A\n1407fc1d0  mov rdx, qword ptr cs:xmmword_140B3CC40+8\n1407fc1d7  sub rdx, rcx\n1407fc1da  and rdx, 0FFFFFFFFFFFFFFF8h\n1407fc1de  cmp rdx, 1000h\n1407fc1e5  jb loc_1407FC1FF\n1407fc1e7  mov r8, [rcx-8]\n1407fc1eb  add rdx, 27h\n1407fc1ef  sub rcx, r8\n1407fc1f2  lea rax, [rcx-8]\n1407fc1f6  cmp rax, 1Fh\n1407fc1fa  ja loc_1407FC21F\n1407fc1fc  mov rcx, r8\n1407fc1ff  call j_j_free\n1407fc204  xorps xmm0, xmm0\n1407fc207  mov cs:qword_140B3CC38, 0\n1407fc212  movdqu cs:xmmword_140B3CC40, xmm0\n1407fc21a  add rsp, 28h\n1407fc21e  retn\n1407fc21f  call _invalid_parameter_noinfo_noreturn",
+      "code": "void sub_1407FC1C0()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3CC38; /*0x1407fc1c4*/\n  if ( qword_140B3CC38 ) /*0x1407fc1ce*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3CC40 + 1) - qword_140B3CC38) & 0xFFFFFFFFFFFFFFF8uLL) >= 0x1000 ) /*0x1407fc1e5*/\n    {\n      if ( (unsigned __int64)(qword_140B3CC38 - *(_QWORD *)(qword_140B3CC38 - 8) - 8) > 0x1F ) /*0x1407fc1fa*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fc21f*/\n      v0 = *(void **)(qword_140B3CC38 - 8); /*0x1407fc1fc*/\n    }\n    j_j_free(v0); /*0x1407fc1ff*/\n    qword_140B3CC38 = 0; /*0x1407fc207*/\n    xmmword_140B3CC40 = 0; /*0x1407fc212*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d7d0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f80",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc1c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc230",
+      "name": "sub_1407FC230",
+      "prototype": null,
+      "size": "0x65",
+      "comments": {
+        "0x1407fc26c": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FC230 (.text @ 0x1407fc230):\n1407fc230  sub rsp, 28h\n1407fc234  mov rcx, cs:qword_140B3CC90\n1407fc23b  test rcx, rcx\n1407fc23e  jz loc_1407FC28A\n1407fc240  mov rdx, qword ptr cs:xmmword_140B3CC98+8\n1407fc247  sub rdx, rcx\n1407fc24a  and rdx, 0FFFFFFFFFFFFFFF8h\n1407fc24e  cmp rdx, 1000h\n1407fc255  jb loc_1407FC26F\n1407fc257  mov r8, [rcx-8]\n1407fc25b  add rdx, 27h\n1407fc25f  sub rcx, r8\n1407fc262  lea rax, [rcx-8]\n1407fc266  cmp rax, 1Fh\n1407fc26a  ja loc_1407FC28F\n1407fc26c  mov rcx, r8\n1407fc26f  call j_j_free\n1407fc274  xorps xmm0, xmm0\n1407fc277  mov cs:qword_140B3CC90, 0\n1407fc282  movdqu cs:xmmword_140B3CC98, xmm0\n1407fc28a  add rsp, 28h\n1407fc28e  retn\n1407fc28f  call _invalid_parameter_noinfo_noreturn",
+      "code": "void sub_1407FC230()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3CC90; /*0x1407fc234*/\n  if ( qword_140B3CC90 ) /*0x1407fc23e*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3CC98 + 1) - qword_140B3CC90) & 0xFFFFFFFFFFFFFFF8uLL) >= 0x1000 ) /*0x1407fc255*/\n    {\n      if ( (unsigned __int64)(qword_140B3CC90 - *(_QWORD *)(qword_140B3CC90 - 8) - 8) > 0x1F ) /*0x1407fc26a*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fc28f*/\n      v0 = *(void **)(qword_140B3CC90 - 8); /*0x1407fc26c*/\n    }\n    j_j_free(v0); /*0x1407fc26f*/\n    qword_140B3CC90 = 0; /*0x1407fc277*/\n    xmmword_140B3CC98 = 0; /*0x1407fc282*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d810",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f8c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc234",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc2a0",
+      "name": "sub_1407FC2A0",
+      "prototype": null,
+      "size": "0x65",
+      "comments": {
+        "0x1407fc2dc": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FC2A0 (.text @ 0x1407fc2a0):\n1407fc2a0  sub rsp, 28h\n1407fc2a4  mov rcx, cs:qword_140B3CCD0\n1407fc2ab  test rcx, rcx\n1407fc2ae  jz loc_1407FC2FA\n1407fc2b0  mov rdx, qword ptr cs:xmmword_140B3CCD8+8\n1407fc2b7  sub rdx, rcx\n1407fc2ba  and rdx, 0FFFFFFFFFFFFFFF8h\n1407fc2be  cmp rdx, 1000h\n1407fc2c5  jb loc_1407FC2DF\n1407fc2c7  mov r8, [rcx-8]\n1407fc2cb  add rdx, 27h\n1407fc2cf  sub rcx, r8\n1407fc2d2  lea rax, [rcx-8]\n1407fc2d6  cmp rax, 1Fh\n1407fc2da  ja loc_1407FC2FF\n1407fc2dc  mov rcx, r8\n1407fc2df  call j_j_free\n1407fc2e4  xorps xmm0, xmm0\n1407fc2e7  mov cs:qword_140B3CCD0, 0\n1407fc2f2  movdqu cs:xmmword_140B3CCD8, xmm0\n1407fc2fa  add rsp, 28h\n1407fc2fe  retn\n1407fc2ff  call _invalid_parameter_noinfo_noreturn",
+      "code": "void sub_1407FC2A0()\n{\n  void *v0; // rcx\n\n  v0 = (void *)qword_140B3CCD0; /*0x1407fc2a4*/\n  if ( qword_140B3CCD0 ) /*0x1407fc2ae*/\n  {\n    if ( ((*((_QWORD *)&xmmword_140B3CCD8 + 1) - qword_140B3CCD0) & 0xFFFFFFFFFFFFFFF8uLL) >= 0x1000 ) /*0x1407fc2c5*/\n    {\n      if ( (unsigned __int64)(qword_140B3CCD0 - *(_QWORD *)(qword_140B3CCD0 - 8) - 8) > 0x1F ) /*0x1407fc2da*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fc2ff*/\n      v0 = *(void **)(qword_140B3CCD0 - 8); /*0x1407fc2dc*/\n    }\n    j_j_free(v0); /*0x1407fc2df*/\n    qword_140B3CCD0 = 0; /*0x1407fc2e7*/\n    xmmword_140B3CCD8 = 0; /*0x1407fc2f2*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d840",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2f98",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc2a4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc310",
+      "name": "sub_1407FC310",
+      "prototype": null,
+      "size": "0x6c",
+      "comments": {
+        "0x1407fc314": {
+          "regular": "Block"
+        },
+        "0x1407fc340": {
+          "regular": "lpMem"
+        },
+        "0x1407fc347": {
+          "regular": "dwFlags"
+        },
+        "0x1407fc349": {
+          "regular": "hHeap"
+        }
+      },
+      "asm": "sub_1407FC310 (.text @ 0x1407fc310):\n1407fc310  sub rsp, 28h\n1407fc314  mov rcx, cs:qword_140A45CF0\n1407fc31b  lea rax, ??_7?$DynamicVectorClass@UAssertStruct@@@@6B@\n1407fc322  mov cs:off_140A45CE8, rax\n1407fc329  test rcx, rcx\n1407fc32c  jz loc_1407FC377\n1407fc32e  test cs:dword_140A45CFC, 80000000h\n1407fc338  jz loc_1407FC354\n1407fc33a  call cs:GetProcessHeap\n1407fc340  mov r8, cs:qword_140A45CF0\n1407fc347  xor edx, edx\n1407fc349  mov rcx, rax\n1407fc34c  call cs:HeapFree\n1407fc352  jmp loc_1407FC35E\n1407fc354  mov edx, 3\n1407fc359  call sub_140478B80\n1407fc35e  xor eax, eax\n1407fc360  and cs:dword_140A45CFC, 80000000h\n1407fc36a  mov cs:qword_140A45CF0, rax\n1407fc371  mov cs:dword_140A45CF8, eax\n1407fc377  add rsp, 28h\n1407fc37b  retn",
+      "code": "void **sub_1407FC310()\n{\n  void **result; // rax\n  HANDLE ProcessHeap; // rax\n\n  result = &DynamicVectorClass<AssertStruct>::`vftable'; /*0x1407fc31b*/\n  off_140A45CE8 = &DynamicVectorClass<AssertStruct>::`vftable'; /*0x1407fc322*/\n  if ( qword_140A45CF0 ) /*0x1407fc32c*/\n  {\n    if ( dword_140A45CFC >= 0 ) /*0x1407fc338*/\n    {\n      sub_140478B80(qword_140A45CF0, 3); /*0x1407fc359*/\n    }\n    else\n    {\n      ProcessHeap = GetProcessHeap(); /*0x1407fc33a*/\n      HeapFree(ProcessHeap, 0, qword_140A45CF0); /*0x1407fc34c*/\n    }\n    dword_140A45CFC &= 0x80000000; /*0x1407fc360*/\n    qword_140A45CF0 = nullptr; /*0x1407fc36a*/\n    dword_140A45CF8 = 0; /*0x1407fc371*/\n    return nullptr; /*0x1407fc35e*/\n  }\n  return result; /*0x1407fc377*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d850",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2fa4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc314",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc380",
+      "name": "sub_1407FC380",
+      "prototype": null,
+      "size": "0x6c",
+      "comments": {
+        "0x1407fc384": {
+          "regular": "Block"
+        },
+        "0x1407fc3b0": {
+          "regular": "lpMem"
+        },
+        "0x1407fc3b7": {
+          "regular": "dwFlags"
+        },
+        "0x1407fc3b9": {
+          "regular": "hHeap"
+        }
+      },
+      "asm": "sub_1407FC380 (.text @ 0x1407fc380):\n1407fc380  sub rsp, 28h\n1407fc384  mov rcx, cs:qword_140A45D08\n1407fc38b  lea rax, ??_7?$DynamicVectorClass@UAssertStruct@@@@6B@\n1407fc392  mov cs:off_140A45D00, rax\n1407fc399  test rcx, rcx\n1407fc39c  jz loc_1407FC3E7\n1407fc39e  test cs:dword_140A45D14, 80000000h\n1407fc3a8  jz loc_1407FC3C4\n1407fc3aa  call cs:GetProcessHeap\n1407fc3b0  mov r8, cs:qword_140A45D08\n1407fc3b7  xor edx, edx\n1407fc3b9  mov rcx, rax\n1407fc3bc  call cs:HeapFree\n1407fc3c2  jmp loc_1407FC3CE\n1407fc3c4  mov edx, 3\n1407fc3c9  call sub_140478B80\n1407fc3ce  xor eax, eax\n1407fc3d0  and cs:dword_140A45D14, 80000000h\n1407fc3da  mov cs:qword_140A45D08, rax\n1407fc3e1  mov cs:dword_140A45D10, eax\n1407fc3e7  add rsp, 28h\n1407fc3eb  retn",
+      "code": "void **sub_1407FC380()\n{\n  void **result; // rax\n  HANDLE ProcessHeap; // rax\n\n  result = &DynamicVectorClass<AssertStruct>::`vftable'; /*0x1407fc38b*/\n  off_140A45D00 = &DynamicVectorClass<AssertStruct>::`vftable'; /*0x1407fc392*/\n  if ( qword_140A45D08 ) /*0x1407fc39c*/\n  {\n    if ( dword_140A45D14 >= 0 ) /*0x1407fc3a8*/\n    {\n      sub_140478B80(qword_140A45D08, 3); /*0x1407fc3c9*/\n    }\n    else\n    {\n      ProcessHeap = GetProcessHeap(); /*0x1407fc3aa*/\n      HeapFree(ProcessHeap, 0, qword_140A45D08); /*0x1407fc3bc*/\n    }\n    dword_140A45D14 &= 0x80000000; /*0x1407fc3d0*/\n    qword_140A45D08 = nullptr; /*0x1407fc3da*/\n    dword_140A45D10 = 0; /*0x1407fc3e1*/\n    return nullptr; /*0x1407fc3ce*/\n  }\n  return result; /*0x1407fc3e7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d860",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2fb0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc384",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc3f0",
+      "name": "sub_1407FC3F0",
+      "prototype": "void __cdecl()",
+      "size": "0x38",
+      "comments": {
+        "0x1407fc40f": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FC3F0 (.text @ 0x1407fc3f0):\n1407fc3f0  push rbx\n1407fc3f2  sub rsp, 20h\n1407fc3f6  mov rbx, cs:qword_140B09E08\n1407fc3fd  test rbx, rbx\n1407fc400  jz loc_1407FC417\n1407fc402  mov rcx, rbx\n1407fc405  call sub_14007B260\n1407fc40a  mov edx, 40h\n1407fc40f  mov rcx, rbx\n1407fc412  call j_j_free\n1407fc417  mov cs:qword_140B09E08, 0\n1407fc422  add rsp, 20h\n1407fc426  pop rbx\n1407fc427  retn",
+      "code": "void __fastcall sub_1407FC3F0()\n{\n  void *v0; // rbx\n\n  v0 = qword_140B09E08; /*0x1407fc3f6*/\n  if ( qword_140B09E08 ) /*0x1407fc400*/\n  {\n    sub_14007B260((__int64)qword_140B09E08); /*0x1407fc405*/\n    j_j_free(v0); /*0x1407fc412*/\n  }\n  qword_140B09E08 = nullptr; /*0x1407fc417*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x14001d926",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2fbc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc3f2",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1407fc430",
+      "name": "sub_1407FC430",
+      "prototype": "void __cdecl()",
+      "size": "0x87",
+      "comments": {
+        "0x1407fc48e": {
+          "regular": "Block"
+        }
+      },
+      "asm": "sub_1407FC430 (.text @ 0x1407fc430):\n1407fc430  sub rsp, 28h\n1407fc434  mov r8, qword ptr cs:xmmword_140B44EA0\n1407fc43b  test r8, r8\n1407fc43e  jz loc_1407FC4AC\n1407fc440  mov rcx, cs:qword_140B44EB0\n1407fc447  mov rax, 2AAAAAAAAAAAAAABh\n1407fc451  sub rcx, r8\n1407fc454  imul , rcx\n1407fc457  sar rdx, 2\n1407fc45b  mov rax, rdx\n1407fc45e  shr rax, 3Fh\n1407fc462  add rdx, rax\n1407fc465  lea rdx, [rdx+rdx*2]\n1407fc469  shl rdx, 3\n1407fc46d  cmp rdx, 1000h\n1407fc474  jb loc_1407FC48E\n1407fc476  mov rcx, [r8-8]\n1407fc47a  add rdx, 27h\n1407fc47e  sub r8, rcx\n1407fc481  lea rax, [r8-8]\n1407fc485  cmp rax, 1Fh\n1407fc489  ja loc_1407FC4B1\n1407fc48b  mov r8, rcx\n1407fc48e  mov rcx, r8\n1407fc491  call j_j_free\n1407fc496  xorps xmm0, xmm0\n1407fc499  mov qword ptr cs:xmmword_140B44EA0, 0\n1407fc4a4  movdqu cs:xmmword_140B44EA0+8, xmm0\n1407fc4ac  add rsp, 28h\n1407fc4b0  retn\n1407fc4b1  call _invalid_parameter_noinfo_noreturn",
+      "code": "void __fastcall sub_1407FC430()\n{\n  void *v0; // r8\n\n  v0 = xmmword_140B44EA0; /*0x1407fc434*/\n  if ( xmmword_140B44EA0 ) /*0x1407fc43e*/\n  {\n    if ( (unsigned __int64)(24 * ((qword_140B44EB0 - (__int64)xmmword_140B44EA0) / 24)) >= 0x1000 ) /*0x1407fc474*/\n    {\n      if ( (unsigned __int64)xmmword_140B44EA0 - *((_QWORD *)xmmword_140B44EA0 - 1) - 8 > 0x1F ) /*0x1407fc489*/\n        invalid_parameter_noinfo_noreturn(); /*0x1407fc4b1*/\n      v0 = *((void **)xmmword_140B44EA0 - 1); /*0x1407fc48b*/\n    }\n    j_j_free(v0); /*0x1407fc491*/\n    xmmword_140B44EA0 = nullptr; /*0x1407fc499*/\n    *(_OWORD *)(&xmmword_140B44EA0 + 1) = 0; /*0x1407fc4a4*/\n  }\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407dfdfa",
+            "type": "data"
+          },
+          {
+            "addr": "0x140bb2fc8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1407fc434",
+            "type": "code"
+          }
+        ]
+      }
+    }
+  ]
+}

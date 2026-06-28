@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d0e8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BOOL __stdcall GetStringTypeW(DWORD dwInfoType,LPCWSTR lpSrcStr,int cchSrc,LPWORD lpCharType)\n\n{\n  BOOL BVar1;\n  \n                    /* WARNING: Could not recover jumptable at 0x00014079d0e8. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  BVar1 = GetStringTypeW(dwInfoType,lpSrcStr,cchSrc,lpCharType);\n  return BVar1;\n}",
+  "fetched_at": "2026-04-26T18:53:56Z"
+}

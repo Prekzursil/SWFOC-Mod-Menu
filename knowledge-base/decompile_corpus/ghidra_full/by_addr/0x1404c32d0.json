@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c32d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BehaviorClass * __thiscall BehaviorClass::BehaviorClass(BehaviorClass *this)\n\n{\n  *(undefined4 *)&this->field_0x34 = 1;\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->offset_0x10 = 0;\n  this->offset_0x18 = (undefined **)0x0;\n  *(undefined4 *)&this->field_0x30 = 0;\n  *(undefined4 *)&this->field_0x3c = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:11:25Z"
+}

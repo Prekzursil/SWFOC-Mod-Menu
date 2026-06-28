@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d6d4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d6d4        int32_t arg_8 = arg1\n14079d6dc        int64_t rdx = sx.q(arg1)\n14079d6e2        if (rdx.d != 0xfffffffe)\n14079d6fb        if (arg1 s>= 0 && rdx.d u< data_140b3c8d0 && (*((&data_140b3c4d0)[rdx s>> 6] + (zx.q(rdx.d) & 0x3f) * 0x48 + 0x38) & 1) != 0)\n14079d725        int32_t arg_18 = rdx.d\n14079d729        int32_t arg_20 = rdx.d\n14079d737        int32_t* var_18 = &arg_8\n14079d746        void arg_10\n14079d746        return __crt_seh_guarded_call<class <lambda_a37b2b86f63e897a80ea819b0eb08c01>,class <lambda_38ce7e780aa69e748d6df282ebc68efe>& __ptr64,class <lambda_99fb1378e971ab6e7edea83e3a7a83a2>,int32_t>::operator()<class <lambda_a37b2b86f63e897a80ea819b0eb08c01>,class <lambda_38ce7e780aa69e748d6df282ebc68efe>& __ptr64,class <lambda_99fb1378e971ab6e7edea83e3a7a83a2> >(&arg_10, &arg_20, &var_18, &arg_18)\n14079d752        *_errno() = 9\n14079d758        _invalid_parameter_noinfo()\n14079d6e9        *_errno() = 9\n14079d75d        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:32:14Z"
+}

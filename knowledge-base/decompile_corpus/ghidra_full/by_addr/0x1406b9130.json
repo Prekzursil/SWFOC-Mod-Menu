@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b9130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SignalListenerClass_data * __thiscall\nLandPerceptionSystemClass::vfunction9(LandPerceptionSystemClass *this)\n\n{\n  return &this->SignalListenerClass_data;\n}",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

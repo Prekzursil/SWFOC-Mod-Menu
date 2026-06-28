@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402023e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402023f2        uint16_t hostshort = arg1[1].w\n1402023f9        *arg2 = 2\n1402023fc        uint16_t rax = htons(hostshort)\n140202402        uint32_t hostlong = *arg1\n140202404        arg2[1] = rax\n140202413        *(arg2 + 4) = htonl(hostlong)\n14020241e        return arg2",
+  "fetched_at": "2026-04-26T17:27:44Z"
+}

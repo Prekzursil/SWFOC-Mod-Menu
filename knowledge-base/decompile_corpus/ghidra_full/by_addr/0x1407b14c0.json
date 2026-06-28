@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b14c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407b14c0(longlong param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  DWORD DVar5;\n  int iVar6;\n  longlong lVar7;\n  \n  DVar5 = GetCurrentThreadId();\n  if ((DVar5 != DAT_140a155d0) || (DAT_140a62740 == '\\0')) {\n    iVar6 = (int)(*(longlong *)(param_1 + 0x110) - *(longlong *)(param_1 + 0x108) >> 3);\n    if (0 < iVar6) {\n      lVar7 = 0;\n      do {\n        lVar1 = *(longlong *)(param_1 + 0x108);\n        plVar2 = *(longlong **)(lVar1 + lVar7 * 8);\n        if (plVar2 != (longlong *)0x0) {\n          (**(code **)(*plVar2 + 8))();\n          *(undefined8 *)(lVar1 + lVar7 * 8) = 0;\n        }\n        lVar7 = lVar7 + 1;\n      } while (lVar7 < iVar6);\n    }\n    plVar2 = *(longlong **)(param_1 + 0x110);\n    plVar3 = *(longlong **)(param_1 + 0x108);\n    plVar4 = plVar3;\n    if ((longlong)plVar2 - (longlong)plVar3 >> 3 != 0) {\n      for (; plVar4 != plVar2; plVar4 = plVar4 + 1) {\n        if ((longlong *)*plVar4 != (longlong *)0x0) {\n          (**(code **)(*(longlong *)*plVar4 + 8))();\n        }\n      }\n      *(longlong **)(param_1 + 0x110) = plVar3;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140267c90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140267ca6        if (arg1[2] == 0)\n140267ca6        return \n140267cbe        int64_t* rax_2\n140267cbe        int64_t rdx\n140267cbe        int64_t r8_1\n140267cbe        rax_2, rdx, r8_1 = (*(*arg1 + 0x78))()\n140267cc1        char rdi_1 = *(arg1 + 0x74)\n140267cd5        if (sub_140199c20(rax_2) != 0 && *(sub_140199c20(rax_2) + 0xb8) != 0)\n140267ce6        rdi_1 = 0\n140267ce9        *(rax_2 + 0x204) = rdi_1\n140267cf3        rax_2[0x3f].d = arg1[0xd].d\n140267cfc        *(rax_2 + 0x1fc) = *(arg1 + 0x6c)\n140267d05        rax_2[0x40].d = arg1[0xe].d\n140267d10        int32_t rax_8 = arg1[0xc].d\n140267d13        *(rax_2 + 0x1f4) = *(arg1 + 0x64)\n140267d1b        rax_2[0x3e].d = rax_8\n140267d29        int512_t entry_zmm3\n140267d29        sub_14013d820(*(arg1[2] + 0x40), rdx, r8_1, entry_zmm3)\n140267d3a        int32_t rbp_1\n140267d3a        rbp_1.b = arg2 == 1\n140267d42        uint64_t rdx_1 = zx.q(rbp_1 + 1)\n140267d45        if (arg2 == 2)\n140267d45        rdx_1 = 4\n140267d4b        (*(*rax_2 + 0xa0))(rax_2, rdx_1)\n140267d53        j_sub_140196a40(0)\n140267d72        return ",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

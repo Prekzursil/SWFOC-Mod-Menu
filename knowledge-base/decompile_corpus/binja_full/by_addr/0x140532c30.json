@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140532c43        *arg1 = &SpaceRetreatCoordinatorClass::`vftable'{for `RetreatCoordinatorClass'}\n140532c50        arg1[1] = &SpaceRetreatCoordinatorClass::`vftable'{for `RefCountClass'}\n140532c54        sub_14033fa20(arg1)\n140532c5c        if ((arg2 & 1) != 0)\n140532c66        j_sub_1407864b8(arg1)\n140532c78        return arg1",
+  "fetched_at": "2026-04-26T17:33:40Z"
+}

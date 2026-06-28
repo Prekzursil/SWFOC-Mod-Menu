@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ded0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTexture2D::vfunction4(alD3dTexture2D *this)\n\n{\n  DWORD DVar1;\n  \n  DVar1 = GetCurrentThreadId();\n  if (DVar1 != DAT_140a155d0) {\n    FUN_14013cb30(RefCountClass::vfunction4,this);\n    return;\n  }\n  if (this != (alD3dTexture2D *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x00014018defc. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*this->vftablePtr->deleting_destructor)(this,1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:05Z"
+}

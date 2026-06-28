@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e0560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1406e0560(longlong param_1,longlong param_2,double *param_3)\n\n{\n  float extraout_XMM0_Da;\n  ulonglong local_res8;\n  \n  if (*(longlong *)(param_1 + 0x98) != *(longlong *)(*(longlong *)(param_2 + 0x58) + 0x50)) {\n    return 0;\n  }\n  local_res8 = 0xffffffffffffffff;\n  FUN_1405f4780(param_2,DAT_140a43c60,&local_res8);\n  FUN_140612ee0(*(longlong *)(*(longlong *)(*(longlong *)(param_1 + 0xa0) + 0x28) + 0x40) + 400,\n                local_res8 & 0xffffffff);\n  *param_3 = (double)extraout_XMM0_Da;\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:45:09Z"
+}

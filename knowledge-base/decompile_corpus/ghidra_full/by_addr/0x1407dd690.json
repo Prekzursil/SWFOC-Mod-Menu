@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _FindPESection\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nPIMAGE_SECTION_HEADER __cdecl _FindPESection(PBYTE pImageBase,DWORD_PTR rva)\n\n{\n  int iVar1;\n  PIMAGE_SECTION_HEADER p_Var2;\n  uint uVar3;\n  \n  iVar1 = *(int *)(pImageBase + 0x3c);\n  uVar3 = 0;\n  p_Var2 = (PIMAGE_SECTION_HEADER)\n           (pImageBase +\n           (ulonglong)*(ushort *)(pImageBase + (longlong)iVar1 + 0x14) + 0x18 + (longlong)iVar1);\n  if (*(ushort *)(pImageBase + (longlong)iVar1 + 6) != 0) {\n    do {\n      if ((p_Var2->VirtualAddress <= rva) &&\n         (rva < (p_Var2->Misc).PhysicalAddress + p_Var2->VirtualAddress)) {\n        return p_Var2;\n      }\n      uVar3 = uVar3 + 1;\n      p_Var2 = p_Var2 + 1;\n    } while (uVar3 < *(ushort *)(pImageBase + (longlong)iVar1 + 6));\n  }\n  return (PIMAGE_SECTION_HEADER)0x0;\n}",
+  "fetched_at": "2026-04-26T18:59:02Z"
+}

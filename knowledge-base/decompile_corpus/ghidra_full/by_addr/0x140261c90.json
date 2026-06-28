@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261c90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140261c90(longlong param_1,float *param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  float fVar11;\n  float fVar12;\n  float *pfVar13;\n  \n  pfVar13 = *(float **)(param_1 + 0x40);\n  fVar1 = param_2[1];\n  fVar2 = pfVar13[1];\n  fVar3 = pfVar13[2];\n  fVar4 = *pfVar13;\n  fVar5 = pfVar13[4];\n  fVar6 = pfVar13[5];\n  fVar7 = pfVar13[6];\n  fVar8 = pfVar13[8];\n  fVar9 = pfVar13[9];\n  fVar10 = pfVar13[10];\n  fVar11 = *param_2;\n  fVar12 = param_2[2];\n  pfVar13[1] = fVar2;\n  *pfVar13 = fVar4;\n  pfVar13[2] = fVar3;\n  pfVar13[4] = fVar5;\n  pfVar13[5] = fVar6;\n  pfVar13[6] = fVar7;\n  pfVar13[3] = fVar4 * fVar11 + fVar2 * fVar1 + fVar12 * fVar3 + pfVar13[3];\n  pfVar13[8] = fVar8;\n  pfVar13[9] = fVar9;\n  pfVar13[10] = fVar10;\n  pfVar13[7] = fVar1 * fVar6 + fVar11 * fVar5 + fVar12 * fVar7 + pfVar13[7];\n  pfVar13[0xb] = fVar11 * fVar8 + fVar1 * fVar9 + fVar12 * fVar10 + pfVar13[0xb];\n  FUN_14022d390(pfVar13,pfVar13 + 0x21);\n  FUN_1401417c0(pfVar13);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:57Z"
+}

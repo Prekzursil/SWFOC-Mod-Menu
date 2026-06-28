@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065e4f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065e4f6        void* rcx = *(arg1 + 0x98)\n14065e503        if (rcx == 0)\n14065e505        int64_t rax\n14065e505        rax.b = 0\n14065e50c        return rax\n14065e526        uint64_t rax_2\n14065e526        rax_2.b = 1\n14065e528        *arg3 = float.d(zx.q(sub_140372780(*(rcx + 0x298), rcx)))\n14065e531        return rax_2",
+  "fetched_at": "2026-04-26T17:08:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003bc30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14003bc30(undefined8 param_1,longlong param_2,char param_3)\n\n{\n  char cVar1;\n  MoveToObjectEventClass *pMVar2;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  \n  if (param_2 != 0) {\n    FUN_140036140();\n    cVar1 = FUN_14003afe0(param_1);\n    if (cVar1 == '\\0') {\n      FUN_1402d5290(&DAT_140b27e60,DAT_140b301c8,0,0,0);\n    }\n    else {\n      pMVar2 = (MoveToObjectEventClass *)FUN_140769c58(0x250);\n      if (pMVar2 == (MoveToObjectEventClass *)0x0) {\n        pMVar2 = (MoveToObjectEventClass *)0x0;\n      }\n      else {\n        pMVar2 = MoveToObjectEventClass::MoveToObjectEventClass(pMVar2);\n      }\n      FUN_1403af190(pMVar2,*(undefined4 *)(param_2 + 0x50),0);\n      OutgoingEventQueueClass::vfunction2\n                ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pMVar2);\n      if (param_3 == '\\x01') {\n        local_18 = *(undefined4 *)(param_2 + 0x78);\n        local_14 = *(undefined4 *)(param_2 + 0x7c);\n        local_10 = *(undefined4 *)(param_2 + 0x80);\n        FUN_1400442f0(param_1,&local_18);\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:15Z"
+}

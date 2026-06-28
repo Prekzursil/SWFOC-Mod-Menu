@@ -1,0 +1,7 @@
+{
+  "addr": "0x140588670",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nRecentGoalLearningDiagnosticsNodeClass::vfunction5\n          (RecentGoalLearningDiagnosticsNodeClass *this,undefined8 *param_1)\n\n{\n  *param_1 = 0;\n  param_1[3] = 0xf;\n  param_1[2] = 0xc;\n  FUN_14076bd80(param_1,\"Recent goals\",0xc);\n  *(undefined1 *)((longlong)param_1 + 0xc) = 0;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:41:32Z"
+}

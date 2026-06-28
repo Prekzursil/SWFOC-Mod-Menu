@@ -1,0 +1,7 @@
+{
+  "addr": "0x140481940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048195b        int64_t rdx = arg1[7]\n140481963        if (rdx u< 0x10)\n140481963        goto label_140481992\n140481965        void* rcx_2 = arg1[4]\n140481973        if (rdx + 1 u< 0x1000)\n140481973        goto label_14048198d\n140481975        void* r8_1 = *(rcx_2 - 8)\n140481988        if (rcx_2 - r8_1 - 8 u<= 0x1f)\n14048198a        rcx_2 = r8_1\n14048198d        label_14048198d:\n14048198d        j_sub_1407864b8(rcx_2)\n140481992        label_140481992:\n140481992        arg1[6] = 0\n14048199a        arg1[7] = 0xf\n1404819a2        arg1[4].b = 0\n1404819a6        int64_t rdx_3 = arg1[3]\n1404819ae        if (rdx_3 u< 0x10)\n1404819ae        goto label_1404819dc\n1404819b0        void* rcx_4 = *arg1\n1404819bd        if (rdx_3 + 1 u< 0x1000)\n1404819bd        goto label_1404819d7\n1404819bf        void* r8_2 = *(rcx_4 - 8)\n1404819d2        if (rcx_4 - r8_2 - 8 u<= 0x1f)\n1404819d4        rcx_4 = r8_2\n1404819d7        label_1404819d7:\n1404819d7        j_sub_1407864b8(rcx_4)\n1404819dc        label_1404819dc:\n1404819dc        arg1[2] = 0\n1404819e4        arg1[3] = 0xf\n1404819ec        *arg1 = 0\n1404819f4        return \n1404819f5        _invalid_parameter_noinfo_noreturn()\n1404819f5        noreturn",
+  "fetched_at": "2026-04-26T17:28:28Z"
+}

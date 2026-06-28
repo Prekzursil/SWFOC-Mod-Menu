@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033df00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033df13        *arg1 = &DynamicVectorClass<class FactionAndMusicEventPairClass>::`vftable'\n14033df19        sub_14033dfc0(arg1)\n14033df21        if ((arg2 & 1) != 0)\n14033df2b        j_sub_1407864b8(arg1)\n14033df3d        return arg1",
+  "fetched_at": "2026-04-26T17:04:20Z"
+}

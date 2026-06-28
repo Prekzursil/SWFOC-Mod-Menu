@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057c4d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057c4d4        int64_t* rcx = *(arg1 + 0x60)\n14057c4de        if (rcx != 0)\n14057c4e7        if (*(rcx + 0x35e) != 0xff)\n14057c529        void* rax_3 = (*(*rcx + 0x10))(rcx, 0x2c)\n14057c534        int64_t* rax_4 = operator new(0x18)\n14057c53f        if (rax_4 == 0)\n14057c5f3        return 0\n14057c559        rax_4[2].b = sub_14042a6b0(rax_3)\n14057c55e        *rax_4 = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n14057c561        rax_4[1].d = 0\n14057c564        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result = sub_14024a250()\n14057c56c        int64_t* arg_8 = rax_4\n14057c577        (**rax_4)(rax_4)\n14057c579        int64_t* rdx = result[3]\n14057c581        if (rdx == result[4])\n14057c5bc        sub_140144900(&result[2], rdx, &arg_8)\n14057c5c7        (*(*rax_4 + 8))(rax_4)\n14057c5e0        return result\n14057c583        *rdx = rax_4\n14057c58c        (**rax_4)(rax_4)\n14057c58e        result[3] = &result[3]->vFunc_1\n14057c599        (*(*rax_4 + 8))(rax_4)\n14057c5b2        return result\n14057c4f0        void** r8_2 = rcx[0x53] + 0xf8\n14057c4fc        if (r8_2[3] u>= 0x10)\n14057c4fe        r8_2 = *r8_2\n14057c50b        sub_140248190(arg2, \"GameObjectWrapper::Fire_Tactical_Superweapon -- %s is not a tactical superweapon.\", r8_2)\n14057c516        return 0",
+  "fetched_at": "2026-04-26T17:35:15Z"
+}

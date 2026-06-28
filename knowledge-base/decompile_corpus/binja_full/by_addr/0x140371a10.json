@@ -1,0 +1,7 @@
+{
+  "addr": "0x140371a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140371a14        int32_t result = data_140b2c314\n140371a1c        if (result == 0)\n140371a1e        char const (* rcx_1)[0xf] = data_140a28560\n140371a25        int64_t rax = -1\n140371a30        rax += 1\n140371a37        do while ((*rcx_1)[rax] != 0)\n140371a3e        result = sub_140215a30(rcx_1, rax.d, 0)\n140371a43        data_140b2c314 = result\n140371a4d        return result",
+  "fetched_at": "2026-04-26T17:15:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401787c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401787ca        int32_t rax = data_140a6e734\n1401787d0        int32_t rbx = 0\n1401787d5        int32_t rdi = arg1\n1401787d7        data_140a6e734 = rax + 1\n1401787dd        data_140a6d421 = rax == 0xffffffff\n1401787ef        if (rax == 0 && data_140a6d428 != 0)\n1401787f4        arg1 = sub_1401a7370(2)\n140178807        if (data_140a6e734 == 0 && data_140a6d428 != 0)\n14017880e        arg1 = sub_1401a7370(1)\n140178819        if (data_140a6d390 == 0)\n140178823        data_140a6d40c = rdi\n14017881b        data_140a6d3c4 = rdi\n140178829        bool cond:2 = data_140a6d480 == 0\n140178830        data_140a6d440 = rdi\n140178836        if (not(cond:2))\n140178838        int32_t rax_2 = sub_140179dc0(arg1.b)\n14017883d        rbx = rax_2\n140178841        if (rax_2 s< 0)\n140178853        if (rbx != 0x8876017c)\n140178853        rbx = -0x7dfffff4\n140178858        sub_14017a460(rbx, 1)\n14017885d        int32_t rdx = data_140a6e734\n140178866        data_140a6e734 = rdx - 1\n14017886c        data_140a6d421 = rdx == 1\n14017887d        if (rdx == 1 && data_140a6d428 != (rdx - 1).b)\n140178882        sub_1401a7370(rdx)\n140178893        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:23:21Z"
+}

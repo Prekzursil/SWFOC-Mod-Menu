@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fcab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fcaba        struct SpecialAbilityClass::ForceLightningAbilityClass::VTable** result = arg1\n1406fcabd        sub_14048c780(arg1)\n1406fcac9        *result = &ForceLightningAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fcada        result[0x35] = 0xf\n1406fcae5        result[1] = &ForceLightningAbilityClass::`vftable'{for `RefCountClass'}\n1406fcaf2        result[0x34] = 0xf\n1406fcafd        __builtin_memset(&result[0x2f], 0, 0x14)\n1406fcb15        result[0x32] = 0\n1406fcb1c        memcpy(&result[0x32], \"Force_Lightning\", 0xf)\n1406fcb30        *(result + 0x19f) = 0\n1406fcb37        result[0x39] = 0xf\n1406fcb42        result[0x38] = 8\n1406fcb4d        __builtin_strncpy(&result[0x36], \"B_HAND_L\", 9)\n1406fcb70        __builtin_memcpy(&result[0x3c], \"\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x0f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x01\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\", 0x18)\n1406fcb7b        __builtin_strncpy(&result[0x3a], \"B_PELVIS\", 9)\n1406fcba0        result[8].w = 1\n1406fcba6        *(result + 0x3c) = 9\n1406fcbb2        return result",
+  "fetched_at": "2026-04-26T17:26:49Z"
+}

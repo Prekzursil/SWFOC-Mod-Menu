@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b3d60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401b3d60(longlong param_1)\n\n{\n  longlong lVar1;\n  TreeCullClass *pTVar2;\n  TreeCullClass *pTVar3;\n  TreeCullClass *pTVar4;\n  \n  pTVar2 = (TreeCullClass *)FUN_140769c58(0x38);\n  pTVar4 = (TreeCullClass *)0x0;\n  pTVar3 = pTVar4;\n  if (pTVar2 != (TreeCullClass *)0x0) {\n    pTVar3 = TreeCullClass::TreeCullClass(pTVar2);\n  }\n  *(TreeCullClass **)(param_1 + 0x270) = pTVar3;\n  pTVar2 = (TreeCullClass *)FUN_140769c58(0x38);\n  pTVar3 = pTVar4;\n  if (pTVar2 != (TreeCullClass *)0x0) {\n    pTVar3 = TreeCullClass::TreeCullClass(pTVar2);\n  }\n  *(TreeCullClass **)(param_1 + 0x278) = pTVar3;\n  for (lVar1 = *(longlong *)(param_1 + 0x230); lVar1 != param_1 + 0x228;\n      lVar1 = *(longlong *)(lVar1 + 8)) {\n    pTVar3 = (TreeCullClass *)(*(longlong *)(lVar1 + 0x18) + -0x10);\n    if (*(longlong *)(lVar1 + 0x18) == 0) {\n      pTVar3 = pTVar4;\n    }\n    pTVar2 = (TreeCullClass *)&(pTVar3->TreeCullClass_data).offset_0x18;\n    if (((pTVar3->TreeCullClass_data).field_0x2a & 1) == 0) {\n      if (pTVar3 == (TreeCullClass *)0x0) {\n        pTVar2 = pTVar4;\n      }\n      (**(code **)(**(longlong **)(param_1 + 0x270) + 8))(*(longlong **)(param_1 + 0x270),pTVar2);\n    }\n    else {\n      if (pTVar3 == (TreeCullClass *)0x0) {\n        pTVar2 = pTVar4;\n      }\n      (**(code **)(**(longlong **)(param_1 + 0x278) + 8))(*(longlong **)(param_1 + 0x278),pTVar2);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:58Z"
+}

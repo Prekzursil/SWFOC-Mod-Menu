@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e5e70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetEditboxClass member function inherited by GUIGadgetIMEEditboxClass */\n\nundefined8 ** __thiscall GUIGadgetEditboxClass::vfunction23(GUIGadgetEditboxClass *this)\n\n{\n  return &(this->GUIGadgetEditboxClass_data).offset_0x58;\n}",
+  "fetched_at": "2026-04-26T17:51:20Z"
+}

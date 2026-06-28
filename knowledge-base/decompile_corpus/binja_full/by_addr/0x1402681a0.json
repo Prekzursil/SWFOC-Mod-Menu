@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402681a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402681a4        void* rcx = *(*(arg1 + 0x78) + 0x280)\n1402681ae        *(rcx + (sx.q(arg2) << 2) + 0x1c) = arg3\n1402681b4        return sub_140267a70(rcx) __tailcall",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

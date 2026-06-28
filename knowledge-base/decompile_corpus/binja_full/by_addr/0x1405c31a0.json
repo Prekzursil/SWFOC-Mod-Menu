@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c31a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c31ae        int128_t zmm6 = arg2\n1405c31b1        float temp0 = *(arg1 + 0x3c0)\n1405c31b1        zmm6.d f- temp0\n1405c31ba        if (not(is_unordered.d(zmm6.d, temp0)) && not(zmm6.d f!= temp0))\n1405c31bc        *(arg1 + 0x3c0) = zmm6.d\n1405c31ce        return \n1405c31cf        void* rcx = *(arg1 + 0x3b8)\n1405c31d9        if (rcx != 0)\n1405c31f9        void var_28\n1405c31f9        int32_t* rax_1 = sub_1401f9860(rcx + 4, &var_28, 1f f- zmm6.d)\n1405c3224        void var_48\n1405c3224        void var_38\n1405c3224        sub_1401f9700(sub_1401f9860(*(arg1 + 0x3b8) + 0x14, &var_38, zmm6.d), &var_48, rax_1)\n1405c3249        void* rcx_5 = **(arg1 + 0x3b0)\n1405c324f        if (rcx_5 != 0)\n1405c3256        sub_140380160(rcx_5, &var_48)\n1405c3265        if (**(arg1 + 0x3b8) != 2)\n1405c3267        zmm6.d f- 1f\n1405c3270        int32_t* rdx_3\n1405c3270        if (**(arg1 + 0x3b8) != 2 && (is_unordered.d(zmm6.d, 1f) || not(zmm6.d f== 1f)))\n1405c3272        rdx_3.b = 1\n1405c3276        rdx_3 = nullptr\n1405c327b        int64_t* rax\n1405c327b        rax, zmm6 = sub_1405c3360(arg1, rdx_3.b)\n1405c328a        *(arg1 + 0x3c0) = zmm6.d\n1405c329c        return ",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

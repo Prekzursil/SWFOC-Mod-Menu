@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407708e8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407708e8(UWMap4 *param_1,int param_2,int param_3,longlong *param_4,longlong *param_5)\n\n{\n  undefined8 *puVar1;\n  undefined8 uVar2;\n  bool bVar3;\n  bool bVar4;\n  uchar *puVar5;\n  int iVar6;\n  uchar *puVar7;\n  uchar *local_res8;\n  int local_res10;\n  \n  local_res8 = *(uchar **)(param_1 + 8);\n  bVar3 = false;\n  bVar4 = false;\n  iVar6 = 0;\n  puVar5 = local_res8 + -1;\n  puVar7 = puVar5;\n  local_res10 = param_2;\n  if (0 < *(int *)param_1) {\n    do {\n      if (iVar6 == param_2) {\n        bVar3 = true;\n        puVar5 = local_res8;\n      }\n      if (iVar6 == param_3) {\n        bVar4 = true;\n        puVar7 = local_res8;\n      }\n      if ((bVar3) && (bVar4)) break;\n      FH4::UWMap4::ReadEntry(param_1,&local_res8);\n      iVar6 = iVar6 + 1;\n    } while (iVar6 < *(int *)param_1);\n  }\n  puVar1 = (undefined8 *)*param_4;\n  param_4[1] = (longlong)puVar5;\n  uVar2 = *(undefined8 *)(param_1 + 8);\n  *puVar1 = *(undefined8 *)param_1;\n  puVar1[1] = uVar2;\n  uVar2 = *(undefined8 *)(param_1 + 0x18);\n  puVar1[2] = *(undefined8 *)(param_1 + 0x10);\n  puVar1[3] = uVar2;\n  puVar1 = (undefined8 *)*param_5;\n  param_5[1] = (longlong)puVar7;\n  uVar2 = *(undefined8 *)(param_1 + 8);\n  *puVar1 = *(undefined8 *)param_1;\n  puVar1[1] = uVar2;\n  uVar2 = *(undefined8 *)(param_1 + 0x18);\n  puVar1[2] = *(undefined8 *)(param_1 + 0x10);\n  puVar1[3] = uVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:46Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e5070",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e5080        char* rbx = arg1[1]\n1404e508a        int64_t rdx = *arg1\n1404e5093        int64_t rcx_2 = (rbx - rdx) s>> 6\n1404e509a        if (arg2 u< rcx_2)\n1404e50a0        void* rdi_2 = (arg2 << 6) + rdx\n1404e50a8        void* rsi = rdi_2\n1404e50ae        if (rdi_2 != rbx)\n1404e50b3        sub_1404b12f0(rsi)\n1404e50b8        rsi += 0x40\n1404e50bf        do while (rsi != rbx)\n1404e50c6        arg1[1] = rdi_2\n1404e50da        return \n1404e50db        if (arg2 u<= rcx_2)\n1404e50db        return \n1404e50eb        if (arg2 u> (arg1[2] - rdx) s>> 6)\n1404e50f8        sub_1404e1010(arg1, arg2)\n1404e510d        return \n1404e510e        int64_t i_1 = arg2 - rcx_2\n1404e5111        if (arg2 != rcx_2)\n1404e5123        int64_t i\n1404e5116        sub_1404e1760(rbx)\n1404e511b        rbx = &rbx[0x40]\n1404e511f        i = i_1\n1404e511f        i_1 -= 1\n1404e5123        do while (i != 1)\n1404e5125        arg1[1] = rbx\n1404e5139        return ",
+  "fetched_at": "2026-04-26T17:31:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140718e30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nClusterBombAbilityClass::vfunction30_for_IXMLLoadableClass(ClusterBombAbilityClass *this)\n\n{\n  undefined ***pppuVar1;\n  undefined1 local_108 [256];\n  \n  CorruptionAbilityClass::vfunction30_for_IXMLLoadableClass((CorruptionAbilityClass *)this);\n  if ((float)(this->ClusterBombAbilityClass_data).offset_0x0 <= 0.0) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_108,\n                  \"Error: (%s) Detonation_Time_In_Secs must be greater than zero! Defaulting to 1 second.\"\n                  ,pppuVar1);\n    FUN_1402149d0(local_108);\n    (this->ClusterBombAbilityClass_data).offset_0x0 = 0x3f800000;\n  }\n  if ((int)(this->ClusterBombAbilityClass_data).offset_0x18 < 1) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_108,\n                  \"Error: (%s) Number_Of_Bombs must be greater than zero! Defaulting to 1.\",pppuVar1\n                 );\n    FUN_1402149d0(local_108);\n    (this->ClusterBombAbilityClass_data).offset_0x18 = 1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:10Z"
+}

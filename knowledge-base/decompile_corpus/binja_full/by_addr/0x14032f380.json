@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032f380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032f383        if (arg2 == 0)\n14032f383        return \n14032f39c        void** rdx_1 = *(arg2 + 0x298) + 0xf8\n14032f3a8        if (rdx_1[3] u>= 0x10)\n14032f3aa        rdx_1 = *rdx_1\n14032f3b4        sub_140327b10(\"TUTORIAL - Zoomed out of planet %s\\r\\n\", rdx_1)\n14032f3cf        sub_14032e5f0(arg1, 0x1c, 0, arg2, 0)\n14032f3de        return ",
+  "fetched_at": "2026-04-26T17:02:32Z"
+}

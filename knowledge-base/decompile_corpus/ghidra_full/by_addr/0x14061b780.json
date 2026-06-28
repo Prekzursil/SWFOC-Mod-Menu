@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061b780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall HackSuperWeaponAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Hack_Super_Weapon_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:29:00Z"
+}

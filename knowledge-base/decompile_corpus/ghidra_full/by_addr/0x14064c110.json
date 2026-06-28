@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_14064c110(longlong param_1,int param_2)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  longlong *plVar3;\n  int *piVar4;\n  ulonglong uVar5;\n  \n  lVar1 = FUN_1405f6fb0(*(undefined8 *)(*(longlong *)(param_1 + 0xa0) + 0xf0));\n  lVar1 = *(longlong *)(*(longlong *)(*(longlong *)(lVar1 + 0x28) + 0x50) + 0x40);\n  uVar2 = *(ulonglong *)(lVar1 + 0x10);\n  uVar5 = lVar1 + 8;\n  if (uVar2 != uVar5) {\n    do {\n      lVar1 = *(longlong *)(uVar2 + 0x18);\n      plVar3 = (longlong *)(lVar1 + 0x60);\n      if (lVar1 == 0) {\n        plVar3 = (longlong *)&DAT_000000a0;\n      }\n      if (*plVar3 == *(longlong *)(param_1 + 0xa0)) {\n        piVar4 = (int *)(lVar1 + -0x30);\n        if (lVar1 == 0) {\n          piVar4 = (int *)&DAT_00000010;\n        }\n        if (*piVar4 != param_2) {\n          return uVar2 & 0xffffffffffffff00;\n        }\n      }\n      uVar2 = *(ulonglong *)(uVar2 + 8);\n    } while (uVar2 != uVar5);\n  }\n  return CONCAT71((int7)(uVar2 >> 8),1);\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:51Z"
+}

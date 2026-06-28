@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405246d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405246f4        int32_t zmm0 = sub_14023bc10(&data_140b09c40, *(arg1 + 0x48), 1)\n1405246f9        int32_t zmm1_1 = *(arg1 + 0x4c)\n14052470b        *(arg1 + 0x48) = zmm0\n140524710        int32_t zmm0_1 = sub_14023bc10(&data_140b09c40, zmm1_1, 2)\n140524715        int32_t zmm1_2 = *(arg1 + 0x50)\n140524727        *(arg1 + 0x4c) = zmm0_1\n14052472c        uint32_t zmm0_2[0x4] = sub_14023bc10(&data_140b09c40, zmm1_2, 3)\n140524731        *(arg1 + 0x50) = zmm0_2[0]\n140524736        zmm0_2[0].q = fconvert.d(zmm0_2[0])\n140524751        if (not(9.99999975e-05f f<= fconvert.s(sub_1407760bc(zmm0_2))))\n140524753        *(arg1 + 0x50) = 0\n14052475a        uint64_t result = data_140b15418\n140524761        void* rbx = *(result + 0x38)\n140524768        if (rbx != 0)\n140524774        result = sub_140494540(rbx, *(arg1 + 0x24), arg1 + 0x48)\n14052477b        if (result.b == 1)\n140524787        return sub_140492d60(rbx, *(arg1 + 0x24), arg1 + 0x48)\n14052479b        return result",
+  "fetched_at": "2026-04-26T17:33:04Z"
+}

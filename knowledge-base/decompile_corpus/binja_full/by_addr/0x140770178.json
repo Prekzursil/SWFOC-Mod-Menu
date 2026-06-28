@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770178",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770188        int32_t rax = ExFilterRethrow(arg1, arg2, arg4)\n140770191        if (rax == 0)\n140770198        *(__vcrt_getptd() + 0x78) = arg3\n1407701a7        return zx.q(rax)",
+  "fetched_at": "2026-04-26T17:30:38Z"
+}

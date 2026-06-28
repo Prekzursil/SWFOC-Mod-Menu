@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d7b20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405d7b3e        int128_t zmm6 = arg3\n1405d7b44        uint64_t result\n1405d7b44        if (*(arg1 + 0x24) != 0)\n1405d7b46        result, zmm6 = sub_1405d8140(arg1)\n1405d7b4b        uint64_t rcx = zx.q(*(arg1 + 0x1c))\n1405d7b51        float zmm3 = zmm6.d\n1405d7b54        int64_t zmm0\n1405d7b54        zmm0.d = float.s(rcx)\n1405d7b5c        if (zmm0.d f<= zmm6.d)\n1405d7b5c        goto label_1405d7b7a\n1405d7b68        if (*(arg1 + 0x31) != 0 || arg1[6].b != 0)\n1405d7b6d        zmm3 = float.s(rcx)\n1405d7b7a        label_1405d7b7a:\n1405d7b7a        int64_t r8_1 = *arg1\n1405d7b7d        zmm0.d = float.s(rcx)\n1405d7b89        int64_t rcx_3 = (arg1[1] - r8_1) s>> 3\n1405d7b98        int32_t rdx = (int.q((zmm3 f- zmm0.d) f/ _mm_cvtepi32_ps(zx.o(arg1[5].d)).d)).d\n1405d7ba2        if (zx.q(rdx) u>= rcx_3)\n1405d7ba4        rdx = (rcx_3 - 1).d\n1405d7bb3        void* rcx_4 = *(r8_1 + (zx.q((modu.dp.q(0:(zx.q(arg1[3].d + rdx)), rcx_3)).d) << 3))\n1405d7bba        if (rcx_4 != 0)\n1405d7bce        int32_t var_28_1 = arg5\n1405d7be2        return sub_1406b1ad0(rcx_4, arg2, (int.q(fconvert.d(zmm6.d) f+ 0.5)).d, zx.q(arg4))\n1405d7bbc        result.b = 0\n1405d7bfb        return result",
+  "fetched_at": "2026-04-26T17:38:16Z"
+}

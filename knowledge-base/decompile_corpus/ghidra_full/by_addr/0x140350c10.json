@@ -1,0 +1,7 @@
+{
+  "addr": "0x140350c10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall TextButtonComponentClass::vfunction43(TextButtonComponentClass *this)\n\n{\n  undefined7 in_register_00000089;\n  \n  if ((this->TextButtonComponentClass_data).offset_0x18 != 0) {\n    (*this->vftablePtr->vfunction42)\n              (this,(short *)&(this->TextButtonComponentClass_data).offset_0x8,1,\n               CONCAT71(in_register_00000089,1));\n  }\n  if ((this->TextButtonComponentClass_data).offset_0x38 != 0) {\n                    /* WARNING: Could not recover jumptable at 0x000140350c5c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*this->vftablePtr->vfunction42)\n              (this,(short *)&(this->TextButtonComponentClass_data).offset_0x28,0,\n               CONCAT71(in_register_00000089,1));\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b99b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandPerceptionSystemClass::vfunction8(LandPerceptionSystemClass *this)\n\n{\n  undefined **ppuVar1;\n  undefined **ppuVar2;\n  \n  ppuVar1 = (this->SignalListenerClass_data).offset_0x8;\n  ppuVar2 = (this->SignalListenerClass_data).offset_0x0;\n  if (ppuVar2 != ppuVar1) {\n    do {\n      if ((longlong *)*ppuVar2 != (longlong *)0x0) {\n        (**(code **)(*(longlong *)*ppuVar2 + 8))();\n      }\n      ppuVar2 = ppuVar2 + 1;\n    } while (ppuVar2 != ppuVar1);\n    ppuVar2 = (this->SignalListenerClass_data).offset_0x0;\n  }\n  (this->SignalListenerClass_data).offset_0x8 = ppuVar2;\n  AIPerceptionSystemClass::vfunction8((AIPerceptionSystemClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:39Z"
+}

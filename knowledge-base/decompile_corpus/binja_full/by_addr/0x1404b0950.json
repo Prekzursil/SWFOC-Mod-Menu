@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b0950",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b0953        if (arg2 == 0)\n1404b0953        return \n1404b0968        int64_t* rbx_1 = *(arg1 + 0x38)\n1404b0979        void* rdi_1 = *(arg1 + 0x40)\n1404b097d        void* rax = rdi_1\n1404b0983        if (rbx_1 == rdi_1)\n1404b099f        label_1404b099f:\n1404b099f        rbx_1 = rax\n1404b0988        while (sub_1405f55e0(*rbx_1) != arg2)\n1404b0992        rax = *(arg1 + 0x40)\n1404b0996        rbx_1 = &rbx_1[1]\n1404b099d        if (rbx_1 == rax)\n1404b099d        goto label_1404b099f\n1404b09af        if (rbx_1 != rdi_1)\n1404b09af        return \n1404b09c2        rax = sub_1405f5160((*(*arg2 + 0xe0))(arg2), arg1)\n1404b09c7        void* arg_10 = rax\n1404b09cf        if (rax == 0)\n1404b09cf        return \n1404b09d1        int32_t* rdx_1 = *(arg1 + 0x40)\n1404b09d9        if (rdx_1 != *(arg1 + 0x48))\n1404b09e0        *rdx_1 = rax\n1404b09e3        *(arg1 + 0x40) += 8\n1404b09ef        return \n1404b09f9        sub_14001ded0(arg1 + 0x38, rdx_1, &arg_10)\n1404b0a0a        return ",
+  "fetched_at": "2026-04-26T17:29:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407412d8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407412e6        struct std::locale::facet::std::locale::_Locimp::VTable** rax = operator new(0x38)\n1407412ee        struct std::locale::facet::std::locale::_Locimp::VTable** arg_10 = rax\n1407412f8        if (rax == 0)\n140741308        return nullptr\n1407412fd        return std::locale::_Locimp::_Locimp(rax, arg1)",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

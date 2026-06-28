@@ -1,0 +1,7 @@
+{
+  "addr": "0x140785964",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140785964        int16_t arg_8[0x8]\n140785964        arg_8[0] = arg1\n140785975        if (arg1 == 0xffff)\n140785a1e        return 0xffff\n140785980        void* var_28\n140785980        _LocaleUpdate::_LocaleUpdate(&var_28, arg2)\n140785985        uint16_t rdx = arg_8[0]\n140785994        void* var_20\n140785994        if (rdx u>= 0x100)\n1407859c5        int16_t* rcx_2 = *(var_20 + 0x138)\n1407859cf        if (rcx_2 != 0)\n1407859f1        uint16_t arg_18\n1407859f1        int32_t rax_4 = __acrt_LCMapStringW(rcx_2, 0x100, &arg_8, 1, &arg_18, 1)\n1407859f6        rdx = arg_8[0]\n1407859fd        if (rax_4 != 0)\n1407859ff        rdx = arg_18\n1407859a4        if (((*u\"         (((((                  H\")[zx.q(rdx.b)].b & 1) == 0)\n1407859bb        rdx = zx.w(rdx.b)\n1407859b5        rdx = zx.w(*(*(var_20 + 0x110) + zx.q(rdx.b)))\n140785a09        char var_10\n140785a09        if (var_10 != 0)\n140785a0b        void* rcx_3 = var_28\n140785a10        *(rcx_3 + 0x3a8) &= 0xfffffffd\n140785a17        return zx.q(rdx)",
+  "fetched_at": "2026-04-26T17:31:15Z"
+}

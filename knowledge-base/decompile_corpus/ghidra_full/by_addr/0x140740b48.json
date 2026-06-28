@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740b48",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140740b48(void)\n\n{\n  int iVar1;\n  int iVar2;\n  LPCRITICAL_SECTION lpCriticalSection;\n  \n  LOCK();\n  iVar2 = DAT_140a44b48 + -1;\n  UNLOCK();\n  iVar1 = DAT_140a44b48 + -1;\n  DAT_140a44b48 = iVar2;\n  if (iVar1 < 0) {\n    lpCriticalSection = (LPCRITICAL_SECTION)&DAT_140b3b480;\n    do {\n      DeleteCriticalSection(lpCriticalSection);\n      lpCriticalSection = lpCriticalSection + 1;\n    } while (lpCriticalSection != (LPCRITICAL_SECTION)&DAT_140b3b5c0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:01Z"
+}

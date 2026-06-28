@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b00c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076b01b        char* PcValue = arg2\n14076b021        uint64_t arguments_1 = 0x19930520\n14076b02e        if (arg2 != 0 && (*arg2 & 0x10) != 0)\n14076b037        void* rax_1 = *(*arg1 - 8)\n14076b03a        PcValue = *(rax_1 + 0x30)\n14076b068        (*(rax_1 + 0x40))()\n14076b050        int64_t BaseOfImage\n14076b050        int64_t BaseOfImage_1 = RtlPcToFileHeader(PcValue, &BaseOfImage)\n14076b056        BaseOfImage = BaseOfImage_1\n14076b068        if (PcValue != 0 && ((*PcValue & 8) != 0 || BaseOfImage_1 == 0))\n14076b06a        arguments_1 = 0x1994000\n14076b074        uint64_t arguments = arguments_1\n14076b07e        int64_t* var_28 = arg1\n14076b088        char* PcValue_1 = PcValue\n14076b08d        int64_t BaseOfImage_2 = BaseOfImage_1\n14076b096        RaiseException(0xe06d7363, 1, 4, &arguments)\n14076b096        noreturn",
+  "fetched_at": "2026-04-26T17:30:21Z"
+}

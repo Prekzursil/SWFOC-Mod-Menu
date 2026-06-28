@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059ef20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14059ef26        int64_t r9 = *arg1\n14059ef32        if (r9 != 0)\n14059ef34        char r8_1 = arg1[5].b\n14059ef39        char rax = 0\n14059ef3e        if (r8_1 s> 0)\n14059ef40        int64_t rdx = sx.q(rax)\n14059ef4c        if (*(r9 + (rdx << 3)) == arg2)\n14059ef64        if (rax == 0xff || rax s>= r8_1)\n14059ef64        break\n14059ef6a        char rdx_1 = r8_1 - rax\n14059ef6f        if (rdx_1 != 1)\n14059ef83        memcpy(r9 + (rdx << 3), r9 + (sx.q(rax + 1) << 3), sx.q(rdx_1 - 1) << 3)\n14059ef88        r8_1 = arg1[5].b\n14059ef92        arg1[5].b = r8_1 - 1\n14059ef9b        return 1\n14059ef4e        rax += 1\n14059ef53        do while (rax s< r8_1)\n14059ef5c        return 0",
+  "fetched_at": "2026-04-26T17:36:46Z"
+}

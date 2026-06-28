@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f22e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f22f3        *arg1 = &GUIGadgetProgressbarClass::`vftable'{for `GUIGadgetClass'}\n1401f22f9        sub_1401f2d40(arg1)\n1401f2305        arg1[0x13].d = 0\n1401f230f        sub_1401cb190(&arg1[0x38])\n1401f231b        sub_140260500(&arg1[0x26])\n1401f2327        sub_140260500(&arg1[0x14])\n1401f232f        sub_1401e3cb0(arg1)\n1401f2337        if ((arg2 & 1) != 0)\n1401f2341        j_sub_1407864b8(arg1)\n1401f2353        return arg1",
+  "fetched_at": "2026-04-26T17:27:19Z"
+}

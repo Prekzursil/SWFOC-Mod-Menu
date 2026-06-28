@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014c20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140014c20(void)\n\n{\n  InitializeCriticalSectionAndSpinCount((LPCRITICAL_SECTION)&DAT_140a7c7b0,4000);\n  atexit((_func_5014 *)&LAB_1407ed410);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140189ac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140189ac0(longlong param_1,int param_2,int param_3)\n\n{\n  undefined8 uVar1;\n  \n  uVar1 = thunk_FUN_140769c58((longlong)(param_2 * param_3));\n  *(undefined8 *)(param_1 + 8) = uVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:30Z"
+}

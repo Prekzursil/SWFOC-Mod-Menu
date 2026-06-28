@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nProximityMineBehaviorClass * __thiscall\nProximityMineBehaviorClass::vfunction4(ProximityMineBehaviorClass *this,int param_1)\n\n{\n  ProximityMineBehaviorClass *pPVar1;\n  \n  pPVar1 = (ProximityMineBehaviorClass *)0x0;\n  if (param_1 == 0x55) {\n    pPVar1 = this;\n  }\n  return pPVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:46Z"
+}

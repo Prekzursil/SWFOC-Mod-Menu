@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cbbc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall SquadronCombatantClass::vfunction28(SquadronCombatantClass *this)\n\n{\n  return *(undefined4 *)(**(longlong **)(*(longlong *)&this->field_0x48 + 0x10) + 0x58);\n}",
+  "fetched_at": "2026-04-26T17:40:52Z"
+}

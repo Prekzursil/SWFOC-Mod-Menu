@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c23d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c23d7        return \"UpgradeDummyBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:30:17Z"
+}

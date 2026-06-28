@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ba390",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ba39f        int32_t r8 = *(arg2 + 8)\n1401ba3a6        int32_t rax = *(arg2 + 0xc)\n1401ba3ac        *(arg1 + 0x1c) = 0\n1401ba3b6        *(arg1 + 0x20) = 0x3f800000\n1401ba3be        int32_t temp0\n1401ba3be        int32_t temp1\n1401ba3be        temp0:temp1 = sx.q(rax - r8)\n1401ba3c3        int32_t rsi = r8 + ((temp1 - temp0) s>> 1)\n1401ba3ce        uint128_t zmm0\n1401ba3ce        zmm0.d = _mm_cvtepi32_ps(zx.o(rsi)).d f* arg2[1].d\n1401ba3d3        *(arg1 + 0x28) = zmm0.d\n1401ba3de        int32_t var_28 = arg2[1].d\n1401ba3e7        uint128_t var_38 = *arg2\n1401ba3ec        var_38:0xc.d = rsi\n1401ba3f0        int32_t* rax_5 = operator new(0x40)\n1401ba3f8        if (rax_5 != 0)\n1401ba402        rax_5 = sub_1401ba000(rax_5, &var_38)\n1401ba407        *(arg1 + 0x38) = rax_5\n1401ba416        int32_t var_10 = arg2[1].d\n1401ba41a        int128_t var_20 = *arg2\n1401ba41f        var_20:8.d = rsi\n1401ba423        int32_t* rax_7 = operator new(0x40)\n1401ba42b        if (rax_7 == 0)\n1401ba453        *(arg1 + 0x30) = 0\n1401ba465        return rax_7\n1401ba435        int32_t* rax_8 = sub_1401ba000(rax_7, &var_20)\n1401ba43a        *(arg1 + 0x30) = rax_8\n1401ba44d        return rax_8",
+  "fetched_at": "2026-04-26T17:25:55Z"
+}

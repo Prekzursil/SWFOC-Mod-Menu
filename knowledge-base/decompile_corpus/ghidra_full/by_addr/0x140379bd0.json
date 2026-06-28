@@ -1,0 +1,7 @@
+{
+  "addr": "0x140379bd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_GameObjectClass*___ptr64> * __thiscall\nDynamicVectorClass<class_GameObjectClass*___ptr64>::\nDynamicVectorClass<class_GameObjectClass*___ptr64>\n          (DynamicVectorClass<class_GameObjectClass*___ptr64> *this)\n\n{\n  this[1].DynamicVectorClass<class_GameObjectClass*___ptr64>_data.offset_0xc = 0x80000000;\n                    /* inlined constructor: FlagshipDataPackClass::FlagshipDataPackClass */\n  (this->DynamicVectorClass<class_GameObjectClass*___ptr64>_data).offset_0x8 = 0;\n  (this->DynamicVectorClass<class_GameObjectClass*___ptr64>_data).offset_0xc = 0;\n  this->vftablePtr =\n       (DynamicVectorClass<class_GameObjectClass*___ptr64>_vftable *)&FlagshipDataPackClass::vftable\n  ;\n  (this->DynamicVectorClass<class_GameObjectClass*___ptr64>_data).offset_0x0 =\n       &FlagshipDataPackClass::vftable;\n  this[1].vftablePtr = &vftable;\n  this[1].DynamicVectorClass<class_GameObjectClass*___ptr64>_data.offset_0x0 = (LPVOID)0x0;\n  this[1].DynamicVectorClass<class_GameObjectClass*___ptr64>_data.offset_0x8 = 0;\n  *(undefined2 *)&this[2].vftablePtr = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:17:23Z"
+}

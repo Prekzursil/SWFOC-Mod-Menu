@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022a280",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14022a280(longlong *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  lVar2 = 0;\n  param_1[4] = 0;\n  param_1[0xe] = 0;\n  param_1[0x18] = 0;\n  param_1[0x22] = 0;\n  param_1[0x2c] = 0;\n  param_1[0x36] = 0;\n  param_1[0x40] = 0;\n  param_1[0x4a] = 0;\n  param_1[0x54] = 0;\n  param_1[0x5e] = 0;\n  param_1[0x68] = 0;\n  param_1[0x72] = 0;\n  param_1[0x7c] = 0;\n  param_1[0x86] = 0;\n  param_1[0x90] = 0;\n  param_1[0x9a] = 0;\n  param_1[0xa4] = 0;\n  param_1[0xae] = 0;\n  param_1[0xb8] = 0;\n  param_1[0xc2] = 0;\n  param_1[0xcc] = 0;\n  param_1[0xd6] = 0;\n  param_1[0xe0] = 0;\n  param_1[0xea] = 0;\n  param_1[0xf4] = 0;\n  param_1[0xfe] = 0;\n  param_1[0x108] = 0;\n  param_1[0x112] = 0;\n  param_1[0x11c] = 0;\n  param_1[0x126] = 0;\n  param_1[0x130] = 0;\n  param_1[0x13a] = 0;\n  *(undefined4 *)((longlong)param_1 + 0x14) = 0;\n  do {\n    if (param_1[lVar2 * 10 + 4] == 0) {\n      lVar1 = AIL_allocate_sample_handle(*(undefined8 *)(*param_1 + 0xff8));\n      param_1[lVar2 * 10 + 4] = lVar1;\n      if (lVar1 == 0) break;\n      *(int *)((longlong)param_1 + 0x14) = *(int *)((longlong)param_1 + 0x14) + 1;\n    }\n    lVar2 = lVar2 + 1;\n  } while (lVar2 < 0x20);\n  return 0 < *(int *)((longlong)param_1 + 0x14);\n}",
+  "fetched_at": "2026-04-26T18:05:27Z"
+}

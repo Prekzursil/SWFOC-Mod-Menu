@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140222b37        int32_t r10 = arg2\n140222b3d        if (*(arg1 + 0x9c) != 0)\n140222b46        if (arg3 == 0)\n140222ba9        int32_t rax_2 = *(arg1 + 0x94)\n140222bb2        if (rax_2 s< r10)\n140222bb2        r10 = rax_2\n140222bb6        int32_t rcx_3 = 0\n140222bbb        if (r10 s>= 0)\n140222bbb        rcx_3 = r10\n140222bc1        *(arg1 + 0x90) = rcx_3\n140222bc8        return zx.q(rcx_3)\n140222b4c        if (arg3 == 1)\n140222b8b        int32_t result = *(arg1 + 0x94)\n140222b92        int32_t result_1 = *(arg1 + 0x90) + r10\n140222b97        if (result s>= result_1)\n140222b97        result = result_1\n140222b9e        if (result s< 0)\n140222b9e        result = 0\n140222ba1        *(arg1 + 0x90) = result\n140222ba8        return result\n140222b52        if (arg3 == 2)\n140222b54        int32_t r8_1 = *(arg1 + 0x94)\n140222b5e        int32_t rdx_1 = r8_1 - r10\n140222b6a        int32_t rcx_1 = 0\n140222b6f        if (r8_1 - 1 s>= rdx_1 - 1)\n140222b6f        r8_1 = rdx_1\n140222b77        if (r8_1 - 1 s>= 0)\n140222b77        rcx_1 = r8_1 - 1\n140222b7d        *(arg1 + 0x90) = rcx_1\n140222b84        return zx.q(rcx_1)\n140222bcf        return zx.q(*(arg1 + 0x90))",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

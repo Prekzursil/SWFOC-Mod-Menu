@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078091c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140780923        int64_t var_48 = arg2\n14078092f        int64_t var_38 = arg3\n140780936        int64_t var_28 = arg4\n14078093a        uint64_t rax_1 = zx.q((sbb.q(arg5, arg5, arg2 != 0)).d) & 3\n14078093d        uint64_t var_40 = rax_1\n140780947        int64_t rax_3 = sbb.q(rax_1, rax_1, arg3 != 0) & 0x100\n14078094a        int64_t var_30 = rax_3\n140780957        int64_t var_20 = sbb.q(rax_3, rax_3, arg4 != 0) & 0x100\n140780963        int64_t var_18 = arg6\n140780967        int64_t rax_7 = neg.q(arg6)\n14078097a        int64_t var_10 = sbb.q(rax_7, rax_7, arg6 != 0) & 0x100\n140780987        return common_splitpath_internal<char,class <lambda_53a6356d19cc262edbc98b4248a685b4>,class <lambda_040cbb5784310d69116e1bf4e70bcac8> >(arg1, &var_48, 0)",
+  "fetched_at": "2026-04-26T17:31:05Z"
+}

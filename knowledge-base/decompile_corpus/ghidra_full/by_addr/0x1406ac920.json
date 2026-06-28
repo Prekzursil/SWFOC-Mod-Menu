@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ac920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall MeleeHeroClashClass::vfunction4(MeleeHeroClashClass *this,longlong param_1)\n\n{\n  if ((param_1 != 0) &&\n     ((param_1 == (this->MeleeHeroClashClass_data).offset_0x0 ||\n      (param_1 == (this->MeleeHeroClashClass_data).offset_0x8)))) {\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:35:38Z"
+}

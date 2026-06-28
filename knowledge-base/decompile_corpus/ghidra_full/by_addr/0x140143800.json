@@ -1,0 +1,7 @@
+{
+  "addr": "0x140143800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140143800(char *param_1,char *param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  int iVar3;\n  longlong lVar4;\n  longlong lVar5;\n  char *pcVar6;\n  char acStack_409 [1033];\n  \n  lVar5 = 1 - (longlong)param_2;\n  do {\n    cVar1 = *param_2;\n    param_2[(longlong)(acStack_409 + lVar5)] = cVar1;\n    param_2 = param_2 + 1;\n  } while (cVar1 != '\\0');\n  lVar5 = -1;\n  do {\n    lVar4 = lVar5 + 1;\n    lVar2 = lVar5 + 2;\n    lVar5 = lVar4;\n  } while (acStack_409[lVar2] != '\\0');\n  iVar3 = (int)lVar4 + -1;\n  lVar5 = (longlong)iVar3;\n  if (-1 < iVar3) {\n    do {\n      if (acStack_409[lVar5 + 1] == '.') {\n        acStack_409[(longlong)iVar3 + 1] = '\\0';\n        break;\n      }\n      iVar3 = iVar3 + -1;\n      lVar5 = lVar5 + -1;\n    } while (-1 < lVar5);\n  }\n  pcVar6 = acStack_409;\n  do {\n    pcVar6 = pcVar6 + 1;\n    cVar1 = *pcVar6;\n    pcVar6[(longlong)param_1 - (longlong)(acStack_409 + 1)] = cVar1;\n  } while (cVar1 != '\\0');\n  _strlwr(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:45Z"
+}

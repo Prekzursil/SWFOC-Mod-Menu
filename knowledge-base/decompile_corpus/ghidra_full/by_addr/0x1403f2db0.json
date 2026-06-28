@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f2db0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403f2db0(void)\n\n{\n                    /* WARNING: Subroutine does not return */\n  FUN_1407408dc(\"vector<bool> too long\");\n}",
+  "fetched_at": "2026-04-26T17:40:38Z"
+}

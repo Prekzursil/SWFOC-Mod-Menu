@@ -1,0 +1,7 @@
+{
+  "addr": "0x14046ff50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14046ff50(undefined1 *param_1)\n\n{\n  longlong *plVar1;\n  char cVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  longlong *plVar5;\n  undefined8 *puVar6;\n  \n  puVar6 = (undefined8 *)(param_1 + 8);\n  *param_1 = 0;\n  *(undefined8 *)(param_1 + 0x18) = 0;\n  if (0xf < *(ulonglong *)(param_1 + 0x20)) {\n    puVar6 = (undefined8 *)*puVar6;\n  }\n  *(undefined1 *)puVar6 = 0;\n  plVar1 = (longlong *)(param_1 + 0x30);\n  lVar3 = *plVar1;\n  cVar2 = *(char *)((longlong)*(longlong **)(lVar3 + 8) + 0x19);\n  plVar5 = *(longlong **)(lVar3 + 8);\n  while (cVar2 == '\\0') {\n    FUN_14006c2e0(plVar1,plVar1,plVar5[2]);\n    plVar4 = (longlong *)*plVar5;\n    thunk_FUN_1407864b8(plVar5,0x30);\n    plVar5 = plVar4;\n    cVar2 = *(char *)((longlong)plVar4 + 0x19);\n  }\n  *(longlong *)(lVar3 + 8) = lVar3;\n  *(longlong *)lVar3 = lVar3;\n  *(longlong *)(lVar3 + 0x10) = lVar3;\n  *(undefined8 *)(param_1 + 0x38) = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:07Z"
+}

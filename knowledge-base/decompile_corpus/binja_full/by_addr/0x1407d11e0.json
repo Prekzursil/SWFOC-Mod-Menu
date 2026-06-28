@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d11e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d11ff        char var_18[0x10]\n1407d11ff        int512_t entry_zmm2\n1407d11ff        sscanf_s(&var_18, \"%8.8X\", zx.q(sub_1407d22d0(arg1, 0, entry_zmm2)))\n1407d120c        sub_1407b9540(arg1, &var_18)\n1407d121b        return 1",
+  "fetched_at": "2026-04-26T17:33:58Z"
+}

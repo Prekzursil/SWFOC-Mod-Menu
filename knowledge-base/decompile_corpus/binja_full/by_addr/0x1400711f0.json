@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400711f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140071209        int64_t rcx = *(arg1 + 0x308)\n14007120d        int64_t rdx = *(arg1 + 0x2f8)\n140071218        if (rdx u<= rcx + 1)\n140071222        sub_14007c6b0(arg1 + 0x2e8, 1)\n140071227        rdx = *(arg1 + 0x2f8)\n14007122b        rcx = *(arg1 + 0x308)\n140071233        *(arg1 + 0x300) &= rdx - 1\n14007123f        int64_t rcx_3 = (rcx + *(arg1 + 0x300)) & (rdx - 1)\n140071242        int64_t rax_3 = *(arg1 + 0x2f0)\n14007124b        int64_t rbx = rcx_3 << 3\n140071253        if (*(rax_3 + (rcx_3 << 3)) == 0)\n140071263        *(rbx + *(arg1 + 0x2f0)) = operator new(0x38)\n140071267        rax_3 = *(arg1 + 0x2f0)\n14007126b        int32_t* rbx_1 = *(rbx + rax_3)\n140071279        *rbx_1 = *arg2\n14007127b        sub_14001e680(&rbx_1[2], &arg2[2])\n140071284        *(rbx_1 + 0x28) = *(arg2 + 0x28)\n140071288        int64_t result = *(arg2 + 0x30)\n140071291        *(rbx_1 + 0x30) = result\n140071295        *(arg1 + 0x308) += 1\n1400712a3        return result",
+  "fetched_at": "2026-04-26T16:56:25Z"
+}

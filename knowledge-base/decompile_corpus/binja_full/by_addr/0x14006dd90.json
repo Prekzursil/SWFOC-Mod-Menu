@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006dd90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006ddab        int64_t* rcx = *(SteamInternal_ContextInit(&data_140a10e00) + 8)\n14006ddb2        void arg_8\n14006ddb2        int64_t* rax_2 = (*(*rcx + 0x10))(rcx, &arg_8)\n14006ddb5        void* r8 = *(arg1 + 0x2d0)\n14006ddbc        int64_t i = 0\n14006ddc6        void* rcx_2 = *(arg1 + 0x2d8) - r8\n14006ddd6        int64_t rax_3\n14006ddd6        void* rdx_1\n14006ddd6        rdx_1:rax_3 = muls.dp.q(-0x75270d0456c797dd, rcx_2)\n14006dddc        int64_t rdx_3 = (rdx_1 + rcx_2) s>> 8\n14006ddea        if (rdx_3 != neg.q(rdx_3 u>> 0x3f))\n14006ddf4        if (*(r8 + 0x68) == *rax_2)\n14006de13        if (r8 != 0)\n14006de21        return zx.q(*(r8 + 0xa0))\n14006de13        break\n14006ddf6        i += 1\n14006ddf9        r8 += 0x1d8\n14006de03        do while (i u< rcx_2 s/ 0x1d8)\n14006de0f        return 0xffffffff",
+  "fetched_at": "2026-04-26T16:56:14Z"
+}

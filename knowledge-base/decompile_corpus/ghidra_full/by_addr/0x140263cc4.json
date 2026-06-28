@@ -1,0 +1,7 @@
+{
+  "addr": "0x140263cc4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ModelClass::vfunction1_for_MultiLinkedListMember(ModelClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor((ModelClass *)&this[-1].ModelClass_data.field_0xa8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ef3f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ef404        int64_t rdx = *arg1\n1403ef413        int32_t rsi = 0\n1403ef415        int64_t result = (arg1[1] - rdx) s>> 3\n1403ef41c        if (result != 0)\n1403ef41e        uint64_t rcx = 0\n1403ef420        void* rbx_1 = *(rdx + (rcx << 3))\n1403ef427        if (rbx_1 != 0)\n1403ef429        void* rcx_1 = *(rbx_1 + 8)\n1403ef430        if (rcx_1 != 0)\n1403ef444        if (((*(rbx_1 + 0x18) - rcx_1) & 0xfffffffffffffff0) u>= 0x1000)\n1403ef446        void* r8_1 = *(rcx_1 - 8)\n1403ef459        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1403ef4ac        _invalid_parameter_noinfo_noreturn()\n1403ef4ac        noreturn\n1403ef45b        rcx_1 = r8_1\n1403ef45e        j_sub_1407864b8(rcx_1)\n1403ef463        __builtin_memset(rbx_1 + 8, 0, 0x18)\n1403ef477        j_sub_1407864b8(rbx_1)\n1403ef47c        rdx = *arg1\n1403ef47f        rsi += 1\n1403ef488        rcx = zx.q(rsi)\n1403ef48a        result = (arg1[1] - rdx) s>> 3\n1403ef491        do while (rcx u< result)\n1403ef4a2        arg1[1] = rdx\n1403ef4ab        return result",
+  "fetched_at": "2026-04-26T17:25:21Z"
+}

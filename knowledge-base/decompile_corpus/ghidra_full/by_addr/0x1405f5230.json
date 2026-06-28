@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5230",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceGoalSystemClass * __thiscall TacticalAIManagerClass::vfunction6(TacticalAIManagerClass *this)\n\n{\n  int iVar1;\n  SpaceGoalSystemClass *pSVar2;\n  LandGoalSystemClass *pLVar3;\n  GalacticGoalSystemClass *pGVar4;\n  \n  iVar1 = *(int *)((longlong)&(this->TacticalAIManagerClass_data).offset_0x8 + 4);\n  if (iVar1 == 0) {\n    pGVar4 = (GalacticGoalSystemClass *)FUN_140769c58(0x2b8);\n    if (pGVar4 != (GalacticGoalSystemClass *)0x0) {\n      pGVar4 = GalacticGoalSystemClass::GalacticGoalSystemClass(pGVar4,this);\n      return (SpaceGoalSystemClass *)pGVar4;\n    }\n  }\n  else if (iVar1 == 1) {\n    pLVar3 = (LandGoalSystemClass *)FUN_140769c58(0x2b8);\n    if (pLVar3 != (LandGoalSystemClass *)0x0) {\n      pLVar3 = LandGoalSystemClass::LandGoalSystemClass(pLVar3,this);\n      return (SpaceGoalSystemClass *)pLVar3;\n    }\n  }\n  else if (iVar1 == 2) {\n    pSVar2 = (SpaceGoalSystemClass *)FUN_140769c58(0x2b8);\n    if (pSVar2 != (SpaceGoalSystemClass *)0x0) {\n      pSVar2 = SpaceGoalSystemClass::SpaceGoalSystemClass(pSVar2,this);\n      return pSVar2;\n    }\n  }\n  return (SpaceGoalSystemClass *)0;\n}",
+  "fetched_at": "2026-04-26T17:23:04Z"
+}

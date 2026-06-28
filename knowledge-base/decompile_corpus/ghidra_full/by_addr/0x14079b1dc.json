@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b1dc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n\nuint FUN_14079b1dc(undefined8 param_1)\n\n{\n  uint *puVar1;\n  LCID Locale;\n  int iVar2;\n  longlong lVar3;\n  longlong lVar4;\n  short *psVar5;\n  uint uVar6;\n  undefined1 auStack_128 [32];\n  WCHAR local_108 [120];\n  ulonglong local_18;\n  \n  local_18 = DAT_140a44b98 ^ (ulonglong)auStack_128;\n  lVar3 = FUN_14078f07c();\n  lVar4 = FUN_14078f07c();\n  puVar1 = *(uint **)(lVar4 + 0x3a0);\n  Locale = LcidFromHexString(param_1);\n  iVar2 = GetLocaleInfoW(Locale,(-(uint)(*(int *)(lVar3 + 0xb4) != 0) & 0xfffff005) + 0x1002,\n                         local_108,0x78);\n  uVar6 = 0;\n  if (iVar2 == 0) {\n    *puVar1 = 0;\n    uVar6 = 1;\n  }\n  else {\n    iVar2 = _wcsicmp(*(wchar_t **)(lVar3 + 0xa0),local_108);\n    if (iVar2 == 0) {\n      psVar5 = &DAT_1408daae8;\n      do {\n        if ((short)Locale == *psVar5) goto LAB_14079b291;\n        uVar6 = uVar6 + 1;\n        psVar5 = psVar5 + 1;\n      } while (uVar6 < 10);\n      *puVar1 = *puVar1 | 4;\n      puVar1[2] = Locale;\n      puVar1[1] = Locale;\n    }\nLAB_14079b291:\n    uVar6 = ~(*puVar1 >> 2) & 1;\n  }\n  return uVar6;\n}",
+  "fetched_at": "2026-04-26T18:53:50Z"
+}

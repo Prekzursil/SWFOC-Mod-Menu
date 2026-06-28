@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f5f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall RegistryProfileClass::vfunction3(void)\n\n{\n  if (*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) + 0xd4\n              ) < DAT_140a7e2d0) {\n    _Init_thread_header(&DAT_140a7e2d0);\n    if (DAT_140a7e2d0 == -1) {\n      atexit(FUN_1407ed9e0);\n      _Init_thread_footer(&DAT_140a7e2d0);\n      return &DAT_140a15380;\n    }\n  }\n  return &DAT_140a15380;\n}",
+  "fetched_at": "2026-04-26T18:02:48Z"
+}

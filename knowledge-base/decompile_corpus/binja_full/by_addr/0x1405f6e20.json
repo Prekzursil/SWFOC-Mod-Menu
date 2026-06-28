@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6e20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f6e2e        struct AIDiagnosticsNodeClass::AIPlanBehaviorDiagnosticsNodeClass::VTable** result = operator new(0x10)\n1405f6e36        if (result == 0)\n1405f6e55        return result\n1405f6e3f        *result = &AIPlanBehaviorDiagnosticsNodeClass::`vftable'{for `AIDiagnosticsNodeClass'}\n1405f6e46        result[1] = arg1 - 0x20\n1405f6e4f        return result",
+  "fetched_at": "2026-04-26T17:22:35Z"
+}

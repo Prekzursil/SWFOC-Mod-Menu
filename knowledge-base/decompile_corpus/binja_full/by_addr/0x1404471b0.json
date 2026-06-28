@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404471b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404471d7        int32_t rsi_1\n1404471d7        if (arg2 != 0)\n1404471dd        rsi_1 = 0\n1404471e5        int32_t result\n1404471e5        if (arg2 == 0 || *(arg1 + 0x278) s<= 0)\n140447279        label_140447279:\n140447279        result.b = 0\n1404471eb        void* rbx_1 = 0x20\n1404471fb        while (true)\n1404471fb        char* rdx_2 = *(arg1 + 0x270) - 0x20 + rbx_1\n140447203        if (*(rdx_2 + 0x18) u>= 0x10)\n140447205        rdx_2 = *rdx_2\n14044720f        char* rcx_1 = *(arg2 + 0x298) + 0xf8\n14044721b        if (*(rcx_1 + 0x18) u>= 0x10)\n14044721d        rcx_1 = *rcx_1\n140447227        if (_stricmp(rcx_1, rdx_2) == 0)\n140447230        char* rcx_2 = rbx_1 + *(arg1 + 0x270)\n140447237        char* rdx_3\n140447237        if (arg3 == 0)\n140447251        if (*(rcx_2 + 0x18) u>= 0x10)\n140447253        rcx_2 = *rcx_2\n140447256        rdx_3 = \"space\"\n14044723e        if (*(rcx_2 + 0x18) u>= 0x10)\n140447240        rcx_2 = *rcx_2\n140447243        rdx_3 = \"land\"\n140447264        if (_stricmp(rcx_2, rdx_3) == 0)\n140447296        result.b = 1\n140447298        break\n140447266        rsi_1 += 2\n140447269        rbx_1 += 0x40\n140447273        if (rsi_1 s>= *(arg1 + 0x278))\n140447273        goto label_140447279\n140447295        return result",
+  "fetched_at": "2026-04-26T17:27:25Z"
+}

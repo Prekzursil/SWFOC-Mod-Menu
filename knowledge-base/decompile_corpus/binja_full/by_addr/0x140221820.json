@@ -1,0 +1,7 @@
+{
+  "addr": "0x140221820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140221833        *arg1 = &SignalDispatcherClass::`vftable'\n140221839        __builtin_memset(arg1 + 0xc, 0, 0x14)\n14022183e        arg1[1].b = 0\n14022184c        int64_t* rax = operator new(0x20)\n140221858        *rax = rax\n14022185b        rax[1] = rax\n14022185f        arg1[2] = rax\n140221863        int64_t r8 = arg1[2]\n140221867        __builtin_memset(&arg1[4], 0, 0x18)\n140221872        arg1[7] = 7\n14022187a        arg1[8] = 8\n140221882        *(arg1 + 0xc) = 0x3f800000\n140221889        sub_140048250(&arg1[4], 0x10, r8)\n140221891        __builtin_memset(&arg1[9], 0, 0x30)\n1402218b3        return arg1",
+  "fetched_at": "2026-04-26T17:29:11Z"
+}

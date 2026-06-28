@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _clrfp\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nuint _clrfp(void)\n\n{\n  uint uVar1;\n  \n  uVar1 = _get_fpsr();\n  _fclrf();\n  return uVar1 & 0x3f;\n}",
+  "fetched_at": "2026-04-26T18:52:44Z"
+}

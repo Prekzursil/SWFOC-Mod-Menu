@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402358e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402358ee        uint128_t zmm2\n1402358ee        zmm2.d = (*(arg1 + 4)).d f* arg2[1]\n1402358fa        uint128_t zmm0\n1402358fa        zmm0.d = (*arg1).d f* *arg2\n140235908        zmm2.d = zmm2.d f+ zmm0.d\n140235911        zmm0.d = (*(arg1 + 0xc)).d f* arg2[3]\n140235916        zmm2.d = zmm2.d f+ *(arg1 + 8) f* arg2[2]\n14023591a        zmm2.d = zmm2.d f+ zmm0.d\n140235921        float zmm1 = zmm2.d\n140235924        if (not(0f f<= zmm2.d))\n140235926        zmm2 ^= data_140800860\n140235930        bool rax = 0f > zmm1\n140235933        arg3[2].b = rax\n14023594e        if (not(0.00100000005f <= 1f f- zmm2.d))\n140235950        *(arg3 + 9) = 1\n140235955        arg3[1] = 0\n14023595d        *arg3 = 0\n140235967        return rax\n14023596b        *(arg3 + 9) = 0\n140235970        int64_t rdx\n140235970        double zmm0_1[0x2]\n140235970        uint64_t zmm2_1[0x2]\n140235970        rdx, zmm0_1, zmm2_1 = acosf(zmm2)\n14023597f        int32_t rax_2 = zmm0_1[0].d & 0x7f800000\n140235984        arg3[1] = zmm0_1[0].d\n14023598e        if (rax_2 u> 0x1d000000)\n140235990        rax_2, zmm0_1 = sinf(zmm0_1, rdx, zmm2_1)\n140235995        *arg3 = zmm0_1[0].d\n14023599e        return rax_2",
+  "fetched_at": "2026-04-26T17:29:54Z"
+}

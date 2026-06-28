@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070e3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070e3f3        *arg1 = &SiphonCreditsAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070e400        arg1[1] = &SiphonCreditsAbilityClass::`vftable'{for `RefCountClass'}\n14070e406        arg1[0x2f] = 0\n14070e40d        arg1[0x30].d = 0\n14070e413        sub_14048c8d0(arg1)\n14070e41b        if ((arg2 & 1) != 0)\n14070e425        j_sub_1407864b8(arg1)\n14070e437        return arg1",
+  "fetched_at": "2026-04-26T17:27:36Z"
+}

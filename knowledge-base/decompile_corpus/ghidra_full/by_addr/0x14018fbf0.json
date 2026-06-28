@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fbf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTerrainRender::vfunction8(alD3dTerrainRender *this)\n\n{\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  \n  iVar3 = 0;\n  if (0 < *(int *)((longlong)&this[2].vftablePtr + 4)) {\n    iVar1 = *(int *)&this[2].vftablePtr;\n    do {\n      iVar2 = 0;\n      if (0 < iVar1) {\n        do {\n          FUN_1401b6f30((&(this[4].vftablePtr)->deleting_destructor)[iVar1 * iVar3 + iVar2]);\n          iVar1 = *(int *)&this[2].vftablePtr;\n          iVar2 = iVar2 + 1;\n        } while (iVar2 < iVar1);\n      }\n      iVar3 = iVar3 + 1;\n    } while (iVar3 < *(int *)((longlong)&this[2].vftablePtr + 4));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:20Z"
+}

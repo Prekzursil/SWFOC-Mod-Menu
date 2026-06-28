@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b1dc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079b1fa        void var_128\n14079b1fa        int64_t rax_1 = __security_cookie ^ &var_128\n14079b208        void* rax_2 = __acrt_getptd()\n14079b218        int32_t* rdi = *(__acrt_getptd() + 0x3a0)\n14079b21f        uint32_t Locale\n14079b21f        int32_t rdx\n14079b21f        Locale, rdx = LcidFromHexString(arg1)\n14079b24f        int32_t rbx_1 = 0\n14079b253        void lCData\n14079b253        uint64_t result\n14079b253        if (GetLocaleInfoW(Locale, (sbb.d(rdx, rdx, *(rax_2 + 0xb4) != 0) & 0xfffff005) + 0x1002, &lCData, 0x78) != 0)\n14079b26f        if (_wcsicmp(*(rax_2 + 0xa0), &lCData) == 0)\n14079b271        int16_t* rax_6 = &data_1408daae8\n14079b27b        while (Locale.w != *rax_6)\n14079b27d        rbx_1 += 1\n14079b27f        rax_6 = &rax_6[1]\n14079b286        if (rbx_1 u>= 0xa)\n14079b288        *rdi |= 4\n14079b28b        rdi[2] = Locale\n14079b28e        rdi[1] = Locale\n14079b28e        break\n14079b298        result = zx.q(not.d(*rdi u>> 2)) & 1\n14079b255        *rdi = 0\n14079b257        result = 1\n14079b2a6        __security_check_cookie(rax_1 ^ &var_128)\n14079b2c3        return result",
+  "fetched_at": "2026-04-26T17:32:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400f53f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400f53f4        int32_t rdx = *arg1\n1400f53f8        if (rdx == 0)\n1400f54ae        return sub_1400f5340() __tailcall\n1400f5401        if (rdx != 1)\n1400f5401        return \n1400f5415        void* rcx = &arg1[2]\n1400f5418        if (*(arg1 + 0x20) u>= 0x10)\n1400f541a        rcx = *(arg1 + 8)\n1400f5422        int32_t rax_1\n1400f5422        if (*(arg1 + 0x18) == 0x17)\n1400f5431        rax_1 = memcmp(rcx, \"IDC_SLICE_CANCEL_BUTTON\", 0x17)\n1400f5438        if (*(arg1 + 0x18) == 0x17 && rax_1 == 0)\n1400f5464        sub_1400f5340()\n1400f543f        void* rcx_1 = &arg1[2]\n1400f5442        if (*(arg1 + 0x20) u>= 0x10)\n1400f5444        rcx_1 = *(arg1 + 8)\n1400f544c        if (*(arg1 + 0x18) == 0x17 && memcmp(rcx_1, \"IDC_DIALOG_CLOSE_BUTTON\", 0x17) == 0)\n1400f5464        sub_1400f5340()\n1400f546e        void* rax = &arg1[2]\n1400f5471        if (*(arg1 + 0x20) u>= 0x10)\n1400f5473        rax = *(arg1 + 8)\n1400f549f        if (*(arg1 + 0x18) == 0x10 && *rax == 0x43494c535f434449 && *(rax + 8) == 0x4e4f545455425f45)\n1400f54a5        return sub_1400f5d10() __tailcall\n1400f54b7        return ",
+  "fetched_at": "2026-04-26T17:04:08Z"
+}

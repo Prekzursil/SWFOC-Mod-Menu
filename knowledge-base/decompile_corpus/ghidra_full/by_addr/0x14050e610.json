@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050e610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_14050e610(longlong *param_1,int *param_2,int param_3)\n\n{\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  uint uVar4;\n  \n  if (param_3 != -1) {\n    FUN_14050fcd0();\n    iVar1 = *param_2;\n    iVar2 = (int)param_1[0x14];\n    iVar3 = param_2[1];\n    if ((((iVar2 <= iVar1) && (iVar1 < (int)param_1[0x15] + iVar2)) &&\n        (*(int *)((longlong)param_1 + 0xa4) <= iVar3)) &&\n       ((iVar3 < *(int *)((longlong)param_1 + 0xa4) + *(int *)((longlong)param_1 + 0xac) &&\n        (uVar4 = ((iVar3 - *(int *)((longlong)param_1 + 0xa4)) * (int)param_1[0xd] - iVar2) + iVar1,\n        uVar4 < (uint)((int)param_1[0xd] * *(int *)((longlong)param_1 + 0x6c)))))) {\n      return *(undefined4 *)(*(longlong *)(*param_1 + (longlong)param_3 * 8) + (ulonglong)uVar4 * 4)\n      ;\n    }\n  }\n  return 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T18:21:52Z"
+}

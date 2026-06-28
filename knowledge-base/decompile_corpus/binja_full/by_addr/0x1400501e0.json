@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400501e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400501eb        sub_140740900(\"invalid string position\")\n1400501eb        noreturn",
+  "fetched_at": "2026-04-26T16:54:42Z"
+}

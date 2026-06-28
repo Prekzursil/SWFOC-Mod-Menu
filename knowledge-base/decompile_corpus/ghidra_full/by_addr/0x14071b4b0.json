@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071b4b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall\nDrainLifeAbilityClass::vfunction6_for_IXMLLoadableClass\n          (DrainLifeAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  \n  if (param_1 != 0) {\n    if ((float)(this->DrainLifeAbilityClass_data).offset_0x8 <= 0.0) {\n      if ((param_2 == 0) || (param_1 == param_2)) {\n        return true;\n      }\n    }\n    else if (param_2 != 0) {\n      cVar1 = FUN_14039a450(param_2,*(undefined4 *)(param_1 + 0x58),0);\n      if (cVar1 != '\\0') {\n        cVar1 = FUN_14048e290(this,param_2);\n        if ((cVar1 != '\\0') && (*(longlong *)(param_2 + 0x2a0) != 0)) {\n          return *(char *)(param_2 + 0x33a) == -1;\n        }\n      }\n    }\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:57:43Z"
+}

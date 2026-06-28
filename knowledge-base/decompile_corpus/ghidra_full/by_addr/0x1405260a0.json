@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405260a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nAIExecutionSystemDiagnosticsNodeClass::vfunction5\n          (AIExecutionSystemDiagnosticsNodeClass *this,undefined8 *param_1)\n\n{\n  param_1[3] = 0xf;\n  *param_1 = 0;\n  param_1[2] = 0;\n  FUN_140022730(param_1,\"Execution System\",0x10);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:27:12Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403263c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403263d3        *arg1 = &DynamicVectorClass<class DynamicVectorClass<class std::string> >::`vftable'\n1403263d9        sub_140326b80(arg1)\n1403263e1        if ((arg2 & 1) != 0)\n1403263eb        j_sub_1407864b8(arg1)\n1403263fd        return arg1",
+  "fetched_at": "2026-04-26T17:01:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054aa30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054aa43        int64_t* var_58 = arg1\n14054aa4a        int64_t var_40 = -1\n14054aa55        int64_t var_38 = 0\n14054aa5d        int32_t var_24 = 0xffffffff\n14054aa64        int32_t var_18 = 0\n14054aa70        int32_t var_14 = sub_140371a10()\n14054aa74        int32_t var_10 = 0\n14054aa7c        char var_b = 0\n14054aa84        if (arg1 != 0)\n14054aa86        void* rcx = arg1[0x53]\n14054aa9e        int32_t var_18_1 = *(rcx + 0x474)\n14054aaa4        int32_t var_14_1 = *(rcx + 0x440)\n14054aaad        int32_t var_10_1 = sub_1403749d0(rcx, arg1)\n14054aac1        int32_t var_30 = *arg2\n14054aacc        int32_t var_28 = arg2[2]\n14054aad2        int32_t var_2c = arg2[1]\n14054aad8        char var_c = 1\n14054aadd        int64_t r8\n14054aadd        int64_t var_20 = r8\n14054aae2        sub_14054ade0(&var_58)\n14054aafd        return zx.q(var_b)",
+  "fetched_at": "2026-04-26T17:34:09Z"
+}

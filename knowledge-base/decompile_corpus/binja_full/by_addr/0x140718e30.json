@@ -1,0 +1,7 @@
+{
+  "addr": "0x140718e30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140718e3c        int64_t result = sub_14048f2c0(arg1)\n140718e4b        char var_108[0x100]\n140718e4b        if (not(0f f< *(arg1 + 0x178)))\n140718e52        void* r8_1 = arg1 + 0x18\n140718e56        if (*(arg1 + 0x30) u>= 0x10)\n140718e58        r8_1 = *r8_1\n140718e67        sscanf_s(&var_108, \"Error: (%s) Detonation_Time_In_Secs must be greater than zero! Defaulting to 1 second.\", r8_1)\n140718e71        result = sub_1402149d0(&var_108)\n140718e76        *(arg1 + 0x178) = 0x3f800000\n140718e87        if (*(arg1 + 0x190) s<= 0)\n140718e8e        void* r8_2 = arg1 + 0x18\n140718e92        if (*(arg1 + 0x30) u>= 0x10)\n140718e94        r8_2 = *r8_2\n140718ea3        sscanf_s(&var_108, \"Error: (%s) Number_Of_Bombs must be greater than zero! Defaulting to 1.\", r8_2)\n140718ead        result = sub_1402149d0(&var_108)\n140718eb2        *(arg1 + 0x190) = 1\n140718ec4        return result",
+  "fetched_at": "2026-04-26T17:27:59Z"
+}

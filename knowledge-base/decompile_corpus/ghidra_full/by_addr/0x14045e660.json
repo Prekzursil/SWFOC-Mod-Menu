@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045e660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventWinBattlesClass::vfunction5(StoryEventWinBattlesClass *this)\n\n{\n  *(undefined4 *)&this[1].SignalGeneratorClass_data = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:24Z"
+}

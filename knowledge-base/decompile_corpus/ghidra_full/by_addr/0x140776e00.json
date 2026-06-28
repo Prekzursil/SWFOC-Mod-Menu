@@ -1,0 +1,7 @@
+{
+  "addr": "0x140776e00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    strcmp\n   \n   Libraries: Visual Studio 2012, Visual Studio 2015, Visual Studio 2017, Visual Studio 2019 */\n\nint __cdecl strcmp(char *_Str1,char *_Str2)\n\n{\n  byte bVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  \n  lVar3 = (longlong)_Str2 - (longlong)_Str1;\n  while( true ) {\n    if (((ulonglong)_Str1 & 7) == 0) {\n      while ((((int)lVar3 + (int)_Str1 & 0xfffU) < 0xff9 &&\n             (uVar2 = *(ulonglong *)_Str1, uVar2 == *(ulonglong *)(lVar3 + (longlong)_Str1)))) {\n        _Str1 = (char *)((longlong)_Str1 + 8);\n        if ((~uVar2 & uVar2 + 0xfefefefefefefeff & 0x8080808080808080) != 0) {\n          return 0;\n        }\n      }\n    }\n    bVar1 = (byte)*(ulonglong *)_Str1;\n    if (bVar1 != *(byte *)(lVar3 + (longlong)_Str1)) break;\n    _Str1 = (char *)((longlong)_Str1 + 1);\n    if (bVar1 == 0) {\n      return 0;\n    }\n  }\n  return -(uint)(bVar1 < *(byte *)(lVar3 + (longlong)_Str1)) | 1;\n}",
+  "fetched_at": "2026-04-26T18:50:27Z"
+}

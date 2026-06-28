@@ -1,0 +1,7 @@
+{
+  "addr": "0x140072570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007257b        __chkstk(0x2080)\n140072583        arg3 &= 0xff0fffff\n140072590        int128_t zmm0 = data_140802a40\n14007259b        arg3:3.b = 0\n1400725a9        arg3 &= 0xfff00000\n1400725b7        int32_t var_2048 = 0\n1400725bb        void* var_2040 = nullptr\n1400725c6        int64_t var_2020 = 0\n1400725cb        int64_t var_2018 = 0\n1400725d0        int32_t arg_10 = 0\n140072609        int64_t* rcx = *(SteamInternal_ContextInit(&data_140a10e00) + 0x20)\n140072619        void var_2008\n140072619        int32_t arg_8\n140072619        int32_t result = (*(*rcx + 0xd8))(rcx, *(arg1 + 0x160), zx.q(*(arg2 + 0x14)), &arg_10, &var_2008, 0x2000, &arg_8)\n140072627        if (arg_8 == 1)\n140072639        result = sub_14006c820(&var_2048, &var_2008, sx.q(result))\n140072640        if (result.b != 0)\n140072652        int64_t var_2018_1 = arg_10.q\n140072657        result = sub_140078180(arg1, &var_2048)\n14007265c        int64_t rdx_3 = zmm0:8.q\n140072665        if (rdx_3 u< 0x10)\n1400726a5        return result\n140072667        void* rcx_3 = var_2040\n14007266f        void* rax_3 = rcx_3\n140072679        if (rdx_3 + 1 u>= 0x1000)\n14007267b        rcx_3 = *(rcx_3 - 8)\n14007268e        if (rax_3 - rcx_3 - 8 u> 0x1f)\n1400726a6        _invalid_parameter_noinfo_noreturn()\n1400726a6        noreturn\n140072690        return j_sub_1407864b8(rcx_3)",
+  "fetched_at": "2026-04-26T16:56:33Z"
+}

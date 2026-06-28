@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405ea8f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall MoveActionClass::vfunction9(MoveActionClass *this)\n\n{\n  if (((this->ActionClass_data).offset_0x98 != 0) && ((this->ActionClass_data).offset_0xa0 != 0)) {\n    return *(undefined1 *)((longlong)&(this->MoveActionClass_data).offset_0x18 + 7);\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:46:25Z"
+}

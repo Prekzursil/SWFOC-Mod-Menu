@@ -1,0 +1,7 @@
+{
+  "addr": "0x140208210",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020822d        if (arg2 != 0)\n14020822f        int32_t i = 0\n140208234        if (*(arg1 + 0x10) s> 0)\n140208236        int64_t rdi_1 = 0\n140208244        void* rcx = *(*(arg1 + 8) + rdi_1)\n14020824c        if (rcx != -0x40 && std::_String_const_iterator<class std::_String_val<struct std::_Simple_types<uint16_t> > >::operator==(rcx + 0x40, arg2) != 0)\n140208283        return *(*(arg1 + 8) + (sx.q(i) << 3))\n14020825a        i += 1\n14020825c        rdi_1 += 8\n140208263        do while (i s< *(arg1 + 0x10))\n140208265        return 0",
+  "fetched_at": "2026-04-26T17:27:59Z"
+}

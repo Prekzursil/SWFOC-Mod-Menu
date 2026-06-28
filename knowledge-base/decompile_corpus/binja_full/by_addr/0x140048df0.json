@@ -1,0 +1,7 @@
+{
+  "addr": "0x140048df0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140048dff        uint128_t* rdi = arg1[1]\n140048e09        int64_t rdx = *arg1\n140048e12        int64_t rcx_2 = (rdi - rdx) s>> 3\n140048e19        if (arg2 u< rcx_2)\n140048e20        int64_t* rbp = rdx + (arg2 << 3)\n140048e24        int64_t* rbx_1 = rbp\n140048e2a        if (rbp != rdi)\n140048e30        int64_t* rcx_3 = *rbx_1\n140048e36        if (rcx_3 != 0)\n140048e3b        (*(*rcx_3 + 8))(rcx_3)\n140048e3e        rbx_1 = &rbx_1[1]\n140048e45        do while (rbx_1 != rdi)\n140048e47        arg1[1] = rbp\n140048e5f        return \n140048e60        if (arg2 u<= rcx_2)\n140048e60        return \n140048e70        if (arg2 u> (arg1[2] - rdx) s>> 3)\n140048e7d        sub_140045940(arg1, arg2)\n140048e91        return \n140048e92        int64_t rbx_2 = arg2 - rcx_2\n140048e95        if (arg2 != rcx_2)\n140048ea3        memset(rdi, 0, rbx_2 << 3)\n140048ea8        rdi += rbx_2 << 3\n140048eac        arg1[1] = rdi\n140048ebf        return ",
+  "fetched_at": "2026-04-26T16:54:09Z"
+}

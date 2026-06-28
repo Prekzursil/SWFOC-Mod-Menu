@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e00b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 *\nFUN_1407e00b0(undefined8 param_1,undefined4 *param_2,undefined4 *param_3,undefined4 *param_4)\n\n{\n  undefined4 *puVar1;\n  undefined4 *puVar2;\n  undefined4 *puVar3;\n  undefined4 *puVar4;\n  \n  puVar4 = param_4;\n  if (param_2 != param_3) {\n    puVar3 = param_2 + 1;\n    do {\n      puVar1 = puVar3 + 6;\n      *puVar4 = puVar3[-1];\n      puVar4 = puVar4 + 6;\n      *(undefined4 *)((longlong)param_4 + (-0x18 - (longlong)param_2) + (longlong)puVar1) = *puVar3;\n      *(undefined4 *)((longlong)param_4 + (-0x14 - (longlong)param_2) + (longlong)puVar1) =\n           puVar3[1];\n      *(undefined4 *)((longlong)param_4 + (-0x10 - (longlong)param_2) + (longlong)puVar1) =\n           puVar3[2];\n      *(undefined4 *)((longlong)param_4 + (-0xc - (longlong)param_2) + (longlong)puVar1) = puVar3[3]\n      ;\n      *(undefined4 *)((longlong)param_4 + (-8 - (longlong)param_2) + (longlong)puVar1) = puVar3[4];\n      puVar2 = puVar3 + 5;\n      puVar3 = puVar1;\n    } while (puVar2 != param_3);\n  }\n  return puVar4;\n}",
+  "fetched_at": "2026-04-26T18:59:18Z"
+}

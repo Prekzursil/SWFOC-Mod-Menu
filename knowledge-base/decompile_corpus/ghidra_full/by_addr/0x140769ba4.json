@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ba4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __crtLCMapStringW\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl\n__crtLCMapStringW(LPCWSTR _LocaleName,DWORD _DWMapFlag,LPCWSTR _LpSrcStr,int _CchSrc,\n                 LPWSTR _LpDestStr,int _CchDest)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  iVar2 = _CchSrc;\n  if (0 < _CchSrc) {\n    iVar1 = FUN_14078baa0(_LpSrcStr,(longlong)_CchSrc);\n    iVar2 = iVar1 + 1;\n    if (_CchSrc <= iVar1) {\n      iVar2 = iVar1;\n    }\n  }\n  iVar2 = LCMapStringEx(_LocaleName,_DWMapFlag,_LpSrcStr,iVar2,_LpDestStr,_CchDest,\n                        (LPNLSVERSIONINFO)0x0,(LPVOID)0x0,0);\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:09:46Z"
+}

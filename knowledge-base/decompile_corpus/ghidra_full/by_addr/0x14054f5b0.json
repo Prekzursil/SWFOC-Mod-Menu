@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054f5b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_14054f5b0(longlong *param_1)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  uint uVar3;\n  longlong lVar4;\n  float fVar5;\n  float fVar6;\n  \n  lVar4 = param_1[1] - *param_1;\n  uVar3 = 0;\n  lVar1 = lVar4 >> 0x3f;\n  lVar4 = lVar4 / 0x34 + lVar1;\n  if (lVar4 != lVar1) {\n    uVar2 = 0;\n    fVar6 = 0.0;\n    do {\n      uVar3 = uVar3 + 1;\n      fVar5 = *(float *)(uVar2 * 0x34 + 0x18 + *param_1);\n      if (fVar5 <= fVar6) {\n        fVar5 = fVar6;\n      }\n      uVar2 = (ulonglong)uVar3;\n      fVar6 = fVar5;\n    } while (uVar2 < (ulonglong)(lVar4 - lVar1));\n    return fVar5;\n  }\n  return 0.0;\n}",
+  "fetched_at": "2026-04-26T18:37:50Z"
+}

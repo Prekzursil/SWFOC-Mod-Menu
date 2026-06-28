@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall FindWeaknessAbilityClass::vfunction4_for_IXMLLoadableClass(void)\n\n{\n  return (int)((float)DAT_140b0a340 + DAT_1408007c0);\n}",
+  "fetched_at": "2026-04-26T17:49:50Z"
+}

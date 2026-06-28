@@ -1,0 +1,7 @@
+{
+  "addr": "0x140196b20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140196b37        float zmm4 = arg1 - arg2\n140196b3b        data_140a701dc = arg2\n140196b48        data_140a7007c = arg1\n140196b5f        data_140a70128 = 1f / zmm4\n140196b67        data_140a7012c = -1f / zmm4 * arg2\n140196b6f        sub_140177aa0(0x24, arg1)\n140196b85        return sub_140177aa0(0x25, data_140a701dc) __tailcall",
+  "fetched_at": "2026-04-26T17:24:29Z"
+}

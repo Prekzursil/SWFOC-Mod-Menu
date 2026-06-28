@@ -1,0 +1,7 @@
+{
+  "addr": "0x140373b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140373b59        int64_t* rcx = data_140b15418\n140373b63        int32_t rax\n140373b63        if (rcx != 0)\n140373b70        rax = (*(*rcx + 0xe0))(rcx)\n140373b65        rax = data_140b153fc\n140373b81        int64_t* rax_2\n140373b81        int128_t zmm6\n140373b81        rax_2, zmm6 = sub_1403729f0(arg1, rax, nullptr)\n140373b8c        if (rax_2 == 0)\n140373b96        return zx.o(0)\n140373b9f        int128_t var_18 = zmm6\n140373ba4        void var_38\n140373ba4        (*(*rax_2 + 0x58))(rax_2, &var_38)\n140373bb8        int32_t var_2c\n140373bb8        zmm6.d = fconvert.s(sub_1407760bc(_mm_cvtps_pd(var_2c[0].q))[0].q)\n140373bd5        int32_t var_28\n140373bd5        int32_t zmm1 = fconvert.s(sub_1407760bc(_mm_cvtps_pd(var_28[0].q)).q)\n140373bd9        int128_t result = *(arg1 + 0x16b8)\n140373bf3        zmm6.d = _mm_max_ss(zmm6.d, zmm1).d f* 2f\n140373bf7        zmm6.d = zmm6.d f/ 20f\n140373bfb        if (result.d f> 0f)\n140373c0d        zmm6.d = result.d f* 2f\n140373c11        zmm6.d = zmm6.d f/ 20f\n140373bfd        result = *(arg1 + 0x16f0)\n140373c08        if (not(result.d f<= 0f))\n140373c0d        zmm6.d = result.d f* 2f\n140373c11        zmm6.d = zmm6.d f/ 20f\n140373c1d        result.d = (*(arg1 + 0x658)).d f* zmm6.d\n140373c2b        return result",
+  "fetched_at": "2026-04-26T17:16:37Z"
+}

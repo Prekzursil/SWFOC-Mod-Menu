@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e6940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void SingletonInstance<class_MousePointerClass>::\n     SingletonInstance<class_MousePointerClass>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_1409cf1b8 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:00:51Z"
+}

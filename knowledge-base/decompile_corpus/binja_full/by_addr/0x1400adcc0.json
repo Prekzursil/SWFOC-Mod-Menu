@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400adcc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400adcd7        char const* const rbx = \"IDC_EDIT_DEFEND\"\n1400add4f        uint64_t result\n1400adcde        int32_t i = 0x2e\n1400add4f        while (i s< 0x43)\n1400adcf0        result = -1\n1400adcf7        result += 1\n1400adcfe        do while (rbx[result] != 0)\n1400add05        char* rcx = arg1 + 8\n1400add09        if (*(arg1 + 0x20) u>= 0x10)\n1400add0b        rcx = *(arg1 + 8)\n1400add0f        int64_t r8_1 = *(arg1 + 0x18)\n1400add16        if (r8_1 == result)\n1400add1b        result = memcmp(rcx, rbx, r8_1)\n1400add22        if (result.d == 0)\n1400add24        int32_t rcx_1 = *(arg1 + 0x2c)\n1400add2a        int32_t arg_14 = *(arg1 + 0x34)\n1400add2e        int32_t arg_10 = rcx_1\n1400add32        result = zx.q(rcx_1 - 0x10)\n1400add38        if (result.d u> 2)\n1400add41        result = sub_1400add70(i, &arg_10)\n1400add46        i += 1\n1400add48        rbx = &rbx[0x20]\n1400add65        return result",
+  "fetched_at": "2026-04-26T16:59:16Z"
+}

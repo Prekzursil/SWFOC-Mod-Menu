@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277dbc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawLineSegmentClass::vfunction3(DrawLineSegmentClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((DrawLineSegmentClass *)&this[-1].RefCountClass_data.offset_0x50,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:46Z"
+}

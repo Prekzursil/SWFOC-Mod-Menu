@@ -1,0 +1,7 @@
+{
+  "addr": "0x140727c40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float __thiscall\nTerrainTypeInstantiationMarshallerClass::vfunction2\n          (TerrainTypeInstantiationMarshallerClass *this,int param_1,longlong param_2)\n\n{\n  undefined8 uVar1;\n  longlong *plVar2;\n  double dVar3;\n  char cVar4;\n  longlong lVar5;\n  \n  uVar1 = *(undefined8 *)(*(longlong *)(param_2 + 0xd0) + (longlong)param_1 * 8);\n  if ((*(longlong *)(param_2 + 0x20) != 0) &&\n     (plVar2 = *(longlong **)(*(longlong *)(param_2 + 0x20) + 0x58), plVar2 != (longlong *)0x0)) {\n    lVar5 = (**(code **)(*plVar2 + 0x30))();\n    if (lVar5 != 0) {\n      cVar4 = FUN_140373490(*(undefined8 *)(lVar5 + 0x298),uVar1);\n      if (cVar4 == '\\x01') {\n        return DAT_140800804;\n      }\n    }\n  }\n  if (*(int *)(param_2 + 0x19c) == -1) {\n    return 0.0;\n  }\n  dVar3 = (double)FUN_1405f22c0(uVar1);\n  return (float)dVar3;\n}",
+  "fetched_at": "2026-04-26T18:00:29Z"
+}

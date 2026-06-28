@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ac6f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nMeleeHeroClashClass::vfunction7(MeleeHeroClashClass *this,undefined8 *param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n  *param_1 = 0;\n  param_1[1] = 0;\n  param_1[2] = 0;\n  if ((this->MeleeHeroClashClass_data).offset_0x0 != 0) {\n    FUN_140045580(param_1,0);\n  }\n  lVar1 = (this->MeleeHeroClashClass_data).offset_0x8;\n  if (lVar1 != 0) {\n    plVar2 = (longlong *)param_1[1];\n    if (plVar2 != (longlong *)param_1[2]) {\n      *plVar2 = lVar1;\n      param_1[1] = param_1[1] + 8;\n      return param_1;\n    }\n    FUN_140045580(param_1,plVar2,&(this->MeleeHeroClashClass_data).offset_0x8);\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:35:36Z"
+}

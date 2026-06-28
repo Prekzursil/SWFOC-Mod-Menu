@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BombingRunEventClass * __thiscall\nBombingRunEventClass::BombingRunEventClass(BombingRunEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x1c;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:26:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e3f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e3f57        uint128_t zmm1\n1401e3f57        if (data_140a79800 == 0)\n1401e3f67        zmm1 = 0x44800000\n1401e3f62        zmm1 = _mm_cvtepi32_ps(zx.o(sub_14025e960()))\n1401e3f77        uint128_t result\n1401e3f77        result.d = _mm_cvtepi32_ps(zx.o(*(arg1 + 0x34))).d f/ zmm1.d\n1401e3f7b        *(arg1 + 0x44) = result.d\n1401e3f87        if (data_140a79800 == 0)\n1401e3f97        zmm1 = 0x44400000\n1401e3f92        zmm1 = _mm_cvtepi32_ps(zx.o(sub_14025e930()))\n1401e3fa7        result.d = _mm_cvtepi32_ps(zx.o(arg1[7].d)).d f/ zmm1.d\n1401e3fab        arg1[9].d = result.d\n1401e3fb7        if (data_140a79800 == 0)\n1401e3fc7        zmm1 = 0x44800000\n1401e3fc2        zmm1 = _mm_cvtepi32_ps(zx.o(sub_14025e960()))\n1401e3fd7        result.d = _mm_cvtepi32_ps(zx.o(*(arg1 + 0x3c))).d f/ zmm1.d\n1401e3fdb        *(arg1 + 0x4c) = result.d\n1401e3fe7        if (data_140a79800 == 0)\n1401e3ff7        zmm1 = 0x44400000\n1401e3ff2        zmm1 = _mm_cvtepi32_ps(zx.o(sub_14025e930()))\n1401e4007        result.d = _mm_cvtepi32_ps(zx.o(arg1[8].d)).d f/ zmm1.d\n1401e400b        arg1[0xa].d = result.d\n1401e4013        if (arg2 != 0)\n1401e401b        (*(*arg1 + 0x48))(arg1)\n1401e4028        return result",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

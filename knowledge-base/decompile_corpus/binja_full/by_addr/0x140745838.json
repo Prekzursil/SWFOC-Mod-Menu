@@ -1,0 +1,7 @@
+{
+  "addr": "0x140745838",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074584e        void var_68\n14074584e        int64_t rax_1 = __security_cookie ^ &var_68\n140745856        int64_t rsi\n140745856        rsi.b = arg3\n14074585c        int64_t* rax_2 = localeconv()\n140745869        void var_40\n140745869        _Getcvt(&var_40)\n14074586e        *(arg1 + 0x10) = 0\n140745873        *(arg1 + 0x20) = 0\n140745878        *(arg1 + 0x28) = 0\n14074587d        void* var_48 = arg1\n140745887        _Getcvt(&var_40)\n14074588f        void* const rcx_2 = &data_1407ff8a8\n140745896        if (rsi.b == 0)\n140745898        rcx_2 = rax_2[2]\n1407458a8        *(arg1 + 0x10) = std::_Maklocstr<char>(rcx_2)\n1407458bf        *(arg1 + 0x20) = std::_Maklocstr<char>(\"false\")\n1407458d6        *(arg1 + 0x28) = std::_Maklocstr<char>(\"true\")\n1407458dd        int32_t* result\n1407458dd        if (rsi.b == 0)\n1407458ec        *(arg1 + 0x18) = **rax_2\n1407458f3        result.b = *rax_2[1]\n1407458df        *(arg1 + 0x18) = 0x2e\n1407458e3        result.b = 0x2c\n1407458f5        *(arg1 + 0x19) = result.b\n140745900        __security_check_cookie(rax_1 ^ &var_68)\n140745916        return result",
+  "fetched_at": "2026-04-26T17:29:26Z"
+}

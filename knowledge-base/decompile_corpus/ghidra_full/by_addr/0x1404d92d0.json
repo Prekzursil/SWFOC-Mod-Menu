@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d92d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall\nSpaceReinforceFOWSampler::vfunction1(SpaceReinforceFOWSampler *this,undefined8 param_1)\n\n{\n  char cVar1;\n  undefined4 uVar2;\n  \n  cVar1 = FUN_1404d8d10(this[1].vftablePtr,*(undefined4 *)&this[2].vftablePtr,param_1);\n  uVar2 = 0xff;\n  if (cVar1 != '\\0') {\n    uVar2 = 0;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:14:23Z"
+}

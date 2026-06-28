@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401432b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401432b0(undefined8 param_1,undefined8 param_2)\n\n{\n  char cVar1;\n  alEmitter *paVar2;\n  char *pcVar3;\n  char local_408 [1024];\n  \n  paVar2 = (alEmitter *)FUN_140769c58(0x2f8);\n  if (paVar2 == (alEmitter *)0x0) {\n    paVar2 = (alEmitter *)0x0;\n  }\n  else {\n    paVar2 = alEmitter::alEmitter(paVar2);\n  }\n  FUN_140143740(local_408,param_2);\n  pcVar3 = local_408;\n  do {\n    cVar1 = *pcVar3;\n    pcVar3[(longlong)paVar2 + (0xd8 - (longlong)local_408)] = cVar1;\n    pcVar3 = pcVar3 + 1;\n  } while (cVar1 != '\\0');\n  FUN_140143190(param_1,paVar2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:42Z"
+}

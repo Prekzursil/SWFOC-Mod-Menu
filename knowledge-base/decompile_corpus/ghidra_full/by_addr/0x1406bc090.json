@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bc090",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nAITemplateSystemClass::vfunction6(AITemplateSystemClass *this,undefined8 param_1)\n\n{\n  int iVar1;\n  ulonglong uVar2;\n  \n  iVar1 = FUN_1402205a0(param_1);\n  if (iVar1 != 0x60000) {\n    uVar2 = ServicedAISystemClass::vfunction6((ServicedAISystemClass *)this,param_1);\n    return uVar2 & 0xffffffffffffff01;\n  }\n  uVar2 = FUN_1406bc0e0();\n  return uVar2 & 0xffffffffffffff01;\n}",
+  "fetched_at": "2026-04-26T17:38:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077f7e4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8\nFUN_14077f7e4(undefined8 param_1,undefined1 *param_2,longlong param_3,longlong *param_4,\n             rsize_t *param_5,wchar_t param_6)\n\n{\n  errno_t eVar1;\n  int local_res18 [4];\n  \n  local_res18[0] = 0;\n  if (param_3 == -1) {\n    eVar1 = wctomb_s(local_res18,(char *)*param_4,5,param_6);\n    if (eVar1 == 0) {\n      *param_4 = *param_4 + (longlong)local_res18[0];\n      *param_5 = *param_5 - (longlong)local_res18[0];\n    }\n    else if ((eVar1 == 0x16) || (eVar1 == 0x22)) {\n                    /* WARNING: Subroutine does not return */\n      _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n    }\n  }\n  else {\n    eVar1 = wctomb_s(local_res18,(char *)*param_4,*param_5,param_6);\n    if (eVar1 == 0x22) {\n      *param_2 = 0;\n      return 0;\n    }\n    if (0 < local_res18[0]) {\n      *param_4 = *param_4 + (longlong)local_res18[0];\n      *param_5 = *param_5 - (longlong)local_res18[0];\n    }\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:50:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140763168",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "collate<char> * __thiscall\nstd::collate<char>::scalar_deleting_destructor(collate<char> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: std::collate<char>::~collate<char> */\n  this->vftablePtr = &vftable;\n  FUN_1407864b8(this[1]._Crt_new_delete);\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr = (collate<char>_vftable *)&_Facet_base::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x20);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:09:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8ef0",
+  "tool": "ghidra",
+  "fact_id": "api_lua_gettop",
+  "body": "\nlonglong FUN_1407b8ef0(longlong param_1)\n\n{\n  return *(longlong *)(param_1 + 0x10) - *(longlong *)(param_1 + 0x18) >> 4;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:25Z"
+}

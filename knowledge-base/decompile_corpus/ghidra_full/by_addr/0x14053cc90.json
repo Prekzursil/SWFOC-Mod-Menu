@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053cc90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_14053cc90(undefined8 param_1)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  ulonglong uVar5;\n  longlong lVar6;\n  longlong lVar7;\n  \n  uVar5 = DAT_140b39338 - DAT_140b39330 >> 3;\n  bVar1 = FUN_14021fe20(param_1,0x11);\n  bVar1 = bVar1 & 1;\n  if ((int)uVar5 != 0) {\n    lVar6 = 0;\n    uVar5 = uVar5 & 0xffffffff;\n    lVar7 = lVar6;\n    do {\n      if (*(longlong *)(lVar6 + DAT_140b39330) != 0) {\n        FUN_1401fed10(0,0);\n      }\n      bVar2 = FUN_14021ffa0(param_1,3);\n      bVar3 = FUN_1402200b0(param_1,DAT_140b39330 + lVar7,8);\n      bVar4 = FUN_140220030();\n      bVar1 = bVar1 & bVar2 & bVar3 & bVar4;\n      lVar7 = lVar7 + 8;\n      lVar6 = lVar6 + 8;\n      uVar5 = uVar5 - 1;\n    } while (uVar5 != 0);\n  }\n  bVar2 = FUN_14021feb0(param_1);\n  return bVar2 & bVar1;\n}",
+  "fetched_at": "2026-04-26T18:34:47Z"
+}

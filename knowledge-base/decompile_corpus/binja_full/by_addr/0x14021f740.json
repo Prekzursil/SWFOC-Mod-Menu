@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f740",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021f75c        *arg1 = 0\n14021f768        if (arg2 == 0)\n14021f800        return arg1\n14021f77c        enum REG_SAM_FLAGS samDesired = 0xf023f\n14021f782        int64_t rbp_2 = zx.q(arg4) ^ 1\n14021f793        if (arg5 != 0)\n14021f793        samDesired = 0x20219\n14021f7ae        if (RegOpenKeyExA(rbp_2 - 0x7fffffff, arg2, 0, samDesired, arg1) != NO_ERROR && arg3 != 0)\n14021f7d7        int64_t* var_38_1\n14021f7d7        var_38_1.d = 0\n14021f7dc        RegCreateKeyExA(rbp_2 - 0x7fffffff, arg2, 0, nullptr, var_38_1.d, 0xf023f, nullptr, arg1, nullptr)\n14021f7e7        return arg1",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140427110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StopMovementEventClass * __thiscall\nStopMovementEventClass::StopMovementEventClass(StopMovementEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x1d;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:48:03Z"
+}

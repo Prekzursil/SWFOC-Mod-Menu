@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079f768",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wchar_t * __ptr64 __cdecl common_getenv_nolock<wchar_t>(wchar_t const * __ptr64 const)\n   \n   Library: Visual Studio 2019 Release */\n\nwchar_t * __cdecl common_getenv_nolock<wchar_t>(wchar_t *param_1)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  wchar_t *_Str1;\n  ulonglong uVar3;\n  ulonglong _MaxCount;\n  \n  plVar2 = (longlong *)__dcrt_get_or_create_wide_environment_nolock();\n  if ((plVar2 != (longlong *)0x0) && (param_1 != (wchar_t *)0x0)) {\n    _MaxCount = 0xffffffffffffffff;\n    do {\n      _MaxCount = _MaxCount + 1;\n    } while (param_1[_MaxCount] != L'\\0');\n    _Str1 = (wchar_t *)*plVar2;\n    while (_Str1 != (wchar_t *)0x0) {\n      uVar3 = 0xffffffffffffffff;\n      do {\n        uVar3 = uVar3 + 1;\n      } while (_Str1[uVar3] != L'\\0');\n      if (((_MaxCount < uVar3) && (_Str1[_MaxCount] == L'=')) &&\n         (iVar1 = _wcsnicoll(_Str1,param_1,_MaxCount), iVar1 == 0)) {\n        return (wchar_t *)(*plVar2 + _MaxCount * 2 + 2);\n      }\n      plVar2 = plVar2 + 1;\n      _Str1 = (wchar_t *)*plVar2;\n    }\n  }\n  return (wchar_t *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:54:10Z"
+}

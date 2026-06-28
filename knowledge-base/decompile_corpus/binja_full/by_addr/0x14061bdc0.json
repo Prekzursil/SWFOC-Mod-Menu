@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061bdc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061bdcb        struct BehaviorClass::GravityControlFieldBehaviorClass::VTable** result = operator new(0x40)\n14061bdd6        if (result == 0)\n14061be0e        return result\n14061bddb        sub_1404c32d0(result)\n14061bde7        *result = &GravityControlFieldBehaviorClass::`vftable'{for `BehaviorClass'}\n14061bdf1        result[1] = &GravityControlFieldBehaviorClass::`vftable'{for `RefCountClass'}\n14061bdfc        result[3] = &GravityControlFieldBehaviorClass::`vftable'{for `SignalListenerClass'}\n14061be08        return result",
+  "fetched_at": "2026-04-26T17:23:37Z"
+}

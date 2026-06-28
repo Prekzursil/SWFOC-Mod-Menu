@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078decc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078decc        int64_t arg_10 = arg2\n14078ded1        int32_t arg_8 = arg1\n14078dedd        int64_t result = 0\n14078dee2        int64_t var_40 = 0\n14078deea        if (arg1 u> 5)\n14078def1        *_errno() = 0x16\n14078def7        _invalid_parameter_noinfo()\n14078defc        return 0\n14078df05        void* arg_20 = __acrt_getptd()\n14078df09        __acrt_eagerly_load_locale_apis()\n14078df0e        sub_14079a6ec()\n14078df13        void* rax_3 = arg_20\n14078df27        *(rax_3 + 0x3a8) |= 0x10\n14078df32        void** var_38 = &arg_20\n14078df3a        int64_t* var_30 = &var_40\n14078df42        void** var_28_1 = &arg_20\n14078df4a        int64_t* var_20_1 = &result\n14078df52        int32_t* var_18_1 = &arg_8\n14078df5a        int64_t* var_10_1 = &arg_10\n14078df5e        void arg_18\n14078df5e        __crt_seh_guarded_call<class <lambda_5df02c53a8f32f81fd64e5bbb78039f1>,class <lambda_2af78c5f5901b1372d98f9ab3177dfa6>& __ptr64,class <lambda_f51fe5fd7c79a33db34fc9310f277369>& __ptr64,void>::operator()<class <lambda_5df02c53a8f32f81fd64e5bbb78039f1>,class <lambda_2af78c5f5901b1372d98f9ab3177dfa6>& __ptr64,class <lambda_f51fe5fd7c79a33db34fc9310f277369>& __ptr64>(&arg_18, &arg_18, &var_30, &var_38)\n14078df63        return result",
+  "fetched_at": "2026-04-26T17:31:35Z"
+}

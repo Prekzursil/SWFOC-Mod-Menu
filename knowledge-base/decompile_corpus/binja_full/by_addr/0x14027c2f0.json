@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027c2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027c2f4        int32_t r8 = arg1[0x13]\n14027c2f8        int32_t r9 = arg1[1] + 1\n14027c2fb        arg1[1] = r9\n14027c302        if (r8 == 0)\n14027c306        r8 = arg2\n14027c309        arg1[0x12] = *arg1\n14027c30c        arg1[0x13] = arg2\n14027c311        int32_t result = arg2 - r8\n14027c319        if (result u> 0x3e8)\n14027c31e        arg1[0x13] = arg2\n14027c321        result = r9 - arg1[0x12]\n14027c324        arg1[0x10] = result\n14027c327        arg1[0x12] = r9\n14027c32b        return result",
+  "fetched_at": "2026-04-26T17:32:02Z"
+}

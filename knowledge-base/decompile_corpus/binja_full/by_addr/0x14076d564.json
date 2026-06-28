@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d564",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076d572        int64_t* rdx = *(__vcrt_getptd() + 0x58)\n14076d584        while (true)\n14076d584        if (rdx == 0)\n14076d586        return zx.q((rdx + 1).d)\n14076d57b        if (*rdx == arg1)\n14076d57b        break\n14076d57d        rdx = rdx[1]\n14076d58f        return 0",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

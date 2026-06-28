@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alRenderable::~alRenderable(alRenderable *this)\n\n{\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n                    /* inlined destructor: CullObjectClass::~CullObjectClass */\n  this->vftablePtr = (alRenderable_vftable_for_CullObjectClass *)&CullObjectClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (alRenderable_vftable_for_RefCountClass *)&RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:05Z"
+}

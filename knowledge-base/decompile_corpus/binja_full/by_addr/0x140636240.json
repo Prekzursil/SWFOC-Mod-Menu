@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636240",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140636247        return \"DisableForceAbilitiesBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:00:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401443a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401443ba        struct alAnim::alRawAnim::VTable** rax = operator new(0x50)\n1401443c2        struct alAnim::alRawAnim::VTable** rbx\n1401443c2        if (rax == 0)\n1401443d1        rbx = nullptr\n1401443cc        rbx = sub_14019de90(rax)\n1401443e3        if (sub_14019df60(rbx, arg2, arg3) != 0)\n1401443eb        sub_140149f50(arg3, rbx)\n1401443f0        int64_t result\n1401443f0        result.b = 1\n140144401        return result\n140144405        if (rbx != 0)\n140144412        (*rbx)->vFunc_2(rbx, 1)\n140144426        return 0",
+  "fetched_at": "2026-04-26T17:19:53Z"
+}

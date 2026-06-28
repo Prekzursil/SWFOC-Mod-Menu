@@ -1,0 +1,7 @@
+{
+  "addr": "0x140397470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140397482        float zmm6[0x4] = 0x3f800000\n1403974b9        if (arg2 != 0 && *(arg2 + 0x10b) != 0 && *(arg3[0x17] + 0x2f4) != 0xffffffff && *(*(arg4 + 0xb8) + 0x2f4) != 0xffffffff)\n1403974bb        zmm6 = data_140b2793c\n1403974e1        if (sub_1403f7b30((*(*arg3 + 0x10))(arg3, 3), arg3, arg4) != 0)\n1403974f0        void* rax_6 = sub_140471470(&data_140a2a060, arg3, arg4)\n1403974f8        if (rax_6 != 0)\n1403974fa        zmm6 = __maxss_xmmss_memss(zmm6[0], *(rax_6 + 0x50))\n140397504        int512_t result\n140397504        result.o = zmm6\n140397511        return result",
+  "fetched_at": "2026-04-26T17:23:46Z"
+}

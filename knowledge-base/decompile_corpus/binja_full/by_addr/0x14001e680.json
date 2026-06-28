@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001e680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001e68f        int32_t* rax = nullptr\n14001e691        int128_t* rdi = arg2\n14001e694        *arg1 = 0\n14001e69a        arg1[2] = 0\n14001e69e        arg1[3] = 0\n14001e6a7        void* rbp = arg2[2]\n14001e6ab        if (arg2[3] u>= 0x10)\n14001e6ad        rdi = *arg2\n14001e6b9        int64_t rsi\n14001e6b9        if (rbp u>= 0x10)\n14001e6d5        rsi = rbp | 0xf\n14001e6dc        if (rsi u> 0x7fffffffffffffff)\n14001e6dc        rsi = 0x7fffffffffffffff\n14001e6eb        if (rsi + 1 u>= 0x1000)\n14001e6f4        if (rsi + 0x28 u<= rsi + 1)\n14001e756        stdext::threads::_Throw_lock_error()\n14001e756        noreturn\n14001e6f9        int64_t rax_2 = operator new(rsi + 0x28)\n14001e704        if (rax_2 == 0)\n14001e750        _invalid_parameter_noinfo_noreturn()\n14001e750        noreturn\n14001e70a        rax = (rax_2 + 0x27) & 0xffffffffffffffe0\n14001e70e        *(rax - 8) = rax_2\n14001e717        if (rsi != -1)\n14001e719        rax = operator new(rsi + 1)\n14001e722        *arg1 = rax\n14001e72b        memcpy(rax, rdi, rbp + 1)\n14001e6be        rsi = 0xf\n14001e6c3        *arg1 = *rdi\n14001e730        arg1[2] = rbp\n14001e737        arg1[3] = rsi\n14001e74f        return arg1",
+  "fetched_at": "2026-04-26T16:51:32Z"
+}

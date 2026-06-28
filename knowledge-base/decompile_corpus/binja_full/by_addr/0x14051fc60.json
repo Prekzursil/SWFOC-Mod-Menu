@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051fc60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14051fc6a        int64_t* rdi = arg1[1]\n14051fc71        int64_t r9 = *arg1\n14051fc8a        int64_t rax\n14051fc8a        int64_t rdx\n14051fc8a        rdx:rax = muls.dp.q(0x6666666666666667, rdi - r9)\n14051fc97        uint64_t rax_2 = rdx s>> 4 u>> 0x3f\n14051fc9b        int64_t r8_4 = (rdi - r9) s/ 0x28\n14051fca1        if (arg2 u>= r8_4)\n14051fceb        if (arg2 u> r8_4)\n14051fcf7        int64_t rax_4\n14051fcf7        int64_t rdx_1\n14051fcf7        rdx_1:rax_4 = muls.dp.q(0x6666666666666667, arg1[2] - r9)\n14051fcfd        int64_t rdx_2 = rdx_1 s>> 4\n14051fd0e        if (arg2 u> rdx_2 + (rdx_2 u>> 0x3f))\n14051fd27        return sub_140515490(arg1, arg2)\n14051fd37        rax_2 = sub_14051f090(arg1, rdi, arg2 - r8_4)\n14051fd3c        arg1[1] = rax_2\n14051fd4a        return rax_2\n14051fca8        int64_t rax_3 = arg2 * 5\n14051fcb1        void* rbp = r9 + (rax_3 << 3)\n14051fcb5        void* rbx = rbp\n14051fcbb        if (rbp != rdi)\n14051fcc4        rax_3 = sub_1404c46c0(rbx + 8)\n14051fcc9        rbx += 0x28\n14051fcd0        do while (rbx != rdi)\n14051fcd7        arg1[1] = rbp\n14051fcea        return rax_3",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

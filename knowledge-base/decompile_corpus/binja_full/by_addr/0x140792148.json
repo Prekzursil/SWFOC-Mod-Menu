@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792148",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140792148        char arg_8 = arg1\n140792154        int32_t arg_20 = 0\n14079215c        int32_t arg_18 = 0\n140792164        int32_t* var_20 = &arg_20\n140792170        char* var_18 = &arg_8\n14079217c        int32_t* var_10 = &arg_18\n140792189        int32_t var_28 = 8\n14079218c        int32_t var_24 = 8\n14079218f        void arg_10\n14079218f        __crt_seh_guarded_call<class <lambda_886d6c58226a84441f68b9f2b8217b83>,class <lambda_ab61a845afdef5b7c387490eaf3616ee>& __ptr64,class <lambda_f7f22ab5edc0698d5f6905b0d3f44752>,void>::operator()<class <lambda_886d6c58226a84441f68b9f2b8217b83>,class <lambda_ab61a845afdef5b7c387490eaf3616ee>& __ptr64,class <lambda_f7f22ab5edc0698d5f6905b0d3f44752> >(&arg_10, &var_24, &var_20, &var_28)\n14079219b        if (arg_8 != 0)\n14079219b        return zx.q(arg_20)\n1407921a4        return zx.q(arg_18)",
+  "fetched_at": "2026-04-26T17:31:47Z"
+}

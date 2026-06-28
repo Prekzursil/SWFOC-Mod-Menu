@@ -1,0 +1,7 @@
+{
+  "addr": "0x140621360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CashPointBehaviorClass * __thiscall\nCashPointBehaviorClass::vfunction4(CashPointBehaviorClass *this,int param_1)\n\n{\n  CashPointBehaviorClass *pCVar1;\n  \n  pCVar1 = (CashPointBehaviorClass *)0x0;\n  if (param_1 == 0x3c) {\n    pCVar1 = this;\n  }\n  return pCVar1;\n}",
+  "fetched_at": "2026-04-26T17:29:56Z"
+}

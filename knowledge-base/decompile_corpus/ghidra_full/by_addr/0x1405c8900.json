@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c8900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1405c8900(longlong *param_1,longlong param_2)\n\n{\n  ulonglong in_RAX;\n  longlong lVar1;\n  longlong lVar2;\n  \n  if ((param_1 != (longlong *)0x0) && (param_2 != 0)) {\n    lVar1 = FUN_140294bc0(&DAT_140a16fd0,(int)param_1[0xb]);\n    in_RAX = 0;\n    if (lVar1 != 0) {\n      lVar2 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_2 + 0x58));\n      in_RAX = 0;\n      if (lVar2 != 0) {\n        in_RAX = FUN_1402824f0(lVar1,lVar2);\n        if ((char)in_RAX != '\\0') {\n          in_RAX = (**(code **)(*param_1 + 0x10))(param_1,0x26);\n          if ((((in_RAX != 0) && (param_1[0x53] != 0)) &&\n              (in_RAX = *(ulonglong *)(param_2 + 0x298), in_RAX != 0)) &&\n             ((*(char *)(in_RAX + 0x18) != '\\0' ||\n              ((*(char *)(param_1[0x53] + 0x19) != '\\0' && (*(char *)(in_RAX + 0x1a) != '\\0')))))) {\n            return CONCAT71((int7)(in_RAX >> 8),1);\n          }\n        }\n      }\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:44:59Z"
+}

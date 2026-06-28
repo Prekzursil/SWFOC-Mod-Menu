@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014e100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014e100        float result = *arg2\n14014e104        *arg1 = result\n14014e108        float zmm1 = arg2[1]\n14014e10d        arg1[1] = zmm1\n14014e112        float zmm2 = arg2[2]\n14014e117        arg1[2] = zmm2\n14014e11c        float zmm3 = *arg3\n14014e121        arg1[3] = zmm3\n14014e126        zmm3 = zmm3 - result\n14014e12a        float zmm5 = arg3[1]\n14014e133        arg1[4] = zmm5\n14014e138        zmm5 = zmm5 - zmm1\n14014e13c        float zmm4 = arg3[2]\n14014e142        arg1[5] = zmm4\n14014e147        zmm4 = zmm4 - zmm2\n14014e153        arg1[6] = zmm3\n14014e158        arg1[7] = zmm5\n14014e161        arg1[8] = zmm4\n14014e172        zmm5 = zmm5 * zmm5 + zmm3 * zmm3 + zmm4 * zmm4\n14014e176        float temp0 = _mm_sqrt_ss(0, zmm5)\n14014e17a        arg1[0xc] = zmm5\n14014e17f        zmm2 = 1f / temp0\n14014e183        arg1[0xd] = temp0\n14014e18e        zmm1 = zmm2 f* arg1[6]\n14014e193        result = zmm2 f* arg1[7]\n14014e198        zmm2 = zmm2 f* arg1[8]\n14014e19d        arg1[9] = zmm1\n14014e1a2        arg1[0xa] = result\n14014e1a7        arg1[0xb] = zmm2\n14014e1ac        return result",
+  "fetched_at": "2026-04-26T17:21:44Z"
+}

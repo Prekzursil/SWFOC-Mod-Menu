@@ -1,0 +1,7 @@
+{
+  "addr": "0x140209f40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_140209f40(int *param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  char cVar4;\n  \n  if ((*(longlong *)(param_1 + 0x14) != 0) && (*param_1 == 4)) {\n    EnterCriticalSection((LPCRITICAL_SECTION)(param_1 + 0x1a));\n    lVar1 = *(longlong *)(**(longlong **)(param_1 + 0x12) + 0x10);\n    if ((lVar1 != 0) && ((param_2 == 0 || (cVar4 = FUN_1402074d0(param_2,lVar1), cVar4 != '\\0')))) {\n      plVar2 = (longlong *)**(longlong **)(param_1 + 0x12);\n      lVar3 = *plVar2;\n      *(longlong *)(param_1 + 0x14) = *(longlong *)(param_1 + 0x14) + -1;\n      *(longlong *)plVar2[1] = lVar3;\n      *(longlong *)(lVar3 + 8) = plVar2[1];\n      lVar3 = plVar2[2];\n      if (lVar3 != 0) {\n        (**(code **)(*(longlong *)(lVar3 + 0x60) + 8))(lVar3 + 0x60);\n      }\n      thunk_FUN_1407864b8(plVar2,0x18);\n      LeaveCriticalSection((LPCRITICAL_SECTION)(param_1 + 0x1a));\n      return lVar1;\n    }\n    LeaveCriticalSection((LPCRITICAL_SECTION)(param_1 + 0x1a));\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:57:57Z"
+}

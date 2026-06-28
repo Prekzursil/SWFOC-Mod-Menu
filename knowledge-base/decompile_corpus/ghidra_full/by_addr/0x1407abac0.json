@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407abac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall alLensFlare::vfunction7_for_RefCountClass(alLensFlare *this)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = &(this->alLensFlare_data).offset_0x8;\n  if (0xf < (this->alLensFlare_data).offset_0x20) {\n    plVar1 = (longlong *)*plVar1;\n  }\n  return plVar1;\n}",
+  "fetched_at": "2026-04-26T18:55:11Z"
+}

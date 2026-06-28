@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cd110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GalacticTaskForceClass * __thiscall\nGalacticTaskForceClass::scalar_deleting_destructor(GalacticTaskForceClass *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: GalacticTaskForceClass::~GalacticTaskForceClass */\n  this->vftablePtr = &vftable_for_LuaUserVar;\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  plVar1 = (longlong *)(this->GalacticTaskForceClass_data).offset_0x88;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  TaskForceClass::~TaskForceClass((TaskForceClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x128);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:41:31Z"
+}

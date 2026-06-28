@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b19c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTransitionEffect::~alD3dTransitionEffect(alD3dTransitionEffect *this)\n\n{\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (alD3dTransitionEffect_vftable_for_RefCountClass *)&RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:22Z"
+}

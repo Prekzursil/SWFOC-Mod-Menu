@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b0420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nAIPlayerDiagnosticsNodeClass::vfunction5(AIPlayerDiagnosticsNodeClass *this,undefined8 param_1)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  undefined1 local_res18;\n  longlong local_48 [2];\n  undefined8 local_38;\n  ulonglong local_30;\n  longlong local_28 [3];\n  ulonglong local_10;\n  \n  local_30 = 0xf;\n  local_38 = 4;\n  local_48[0] = 0x29494128;\n  FUN_14001e680(local_28,*(undefined8 *)((this->AIDiagnosticsNodeClass_data).offset_0x0 + 0x30));\n  FUN_140058010(param_1,local_res18,local_28,local_48);\n  if (0xf < local_10) {\n    uVar2 = local_10 + 1;\n    lVar1 = local_28[0];\n    if (0xfff < uVar2) {\n      lVar1 = *(longlong *)(local_28[0] + -8);\n      uVar2 = local_10 + 0x28;\n      if (0x1f < (local_28[0] - lVar1) - 8U) goto LAB_1404b04f8;\n    }\n    thunk_FUN_1407864b8(lVar1,uVar2);\n  }\n  if (0xf < local_30) {\n    if (0xfff < local_30 + 1) {\n      lVar1 = *(longlong *)(local_48[0] + -8);\n      uVar2 = local_30 + 0x28;\n      if (0x1f < (local_48[0] - lVar1) - 8U) {\nLAB_1404b04f8:\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1,uVar2);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:06:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cea10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402cea16        *arg2 = *(arg1 + 0x110)\n1402cea1e        arg2[1] = *(arg1 + 0x114)\n1402cea27        arg2[2] = *(arg1 + 0x118)\n1402cea30        arg2[3] = *(arg1 + 0x11c)\n1402cea39        arg2[4] = *(arg1 + 0x120)\n1402cea42        arg2[5] = *(arg1 + 0x124)\n1402cea4b        *arg3 = *(arg1 + 0x128)\n1402cea54        arg3[1] = *(arg1 + 0x12c)\n1402cea5e        arg3[2] = *(arg1 + 0x130)\n1402cea68        arg3[3] = *(arg1 + 0x134)\n1402cea72        arg3[4] = *(arg1 + 0x138)\n1402cea7c        arg3[5] = *(arg1 + 0x13c)\n1402cea87        return zx.q(*(arg1 + 0x10f))",
+  "fetched_at": "2026-04-26T17:22:20Z"
+}

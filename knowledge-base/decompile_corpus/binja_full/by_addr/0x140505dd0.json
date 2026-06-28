@@ -1,0 +1,7 @@
+{
+  "addr": "0x140505dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140505dde        struct AIDiagnosticsNodeClass::CollisionSystemDiagnosticsNodeClass::VTable** result = operator new(0x10)\n140505de6        if (result == 0)\n140505e05        return result\n140505def        *result = &CollisionSystemDiagnosticsNodeClass::`vftable'{for `AIDiagnosticsNodeClass'}\n140505df6        result[1] = arg1 - 0x10\n140505dff        return result",
+  "fetched_at": "2026-04-26T17:32:02Z"
+}

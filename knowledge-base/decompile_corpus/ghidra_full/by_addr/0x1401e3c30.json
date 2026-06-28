@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e3c30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetClass * __thiscall GUIGadgetClass::GUIGadgetClass(GUIGadgetClass *this)\n\n{\n  undefined8 **ppuVar1;\n  \n  (this->GUIGadgetClass_data).offset_0x68 = 7;\n  (this->GUIGadgetClass_data).offset_0x50 = (undefined8 *)0x0;\n  this->vftablePtr = &vftable;\n  ppuVar1 = &(this->GUIGadgetClass_data).offset_0x50;\n  (this->GUIGadgetClass_data).offset_0x8 = (longlong *)0x0;\n  (this->GUIGadgetClass_data).offset_0x20 = 0xf;\n  (this->GUIGadgetClass_data).offset_0x3c = 0;\n  (this->GUIGadgetClass_data).offset_0x44 = 0;\n  (this->GUIGadgetClass_data).offset_0x18 = 0;\n  (this->GUIGadgetClass_data).offset_0x0 = 0xffffffff;\n  (this->GUIGadgetClass_data).offset_0x28 = 0xffffffff;\n  (this->GUIGadgetClass_data).offset_0x60 = 0;\n  if (7 < (this->GUIGadgetClass_data).offset_0x68) {\n    ppuVar1 = (undefined8 **)*ppuVar1;\n  }\n  *(undefined2 *)ppuVar1 = 0;\n  (this->GUIGadgetClass_data).offset_0x70 = 0x101;\n  (this->GUIGadgetClass_data).offset_0x80 = 0;\n  (this->GUIGadgetClass_data).offset_0x78 = 0;\n  (this->GUIGadgetClass_data).offset_0x88 = 0;\n  (this->GUIGadgetClass_data).offset_0x8a = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:51:03Z"
+}

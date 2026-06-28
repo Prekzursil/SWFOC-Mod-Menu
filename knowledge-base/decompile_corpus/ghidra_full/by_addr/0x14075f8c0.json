@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f8c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n/* Library Function - Multiple Matches With Same Base Name\n    protected: virtual unsigned short const * __ptr64 __cdecl std::ctype<unsigned\n   short>::do_narrow(unsigned short const * __ptr64,unsigned short const * __ptr64,char,char *\n   __ptr64)const __ptr64\n    protected: virtual wchar_t const * __ptr64 __cdecl std::ctype<wchar_t>::do_narrow(wchar_t const\n   * __ptr64,wchar_t const * __ptr64,char,char * __ptr64)const __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nwchar_t * __thiscall\ndo_narrow(void *this,wchar_t *param_1,wchar_t *param_2,char param_3,char *param_4)\n\n{\n  int iVar1;\n  char cVar2;\n  undefined1 auStack_58 [32];\n  mbstate_t local_38 [2];\n  char local_30 [8];\n  ulonglong local_28;\n  \n  local_28 = DAT_140a44b98 ^ (ulonglong)auStack_58;\n  if (param_1 != param_2) {\n    do {\n      local_38[0] = 0;\n      local_38[1] = 0;\n      iVar1 = _Wcrtomb(local_30,*param_1,local_38,(_Cvtvec *)((longlong)this + 0x30));\n      cVar2 = local_30[0];\n      if (iVar1 != 1) {\n        cVar2 = param_3;\n      }\n      param_1 = param_1 + 1;\n      *param_4 = cVar2;\n      param_4 = param_4 + 1;\n    } while (param_1 != param_2);\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:08:09Z"
+}

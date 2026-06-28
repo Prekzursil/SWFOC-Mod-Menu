@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027d6a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14027d6a0(uint *param_1,char param_2)\n\n{\n  byte bVar1;\n  FrameInfoEventClass *pFVar2;\n  ulonglong uVar3;\n  \n  bVar1 = (byte)param_1[0xd];\n  uVar3 = (ulonglong)bVar1;\n  if ((((bVar1 == 0) || (0 < (int)param_1[3])) && ((char)param_1[5] == '\\0')) &&\n     (((bVar1 == 0 || (0 < (int)param_1[3])) &&\n      ((param_2 != '\\0' ||\n       (uVar3 = (ulonglong)*param_1 / (ulonglong)param_1[3], *param_1 % param_1[3] == 0)))))) {\n    pFVar2 = (FrameInfoEventClass *)FUN_140769c58(0x38);\n    uVar3 = 0;\n    if (pFVar2 != (FrameInfoEventClass *)0x0) {\n      pFVar2 = FrameInfoEventClass::FrameInfoEventClass(pFVar2);\n      uVar3 = 0;\n      if (pFVar2 != (FrameInfoEventClass *)0x0) {\n        uVar3 = (ulonglong)*param_1 & 0xff;\n        FUN_1404c1cd0(pFVar2,(ulonglong)*param_1,param_1[uVar3 * 3 + 0x17],param_1[uVar3 * 3 + 0x16]\n                     );\n        uVar3 = OutgoingEventQueueClass::vfunction2\n                          ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pFVar2);\n      }\n    }\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T18:21:40Z"
+}

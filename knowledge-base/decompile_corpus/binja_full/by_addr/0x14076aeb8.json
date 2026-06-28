@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076aeb8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076aec3        RtlCaptureContext(arg1)\n14076aec9        uint64_t Rip = arg1->Rip\n14076af1f        IMAGE_RUNTIME_FUNCTION_ENTRY* FunctionEntry\n14076aed0        int32_t i = 0\n14076af1f        while (i s< 2)\n14076aedd        uint64_t ImageBase\n14076aedd        FunctionEntry = RtlLookupFunctionEntry(Rip, &ImageBase, nullptr)\n14076aee6        if (FunctionEntry == 0)\n14076aee6        break\n14076af14        uint64_t EstablisherFrame\n14076af14        void HandlerData\n14076af14        FunctionEntry = RtlVirtualUnwind(UNW_FLAG_NHANDLER, ImageBase, Rip, FunctionEntry, arg1, &HandlerData, &EstablisherFrame, nullptr)\n14076af1a        i += 1\n14076af28        return FunctionEntry",
+  "fetched_at": "2026-04-26T17:30:21Z"
+}

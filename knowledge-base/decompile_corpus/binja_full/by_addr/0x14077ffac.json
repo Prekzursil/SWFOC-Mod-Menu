@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077ffac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077ffb1        int64_t* arg_18 = arg3\n14077ffcb        char* result = nullptr\n14077ffd0        if (arg1 != 0)\n140780002        if (arg2 s>= 0 && arg3 != 0)\n14077fffd        goto label_140780007\n14077ffdb        *_errno() = 0x16\n14077ffe1        _invalid_parameter_noinfo()\n140780002        if (arg2 == 0 && arg2 s>= 0 && arg3 != 0)\n140780007        label_140780007:\n140780007        if (arg2 != 0)\n14078000c        sub_140784aa4(arg3)\n14078001c        if (__acrt_stdio_char_traits<char>::validate_stream_is_ansi_if_required(arg3) != 0)\n14078001e        char* rsi_1 = arg1\n140780021        char* var_30_1 = arg1\n140780026        int32_t r15_1 = 1\n14078002c        while (true)\n14078002c        int32_t var_38_1 = r15_1\n140780034        if (r15_1 != arg2)\n140780039        int32_t rax_4 = _getc_nolock(arg3)\n14078003e        int32_t arg_8 = rax_4\n140780045        if (rax_4 != 0xffffffff)\n14078004e        *rsi_1 = rax_4.b\n140780050        rsi_1 = &rsi_1[1]\n140780053        char* var_30_2 = rsi_1\n14078005a        if (rax_4.b != 0xa)\n14078005c        r15_1 += 1\n14078005f        continue\n14078004a        if (rsi_1 == arg1)\n14078004a        break\n140780061        *rsi_1 = 0\n140780064        result = arg1\n140780064        break\n14078006a        sub_140784ab0(arg3)\n14078006f        return result\n14077ffdb        *_errno() = 0x16\n14077ffe1        _invalid_parameter_noinfo()\n14077ffe6        return nullptr",
+  "fetched_at": "2026-04-26T17:31:04Z"
+}

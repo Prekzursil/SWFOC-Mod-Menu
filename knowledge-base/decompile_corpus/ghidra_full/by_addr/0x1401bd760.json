@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bd760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Removing unreachable block (ram,0x0001401bd835) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd83f) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd84e) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd863) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd866) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd86b) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd883) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd830) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd888) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd7ac) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd7c0) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd7ce) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd7d1) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd81d) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd8a0) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd8ce) */\n/* WARNING: Removing unreachable block (ram,0x0001401bd8b5) */\n\nvoid FUN_1401bd760(void)\n\n{\n  FUN_1401bbd60();\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:48Z"
+}

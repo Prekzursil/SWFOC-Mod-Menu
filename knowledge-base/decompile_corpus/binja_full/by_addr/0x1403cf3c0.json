@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403cf3c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403cf3da        if (arg2 == 0 || arg3 == 0)\n1403cf4ec        int64_t result\n1403cf4ec        result.b = 0\n1403cf4f6        return result\n1403cf3fc        int64_t* r12 = nullptr\n1403cf404        int64_t r13\n1403cf404        r13.b = 0\n1403cf40e        if (*(arg2 + 0x337) == 0xff)\n1403cf485        if (sub_140398670(arg2, arg3) != 0)\n1403cf48c        label_1403cf48c:\n1403cf48c        struct RefCountClass::EventClass::VTable** rax_5 = operator new(0x158)\n1403cf494        if (rax_5 != 0)\n1403cf49e        r12 = sub_1404b4210(rax_5)\n1403cf4aa        sub_1404b5320(r12, arg2, arg3)\n1403cf4b9        sub_1403b01f0(&data_140b2ed18, r12)\n1403cf4be        r13.b = 1\n1403cf410        void* rax = sub_140397bf0(arg2)\n1403cf41b        if (rax != 0)\n1403cf421        int32_t rbx_1 = 0\n1403cf427        if (*(rax + 0x10) s> 0)\n1403cf42d        int64_t* rdi_1 = nullptr\n1403cf434        int64_t* rbp_1\n1403cf434        while (true)\n1403cf434        rbp_1 = *(rdi_1 + *(rax + 8))\n1403cf43b        if (rbp_1 != 0 && sub_140398670(rbp_1, arg3) != 0)\n1403cf44a        break\n1403cf44c        rbx_1 += 1\n1403cf44e        rdi_1 = &rdi_1[1]\n1403cf455        if (rbx_1 s>= *(rax + 0x10))\n1403cf4eb        return zx.q(r13.b)\n1403cf477        if (sub_140326a30(data_140b15418 + 0xa0, rbp_1, arg3, 0) == 0)\n1403cf477        goto label_1403cf48c\n1403cf4eb        return zx.q(r13.b)",
+  "fetched_at": "2026-04-26T17:24:53Z"
+}

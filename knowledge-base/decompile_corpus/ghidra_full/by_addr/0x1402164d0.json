@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402164d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1402164d0(undefined8 param_1)\n\n{\n  FILE *_File;\n  \n  _File = (FILE *)FUN_14078013c(param_1,&DAT_140816dac);\n  if (_File != (FILE *)0x0) {\n    fclose(_File);\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:00:53Z"
+}

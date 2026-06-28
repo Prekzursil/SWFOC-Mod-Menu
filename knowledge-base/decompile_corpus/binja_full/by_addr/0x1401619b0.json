@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401619b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401619c4        if (*(arg1 + 0x298) != 0)\n1401619c4        return \n1401619cf        int32_t* rax_1 = operator new(0x48)\n1401619d7        int32_t* r9_1\n1401619d7        if (rax_1 == 0)\n1401619e6        r9_1 = nullptr\n1401619e1        r9_1 = sub_1401a4e30(rax_1)\n1401619f5        int32_t* rcx_2 = *(arg1 + 0x118) + 0x464\n1401619fc        *(arg1 + 0x298) = r9_1\n140161a0a        int32_t var_98 = *rcx_2\n140161a13        int32_t var_94_1 = rcx_2[1]\n140161a1e        int32_t var_90_1 = rcx_2[2]\n140161a29        int32_t var_8c_1 = rcx_2[3]\n140161a34        int32_t var_88_1 = rcx_2[4]\n140161a3f        int32_t var_84_1 = rcx_2[5]\n140161a4a        int32_t var_80_1 = rcx_2[6]\n140161a55        int32_t var_7c_1 = rcx_2[7]\n140161a60        int32_t var_78_1 = rcx_2[8]\n140161a6a        char var_74_1 = rcx_2[9].b\n140161a73        int32_t var_70_1 = rcx_2[0xa]\n140161a7d        char var_6c_1 = rcx_2[0xb].b\n140161a86        int32_t var_68_1 = rcx_2[0xc]\n140161a91        int32_t var_64_1 = rcx_2[0xd]\n140161a9c        int32_t var_60_1 = rcx_2[0xe]\n140161aa7        int32_t var_5c_1 = rcx_2[0xf]\n140161ab2        int32_t var_58_1 = rcx_2[0x10]\n140161abf        char var_54_1 = rcx_2[0x11].b\n140161ac3        void var_50\n140161ac3        sub_14016f3a0(r9_1, &var_50, &var_98)\n140161ada        return ",
+  "fetched_at": "2026-04-26T17:22:40Z"
+}

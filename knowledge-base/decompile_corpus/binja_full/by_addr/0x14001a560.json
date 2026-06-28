@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001a56b        sub_140689670(&data_140b37190)\n14001a57b        return atexit(Concurrency::details::SchedulerBase::OneShotStaticDestruction) __tailcall",
+  "fetched_at": "2026-04-26T16:51:11Z"
+}

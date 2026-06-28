@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a5480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a5496        struct LuaUserVar::LuaFOWCellsClass::VTable** result = operator new(0x48)\n1406a54a1        if (result == 0)\n1406a554d        *0x20 = arg1\n1406a555a        return 0\n1406a54b4        sub_140249c20(result, 0, 1)\n1406a54bb        result[8].d = 0xffffffff\n1406a54c9        *result = &LuaFOWCellsClass::`vftable'{for `LuaUserVar'}\n1406a54cc        __builtin_memset(&result[5], 0, 0x18)\n1406a54db        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x40)\n1406a54e0        int64_t* rsi = rax\n1406a54e6        if (rax == 0)\n1406a5514        rsi = nullptr\n1406a54f0        sub_140249c20(rax, 0, 0)\n1406a54fc        rsi[6] = result\n1406a5500        *rsi = &LuaMemberFunctionWrapper<class LuaFOWCellsClass>::`vftable'{for `LuaUserVar'}\n1406a550a        rsi[5] = sub_1406a5560\n1406a550e        rsi[7].b = 0\n1406a5524        sub_14024be40(result, \"Undo_Reveal\", rsi)\n1406a5531        result[4].d = arg1\n1406a5543        return result",
+  "fetched_at": "2026-04-26T17:21:47Z"
+}

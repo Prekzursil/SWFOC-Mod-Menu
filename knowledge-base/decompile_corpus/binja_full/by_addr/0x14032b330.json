@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032b330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032b333        if (arg2 != 0)\n14032b34c        sub_140327b10(\"STORY - Player/AI retreated\\r\\n\", arg2)\n14032b367        sub_14032e5f0(arg1, 0x15, 0, arg2, 0)\n14032b376        return ",
+  "fetched_at": "2026-04-26T17:02:03Z"
+}

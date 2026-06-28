@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e4160",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e4160        void* arg_10 = arg2\n1407e417d        sub_1404778c0(*(arg2 + 0x80), *(arg2 + 0x20), *(arg2 + 0x30))\n1407e4197        public: void __cdecl std::allocator<struct `protected: int __cdecl GSI1::readHash(unsigned short, long, long)'::`2'::FileSymbolInfo>::deallocate(struct `protected: int __cdecl GSI1::readHash(unsigned short, long, long)'::`2'::FileSymbolInfo *const, unsigned __int64)(*(arg2 + 0x80), *(arg2 + 0x98), *(arg2 + 0x88))\n1407e41a0        sub_14076b00c(nullptr, nullptr)\n1407e41a0        noreturn",
+  "fetched_at": "2026-04-26T17:34:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fdbd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass\n   TaskForceClass member function inherited by SpaceTaskForceClass\n   TaskForceClass member function inherited by LandTaskForceClass */\n\nundefined8 __thiscall\nTaskForceClass::vfunction26(TaskForceClass *this,undefined8 param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  char *pcVar3;\n  \n  if ((*(longlong *)(param_2 + 0x18) - (longlong)*(longlong **)(param_2 + 0x10) &\n      0xfffffffffffffff8U) == 0) {\n    pcVar3 = \"TaskForceClass::Lua_Set_As_Goal_System_Removable -- No params\";\n  }\n  else {\n    plVar1 = (longlong *)**(longlong **)(param_2 + 0x10);\n    if (plVar1 != (longlong *)0x0) {\n      for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n          puVar2 = *(undefined **)(puVar2 + 8)) {\n        if (puVar2 == &DAT_140a157b0) {\n          FUN_1405f8360(this[1].offset_0x50,(char)plVar1[2]);\n          return 0;\n        }\n      }\n    }\n    pcVar3 = \n    \"TaskForceClass::Lua_Set_As_Goal_System_Removable -- Invalid parameter 1, expected boolean\";\n  }\n  FUN_140248190(param_1,pcVar3);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:24:37Z"
+}

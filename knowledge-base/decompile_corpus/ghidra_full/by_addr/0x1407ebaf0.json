@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ebaf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ReferenceListClass<class_alD3dEffect>::~ReferenceListClass<class_alD3dEffect>(void)\n\n{\n  longlong lVar1;\n  undefined1 local_res8 [8];\n  \n  PTR_vftable_140a12a20 = (undefined *)&vftable;\n  while ((undefined **)PTR_LOOP_140a12a30 != &PTR_LOOP_140a12a28) {\n    lVar1 = *(longlong *)(PTR_LOOP_140a12a30 + 0x18) + -0x10;\n    if (*(longlong *)(PTR_LOOP_140a12a30 + 0x18) == 0) {\n      lVar1 = 0;\n    }\n    if (lVar1 == 0) break;\n    lVar1 = FUN_14020ac80(&PTR_vftable_140a12a20,local_res8);\n    if ((lVar1 != 0) && ((longlong *)(lVar1 + -0x10) != (longlong *)0x0)) {\n      (**(code **)(*(longlong *)(lVar1 + -0x10) + 8))();\n    }\n  }\n  GenericMultiLinkedList::~GenericMultiLinkedList((GenericMultiLinkedList *)&PTR_vftable_140a12a20);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ab650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alLensFlare * __thiscall alLensFlare::alLensFlare(alLensFlare *this)\n\n{\n  alRenderable::alRenderable((alRenderable *)this);\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  (this->alLensFlare_data).offset_0x0 = 0;\n  (this->alLensFlare_data).offset_0x8 = 0;\n  (this->alLensFlare_data).offset_0x18 = 0;\n  (this->alLensFlare_data).offset_0x28 = 0;\n  (this->alLensFlare_data).offset_0x30 = (undefined4 *)0x0;\n  (this->alLensFlare_data).offset_0x38 = (undefined4 *)0x0;\n  (this->alLensFlare_data).offset_0x20 = 0xf;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:55:10Z"
+}

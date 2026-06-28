@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025b336        struct DrawPrimitiveClass::DrawTextClass::VTable** result = arg1\n14025b339        sub_14026ed80(arg1)\n14025b342        sub_14026ce70(&result[0xa])\n14025b34e        result[9].d = 0\n14025b355        *result = &DrawTextClass::`vftable'{for `DrawPrimitiveClass'}\n14025b366        result[8] = &DrawTextClass::`vftable'{for `RefCountClass'}\n14025b36a        sub_1401f92f0(&result[0x14])\n14025b376        sub_1401f92f0(&result[0x16])\n14025b37e        result[0x18] = 0\n14025b38e        return result",
+  "fetched_at": "2026-04-26T17:31:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140492540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140492540(longlong param_1)\n\n{\n  FUN_140496140();\n  DynamicVectorClass<class_PlayerBombingRunClass>::~DynamicVectorClass<class_PlayerBombingRunClass>\n            ((DynamicVectorClass<class_PlayerBombingRunClass> *)(param_1 + 0x18));\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:07Z"
+}

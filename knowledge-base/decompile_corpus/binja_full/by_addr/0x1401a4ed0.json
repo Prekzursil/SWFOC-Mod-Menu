@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a4ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a4eeb        int512_t zmm1\n1401a4eeb        zmm1.o = arg1[0xc]\n1401a4ef0        int32_t var_2c = arg1[7]\n1401a4efb        int32_t var_20 = arg1[0xa]\n1401a4f06        int32_t var_18 = zmm1.d\n1401a4f0c        zmm1.o = arg1[0xe]\n1401a4f11        int32_t var_10 = arg1[0xf]\n1401a4f1c        int32_t var_14 = zmm1.d\n1401a4f22        zmm1.o = arg1[0x10]\n1401a4f27        int32_t var_38 = arg1[4]\n1401a4f32        int32_t var_c = zmm1.d\n1401a4f38        zmm1.o = arg1[5]\n1401a4f3d        int32_t var_30 = arg1[6]\n1401a4f48        int32_t var_34 = zmm1.d\n1401a4f4e        zmm1.o = arg1[1]\n1401a4f53        char var_1c = arg1[0xb].b\n1401a4f5b        int32_t var_40 = arg1[2]\n1401a4f66        int32_t var_44 = zmm1.d\n1401a4f6c        zmm1.o = arg1[3]\n1401a4f71        char var_24 = arg1[9].b\n1401a4f7a        int32_t var_28 = arg1[8]\n1401a4f80        int32_t var_3c = zmm1.d\n1401a4f86        int32_t var_48 = *arg1\n1401a4f8a        char rax_3\n1401a4f8a        int64_t r8\n1401a4f8a        rax_3, r8 = sub_14021fe20(arg2, 0x1100, arg3, zmm1)\n1401a4fad        char rbx = rax_3 & 1 & sub_14021fe20(arg2, 0x1101, r8, zmm1)\n1401a4fb3        sub_1402200b0(arg2, &var_48, 0x40, nullptr)\n1401a4fc3        rbx &= sub_14021feb0(arg2)\n1401a4fd6        return sub_14021feb0(arg2) & rbx",
+  "fetched_at": "2026-04-26T17:25:05Z"
+}

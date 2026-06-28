@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405016e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CapturePointBehaviorClass * __thiscall\nCapturePointBehaviorClass::vfunction4(CapturePointBehaviorClass *this,int param_1)\n\n{\n  CapturePointBehaviorClass *pCVar1;\n  \n  pCVar1 = (CapturePointBehaviorClass *)0x0;\n  if (param_1 == 0x3d) {\n    pCVar1 = this;\n  }\n  return pCVar1;\n}",
+  "fetched_at": "2026-04-26T18:20:15Z"
+}

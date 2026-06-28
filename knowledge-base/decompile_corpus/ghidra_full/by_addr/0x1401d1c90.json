@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d1c90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401d1c90(longlong param_1,undefined8 param_2,char param_3)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  undefined1 local_res18;\n  \n  iVar1 = *(int *)(param_1 + 0x198);\n  DAT_140a79890 = param_2;\n  if (0 < iVar1) {\n    FUN_1401ca5c0(*(longlong *)(param_1 + 0xa8),*(longlong *)(param_1 + 0xa8) + (longlong)iVar1 * 8,\n                  (longlong)iVar1,local_res18);\n  }\n  *(undefined4 *)(param_1 + 0x98) = 0;\n  if (param_3 == '\\x01') {\n    FUN_1401d02a0(param_1);\n  }\n  plVar2 = *(longlong **)(param_1 + 0xd8);\n  if ((plVar2 != (longlong *)0x0) && (*(char *)(param_1 + 0xc0) != '\\0')) {\n    (**(code **)(*plVar2 + 0x50))(plVar2,1);\n    if (*(int *)(param_1 + 0x9c) < *(int *)(param_1 + 0x198)) {\n      (**(code **)(**(longlong **)(param_1 + 0xd8) + 0x58))();\n    }\n    else {\n      (**(code **)(**(longlong **)(param_1 + 0xd8) + 0x60))();\n    }\n    *(undefined1 *)(param_1 + 0xe0) = 1;\n    FUN_1401ed390(*(undefined8 *)(param_1 + 0xd8));\n    *(undefined1 *)(param_1 + 0xe0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:14Z"
+}

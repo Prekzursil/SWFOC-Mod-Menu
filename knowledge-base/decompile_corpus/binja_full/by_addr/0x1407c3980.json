@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c3980",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c398e        int32_t i = arg3.d\n1407c3994        if (arg1[4].d == 0)\n1407c3a24        if (sub_1407c38e0(arg1[1], arg2, sx.q(arg3.d)).d != 0)\n1407c3a3e        noreturn sub_1407bad30(*arg1, \"unexpected end of file in %s\", arg1[5]) __tailcall\n1407c3a24        return \n1407c39a3        char* rsi_2 = arg2 - 1 + arg3\n1407c39a9        if (arg3.d == 0)\n1407c39a9        return \n1407c39b0        int64_t* rcx = arg1[1]\n1407c39b4        i -= 1\n1407c39b6        int64_t rdx = *rcx\n1407c39bd        *rcx = rdx - 1\n1407c39c0        int64_t* rcx_1 = arg1[1]\n1407c39c7        uint32_t rbx_1\n1407c39c7        if (rdx == 0)\n1407c39de        rbx_1 = sub_1407c37d0(rcx_1).d\n1407c39c9        char* rax_2 = rcx_1[1]\n1407c39cd        rbx_1 = zx.d(*rax_2)\n1407c39d3        rcx_1[1] = &rax_2[1]\n1407c39e3        if (rbx_1 == 0xffffffff)\n1407c39f3        sub_1407bad30(*arg1, \"unexpected end of file in %s\", arg1[5])\n1407c39f3        noreturn\n1407c39f8        *rsi_2 = rbx_1.b\n1407c39fa        rsi_2 -= 1\n1407c39ff        do while (i != 0)\n1407c3a15        return ",
+  "fetched_at": "2026-04-26T17:33:40Z"
+}

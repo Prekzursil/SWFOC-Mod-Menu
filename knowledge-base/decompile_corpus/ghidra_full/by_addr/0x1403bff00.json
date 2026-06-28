@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bff00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403bff00(longlong param_1,undefined4 *param_2,undefined4 param_3)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  char cVar3;\n  undefined4 local_res8 [2];\n  undefined4 local_res10 [2];\n  undefined4 local_res18 [2];\n  undefined4 local_58;\n  undefined4 local_54;\n  undefined4 local_50;\n  undefined4 local_48;\n  undefined4 local_44;\n  undefined4 local_40;\n  \n  local_58 = *param_2;\n  local_54 = param_2[1];\n  uVar1 = *(undefined4 *)(param_1 + 0x84);\n  uVar2 = *(undefined4 *)(param_1 + 0x88);\n  local_50 = param_2[2];\n  local_res18[0] = 0;\n  local_res8[0] = 0;\n  local_res10[0] = 0;\n  cVar3 = FUN_14042bb40(&local_58,local_res18,local_res8,local_res10,param_3,\n                        *(undefined8 *)(param_1 + 0x298));\n  local_48 = uVar1;\n  local_44 = uVar2;\n  if (cVar3 != '\\0') {\n    local_50 = local_res18[0];\n    local_48 = local_res10[0];\n    local_44 = local_res8[0];\n  }\n  local_40 = param_3;\n  FUN_1403a8710(param_1,&local_48);\n  FUN_1403a84f0(param_1,param_1 + 0x84);\n  FUN_1403a8f90(param_1,&local_58,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:15Z"
+}

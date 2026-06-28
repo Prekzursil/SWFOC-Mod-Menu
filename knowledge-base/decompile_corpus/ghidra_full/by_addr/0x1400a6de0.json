@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a6de0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined * FUN_1400a6de0(int param_1)\n\n{\n  return (&PTR_s_TEXT_GAME_TYPE_INVALID_140a11458)[param_1];\n}\n\n",
+  "fetched_at": "2026-04-26T16:59:00Z"
+}

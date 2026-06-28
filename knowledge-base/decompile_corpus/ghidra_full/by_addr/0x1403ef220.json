@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ef220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPerceptionParameterBindingsClass::~PerceptionParameterBindingsClass\n          (PerceptionParameterBindingsClass *this)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  longlong *plVar3;\n  \n  this->vftablePtr = &vftable;\n  plVar1 = (longlong *)(this->PerceptionParameterBindingsClass_data).offset_0x8;\n  plVar3 = (longlong *)*plVar1;\n  if (plVar3 != plVar1) {\n    do {\n      iVar2 = (**(code **)(*(longlong *)plVar3[3] + 0x28))();\n      if (iVar2 == 2) {\n        FUN_14024a4b0(plVar3 + 3);\n      }\n      plVar3 = (longlong *)*plVar3;\n    } while (plVar3 != (longlong *)(this->PerceptionParameterBindingsClass_data).offset_0x8);\n  }\n  FUN_1400465e0(&this->PerceptionParameterBindingsClass_data);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:16Z"
+}

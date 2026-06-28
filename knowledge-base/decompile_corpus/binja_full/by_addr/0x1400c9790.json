@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400c9790",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400c97b5        void var_38\n1400c97b5        sub_1401f9320(&var_38, sub_1401fe0d0(&data_140a7bca0, 0xe))\n1400c97d3        void var_48\n1400c97d3        sub_1401f9320(&var_48, sub_1401fe0d0(&data_140a7bca0, 0xf))\n1400c97e6        int32_t rcx_2 = data_140a6201c\n1400c97f7        int32_t rdx_2 = data_140a118f8\n1400c9824        data_140a6201c = rcx_2 + 1\n1400c985d        int64_t var_10 = 0xf\n1400c9869        int64_t var_18 = 0xf\n1400c9875        void* var_28\n1400c9875        __builtin_strncpy(&var_28, \"IDC_PLAYER_LIST\", 0x10)\n1400c9886        int64_t result = sub_1401c3c50(&data_140a78510, rdx_2, &var_28, arg1, rcx_2, &var_38, &var_48, 0, 0, 1, 0)\n1400c9897        if (var_10 u< 0x10)\n1400c98e6        return result\n1400c9899        void* rcx_3 = var_28\n1400c98a4        void* rax_3 = rcx_3\n1400c98ae        if (var_10 + 1 u>= 0x1000)\n1400c98b0        rcx_3 = *(rcx_3 - 8)\n1400c98c3        if (rax_3 - rcx_3 - 8 u> 0x1f)\n1400c98e7        _invalid_parameter_noinfo_noreturn()\n1400c98e7        noreturn\n1400c98c5        return j_sub_1407864b8(rcx_3)",
+  "fetched_at": "2026-04-26T17:01:04Z"
+}

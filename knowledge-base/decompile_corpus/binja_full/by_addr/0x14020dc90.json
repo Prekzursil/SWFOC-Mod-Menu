@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020dc90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020dcb5        int128_t zmm0\n14020dcb5        int512_t zmm6\n14020dcb5        zmm0, zmm6 = sub_14020d140(arg1, arg3)\n14020dcc0        zmm6.o = zmm0\n14020dcc3        uint32_t result[0x4]\n14020dcc3        float zmm6_1\n14020dcc3        result, zmm6_1 = sub_14020d140(arg2, arg3)\n14020dccb        float zmm7 = result[0] + zmm6_1\n14020dcd2        zmm7 - 0f\n14020dcd7        if (is_unordered.d(zmm7, 0f) || not(zmm7 == 0f))\n14020dcd9        float zmm1_1[0x2] = arg2[5]\n14020dcde        zmm1_1[0] = zmm1_1[0] f- arg1[5]\n14020dce3        result = arg2[4]\n14020dce8        result[0] = result[0] f- arg1[4]\n14020dced        zmm1_1[0] = zmm1_1[0] f* arg3[1]\n14020dcf2        result[0] = result[0] f* *arg3\n14020dcf6        zmm1_1[0] = zmm1_1[0] f+ result[0]\n14020dcfd        result = sub_1407760bc(_mm_cvtps_pd(zmm1_1))\n14020dd02        result[0] = fconvert.s(result[0].q)\n14020dd09        if (not(zmm7 f>= result[0]))\n14020dd0b        result[0] = result[0] f- zmm7\n14020dd2d        return result\n14020dd11        return zx.o(0)",
+  "fetched_at": "2026-04-26T17:28:14Z"
+}

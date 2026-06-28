@@ -1,0 +1,7 @@
+{
+  "addr": "0x140696710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14069671f        int64_t* rcx = arg1[0xc]\n140696726        if (rcx != 0)\n14069672b        (*(*rcx + 8))(rcx)\n14069672e        int64_t* rcx_1 = arg1[0xb]\n140696735        if (rcx_1 != 0)\n14069673a        (*(*rcx_1 + 8))(rcx_1)\n14069673d        int64_t* rcx_2 = arg1[0xa]\n140696744        if (rcx_2 != 0)\n140696749        (*(*rcx_2 + 8))(rcx_2)\n14069674c        int64_t* rcx_3 = arg1[9]\n140696753        if (rcx_3 != 0)\n140696758        (*(*rcx_3 + 8))(rcx_3)\n14069675b        int64_t* rcx_4 = arg1[8]\n140696762        if (rcx_4 != 0)\n140696767        (*(*rcx_4 + 8))(rcx_4)\n140696775        arg1[6] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140696778        sub_14020a820(&arg1[6])\n14069677d        int64_t* rcx_6 = arg1[5]\n140696784        if (rcx_6 != 0)\n140696789        (*(*rcx_6 + 8))(rcx_6)\n14069678f        sub_140249eb0(arg1)\n140696798        if ((arg2 & 1) != 0)\n1406967a2        j_sub_1407864b8(arg1)\n1406967b4        return arg1",
+  "fetched_at": "2026-04-26T17:20:05Z"
+}

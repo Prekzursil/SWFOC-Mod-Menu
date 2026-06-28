@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e7870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e7884        *arg1 = &DatabaseObjectManagerClass<class LuaScriptClass>::`vftable'{for `DatabaseUIntConversionClass'}\n1405e7887        int64_t* rax = arg1[2]\n1405e788b        void** i = *rax\n1405e7891        if (i != rax)\n1405e7893        int64_t rdx_1 = i[6]\n1405e789a        if (rdx_1 != 0)\n1405e78a2        (*arg1)->vFunc_3(arg1, rdx_1)\n1405e78a2        noreturn\n1405e78a5        i = *i\n1405e78ac        do while (i != arg1[2])\n1405e78b2        sub_140145610(&arg1[1])\n1405e78bb        sub_1401450b0(&arg1[1])\n1405e78cd        return sub_14023af60(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:38:30Z"
+}

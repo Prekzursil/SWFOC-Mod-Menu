@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dddec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    public: int __cdecl __crt_seh_guarded_call<int>::operator()<class\n   <lambda_450d90ce9489cb83d667727298b1f467>,class <lambda_0bd0bd1e46f8138169959d81163ebf0c> &\n   __ptr64,class <lambda_e9ecde663af5bbd3dec5792d9ab5b194> >(class\n   <lambda_450d90ce9489cb83d667727298b1f467> && __ptr64,class\n   <lambda_0bd0bd1e46f8138169959d81163ebf0c> & __ptr64,class\n   <lambda_e9ecde663af5bbd3dec5792d9ab5b194> && __ptr64) __ptr64\n    public: int __cdecl __crt_seh_guarded_call<int>::operator()<class\n   <lambda_638071c8ff4a7adc38ebf97819af8252>,class <lambda_c24b6d9e7c4576f9a5efdbd124f9441f> &\n   __ptr64,class <lambda_b22ff52eb36be97581a67924712ed724> >(class\n   <lambda_638071c8ff4a7adc38ebf97819af8252> && __ptr64,class\n   <lambda_c24b6d9e7c4576f9a5efdbd124f9441f> & __ptr64,class\n   <lambda_b22ff52eb36be97581a67924712ed724> && __ptr64) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint operator()<>(undefined8 param_1,undefined8 *param_2,\n                <lambda_0bd0bd1e46f8138169959d81163ebf0c> *param_3,undefined8 *param_4)\n\n{\n  int iVar1;\n  \n  FUN_140784aa4(*param_2);\n  iVar1 = <lambda_0bd0bd1e46f8138169959d81163ebf0c>::operator()(param_3);\n  FUN_140784ab0(*param_4);\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:59:07Z"
+}

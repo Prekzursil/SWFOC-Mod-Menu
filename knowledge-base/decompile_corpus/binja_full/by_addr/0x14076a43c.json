@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a43c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a43c        void* const* ThreadLocalStoragePointer = &__return_addr\n14076a45c        if (arg2 == 3 || arg2 == 0)\n14076a464        TEB* gsbase\n14076a464        ThreadLocalStoragePointer = gsbase->ThreadLocalStoragePointer\n14076a472        void* r14_1 = ThreadLocalStoragePointer[zx.q(data_140b3b9a0)]\n14076a476        int32_t* i_1 = *(r14_1 + 0xe0)\n14076a47d        if (i_1 != 0)\n14076a4c3        int32_t* i\n14076a47f        int32_t rbx_1 = *i_1\n14076a481        int32_t rbx_2 = rbx_1 - 1\n14076a484        if (rbx_1 - 1 s>= 0)\n14076a48d        void* rsi_3 = &i_1[(sx.q(rbx_2) + 2) * 2]\n14076a4a6        int32_t temp1_1\n14076a491        ThreadLocalStoragePointer = *rsi_3\n14076a497        if (ThreadLocalStoragePointer != 0)\n14076a499        ThreadLocalStoragePointer = ThreadLocalStoragePointer()\n14076a49f        rsi_3 -= 8\n14076a4a3        temp1_1 = rbx_2\n14076a4a3        rbx_2 -= 1\n14076a4a6        do while (temp1_1 - 1 s>= 0)\n14076a4a8        i = *(i_1 + 8)\n14076a4af        if (i != 0)\n14076a4b4        ThreadLocalStoragePointer = free(i_1)\n14076a4b9        *(r14_1 + 0xe0) = i\n14076a4bd        i_1 = i\n14076a4c3        do while (i != 0)\n14076a4df        return ThreadLocalStoragePointer",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

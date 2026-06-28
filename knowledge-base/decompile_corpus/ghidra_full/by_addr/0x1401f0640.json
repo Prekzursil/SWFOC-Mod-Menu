@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f0640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetCheckboxClass * __thiscall\nGUIGadgetCheckboxClass::scalar_deleting_destructor(GUIGadgetCheckboxClass *this,uint param_1)\n\n{\n                    /* inlined destructor: GUIGadgetCheckboxClass::~GUIGadgetCheckboxClass */\n  this->vftablePtr = &vftable;\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetCheckboxClass_data).field_0x8);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetCheckboxClass_data).field_0x98);\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  (this->GUIGadgetCheckboxClass_data).offset_0x0 = 0;\n  DrawTextClass::~DrawTextClass((DrawTextClass *)&(this->GUIGadgetCheckboxClass_data).field_0x98);\n  TextureRectClass::~TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetCheckboxClass_data).field_0x8);\n  GUIGadgetClass::~GUIGadgetClass((GUIGadgetClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x218);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:52Z"
+}

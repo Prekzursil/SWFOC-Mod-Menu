@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140215ef6        int64_t entry_r8\n140215ef6        sub_140216150(0, \"Node Name, Percent of Total, Samples\\r\\n\", entry_r8)\n140215efb        void* rbx = data_140a7cc28\n140215f0c        rbx != 0 && *(rbx + 0x20) != 0 && *(rbx + 0x28) != 0\n140215f3d        int32_t var_18 = *(rbx + 0x20)\n140215f41        sub_140216150(0, \"%s, %d, %d\\r\\n\", *(rbx + 0x18))\n140215f46        int64_t* i = *(rbx + 0x10)\n140215f4d        while (i != 0)\n140215f53        sub_140215fd0(i)\n140215f58        i = *i\n140215f6d        return sub_1402162b0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:28:31Z"
+}

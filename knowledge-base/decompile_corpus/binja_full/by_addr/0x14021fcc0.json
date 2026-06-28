@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fcc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021fcd1        arg1[1] = arg2\n14021fcdc        arg1[2].d = 0\n14021fcdf        *arg1 = &ChunkWriterClass::`vftable'\n14021fce5        __builtin_memset(&arg1[3], 0, 0x12)\n14021fcf4        *(arg1 + 0x2c) = 0\n14021fcf7        arg1[6] = 0\n14021fd0a        arg1[3] = j_operator new(0x400)\n14021fd0e        int64_t* rax_1 = j_operator new(0x800)\n14021fd16        if (rax_1 == 0)\n14021fd2f        rax_1 = nullptr\n14021fd18        int64_t* rcx = rax_1\n14021fd1b        int64_t i_1 = 0x100\n14021fd2b        int64_t i\n14021fd20        *rcx = 0\n14021fd23        rcx = &rcx[1]\n14021fd27        i = i_1\n14021fd27        i_1 -= 1\n14021fd2b        do while (i != 1)\n14021fd37        arg1[4] = rax_1\n14021fd3b        int16_t* rax_2 = operator new(2)\n14021fd43        if (rax_2 == 0)\n14021fd4a        rax_2 = nullptr\n14021fd45        *rax_2 = 0\n14021fd4d        uint128_t* rcx_1 = arg1[3]\n14021fd59        arg1[6] = rax_2\n14021fd5d        memset(rcx_1, 0, 0x400)\n14021fd6e        memset(arg1[4], 0, 0x800)\n14021fd79        arg1[6]->vFunc_0 = 0\n14021fd87        if ((*(*arg2 + 0x58))(arg2) == 0)\n14021fd96        (*(*arg2 + 8))(arg2, 1, 0)\n14021fdab        return arg1",
+  "fetched_at": "2026-04-26T17:29:05Z"
+}

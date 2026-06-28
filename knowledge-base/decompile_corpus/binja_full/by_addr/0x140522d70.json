@@ -1,0 +1,7 @@
+{
+  "addr": "0x140522d70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140522d70        arg1[7] = 0x80000000\n140522d7e        *(arg1 + 8) = &DynamicVectorClass<class GameObjectTypeClass const* __ptr64>::`vftable'\n140522d84        *(arg1 + 0x10) = 0\n140522d88        arg1[6] = 0\n140522d8b        arg1[1] = 0\n140522d8e        *arg1 = 0xffffffff\n140522d94        *(arg1 + 0x30) = &DynamicVectorClass<class GameObjectTypeClass const* __ptr64>::`vftable'\n140522d9b        arg1[8] = 0\n140522d9e        arg1[9] = 0xffffffff\n140522da5        arg1[0xa] = 0\n140522da8        *(arg1 + 0x38) = 0\n140522dac        arg1[0x10] = 0\n140522daf        arg1[0x11] = 0x80000000\n140522db6        *(arg1 + 0x48) = 0\n140522dba        *(arg1 + 0x58) = 0\n140522dbe        *(arg1 + 0x60) = 0xf\n140522dc6        return arg1",
+  "fetched_at": "2026-04-26T17:33:01Z"
+}

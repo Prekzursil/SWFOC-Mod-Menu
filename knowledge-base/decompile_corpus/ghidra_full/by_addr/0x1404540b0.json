@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404540b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStoryEventCaptureClass::vfunction4(StoryEventCaptureClass *this,longlong param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  int iVar4;\n  undefined8 *puVar5;\n  undefined8 *_Buf1;\n  void *_Buf2;\n  ulonglong uVar6;\n  ulonglong uVar7;\n  \n  if (param_1 != 0) {\n    uVar6 = 0;\n    lVar1 = *(longlong *)&this[1].SignalGeneratorClass_data;\n    uVar7 = this[1].SignalGeneratorClass_data.offset_0x8 - lVar1 >> 5;\n    if (uVar7 != 0) {\n      lVar2 = *(longlong *)(param_1 + 0x298);\n      uVar3 = *(ulonglong *)(lVar2 + 0x110);\n      do {\n        _Buf2 = (void *)(lVar2 + 0xf8);\n        puVar5 = (undefined8 *)(uVar6 * 0x20 + lVar1);\n        if (0xf < uVar3) {\n          _Buf2 = *(void **)(lVar2 + 0xf8);\n        }\n        _Buf1 = puVar5;\n        if (0xf < (ulonglong)puVar5[3]) {\n          _Buf1 = (undefined8 *)*puVar5;\n        }\n        if (((puVar5[2] == *(size_t *)(lVar2 + 0x108)) &&\n            (iVar4 = memcmp(_Buf1,_Buf2,puVar5[2]), iVar4 == 0)) &&\n           (param_2 == *(longlong *)&this[1].StoryEventClass_data.field_0x8)) {\n          FUN_140455db0(this,0,0);\n          return;\n        }\n        uVar6 = (ulonglong)((int)uVar6 + 1);\n      } while (uVar6 < uVar7);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:36Z"
+}

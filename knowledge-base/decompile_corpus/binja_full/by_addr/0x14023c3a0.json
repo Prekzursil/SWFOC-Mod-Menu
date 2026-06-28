@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023c3a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023c3b2        int32_t rbx = arg2\n14023c3b8        EnterCriticalSection(&arg1[4])\n14023c3c0        if (rbx == 0)\n14023c3ca        rbx = timeGetTime() - data_140a7bec0\n14023c3e1        int32_t temp0\n14023c3e1        int32_t temp1\n14023c3e1        temp0:temp1 = mulu.dp.d(0x10624dd3, (rbx - arg1[2]) * arg1[3])\n14023c3e3        int32_t rax_2 = 0\n14023c3ec        uint32_t rdx_2 = temp0 u>> 9\n14023c3f4        if (*arg1 u>= rdx_2)\n14023c3f4        rax_2 = *arg1 - rdx_2\n14023c3f8        *arg1 = rax_2\n14023c3fa        arg1[2] = rbx\n14023c40c        return LeaveCriticalSection(&arg1[4]) __tailcall",
+  "fetched_at": "2026-04-26T17:30:03Z"
+}

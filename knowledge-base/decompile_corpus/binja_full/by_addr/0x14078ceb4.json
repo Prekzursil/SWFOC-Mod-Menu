@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ceb4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078cebf        _initialize_onexit_table(&data_140b3c458)\n14078cecb        _initialize_onexit_table(&data_140b3c470)\n14078ced0        int64_t result\n14078ced0        result.b = 1\n14078ced6        return result",
+  "fetched_at": "2026-04-26T17:31:32Z"
+}

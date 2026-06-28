@@ -1,0 +1,7 @@
+{
+  "addr": "0x140560960",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SquadLeaderDataPackClass::~SquadLeaderDataPackClass(SquadLeaderDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>::\n  ~DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>\n            ((DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> *)\n             &this->PooledObjectClass<class_SquadLeaderDataPackClass,20,class_EmptyLockerClass>);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:38:53Z"
+}

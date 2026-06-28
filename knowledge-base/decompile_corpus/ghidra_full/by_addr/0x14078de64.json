@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078de64",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078de64(wchar_t *param_1,rsize_t param_2,int param_3,undefined8 param_4)\n\n{\n  errno_t eVar1;\n  int iVar2;\n  int *piVar3;\n  int local_res18 [2];\n  undefined8 local_res20;\n  \n  if (0 < param_3) {\n    local_res20 = param_4;\n    iVar2 = 0;\n    piVar3 = local_res18;\n    local_res18[0] = param_3;\n    do {\n      piVar3 = piVar3 + 2;\n      eVar1 = wcscat_s(param_1,param_2,*(wchar_t **)piVar3);\n      if (eVar1 != 0) {\n                    /* WARNING: Subroutine does not return */\n        _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n      }\n      iVar2 = iVar2 + 1;\n    } while (iVar2 < local_res18[0]);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e1c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined2 FUN_14020e1c0(uint param_1,int param_2,HKL param_3)\n\n{\n  SHORT SVar1;\n  ushort uVar2;\n  UINT wScanCode;\n  int iVar3;\n  WCHAR local_28 [16];\n  \n  if (param_2 < 0) {\n    return 0;\n  }\n  SVar1 = GetKeyState(0x10);\n  if (-1 < SVar1) {\n    uVar2 = GetKeyState(0x14);\n    DAT_140a7c570 = 0;\n    if ((uVar2 & 1) == 0) goto LAB_14020e209;\n  }\n  DAT_140a7c570 = 0x80;\nLAB_14020e209:\n  SVar1 = GetKeyState(0x12);\n  DAT_140a7c572 = (byte)((ushort)SVar1 >> 8) & 0x80;\n  SVar1 = GetKeyState(0x11);\n  DAT_140a7c571 = (byte)((ushort)SVar1 >> 8) & 0x80;\n  wScanCode = MapVirtualKeyExA(param_1 & 0xff,0,param_3);\n  iVar3 = ToUnicodeEx(param_1,wScanCode,&DAT_140a7c560,local_28,10,0,param_3);\n  if (iVar3 != 1) {\n    return 0;\n  }\n  return local_28[0];\n}",
+  "fetched_at": "2026-04-26T17:59:06Z"
+}

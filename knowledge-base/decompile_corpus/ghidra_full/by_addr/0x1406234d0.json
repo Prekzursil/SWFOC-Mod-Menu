@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406234d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nStarshipLocomotorBehaviorClass::vfunction31(StarshipLocomotorBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  undefined8 uVar2;\n  \n  puVar1 = this->offset_0x18[0x15];\n  if (puVar1 == (undefined *)0x0) {\n    return (ulonglong)this->offset_0x18 & 0xffffffffffffff00;\n  }\n  if (1 < *(int *)(puVar1 + 0x48) - 4U) {\n    uVar2 = FUN_140559250(puVar1,8);\n    *(undefined4 *)(puVar1 + 0x5c) = 0xffffffff;\n    return CONCAT71((int7)((ulonglong)uVar2 >> 8),1);\n  }\n  *(undefined4 *)(puVar1 + 0x4c) = 8;\n  return CONCAT71((uint7)(uint3)(*(int *)(puVar1 + 0x48) - 4U >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

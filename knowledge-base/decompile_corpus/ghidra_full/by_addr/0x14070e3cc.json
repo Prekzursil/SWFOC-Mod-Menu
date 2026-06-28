@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070e3cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSiphonCreditsAbilityClass::vfunction3_for_RefCountClass\n          (SiphonCreditsAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((SiphonCreditsAbilityClass *)&this[-1].SiphonCreditsAbilityClass_data.offset_0x8,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:45Z"
+}

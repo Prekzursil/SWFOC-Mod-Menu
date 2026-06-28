@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402605a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTextureRectClass::vfunction20_for_DrawPrimitiveClass\n          (TextureRectClass *this,undefined4 *param_1,undefined4 *param_2,undefined4 *param_3,\n          undefined4 *param_4)\n\n{\n  *param_1 = *(undefined4 *)&(this->RefCountClass_data).field_0x38;\n  *param_2 = *(undefined4 *)&(this->RefCountClass_data).field_0x3c;\n  *param_3 = *(undefined4 *)&(this->RefCountClass_data).offset_0x40;\n  *param_4 = *(undefined4 *)((longlong)&(this->RefCountClass_data).offset_0x40 + 4);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:27Z"
+}

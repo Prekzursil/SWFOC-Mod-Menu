@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078de64",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078de67        if (arg3 s<= 0)\n14078de67        return \n14078de69        int32_t arg_18 = arg3\n14078de6e        int64_t r9\n14078de6e        int64_t arg_20 = r9\n14078de80        int32_t rbx_1 = 0\n14078de82        int32_t* rdi_1 = &arg_18\n14078de8c        rdi_1 = &rdi_1[2]\n14078dea0        if (wcscat_s(arg1, arg2, *rdi_1) != 0)\n14078deb3        int64_t var_38 = 0\n14078dec3        _invoke_watson()\n14078dec3        noreturn\n14078dea2        rbx_1 += 1\n14078dea8        do while (rbx_1 s< arg_18)\n14078deb2        return ",
+  "fetched_at": "2026-04-26T17:31:35Z"
+}

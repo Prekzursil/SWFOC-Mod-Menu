@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e6770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetEditboxClass member function inherited by GUIGadgetIMEEditboxClass */\n\nvoid __thiscall GUIGadgetEditboxClass::vfunction29(GUIGadgetEditboxClass *this,longlong param_1)\n\n{\n  int iVar1;\n  char cVar2;\n  \n  iVar1 = (this->GUIGadgetEditboxClass_data).offset_0x88;\n  if (((iVar1 == -1) ||\n      ((0 < iVar1 && (*(int *)&(this->GUIGadgetEditboxClass_data).offset_0x68 < iVar1)))) &&\n     ((cVar2 = FUN_140216630(*(undefined2 *)(param_1 + 0x10)), cVar2 != '\\0' ||\n      (*(int *)(param_1 + 0x10) == 0x20)))) {\n    if ((this->GUIGadgetEditboxClass_data).offset_0x94 != '\\0') {\n      switch(*(undefined1 *)(param_1 + 0x10)) {\n      case 0x22:\n      case 0x25:\n      case 0x2a:\n      case 0x2e:\n      case 0x2f:\n      case 0x3a:\n      case 0x3c:\n      case 0x3e:\n      case 0x3f:\n      case 0x5c:\n      case 0x7c:\n        goto switchD_1401e67db_caseD_22;\n      }\n    }\n    cVar2 = FUN_1401e6880(this,*(undefined4 *)(param_1 + 0x10));\n    if (cVar2 == '\\x01') {\n      (*this->vftablePtr->vfunction28)(this);\n      FUN_1401e70e0(this);\n      (*this->vftablePtr->vfunction26)(this);\n    }\n  }\nswitchD_1401e67db_caseD_22:\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:24Z"
+}

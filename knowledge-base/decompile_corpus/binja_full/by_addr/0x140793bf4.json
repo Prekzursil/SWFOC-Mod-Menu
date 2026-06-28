@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793bf4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793c16        int64_t result = try_get_function(0x1a, \"RoInitialize\", &data_1408d8324, \"RoInitialize\")\n140793c1e        if (result == 0)\n140793c33        return result\n140793c27        return result(zx.q(arg1)) __tailcall",
+  "fetched_at": "2026-04-26T17:31:52Z"
+}

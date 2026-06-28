@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d8b8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _configthreadlocale\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl _configthreadlocale(int _Flag)\n\n{\n  uint uVar1;\n  longlong lVar2;\n  ulong *puVar3;\n  uint uVar4;\n  \n  lVar2 = FUN_14078f07c();\n  uVar1 = *(uint *)(lVar2 + 0x3a8);\n  if (_Flag == -1) {\n    DAT_140a44f90 = 0xffffffff;\n  }\n  else if (_Flag != 0) {\n    if (_Flag == 1) {\n      uVar4 = uVar1 | 2;\n    }\n    else {\n      if (_Flag != 2) {\n        puVar3 = __doserrno();\n        *puVar3 = 0x16;\n        FUN_1407711ac();\n        return -1;\n      }\n      uVar4 = uVar1 & 0xfffffffd;\n    }\n    *(uint *)(lVar2 + 0x3a8) = uVar4;\n  }\n  return 2 - (uint)((uVar1 & 2) != 0);\n}",
+  "fetched_at": "2026-04-26T18:52:19Z"
+}

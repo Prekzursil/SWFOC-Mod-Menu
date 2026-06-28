@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _get_fpsr\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined4 _get_fpsr(void)\n\n{\n  return MXCSR;\n}",
+  "fetched_at": "2026-04-26T18:53:56Z"
+}

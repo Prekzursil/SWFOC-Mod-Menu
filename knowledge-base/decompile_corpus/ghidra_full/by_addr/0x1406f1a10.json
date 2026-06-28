@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f1a10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nBountyOnFactionAbilityClass::vfunction3_for_RefCountClass\n          (BountyOnFactionAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((BountyOnFactionAbilityClass *)&this[-1].BountyOnFactionAbilityClass_data.offset_0x20,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:47:30Z"
+}

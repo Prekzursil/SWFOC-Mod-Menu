@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400193f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400193f9        int64_t* rax = operator new(0x48)\n140019405        *rax = rax\n140019408        rax[1] = rax\n14001940c        rax[2] = rax\n140019410        rax[3].w = 0x101\n140019416        data_140b31240 = rax\n140019421        return atexit(sub_1407f2aa0) __tailcall",
+  "fetched_at": "2026-04-26T16:50:53Z"
+}

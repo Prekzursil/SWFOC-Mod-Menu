@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403cf660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403cf670        int64_t* rcx = *(arg1 + 0x2150)\n1403cf68c        void* result = sub_1403f9530((*(*rcx + 0x10))(rcx, 3), *(arg1 + 0x2150))\n1403cf697        if (result.d s< data_140b168c8)\n1403cf6a2        result = sub_14034c770(arg2, 0)\n1403cf6ba        if (result != 0 && *(result + 0x337) != 0xff)\n1403cf6c5        void* rdi_1 = *(result + 0x2b0)\n1403cf6dc        if (rdi_1 != 0 && *(rdi_1 + 0x336) != 0xff)\n1403cf6ec        struct RefCountClass::EventClass::VTable** rax_2 = operator new(0x68)\n1403cf6f4        struct ScheduledEventClass::FleetManagementEventClass::VTable** rsi_1\n1403cf6f4        if (rax_2 == 0)\n1403cf703        rsi_1 = nullptr\n1403cf6fe        rsi_1 = sub_1405af020(rax_2)\n1403cf73a        sub_1405afb60(rsi_1, *(*(arg1 + 0x2150) + 0x50), *(rdi_1 + 0x50), *(result + 0x50), 2, 0, 0x3fffff, 0x3fffff)\n1403cf749        sub_1403b01f0(&data_140b2ed18, rsi_1)\n1403cf753        struct RefCountClass::EventClass::VTable** rax_5 = operator new(0x68)\n1403cf760        struct ScheduledEventClass::FleetManagementEventClass::VTable** rdi_2\n1403cf760        if (rax_5 == 0)\n1403cf76f        rdi_2 = nullptr\n1403cf76a        rdi_2 = sub_1405af020(rax_5)\n1403cf7a8        sub_1405afb60(rdi_2, *(*(arg1 + 0x2150) + 0x50), 0x3fffff, *(result + 0x50), 5, 0, 0x3fffff, 0x3fffff)\n1403cf7b7        return sub_1403b01f0(&data_140b2ed18, rdi_2)\n1403cf7cb        return result",
+  "fetched_at": "2026-04-26T17:24:54Z"
+}

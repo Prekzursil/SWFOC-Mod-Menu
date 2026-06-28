@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402b59b0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_gamemode_refresh_local_player_subsystems",
+  "body": "1402b59ba        void* i = *(arg1 + 0x48)\n1402b59c5        while (i != arg1 + 0x40)\n1402b59e0        void* rdi_1 = *(i + 0x18)\n1402b59eb        int64_t rax_1 = sub_140294a40(&data_140a16fd0)\n1402b59f3        int64_t* rcx = rdi_1 - 0x18\n1402b59fa        if (rdi_1 == 0)\n1402b59fa        rcx = nullptr\n1402b59fe        sub_1403a51e0(rcx, rax_1)\n1402b5a03        i = *(i + 8)\n1402b5a20        return ",
+  "fetched_at": "2026-04-26T16:43:14Z"
+}

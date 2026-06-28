@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001f8b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* Library Function - Single Match\n    void __cdecl `vector destructor iterator'(void * __ptr64,unsigned __int64,unsigned __int64,void\n   (__cdecl*)(void * __ptr64))\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl\n_vector_destructor_iterator_\n          (void *param_1,__uint64 param_2,__uint64 param_3,_func_void_void_ptr *param_4)\n\n{\n  void *pvVar1;\n  \n  if (param_3 != 0) {\n    pvVar1 = (void *)(param_2 * param_3 + (longlong)param_1);\n    do {\n      pvVar1 = (void *)((longlong)pvVar1 - param_2);\n      (*param_4)(pvVar1);\n      param_3 = param_3 - 1;\n    } while (param_3 != 0);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:43Z"
+}

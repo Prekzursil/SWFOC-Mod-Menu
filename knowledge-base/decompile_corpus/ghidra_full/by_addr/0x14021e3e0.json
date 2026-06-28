@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021e3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14021e3e0(undefined8 param_1,undefined8 param_2,int param_3)\n\n{\n  longlong lVar1;\n  \n  EnterCriticalSection((LPCRITICAL_SECTION)&DAT_140a7e2a0);\n  lVar1 = FUN_14021e910(param_2,1);\n  if (lVar1 != 0) {\n    *(int *)(lVar1 + 0x10) = *(int *)(lVar1 + 0x10) + param_3 + 0x1c;\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014021e423. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  LeaveCriticalSection((LPCRITICAL_SECTION)&DAT_140a7e2a0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:32Z"
+}

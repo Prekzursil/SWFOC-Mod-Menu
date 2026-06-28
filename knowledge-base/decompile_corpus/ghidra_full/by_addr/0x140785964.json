@@ -1,0 +1,7 @@
+{
+  "addr": "0x140785964",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _towlower_l\n   \n   Library: Visual Studio 2019 Release */\n\nwint_t __cdecl _towlower_l(wint_t _C,_locale_t _Locale)\n\n{\n  int iVar1;\n  ushort local_res8 [8];\n  wint_t local_res18 [8];\n  longlong local_28;\n  longlong local_20;\n  char local_10;\n  \n  local_res8[0] = 0xffff;\n  if (_C != 0xffff) {\n    local_res8[0] = _C;\n    _LocaleUpdate::_LocaleUpdate((_LocaleUpdate *)&local_28,(__crt_locale_pointers *)_Locale);\n    if (local_res8[0] < 0x100) {\n      if (((&DAT_1408d4e32)[(ulonglong)(byte)local_res8[0] * 2] & 1) == 0) {\n        local_res8[0] = local_res8[0] & 0xff;\n      }\n      else {\n        local_res8[0] =\n             (ushort)*(byte *)(*(longlong *)(local_20 + 0x110) + (ulonglong)(byte)local_res8[0]);\n      }\n    }\n    else if ((*(longlong *)(local_20 + 0x138) != 0) &&\n            (iVar1 = __acrt_LCMapStringW(*(longlong *)(local_20 + 0x138),0x100,local_res8,1,\n                                         local_res18,1), iVar1 != 0)) {\n      local_res8[0] = local_res18[0];\n    }\n    if (local_10 != '\\0') {\n      *(uint *)(local_28 + 0x3a8) = *(uint *)(local_28 + 0x3a8) & 0xfffffffd;\n    }\n  }\n  return local_res8[0];\n}",
+  "fetched_at": "2026-04-26T18:51:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140055220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_140055220(longlong param_1,int param_2)\n\n{\n  ulonglong in_RAX;\n  \n  if ((-1 < param_2) && (param_2 < *(int *)(param_1 + 0x10))) {\n    return (ulonglong)*(byte *)((longlong)param_2 * 0x70 + 0x6c + *(longlong *)(param_1 + 8));\n  }\n  return in_RAX & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:54Z"
+}

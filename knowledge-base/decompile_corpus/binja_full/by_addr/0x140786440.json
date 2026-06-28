@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140786455        if (arg1 != 0)\n140786457        int64_t rbx_1 = -1\n14078645b        rbx_1 += 1\n140786462        do while (arg1[rbx_1] != 0)\n140786468        char* result = j_sub_14078f364(rbx_1 + 1)\n140786473        if (result != 0)\n140786486        if (strcpy_s(result, rbx_1 + 1, arg1) == 0)\n140786488        return result\n14078649f        int64_t var_18 = 0\n1407864af        _invoke_watson()\n1407864af        noreturn\n14078648d        return nullptr",
+  "fetched_at": "2026-04-26T17:31:17Z"
+}

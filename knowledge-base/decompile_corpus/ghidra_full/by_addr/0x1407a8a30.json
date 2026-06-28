@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a8a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alLaserBeam::vfunction14(void)\n\n{\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cd9a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1407cd9a0(longlong *param_1,undefined8 param_2)\n\n{\n  longlong lVar1;\n  int *piVar2;\n  undefined8 uVar3;\n  int iVar4;\n  undefined4 *puVar5;\n  undefined4 local_18 [2];\n  undefined8 local_10;\n  \n  local_18[0] = 4;\n  local_10 = param_2;\n  piVar2 = (int *)FUN_1407bfd90(param_1[1],local_18);\n  if (*piVar2 == 3) {\n    return (int)*(double *)(piVar2 + 2);\n  }\n  iVar4 = (int)param_1[8];\n  lVar1 = *param_1;\n  if (*(int *)(lVar1 + 0x4c) < iVar4 + 1) {\n    uVar3 = FUN_1407bf6f0(param_1[4],*(undefined8 *)(lVar1 + 0x10),(int *)(lVar1 + 0x4c),0x10,\n                          0x3ffff,\"constant table overflow\");\n    *(undefined8 *)(lVar1 + 0x10) = uVar3;\n    iVar4 = (int)param_1[8];\n  }\n  puVar5 = (undefined4 *)((longlong)iVar4 * 0x10 + *(longlong *)(lVar1 + 0x10));\n  *puVar5 = local_18[0];\n  *(undefined8 *)(puVar5 + 2) = local_10;\n  puVar5 = (undefined4 *)FUN_1407c02e0(param_1[4],param_1[1],local_18);\n  *puVar5 = 3;\n  *(double *)(puVar5 + 2) = (double)(int)param_1[8];\n  lVar1 = param_1[8];\n  *(int *)(param_1 + 8) = (int)lVar1 + 1;\n  return (int)lVar1;\n}",
+  "fetched_at": "2026-04-26T18:57:34Z"
+}

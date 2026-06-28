@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401aba70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401aba70        void* rdx_1 = arg1[2]\n1401aba74        struct alD3dResource::VTable* const result = &alD3dResource::`vftable'\n1401aba7b        *arg1 = &alD3dResource::`vftable'\n1401aba81        if (rdx_1 != 0)\n1401aba83        result = arg1[1]\n1401aba87        *(rdx_1 + 8) = result\n1401aba8b        void* rdx = arg1[1]\n1401aba92        if (rdx != 0)\n1401aba94        result = arg1[2]\n1401aba98        *(rdx + 0x10) = result\n1401abaa3        if (data_140a70a40 == arg1)\n1401abaa5        result = arg1[1]\n1401abaa9        data_140a70a40 = result\n1401abab0        return result",
+  "fetched_at": "2026-04-26T17:25:23Z"
+}

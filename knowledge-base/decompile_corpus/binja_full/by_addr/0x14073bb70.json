@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073bb70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14073bb89        *arg1 = &LandMovementBlockStatus::`vftable'{for `BlockingStatus'}\n14073bb95        arg1[6] = &LandMovementBlockStatus::`vftable'{for `SignalListenerClass'}\n14073bb99        int64_t* rcx = arg1[0xc]\n14073bba0        if (rcx != 0)\n14073bbaa        (*(*rcx + 8))(rcx, 1)\n14073bbad        int64_t* rcx_1 = arg1[0xb]\n14073bbb4        if (rcx_1 != 0)\n14073bbbe        (*(*rcx_1 + 8))(rcx_1, 1)\n14073bbc1        int64_t* rcx_2 = arg1[0x10]\n14073bbcb        if (rcx_2 != 0)\n14073bbd0        (*(*rcx_2 + 8))(rcx_2)\n14073bbd3        int64_t* rcx_3 = arg1[0xf]\n14073bbda        if (rcx_3 != 0)\n14073bbdf        (*(*rcx_3 + 8))(rcx_3)\n14073bbe2        int64_t* rcx_4 = arg1[9]\n14073bbe9        if (rcx_4 != 0)\n14073bbee        (*(*rcx_4 + 8))(rcx_4)\n14073bbfc        arg1[6] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14073bc00        sub_14020a820(&arg1[6])\n14073bc05        int64_t* rcx_6 = arg1[5]\n14073bc0c        if (rcx_6 != 0)\n14073bc11        (*(*rcx_6 + 8))(rcx_6)\n14073bc17        sub_140249eb0(arg1)\n14073bc20        if ((arg2 & 1) != 0)\n14073bc2a        j_sub_1407864b8(arg1)\n14073bc41        return arg1",
+  "fetched_at": "2026-04-26T17:29:09Z"
+}

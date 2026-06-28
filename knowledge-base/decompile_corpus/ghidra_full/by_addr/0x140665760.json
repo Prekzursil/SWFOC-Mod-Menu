@@ -1,0 +1,7 @@
+{
+  "addr": "0x140665760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall PlanetAITargetLocationClass::vfunction8(PlanetAITargetLocationClass *this)\n\n{\n  return *(undefined8 *)&this->field_0x30;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:25Z"
+}

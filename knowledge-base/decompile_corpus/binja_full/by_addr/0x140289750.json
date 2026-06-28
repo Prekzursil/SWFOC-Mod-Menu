@@ -1,0 +1,7 @@
+{
+  "addr": "0x140289750",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14028975c        arg1[3] = -1\n14028976b        arg1[7] = 0\n14028976f        *arg1 = &GameModeManagerClass::`vftable'{for `SignalGeneratorClass'}\n140289775        arg1[0xb] = 0\n140289779        arg1[0x16].w = 0\n140289780        *(arg1 + 0x24) = 0\n140289784        *(arg1 + 0x1e5) = 0\n14028978b        *(arg1 + 0xb4) = 0\n140289791        arg1[0x15] = 0\n140289798        arg1[0x11] = 0\n14028979f        arg1[0x12] = 0\n1402897a6        arg1[4].d = 0\n1402897a9        *(arg1 + 0x34) = 0\n1402897ad        arg1[0x10].d = 1\n1402897b7        arg1[6].d = 1\n1402897c5        sub_140490670(&arg1[0x30])\n1402897d1        sub_140289840(&arg1[0x1e])\n1402897d6        int64_t rdx = arg1[0xf]\n1402897de        if (rdx u>= 0x10)\n1402897e0        void* rcx_2 = arg1[0xc]\n1402897ee        if (rdx + 1 u>= 0x1000)\n1402897f0        void* r8_1 = *(rcx_2 - 8)\n140289803        if (rcx_2 - r8_1 - 8 u> 0x1f)\n140289838        _invalid_parameter_noinfo_noreturn()\n140289838        noreturn\n140289805        rcx_2 = r8_1\n140289808        j_sub_1407864b8(rcx_2)\n140289811        arg1[0xe] = 0\n140289815        arg1[0xf] = 0xf\n14028981d        arg1[0xc].b = 0\n140289821        sub_1402896e0(&arg1[8])\n140289833        return sub_140240640(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:32:23Z"
+}

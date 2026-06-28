@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a344",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcscspn\n   \n   Library: Visual Studio 2019 Release */\n\nsize_t __cdecl wcscspn(wchar_t *_Str,wchar_t *_Control)\n\n{\n  wchar_t *pwVar1;\n  wchar_t wVar2;\n  wchar_t *pwVar3;\n  \n  wVar2 = *_Str;\n  pwVar1 = _Str;\n  while (wVar2 != L'\\0') {\n    if (*_Control != L'\\0') {\n      wVar2 = *_Control;\n      pwVar3 = _Control;\n      do {\n        if (*pwVar1 == wVar2) goto LAB_14079a37c;\n        pwVar3 = pwVar3 + 1;\n        wVar2 = *pwVar3;\n      } while (wVar2 != L'\\0');\n    }\n    pwVar1 = pwVar1 + 1;\n    wVar2 = *pwVar1;\n  }\nLAB_14079a37c:\n  return (longlong)pwVar1 - (longlong)_Str >> 1;\n}",
+  "fetched_at": "2026-04-26T18:53:44Z"
+}

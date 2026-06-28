@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044aae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044aae6        int64_t result = sx.q(*(arg1 + 0x2b0))\n14044aaf0        int32_t rdx = 0\n14044aaf4        if (result.d s> 0)\n14044aaf6        int64_t result_1 = result\n14044aaf9        int64_t r9_1 = 0\n14044aafc        result = *(arg1 + 0x2a8)\n14044ab06        if (*result == arg2)\n14044ab81        if (arg3 == 0)\n14044ab8f        return sub_1400475e0(arg1 + 0x2a0, rdx) __tailcall\n14044ab81        goto label_14044ab7d\n14044ab08        rdx += 1\n14044ab0a        r9_1 += 1\n14044ab0d        result += 8\n14044ab14        do while (r9_1 s< result_1)\n14044ab1a        if (arg3 == 1)\n14044ab2b        int32_t rax = *(arg1 + 0x2b0)\n14044ab30        int32_t rcx_2 = (*(arg1 + 0x2b4) * 2) s>> 1\n14044ab34        if (rax s>= rcx_2)\n14044ab49        int32_t rdx_3 = rcx_2 s/ 0xa\n14044ab52        if (rdx_3 s< 0xa)\n14044ab52        rdx_3 = 0xa\n14044ab5d        sub_140047aa0(arg1 + 0x2a0, rdx_3 + rcx_2, 0, arg3)\n14044ab62        rax = *(arg1 + 0x2b0)\n14044ab68        result = *(arg1 + 0x2a8)\n14044ab6c        *(result + (sx.q(rax) << 3)) = arg2\n14044ab70        *(arg1 + 0x2b0) += 1\n14044ab7d        label_14044ab7d:\n14044ab7d        return result",
+  "fetched_at": "2026-04-26T17:27:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060f400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_14060f400(longlong param_1)\n\n{\n  char cVar1;\n  undefined8 *puVar2;\n  undefined1 local_res8 [8];\n  \n  if (param_1 != 0) {\n    puVar2 = (undefined8 *)FUN_140769c58(0xf0);\n    if (puVar2 != (undefined8 *)0x0) {\n      *puVar2 = 0;\n      puVar2[2] = 0;\n      puVar2[3] = 0xf;\n      FUN_1406cc2c0(puVar2 + 4);\n      puVar2[8] = 0;\n      puVar2[5] = 0;\n      puVar2[6] = 0;\n      puVar2[7] = 0;\n      puVar2[9] = 0;\n      puVar2[10] = 0;\n      puVar2[0xb] = 0;\n      puVar2[0xc] = 0;\n      puVar2[0xd] = 0;\n      puVar2[0xe] = 0;\n      puVar2[0xf] = 0;\n      puVar2[0x10] = 0;\n      puVar2[0x11] = 0;\n      puVar2[0x12] = 0;\n      puVar2[0x13] = 0;\n      puVar2[0x14] = 0;\n      puVar2[0x15] = 0;\n      puVar2[0x16] = 0;\n      puVar2[0x17] = 0;\n      puVar2[0x18] = 0;\n      puVar2[0x19] = 0;\n      *(undefined4 *)(puVar2 + 0x1d) = 2;\n      FUN_140147cf0(puVar2 + 5,3,local_res8);\n      puVar2[0x1a] = 0;\n      puVar2[0x1b] = 0;\n      puVar2[0x1c] = 0;\n      cVar1 = FUN_140610580(puVar2,param_1);\n      if (cVar1 != '\\0') {\n        cVar1 = FUN_1406cc490(puVar2 + 4);\n        if (cVar1 != '\\0') {\n          return puVar2;\n        }\n      }\n      FUN_14060f160(puVar2);\n      thunk_FUN_1407864b8(puVar2,0xf0);\n      return (undefined8 *)0x0;\n    }\n  }\n  return (undefined8 *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:27:01Z"
+}

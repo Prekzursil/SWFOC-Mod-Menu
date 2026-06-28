@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c0be0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406c0bfa        if (*(arg1 + 0x100) == 0 || *(arg1 + 0x4e) != 0)\n1406c0bfa        return \n1406c0c00        *(arg1 + 0x4e) = 1\n1406c0c04        int64_t rcx = *(arg1 + 0x168)\n1406c0c1e        int32_t i = 0\n1406c0c22        if (((*(arg1 + 0x170) - rcx) s>> 2).d s> 0)\n1406c0c32        int64_t* rdi_1 = nullptr\n1406c0c39        int32_t* rsi_1 = nullptr\n1406c0c40        int32_t r14_1 = *(rsi_1 + rcx)\n1406c0c48        if (r14_1 != 0xffffffff)\n1406c0c51        void* r15_1 = *(rdi_1 + *(arg1 + 0x180))\n1406c0c5d        if (*(r15_1 + 0xd0) != 0)\n1406c0c63        void* rcx_1 = *(rdi_1 + *(arg1 + 0x58))\n1406c0c6e        char rax_6\n1406c0c6e        if (*(rcx_1 + 0x86c) s> 0 && *(rcx_1 + 0xf0c) u<= 0)\n1406c0c82        rax_6 = sub_140370320(rcx_1, 0x5f, 0xffffffff)\n1406c0c89        int32_t rdx_1\n1406c0c89        if (*(rcx_1 + 0x86c) s<= 0 || (*(rcx_1 + 0xf0c) u<= 0 && rax_6 == 0))\n1406c0c8f        rdx_1 = 1\n1406c0c8b        rdx_1 = 0\n1406c0cac        sub_14053bee0(sub_140559b40(*(r15_1 + 0xd0), rdx_1), r14_1, arg1, 1)\n1406c0cb1        rcx = *(arg1 + 0x168)\n1406c0cb8        i += 1\n1406c0cc1        rsi_1 = &rsi_1[1]\n1406c0cc8        rdi_1 = &rdi_1[1]\n1406c0cd2        do while (i s< ((*(arg1 + 0x170) - rcx) s>> 2).d)\n1406c0cef        sub_1406c2320(arg1)\n1406c0cfe        return ",
+  "fetched_at": "2026-04-26T17:25:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140138a30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140138a41        if ((arg2 & 2) == 0)\n140138b58        sub_1401385f0(arg1)\n140138b61        if ((arg2 & 1) != 0)\n140138b6b        j_sub_1407864b8(arg1)\n140138b7a        return arg1\n140138a4c        int64_t i = *(arg1 - 8)\n140138a7b        if (i != 0)\n140138a81        void* rbx_1 = arg1 + (i << 7) + 0x78\n140138a90        rbx_1 -= 0x80\n140138a94        i -= 1\n140138a97        void* rcx = *(rbx_1 - 0x10)\n140138a9e        if (rcx != 0)\n140138ab1        if (((*rbx_1 - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n140138ab3        void* r8_1 = *(rcx - 8)\n140138ac6        if (rcx - r8_1 - 8 u> 0x1f)\n140138b7b        _invalid_parameter_noinfo_noreturn()\n140138b7b        noreturn\n140138acc        rcx = r8_1\n140138acf        j_sub_1407864b8(rcx)\n140138ad4        *(rbx_1 - 0x10) = 0\n140138ad8        *(rbx_1 - 8) = 0\n140138adc        *rbx_1 = 0\n140138ae3        *(rbx_1 - 0x58) = &MultiLinkedListClass<class alTerrainShadowBlob>::`vftable'{for `GenericMultiLinkedList'}\n140138aeb        while (*(rbx_1 - 0x48) != rbx_1 - 0x50)\n140138af9        int64_t* arg_18\n140138af9        sub_14020ac80(rbx_1 - 0x58, &arg_18)\n140138b08        sub_14020a960(rbx_1 - 0x58)\n140138b10        do while (i != 0)\n140138b1a        if ((arg2 & 1) != 0)\n140138b1c        *(arg1 - 8)\n140138b2a        j_sub_1407864b8(arg1 - 8)\n140138b57        return arg1 - 8",
+  "fetched_at": "2026-04-26T17:12:40Z"
+}

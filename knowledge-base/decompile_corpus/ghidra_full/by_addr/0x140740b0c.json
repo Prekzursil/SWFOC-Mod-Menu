@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740b0c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl std::_Lockit::_Lockit(int) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\n_Lockit * __thiscall std::_Lockit::_Lockit(_Lockit *this,int param_1)\n\n{\n  *(int *)this = param_1;\n  if (param_1 == 0) {\n    _lock_locales();\n  }\n  else if (param_1 < 8) {\n    EnterCriticalSection((LPCRITICAL_SECTION)(&DAT_140b3b480 + (longlong)param_1 * 0x28));\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:04:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1c80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FrameInfoEventClass::vfunction5(FrameInfoEventClass *this)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  iVar1 = (this->EventClass_data).offset_0xc;\n  iVar2 = FUN_140294a70(&DAT_140a16fd0);\n  if (iVar2 != iVar1) {\n    FUN_14027d400(&DAT_140b0a320,iVar1,*(undefined4 *)&this[1].vftablePtr,\n                  *(undefined4 *)((longlong)&this[1].vftablePtr + 4),\n                  *(undefined4 *)&this[1].field_0x8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:22Z"
+}

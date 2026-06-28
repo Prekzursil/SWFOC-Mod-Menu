@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b40b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b40ba        int64_t* rdx = *(arg1 + 0x18)\n1404b40be        struct CalculationOp<float>::Plus<float>::VTable* const rax = &Plus<float>::`vftable'{for `CalculationOp<float>'}\n1404b40c5        int128_t zmm2 = zx.o(0)\n1404b40c8        struct CalculationOp<float>::Plus<float>::VTable* const arg_10 = &Plus<float>::`vftable'{for `CalculationOp<float>'}\n1404b40cd        int32_t arg_8 = 0\n1404b40d6        int128_t zmm3 = zx.o(0)\n1404b40d9        void** i = *rdx\n1404b40df        while (i != rdx)\n1404b40e8        if (i != *rdx)\n1404b40fb        rax->vFunc_0(&arg_10, &arg_8, &i[2])\n1404b40fd        rdx = *(arg1 + 0x18)\n1404b4101        zmm2 = arg2\n1404b4104        rax = arg_10\n1404b40ea        zmm2 = i[2].d\n1404b4109        arg_8 = zmm2.d\n1404b410f        zmm3 = zmm2\n1404b4112        i = *i\n1404b411e        if (*(arg1 + 0x30) == 1)\n1404b4120        arg2 = *(arg1 + 0x28)\n1404b4128        if (not(arg2.d f<= zmm2.d))\n1404b412a        zmm2 = arg2\n1404b412d        zmm3 = arg2\n1404b4134        if (*(arg1 + 0x31) == 1)\n1404b4136        int128_t zmm1 = *(arg1 + 0x2c)\n1404b413e        if (not(zmm1.d f> zmm2.d))\n1404b4140        zmm2.d f- zmm1.d\n1404b4145        if (is_unordered.d(zmm2.d, zmm1.d) || not(zmm2.d f== zmm1.d))\n1404b4154        return zmm1\n1404b4162        return zmm3",
+  "fetched_at": "2026-04-26T17:29:53Z"
+}

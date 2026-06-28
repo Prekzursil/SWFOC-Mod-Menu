@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d55a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalLocationPerceptualEvaluatorClass * FUN_1406d55a0(longlong param_1)\n\n{\n  TacticalLocationPerceptualEvaluatorClass *this;\n  \n  this = (TacticalLocationPerceptualEvaluatorClass *)FUN_140769c58(0x108);\n  if (this == (TacticalLocationPerceptualEvaluatorClass *)0x0) {\n    this = (TacticalLocationPerceptualEvaluatorClass *)0x0;\n  }\n  else {\n                    /* inlined constructor:\n                       LandLocationPerceptualEvaluatorClass::LandLocationPerceptualEvaluatorClass */\n    TacticalLocationPerceptualEvaluatorClass::TacticalLocationPerceptualEvaluatorClass(this);\n    this->vftablePtr =\n         (TacticalLocationPerceptualEvaluatorClass_vftable0 *)\n         &LandLocationPerceptualEvaluatorClass::vftable;\n    this->vftablePtr =\n         (TacticalLocationPerceptualEvaluatorClass_vftable1 *)\n         &LandLocationPerceptualEvaluatorClass::vftable;\n    this->vftablePtr =\n         (TacticalLocationPerceptualEvaluatorClass_vftable2 *)\n         &LandLocationPerceptualEvaluatorClass::vftable;\n  }\n  (*this->vftablePtr->vfunction14)(this,param_1);\n  (*this->vftablePtr->vfunction9)(this);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:43:04Z"
+}

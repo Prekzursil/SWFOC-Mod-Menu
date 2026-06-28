@@ -1,0 +1,7 @@
+{
+  "addr": "0x140067c80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nSteamClass * FUN_140067c80(void)\n\n{\n  SteamClass *this;\n  undefined **local_res8 [4];\n  \n  if (DAT_1409cf0a0 == (SteamClass *)0x0) {\n    this = (SteamClass *)FUN_140769c58(0x18);\n    if (this == (SteamClass *)0x0) {\n      DAT_1409cf0a0 = (SteamClass *)0x0;\n    }\n    else {\n      DAT_1409cf0a0 = SteamClass::SteamClass(this);\n    }\n    local_res8[0] = &PTR_vftable_1409cf098;\n    if (DAT_140a7bc10 != DAT_140a7bc18) {\n      *DAT_140a7bc10 = &PTR_vftable_1409cf098;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      return DAT_1409cf0a0;\n    }\n    FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res8);\n  }\n  return DAT_1409cf0a0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:49Z"
+}

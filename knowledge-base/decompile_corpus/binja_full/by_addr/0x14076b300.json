@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076b31a        void arg_20\n14076b31a        int64_t* rax = _GetEstablisherFrame(arg1, arg2, arg3, &arg_20)\n14076b332        void* rax_2 = _CatchTryBlock(arg3, sub_14076dad0(arg3, arg2))\n14076b33a        int32_t r9_1\n14076b33a        if (rax_2 != 0)\n14076b342        r9_1 = *(rax_2 + 4)\n14076b33c        r9_1 = -1\n14076b363        return __FrameHandler3::FrameUnwindToState(rax, arg2, arg3, r9_1)",
+  "fetched_at": "2026-04-26T17:30:22Z"
+}

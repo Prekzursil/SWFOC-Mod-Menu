@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc55c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nInfectionAbilityClass::vfunction3_for_RefCountClass(InfectionAbilityClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor\n            ((InfectionAbilityClass *)&this[-1].InfectionAbilityClass_data.field_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:14Z"
+}

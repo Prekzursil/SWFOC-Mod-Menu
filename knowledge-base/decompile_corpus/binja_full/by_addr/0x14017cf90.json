@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017cf90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017cf9b        *arg2 = *arg3\n14017cfa1        arg2[1] = arg3[1]\n14017cfa8        arg2[2] = arg3[2]\n14017cfb7        uint128_t zmm0\n14017cfb7        zmm0.d = _mm_cvtepi32_ps(zx.o(sx.d(arg3[3].w))).d f* 6.10351562e-05f\n14017cfbb        arg2[3] = zmm0.d\n14017cfcc        zmm0.d = _mm_cvtepi32_ps(zx.o(sx.d(*(arg3 + 0xe)))).d f* 6.10351562e-05f\n14017cfd0        arg2[4] = zmm0.d\n14017cfe1        uint128_t zmm1\n14017cfe1        zmm1.d = _mm_cvtepi32_ps(zx.o(sx.d(arg3[4].w))).d f* 6.10351562e-05f\n14017cfe5        arg2[5] = zmm1.d\n14017cfef        arg2[0x1c] = sx.d(*(arg3 + 0x12))\n14017cff6        arg2[6] = arg3[5]\n14017cffd        arg2[7] = arg3[6]\n14017d004        arg2[0xe] = arg3[7]\n14017d00b        arg2[0xf] = arg3[8]\n14017d012        arg2[0x10] = arg3[9]\n14017d019        arg2[0x11] = arg3[0xa]\n14017d020        arg2[0x12] = arg3[0xb]\n14017d023        int32_t result = arg3[0xc]\n14017d027        arg2[0x13] = result\n14017d02a        return result",
+  "fetched_at": "2026-04-26T17:23:38Z"
+}

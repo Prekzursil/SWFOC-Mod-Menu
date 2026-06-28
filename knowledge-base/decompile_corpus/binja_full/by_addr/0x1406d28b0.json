@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d28b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d28b8        int64_t* rdi = nullptr\n1406d28bd        *arg3 = 0\n1406d28cd        int32_t arg_8\n1406d28cd        int64_t result\n1406d28cd        if (*(arg1 + 0x98) != 0 && sub_1405f3f00(arg2, data_140a43c6c, &arg_8).b != 0)\n1406d28ee        int64_t rdx_1 = sx.q(arg_8)\n1406d28f8        int64_t rcx_1 = rdx_1 * 3\n1406d290c        int32_t rbx_2 = ((*(arg1 + (rcx_1 << 3) + 0xc0) - *(arg1 + (rcx_1 << 3) + 0xb8)) s>> 3).d\n1406d2912        if (rbx_2 != 0)\n1406d2919        uint64_t r14_1 = zx.q(rbx_2)\n1406d2920        int64_t zmm1_1\n1406d2920        while (true)\n1406d2933        double zmm0_1 = sub_140385a70(*(rdi + *(arg1 + sx.q(rdx_1.d) * 0x18 + 0xb8)))\n1406d293b        rdi = &rdi[1]\n1406d2943        zmm1_1 = fconvert.d(zmm0_1.d) f+ *arg3\n1406d2947        *arg3 = zmm1_1\n1406d294b        uint64_t temp0_1 = r14_1\n1406d294b        r14_1 -= 1\n1406d294f        if (temp0_1 == 1)\n1406d294f        break\n1406d2951        rdx_1 = zx.q(arg_8)\n1406d296a        *arg3 = zmm1_1 f/ float.d(zx.q(rbx_2))\n1406d2973        result.b = 1\n1406d297c        return result\n1406d297d        result.b = 0\n1406d2986        return result",
+  "fetched_at": "2026-04-26T17:25:34Z"
+}

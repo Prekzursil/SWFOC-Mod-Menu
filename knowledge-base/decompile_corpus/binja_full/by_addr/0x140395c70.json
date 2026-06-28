@@ -1,0 +1,7 @@
+{
+  "addr": "0x140395c70",
+  "tool": "binary_ninja",
+  "fact_id": "rva_buff_modifier_read",
+  "body": "140395c83        if (arg2 == 0)\n140395c85        int64_t result\n140395c85        result.b = 0\n140395c91        return result\n140395c92        int64_t* rcx = data_140b15418\n140395ca6        int64_t rdi\n140395ca6        rdi.b = 0\n140395cac        int64_t* rax_1 = (*(*rcx + 0x220))(rcx, zx.q(*(arg1 + 0x58)))\n140395cb2        void* rcx_1 = *(arg1 + 0xf0)\n140395cb9        int64_t* rsi = nullptr\n140395cbe        if (rcx_1 != 0)\n140395cc0        rsi = *(rcx_1 + 0x138)\n140395cca        if (rax_1 != 0)\n140395cd2        sub_140536570(arg2, rax_1)\n140395cd7        rdi.b = 1\n140395cdd        if (rsi != 0)\n140395ce5        sub_140536570(arg2, rsi)\n140395cea        rdi.b = 1\n140395d05        return zx.q(rdi.b)",
+  "fetched_at": "2026-04-26T16:43:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a22a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400a22a4        arg1 - 9.99999984e+17f\n1400a22b3        float zmm1 = data_140a7c438\n1400a22c0        int128_t zmm6 = zx.o(0)\n1400a22c9        if (is_unordered.d(arg1, 9.99999984e+17f) || not(arg1 == 9.99999984e+17f))\n1400a22cb        zmm1 = arg1\n1400a22d2        zmm1 = (zmm1 - 0f) / (3f - 0f)\n1400a22d9        if (not(0f > zmm1))\n1400a22e3        zmm6 = _mm_min_ss(0x3f800000, zmm1)\n1400a22ec        void* rax = operator new(0x20)\n1400a22f8        int64_t var_28 = 0x17\n1400a2306        int64_t var_20 = 0x1f\n1400a2312        __builtin_strncpy(rax, \"IDC_SCROLL_SPEED_SLIDER\", 0x18)\n1400a233e        int32_t rdx = data_140a113c0\n1400a2344        void* var_38 = rax\n1400a2349        int64_t result = sub_1401c9080(&data_140a78510, rdx, &var_38, zmm6)\n1400a2357        if (var_20 u< 0x10)\n1400a2390        return result\n1400a2359        void* rcx_1 = var_38\n1400a2361        void* rax_1 = rcx_1\n1400a236b        if (var_20 + 1 u>= 0x1000)\n1400a236d        rcx_1 = *(rcx_1 - 8)\n1400a2380        if (rax_1 - rcx_1 - 8 u> 0x1f)\n1400a2391        _invalid_parameter_noinfo_noreturn()\n1400a2391        noreturn\n1400a2382        return j_sub_1407864b8(rcx_1)",
+  "fetched_at": "2026-04-26T16:58:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a819        void* rbx = arg4[7]\n14076a833        __GSHandlerCheckCommon(arg2, arg4, rbx + 4)\n14076a851        if ((*(rbx + 4) & (neg.d(sbb.d((rbx + 4).d, (rbx + 4).d, ((arg1[1]).b & 0x66) != 0)) + 1)) == 0)\n14076a87e        return 1\n14076a85f        return sub_14076bc84(arg1, arg2, arg3, arg4)",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

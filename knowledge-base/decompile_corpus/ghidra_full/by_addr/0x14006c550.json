@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006c550",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall SteamAsyncSocketImpl::vfunction5(void)\n\n{\n  return 0x4b0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:06Z"
+}

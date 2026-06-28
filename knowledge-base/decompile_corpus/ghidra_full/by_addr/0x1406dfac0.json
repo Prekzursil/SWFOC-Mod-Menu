@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406dfac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlayerPerceptualEvaluatorClass * __thiscall\nPlayerPerceptualEvaluatorClass::PlayerPerceptualEvaluatorClass\n          (PlayerPerceptualEvaluatorClass *this,undefined **param_1)\n\n{\n  PerceptualEvaluatorClass::~PerceptualEvaluatorClass((PerceptualEvaluatorClass *)this);\n  (this->SignalListenerClass_data).offset_0x8 = param_1;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  (this->MultiLinkedListMember_data).offset_0x0 = (longlong *)0x0;\n  (this->SignalListenerClass_data).offset_0x0 = (undefined **)0x0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:44:58Z"
+}

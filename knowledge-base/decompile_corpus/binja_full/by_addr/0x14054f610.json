@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054f610",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054f633        int64_t rax\n14054f633        int64_t rdx_2\n14054f633        rdx_2:rax = muls.dp.q(0x4ec4ec4ec4ec4ec5, arg1[1] - *arg1)\n14054f63e        int32_t rdi = 0\n14054f643        int64_t rdx_3 = rdx_2 s>> 4\n14054f64a        uint64_t result = rdx_3 u>> 0x3f\n14054f655        if (rdx_3 + result u> 1)\n14054f65b        uint64_t i = 1\n14054f6d4        int64_t rdx_7\n14054f661        int64_t rcx = *arg1\n14054f666        int32_t* rdx_5 = zx.q(rdi) * 0x34\n14054f66a        float* rax_3 = i * 0x34\n14054f67f        float zmm1 = *(rdx_5 + rcx) f- *(rax_3 + rcx)\n14054f684        float zmm0 = *(rdx_5 + rcx + 4) f- *(rax_3 + rcx + 4)\n14054f68a        float zmm2 = *(rdx_5 + rcx + 8) f- *(rax_3 + rcx + 8)\n14054f6a7        float zmm6_1\n14054f6a7        zmm0, zmm6_1 = sqrtf(zmm1 * zmm1 + zmm0 * zmm0 + zmm2 * zmm2)\n14054f6b7        rdi += 1\n14054f6bc        int64_t rax_4\n14054f6bc        int64_t rdx_6\n14054f6bc        rdx_6:rax_4 = muls.dp.q(0x4ec4ec4ec4ec4ec5, arg1[1] - *arg1)\n14054f6bf        i = zx.q(rdi + 1)\n14054f6c3        rdx_7 = rdx_6 s>> 4\n14054f6ca        result = rdx_7 u>> 0x3f\n14054f6d4        do while (i u< rdx_7 + result)\n14054f6f2        return result",
+  "fetched_at": "2026-04-26T17:34:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c5df0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c5e07        if (&arg1[3] != arg2)\n1405c5e19        sub_14040aa20(&arg1[3], *arg2, arg2[1])\n1405c5e29        if (&arg1[6] != &arg2[3])\n1405c5e39        int32_t* r12_1 = arg2[3]\n1405c5e40        void* rbp_2 = arg2[4] - r12_1\n1405c5e4b        int32_t* r14_1 = arg1[6]\n1405c5e51        int64_t rdx_2 = rbp_2 s>> 2\n1405c5e5c        if (rdx_2 u> (arg1[8] - r14_1) s>> 2)\n1405c5e61        sub_1401a4af0(&arg1[6], rdx_2)\n1405c5e66        r14_1 = arg1[6]\n1405c5e72        memcpy(r14_1, r12_1, rbp_2)\n1405c5e8a        arg1[7] = r14_1 + rbp_2\n1405c5e91        arg1[9].d = arg2[6].d\n1405c5e97        *(arg1 + 0x4c) = *(arg2 + 0x34)\n1405c5e9d        arg1[0xa].d = arg2[7].d\n1405c5ea3        *(arg1 + 0x54) = *(arg2 + 0x3c)\n1405c5ea9        arg1[0xb].d = arg2[8].d\n1405c5eb0        *(arg1 + 0x5c) = *(arg2 + 0x44)\n1405c5ec4        int64_t rax_11\n1405c5ec4        int64_t rdx_4\n1405c5ec4        rdx_4:rax_11 = muls.dp.q(0x4ec4ec4ec4ec4ec5, arg1[4] - arg1[3])\n1405c5eca        int64_t rdx_5 = rdx_4 s>> 4\n1405c5ee3        return sub_1405c5ef0(arg1, zx.q(rdx_5.d + (rdx_5 u>> 0x3f).d)) __tailcall",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

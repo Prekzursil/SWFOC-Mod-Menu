@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004b0f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14004b100        *arg1 = &SingletonInstance<class TheGameScoringManagerClass>::`vftable'{for `SingletonManager'}\n14004b106        if ((arg2 & 1) != 0)\n14004b10d        j_sub_1407864b8(arg1)\n14004b11a        return arg1",
+  "fetched_at": "2026-04-26T16:54:16Z"
+}

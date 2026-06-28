@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd894",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd8a3        __except_validate_jump_buffer(arg1)\n1407dd8b7        uint64_t ssp\n1407dd8b7        return __longjmp_internal(arg1, zx.q(arg2), ssp) __tailcall",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

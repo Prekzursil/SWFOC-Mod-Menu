@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140703e76        struct SpecialAbilityClass::IncomeStreamModAbilityClass::VTable** result = arg1\n140703e79        sub_14048c780(arg1)\n140703e85        result[0x2f] = 0x3f800000\n140703e90        *result = &IncomeStreamModAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140703ea1        result[0x30] = 0x3f800000\n140703eac        result[1] = &IncomeStreamModAbilityClass::`vftable'{for `RefCountClass'}\n140703eb0        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x31])\n140703eb8        result[0x33].w = 0\n140703ec1        result[8].w = 1\n140703ec7        *(result + 0x3c) = 2\n140703ed3        return result",
+  "fetched_at": "2026-04-26T17:27:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407820f8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _itow_s\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nerrno_t __cdecl _itow_s(int _Val,wchar_t *_DstBuf,size_t _SizeInWords,int _Radix)\n\n{\n  bool bVar1;\n  int iVar2;\n  \n  bVar1 = false;\n  if ((_Radix == 10) && (_Val < 0)) {\n    bVar1 = true;\n  }\n  iVar2 = common_xtox_s<unsigned_long,wchar_t>(_Val,_DstBuf,_SizeInWords,_Radix,bVar1);\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:51:10Z"
+}

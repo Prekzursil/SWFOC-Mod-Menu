@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407aa210",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407aa23c        char var_18[0x10]\n1407aa23c        char arg_8\n1407aa23c        char arg_18\n1407aa23c        char arg_20\n1407aa23c        int512_t result = sub_1401f94d0(arg2, &arg_18, &arg_20, &var_18, &arg_8)\n1407aa26e        *(arg1 + 0xfc) = ((zx.d(arg_8) << 8 | zx.d(arg_18)) << 8 | zx.d(arg_20)) << 8 | zx.d(var_18[0])\n1407aa284        return result",
+  "fetched_at": "2026-04-26T17:32:38Z"
+}

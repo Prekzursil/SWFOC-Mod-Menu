@@ -1,0 +1,7 @@
+{
+  "addr": "0x140618470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140618476        struct SpecialAbilityClass::SlicerAbilityClass::VTable** result = arg1\n140618479        sub_14048c780(arg1)\n14061848b        *result = &SlicerAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14061849e        result[1] = &SlicerAbilityClass::`vftable'{for `RefCountClass'}\n1406184a2        sub_14001e5d0(&result[0x2f], 1, 5)\n1406184b6        sub_14001e5d0(&result[0x32], 1, 5)\n1406184bd        result[0x36].b = 0\n1406184cb        result[0x37] = 0\n1406184d2        result[0x35] = &LinearInterpolator::`vftable'{for `Interpolator'}\n1406184d9        result[0x3a] = &LinearInterpolator::`vftable'{for `Interpolator'}\n1406184e0        result[0x3f] = &LinearInterpolator::`vftable'{for `Interpolator'}\n1406184ea        result[0x38] = 0\n1406184f1        result[0x39] = 0\n1406184f8        result[0x3b].b = 0\n1406184fe        __builtin_memset(&result[0x3c], 0, 0x18)\n140618513        result[0x40].b = 0\n140618519        __builtin_memset(&result[0x41], 0, 0x20)\n140618535        result[8].w = 0x101\n14061853b        *(result + 0x3c) = 6\n140618547        return result",
+  "fetched_at": "2026-04-26T17:23:28Z"
+}

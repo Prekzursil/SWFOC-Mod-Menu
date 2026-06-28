@@ -1,0 +1,7 @@
+{
+  "addr": "0x140332c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140332c3f        int32_t rbx = 0\n140332c48        *arg1 = &DynamicVectorClass<struct InternetPlayerStruct>::`vftable'\n140332c4e        int32_t rax = *(arg1 + 0x14)\n140332c54        arg1[1] = 0\n140332c58        arg1[2].d = 0\n140332c62        *(arg1 + 0x14) ^= (rax ^ *(arg2 + 0x14)) & 0x7fffffff\n140332c6f        int32_t rax_6 = ((*(arg1 + 0x14) ^ *(arg2 + 0x14)) & 0x7fffffff) ^ *(arg2 + 0x14)\n140332c72        *(arg1 + 0x14) = rax_6\n140332c78        int32_t rdx_1 = (rax_6 * 2) s>> 1\n140332c7a        if (rdx_1 != 0)\n140332c82        sub_14002ced0(arg1, rdx_1, 0, 1)\n140332c87        int32_t rax_7 = *(arg2 + 0x10)\n140332c8c        if (rax_7 s> 0)\n140332ca5        sub_14002c690(&arg1[1][sx.q(rbx) * 0x3b], *(arg2 + 8) + sx.q(rbx) * 0x1d8)\n140332caa        rax_7 = *(arg2 + 0x10)\n140332cad        rbx += 1\n140332cb1        do while (rbx s< rax_7)\n140332cb3        arg1[2].d = rax_7\n140332cc8        return arg1",
+  "fetched_at": "2026-04-26T17:02:59Z"
+}

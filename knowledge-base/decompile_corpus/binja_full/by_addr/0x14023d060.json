@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023d060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023d078        void* rax = sub_1402093c0(&data_140a14b80, 0)\n14023d088        if (rax == 0 || arg2 == 0)\n14023d0fc        rax.b = 0\n14023d106        return rax\n14023d08a        int64_t r8 = *rax\n14023d095        int32_t rbx = *(arg2 + 0x80)\n14023d09b        (*r8)(rax, arg3, r8)\n14023d09e        *(rax + 0x78) = 2\n14023d0aa        *(rax + 0x80) = rbx\n14023d0b3        int64_t arg_20 = *arg1\n14023d0bf        public: __cdecl std::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0>::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0><class <lambda_508dc996854572947a45292d62928d80> &>(class <lambda_508dc996854572947a45292d62928d80> &)(rax + 0x98, &arg_20)\n14023d0d0        if (*(arg2 + 0x84) != 0)\n14023d0d2        *(rax + 0x84) += 1\n14023d0d8        void* rcx_3 = arg1[1]\n14023d0e4        char arg_18 = 0\n14023d0ec        sub_140206120(rcx_3, rax, &arg_18, 1)\n14023d0f1        int64_t rax_1\n14023d0f1        rax_1.b = 1\n14023d0fb        return rax_1",
+  "fetched_at": "2026-04-26T17:30:06Z"
+}

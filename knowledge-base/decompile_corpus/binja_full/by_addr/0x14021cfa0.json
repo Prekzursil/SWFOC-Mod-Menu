@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021cfa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021cfb5        if (*arg1 == 0 || arg2 u> 3)\n14021d087        return 1f\n14021cfbb        int64_t rax = sx.q(arg2)\n14021cfc3        int64_t rcx = rax * 5\n14021cfc7        int128_t zmm6 = *(arg1 + (rcx << 2) + 0xfac)\n14021cfd0        zmm6.d f- -1f\n14021cfd9        if (is_unordered.d(zmm6.d, -1f) || not(zmm6.d f== -1f))\n14021cfe7        int64_t rax_1 = rax * 5\n14021cfee        *(arg1 + (rax_1 << 2) + 0xfa0) = zmm6.d\n14021cff7        float zmm0 = _mm_max_ss(0, zmm6.d)\n14021cffb        *(arg1 + (rcx << 2) + 0xfa4) = zmm6.d\n14021d004        float zmm1 = _mm_min_ss(0x3f800000, zmm0)\n14021d00b        *(arg1 + (rax_1 << 2) + 0xfa4) = zmm1\n14021d014        zmm0 = zmm1 f- *(arg1 + (rax_1 << 2) + 0xfa0)\n14021d01d        *(arg1 + (rax_1 << 2) + 0xfa0) = zmm1\n14021d02e        *(arg1 + (rax_1 << 2) + 0xfa8) = zmm0 / 1000f\n14021d044        char var_20_1 = 1\n14021d067        zmm6 = sub_14021caf0(arg1, timeGetTime() - data_140a7bec0, arg1 + 0x1000, arg1 + 0x100c, arg1 + 0x1018)\n14021d079        return zmm6.d",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

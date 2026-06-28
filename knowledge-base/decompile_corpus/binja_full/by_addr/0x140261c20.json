@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140261c2b        *arg1 = *arg2\n140261c30        arg1[1] = arg2[1]\n140261c36        arg1[2] = arg2[2]\n140261c3c        arg1[3] = arg2[3]\n140261c42        arg1[4] = arg2[4]\n140261c48        arg1[5] = arg2[5]\n140261c4e        arg1[6] = arg2[6]\n140261c54        arg1[7] = arg2[7]\n140261c5a        arg1[8] = arg2[8]\n140261c60        arg1[9] = arg2[9]\n140261c66        arg1[0xa] = arg2[0xa]\n140261c73        arg1[0xb] = arg2[0xb]\n140261c76        sub_14022d390(arg1, &arg1[0x21])\n140261c83        return sub_1401417c0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cdf4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _execute_onexit_table\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid _execute_onexit_table(undefined8 param_1)\n\n{\n  undefined8 local_res8;\n  __crt_seh_guarded_call<int> local_res10 [8];\n  undefined4 local_res18 [2];\n  undefined4 local_res20 [2];\n  undefined8 *local_18 [3];\n  \n  local_18[0] = &local_res8;\n  local_res18[0] = 2;\n  local_res20[0] = 2;\n  local_res8 = param_1;\n  __crt_seh_guarded_call<int>::\n  operator()<class_<lambda_7777bce6b2f8c936911f934f8298dc43>,class_<lambda_f03950bc5685219e0bcd2087efbe011e>&___ptr64,class_<lambda_3883c3dff614d5e0c5f61bb1ac94921c>_>\n            (local_res10,(<lambda_7777bce6b2f8c936911f934f8298dc43> *)local_res20,\n             (<lambda_f03950bc5685219e0bcd2087efbe011e> *)local_18,\n             (<lambda_3883c3dff614d5e0c5f61bb1ac94921c> *)local_res18);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015e290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: virtual void * __ptr64 __cdecl Concurrency::details::FreeThreadProxy::`scalar deleting\n   destructor'(unsigned int) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release\n   ***** Removed Bad FID Symbol ***** */\n\nvoid * __thiscall alMeshRenderTask::scalar_deleting_destructor(alMeshRenderTask *this,uint param_1)\n\n{\n                    /* inlined destructor: alRenderTask::~alRenderTask */\n  this->vftablePtr = (alMeshRenderTask_vftable *)&alRenderTask::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x80);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:23:56Z"
+}

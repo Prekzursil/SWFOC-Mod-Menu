@@ -1,0 +1,7 @@
+{
+  "addr": "0x140454390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStoryEventConquerCountClass::vfunction4(StoryEventConquerCountClass *this,undefined8 param_1)\n\n{\n  *(int *)&this[1].SignalGeneratorClass_data = *(int *)&this[1].SignalGeneratorClass_data + 1;\n  if (this[1].SignalGeneratorClass_data.offset_0x4 <= *(int *)&this[1].SignalGeneratorClass_data) {\n    FUN_140455db0(this,param_1,0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:37Z"
+}

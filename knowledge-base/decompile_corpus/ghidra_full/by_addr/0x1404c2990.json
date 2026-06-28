@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall GroundStructureDummyBehaviorClass::vfunction9(void)\n\n{\n  return \"GroundStructureDummyBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:10:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524da0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140524db4        *arg1 = &AIExecutionSystemClass::`vftable'{for `ServicedAISystemClass'}\n140524db9        int64_t* rcx = arg1[8]\n140524dc0        if (rcx != 0)\n140524dca        (*(*rcx + 8))(rcx, 1)\n140524dcd        void* rcx_1 = arg1[7]\n140524dd1        arg1[8] = 0\n140524ddc        if (rcx_1 != 0)\n140524dde        sub_1404d6400(rcx_1)\n140524de3        int64_t* rcx_2 = arg1[7]\n140524dea        if (rcx_2 != 0)\n140524def        (*(*rcx_2 + 8))(rcx_2)\n140524df2        arg1[7] = 0\n140524e02        if (*(&arg1[5]->vFunc_6 + 4) == 0)\n140524e04        sub_14053d520()\n140524e09        int64_t* rcx_3 = arg1[9]\n140524e10        if (rcx_3 != 0)\n140524e1a        (**rcx_3)(rcx_3, 1)\n140524e1c        arg1[9] = 0\n140524e24        int64_t* rcx_4 = arg1[7]\n140524e2b        if (rcx_4 != 0)\n140524e30        (*(*rcx_4 + 8))(rcx_4)\n140524e36        sub_14064c290(arg1)\n140524e3f        if ((arg2 & 1) != 0)\n140524e49        j_sub_1407864b8(arg1)\n140524e5b        return arg1",
+  "fetched_at": "2026-04-26T17:33:07Z"
+}

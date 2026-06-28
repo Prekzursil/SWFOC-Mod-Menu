@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8f90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403a8f90(float param_1,float *param_2,char param_3)\n\n{\n  longlong in_RCX;\n  \n  if ((((param_3 != '\\0') || (param_1 = *(float *)(in_RCX + 0x78), param_1 != *param_2)) ||\n      (param_1 = *(float *)(in_RCX + 0x7c), param_1 != param_2[1])) ||\n     (param_1 = *(float *)(in_RCX + 0x80), param_1 != param_2[2])) {\n    *(float *)(in_RCX + 0x78) = *param_2;\n    *(float *)(in_RCX + 0x7c) = param_2[1];\n    *(float *)(in_RCX + 0x80) = param_2[2];\n    if (param_3 != '\\0') {\n      FUN_1403ac530(param_1,param_3);\n      return;\n    }\n    *(byte *)(in_RCX + 0x3a1) = *(byte *)(in_RCX + 0x3a1) | 1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:53Z"
+}

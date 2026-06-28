@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e72f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetEditboxClass member function inherited by GUIGadgetIMEEditboxClass */\n\nvoid __thiscall GUIGadgetEditboxClass::vfunction25(GUIGadgetEditboxClass *this)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong lVar3;\n  ulonglong uVar4;\n  \n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetEditboxClass_data).field_0x1a8);\n  plVar1 = &(this->GUIGadgetEditboxClass_data).offset_0xc8;\n  lVar3 = (this->GUIGadgetEditboxClass_data).offset_0xd0 - *plVar1;\n  uVar4 = 0;\n  lVar2 = lVar3 >> 0x3f;\n  if (lVar3 / 0x90 + lVar2 != lVar2) {\n    do {\n      FUN_14025c490(DAT_140a619f0,uVar4 * 0x90 + *plVar1);\n      uVar4 = (ulonglong)((int)uVar4 + 1);\n    } while (uVar4 < (ulonglong)(((this->GUIGadgetEditboxClass_data).offset_0xd0 - *plVar1) / 0x90))\n    ;\n  }\n  FUN_1401d2060(plVar1,0);\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:29Z"
+}

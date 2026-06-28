@@ -1,0 +1,7 @@
+{
+  "addr": "0x140563580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BaseShieldDataPackClass * __thiscall\nBaseShieldDataPackClass::BaseShieldDataPackClass(BaseShieldDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&this->PooledObjectClass<class_BaseShieldDataPackClass,20,class_EmptyLockerClass> =\n       0;\n  (this->PooledObjectClass<class_BaseShieldDataPackClass,20,class_EmptyLockerClass>).field_0x4 = 0;\n  (this->BaseShieldDataPackClass_data).offset_0x0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:11Z"
+}

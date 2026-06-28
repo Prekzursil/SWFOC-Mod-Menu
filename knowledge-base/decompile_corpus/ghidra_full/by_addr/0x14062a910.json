@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062a910",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AmbientSFXBehaviorClass::vfunction1(AmbientSFXBehaviorClass *this,uint param_1)\n\n{\n  ~AmbientSFXBehaviorClass((AmbientSFXBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:31:49Z"
+}

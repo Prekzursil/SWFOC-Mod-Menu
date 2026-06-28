@@ -1,0 +1,7 @@
+{
+  "addr": "0x140785fb4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140785fba        int64_t rbx = sx.q(arg1)\n140785fc2        void* var_28\n140785fc2        _LocaleUpdate::_LocaleUpdate(&var_28, arg2)\n140785fcf        uint64_t result\n140785fcf        int64_t* var_20\n140785fcf        if ((rbx + 1).d u> 0x100)\n140785fe4        result = 0\n140785fdd        result = zx.q(*(*var_20 + (rbx << 1))) & 0x8000\n140785feb        char var_10\n140785feb        if (var_10 != 0)\n140785fed        void* rcx_2 = var_28\n140785ff2        *(rcx_2 + 0x3a8) &= 0xfffffffd\n140785ffe        return result",
+  "fetched_at": "2026-04-26T17:31:16Z"
+}

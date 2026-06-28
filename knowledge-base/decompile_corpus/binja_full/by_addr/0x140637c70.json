@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637c70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140637c7b        struct BehaviorClass::CorruptSystemsBehaviorClass::VTable** result = operator new(0x40)\n140637c86        if (result == 0)\n140637cbe        return result\n140637c8b        sub_1404c32d0(result)\n140637c97        *result = &CorruptSystemsBehaviorClass::`vftable'{for `BehaviorClass'}\n140637ca1        result[1] = &CorruptSystemsBehaviorClass::`vftable'{for `RefCountClass'}\n140637cac        result[3] = &CorruptSystemsBehaviorClass::`vftable'{for `SignalListenerClass'}\n140637cb8        return result",
+  "fetched_at": "2026-04-26T17:01:00Z"
+}

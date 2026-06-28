@@ -1,0 +1,7 @@
+{
+  "addr": "0x140193e70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140193e70(longlong param_1)\n\n{\n  char cVar1;\n  alD3dRenderTarget *paVar2;\n  alD3dRenderTarget *this;\n  \n  if (((*(longlong *)(param_1 + 0x3f8) != 0) &&\n      (*(int *)(*(longlong *)(param_1 + 0x3f8) + 0x50) == *(int *)(param_1 + 0x3f0))) &&\n     (DAT_140a12ad4 == '\\0')) {\n    return *(undefined8 *)(param_1 + 0x3f8);\n  }\n  paVar2 = (alD3dRenderTarget *)FUN_140769c58(0x68);\n  if (paVar2 == (alD3dRenderTarget *)0x0) {\n    paVar2 = (alD3dRenderTarget *)0x0;\n  }\n  else {\n    paVar2 = alD3dRenderTarget::alD3dRenderTarget(paVar2);\n  }\n  this = *(alD3dRenderTarget **)(param_1 + 0x3f8);\n  if (this != paVar2) {\n    if (this != (alD3dRenderTarget *)0x0) {\n      (*this->vftablePtr->vfunction2)(this);\n    }\n    *(alD3dRenderTarget **)(param_1 + 0x3f8) = paVar2;\n    this = (alD3dRenderTarget *)0x0;\n    if (paVar2 != (alD3dRenderTarget *)0x0) {\n      (*paVar2->vftablePtr->vfunction1)(paVar2);\n      this = *(alD3dRenderTarget **)(param_1 + 0x3f8);\n    }\n  }\n  FUN_1401981b0(this,*(undefined4 *)(param_1 + 0x3f0),*(undefined4 *)(param_1 + 0x3f0),0x15);\n  cVar1 = FUN_140198400(*(undefined8 *)(param_1 + 0x3f8));\n  if (cVar1 == '\\0') {\n    if (*(longlong **)(param_1 + 0x3f8) == (longlong *)0x0) {\n      return 0;\n    }\n    (**(code **)(**(longlong **)(param_1 + 0x3f8) + 8))();\n    *(undefined8 *)(param_1 + 0x3f8) = 0;\n  }\n  return *(undefined8 *)(param_1 + 0x3f8);\n}",
+  "fetched_at": "2026-04-26T17:34:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddc68",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ddc95        if (arg3 != 0 && arg4 != 0)\n1407ddc9f        if (arg5 != 0)\n1407ddce1        sub_140784aa4(arg5)\n1407ddcf8        uint64_t result = _fread_nolock_s(arg1, arg2, arg3, arg4, arg5)\n1407ddd03        sub_140784ab0(arg5)\n1407ddd08        return result\n1407ddca5        if (arg2 != -1)\n1407ddcac        memset(arg1, 0, arg2)\n1407ddcb6        *_errno() = 0x16\n1407ddcbc        _invalid_parameter_noinfo()\n1407ddcc1        return 0",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

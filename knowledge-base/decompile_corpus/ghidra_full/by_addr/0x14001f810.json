@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001f810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nexception * __thiscall\nstd::bad_exception::scalar_deleting_destructor(bad_exception *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: std::exception::~exception */\n  this->vftablePtr = (bad_exception_vftable *)&exception::vftable;\n  __std_exception_destroy(&this->exception_data);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return (exception *)this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:43Z"
+}

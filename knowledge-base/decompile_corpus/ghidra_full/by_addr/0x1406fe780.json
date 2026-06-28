@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fe780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LinearInterpolator * __thiscall LinearInterpolator::LinearInterpolator(LinearInterpolator *this)\n\n{\n                    /* inlined constructor: ForceWhirlwindAbilityClass::ForceWhirlwindAbilityClass\n                        */\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  *(undefined2 *)&this[1].LinearInterpolator_data.offset_0x10 = 1;\n  this->vftablePtr =\n       (LinearInterpolator_vftable *)&ForceWhirlwindAbilityClass::vftable_for_IXMLLoadableClass;\n  *(ForceWhirlwindAbilityClass_vftable_for_RefCountClass **)&this->LinearInterpolator_data =\n       &ForceWhirlwindAbilityClass::vftable_for_RefCountClass;\n  this[9].LinearInterpolator_data.offset_0x8 = (longlong)&vftable;\n  this[9].LinearInterpolator_data.offset_0x18 = 0;\n  this[10].vftablePtr = (LinearInterpolator_vftable *)0x0;\n  *(undefined8 *)&this[10].LinearInterpolator_data = 0;\n  this[10].LinearInterpolator_data.offset_0x8 = 0;\n  this[10].LinearInterpolator_data.offset_0x10 = 0;\n  *(undefined4 *)&this[10].LinearInterpolator_data.offset_0x18 = 0;\n  *(undefined1 *)&this[9].LinearInterpolator_data.offset_0x10 = 0;\n  *(undefined4 *)((longlong)&this[1].LinearInterpolator_data.offset_0x8 + 4) = 9;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:50:29Z"
+}

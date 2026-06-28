@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b1760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall RemoveCorruptionAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Remove_Corruption_Ability\";\n}",
+  "fetched_at": "2026-04-26T18:43:45Z"
+}

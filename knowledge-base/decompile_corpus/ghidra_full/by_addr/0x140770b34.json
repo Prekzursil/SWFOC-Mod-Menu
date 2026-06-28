@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770b34",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __except_validate_context_record\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __except_validate_context_record(longlong param_1)\n\n{\n  code *pcVar1;\n  \n  if ((code *)PTR__guard_check_icall_1407fdcc8 != _guard_check_icall) {\n    if ((*(ulonglong *)(param_1 + 0x98) < *(ulonglong *)((longlong)Self + 0x10)) ||\n       (*(ulonglong *)((longlong)Self + 8) < *(ulonglong *)(param_1 + 0x98))) {\n      pcVar1 = (code *)swi(0x29);\n      (*pcVar1)(0xd);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:51Z"
+}

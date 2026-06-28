@@ -1,0 +1,7 @@
+{
+  "addr": "0x140706b4c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nMaximumFirepowerAttackAbilityClass::vfunction3_for_RefCountClass\n          (MaximumFirepowerAttackAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((MaximumFirepowerAttackAbilityClass *)&this[-1].SpecialAbilityClass_data.offset_0xd0,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:44Z"
+}

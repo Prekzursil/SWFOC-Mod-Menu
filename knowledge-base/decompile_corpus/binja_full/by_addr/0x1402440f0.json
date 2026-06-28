@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402440f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402440fa        char* rbx = arg1\n140244102        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x138)\n14024410a        struct LuaUserVar::LuaScriptClass::VTable** result\n14024410a        if (rax == 0)\n140244119        result = nullptr\n140244114        result = sub_140242570(rax)\n140244120        if (*(rbx + 0x18) u>= 0x10)\n140244122        rbx = *rbx\n140244128        char* rax_2 = sub_1402011a0(rbx)\n14024412d        void* r8 = -ffffffffffffffff\n140244134        r8 += 1\n14024413c        do while (*(rax_2 + r8) != 0)\n140244155        sub_140244d80(&result[0xd], &result[0x11], sub_140022730(&result[0xd], rax_2, r8))\n140244167        return result",
+  "fetched_at": "2026-04-26T17:30:17Z"
+}

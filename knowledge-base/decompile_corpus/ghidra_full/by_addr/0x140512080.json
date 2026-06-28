@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall FormationBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a2bf80;\n}",
+  "fetched_at": "2026-04-26T18:22:27Z"
+}

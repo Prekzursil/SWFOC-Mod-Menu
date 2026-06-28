@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a0db0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a0dd4        int64_t rbx_1 = sx.q(arg3) * 0x48\n1401a0ddc        uint32_t rdi_1 = (sx.q(sub_1402205c0(arg2)) u>> 1).d\n1401a0df0        sub_140170cd0(data_140a705c8 + 0x30 + rbx_1, sx.q(rdi_1))\n1401a0e1a        return sub_140220730(arg2, *(rbx_1 + data_140a705c8 + 0x30), rdi_1 * 2, nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:24:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070bc30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070bc3c        int64_t result = sub_14048f2c0(arg1)\n14070bc45        char var_108[0x100]\n14070bc45        if (*(arg1 + 0x3c) != 3)\n14070bc4c        void* r8_1 = arg1 + 0x18\n14070bc50        if (*(arg1 + 0x30) u>= 0x10)\n14070bc52        r8_1 = *r8_1\n14070bc61        sscanf_s(&var_108, \"Error: (%s) The only currently supported Activation_Style is Galactic_Automatic.\", r8_1)\n14070bc6b        result = sub_1402149d0(&var_108)\n14070bc70        *(arg1 + 0x3c) = 3\n14070bc77        *(arg1 + 0x41) = 0\n14070bc86        if (*(arg1 + 0x60) == 0 && *(arg1 + 0x78) s<= 0)\n14070bc8d        void* r8_2 = arg1 + 0x18\n14070bc91        if (*(arg1 + 0x30) u>= 0x10)\n14070bc93        r8_2 = *r8_2\n14070bca2        sscanf_s(&var_108, \"Warning: (%s) You should really specify a value for either Applicable_Unit_Categories\\nor Applicable_Unit_Types, otherwise this ability won't affect any units at all.\", r8_2)\n14070bcac        result = sub_1402149d0(&var_108)\n14070bcc0        if (not(*(arg1 + 0x178) f< 1f))\n14070bcc7        void* r8_3 = arg1 + 0x18\n14070bccb        if (*(arg1 + 0x30) u>= 0x10)\n14070bccd        r8_3 = *r8_3\n14070bcdc        sscanf_s(&var_108, \"Error: (%s) Time_Reduction_Percentage must be < 1.0\", r8_3)\n14070bce6        result = sub_1402149d0(&var_108)\n14070bceb        *(arg1 + 0x178) = 0\n14070bcfd        return result",
+  "fetched_at": "2026-04-26T17:27:29Z"
+}

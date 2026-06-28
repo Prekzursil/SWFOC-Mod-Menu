@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cf8d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402cf8d0(longlong param_1,float param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  \n  fVar3 = param_2;\n  if (0x1d000000 < ((uint)param_2 & 0x7f800000)) {\n    fVar3 = (float)FUN_140776650(param_2);\n  }\n  fVar4 = DAT_1407ffaf8;\n  if (0x1d000000 < ((uint)param_2 & 0x7f800000)) {\n    fVar4 = (float)FUN_140776150(param_2);\n  }\n  fVar1 = *(float *)(param_1 + 8);\n  *(float *)(param_1 + 8) = fVar1 * fVar4 - *(float *)(param_1 + 4) * fVar3;\n  fVar2 = *(float *)(param_1 + 0x18);\n  *(float *)(param_1 + 4) = *(float *)(param_1 + 4) * fVar4 + fVar1 * fVar3;\n  *(float *)(param_1 + 0x18) = fVar2 * fVar4 - *(float *)(param_1 + 0x14) * fVar3;\n  fVar1 = *(float *)(param_1 + 0x28);\n  *(float *)(param_1 + 0x14) = *(float *)(param_1 + 0x14) * fVar4 + fVar2 * fVar3;\n  *(float *)(param_1 + 0x28) = fVar1 * fVar4 - *(float *)(param_1 + 0x24) * fVar3;\n  *(float *)(param_1 + 0x24) = *(float *)(param_1 + 0x24) * fVar4 + fVar1 * fVar3;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:26Z"
+}

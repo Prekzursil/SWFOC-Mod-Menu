@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dd500",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1404dd500(longlong param_1)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)*DAT_140b31918;\n  while( true ) {\n    if (puVar1 == DAT_140b31918) {\n      return 0xffffffff;\n    }\n    if (puVar1[3] == param_1) break;\n    puVar1 = (undefined8 *)*puVar1;\n  }\n  return *(undefined4 *)(puVar1 + 2);\n}",
+  "fetched_at": "2026-04-26T18:15:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770d44",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __vcrt_FlsFree\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __vcrt_FlsFree(undefined4 param_1)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_140770bac(1,\"FlsFree\",&DAT_1408d1cd0,\"FlsFree\");\n  if (lVar1 != 0) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    return;\n  }\n                    /* WARNING: Could not recover jumptable at 0x000140770d83. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  TlsFree(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:55Z"
+}

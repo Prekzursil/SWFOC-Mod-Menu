@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048fce0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "InvadeEventClass * __thiscall InvadeEventClass::InvadeEventClass(InvadeEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->InvadeEventClass_data).offset_0x1fc = 0;\n  this->vftablePtr = &vftable;\n  (this->InvadeEventClass_data).offset_0x200 = 0x3fffff;\n  (this->InvadeEventClass_data).offset_0x204 = 0;\n  (this->EventClass_data).offset_0x8 = 9;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:02:20Z"
+}

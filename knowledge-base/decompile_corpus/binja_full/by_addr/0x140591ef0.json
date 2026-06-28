@@ -1,0 +1,7 @@
+{
+  "addr": "0x140591ef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140591f03        *arg1 = &BarrageAreaBehaviorClass::`vftable'{for `BehaviorClass'}\n140591f10        arg1[1] = &BarrageAreaBehaviorClass::`vftable'{for `RefCountClass'}\n140591f1b        arg1[3] = &BarrageAreaBehaviorClass::`vftable'{for `SignalListenerClass'}\n140591f1f        sub_1404c3310(arg1)\n140591f27        if ((arg2 & 1) != 0)\n140591f31        j_sub_1407864b8(arg1)\n140591f43        return arg1",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

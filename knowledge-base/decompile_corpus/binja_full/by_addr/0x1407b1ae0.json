@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b1ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b1af0        uint8_t result = sub_14013fc10(arg1)\n1407b1b01        if (result == 0 && (*(arg1 + 0x30) & 0xd) == 0)\n1407b1b0a        result = (*(arg2 + 0x14) u>> 8).b\n1407b1b0f        if ((result & 1) != 0)\n1407b1b1c        int32_t arg_18 = 0\n1407b1b29        int32_t arg_20 = 0\n1407b1b36        result = sub_1407b3b90(arg1 + 0x120, &arg_18, &arg_20)\n1407b1b40        if (arg_18 != 0)\n1407b1b4c        struct MultiLinkedListMember::alRenderTask::VTable** rax_1 = operator new(0x78)\n1407b1b51        struct MultiLinkedListMember::alRenderTask::VTable** rbx_1 = rax_1\n1407b1b57        if (rax_1 == 0)\n1407b1b91        rbx_1 = nullptr\n1407b1b71        sub_14015e020(rbx_1, arg2, arg1, 0, arg1 + 0x98)\n1407b1b7d        rbx_1[0xd] = -1\n1407b1b85        *rbx_1 = &al3DCableRenderTask::`vftable'{for `alRenderTask'}\n1407b1b88        rbx_1[0xe].d = 0xffffffff\n1407b1b93        rbx_1[0xb].d = 0\n1407b1ba7        *(rbx_1 + 0x5c) = arg_18\n1407b1bb1        rbx_1[0xc].d = arg_20\n1407b1bb4        return sub_140149490(arg2, rbx_1, 8)\n1407b1bc8        return result",
+  "fetched_at": "2026-04-26T17:32:55Z"
+}

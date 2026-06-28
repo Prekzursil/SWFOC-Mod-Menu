@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058d920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HarassBehaviorClass * __thiscall\nHarassBehaviorClass::vfunction4(HarassBehaviorClass *this,int param_1)\n\n{\n  HarassBehaviorClass *pHVar1;\n  \n  pHVar1 = (HarassBehaviorClass *)0x0;\n  if (param_1 == 0x41) {\n    pHVar1 = this;\n  }\n  return pHVar1;\n}",
+  "fetched_at": "2026-04-26T18:41:54Z"
+}

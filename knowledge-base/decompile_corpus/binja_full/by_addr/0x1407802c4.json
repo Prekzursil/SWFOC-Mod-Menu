@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407802c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407802ed        return __acrt_strtok_s_novalidation(arg1, arg2, __acrt_getptd() + 0x30) __tailcall",
+  "fetched_at": "2026-04-26T17:31:05Z"
+}

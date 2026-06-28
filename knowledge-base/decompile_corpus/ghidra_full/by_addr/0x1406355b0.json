@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406355b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HolsterWeaponBehaviorClass * __thiscall\nHolsterWeaponBehaviorClass::vfunction4(HolsterWeaponBehaviorClass *this,int param_1)\n\n{\n  HolsterWeaponBehaviorClass *pHVar1;\n  \n  pHVar1 = (HolsterWeaponBehaviorClass *)0x0;\n  if (param_1 == 0x4e) {\n    pHVar1 = this;\n  }\n  return pHVar1;\n}",
+  "fetched_at": "2026-04-26T17:34:44Z"
+}

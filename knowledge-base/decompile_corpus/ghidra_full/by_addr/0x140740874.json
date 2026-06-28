@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740874",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "runtime_error * __thiscall std::runtime_error::runtime_error(runtime_error *this,undefined8 param_1)\n\n{\n  undefined8 local_18;\n  undefined1 local_10;\n  \n  local_10 = 1;\n                    /* inlined constructor: std::exception::exception */\n  this->vftablePtr = (runtime_error_vftable *)&exception::vftable;\n  (this->exception_data).offset_0x0 = 0;\n  (this->exception_data).offset_0x8 = 0;\n  local_18 = param_1;\n  __std_exception_copy(&local_18);\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:03:54Z"
+}

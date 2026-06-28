@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f2d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void DynamicVectorClass<struct_ObjectPersistenceClass::tPersistentUnit>::\n     DynamicVectorClass<struct_ObjectPersistenceClass::tPersistentUnit>_Constructor_or_Destructor\n               (undefined8 param_1,undefined8 *param_2)\n\n{\n  LPVOID lpMem;\n  undefined8 *puVar1;\n  undefined8 *puVar2;\n  HANDLE hHeap;\n  \n  *(undefined8 *)param_2[1] = 0;\n  puVar2 = (undefined8 *)*param_2;\n  while (puVar2 != (undefined8 *)0x0) {\n    lpMem = (LPVOID)puVar2[4];\n    puVar1 = (undefined8 *)*puVar2;\n    puVar2[3] = &vftable;\n    if (lpMem != (LPVOID)0x0) {\n      if ((*(uint *)((longlong)puVar2 + 0x2c) & 0x80000000) == 0) {\n        thunk_FUN_1407864b8(lpMem);\n      }\n      else {\n        hHeap = GetProcessHeap();\n        HeapFree(hHeap,0,lpMem);\n      }\n      *(uint *)((longlong)puVar2 + 0x2c) = *(uint *)((longlong)puVar2 + 0x2c) & 0x80000000;\n      puVar2[4] = 0;\n      *(undefined4 *)(puVar2 + 5) = 0;\n    }\n    thunk_FUN_1407864b8(puVar2);\n    puVar2 = puVar1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:04Z"
+}

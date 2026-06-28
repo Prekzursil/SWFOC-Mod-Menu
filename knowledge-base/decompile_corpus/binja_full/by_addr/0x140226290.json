@@ -1,0 +1,7 @@
+{
+  "addr": "0x140226290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022629a        int64_t* lpMem = arg1[1]\n14022629e        struct DynamicVectorClass<struct UPnPDeviceInfoStruct>::VTable* const result = &DynamicVectorClass<struct UPnPDeviceInfoStruct>::`vftable'\n1402262a5        *arg1 = &DynamicVectorClass<struct UPnPDeviceInfoStruct>::`vftable'\n1402262ae        if (lpMem != 0)\n1402262b7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1402262d7        sub_140226690(lpMem, 3)\n1402262c7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1402262dc        result = nullptr\n1402262de        *(arg1 + 0x14) &= 0x80000000\n1402262e5        arg1[1] = 0\n1402262e9        arg1[2].d = 0\n1402262f6        return result",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

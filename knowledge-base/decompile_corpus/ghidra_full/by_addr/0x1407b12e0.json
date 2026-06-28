@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b12e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_1407b12e0(longlong param_1,undefined4 *param_2)\n\n{\n  undefined8 *puVar1;\n  DWORD DVar2;\n  longlong *plVar3;\n  longlong *local_res18 [2];\n  \n  DVar2 = GetCurrentThreadId();\n  if ((DVar2 == DAT_140a155d0) && (DAT_140a62740 != '\\0')) {\n    return (longlong *)0x0;\n  }\n  plVar3 = (longlong *)FUN_140769c58(0x88);\n  local_res18[0] = plVar3;\n  if (plVar3 != (longlong *)0x0) {\n    *(undefined4 *)(plVar3 + 0xe) = 0;\n    *(undefined4 *)(plVar3 + 1) = 0;\n                    /* inlined constructor: PlaneCollisionBodyClass::PlaneCollisionBodyClass */\n    *plVar3 = (longlong)&PlaneCollisionBodyClass::vftable;\n    *(undefined4 *)(plVar3 + 0xf) = *param_2;\n    *(undefined4 *)((longlong)plVar3 + 0x7c) = param_2[1];\n    *(undefined4 *)(plVar3 + 0x10) = param_2[2];\n    *(undefined4 *)((longlong)plVar3 + 0x84) = param_2[3];\n    *(undefined4 *)(plVar3 + 0xe) = 2;\n    (**(code **)*plVar3)(plVar3);\n  }\n  puVar1 = *(undefined8 **)(param_1 + 0x110);\n  if (puVar1 == *(undefined8 **)(param_1 + 0x118)) {\n    FUN_140045680(param_1 + 0x108,puVar1,local_res18);\n  }\n  else {\n    *puVar1 = plVar3;\n    if (plVar3 != (longlong *)0x0) {\n      (**(code **)*plVar3)(plVar3);\n    }\n    *(longlong *)(param_1 + 0x110) = *(longlong *)(param_1 + 0x110) + 8;\n  }\n  if (plVar3 != (longlong *)0x0) {\n    (**(code **)(*plVar3 + 8))(plVar3);\n  }\n  return plVar3;\n}",
+  "fetched_at": "2026-04-26T18:55:33Z"
+}

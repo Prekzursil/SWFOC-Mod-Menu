@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bce70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bce7f        int64_t* rbx = *(arg3 + 0x10)\n1406bce90        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1406bce98        if (r8_2 != 1)\n1406bcea4        sub_140248190(arg2, \"BudgetWrapper::Flush_Category -- Invalid number of parameters.  Expected 1, got %d.\", r8_2)\n1406bceba        return 0\n1406bcebb        int64_t* rbx_1 = *rbx\n1406bcec1        if (rbx_1 != 0)\n1406bcec9        void* i\n1406bcec9        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1406bcecf        while (i != 0)\n1406bcedb        if (i == &data_140a157d0)\n1406bcf12        (**rbx_1)(rbx_1)\n1406bcf14        int64_t* rcx_4 = data_140b31088\n1406bcf1b        void* rdi = &rbx_1[2]\n1406bcf2f        int32_t arg_18\n1406bcf2f        if ((*(*rcx_4 + 0x20))(rcx_4, rdi, &arg_18) != 0)\n1406bcf8a        sub_140612cb0(*(*(*(arg1 + 0x28) + 0x88) + 0x90) + 0x190, arg_18)\n1406bcf95        (*(*rbx_1 + 8))(rbx_1)\n1406bcfae        return 0\n1406bcf36        if (*(rdi + 0x18) u>= 0x10)\n1406bcf38        rdi = *rdi\n1406bcf48        sub_140248190(arg2, \"BudgetWrapper::Flush_Category -- unrecognized goal category %s.\", rdi)\n1406bcf53        (*(*rbx_1 + 8))(rbx_1)\n1406bcf6c        return 0\n1406bcedd        i = *(i + 8)\n1406bcef0        sub_140248190(arg2, \"BudgetWrapper::Flush_Category -- invalid type for parameter 1.  Expected string\", r8_2)\n1406bcf06        return 0",
+  "fetched_at": "2026-04-26T17:24:56Z"
+}

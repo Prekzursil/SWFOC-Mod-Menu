@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047f5b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047f5b8        int32_t rbp = data_140a2a4d8\n14047f5be        int32_t rdi = 0\n14047f5c5        if (rbp s<= 0)\n14047f5c5        return \n14047f5d5        void* r13_1 = data_140a2a4d0\n14047f5e1        int64_t r14_1 = arg1[3]\n14047f5ea        int64_t r15_1 = arg1[2]\n14047f5ee        char* rbx_1 = r13_1 + 0x40\n14047f5f2        int64_t* rdx_1 = arg1\n14047f5f9        if (r14_1 u>= 0x10)\n14047f5fb        rdx_1 = *arg1\n14047f603        char* rcx = rbx_1\n14047f606        if (*(rbx_1 + 0x18) u>= 0x10)\n14047f608        rcx = *rbx_1\n14047f60b        int64_t r8_1 = *(rbx_1 + 0x10)\n14047f612        if (r8_1 == r15_1 && memcmp(rcx, rdx_1, r8_1).d == 0)\n14047f62c        void* rbx_2 = sx.q(rdi) * 0x70\n14047f630        void* rax_2 = rbx_2 + r13_1\n14047f63d        if (*(rax_2 + 0x58) u>= 0x10)\n14047f63f        *(rax_2 + 0x40)\n14047f64a        if (*(rax_2 + 0x18) u>= 0x10)\n14047f64c        *rax_2\n14047f64f        *(rax_2 + 0x68)\n14047f666        *(rbx_2 + data_140a2a4d0 + 0x6c) = 1\n14047f64a        break\n14047f61d        rdi += 1\n14047f61f        rbx_1 = &rbx_1[0x70]\n14047f625        do while (rdi s< rbp)\n14047f686        return ",
+  "fetched_at": "2026-04-26T17:28:25Z"
+}

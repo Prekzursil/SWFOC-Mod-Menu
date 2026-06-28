@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a3a40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a3a4f        *(zx.q(*(arg1 + 0x28)) + *(arg1 + 0x10)) = (arg2 u>> 8).b\n1407a3a53        *(arg1 + 0x28) += 1\n1407a3a5a        int64_t result = *(arg1 + 0x10)\n1407a3a5e        *(zx.q(*(arg1 + 0x28)) + result) = arg2.b\n1407a3a62        *(arg1 + 0x28) += 1\n1407a3a65        return result",
+  "fetched_at": "2026-04-26T17:32:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056b290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nBaseShieldBehaviorClass::vfunction7(BaseShieldBehaviorClass *this,undefined8 param_1,int param_2)\n\n{\n  BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n  FUN_14056bb00(this,param_1,0);\n  return 0x650000;\n}",
+  "fetched_at": "2026-04-26T18:39:57Z"
+}

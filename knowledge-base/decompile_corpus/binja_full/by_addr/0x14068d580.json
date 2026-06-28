@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068d580",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068d594        struct LuaUserVar::WeightedTypeListClass::VTable** result = arg1\n14068d597        sub_140249c20(arg1, 0, 1)\n14068d5a8        *result = &WeightedTypeListClass::`vftable'{for `LuaUserVar'}\n14068d5ab        __builtin_memset(&result[5], 0, 0x18)\n14068d5c3        struct LuaUserVar::LuaMemberFunctionWrapper<class WeightedTypeListClass>::VTable** rax = operator new(0x40)\n14068d5cf        struct LuaUserVar::LuaMemberFunctionWrapper<class WeightedTypeListClass>::VTable** rbx = rax\n14068d5d5        if (rax == 0)\n14068d5fc        rbx = nullptr\n14068d5df        sub_140249c20(rax, 0, 0)\n14068d5eb        *rbx = &LuaMemberFunctionWrapper<class WeightedTypeListClass>::`vftable'{for `LuaUserVar'}\n14068d5ee        rbx[5] = &data_140254a1c\n14068d5f2        rbx[6] = result\n14068d5f6        rbx[7].b = 0\n14068d60b        sub_14024be40(result, \"Create\", rbx)\n14068d615        int64_t* rax_1 = operator new(0x40)\n14068d61a        int64_t* rbx_1 = rax_1\n14068d620        if (rax_1 == 0)\n14068d647        rbx_1 = nullptr\n14068d62a        sub_140249c20(rax_1, 0, 0)\n14068d636        *rbx_1 = &LuaMemberFunctionWrapper<class WeightedTypeListClass>::`vftable'{for `LuaUserVar'}\n14068d639        rbx_1[5] = &data_140254a28\n14068d63d        rbx_1[6] = result\n14068d641        rbx_1[7].b = 0\n14068d656        sub_14024be40(result, \"Parse\", rbx_1)\n14068d66d        return result",
+  "fetched_at": "2026-04-26T17:16:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019ded0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019dedd        struct IRefCountClass::RefCountClass::VTable** rbx = arg1\n14019dee0        *arg1 = &alRawAnim::`vftable'{for `alAnim'}\n14019deee        arg1[7] = &DynamicVectorClass<class alRawAnim::alRawJointAnim>::`vftable'\n14019def1        sub_14019f2f0(&arg1[7])\n14019def6        int64_t rdx = rbx[5]\n14019defe        if (rdx u>= 0x10)\n14019df00        void* rcx_1 = rbx[2]\n14019df0e        if (rdx + 1 u>= 0x1000)\n14019df10        void* r8_1 = *(rcx_1 - 8)\n14019df23        if (rcx_1 - r8_1 - 8 u> 0x1f)\n14019df51        _invalid_parameter_noinfo_noreturn()\n14019df51        noreturn\n14019df25        rcx_1 = r8_1\n14019df28        j_sub_1407864b8(rcx_1)\n14019df34        rbx[4] = 0\n14019df3c        rbx[5] = 0xf\n14019df44        rbx[2].b = 0\n14019df48        *rbx = &RefCountClass::`vftable'{for `IRefCountClass'}\n14019df50        return &RefCountClass::`vftable'{for `IRefCountClass'}",
+  "fetched_at": "2026-04-26T17:24:49Z"
+}

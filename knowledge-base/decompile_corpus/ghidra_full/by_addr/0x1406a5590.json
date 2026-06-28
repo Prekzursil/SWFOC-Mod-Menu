@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a5590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaFOWCellsClass::vfunction5(void)\n\n{\n  return &DAT_140a44750;\n}",
+  "fetched_at": "2026-04-26T17:21:49Z"
+}

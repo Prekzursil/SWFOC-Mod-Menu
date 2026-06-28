@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e65a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid DynamicVectorClass<struct_InternetPlayerStruct>::\n     DynamicVectorClass<struct_InternetPlayerStruct>_Constructor_or_Destructor(void)\n\n{\n  HANDLE hHeap;\n  \n  PTR_vftable_1409cf0c0 = (undefined *)&vftable;\n  if (DAT_1409cf0c8 != (LPVOID)0x0) {\n    if ((_DAT_1409cf0d4 & 0x80000000) == 0) {\n      FUN_14001f270(DAT_1409cf0c8,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,DAT_1409cf0c8);\n    }\n    _DAT_1409cf0d4 = _DAT_1409cf0d4 & 0x80000000;\n    DAT_1409cf0c8 = (LPVOID)0x0;\n    _DAT_1409cf0d0 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:00:48Z"
+}

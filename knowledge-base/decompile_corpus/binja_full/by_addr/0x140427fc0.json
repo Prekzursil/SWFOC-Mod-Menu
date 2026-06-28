@@ -1,0 +1,7 @@
+{
+  "addr": "0x140427fc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140427fd7        arg1[5].w = 0\n140427fdd        while (arg1[1] != 0)\n140427fe3        int64_t* rbx_2 = **arg1\n140427fe6        int64_t* rsi_1 = rbx_2[5]\n140427fed        if (rsi_1 != 0)\n140427ff2        sub_1404272c0(rsi_1)\n140427fff        j_sub_1407864b8(rsi_1)\n140428017        j_sub_1407864b8(sub_140069ba0(arg1, rbx_2))\n140428023        void* rax_2 = &arg1[6]\n140428027        *(rax_2 + 0x10) = 0\n140428034        if (*(rax_2 + 0x18) u>= 0x10)\n140428036        rax_2 = *rax_2\n140428039        *rax_2 = 0\n140428040        arg1[3] = arg1[2]\n140428044        void** rsi_2 = *arg1\n140428047        void** rbx_3 = rsi_2[1]\n14042804f        while (*(rbx_3 + 0x19) == 0)\n14042805b        sub_14006c2e0(arg1, arg1, rbx_3[2])\n140428060        void** rcx_5 = rbx_3\n140428068        rbx_3 = *rbx_3\n14042806b        j_sub_1407864b8(rcx_5)\n140428076        rsi_2[1] = rsi_2\n140428081        *rsi_2 = rsi_2\n140428084        rsi_2[2] = rsi_2\n140428088        arg1[1] = 0\n14042809f        return mainCRTStartup(&data_140a62728) __tailcall",
+  "fetched_at": "2026-04-26T17:26:31Z"
+}

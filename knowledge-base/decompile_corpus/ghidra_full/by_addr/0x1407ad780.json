@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ad780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1407ad780(longlong param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  longlong lVar1;\n  int iVar2;\n  int iVar3;\n  undefined8 local_38;\n  undefined8 uStack_30;\n  undefined4 local_28;\n  undefined4 uStack_24;\n  undefined4 uStack_20;\n  undefined4 uStack_1c;\n  undefined4 local_18;\n  undefined4 uStack_14;\n  undefined4 uStack_10;\n  undefined4 uStack_c;\n  \n  lVar1 = *(longlong *)(param_1 + 200);\n  if ((((lVar1 != 0) && (*(int *)(param_1 + 0xe8) != -1)) &&\n      (iVar3 = (int)((*(longlong *)(lVar1 + 0x98) - *(longlong *)(lVar1 + 0x90)) / 0x1c), iVar3 != 0\n      )) && (iVar2 = FUN_14022fe40(), 0 < iVar2)) {\n    local_38 = _DAT_140800820;\n    uStack_30 = _UNK_140800828;\n    iVar3 = (iVar3 + iVar2 * 3) * 2 + -2;\n    local_28 = _DAT_140800830;\n    uStack_24 = _UNK_140800834;\n    uStack_20 = _UNK_140800838;\n    uStack_1c = _UNK_14080083c;\n    local_18 = _DAT_140800840;\n    uStack_14 = _UNK_140800844;\n    uStack_10 = _UNK_140800848;\n    uStack_c = _UNK_14080084c;\n    FUN_14013d400(0,0,0,0);\n    FUN_14013d850(&local_38);\n    thunk_FUN_1401805b0(param_3,*(undefined4 *)(param_1 + 0xe8),0xffffffff,0,iVar3,iVar3 / 2,3,2,0,0\n                       );\n    *(undefined4 *)(param_1 + 0xe8) = 0xffffffff;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:19Z"
+}

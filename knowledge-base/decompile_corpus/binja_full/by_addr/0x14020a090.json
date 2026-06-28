@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020a0af        if (*(arg1 + 0x50) != 0 && *arg1 == 4)\n14020a0b8        EnterCriticalSection(&arg1[0x1a])\n14020a0c5        void* result = *(**(arg1 + 0x48) + 0x10)\n14020a0cc        char rax_2\n14020a0cc        if (arg2 != 0)\n14020a0d4        rax_2 = sub_1402074d0(arg2, result)\n14020a0db        if (arg2 == 0 || rax_2 != 0)\n14020a0fb        LeaveCriticalSection(&arg1[0x1a])\n14020a113        return result\n14020a0e0        LeaveCriticalSection(&arg1[0x1a])\n14020a0f7        return 0",
+  "fetched_at": "2026-04-26T17:28:05Z"
+}

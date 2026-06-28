@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060e630",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall AITargetLocationWrapper::vfunction5_for_LuaUserVar(void)\n\n{\n  return &DAT_140a44280;\n}",
+  "fetched_at": "2026-04-26T17:26:45Z"
+}

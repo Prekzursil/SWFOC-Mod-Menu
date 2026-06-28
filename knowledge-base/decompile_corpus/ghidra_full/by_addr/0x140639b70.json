@@ -1,0 +1,7 @@
+{
+  "addr": "0x140639b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall BikeLocomotorBehaviorClass::vfunction45(BikeLocomotorBehaviorClass *this)\n\n{\n  undefined8 uVar1;\n  int in_EDX;\n  \n  uVar1 = (*this->vftablePtr->vfunction47)(this,in_EDX);\n  if (((char)uVar1 != '\\0') && (this->offset_0x18[0x15] != (undefined *)0x0)) {\n    FUN_140559250(this->offset_0x18[0x15],0);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:47Z"
+}

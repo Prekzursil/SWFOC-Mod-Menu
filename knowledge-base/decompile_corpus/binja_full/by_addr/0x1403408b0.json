@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403408b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403408cb        if (arg2 == 0xffffffff || *(arg1 + 0x7e) == 1 || *(arg1 + 0x1c) != arg2 || *(arg1 + 0x18) != 1)\n1403408cb        return \n1403408d7        struct RefCountClass::EventClass::VTable** rax_1 = operator new(0x50)\n1403408df        struct ScheduledEventClass::RetreatEventClass::VTable** rdi_1\n1403408df        if (rax_1 == 0)\n1403408ee        rdi_1 = nullptr\n1403408e9        rdi_1 = sub_140532570(rax_1)\n1403408f8        sub_140532620(rdi_1, arg2, 1)\n140340907        sub_1403b01f0(&data_140b2ed18, rdi_1)\n140340916        return ",
+  "fetched_at": "2026-04-26T17:05:42Z"
+}

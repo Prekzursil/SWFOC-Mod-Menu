@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045e480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14045e487        if (*(arg1 + 0x338) s<= 0)\n14045e487        return \n14045e489        float zmm0 = *(arg1 + 0x308)\n14045e491        zmm0 - -1f\n14045e498        *(arg1 + 0x4d) = 0\n14045e49e        if (is_unordered.d(zmm0, -1f) || not(zmm0 == -1f))\n14045e4aa        return _guard_check_icall(*(arg1 + 0x228)) __tailcall\n14045e4af        return ",
+  "fetched_at": "2026-04-26T17:27:50Z"
+}

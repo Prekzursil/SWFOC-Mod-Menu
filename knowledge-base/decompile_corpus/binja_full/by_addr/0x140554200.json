@@ -1,0 +1,7 @@
+{
+  "addr": "0x140554200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140554214        if (arg1 != arg2)\n140554223        sub_1405536d0(arg1, *arg2, arg2[1])\n140554233        if (&arg1[3] != &arg2[3])\n140554245        sub_14040aa20(&arg1[3], arg2[3], arg2[4])\n140554255        if (&arg1[6] != &arg2[6])\n140554265        int32_t* r13_1 = arg2[6]\n14055426c        void* r12_2 = arg2[7] - r13_1\n140554277        int32_t* r15_1 = arg1[6]\n14055427d        int64_t rdx_3 = r12_2 s>> 2\n140554288        if (rdx_3 u> (arg1[8] - r15_1) s>> 2)\n14055428d        sub_1401a4af0(&arg1[6], rdx_3)\n140554292        r15_1 = arg1[6]\n14055429e        memcpy(r15_1, r13_1, r12_2)\n1405542b6        arg1[7] = r15_1 + r12_2\n1405542bd        arg1[9].d = arg2[9].d\n1405542c3        *(arg1 + 0x4c) = *(arg2 + 0x4c)\n1405542c9        arg1[0xa].d = arg2[0xa].d\n1405542cf        *(arg1 + 0x54) = *(arg2 + 0x54)\n1405542d5        arg1[0xb].d = arg2[0xb].d\n1405542dc        *(arg1 + 0x5c) = *(arg2 + 0x5c)\n1405542e2        arg1[0xc].d = arg2[0xc].d\n1405542e8        *(arg1 + 0x64) = *(arg2 + 0x64)\n1405542ee        arg1[0xd].d = arg2[0xd].d\n1405542f5        *(arg1 + 0x6c) = *(arg2 + 0x6c)\n1405542fc        *(arg1 + 0x6d) = *(arg2 + 0x6d)\n14055430c        return arg1",
+  "fetched_at": "2026-04-26T17:34:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b010(void)\n\n{\n  StarbaseUpgradeAbilityClass *this;\n  \n  this = (StarbaseUpgradeAbilityClass *)FUN_140769c58(0x178);\n  if (this != (StarbaseUpgradeAbilityClass *)0x0) {\n    StarbaseUpgradeAbilityClass::StarbaseUpgradeAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:35Z"
+}

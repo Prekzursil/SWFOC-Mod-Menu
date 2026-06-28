@@ -1,0 +1,7 @@
+{
+  "addr": "0x140684b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140684b25        if (arg1 == 0 || arg2 == 0)\n140684bca        int64_t rax\n140684bca        rax.b = 0\n140684bd1        return rax\n140684b35        float zmm0 = *(arg1 + 0x78) f- data_140b3a1f8\n140684b3d        float zmm1 = *(arg1 + 0x7c) f- data_140b3a1fc\n140684b4d        float zmm2 = *(arg1 + 0x80) f- data_140b3a200\n140684b6e        int128_t zmm0_1\n140684b6e        int512_t zmm6\n140684b6e        zmm0_1, zmm6 = sqrtf(zmm0 * zmm0 + zmm1 * zmm1 + zmm2 * zmm2)\n140684b78        zmm6.o = zmm0_1\n140684b80        zmm0_1.d = (*(arg2 + 0x78)).d f- data_140b3a1f8\n140684b88        float zmm1_1 = *(arg2 + 0x7c) f- data_140b3a1fc\n140684b98        zmm2 = *(arg2 + 0x80) f- data_140b3a200\n140684ba0        zmm0_1.d = zmm0_1.d f* zmm0_1.d\n140684bac        zmm0_1.d = zmm0_1.d f+ zmm1_1 * zmm1_1\n140684bb0        zmm0_1.d = zmm0_1.d f+ zmm2 * zmm2\n140684bb4        int64_t rax_1\n140684bb4        float zmm0_2\n140684bb4        float zmm6_1\n140684bb4        rax_1, zmm0_2, zmm6_1 = sqrtf(zmm0_1.d)\n140684bc1        rax_1.b = zmm0_2 > zmm6_1\n140684bc9        return rax_1",
+  "fetched_at": "2026-04-26T17:14:32Z"
+}

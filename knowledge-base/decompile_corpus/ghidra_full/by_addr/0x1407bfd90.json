@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bfd90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int * FUN_1407bfd90(longlong param_1,int *param_2)\n\n{\n  int iVar1;\n  int *piVar2;\n  longlong lVar3;\n  \n  iVar1 = *param_2;\n  if (iVar1 == 3) {\n    if ((double)(int)*(double *)(param_2 + 2) == *(double *)(param_2 + 2)) {\n      piVar2 = (int *)FUN_1407bfed0();\n      return piVar2;\n    }\n  }\n  else {\n    if (iVar1 == 4) {\n      piVar2 = (int *)(*(longlong *)(param_1 + 0x20) +\n                      ((longlong)(1 << (*(byte *)(param_1 + 0xb) & 0x1f)) - 1U &\n                      (longlong)*(int *)(*(longlong *)(param_2 + 2) + 0xc)) * 0x28);\n      while ((*piVar2 != 4 || (*(longlong *)(piVar2 + 2) != *(longlong *)(param_2 + 2)))) {\n        piVar2 = *(int **)(piVar2 + 8);\n        if (piVar2 == (int *)0x0) {\n          return &DAT_1408fd750;\n        }\n      }\n      return piVar2 + 4;\n    }\n    if (iVar1 == 0) {\n      return &DAT_1408fd750;\n    }\n  }\n  lVar3 = FUN_1407bffb0(param_1,param_2);\n  do {\n    iVar1 = FUN_1407c3650(lVar3,param_2);\n    if (iVar1 != 0) {\n      return (int *)(lVar3 + 0x10);\n    }\n    lVar3 = *(longlong *)(lVar3 + 0x20);\n  } while (lVar3 != 0);\n  return &DAT_1408fd750;\n}",
+  "fetched_at": "2026-04-26T18:56:42Z"
+}

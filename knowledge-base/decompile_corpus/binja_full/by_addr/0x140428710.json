@@ -1,0 +1,7 @@
+{
+  "addr": "0x140428710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140428721        struct RefCountClass::alRenderable::VTable** result = arg1\n140428724        *arg1 = &WaypointLineSubClass::`vftable'{for `alRenderable'}\n140428730        arg1[2] = &WaypointLineSubClass::`vftable'{for `MultiLinkedListMember'}\n14042873b        arg1[4] = &WaypointLineSubClass::`vftable'{for `CullObjectClass'}\n140428746        sub_1401415b0(&arg1[0x26])\n14042874b        int64_t* rcx_1 = result[0x24]\n140428755        if (rcx_1 != 0)\n14042875a        (*(*rcx_1 + 8))(rcx_1)\n14042876c        sub_14013f770(result)\n140428775        if ((arg2 & 1) != 0)\n14042877f        j_sub_1407864b8(result)\n140428791        return result",
+  "fetched_at": "2026-04-26T17:26:34Z"
+}

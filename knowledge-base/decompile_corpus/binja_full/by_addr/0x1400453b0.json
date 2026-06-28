@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400453b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400453b3        if (arg2 == 0)\n1400453b3        return \n1400453c9        char rax_1\n1400453c9        int512_t zmm2_1\n1400453c9        rax_1, zmm2_1 = sub_1404432d0(arg2)\n1400453d0        if (rax_1 != 0)\n1400453dd        int64_t* rax_3 = (*(*arg2 + 0x10))(arg2, 0x4f)\n1400453e3        if (rax_3 == 0)\n1400453f0        rax_3 = (*(*arg2 + 0x10))(arg2, 0x56)\n1400453f6        if (rax_3 != 0)\n1400453f6        goto label_1400453fb\n140045409        label_140045409:\n140045409        struct RefCountClass::EventClass::VTable** rax_6 = operator new(0x50)\n140045411        struct ScheduledEventClass::GarrisonEventClass::VTable** rdi\n140045411        if (rax_6 == 0)\n140045420        rdi = nullptr\n14004541b        rdi = sub_140440ad0(rax_6)\n14004542e        sub_1403b01e0(rdi, arg2[0xa].d, 0x3fffff)\n140045447        return sub_1403b01f0(&data_140b2ed18, rdi) __tailcall\n1400453fb        label_1400453fb:\n1400453fb        char rax_5\n1400453fb        rax_5, zmm2_1 = sub_140444520(rax_3)\n140045402        if (rax_5 != 0)\n140045402        goto label_140045409\n14004545f        zmm2_1.o = zx.o(0)\n140045466        sub_1402d5290(&data_140b27e60, data_140b301c8, zmm2_1, 0, 0)\n140045475        return ",
+  "fetched_at": "2026-04-26T16:53:38Z"
+}

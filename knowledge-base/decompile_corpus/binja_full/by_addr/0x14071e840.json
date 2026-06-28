@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071e840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071e846        struct ActionClass::AttackActionClass::VTable** result = arg1\n14071e849        sub_1405e8e20(arg1)\n14071e85c        *result = &AttackActionClass::`vftable'{for `ActionClass'}\n14071e85f        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x19])\n14071e864        result[0x1b].d = 0xffffffff\n14071e875        *(result + 0xdc) = 0xffff\n14071e87f        result[0x1c].d = 0x3f800000\n14071e889        *(result + 0xe4) = 1\n14071e893        result[0x1d].d = 0x3f800000\n14071e89d        result[0x1e] = 0\n14071e8a8        result[0x21] = 0xf\n14071e8b3        result[0x20] = 4\n14071e8be        __builtin_strncpy(&result[0x1e], \"ROOT\", 5)\n14071e8cf        sub_1404c3ee0(&result[0x22])\n14071e8d7        result[0x24].b = 0\n14071e8de        *(result + 0x124) = 0\n14071e8e8        result[0x25] = -1\n14071e8f8        return result",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

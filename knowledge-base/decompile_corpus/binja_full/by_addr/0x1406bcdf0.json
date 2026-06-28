@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bcdf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bce04        int64_t rax_2 = (*(arg3 + 0x18) - *(arg3 + 0x10)) s>> 3\n1406bce0b        if (rax_2 != 0)\n1406bce1a        sub_140248190(arg2, \"BudgetWrapper::Release_Resources -- Invalid number of parameters: %d should be 0.\\n\", rax_2)\n1406bce26        return 0\n1406bce32        int128_t zmm0 = sub_140692780(*(*(arg1 + 0x28) + 0x88))\n1406bce45        sub_1406931e0(*(*(arg1 + 0x28) + 0x88), zmm0)\n1406bce55        sub_1406927d0(*(*(arg1 + 0x28) + 0x88))\n1406bce61        return 0",
+  "fetched_at": "2026-04-26T17:24:56Z"
+}

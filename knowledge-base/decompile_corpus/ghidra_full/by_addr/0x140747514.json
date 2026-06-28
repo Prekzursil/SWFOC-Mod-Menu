@@ -1,0 +1,7 @@
+{
+  "addr": "0x140747514",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nstd::codecvt<char,char,struct__Mbstatet>::vfunction7\n          (codecvt<char,char,struct__Mbstatet> *this,undefined8 param_1,undefined8 param_2,\n          undefined8 param_3,undefined8 *param_4,undefined8 param_5,undefined8 param_6,\n          undefined8 *param_7)\n\n{\n  *param_4 = param_2;\n  *param_7 = param_5;\n  return 3;\n}",
+  "fetched_at": "2026-04-26T18:05:11Z"
+}

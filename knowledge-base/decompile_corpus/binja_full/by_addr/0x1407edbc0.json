@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407edbc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407edbc7        data_140a155b0 = &ThreadClass::`vftable'\n1407edbce        return &ThreadClass::`vftable'",
+  "fetched_at": "2026-04-26T17:36:12Z"
+}

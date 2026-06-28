@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402773e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402773e2        *(arg1 + 0xc0) = *arg2\n1402773eb        *(arg1 + 0xc4) = arg2[1]\n1402773f4        *(arg1 + 0xc8) = arg2[2]\n1402773fd        *(arg1 + 0xcc) = arg2[3]\n140277406        *(arg1 + 0xd0) = arg2[4]\n14027740f        *(arg1 + 0xd4) = arg2[5]\n140277418        *(arg1 + 0xd8) = arg2[6]\n140277421        *(arg1 + 0xdc) = arg2[7]\n14027742a        *(arg1 + 0xe0) = arg2[8]\n140277433        *(arg1 + 0xe4) = arg2[9]\n14027743c        *(arg1 + 0xe8) = arg2[0xa]\n140277445        *(arg1 + 0xec) = arg2[0xb]\n14027744e        *(arg1 + 0xf0) = arg2[0xc]\n140277457        *(arg1 + 0xf4) = arg2[0xd]\n140277460        *(arg1 + 0xf8) = arg2[0xe]\n140277469        *(arg1 + 0xfc) = arg2[0xf]\n140277472        *(arg1 + 0x100) = arg2[0x10]\n14027747b        *(arg1 + 0x104) = arg2[0x11]\n140277484        *(arg1 + 0x108) = arg2[0x12]\n14027748d        *(arg1 + 0x10c) = arg2[0x13]\n140277496        *(arg1 + 0x110) = arg2[0x14]\n14027749f        *(arg1 + 0x114) = arg2[0x15]\n1402774a8        *(arg1 + 0x118) = arg2[0x16]\n1402774b1        *(arg1 + 0x11c) = arg2[0x17]\n1402774ba        *(arg1 + 0x120) = arg2[0x18]\n1402774c3        *(arg1 + 0x124) = arg2[0x19]\n1402774cc        *(arg1 + 0x128) = arg2[0x1a]\n1402774d5        *(arg1 + 0x12c) = *arg3\n1402774df        *(arg1 + 0x130) = arg3[1]\n1402774e5        int32_t result = arg3[2]\n1402774e9        *(arg1 + 0x134) = result\n1402774ef        return result",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

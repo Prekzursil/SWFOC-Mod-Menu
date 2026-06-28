@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401cb350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TextureRectClass::vfunction3_for_RefCountClass(TextureRectClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((TextureRectClass *)&this[-1].RefCountClass_data.offset_0x50,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:28Z"
+}

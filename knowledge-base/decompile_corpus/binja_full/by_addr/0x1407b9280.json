@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9280",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_pcall",
+  "body": "1407b9295        void* rax\n1407b9295        int64_t r11\n1407b9295        if (arg4 != 0)\n1407b929f        void* rax_3\n1407b929f        if (arg4 s<= 0)\n1407b92b8        rax_3 = sub_1407b9f20(arg1, arg4)\n1407b92b0        rax_3 = *(arg1 + 0x18) - 0x10 + (sx.q(arg4) << 4)\n1407b92bd        r11 = *(arg1 + 0x68)\n1407b92c1        rax = rax_3 - r11\n1407b9297        r11 = *(arg1 + 0x68)\n1407b929b        rax = nullptr\n1407b92da        int64_t r9_1 = *(arg1 + 0x10) - (sx.q(arg2 + 1) << 4)\n1407b92dd        int32_t var_10 = arg3\n1407b92e1        int64_t var_18 = r9_1\n1407b9304        return sub_1407bbbe0(arg1, sub_1407b8ae0, &var_18, r9_1 - r11, rax)",
+  "fetched_at": "2026-04-26T16:44:29Z"
+}

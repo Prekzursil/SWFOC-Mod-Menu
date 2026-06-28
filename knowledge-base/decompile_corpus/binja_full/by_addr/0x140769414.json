@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769414",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769444        int64_t r14_2 = (arg4 - arg3) s>> 1\n140769447        int64_t r15_2 = (arg2 - arg1) s>> 1\n14076944a        int64_t rsi = -1\n14076944e        void* rdi = nullptr\n140769459        PWSTR rbp_1\n140769459        if (arg5 != 0)\n140769466        rbp_1 = *(arg5 + 8)\n140769460        rbp_1 = *(___lc_locale_name_func() + 8)\n14076946d        if (rbp_1 == 0)\n140769472        if (r14_2 u<= r15_2)\n14076947e        memcpy(arg1, arg3, r14_2 * 2)\n140769483        return r14_2\n14076948b        wchar16* rax_2 = j_sub_14078f364(r15_2)\n140769496        if (rax_2 != 0)\n1407694b4        int32_t rax_3 = __crtLCMapStringW(rbp_1, 0x400, arg3, r14_2.d, rax_2, r15_2.d)\n1407694b9        rsi = sx.q(rax_3)\n1407694be        if (rax_3 != 0)\n1407694ec        *(arg1 + (rdi << 1)) = zx.w(*(rdi + rax_2))\n1407694f2        rdi += 1\n1407694f8        do while (rdi u< rsi)\n1407694d5        int32_t rax_4 = __crtLCMapStringW(rbp_1, 0x400, arg3, r14_2.d, nullptr, 0)\n1407694da        rsi = sx.q(rax_4)\n1407694df        if (rax_4 == 0)\n1407694e1        rsi = 0x7fffffff\n1407694fd        free(rax_2)\n140769521        return rsi",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

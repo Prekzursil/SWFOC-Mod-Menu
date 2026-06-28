@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032e8c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032e8c5        int32_t arg_10 = arg2.d\n14032e8db        sub_140327b10(\"STORY - TECH LEVEL %d\\r\\n\", arg2)\n14032e908        return sub_14032e5f0(arg1, 0xa, arg3, &arg_10, 0)",
+  "fetched_at": "2026-04-26T17:02:22Z"
+}

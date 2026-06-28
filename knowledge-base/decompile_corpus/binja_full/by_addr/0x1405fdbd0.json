@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fdbd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405fdbdf        int64_t* rbx = *(arg3 + 0x10)\n1405fdbf6        char const* const rdx\n1405fdbf6        if (((*(arg3 + 0x18) - rbx) & 0xfffffffffffffff8) != 0)\n1405fdc01        int64_t* rbx_1 = *rbx\n1405fdc07        if (rbx_1 != 0)\n1405fdc0f        void* i\n1405fdc0f        i, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n1405fdc15        while (i != 0)\n1405fdc23        if (i == &data_140a157b0)\n1405fdc5a        sub_1405f8360(*(arg1 + 0xf0), rbx_1[2].b)\n1405fdc70        return 0\n1405fdc25        i = *(i + 8)\n1405fdc2e        rdx = \"TaskForceClass::Lua_Set_As_Goal_System_Removable -- Invalid parameter 1, expected boolean\"\n1405fdbf8        rdx = \"TaskForceClass::Lua_Set_As_Goal_System_Removable -- No params\"\n1405fdc38        sub_140248190(arg2, rdx, arg3)\n1405fdc4e        return 0",
+  "fetched_at": "2026-04-26T17:22:46Z"
+}

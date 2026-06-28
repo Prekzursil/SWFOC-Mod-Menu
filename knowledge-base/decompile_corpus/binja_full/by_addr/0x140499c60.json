@@ -1,0 +1,7 @@
+{
+  "addr": "0x140499c60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140499c6a        int64_t r10 = sx.q(*(arg1 + 0x10))\n140499c77        if (r10.d == 0)\n140499c7e        sub_140499ac0(arg1, arg2)\n140499c8c        *(arg1 + 0x9c) = 0\n140499c8f        *(arg1 + 0xa4) = 0\n140499c95        if (*(arg1 + 0x10) s> 0)\n140499c97        int32_t* rdx = *(arg1 + 8)\n140499c9e        if (rdx != 0)\n140499ca9        sub_14049d640(arg1, rdx, arg1 + 0x9c, 1)\n140499cb0        *(arg1 + 0xb4) = *(arg1 + 0x9c)\n140499cb9        *(arg1 + 0xb8) = *(arg1 + 0xa0)\n140499cc7        *(arg1 + 0xbc) = *(arg1 + 0xa4)\n140499cd9        return 0\n140499cde        int32_t rbx = 0\n140499ce0        int32_t i = arg2[9]\n140499ce3        int32_t* rax_5 = *(arg1 + 8) + 0x24\n140499ce9        if (*rax_5 s<= i)\n140499ceb        int64_t rcx_1 = 0\n140499cf0        rbx += 1\n140499cf2        rax_5 = &rax_5[0x15]\n140499cf6        rcx_1 += 1\n140499cfc        if (rcx_1 == r10)\n140499cfc        break\n140499d00        do while (*rax_5 s<= i)\n140499d0b        if (rbx s< r10.d)\n140499d17        sub_1404a78d0(arg1, arg2, rbx)\n140499d0d        sub_140499ac0(arg1, arg2)\n140499d1f        sub_140499ef0(arg1)\n140499d30        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:29:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d81c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d81c8        __chkstk(0x2048)\n1407d81d7        DeleteFileA(data_140a45ce0)\n1407d81fb        int32_t var_2038 = 2\n1407d8207        HANDLE result = CreateFileA(data_140a45ce0, 0x40000000, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr)\n1407d820d        uint32_t numberOfBytesWritten = 0\n1407d821b        if (result == -1)\n1407d830b        return result\n1407d822f        int32_t buffer_1 = data_140a45d10\n1407d824d        var_2038.q = 0\n1407d8252        WriteFile(result, &buffer_1, 4, &numberOfBytesWritten, nullptr)\n1407d8258        int32_t rdi_1 = 0\n1407d8261        if (buffer_1 s> 0)\n1407d826f        int64_t rbx_1 = 0\n1407d8278        int64_t* rcx_5 = data_140a45d08 + rbx_1\n1407d8283        if (rcx_5[3] u>= 0x10)\n1407d8285        *rcx_5\n1407d8298        void buffer\n1407d8298        sscanf_s(&buffer, \"%d, %s\\r\\n\", zx.q(rcx_5[4].d))\n1407d82a2        int64_t rax = -1\n1407d82b9        bool cond:0_1\n1407d82b0        char var_2017[0x1fff]\n1407d82b0        cond:0_1 = var_2017[rax] != 0\n1407d82b5        rax += 1\n1407d82b9        do while (cond:0_1)\n1407d82bf        var_2038.q = 0\n1407d82d4        WriteFile(result, &buffer, (rax + 1).d, &numberOfBytesWritten, nullptr)\n1407d82da        rdi_1 += 1\n1407d82dc        rbx_1 += 0x28\n1407d82e7        do while (rdi_1 s< buffer_1)\n1407d82f4        return CloseHandle(result)",
+  "fetched_at": "2026-04-26T17:34:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140663530",
+  "tool": "binary_ninja",
+  "fact_id": "rva_planet_reachability_ctor",
+  "body": "140663559        int64_t i_2 = 0xb\n140663561        double i_3 = 5.434722104253712e-323\n140663563        arg1[1].d = 0\n140663567        void* rbx = &arg1[0x24]\n14066356e        *arg1 = &PlanetReachabilityClass::`vftable'{for `ReachabilityClass'}\n140663571        void* rdi = rbx\n140663574        arg1[2] = arg2\n140663578        __builtin_memset(&arg1[3], 0, 0x108)\n140663652        double i\n140663645        sub_14020b740(rdi, 0)\n14066364a        rdi += 0x10\n14066364e        i = i_3\n14066364e        i_3 -= 1\n140663652        do while (i != 1)\n140663663        arg1[0x3a] = arg3\n14066366c        *(arg1 + 0x204) = i_3.w\n140663677        *(arg1 + 0x206) = i_3.b\n14066367e        __builtin_memset(&arg1[0x3b], 0xff, 0x2c)\n140663686        double i_4 = i_3\n140663693        int32_t var_30 = i_3.d\n1406636e3        int32_t rdi_1 = *(sub_1402a9ff0(*(sub_14028a950(&data_140b153e0, 0) + 0x18), (i_3 i+ 3).d, 0xffffffff, 0xffffffff, &i_4, 0, 0x7fffffff, 0xffffffff) + 0x10)\n1406636f8        int64_t i_1\n1406636eb        sub_14020b930(rbx, rdi_1)\n1406636f0        rbx += 0x10\n1406636f4        i_1 = i_2\n1406636f4        i_2 -= 1\n1406636f8        do while (i_1 != 1)\n14066371b        return arg1",
+  "fetched_at": "2026-04-26T16:44:08Z"
+}

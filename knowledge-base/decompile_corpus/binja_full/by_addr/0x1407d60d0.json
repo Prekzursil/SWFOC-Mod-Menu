@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d60d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d6100        int32_t rcx = arg3 + arg4\n1407d610e        int32_t rcx_1 = arg2 + arg5\n1407d6114        int32_t r13 = arg2 + arg4\n1407d611c        int32_t rdi_1 = arg2 - arg5\n1407d611e        int32_t rdx = arg3 + arg5\n1407d6122        int32_t r14_1 = arg2 - arg4\n1407d6129        int32_t r12_1 = arg3 - arg5\n1407d612c        int32_t rsi_1 = arg3 - arg4\n1407d613a        char rax_8\n1407d613a        char rbx\n1407d613a        if (arg7 == 0)\n1407d6228        rbx = sub_1407d6270(arg1, r14_1, r13, rdx, arg6) | sub_1407d6270(arg1, r14_1, r13, r12_1, arg6) | sub_1407d6270(arg1, rdi_1, rcx_1, rcx, arg6)\n1407d6237        rax_8 = sub_1407d6270(arg1, rdi_1, rcx_1, rsi_1, arg6)\n1407d61ad        rbx = sub_1407d62f0(arg1, r13, rdx, arg6) | sub_1407d62f0(arg1, r14_1, rdx, arg6) | sub_1407d62f0(arg1, r13, r12_1, arg6) | sub_1407d62f0(arg1, r14_1, r12_1, arg6) | sub_1407d62f0(arg1, rcx_1, rcx, arg6)\n1407d61c8        rbx = rbx | sub_1407d62f0(arg1, rdi_1, rcx, arg6) | sub_1407d62f0(arg1, rcx_1, rsi_1, arg6)\n1407d61d5        rax_8 = sub_1407d62f0(arg1, rdi_1, rsi_1, arg6)\n1407d6268        return zx.q(rbx) | zx.q(rax_8)",
+  "fetched_at": "2026-04-26T17:34:02Z"
+}

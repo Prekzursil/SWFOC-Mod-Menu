@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ee457        *arg1 = &LightEffectDataPackClass::`vftable'{for `BaseDataPackClass'}\n1404ee45a        int64_t* rcx = arg1[7]\n1404ee461        if (rcx == 0)\n1404ee46a        return &LightEffectDataPackClass::`vftable'{for `BaseDataPackClass'}\n1404ee466        jump(*(*rcx + 8))",
+  "fetched_at": "2026-04-26T17:31:35Z"
+}

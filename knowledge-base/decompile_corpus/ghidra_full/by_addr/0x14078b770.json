@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078b770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _Wcsftime\n   \n   Library: Visual Studio 2019 Release */\n\nsize_t __cdecl\n_Wcsftime(wchar_t *param_1,size_t _Maxsize,wchar_t *param_3,tm *param_4,void *param_5)\n\n{\n  size_t sVar1;\n  \n  sVar1 = _Wcsftime_l();\n  return sVar1;\n}",
+  "fetched_at": "2026-04-26T18:51:54Z"
+}

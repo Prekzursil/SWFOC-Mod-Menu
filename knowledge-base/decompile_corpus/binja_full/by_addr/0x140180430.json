@@ -1,0 +1,7 @@
+{
+  "addr": "0x140180430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140180430        void* rax_2 = data_140a6fe70\n140180449        jump(*(***(*(rax_2 + 8) + (sx.q(*(rax_2 + 0x20)) << 3)) + 0x60))",
+  "fetched_at": "2026-04-26T17:23:51Z"
+}

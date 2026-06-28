@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793df4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_initialize_winapi_thunks\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 __acrt_initialize_winapi_thunks(void)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  undefined8 *puVar3;\n  \n  uVar1 = DAT_140a44b98;\n  puVar3 = &DAT_140b3c980;\n  for (lVar2 = 0x22; lVar2 != 0; lVar2 = lVar2 + -1) {\n    *puVar3 = uVar1;\n    puVar3 = puVar3 + 1;\n  }\n  return CONCAT71((int7)((ulonglong)uVar1 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:53:07Z"
+}

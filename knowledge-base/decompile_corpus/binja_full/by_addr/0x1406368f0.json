@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406368f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406368fb        struct BehaviorClass::ConfuseBehaviorClass::VTable** result = operator new(0x40)\n140636906        if (result == 0)\n14063693e        return result\n14063690b        sub_1404c32d0(result)\n140636917        *result = &ConfuseBehaviorClass::`vftable'{for `BehaviorClass'}\n140636921        result[1] = &ConfuseBehaviorClass::`vftable'{for `RefCountClass'}\n14063692c        result[3] = &ConfuseBehaviorClass::`vftable'{for `SignalListenerClass'}\n140636938        return result",
+  "fetched_at": "2026-04-26T17:00:28Z"
+}

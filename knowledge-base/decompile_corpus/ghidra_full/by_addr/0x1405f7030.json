@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f7030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall AIPlanBehaviorDiagnosticsNodeClass::vfunction1(void)\n\n{\n  return &DAT_140a441d0;\n}",
+  "fetched_at": "2026-04-26T17:23:43Z"
+}

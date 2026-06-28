@@ -1,0 +1,7 @@
+{
+  "addr": "0x140454980",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140454994        if (arg2 == 0 || arg3 == 0)\n140454994        return \n1404549aa        int128_t zmm6 = *arg2\n1404549ae        if (*(arg1 + 0x36c) == 0)\n1404549b0        arg1[0x6c].d = zmm6.d\n1404549bd        *(arg1 + 0x36c) = 1\n1404549c9        return \n1404549d5        if (not(arg1[0x6c].d f<= zmm6.d))\n1404549dc        void* rdx = &arg1[3]\n1404549e0        if (arg1[6] u>= 0x10)\n1404549e2        rdx = *rdx\n1404549f4        _mm_cvtps_pd(arg1[0x6c].d)\n1404549f7        _mm_cvtps_pd(zmm6.q)\n140454a04        int64_t rax_1\n140454a04        int32_t zmm6_1\n140454a04        rax_1, zmm6_1 = sub_140467540(\"STORY_ELAPSED %s, LastTime %f > elapsed time %f\\r\\n\", rdx)\n140454a09        arg1[0x6c].d = zmm6_1\n140454a1b        return \n140454a1e        if (*arg3 == 0)\n140454a33        *(arg1 + 0x364) = zmm6.d f- arg1[0x6c].d f+ *(arg1 + 0x364)\n140454a4a        arg1[0x6c].d = zmm6.d\n140454a52        if (*(arg1 + 0x364) f< arg1[0x6d].d)\n140454a52        return \n140454a59        void* rdx_1 = &arg1[3]\n140454a5d        if (arg1[6] u>= 0x10)\n140454a5f        rdx_1 = *rdx_1\n140454a62        _mm_cvtps_pd(zmm6.q)\n140454a71        sub_140467540(\"STORY_ELAPSED %s triggered at %f\\r\\n\", rdx_1)\n140454a7e        sub_140455db0(arg1, nullptr, 0)\n140454a8d        return ",
+  "fetched_at": "2026-04-26T17:27:44Z"
+}

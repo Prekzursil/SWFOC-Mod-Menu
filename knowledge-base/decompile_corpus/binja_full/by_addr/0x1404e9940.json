@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e9940",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_player_type_mgr_ctor",
+  "body": "1404e9953        *arg1 = &TheAIPlayerTypeManagerClass::`vftable'\n1404e9959        __builtin_memset(arg1 + 0xc, 0, 0x14)\n1404e995e        arg1[1].b = 0\n1404e996c        int64_t* rax = operator new(0x38)\n1404e9978        *rax = rax\n1404e997b        rax[1] = rax\n1404e997f        arg1[2] = rax\n1404e9983        int64_t r8 = arg1[2]\n1404e9987        __builtin_memset(&arg1[4], 0, 0x18)\n1404e9992        arg1[7] = 7\n1404e999a        arg1[8] = 8\n1404e99a2        *(arg1 + 0xc) = 0x3f800000\n1404e99a9        sub_140048250(&arg1[4], 0x10, r8)\n1404e99bb        return arg1",
+  "fetched_at": "2026-04-26T16:43:46Z"
+}

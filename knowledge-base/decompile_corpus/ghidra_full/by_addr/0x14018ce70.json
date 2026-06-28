@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ce70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall alD3dEffectInstance::vfunction15_for_RefCountClass(alD3dEffectInstance *this)\n\n{\n  return *(longlong *)&this->field_0x40 - *(longlong *)&this->field_0x38 >> 3;\n}",
+  "fetched_at": "2026-04-26T17:33:37Z"
+}

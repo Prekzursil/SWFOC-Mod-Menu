@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ab930",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ab930        uint64_t r8_1 = zx.q(data_140a70634)\n1401ab937        char const (* rdx)[0x14] = data_140a12bc0\n1401ab93e        data_140a12bb8 = arg1\n1401ab94b        data_140a70630 = 1\n1401ab952        return sscanf_s(&data_140a70640, rdx, r8_1) __tailcall",
+  "fetched_at": "2026-04-26T17:25:23Z"
+}

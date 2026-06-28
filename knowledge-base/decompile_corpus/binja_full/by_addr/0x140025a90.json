@@ -1,0 +1,7 @@
+{
+  "addr": "0x140025a90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140025aa0        *arg1 = &SingletonInstance<class SteamLobbyDialogClass>::`vftable'{for `SingletonManager'}\n140025aa6        if ((arg2 & 1) != 0)\n140025aad        j_sub_1407864b8(arg1)\n140025aba        return arg1",
+  "fetched_at": "2026-04-26T16:52:10Z"
+}

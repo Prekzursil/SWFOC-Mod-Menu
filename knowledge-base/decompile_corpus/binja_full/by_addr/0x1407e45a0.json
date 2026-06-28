@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e45a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e45a0        void* arg_10 = arg2\n1407e45bd        sub_14033f600(*(arg2 + 0x80), *(arg2 + 0x20), *(arg2 + 0x38))\n1407e45d4        sub_1400259b0(*(arg2 + 0x80), *(arg2 + 0x28), *(arg2 + 0x98))\n1407e45dd        sub_14076b00c(nullptr, nullptr)\n1407e45dd        noreturn",
+  "fetched_at": "2026-04-26T17:34:23Z"
+}

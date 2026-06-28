@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b0c90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b0ca9        if (arg2[2] f<= 0f || arg2[3] f<= 0f)\n1406b0d47        *arg1 = *arg3\n1406b0d4d        arg1[1] = arg3[1]\n1406b0d54        arg1[2] = arg3[2]\n1406b0d5b        arg1[3] = arg3[3]\n1406b0d61        return arg1\n1406b0cc3        if (arg3[2] <= 0f || arg3[3] <= 0f)\n1406b0d2c        *arg1 = *arg2\n1406b0d31        arg1[1] = arg2[1]\n1406b0d37        arg1[2] = arg2[2]\n1406b0d3d        arg1[3] = arg2[3]\n1406b0d43        return arg1\n1406b0cce        float zmm0 = arg3[2] + *arg3\n1406b0cd7        float zmm3 = *arg2 f+ arg2[2]\n1406b0ce1        int32_t zmm1 = arg2[1] f+ arg2[3]\n1406b0cea        float temp0 = __minss_xmmss_memss(*arg2, *arg3)\n1406b0cef        float zmm2 = arg2[1]\n1406b0cf4        float temp0_1 = _mm_max_ss(zmm3, zmm0)\n1406b0cf8        float temp0_2 = __minss_xmmss_memss(zmm2, arg3[1])\n1406b0d04        zmm0 = arg3[1] + arg3[3]\n1406b0d0a        *arg1 = temp0\n1406b0d12        arg1[1] = temp0_2\n1406b0d17        int32_t temp0_3 = _mm_max_ss(zmm1, zmm0)\n1406b0d1b        arg1[2] = temp0_1 - temp0\n1406b0d24        arg1[3] = temp0_3 f- temp0_2\n1406b0d29        return arg1",
+  "fetched_at": "2026-04-26T17:24:39Z"
+}

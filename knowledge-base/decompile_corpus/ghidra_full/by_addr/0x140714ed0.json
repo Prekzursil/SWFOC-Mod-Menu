@@ -1,0 +1,7 @@
+{
+  "addr": "0x140714ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSuperLaserAbilityClass::vfunction3_for_RefCountClass(SuperLaserAbilityClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor\n            ((SuperLaserAbilityClass *)&this[-1].SuperLaserAbilityClass_data.offset_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:26Z"
+}

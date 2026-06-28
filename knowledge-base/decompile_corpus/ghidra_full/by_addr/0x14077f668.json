@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077f668",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: void __cdecl __crt_stdio_input::scanset_buffer<wchar_t>::set(wchar_t) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall\n__crt_stdio_input::scanset_buffer<wchar_t>::set(scanset_buffer<wchar_t> *this,wchar_t param_1)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  \n  lVar2 = *(longlong *)this;\n  if (lVar2 == 0) {\n    uVar1 = _calloc_base(0x2000,1);\n    _free_base(*(undefined8 *)this);\n    *(undefined8 *)this = uVar1;\n    _free_base(0);\n    lVar2 = *(longlong *)this;\n  }\n  *(byte *)((ulonglong)((ushort)param_1 >> 3) + lVar2) =\n       *(byte *)((ulonglong)((ushort)param_1 >> 3) + lVar2) | (byte)(1 << (param_1 & 7U));\n  return;\n}",
+  "fetched_at": "2026-04-26T18:50:52Z"
+}

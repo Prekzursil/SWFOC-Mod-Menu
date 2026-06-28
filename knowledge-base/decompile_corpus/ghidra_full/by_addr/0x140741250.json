@@ -1,0 +1,7 @@
+{
+  "addr": "0x140741250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: static void __cdecl std::_Locinfo::_Locinfo_ctor(class std::_Locinfo * __ptr64,char\n   const * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl std::_Locinfo::_Locinfo_ctor(_Locinfo *param_1,char *param_2)\n\n{\n  undefined **ppuVar1;\n  char *pcVar2;\n  \n  ppuVar1 = (undefined **)setlocale(0,(char *)0x0);\n  if (ppuVar1 == (undefined **)0x0) {\n    ppuVar1 = &PTR_1407ff8a8;\n  }\n  _Yarn<char>::operator=((_Yarn<char> *)(param_1 + 0x48),(char *)ppuVar1);\n  pcVar2 = (char *)0x0;\n  if (param_2 != (char *)0x0) {\n    pcVar2 = setlocale(0,param_2);\n  }\n  if (pcVar2 == (char *)0x0) {\n    pcVar2 = \"*\";\n  }\n  _Yarn<char>::operator=((_Yarn<char> *)(param_1 + 0x58),pcVar2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:13Z"
+}

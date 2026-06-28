@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798cd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798cd4        HANDLE result = GetProcessHeap()\n140798cdd        data_140b3cc00 = result\n140798ce4        result.b = result != 0\n140798ceb        return result",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f37f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlanetaryBehaviorClass * FUN_1403f37f0(PlanetaryBehaviorClass *param_1,uint param_2)\n\n{\n  PlanetaryBehaviorClass::~PlanetaryBehaviorClass(param_1);\n  if ((param_2 & 1) != 0) {\n    thunk_FUN_1407864b8(param_1,0x40);\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:40:49Z"
+}

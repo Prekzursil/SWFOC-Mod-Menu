@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013a3c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alBlob::~alBlob(alBlob *this)\n\n{\n  ulonglong uVar1;\n  \n  uVar1 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  if (DAT_140a62670 - DAT_140a62668 >> 3 != 0) {\n    do {\n      *(undefined8 *)(DAT_140a62668 + uVar1 * 8) = 0;\n      uVar1 = (ulonglong)((int)uVar1 + 1);\n    } while (uVar1 < (ulonglong)(DAT_140a62670 - DAT_140a62668 >> 3));\n  }\n  DAT_140a62670 = DAT_140a62668;\n  FUN_1401f9440(&(this->alBlob_data).offset_0x4c);\n  alRenderable::~alRenderable((alRenderable *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:34Z"
+}

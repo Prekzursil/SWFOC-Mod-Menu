@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020eac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020eaca        int32_t rbx = 0\n14020ead1        *(arg1 + 8) = 0\n14020ead8        int32_t* rcx = *(arg1 + 0x10)\n14020eadf        int128_t var_28\n14020eadf        __builtin_memset(&var_28, 0, 0x18)\n14020eaea        sub_1402102d0(rcx, arg2, &var_28)\n14020eaf4        void* rcx_1 = var_28.q\n14020eafc        int64_t result = (var_28:8.q - rcx_1) s>> 3\n14020eb03        if (result != 0)\n14020eb05        uint64_t rdx = 0\n14020eb10        void* rdx_1 = *(rcx_1 + (rdx << 3))\n14020eb14        rbx += 1\n14020eb1a        *(rdx_1 + 0x18) = *(arg1 + 8)\n14020eb23        rcx_1 = var_28.q\n14020eb28        void* rax_4 = var_28:8.q - rcx_1\n14020eb2b        *(arg1 + 8) = rdx_1\n14020eb2f        result = rax_4 s>> 3\n14020eb33        rdx = zx.q(rbx)\n14020eb38        do while (rdx u< result)\n14020eb3a        data_140a7c664 += 1\n14020eb43        if (rcx_1 == 0)\n14020eb81        return result\n14020eb4a        void* rax_5 = rcx_1\n14020eb5b        int64_t var_18\n14020eb5b        if (((var_18 - rcx_1) & 0xfffffffffffffff8) u>= 0x1000)\n14020eb5d        rcx_1 = *(rcx_1 - 8)\n14020eb70        if (rax_5 - rcx_1 - 8 u> 0x1f)\n14020eb82        _invalid_parameter_noinfo_noreturn()\n14020eb82        noreturn\n14020eb72        return j_sub_1407864b8(rcx_1)",
+  "fetched_at": "2026-04-26T17:28:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f5e79        *arg1 = &DebugTreeItem::`vftable'{for `RefCountClass'}\n1405f5e7f        arg1[1].d = 0\n1405f5e82        __builtin_memset(&arg1[2], 0, 0x30)\n1405f5e9a        arg1[9] = 0\n1405f5e9e        arg1[0xa] = 0xf\n1405f5ea6        return arg1",
+  "fetched_at": "2026-04-26T17:22:31Z"
+}

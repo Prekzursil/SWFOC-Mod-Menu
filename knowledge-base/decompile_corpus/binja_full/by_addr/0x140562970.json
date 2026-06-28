@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562970",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140562980        *arg1 = &AbilityCountdownDataPackClass::`vftable'{for `BaseDataPackClass'}\n14056298f        memset(&arg1[1], 0, 0x2b5)\n140562997        arg1[0x58].d = 0\n1405629a6        return arg1",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

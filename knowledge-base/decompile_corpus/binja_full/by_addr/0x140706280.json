@@ -1,0 +1,7 @@
+{
+  "addr": "0x140706280",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_lucky_shot",
+  "body": "140706286        struct SpecialAbilityClass::LuckyShotAttackAbilityClass::VTable** result = arg1\n140706289        sub_14048c780(arg1)\n140706295        result[8].w = 1\n14070629b        *result = &LuckyShotAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1407062a5        result[1] = &LuckyShotAttackAbilityClass::`vftable'{for `RefCountClass'}\n1407062ac        *(result + 0x3c) = 9\n1407062b8        return result",
+  "fetched_at": "2026-04-26T16:44:18Z"
+}

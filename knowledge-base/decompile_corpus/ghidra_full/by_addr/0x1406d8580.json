@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d8580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* PlanetForcePerceptualEvaluatorClass member function inherited by\n   PlanetEnemyForcePerceptualEvaluatorClass\n   PlanetForcePerceptualEvaluatorClass member function inherited by\n   PlanetFriendlyForcePerceptualEvaluatorClass */\n\nvoid __thiscall\nPlanetForcePerceptualEvaluatorClass::vfunction1\n          (PlanetForcePerceptualEvaluatorClass *this,uint param_1)\n\n{\n  PlanetFriendlyForcePerceptualEvaluatorClass::scalar_deleting_destructor\n            ((PlanetFriendlyForcePerceptualEvaluatorClass *)\n             &this[-1].SignalListenerClass_data.offset_0x50,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:50Z"
+}

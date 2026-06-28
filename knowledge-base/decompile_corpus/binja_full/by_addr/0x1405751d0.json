@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405751d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405751e8        int64_t* rdi = arg1\n1405751f7        if (arg1 != 0 && (arg1[0x74].b & 2) != 0)\n1405751f7        rdi = nullptr\n140575203        struct LuaVar::LuaUserVar::VTable** result\n140575203        if (arg2 == 0)\n14057526c        struct LuaVar::LuaUserVar::VTable** result_2 = sub_1405761a0(0x802)\n14057527a        sub_14057ac10(result_2, rdi)\n14057527f        result = result_2\n140575282        result_2[0xe].b = arg3\n140575205        void* rcx = data_140b39380\n140575216        int64_t* var_28 = rdi\n14057521b        int64_t var_20_1 = arg2\n140575220        int64_t var_18_1 = 0\n140575225        void* var_38\n140575225        sub_140257870(rcx, &var_38, &var_28)\n14057522f        char var_30\n14057522f        if (var_30 == 0)\n14057525d        result = *(var_38 + 0x20)\n140575261        result[0xe].b = arg3\n140575236        struct LuaVar::LuaUserVar::VTable** result_1 = sub_1405761a0(0x802)\n140575244        sub_14057ac10(result_1, rdi)\n14057524e        *(var_38 + 0x20) = result_1\n140575252        result_1[0xd] = arg2\n14057527f        result = result_1\n140575282        result_1[0xe].b = arg3\n14057529a        return result",
+  "fetched_at": "2026-04-26T17:35:00Z"
+}

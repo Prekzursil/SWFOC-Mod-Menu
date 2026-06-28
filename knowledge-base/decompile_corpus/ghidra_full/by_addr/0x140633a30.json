@@ -1,0 +1,7 @@
+{
+  "addr": "0x140633a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nTargetingBehaviorClass::vfunction7(TargetingBehaviorClass *this,longlong *param_1,int param_2)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  undefined8 uVar3;\n  \n  BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n  plVar2 = (longlong *)(**(code **)(*param_1 + 0x10))(param_1,1);\n  if (plVar2 == (longlong *)0x0) {\n    iVar1 = DAT_140b153fc;\n    if (DAT_140b15418 != (longlong *)0x0) {\n      iVar1 = (**(code **)(*DAT_140b15418 + 0xe0))();\n    }\n  }\n  else {\n    iVar1 = (**(code **)(*plVar2 + 0x238))(plVar2);\n  }\n  FUN_140565e50(this);\n  if (iVar1 == 1) {\n    uVar3 = FUN_140634810(this,param_1,param_2);\n  }\n  else if (iVar1 == 2) {\n    uVar3 = FUN_140633ae0(this,param_1,param_2);\n  }\n  else {\n    uVar3 = 0x650000;\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T17:34:33Z"
+}

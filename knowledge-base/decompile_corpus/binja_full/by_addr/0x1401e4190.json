@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e4190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e41a1        struct GUIGadgetClass::VTable** rdi = arg1\n1401e41a4        *arg1 = &GUIGadgetEditboxClass::`vftable'{for `GUIGadgetClass'}\n1401e41a7        sub_1401e72f0(arg1)\n1401e41ae        rdi[0x23].b = 0\n1401e41b5        *(rdi + 0x11c) = 0\n1401e41bb        void* rax = &rdi[0x1e]\n1401e41c2        *(rdi + 0x114) = 0\n1401e41c8        rdi[0x20] = 0\n1401e41d7        if (rdi[0x21] u>= 8)\n1401e41d9        rax = rdi[0x1e]\n1401e41e0        *rax = 0\n1401e41ea        rdi[0x24].d = 0xffffffff\n1401e41f4        sub_14026edd0(&rdi[0x48])\n1401e4200        sub_14025b390(&rdi[0x2f])\n1401e420c        sub_1401cb190(&rdi[0x2c])\n1401e4218        sub_14001eb00(&rdi[0x28])\n1401e4224        sub_14001eb00(&rdi[0x1e])\n1401e4248        sub_14001eb00(&rdi[0x13])\n1401e425a        return sub_1401e3cb0(rdi) __tailcall",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

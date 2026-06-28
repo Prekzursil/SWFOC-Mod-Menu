@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405532b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405532b7        arg1[1].d = 0\n1405532be        *arg1 = &IdleDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405532c5        return sub_1402da8d0(&arg1[2]) __tailcall",
+  "fetched_at": "2026-04-26T17:34:18Z"
+}

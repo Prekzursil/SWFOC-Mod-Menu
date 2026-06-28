@@ -1,0 +1,7 @@
+{
+  "addr": "0x140437990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "NebulaBehaviorClass * __thiscall\nNebulaBehaviorClass::vfunction4(NebulaBehaviorClass *this,int param_1)\n\n{\n  NebulaBehaviorClass *pNVar1;\n  \n  pNVar1 = (NebulaBehaviorClass *)0x0;\n  if (param_1 == 0x48) {\n    pNVar1 = this;\n  }\n  return pNVar1;\n}",
+  "fetched_at": "2026-04-26T17:51:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140686de0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140686e02        struct CollisionClass::StoppedVsStoppedCollisionClass::VTable** result = operator new(0x88)\n140686e0d        if (result == 0)\n140686e79        return result\n140686e14        sub_1405c5f70(result, arg3)\n140686e20        result[0xf].d = 0\n140686e27        *result = &StoppedVsStoppedCollisionClass::`vftable'{for `CollisionClass'}\n140686e34        *(result + 0x7c) = 0x3fffff\n140686e3f        result[2] = &StoppedVsStoppedCollisionClass::`vftable'{for `AIDiagnosticsClass'}\n140686e43        sub_1405c6240(result, arg1)\n140686e4e        sub_1405c6240(result, arg2)\n140686e5c        result[0x10].d = data_140b0a320 + 0x1e\n140686e62        return result",
+  "fetched_at": "2026-04-26T17:14:44Z"
+}

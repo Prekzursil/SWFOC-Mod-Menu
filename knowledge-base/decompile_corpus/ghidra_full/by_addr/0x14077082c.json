@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077082c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: void __cdecl FH4::UWMap4::ReadEntry(unsigned char * __ptr64 * __ptr64) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall FH4::UWMap4::ReadEntry(UWMap4 *this,uchar **param_1)\n\n{\n  byte bVar1;\n  undefined4 uVar2;\n  uint uVar3;\n  uint uVar4;\n  byte *pbVar5;\n  \n  uVar3 = **param_1 & 0xf;\n  pbVar5 = *param_1 + -(longlong)(char)(&DAT_1408d0c38)[uVar3];\n  uVar3 = *(uint *)(pbVar5 + -4) >> ((&DAT_1408d0c48)[uVar3] & 0x1f);\n  *param_1 = pbVar5;\n  uVar4 = uVar3 & 3;\n  *(uint *)(this + 0x14) = uVar4;\n  *(uint *)(this + 0x10) = uVar3 >> 2;\n  if ((uVar4 == 1) || (uVar4 == 2)) {\n    uVar2 = *(undefined4 *)*param_1;\n    *param_1 = *param_1 + 4;\n    *(undefined4 *)(this + 0x18) = uVar2;\n    uVar3 = **param_1 & 0xf;\n    bVar1 = (&DAT_1408d0c48)[uVar3];\n    pbVar5 = *param_1 + -(longlong)(char)(&DAT_1408d0c38)[uVar3];\n    uVar3 = *(uint *)(pbVar5 + -4);\n    *param_1 = pbVar5;\n    *(uint *)(this + 0x1c) = uVar3 >> (bVar1 & 0x1f);\n  }\n  else if (uVar4 == 3) {\n    uVar2 = *(undefined4 *)*param_1;\n    *param_1 = *param_1 + 4;\n    *(undefined4 *)(this + 0x18) = uVar2;\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:44Z"
+}

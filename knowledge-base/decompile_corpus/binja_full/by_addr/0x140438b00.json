@@ -1,0 +1,7 @@
+{
+  "addr": "0x140438b00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140438b13        *arg1 = &LandMovementCoordinatorClass::`vftable'{for `MovementCoordinatorClass'}\n140438b19        sub_1404f6990(arg1)\n140438b21        if ((arg2 & 1) != 0)\n140438b2b        j_sub_1407864b8(arg1)\n140438b3d        return arg1",
+  "fetched_at": "2026-04-26T17:27:10Z"
+}

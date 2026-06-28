@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769c2c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "type_info * __thiscall type_info::scalar_deleting_destructor(type_info *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: type_info::~type_info */\n  this->vftablePtr = &vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:09:46Z"
+}

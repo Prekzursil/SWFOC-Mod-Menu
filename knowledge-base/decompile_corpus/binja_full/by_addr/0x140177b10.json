@@ -1,0 +1,7 @@
+{
+  "addr": "0x140177b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140177b10        data_140a72754 += 1\n140177b20        int64_t r9_2 = (zx.q(arg1) << 4) + sx.q(arg2)\n140177b31        if (arg3 == *(&data_140a70f30 + (r9_2 << 2)))\n140177b51        return &data_140a70f30\n140177b33        int64_t* rcx = data_140a6d480\n140177b3a        *(&data_140a70f30 + (r9_2 << 2)) = arg3\n140177b4a        jump(*(*rcx + 0x228))",
+  "fetched_at": "2026-04-26T17:23:17Z"
+}

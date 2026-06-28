@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a4e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __tlregdtor\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 __tlregdtor(undefined8 param_1)\n\n{\n  longlong lVar1;\n  int *piVar2;\n  \n  lVar1 = *(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8);\n  piVar2 = *(int **)(lVar1 + 0xe0);\n  if (piVar2 == (int *)0x0) {\n    piVar2 = (int *)(lVar1 + 0xf0);\n  }\n  else {\n    if (*piVar2 != 0x1e) goto LAB_14076a556;\n    piVar2 = (int *)_malloc_base(0x100);\n    FUN_1407864b8(0);\n    if (piVar2 == (int *)0x0) {\n      return 0xffffffff;\n    }\n    *(undefined8 *)(piVar2 + 2) = *(undefined8 *)(lVar1 + 0xe0);\n  }\n  *piVar2 = 0;\n  *(int **)(lVar1 + 0xe0) = piVar2;\nLAB_14076a556:\n  *(undefined8 *)(piVar2 + (longlong)*piVar2 * 2 + 4) = param_1;\n  *piVar2 = *piVar2 + 1;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:10:04Z"
+}

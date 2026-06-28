@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cdf80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cdf95        int32_t rbx = arg2\n1407cdfa1        void var_88\n1407cdfa1        sub_1407bb5c0(arg1, 0, &var_88)\n1407cdfb5        sub_1407bb3a0(arg1, U\"n\", &var_88)\n1407cdfc6        int64_t rax = 0\n1407cdfd0        void* var_80\n1407cdfd0        while (true)\n1407cdfd0        char* var_78\n1407cdfd0        char rcx_1 = var_78[rax]\n1407cdfd5        rax += 1\n1407cdfdc        if (rcx_1 != *(rax + 0x1408fd0c3))\n1407cdfdc        break\n1407cdfe2        if (rax == 7)\n1407cdfe4        int32_t temp0_1 = rbx\n1407cdfe4        rbx -= 1\n1407cdfe7        if (temp0_1 != 1)\n1407cdfe7        break\n1407cdffb        sub_1407ce300(arg1, \"calling `%s' on bad self (%s)\", var_80)\n1407cdffb        noreturn\n1407ce007        void* const r9_2 = &data_1408fd01c\n1407ce011        int64_t r8\n1407ce011        int64_t var_98 = r8\n1407ce020        if (var_80 != 0)\n1407ce020        r9_2 = var_80\n1407ce027        void* const var_80_1 = r9_2\n1407ce02c        sub_1407ce300(arg1, \"bad argument #%d to `%s' (%s)\", zx.q(rbx))\n1407ce02c        noreturn",
+  "fetched_at": "2026-04-26T17:33:53Z"
+}

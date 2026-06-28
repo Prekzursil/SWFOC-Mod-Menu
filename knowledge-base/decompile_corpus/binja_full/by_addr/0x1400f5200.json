@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400f5200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400f5221        if (data_140a62230 != 0)\n1400f5221        return \n1400f5231        if (&data_140a62240 != arg1)\n1400f5243        sub_1400f6000(&data_140a62240, *arg1, arg1[1])\n1400f524d        data_140a62234 = arg3.d\n1400f5255        data_140a11f24 = arg2\n1400f525b        data_140a62238 = arg4\n1400f5262        char* rax_1 = operator new(0x20)\n1400f526e        int64_t var_30_1 = 0x10\n1400f527e        int64_t var_28_1 = 0x1f\n1400f528c        __builtin_strncpy(rax_1, \"IDD_SLICE_DIALOG\", 0x11)\n1400f52b5        char* var_40 = rax_1\n1400f52ba        int32_t rax = sub_1401c1570(&data_140a78510, &var_40, sub_1400f53f0, 0, 1, 0x3f800000, 1)\n1400f52c4        data_140a11f20 = rax\n1400f52ce        if (var_28_1 u>= 0x10)\n1400f52d0        char* rcx = var_40\n1400f52d8        char* rax_2 = rcx\n1400f52e2        if (var_28_1 + 1 u>= 0x1000)\n1400f52e4        rcx = *(rcx - 8)\n1400f52f7        if (rax_2 - rcx - 8 u> 0x1f)\n1400f5334        _invalid_parameter_noinfo_noreturn()\n1400f5334        noreturn\n1400f52f9        j_sub_1407864b8(rcx)\n1400f52fe        rax = data_140a11f20\n1400f5307        if (rax != 0xffffffff)\n1400f5312        data_140a62230 = 1\n1400f5319        sub_1400f54c0()\n1400f5309        data_140a62230 = 0\n1400f5333        return ",
+  "fetched_at": "2026-04-26T17:04:06Z"
+}

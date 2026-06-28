@@ -1,0 +1,7 @@
+{
+  "addr": "0x140700080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140700091        *(arg1 + 0x18c) = -1\n14070009c        *arg1 = &GenericAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1407000ab        arg1[1] = &GenericAttackAbilityClass::`vftable'{for `RefCountClass'}\n1407000b1        __builtin_memset(&arg1[0x2f], 0, 0x14)\n1407000c5        *(arg1 + 0x194) = 0\n1407000d3        sub_1404c47c0(&arg1[0x34])\n1407000db        sub_14048c8d0(arg1)\n1407000e3        if ((arg2 & 1) != 0)\n1407000ed        j_sub_1407864b8(arg1)\n1407000ff        return arg1",
+  "fetched_at": "2026-04-26T17:26:59Z"
+}

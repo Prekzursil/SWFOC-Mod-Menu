@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079132c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079133c        int32_t mxcsr\n14079133c        return zx.q(_get_fpsr(mxcsr)) & 0x3f",
+  "fetched_at": "2026-04-26T17:31:45Z"
+}

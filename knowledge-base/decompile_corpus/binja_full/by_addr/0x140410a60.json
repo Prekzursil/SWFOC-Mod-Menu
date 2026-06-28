@@ -1,0 +1,7 @@
+{
+  "addr": "0x140410a60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140410a6d        int32_t rcx = data_140b0a320\n140410a79        uint64_t rax\n140410a79        if (rcx s>= *(arg1 + 0x1d8))\n140410a8f        uint128_t zmm0\n140410a8f        zmm0.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f+ 0.5f\n140410aa0        *(arg1 + 0x1d8) = int.d(zmm0.d) + rcx\n140410aa6        char rax_1 = sub_1404165f0(arg1)\n140410ab2        rax = sub_14040edd0(arg1 + 0x10)\n140410abe        if (rax_1 == 0)\n140410ac6        if (rax.b == 0)\n140410b3a        label_140410b3a:\n140410b3a        sub_1404105a0(arg1 + 0x10)\n140410b3f        uint64_t rax_6\n140410b3f        rax_6.b = 1\n140410b4b        return rax_6\n140410ac8        int64_t r10_1 = *(arg1 + 0x100)\n140410ad9        int64_t r8_1 = *(arg1 + 0xf8)\n140410af7        int32_t rdx_5 = ((r10_1 - r8_1) s/ 0x68).d\n140410afd        if (rdx_5 u> 1)\n140410aff        uint64_t r9_1 = zx.q(rdx_5 - 2)\n140410b1d        if (r9_1 u>= (r10_1 - r8_1) s/ 0x68)\n140410b28        rax = &data_140a289c0\n140410b23        rax = r9_1 * 0x68 + r8_1\n140410b34        if (*(rax + 0x28) != 0)\n140410b34        goto label_140410b3a\n140410b4e        if (rax.b == 0)\n140410b50        *(arg1 + 0x21c) = 0xbf800000\n140410b5a        rax.b = 1\n140410b5c        *(arg1 + 0x1d0) = 0\n140410b70        return rax\n140410b76        rax.b = 0\n140410b7d        return rax",
+  "fetched_at": "2026-04-26T17:26:02Z"
+}

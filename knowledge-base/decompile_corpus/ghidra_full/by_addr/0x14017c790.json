@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017c790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dVertexTypeInterface * __thiscall\nalD3dVertexType<class_alD3dVertGrass>::scalar_deleting_destructor\n          (alD3dVertexType<class_alD3dVertGrass> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: alD3dVertexTypeInterface::~alD3dVertexTypeInterface */\n  this->vftablePtr =\n       (alD3dVertexType<class_alD3dVertGrass>_vftable *)&alD3dVertexTypeInterface::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,8);\n  }\n  return (alD3dVertexTypeInterface *)this;\n}",
+  "fetched_at": "2026-04-26T17:29:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047be50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047be89        TEB* gsbase\n14047be89        if (data_140b311bc s> *(0xd4 + *(gsbase->ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))))\n14047bf08        _Init_thread_header(&data_140b311bc)\n14047bf14        if (data_140b311bc == 0xffffffff)\n14047bf21        atexit(sub_1407f25f0)\n14047bf2d        _Init_thread_footer(&data_140b311bc)\n14047be8b        int32_t i = 0\n14047be9b        if (arg1[1].d s> 0)\n14047be9d        int64_t rsi_1 = 0\n14047bea0        void* rbx_1 = *arg1\n14047bea3        char* result = rbx_1 + rsi_1\n14047bea6        if (rbx_1 != neg.q(rsi_1))\n14047bead        int64_t* rdx = arg2\n14047beb0        if (arg2[3] u>= 0x10)\n14047beb2        rdx = *arg2\n14047beba        char* result_1 = result\n14047bebd        if (*(result + 0x18) u>= 0x10)\n14047bebf        result_1 = *result\n14047bec9        if (_stricmp(result_1, rdx) == 0)\n14047befc        return result\n14047becb        i += 1\n14047becd        rsi_1 += 0xf0\n14047bed8        do while (i s< arg1[1].d)\n14047beda        return &data_140a2a190",
+  "fetched_at": "2026-04-26T17:28:21Z"
+}

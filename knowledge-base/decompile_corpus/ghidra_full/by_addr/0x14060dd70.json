@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060dd70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall AutoResolveClass::vfunction24(AutoResolveClass *this)\n\n{\n  int iVar1;\n  \n  iVar1 = *(int *)&(this->AutoResolveClass_data).field_0x14;\n  if (iVar1 == -1) {\n    return 0;\n  }\n  return (&(this->AutoResolveClass_data).offset_0x88)[(longlong)iVar1 * 0x17];\n}",
+  "fetched_at": "2026-04-26T17:26:34Z"
+}

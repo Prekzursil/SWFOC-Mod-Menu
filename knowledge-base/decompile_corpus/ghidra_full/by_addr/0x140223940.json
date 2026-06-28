@@ -1,0 +1,7 @@
+{
+  "addr": "0x140223940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140223940(longlong param_1)\n\n{\n  longlong lVar1;\n  bool bVar2;\n  \n  lVar1 = *(longlong *)(param_1 + 0x50);\n  bVar2 = false;\n  if (lVar1 == 0) {\n    FUN_140223a60();\n    lVar1 = *(longlong *)(param_1 + 0x50);\n    bVar2 = lVar1 == 0;\n  }\n  return CONCAT71((int7)((ulonglong)lVar1 >> 8),!bVar2);\n}",
+  "fetched_at": "2026-04-26T18:04:16Z"
+}

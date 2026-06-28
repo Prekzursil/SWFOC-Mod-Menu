@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401459e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401459ef        int64_t* rcx = arg1[0xe]\n1401459f6        if (rcx != 0)\n1401459fb        (*(*rcx + 8))(rcx)\n1401459fe        rcx = nullptr\n140145a00        arg1[0xe] = 0\n140145a04        int64_t* rdx = *arg1\n140145a0a        if (rdx != 0)\n140145a12        (*(*rdx + 8))(rdx)\n140145a15        *arg1 = 0\n140145a18        rcx = arg1[0xe]\n140145a1f        if (rcx != 0)\n140145a24        (*(*rcx + 8))(rcx)\n140145a2b        sub_140148990(&arg1[0xb])\n140145a34        sub_140148990(&arg1[8])\n140145a3d        int64_t result = sub_140148990(&arg1[5])\n140145a42        void* rcx_5 = arg1[2]\n140145a49        if (rcx_5 != 0)\n140145a59        if (arg1[4] - rcx_5 u>= 0x1000)\n140145a5b        void* r8_1 = *(rcx_5 - 8)\n140145a6e        if (rcx_5 - r8_1 - 8 u> 0x1f)\n140145a9d        _invalid_parameter_noinfo_noreturn()\n140145a9d        noreturn\n140145a70        rcx_5 = r8_1\n140145a73        result = j_sub_1407864b8(rcx_5)\n140145a78        __builtin_memset(&arg1[2], 0, 0x18)\n140145a84        int64_t* rcx_7 = *arg1\n140145a8a        if (rcx_7 == 0)\n140145a9c        return result\n140145a8f        return (*(*rcx_7 + 8))(rcx_7)",
+  "fetched_at": "2026-04-26T17:20:13Z"
+}

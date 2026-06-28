@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078cea7        data_140b3c4c8 = &data_140a44dc0\n14078ceae        wchar16 const (** rax)[0x21]\n14078ceae        rax.b = 1\n14078ceb0        return &data_140a44d00:1",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

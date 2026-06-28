@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028a9c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined ** FUN_14028a9c0(int param_1)\n\n{\n  if (param_1 - 1U < 4) {\n    return (undefined **)(&PTR_PTR_140a16df8)[param_1];\n  }\n  return &PTR_1407ff8a8;\n}",
+  "fetched_at": "2026-04-26T18:23:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a6830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a683a        int64_t* rbx = *(arg3 + 0x10)\n1406a6848        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1406a6850        if (r8_2 != 1)\n1406a685c        sub_140248190(arg2, \"Play_Music -- invalid number of parameters.  Expected 1, got %d.\", r8_2)\n1406a686d        return 0\n1406a686e        int64_t* rbx_1 = *rbx\n1406a6874        if (rbx_1 != 0)\n1406a687c        void* i\n1406a687c        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1406a6882        while (i != 0)\n1406a6893        if (i == &data_140a157d0)\n1406a68c0        (**rbx_1)(rbx_1)\n1406a68d9        sub_1402d2070(&data_140b27dc0, &rbx_1[2], 0xc, 0, 1)\n1406a68e4        (*(*rbx_1 + 8))(rbx_1)\n1406a68f3        return 0\n1406a6895        i = *(i + 8)\n1406a68a8        sub_140248190(arg2, \"Play_Music -- invalid type for parameter 1.  Expected string.\", r8_2)\n1406a68b9        return 0",
+  "fetched_at": "2026-04-26T17:21:57Z"
+}

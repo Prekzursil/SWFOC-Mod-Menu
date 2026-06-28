@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c6550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406c6571        int32_t i_1 = 0\n1406c6573        *arg1 = &ProduceForceBlockStatus::`vftable'{for `BlockingStatus'}\n1406c6582        arg1[6] = &ProduceForceBlockStatus::`vftable'{for `SignalListenerClass'}\n1406c6595        if ((arg1[9] - arg1[8]) s>> 3 != 0)\n1406c6597        uint64_t i = 0\n1406c65a8        sub_14064ad00(*(arg1[8] + (i << 3)))\n1406c65b1        i_1 += 1\n1406c65bb        i = zx.q(i_1)\n1406c65c0        do while (i u< (arg1[9] - arg1[8]) s>> 3)\n1406c65c6        sub_1404d68c0(&arg1[8])\n1406c65d6        arg1[6] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1406c65da        sub_14020a820(&arg1[6])\n1406c65df        int64_t* rcx_4 = arg1[5]\n1406c65e6        if (rcx_4 != 0)\n1406c65eb        (*(*rcx_4 + 8))(rcx_4)\n1406c65f1        sub_140249eb0(arg1)\n1406c65fa        if ((arg2 & 1) != 0)\n1406c6604        j_sub_1407864b8(arg1)\n1406c6626        return arg1",
+  "fetched_at": "2026-04-26T17:25:14Z"
+}

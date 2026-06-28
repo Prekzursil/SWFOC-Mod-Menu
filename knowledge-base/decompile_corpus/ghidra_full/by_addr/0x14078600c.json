@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078600c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078600c(longlong param_1)\n\n{\n  DWORD dwExitCode;\n  int iVar1;\n  undefined4 uVar2;\n  longlong lVar3;\n  \n  if (param_1 == 0) {\n    dwExitCode = GetLastError();\n                    /* WARNING: Subroutine does not return */\n    ExitThread(dwExitCode);\n  }\n  lVar3 = FUN_14078f07c();\n  *(longlong *)(lVar3 + 0x3c0) = param_1;\n  iVar1 = __acrt_get_begin_thread_init_policy();\n  if (iVar1 == 2) {\n    iVar1 = __acrt_RoInitialize(1);\n    *(bool *)(param_1 + 0x20) = iVar1 == 0;\n  }\n  uVar2 = (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(*(undefined8 *)(param_1 + 8));\n  uVar2 = FUN_14078620c(uVar2);\n                    /* WARNING: Subroutine does not return */\n  FUN_14078c0fc(uVar2);\n}",
+  "fetched_at": "2026-04-26T18:51:33Z"
+}

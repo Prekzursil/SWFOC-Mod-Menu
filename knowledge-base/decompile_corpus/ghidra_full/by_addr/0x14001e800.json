@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001e800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nbad_array_new_length * __thiscall\nstd::bad_array_new_length::bad_array_new_length(bad_array_new_length *this)\n\n{\n  (this->exception_data).offset_0x8 = 0;\n  (this->exception_data).offset_0x0 = \"bad array new length\";\n  this->vftablePtr = &vftable;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019a2fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alScene::vfunction1_for_MultiLinkedListMember(alScene *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor((alScene *)&this[-1].alRenderable_data.offset_0x20,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:00Z"
+}

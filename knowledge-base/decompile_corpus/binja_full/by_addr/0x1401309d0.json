@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401309d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401309e9        *arg1 = &alTerrainShadowBlob::`vftable'{for `RefCountClass'}\n1401309f5        arg1[2] = &alTerrainShadowBlob::`vftable'{for `MultiLinkedListMember'}\n1401309f9        int64_t rcx = arg1[0x1d]\n140130a03        if (rcx != 0)\n140130a0a        j_sub_1407864b8(rcx)\n140130a0f        int64_t rcx_1 = arg1[0x1e]\n140130a19        if (rcx_1 != 0)\n140130a20        j_sub_1407864b8(rcx_1)\n140130a2e        arg1[0x1d] = 0\n140130a35        arg1[0x1e] = 0\n140130a45        sub_14020a820(&arg1[2])\n140130a51        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n140130a58        if ((arg2 & 1) != 0)\n140130a62        j_sub_1407864b8(arg1)\n140130a79        return arg1",
+  "fetched_at": "2026-04-26T17:10:44Z"
+}

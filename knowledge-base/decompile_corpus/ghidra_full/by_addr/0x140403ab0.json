@@ -1,0 +1,7 @@
+{
+  "addr": "0x140403ab0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ReinforceEventClass * __thiscall ReinforceEventClass::ReinforceEventClass(ReinforceEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->ReinforceEventClass_data).offset_0x0 = 0x3fffff;\n  this->vftablePtr = &vftable;\n  (this->EventClass_data).offset_0x8 = 0xc;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:43:41Z"
+}

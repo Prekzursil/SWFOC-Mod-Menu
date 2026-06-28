@@ -1,0 +1,7 @@
+{
+  "addr": "0x140629740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall TreadScrollBehaviorClass::vfunction9(void)\n\n{\n  return \"TreadScrollBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:31:38Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140036060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140036060(longlong param_1,longlong param_2,undefined4 param_3,int param_4,uint param_5,\n                  undefined4 param_6,undefined1 param_7)\n\n{\n  if (((0 < *(int *)(param_2 + 0x10)) && (param_4 - 1U < 0x4c)) && (param_5 < 7)) {\n    FUN_140047a20(param_1 + 0x928);\n    *(undefined4 *)(param_1 + 0x950) = param_6;\n    *(undefined1 *)(param_1 + 0x92b) = param_7;\n    *(undefined1 *)(param_1 + 0x92a) = 1;\n    FUN_140046b30(param_1 + 0x930,param_2);\n    *(undefined4 *)(param_1 + 0x94c) = param_3;\n    *(int *)(param_1 + 0x948) = param_4;\n    *(uint *)(param_1 + 0x92c) = param_5;\n    FUN_1400354d0(param_1);\n    FUN_140035b10(param_1);\n    if (0.0 < *(float *)(param_1 + 0x954)) {\n      FUN_1400356b0(param_1);\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:48Z"
+}

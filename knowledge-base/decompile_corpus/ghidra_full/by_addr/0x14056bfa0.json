@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056bfa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall EnergyPoolBehaviorClass::vfunction9(void)\n\n{\n  return \"EnergyPoolBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:40:03Z"
+}

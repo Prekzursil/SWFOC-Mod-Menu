@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406909c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandFreeStoreClass * __thiscall\nLandFreeStoreClass::scalar_deleting_destructor(LandFreeStoreClass *this,uint param_1)\n\n{\n                    /* inlined destructor: LandFreeStoreClass::~LandFreeStoreClass */\n  this->vftablePtr = &vftable_for_LuaUserVar;\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  AIFreeStoreClass::~AIFreeStoreClass((AIFreeStoreClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x138);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:18:50Z"
+}

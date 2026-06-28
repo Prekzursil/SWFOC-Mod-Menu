@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c24c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c24c9        struct BehaviorClass::IonStunEffectBehaviorClass::VTable** result = operator new(0x40)\n1404c24d3        if (result == 0)\n1404c2519        return 0\n1404c24d5        result[2].d = 0\n1404c24d8        __builtin_memset(&result[4], 0, 0x14)\n1404c24e3        *(result + 0x3c) = 0\n1404c24ed        *result = &IonStunEffectBehaviorClass::`vftable'{for `BehaviorClass'}\n1404c24f7        result[1] = &IonStunEffectBehaviorClass::`vftable'{for `RefCountClass'}\n1404c2502        result[3] = &IonStunEffectBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404c2506        *(result + 0x34) = 1\n1404c2511        return result",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

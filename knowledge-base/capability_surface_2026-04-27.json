@@ -1,0 +1,1040 @@
+{
+  "generatedUtc": "2026-04-28T00:00:00Z",
+  "rollup": {
+    "totalActions": 184,
+    "liveCount": 157,
+    "phase2PendingCount": 24,
+    "liveOnlyCount": 3,
+    "mixedCount": 0,
+    "otherCount": 0,
+    "livePercent": 87
+  },
+  "trend": "87% engine-effective (was 58% on 2026-04-27 → +29pp over 9 entries)",
+  "tabs": [
+    {
+      "tabName": "Tactical Units",
+      "actions": [
+        {
+          "actionName": "Refresh tactical units",
+          "badge": "LIVE",
+          "note": "Tactical unit walker"
+        }
+      ]
+    },
+    {
+      "tabName": "Player State",
+      "actions": [
+        {
+          "actionName": "Get credits",
+          "badge": "LIVE",
+          "note": "Read-only per-slot credits probe"
+        },
+        {
+          "actionName": "Set credits",
+          "badge": "LIVE",
+          "note": "Per-slot credits writer (any slot)"
+        },
+        {
+          "actionName": "Uncap credits",
+          "badge": "LIVE",
+          "note": "Sets max-credits cap to int max"
+        },
+        {
+          "actionName": "Drain enemy credits",
+          "badge": "LIVE",
+          "note": "Sweep over non-local players setting credits=0"
+        },
+        {
+          "actionName": "Get tech level",
+          "badge": "LIVE",
+          "note": "Read-only per-slot tech level probe"
+        },
+        {
+          "actionName": "Set tech level",
+          "badge": "LIVE",
+          "note": "Per-slot tech level writer (any slot)"
+        },
+        {
+          "actionName": "Set hero respawn",
+          "badge": "LIVE",
+          "note": "Global default-respawn-time override — writes float at RVA 0xB169F0 (LIVE). Affects timers created AFTER the call; doesn't reset already-queued respawns. Range clamped to [0, 600] seconds."
+        },
+        {
+          "actionName": "Hero instant respawn",
+          "badge": "LIVE",
+          "note": "Sets respawn-remaining to 0"
+        },
+        {
+          "actionName": "Switch to slot",
+          "badge": "LIVE",
+          "note": "Manual sweep + +0x360 swap + subsystem refresh"
+        },
+        {
+          "actionName": "Detect local player",
+          "badge": "LIVE",
+          "note": "Reads PlayerArray + +0x62"
+        },
+        {
+          "actionName": "Refresh slot map",
+          "badge": "LIVE",
+          "note": "Roster CSV"
+        },
+        {
+          "actionName": "Null AI brain",
+          "badge": "LIVE",
+          "note": "Direct +0x360 write"
+        },
+        {
+          "actionName": "Attach AI brain",
+          "badge": "LIVE",
+          "note": "LIVE 2026-04-26 — calls AIPlayerClass simple factory at RVA 0x4AFF50 (allocates 0x60 + ctor at 0x4AF810). Multi-tool VERIFIED ctor (IDA + Ghidra); factory VERIFIED-EXISTS via IDA decompile."
+        }
+      ]
+    },
+    {
+      "tabName": "Economy",
+      "actions": [
+        {
+          "actionName": "Set credits",
+          "badge": "LIVE",
+          "note": "Per-slot credits writer (any slot)"
+        },
+        {
+          "actionName": "Set tech level",
+          "badge": "LIVE",
+          "note": "Per-slot tech level writer (any slot)"
+        },
+        {
+          "actionName": "Drain enemy credits",
+          "badge": "LIVE",
+          "note": "Sweep over non-local players setting credits=0"
+        },
+        {
+          "actionName": "Uncap credits",
+          "badge": "LIVE",
+          "note": "Sets max-credits cap to int max"
+        },
+        {
+          "actionName": "Set income multiplier",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA"
+        },
+        {
+          "actionName": "Set build speed",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA"
+        },
+        {
+          "actionName": "Set build cost",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA"
+        },
+        {
+          "actionName": "Toggle freeze credits",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA — superseded by iter-231 SWFOC_SetCreditsFreezeGlobal (Hook_AddCredits MinHook detour at 0x27F370 with bool-precedence; +4 LIVE flips iter 231 — operator should use the LIVE alternative). This entry stays PHASE 2 PENDING as a Phase-1 mirror legacy wire shape; iter-250 audit caught the operator-trust drift (rationale didn't cite the LIVE alternative)."
+        },
+        {
+          "actionName": "Toggle instant build",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA"
+        },
+        {
+          "actionName": "Toggle free build",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA"
+        },
+        {
+          "actionName": "Freeze credits (GLOBAL)",
+          "badge": "LIVE",
+          "note": "Iter 231 LIVE — bool freeze on AddCredits @ 0x27F370. Short-circuits the function entirely (no write to PlayerClass+0x70, no event notification, no tracking callback). Returns unchanged balance to preserve prototype contract. Wins-over-mult precedence (freeze=true ignores mult). Caveats (per iter-230 RE design doc knowledge-base/iter230_freeze_credits_re_kickoff.md): blocks AI subsidies equally (all factions affected); cap at PlayerClass+0x74 still applies on unfreeze; analytics events suppressed during freeze. Pattern parallels iter-96 Take_Damage_Outer + iter-225 WeaponTick exactly. · Iter 231 LIVE — read-only mirror of g_creditsFreeze_global. Pair-flip with iter-231 SWFOC_SetCreditsFreezeGlobal."
+        },
+        {
+          "actionName": "Set credits mult (GLOBAL)",
+          "badge": "LIVE",
+          "note": "Iter 231 LIVE — scalar multiplier on AddCredits @ 0x27F370. Scales the delta arg before forwarding (mult=1.0 fast-path). Sanity clamp [0.0, 100.0]. mult=2.0 -> 2x income/spending, mult=0.5 -> halved both, mult=0.0 -> soft freeze (still calls real_AddCredits with 0 delta — distinguishable from hard freeze if operator listens for AddCredits events). Pattern parallels iter-96 + iter-225. iter-230 RE design doc: knowledge-base/iter230_freeze_credits_re_kickoff.md."
+        },
+        {
+          "actionName": "Read credits mult (GLOBAL)",
+          "badge": "LIVE",
+          "note": "Iter 231 LIVE — read-only mirror of g_creditsMult_global. Pair-flip with iter-231 SWFOC_SetCreditsMultiplierGlobal."
+        }
+      ]
+    },
+    {
+      "tabName": "Combat",
+      "actions": [
+        {
+          "actionName": "Toggle god mode",
+          "badge": "LIVE",
+          "note": "Hardpoint-behavior sweep + SetHP detour"
+        },
+        {
+          "actionName": "Toggle one-hit-kill",
+          "badge": "LIVE",
+          "note": "SetHP detour"
+        },
+        {
+          "actionName": "Toggle OHK attack-power",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA. Iter 436: Event-driven subsystem (CombatantBehaviorClass + DamageTrackingBehaviorClass evaluate damage application per-tick; per iter-426 feedback_event_driven_defer_pattern.md rule). Multi-iter A1.x offset RE required to hook damage-multiplier override at the combat tick. Alternative for global one-hit-kill: iter-96 SetDamageMultiplierGlobal at large value."
+        },
+        {
+          "actionName": "Toggle area damage",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA. Iter 436: Event-driven subsystem (BarrageAreaBehaviorClass + AsteroidFieldDamageBehaviorClass ticked per-frame to apply area damage; per iter-426 feedback_event_driven_defer_pattern.md rule). Multi-iter A1.x offset RE required to hook tick-time damage application. Alternative for global damage scaling: iter-96 SWFOC_SetDamageMultiplierGlobal LIVE."
+        },
+        {
+          "actionName": "Set damage multiplier",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA — per-slot ATTACKER damage multiplier; ~58 caller-site detours needed. iter-94 string-anchor analysis: Damage_Multiplier anchors point to per-ability validators (LeechShieldsAbilityClass + 4 others), not a global damage path. iter-95 architectural finding: Take_Damage @ 0x3A9E30 chokepoint identified, but Src param 5 is a name string for debug logging, NOT the attacker GameObjectClass* — sampled callers all pass Src=nullptr; attacker identity is implicit in the call stack, cannot be reliably extracted via a single Take_Damage detour. iter-96 split decision: global form shipped LIVE as iter-96 SWFOC_SetDamageMultiplierGlobal (single Take_Damage_Outer @ 0x38A350 detour scaling damageParams[0] by g_dmgMult_global). Per-slot form stays Phase2HookPending — needs detours at the ~58 caller sites that have attacker context (weapon-fire paths). Operator alternatives: iter-96 SWFOC_SetDamageMultiplierGlobal for global outgoing damage scaling; iter-154 SWFOC_SetDamageModifierLua for per-unit damage RECEIVED scaling via Set_Damage_Modifier engine API. iter-328 audit confirmed ZERO C# consumers (orphan bridge wire); see lua_bridge.cpp:6933-7007 for full RE history."
+        },
+        {
+          "actionName": "Set GLOBAL damage multiplier",
+          "badge": "LIVE",
+          "note": "Global damage multiplier — Take_Damage_Outer detour scales damageParams[0]"
+        },
+        {
+          "actionName": "Set unit shield",
+          "badge": "LIVE",
+          "note": "Per-unit shield override — calls SetFrontShield @ 0x3A8630 + SetRearShield @ 0x3A91E0 (LIVE)"
+        },
+        {
+          "actionName": "Set fire rate",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA — global form: superseded by iter-225 SWFOC_SetFireRateMultiplierGlobal (WeaponTick MinHook detour). Per-unit form: superseded by iter-154 SWFOC_SetRateOfFireModifierLua (engine Lua API). This entry stays PHASE 2 PENDING as a Phase-1 mirror — operators should use the LIVE alternatives."
+        },
+        {
+          "actionName": "Set target filter",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA. Iter 436: Event-driven subsystem (UnitAIBehaviorClass target-selection runs per-tick during combat behavior evaluation; per iter-426 feedback_event_driven_defer_pattern.md rule). Multi-iter A1.x offset RE required."
+        },
+        {
+          "actionName": "Heal unit (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 154 LIVE — composes (unit):Heal() no-arg call via DoString. Mirrors iter 112 no-arg dispatcher pattern (Despawn/Stop/Retreat). Iter 193 surfaced as native UX in Combat tab 'Per-unit combat actions' GroupBox."
+        },
+        {
+          "actionName": "Take damage (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 154 LIVE — composes (unit):Take_Damage(amount) via DoString. New iter-154 Lua_DispatchUnitFloatMethod helper (mirrors iter-111 bool-arg pattern). Operator passes raw damage amount; engine resolves through the iter 96 Take_Damage_Outer chokepoint (so iter 96 GLOBAL multiplier applies). Iter 193 surfaced as native UX in Combat tab."
+        },
+        {
+          "actionName": "Set damage modifier (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 154 LIVE — composes (unit):Set_Damage_Modifier(float) via DoString. Per-unit outgoing-damage multiplier (different from iter 96 global). Same iter-154 float-arg dispatcher. Iter 193 surfaced as native UX in Combat tab — operators get per-unit + per-slot + GLOBAL damage controls in one place."
+        },
+        {
+          "actionName": "Set RoF modifier (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 154 LIVE — composes (unit):Set_Rate_Of_Fire_Modifier(float) via DoString. Per-unit rate-of-fire multiplier. Closes the SetFireRate operator gap that iter 101 left open at the global level (no global engine setter exists, but per-unit method does). Iter 193 surfaced as native UX in Combat tab."
+        },
+        {
+          "actionName": "Suspend AI (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 162 LIVE — composes Suspend_AI(seconds) via DoString. Pauses AI decision-making for the given duration (cinematic helper). Per docs/lua-api.md Camera & Cinematics section. Reuses iter-158 global-arg helper. Iter 219 native UX: Combat tab Cinematic Helpers row 'Suspend AI' button — uses NEW SuspendAiSecondsLuaExpr field for the numeric seconds arg. Pairs with iter-208 Lock_Controls + iter-145 cinematic camera quad for full battle-pause cinematic recording workflow. **CLOSES the iter-216 changelog 'What's NOT yet surfaced' queue** — last unsurfaced wire from the iter-216 list now has a native button."
+        },
+        {
+          "actionName": "Set GLOBAL fire rate multiplier",
+          "badge": "LIVE",
+          "note": "Iter 225 LIVE — closes A1.3 after 124-day deferral. WeaponTick @ 0x387010 MinHook detour scales dt arg passed to sub_140387400 (cooldown dispatcher) by g_fireRateMult_global. Pattern parallels iter-96 Take_Damage_Outer detour. Sanity clamp [0.0, 100.0] prevents int overflow in dt math. Caveats: mult=2.0 → 2x fire rate, mult=0.5 → halved, mult=0.0 → effective freeze (use Suspend_AI for proper pause). RE design doc: knowledge-base/iter224_setfirerate_global_re_kickoff.md"
+        },
+        {
+          "actionName": "Read GLOBAL fire rate multiplier",
+          "badge": "LIVE",
+          "note": "Iter 225 LIVE — read-only mirror of g_fireRateMult_global. Pair-flip with iter-225 SWFOC_SetFireRateMultiplierGlobal."
+        }
+      ]
+    },
+    {
+      "tabName": "Inspector",
+      "actions": [
+        {
+          "actionName": "Refresh inspector",
+          "badge": "LIVE ONLY",
+          "note": "Needs live unit object"
+        },
+        {
+          "actionName": "Read unit type (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 169 LIVE — composes (unit):Get_Type() via DoString. Returns a GameObjectType handle. Reuses iter-167 unit-getter helper (shape-agnostic for any obj receiver). Iter 191 surfaced as native UX in the Inspector tab — operators no longer need to paste preset Lua to identify a unit's type."
+        },
+        {
+          "actionName": "Read unit owner (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 168 LIVE — composes (unit):Get_Owner() via DoString. Returns a PlayerWrapper handle (stringifies as 'table: 0x...'). Confirms call landed; operator can chain (Get_Owner()):Get_Faction() once that helper ships. Reuses iter-167 unit-getter helper. Iter 191 surfaced as native UX in the Inspector tab 'Selected Unit Lua Read-side' GroupBox."
+        },
+        {
+          "actionName": "Read has attack target (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 168 LIVE — composes (unit):Has_Attack_Target() via DoString, captures boolean return as 'true'/'false' string. Reuses iter-167 unit-getter helper. Operator can verify if a unit is currently engaged in combat. Iter 191 surfaced as native UX in the Inspector tab."
+        },
+        {
+          "actionName": "Read engines online (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 168 LIVE — composes (unit):Are_Engines_Online() via DoString, captures boolean return. Confirms unit's engines are operational (relevant for ships in tactical battles). Reuses iter-167 unit-getter helper. Iter 191 surfaced as native UX in the Inspector tab."
+        },
+        {
+          "actionName": "Read parent object (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 171 LIVE — composes (unit):Get_Parent_Object() via DoString. Returns parent handle for nested objects (e.g. garrisoned units). Reuses iter-167 helper. Iter 197 surfaced as native UX in Inspector tab read-side extension."
+        },
+        {
+          "actionName": "Read attack target (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 171 LIVE — composes (unit):Get_Attack_Target() via DoString. Returns current attack target handle. Pair with iter-168 Has_Attack_Target predicate. Reuses iter-167 helper. Iter 197 surfaced as native UX in Inspector tab — alongside iter-191 Has attack target? predicate button for full read coverage."
+        },
+        {
+          "actionName": "Read damage mod (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 171 LIVE — composes (unit):Get_Damage_Modifier() via DoString. Returns float damage scalar. Read-after-write pair with iter-154 SetDamageModifier. Reuses iter-167 helper. Iter 197 surfaced as native UX in Inspector tab — operator can verify per-unit damage scalar set on Combat tab (iter 193)."
+        },
+        {
+          "actionName": "Read contained count (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 172 LIVE — composes (unit):Get_Contained_Object_Count() via DoString. Returns numeric count of contained objects. Pair with iter-172 Get_Garrison_Units for garrison inspection workflows. Reuses iter-167 helper. Iter 197 surfaced as native UX in Inspector tab — count complement to iter-188 Read garrison button on UnitControl tab."
+        },
+        {
+          "actionName": "Read behavior id (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 172 LIVE — composes (unit):Get_Behavior_ID() via DoString. Returns the current behavior identifier. Reuses iter-167 helper. Iter 197 surfaced as native UX in Inspector tab — useful for AI debugging workflows."
+        },
+        {
+          "actionName": "Read RoF mod (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 172 LIVE — composes (unit):Get_Rate_Of_Fire_Modifier() via DoString. Returns float fire-rate scalar. Read-after-write pair with iter-154 SetRateOfFireModifier writer. Reuses iter-167 helper. **Crosses 100 LIVE wire milestone in master loop iter 100-172.** Iter 197 surfaced as native UX in Inspector tab — operator can verify per-unit fire-rate scalar set on Combat tab (iter 193)."
+        },
+        {
+          "actionName": "Is ability active? (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 173 LIVE — composes (unit):Is_Ability_Active(name) via DoString and captures boolean return. Read-after-write pair with iter-156 ActivateAbility writer — operator can verify ability activation took effect. First wire shipped via NEW iter-173 Lua_DispatchUnitGetterArg helper (7th in dispatcher set, first arg-getter to capture engine return values). Iter 198 surfaced as native UX in Inspector tab arg-getter extension."
+        },
+        {
+          "actionName": "Has property? (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 173 LIVE — composes (unit):Has_Property(prop) via DoString and captures boolean return. Per docs/lua-api.md GameObjectWrapper Queries section. Reuses iter-173 unit-getter-with-arg helper. Iter 198 surfaced as native UX in Inspector tab — operators can probe arbitrary property predicates."
+        },
+        {
+          "actionName": "Is category? (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 173 LIVE — composes (unit):Is_Category(cat) via DoString and captures boolean return. Operator can categorize units (Hero/Infantry/Vehicle/etc.) for filtering workflows. Reuses iter-173 helper. Iter 198 surfaced as native UX in Inspector tab."
+        },
+        {
+          "actionName": "Get distance to target (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 173 LIVE — composes (unit):Get_Distance(target) via DoString and captures float distance. Useful for AI/scripting workflows (range-check before attack). Reuses iter-173 helper. Iter 198 surfaced as native UX in Inspector tab — second arg field accepts target unit Lua expression."
+        },
+        {
+          "actionName": "Get bone position (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 174 LIVE — composes (unit):Get_Bone_Position(bone) via DoString and captures position handle. Operator can read model-bone positions for cinematics. Binary-confirmed in docs/lua-api.md GameObjectWrapper Movement & Position section. Reuses iter-173 helper. Iter 214 native UX: Inspector tab cross-receiver arg-getter row 'Get bone position' button — reuses iter-198 UnitLuaExpr + UnitArgExpr (operator types unit handle + bone-name)."
+        },
+        {
+          "actionName": "Contains object type? (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 174 LIVE — composes (unit):Contains_Object_Type(type) via DoString and captures boolean. Useful for garrison-content queries (e.g. is this transport carrying any AT-ATs?). Per docs/lua-api.md community-doc additions. Reuses iter-173 helper. Iter 214 native UX: Inspector tab 'Contains object type?' button — reuses iter-198 UnitLuaExpr + UnitArgExpr (operator types unit handle + child-type name)."
+        },
+        {
+          "actionName": "Get space station level (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 174 LIVE — composes (player):Get_Space_Station_Level(planet) via DoString and captures numeric level (0-5). PlayerWrapper galactic query. Useful for AI tech-progression checks. Reuses iter-173 helper (proven shape-agnostic for player receivers). Iter 214 native UX: Inspector tab 'Get space station level' button — receiver is PLAYER (operator types Find_Player(...) into UnitLuaExpr) + planet handle into UnitArgExpr. Field naming reflects the iter-198 history but the helper accepts any receiver type."
+        },
+        {
+          "actionName": "Get type of unit at index (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 174 LIVE — composes (taskforce):Get_Type_Of_Unit(idx) via DoString and captures GameObjectType handle. Binary-confirmed TaskForce method per docs. Demonstrates iter-173 helper is fully receiver-agnostic — first TaskForce wire shipped via that helper. Iter 214 native UX: Inspector tab 'Get type of unit at index' button — receiver is TASKFORCE (operator types a TaskForce handle into UnitLuaExpr) + index into UnitArgExpr."
+        }
+      ]
+    },
+    {
+      "tabName": "Speed",
+      "actions": [
+        {
+          "actionName": "Set global game speed",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA"
+        },
+        {
+          "actionName": "Set faction move-speed multiplier",
+          "badge": "LIVE",
+          "note": "Per-faction speed override — calls SetSpeedOverride per unit owned by slot (LIVE)"
+        },
+        {
+          "actionName": "Set unit speed",
+          "badge": "LIVE",
+          "note": "Per-unit speed override — calls SetSpeedOverride @ RVA 0x3A8C90 (LIVE)"
+        },
+        {
+          "actionName": "Revert unit speed override",
+          "badge": "LIVE",
+          "note": "Revert per-unit speed to engine default — calls ClearSpeedOverride (LIVE)"
+        }
+      ]
+    },
+    {
+      "tabName": "Spawning",
+      "actions": [
+        {
+          "actionName": "Spawn",
+          "badge": "LIVE",
+          "note": "Iter 109 LIVE — calls engine Lua API Spawn_Unit via DoString"
+        },
+        {
+          "actionName": "Refresh from live game",
+          "badge": "LIVE",
+          "note": "Read-only GameObjectTypeManager probe — vanilla/mod isolation for Spawning tab"
+        },
+        {
+          "actionName": "Spawn (Lua, LIVE)",
+          "badge": "LIVE",
+          "note": "Iter 109 LIVE — calls engine Lua API Spawn_Unit via DoString"
+        },
+        {
+          "actionName": "Reinforce unit (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 185 LIVE — composes Reinforce_Unit(player, type, position) via iter-184 3-arg helper. Spawn pathway via the reinforcement pool — alternative to iter-109 SWFOC_SpawnUnitLua (direct spawn). Useful when operators want to use the engine's reinforcement-budget mechanic instead of bypassing it. Same arg order as Spawn_Unit (player, type, position). First wire shipped via iter-184's helper at ~3 LoC marginal cost. Iter 195 surfaced as native UX in Spawning tab — alongside iter-119 button."
+        },
+        {
+          "actionName": "Spawn from reinforcement pool (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 185 LIVE — composes Spawn_From_Reinforcement_Pool(player, type, position) via iter-184 3-arg helper. Per docs/lua-api.md line 64 this is an 'alternative reinforcement spawn' to Reinforce_Unit (line 63) — both go through the same pool but the engine exposes both as distinct entrypoints. Operators may need either name depending on the script style. Reuses iter-185 batch pattern. Iter 195 surfaced as native UX in Spawning tab."
+        },
+        {
+          "actionName": "Create generic object (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 185 LIVE — composes Create_Generic_Object(type, position, player) via iter-184 3-arg helper. **GOTCHA: param order differs from Spawn_Unit** — Create_Generic_Object takes (type, position, player) while iter-109 Spawn_Unit takes (player, type, position). Per docs/lua-api.md line 65 explicit note. Catalog rationale flags this so future readers don't assume parity. Useful for spawning non-unit objects (props, particle emitters, etc.) that aren't valid for Spawn_Unit. Iter 195 surfaced as native UX in Spawning tab — dispatcher reorders the player-first input fields to match the engine's (type, position, player) order, so operators see the GOTCHA in the button label but don't have to re-type."
+        },
+        {
+          "actionName": "Find object type (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 177 LIVE — composes Find_Object_Type(name) via DoString and captures GameObjectType handle for further composition. First wire shipped via NEW iter-177 Lua_DispatchGlobalGetterArg helper (8th in dispatcher set, first global-arg-getter to capture engine return values). Operator-friendly for discovery workflows like `Spawn_Unit(player, Find_Object_Type('AT_AT'), pos)`. Iter 203 native UX: Spawning tab 'Discovery helpers' GroupBox — operator types a type-name in the shared FindTypeNameLuaExpr field and clicks; captured handle lands in LastStatus for paste into spawn fields."
+        },
+        {
+          "actionName": "Find planet (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 177 LIVE — composes FindPlanet(name) via DoString and captures PlanetWrapper handle. Useful for galactic workflows that need to target specific planets by name (e.g. `(taskforce):Launch_Units(FindPlanet('CORUSCANT'))`). Reuses iter-177 helper. Iter 203 native UX: Spawning tab Discovery helpers GroupBox — pairs with iter-200 FOWReveal partial-reveal workflow (find a planet, then reveal FOW around its position)."
+        },
+        {
+          "actionName": "Find first object (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 177 LIVE — composes Find_First_Object(type_name) via DoString and captures GameObjectWrapper handle for first instance of given type. Useful for scripted workflows that need a specific unit reference. Reuses iter-177 helper. Iter 203 native UX: Spawning tab Discovery helpers GroupBox — pairs with iter-200 FOWReveal partial-reveal workflow."
+        },
+        {
+          "actionName": "Find nearest (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 186 LIVE — composes Find_Nearest(type, position, player) via NEW iter-186 Lua_DispatchGlobalGetter3Arg (12th helper in dispatcher set; symmetric counterpart to iter-184 3-arg setter — mirror with engine return-value capture, like iter-177 mirrors iter-158). Returns GameObjectWrapper handle for the closest instance of given type owned by given player at given position. Composes with iter-177 Find_Object_Type + iter-178 Get_Local_Player for 'find my closest AT-AT to here' workflows: `Find_Nearest(Find_Object_Type('AT_AT'), pos, Get_Local_Player())`. docs/lua-api.md line 75. Iter 203 native UX: Spawning tab Discovery helpers GroupBox — first wire to use the NEW iter-203 generic BuildSwfocLua3ArgCall builder (parameterised SWFOC name; iter-200's FOWReveal builder hardcoded the name)."
+        },
+        {
+          "actionName": "Find all objects of type (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 179 LIVE — composes Find_All_Objects_Of_Type(type_name) via iter-177 global-getter-arg helper. Returns a Lua table; helper tostring()s to 'table: 0xADDR' which operators can pass through Lua Playground for iteration: `for i,obj in pairs(Find_All_Objects_Of_Type(t)) do ... end`. Discovery complement to iter-177 Find_First_Object (single instance vs. all instances). Iter 206 native UX: Spawning tab Discovery helpers GroupBox 5th button 'Find all of type' — completes the 'first / nearest / all' trio alongside iter-203 FindFirstObject + iter-186 FindNearest. Reuses shared FindTypeNameLuaExpr field."
+        }
+      ]
+    },
+    {
+      "tabName": "Galactic",
+      "actions": [
+        {
+          "actionName": "Refresh planets",
+          "badge": "LIVE",
+          "note": "Iter 296 LIVE — DoString-driven enumeration via Find_All_Objects_Of_Type with category fallbacks (Planet/GalacticPlanet/Planetary). Returns CSV: count=N|<idx>;<type>;<faction>|... Mod-agnostic via pcall-wrapped Get_Type/Get_Owner."
+        },
+        {
+          "actionName": "Change planet owner",
+          "badge": "PHASE 2 PENDING",
+          "note": "Phase 1 mirror — pending galactic state API"
+        },
+        {
+          "actionName": "Flip & convert garrison",
+          "badge": "PHASE 2 PENDING",
+          "note": "Phase-1 mirror added iter 137 (was vestigial pre-iter-137: editor's BridgeGalacticDispatcher.ChangePlanetOwnerWithModeAsync called this helper but the bridge had no implementation, so the operator's Convert/PureKick buttons errored at runtime with 'attempt to call nil'). Phase-2 engine wire-through blocked per iter 134 audit — engine writers PlanetFactionChange_FullTransfer @ 0x3FB040 (3989 bytes, 4 args) and PlanetFactionChange_InitialSet @ 0x3FA160 (271 bytes, 2 args) too complex for single-iter Resolve<>() pattern; no Planet:Change_Owner Lua wrapper. Operator's actual button surface uses overlay Feature 3 (iter 33-34) — a separate non-SWFOC_ dispatch path in the C++ overlay DLL. This SWFOC_ helper is a doc-only fallback so the bridge contract isn't broken."
+        },
+        {
+          "actionName": "Flip & destroy garrison",
+          "badge": "PHASE 2 PENDING",
+          "note": "Phase-1 mirror added iter 137 (was vestigial pre-iter-137: editor's BridgeGalacticDispatcher.ChangePlanetOwnerWithModeAsync called this helper but the bridge had no implementation, so the operator's Convert/PureKick buttons errored at runtime with 'attempt to call nil'). Phase-2 engine wire-through blocked per iter 134 audit — engine writers PlanetFactionChange_FullTransfer @ 0x3FB040 (3989 bytes, 4 args) and PlanetFactionChange_InitialSet @ 0x3FA160 (271 bytes, 2 args) too complex for single-iter Resolve<>() pattern; no Planet:Change_Owner Lua wrapper. Operator's actual button surface uses overlay Feature 3 (iter 33-34) — a separate non-SWFOC_ dispatch path in the C++ overlay DLL. This SWFOC_ helper is a doc-only fallback so the bridge contract isn't broken."
+        },
+        {
+          "actionName": "Toggle reveal-all",
+          "badge": "LIVE",
+          "note": "Engine call via SWFOC_DoString shim"
+        },
+        {
+          "actionName": "Set diplomacy",
+          "badge": "LIVE",
+          "note": "Per-pair diplomacy write — calls MakeAllyEnemy @ 0x288800 (LIVE). One-way A->B; call twice with swapped slots for symmetric. States: 'ally'=0, 'enemy'=1, 'neutral'=2 (last assumed)."
+        },
+        {
+          "actionName": "Story-arrival spawn",
+          "badge": "PHASE 2 PENDING",
+          "note": "Phase-1 mirror added iter 137 (was vestigial pre-iter-137: same situation as ChangePlanetOwnerWithMode — editor called the helper but bridge had no implementation, operator button errored at runtime). Phase-2 engine wire-through blocked per iter 134 audit — StoryEvent_Factory_Create requires multi-arg state setup (event trigger, faction, planet binding) not single-iter achievable. Operator's actual button surface uses overlay Feature 2 (iter 34) via the C++ overlay DLL's separate dispatch path. Iter 433: Event-driven subsystem (StoryEvent system; per iter-426 feedback_event_driven_defer_pattern.md rule). Multi-iter A1.x offset RE required, not 3-iter mini-arc."
+        },
+        {
+          "actionName": "FOW reveal map",
+          "badge": "LIVE",
+          "note": "Iter 180 LIVE — composes FOWManager.Reveal_All(player) via iter-158 global-arg helper. Demonstrates NAMESPACED method-name dispatch through the existing helper — Lua's `.` lookup makes `FOWManager.Reveal_All` equivalent to a function call from the helper's perspective. No new helper required; proves iter-158 is namespace-agnostic. docs/lua-api.md section 5.4. Useful for cinematic/debug workflows. Iter 200 native UX: Galactic tab 'Fog of War' GroupBox — operators type a player Lua expression into FOWPlayerLuaExpr (default 'Find_Player(\"REBEL\")') and click 'Reveal map'."
+        },
+        {
+          "actionName": "FOW restore fog",
+          "badge": "LIVE",
+          "note": "Iter 180 LIVE — composes FOWManager.Undo_Reveal_All(player) via iter-158. Pairs with FOWRevealAll for cinematic-mode FOW toggle. Reuses iter-180 namespaced-dispatch pattern. Iter 200 native UX: Galactic tab 'Fog of War' GroupBox 'Restore fog' button — sibling to 'Reveal map' so operators can toggle without dropping into Lua Playground."
+        },
+        {
+          "actionName": "FOW reveal at position",
+          "badge": "LIVE",
+          "note": "Iter 184 LIVE — composes FOWManager.Reveal(player, position, radius) via NEW iter-184 Lua_DispatchGlobalArg3Method (11th helper in dispatcher set; second multi-arg expansion after iter-182's 2-arg helper). Partial-reveal complement to iter-180 SWFOC_FOWRevealAllLua — operators can reveal a specific area instead of the whole map. Inherits namespace-agnosticism from iter-180/181 finding. docs/lua-api.md section 5.4. Architectural opening: 3-arg helper unlocks future wires for engine APIs like Set_Cinematic_Camera_Key(pos, target, duration), Find_Nearest(type, pos, player), and similar. Iter 200 native UX: Galactic tab 'Fog of War' GroupBox 'Reveal at position' button — operators type a position Lua expression (default 'FindPlanet(\"Yavin\"):Get_Position()') and a radius (default '500'); the player expression is shared with the FOWRevealAll buttons."
+        },
+        {
+          "actionName": "TaskForce move to (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 175 LIVE — composes (taskforce):Move_To(target) via DoString. Orders an entire task force to move. Distinct from iter-157 SWFOC_MoveToLua which targets unit-receivers. Reuses iter-154 generic 2-arg helper. Iter 215 native UX: Galactic tab TaskForce write-side row 'Move to' — anchors on TaskForceLuaExpr + TaskForceTargetLuaExpr fields."
+        },
+        {
+          "actionName": "TaskForce reinforce (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 175 LIVE — composes (taskforce):Reinforce(type) via DoString. Adds a unit type to the task force reinforcement queue. Per docs/lua-api.md TaskForce section. Reuses iter-154 helper. Iter 215 native UX: Galactic tab 'Reinforce' button — operator types unit-type into TaskForceTargetLuaExpr."
+        },
+        {
+          "actionName": "TaskForce release reinforcements (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 175 LIVE — composes (taskforce):Release_Reinforcements() via DoString. Releases held reinforcements for a SpaceTaskForce. No-arg method — reuses iter-112 helper (proven shape-agnostic for TaskForce receivers). Iter 215 native UX: Galactic tab 'Release reinforcements' no-arg button."
+        },
+        {
+          "actionName": "TaskForce launch units (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 175 LIVE — composes (taskforce):Launch_Units(planet) via DoString. Launches a galactic task force toward a target planet. Per docs/lua-api.md GalacticTaskForce section. Reuses iter-154 helper. Iter 215 native UX: Galactic tab 'Launch units' button — operator types planet handle into TaskForceTargetLuaExpr."
+        },
+        {
+          "actionName": "TaskForce attack target (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 176 LIVE — composes (taskforce):Attack_Target(target) via DoString. TaskForce-receiver variant of iter-163 SWFOC_AttackTargetLua (which targets unit receivers). Per docs/lua-api.md SpaceTaskForce/LandTaskForce section. Reuses iter-154 helper. Iter 215 native UX: Galactic tab 'Attack target' button — operator types target into TaskForceTargetLuaExpr."
+        },
+        {
+          "actionName": "TaskForce guard target (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 176 LIVE — composes (taskforce):Guard_Target(target) via DoString. TaskForce-receiver variant of iter-163 SWFOC_GuardTargetLua. SpaceTaskForce-only per docs/lua-api.md. Reuses iter-154 helper. Iter 215 native UX: Galactic tab 'Guard target' button — operator types target into TaskForceTargetLuaExpr."
+        },
+        {
+          "actionName": "TaskForce land units (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 176 LIVE — composes (taskforce):Land_Units(planet) via DoString. GalacticTaskForce complement to iter-175 SWFOC_TaskForceLaunchUnitsLua. Reuses iter-154 helper. Iter 215 native UX: Galactic tab 'Land units' button — pairs visually with Launch_Units in the same surfacing row."
+        },
+        {
+          "actionName": "TaskForce: goal-system-removable on (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 176 LIVE — composes (taskforce):Set_As_Goal_System_Removable(b) via DoString. AI goal-cleanup flag, TaskForceClass-specific. Reuses iter-111 obj-bool helper. Iter 215 native UX: Galactic tab 'Goal-system-removable: on/off' bool-pair (iter-204 hardcoded-bool pattern, now 6 iters deep: 204→208→211→212→213→215)."
+        },
+        {
+          "actionName": "TaskForce: goal-system-removable off (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 176 LIVE — composes (taskforce):Set_As_Goal_System_Removable(b) via DoString. AI goal-cleanup flag, TaskForceClass-specific. Reuses iter-111 obj-bool helper. Iter 215 native UX: Galactic tab 'Goal-system-removable: on/off' bool-pair (iter-204 hardcoded-bool pattern, now 6 iters deep: 204→208→211→212→213→215)."
+        },
+        {
+          "actionName": "TaskForce move to target (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 179 LIVE — composes (taskforce):Move_To_Target(target) via iter-154 1-arg helper. TaskForceClass-only method (per docs/lua-api.md line 213). Distinct from iter-175 SWFOC_TaskForceMoveToLua which takes a position. Naming convention parallels iter-175 (TaskForce-prefixed disambiguation). Iter 218 native UX: Galactic tab TaskForce row extension button 'TaskForce: move to target' — reuses iter-215 TaskForceLuaExpr + TaskForceTargetLuaExpr fields (zero new fields). Operator can A/B test Move_To (position-targeted, iter-215) vs Move_To_Target (object-targeted, iter-218) without re-typing the TaskForce handle."
+        }
+      ]
+    },
+    {
+      "tabName": "Hero Lab",
+      "actions": [
+        {
+          "actionName": "Refresh heroes",
+          "badge": "PHASE 2 PENDING",
+          "note": "Phase 1 mirror — needs hero detection table IDA-pin. iter-323 audit REVIEW-flagged as drift candidate via iter-179 Find_All_Objects_Of_Type(\"Hero\") composition; iter-325 investigation confirmed DEFER — 3 gaps prevent LIVE flip via composition: (1) C# parser at BridgeHeroLabDispatcher.ListHeroesAsync requires 6-field row format `addr;typeName;owner;alive;respawnMs;respawnEnabled` — heroes are referenced by engine pointer for subsequent SWFOC_KillUnit/SWFOC_ReviveUnit/SWFOC_SetHeroRespawnTimer calls; (2) Lua handle → engine addr extraction is not exposed by the engine bindings — tostring(handle) format is undocumented and non-canonical, would be brittle; (3) iter-130 confirmed defer on per-hero respawn-timer table RVA (table location not callgraph-discoverable; same gap that keeps SWFOC_SetHeroRespawnTimer Phase2HookPending). Stays Phase2HookPending until either: (a) hero detection table RVA pinned via callgraph, or (b) Lua handle → engine addr extraction surface added to engine bindings."
+        },
+        {
+          "actionName": "Set global respawn timer",
+          "badge": "LIVE",
+          "note": "Global default-respawn-time override — writes float at RVA 0xB169F0 (LIVE). Affects timers created AFTER the call; doesn't reset already-queued respawns. Range clamped to [0, 600] seconds."
+        },
+        {
+          "actionName": "Toggle permadeath",
+          "badge": "PHASE 2 PENDING",
+          "note": "Phase 1 mirror — pending hero permadeath flag pin. Iter 433: Event-driven subsystem (DeathBehaviorClass attached to GameObjects via QueryInterface; emits death events when health hits 0; per iter-426 feedback_event_driven_defer_pattern.md rule). Multi-iter A1.x offset RE required to hook DeathBehaviorClass tick or intercept death event emit."
+        },
+        {
+          "actionName": "Kill hero",
+          "badge": "LIVE",
+          "note": "SetHP=0 detour"
+        },
+        {
+          "actionName": "Revive hero",
+          "badge": "LIVE",
+          "note": "Local-only revive via SetHP=max"
+        },
+        {
+          "actionName": "Edit hero stat",
+          "badge": "LIVE",
+          "note": "Per-field hero edit dispatcher (3/4 sub-fields LIVE): hull → direct write to GameObj::HP (LIVE); shield → SetFrontShield @ 0x3A8630 + SetRearShield @ 0x3A91E0 (LIVE iter 129); speed → SetSpeedOverride @ 0x3A8C90 (LIVE iter 100); respawn_ms → Phase-1 mirror only (g_pendingRespawnWrites) pending per-hero respawn-timer table RVA. Iter 135 catalog drift fix — bridge always had these LIVE branches; the catalog under-reported them as a single Phase2 entry."
+        },
+        {
+          "actionName": "Revive all heroes",
+          "badge": "LIVE",
+          "note": "Local-only revive via SetHP=max"
+        }
+      ]
+    },
+    {
+      "tabName": "Battle Control",
+      "actions": [
+        {
+          "actionName": "Toggle freeze AI",
+          "badge": "LIVE",
+          "note": "Iter 162 LIVE — composes Suspend_AI(seconds) via DoString. Pauses AI decision-making for the given duration (cinematic helper). Per docs/lua-api.md Camera & Cinematics section. Reuses iter-158 global-arg helper. Iter 219 native UX: Combat tab Cinematic Helpers row 'Suspend AI' button — uses NEW SuspendAiSecondsLuaExpr field for the numeric seconds arg. Pairs with iter-208 Lock_Controls + iter-145 cinematic camera quad for full battle-pause cinematic recording workflow. **CLOSES the iter-216 changelog 'What's NOT yet surfaced' queue** — last unsurfaced wire from the iter-216 list now has a native button."
+        },
+        {
+          "actionName": "Kill all enemies",
+          "badge": "LIVE",
+          "note": "Tactical unit walker · SetHP=0 detour"
+        },
+        {
+          "actionName": "Heal all local",
+          "badge": "LIVE",
+          "note": "Engine call sweep over local units"
+        },
+        {
+          "actionName": "Instant win",
+          "badge": "LIVE",
+          "note": "Engine call sweep over local units · Tactical unit walker · SetHP=0 detour"
+        },
+        {
+          "actionName": "Set unit cap override",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA — iter-248 RE design hypothesized a MinHook detour at the Apocalypticx CE community ledger entry `rva_apocalypticx_unit_cap_gc @ 0x28DF6F`, but iter-249 RE walk discovered the AOB had drifted to a string-deallocation cleanup block (NOT a unit-cap calculation). Ledger entry DEPRECATED; arc closed as 2-iter honest-defer cycle. The iter-249 finding seeded the iter-256 `feedback_aob_drift_across_binary_versions` memory rule (community CE table AOBs lose accuracy across binary versions; semantic verification required). Future RE arc needs live-game CheatEngine tracing or IDA MCP xref walk; would be 7th multi-iter A1.x arc."
+        },
+        {
+          "actionName": "Clear unit cap override",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA — iter-248 RE design hypothesized a MinHook detour at the Apocalypticx CE community ledger entry `rva_apocalypticx_unit_cap_gc @ 0x28DF6F`, but iter-249 RE walk discovered the AOB had drifted to a string-deallocation cleanup block (NOT a unit-cap calculation). Ledger entry DEPRECATED; arc closed as 2-iter honest-defer cycle. The iter-249 finding seeded the iter-256 `feedback_aob_drift_across_binary_versions` memory rule (community CE table AOBs lose accuracy across binary versions; semantic verification required). Future RE arc needs live-game CheatEngine tracing or IDA MCP xref walk; would be 7th multi-iter A1.x arc."
+        }
+      ]
+    },
+    {
+      "tabName": "Story Events",
+      "actions": [
+        {
+          "actionName": "Fire story event",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Set story flag",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        }
+      ]
+    },
+    {
+      "tabName": "Camera & Debug",
+      "actions": [
+        {
+          "actionName": "Toggle free cam",
+          "badge": "PHASE 2 PENDING",
+          "note": "Phase 2 — engine has no Free_Cam Lua API; would need scripted-behaviour mimic"
+        },
+        {
+          "actionName": "Set camera pos (LIVE)",
+          "badge": "LIVE",
+          "note": "Iter 237 LIVE — direct call to CameraClass::SetTransformMatrix @ 0x261BD0. Bridge looks up active tactical camera via GameModeRoot+0x90 (mode==2 only), reads inline 4x3 matrix at CameraClass+0x10, modifies translation column at indices [3]/[7]/[11], calls SetTransformMatrix to write back + propagate. Pattern parallels iter-100 SetSpeedOverride (direct C++ call, NOT MinHook detour). Caveats: tactical-only (galactic returns ERR); animation pipeline overwrites within 1 frame unless paired with iter-145 cinematic camera or iter-208 Lock_Controls; no clamp on coords (operator can teleport below terrain). RE design doc: knowledge-base/iter236_setcamerapos_per_coord_re_kickoff.md."
+        },
+        {
+          "actionName": "Scroll camera to target",
+          "badge": "LIVE",
+          "note": "Iter 107 LIVE — calls engine Lua API Scroll_Camera_To via DoString"
+        },
+        {
+          "actionName": "Set camera zoom",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Submit raw Lua",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Follow target",
+          "badge": "LIVE",
+          "note": "Iter 143 LIVE — calls Camera_To_Follow @ engine LuaUserVar registry slot 0x140898d70 via DoString. Mirror of iter 107 ScrollCameraToTarget pattern. Camera_To_Follow attaches the camera to a target object so it tracks the object as it moves; complement to Scroll_Camera_To's one-shot pan."
+        },
+        {
+          "actionName": "Rotate to face target",
+          "badge": "LIVE",
+          "note": "Iter 144 LIVE — calls Rotate_Camera_To @ engine LuaUserVar registry slot 0x140898db0 via DoString. Third member of the camera primitive trio (iter 107 Scroll_Camera_To pans, iter 143 Camera_To_Follow tracks, iter 144 Rotate_Camera_To rotates the camera to face the target). Same iter-107 skeleton verbatim."
+        },
+        {
+          "actionName": "Start cinematic mode",
+          "badge": "LIVE",
+          "note": "Iter 145 LIVE — calls Start_Cinematic_Camera() @ engine LuaUserVar slot 0x140898ec0 via DoString. Enters cinematic camera mode; pair with SetKey + TransitionKey for keyframe playback then End_Cinematic_Camera to exit. Zero-arg call."
+        },
+        {
+          "actionName": "End cinematic mode",
+          "badge": "LIVE",
+          "note": "Iter 145 LIVE — calls End_Cinematic_Camera() @ engine LuaUserVar slot 0x140898ed8 via DoString. Exits cinematic camera mode. Zero-arg call."
+        },
+        {
+          "actionName": "Set cinematic key",
+          "badge": "LIVE",
+          "note": "Iter 145 LIVE — calls Set_Cinematic_Camera_Key(args) @ engine LuaUserVar slot 0x140898f30 via DoString. Sets a cinematic-camera keyframe; operator supplies the args expression (engine accepts varying argument shapes — most common: key index + position + look-at + duration)."
+        },
+        {
+          "actionName": "Transition cinematic key",
+          "badge": "LIVE",
+          "note": "Iter 145 LIVE — calls Transition_Cinematic_Camera_Key(args) @ engine LuaUserVar slot 0x140898f50 via DoString. Triggers transition between cinematic-camera keyframes. Operator supplies the args expression."
+        },
+        {
+          "actionName": "Zoom camera",
+          "badge": "LIVE",
+          "note": "Iter 162 LIVE — composes Zoom_Camera(level) via DoString. Sets the camera zoom level. Complements the iter-107/143-145 camera primitive arc. Reuses iter-158 global-arg helper. Iter 192 surfaced as native UX in the Camera & Debug tab 'Camera primitive arc — extras' GroupBox."
+        },
+        {
+          "actionName": "Fade screen out",
+          "badge": "LIVE",
+          "note": "Iter 165 LIVE — composes Fade_Screen_Out(duration) via DoString. Cinematic fade-out primitive; complement to iter-162 Fade_Screen_In. Reuses iter-158 global-arg helper. Iter 192 surfaced as native UX in Camera & Debug tab."
+        },
+        {
+          "actionName": "Rotate camera by",
+          "badge": "LIVE",
+          "note": "Iter 165 LIVE — composes Rotate_Camera_By(degrees) via DoString. Rotates the camera by relative degrees; complement to iter-144 Rotate_Camera_To (absolute). Extends camera primitive arc. Iter 192 surfaced as native UX in Camera & Debug tab."
+        },
+        {
+          "actionName": "Point camera at",
+          "badge": "LIVE",
+          "note": "Iter 165 LIVE — composes Point_Camera_At(object) via DoString. Points the camera at a unit/object. Per docs/lua-api.md Camera & Cinematics section. Reuses iter-158 global-arg helper. Iter 192 surfaced as native UX in Camera & Debug tab — 8th camera primitive in the arc."
+        },
+        {
+          "actionName": "Read camera pos (LIVE)",
+          "badge": "LIVE",
+          "note": "Iter 237 LIVE — direct call to CameraClass::GetPosition @ 0x261A40. Returns 'X,Y,Z' string from per-frame matrix-pointer at CameraClass+0x40. Pair-flip with iter-237 SWFOC_SetCameraPos. Falls back to '0.000,0.000,0.000' when no active tactical camera (parseable result; downstream Lua handles)."
+        }
+      ]
+    },
+    {
+      "tabName": "Lua Playground",
+      "actions": [
+        {
+          "actionName": "Run Lua",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        }
+      ]
+    },
+    {
+      "tabName": "Event Stream",
+      "actions": [
+        {
+          "actionName": "Drain event stream",
+          "badge": "LIVE",
+          "note": "SetHP detour ring buffer drain"
+        }
+      ]
+    },
+    {
+      "tabName": "Director Mode",
+      "actions": [
+        {
+          "actionName": "Set time scale",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA"
+        },
+        {
+          "actionName": "Start playback",
+          "badge": "LIVE",
+          "note": "Iter 237 LIVE — direct call to CameraClass::SetTransformMatrix @ 0x261BD0. Bridge looks up active tactical camera via GameModeRoot+0x90 (mode==2 only), reads inline 4x3 matrix at CameraClass+0x10, modifies translation column at indices [3]/[7]/[11], calls SetTransformMatrix to write back + propagate. Pattern parallels iter-100 SetSpeedOverride (direct C++ call, NOT MinHook detour). Caveats: tactical-only (galactic returns ERR); animation pipeline overwrites within 1 frame unless paired with iter-145 cinematic camera or iter-208 Lock_Controls; no clamp on coords (operator can teleport below terrain). RE design doc: knowledge-base/iter236_setcamerapos_per_coord_re_kickoff.md."
+        },
+        {
+          "actionName": "Step playback",
+          "badge": "LIVE",
+          "note": "Iter 237 LIVE — direct call to CameraClass::SetTransformMatrix @ 0x261BD0. Bridge looks up active tactical camera via GameModeRoot+0x90 (mode==2 only), reads inline 4x3 matrix at CameraClass+0x10, modifies translation column at indices [3]/[7]/[11], calls SetTransformMatrix to write back + propagate. Pattern parallels iter-100 SetSpeedOverride (direct C++ call, NOT MinHook detour). Caveats: tactical-only (galactic returns ERR); animation pipeline overwrites within 1 frame unless paired with iter-145 cinematic camera or iter-208 Lock_Controls; no clamp on coords (operator can teleport below terrain). RE design doc: knowledge-base/iter236_setcamerapos_per_coord_re_kickoff.md."
+        },
+        {
+          "actionName": "Toggle hide UI",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        }
+      ]
+    },
+    {
+      "tabName": "Cross-Faction",
+      "actions": [
+        {
+          "actionName": "Recruit cross-faction",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Auto-fill from selected",
+          "badge": "LIVE",
+          "note": "Engine-selection probe (single)"
+        }
+      ]
+    },
+    {
+      "tabName": "Unit Stat Editor",
+      "actions": [
+        {
+          "actionName": "Apply staged edits",
+          "badge": "LIVE",
+          "note": "Generic per-field unit-edit dispatcher (7/13 sub-fields LIVE iter 136+243+258): hull → direct write to GameObj::HP (LIVE iter 136); shield → SetFrontShield @ 0x3A8630 + SetRearShield @ 0x3A91E0 (LIVE iter 136); speed → SetSpeedOverride @ 0x3A8C90 (LIVE iter 136); invuln_flag → direct byte write to GameObj+0x3A7 (LIVE iter 243 — display flag only; pair with SWFOC_MakeInvulnerableLua iter-110 for engine-effective gameplay invulnerability via BehaviorMarker + per-hardpoint INVULNERABLE attachments); prevent_death → direct bit-write of bit 0x80 of GameObj+0x3A1 (LIVE iter 243 — operator may prefer SWFOC_SetCannotBeKilledLua iter-153 for the engine-state-aware path via Set_Cannot_Be_Killed Lua API); max_hull → walks GameObj+0x298 → UnitType*, writes float at UnitType+0xDCC (LIVE iter 258 — TYPE-LEVEL: affects EVERY unit of this type for the session, operator should be aware that buff/nerf is global-by-type, not per-instance); max_shield → same +0x298 walk, dual-write to UnitType+0xDD0 (front) and UnitType+0xDD4 (rear) mirroring iter-129's per-instance dual-write (LIVE iter 258 — same TYPE-LEVEL caveat as max_hull); max_speed → Phase-1 mirror with HONEST DEFER (iter 267-268 RE walk per iter-256 memory rule confirmed NO TYPE-LEVEL max_speed offset in ledger; Override_Max_Speed @ 0x57E590 walks unit+0x60 locomotor not unit+0x298 UnitType. Operator should use iter-99 SWFOC_SetUnitSpeed for per-instance speed override OR iter-100 SWFOC_SetPerFactionSpeedMultiplier for per-faction; both call SetSpeedOverride @ 0x3A8C90 directly, providing LIVE coverage that max_speed sub-field cannot match without sacrificing iter-258 TYPE-LEVEL semantic consistency); attack_power → Phase-1 mirror with HONEST DEFER (iter 269-270 RE walk per iter-256 memory rule confirmed iter-94 rejection EMPIRICALLY REAFFIRMED — combat path has NO central per-unit attack_power read site; HardpointFire @ 0x387F50 inspection shows param_1+0x28 is the hardpoint HP CONSUMER and param_4 damage is PASSED IN, computed dynamically from per-weapon XML attributes at fire time. Operator has 3 LIVE alternatives covering distinct damage scopes (alternative-set pattern): iter-96 SWFOC_SetDamageMultiplierGlobal for global outgoing damage scaling via Take_Damage_Outer @ 0x38A350 MinHook detour; iter-154 SWFOC_SetDamageModifierLua for per-unit damage scaling via Set_Damage_Modifier engine API; iter-225 SWFOC_SetFireRateMultiplierGlobal for global fire-rate scaling via WeaponTick @ 0x387010 MinHook detour. Together these triple-cover damage tuning; adding a 4th attack_power LIVE branch would not add operator capability and would sacrifice iter-258 TYPE-LEVEL semantic consistency); respawn_ms / is_hero / respawn_enabled → Phase-1 mirror only (g_pendingUnitFieldWrites) pending per-field RE walk; owner_slot → Phase-1 mirror with explicit defer (writing GameObj+0x58 directly bypasses Change_Owner @ 0x574D0E + selection-list update + AI brain reassignment + UI roster refresh; operator MUST use SWFOC_ChangeUnitOwnerLua iter-108 for engine-aware ownership change). Iter 136 mirrored HeroStatEdit's iter 100/129 LIVE branches into the dispatcher; iter 243 extended to invuln_flag + prevent_death; iter 258 extended to max_hull + max_shield via the GameObj+0x298 → UnitType chain (semantic verification per iter-256 memory rule via two engine-reader callers of GetMaxHealth @ 0x3727A0)."
+        }
+      ]
+    },
+    {
+      "tabName": "Quick Actions",
+      "actions": [
+        {
+          "actionName": "Operator god mode",
+          "badge": "LIVE",
+          "note": "Hardpoint-behavior sweep + SetHP detour · Engine call sweep over local units · Sets max-credits cap to int max"
+        },
+        {
+          "actionName": "Drain enemies",
+          "badge": "LIVE",
+          "note": "Sweep over non-local players setting credits=0"
+        },
+        {
+          "actionName": "Reveal galaxy",
+          "badge": "LIVE",
+          "note": "Engine call via SWFOC_DoString shim · Iter 296 LIVE — DoString-driven enumeration via Find_All_Objects_Of_Type with category fallbacks (Planet/GalacticPlanet/Planetary). Returns CSV: count=N|<idx>;<type>;<faction>|... Mod-agnostic via pcall-wrapped Get_Type/Get_Owner. · Roster CSV"
+        },
+        {
+          "actionName": "Reset toggles",
+          "badge": "LIVE",
+          "note": "Hardpoint-behavior sweep + SetHP detour · SetHP detour · Iter 231 LIVE — bool freeze on AddCredits @ 0x27F370. Short-circuits the function entirely (no write to PlayerClass+0x70, no event notification, no tracking callback). Returns unchanged balance to preserve prototype contract. Wins-over-mult precedence (freeze=true ignores mult). Caveats (per iter-230 RE design doc knowledge-base/iter230_freeze_credits_re_kickoff.md): blocks AI subsidies equally (all factions affected); cap at PlayerClass+0x74 still applies on unfreeze; analytics events suppressed during freeze. Pattern parallels iter-96 Take_Damage_Outer + iter-225 WeaponTick exactly. · Iter 162 LIVE — composes Suspend_AI(seconds) via DoString. Pauses AI decision-making for the given duration (cinematic helper). Per docs/lua-api.md Camera & Cinematics section. Reuses iter-158 global-arg helper. Iter 219 native UX: Combat tab Cinematic Helpers row 'Suspend AI' button — uses NEW SuspendAiSecondsLuaExpr field for the numeric seconds arg. Pairs with iter-208 Lock_Controls + iter-145 cinematic camera quad for full battle-pause cinematic recording workflow. **CLOSES the iter-216 changelog 'What's NOT yet surfaced' queue** — last unsurfaced wire from the iter-216 list now has a native button."
+        },
+        {
+          "actionName": "Battle setup",
+          "badge": "LIVE",
+          "note": "Hardpoint-behavior sweep + SetHP detour · Engine call sweep over local units · Sets max-credits cap to int max · Sweep over non-local players setting credits=0"
+        },
+        {
+          "actionName": "Filming setup",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation · Iter 162 LIVE — composes Suspend_AI(seconds) via DoString. Pauses AI decision-making for the given duration (cinematic helper). Per docs/lua-api.md Camera & Cinematics section. Reuses iter-158 global-arg helper. Iter 219 native UX: Combat tab Cinematic Helpers row 'Suspend AI' button — uses NEW SuspendAiSecondsLuaExpr field for the numeric seconds arg. Pairs with iter-208 Lock_Controls + iter-145 cinematic camera quad for full battle-pause cinematic recording workflow. **CLOSES the iter-216 changelog 'What's NOT yet surfaced' queue** — last unsurfaced wire from the iter-216 list now has a native button. · Hardpoint-behavior sweep + SetHP detour"
+        },
+        {
+          "actionName": "Tournament setup",
+          "badge": "LIVE",
+          "note": "Global damage multiplier — Take_Damage_Outer detour scales damageParams[0] · Iter 225 LIVE — closes A1.3 after 124-day deferral. WeaponTick @ 0x387010 MinHook detour scales dt arg passed to sub_140387400 (cooldown dispatcher) by g_fireRateMult_global. Pattern parallels iter-96 Take_Damage_Outer detour. Sanity clamp [0.0, 100.0] prevents int overflow in dt math. Caveats: mult=2.0 → 2x fire rate, mult=0.5 → halved, mult=0.0 → effective freeze (use Suspend_AI for proper pause). RE design doc: knowledge-base/iter224_setfirerate_global_re_kickoff.md · Global default-respawn-time override — writes float at RVA 0xB169F0 (LIVE). Affects timers created AFTER the call; doesn't reset already-queued respawns. Range clamped to [0, 600] seconds."
+        },
+        {
+          "actionName": "Sandbox setup",
+          "badge": "LIVE",
+          "note": "Hardpoint-behavior sweep + SetHP detour · Engine call sweep over local units · Sets max-credits cap to int max · Sweep over non-local players setting credits=0 · Global default-respawn-time override — writes float at RVA 0xB169F0 (LIVE). Affects timers created AFTER the call; doesn't reset already-queued respawns. Range clamped to [0, 600] seconds."
+        },
+        {
+          "actionName": "Streaming setup",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation · Iter 162 LIVE — composes Suspend_AI(seconds) via DoString. Pauses AI decision-making for the given duration (cinematic helper). Per docs/lua-api.md Camera & Cinematics section. Reuses iter-158 global-arg helper. Iter 219 native UX: Combat tab Cinematic Helpers row 'Suspend AI' button — uses NEW SuspendAiSecondsLuaExpr field for the numeric seconds arg. Pairs with iter-208 Lock_Controls + iter-145 cinematic camera quad for full battle-pause cinematic recording workflow. **CLOSES the iter-216 changelog 'What's NOT yet surfaced' queue** — last unsurfaced wire from the iter-216 list now has a native button. · Global default-respawn-time override — writes float at RVA 0xB169F0 (LIVE). Affects timers created AFTER the call; doesn't reset already-queued respawns. Range clamped to [0, 600] seconds."
+        }
+      ]
+    },
+    {
+      "tabName": "Unit Control",
+      "actions": [
+        {
+          "actionName": "Toggle god mode",
+          "badge": "LIVE",
+          "note": "Hardpoint-behavior sweep + SetHP detour"
+        },
+        {
+          "actionName": "Toggle one-hit-kill",
+          "badge": "LIVE",
+          "note": "SetHP detour"
+        },
+        {
+          "actionName": "Set unit hull",
+          "badge": "LIVE",
+          "note": "SetHP detour"
+        },
+        {
+          "actionName": "Set unit invulnerability",
+          "badge": "LIVE",
+          "note": "Direct invuln_flag write"
+        },
+        {
+          "actionName": "Set prevent-death",
+          "badge": "LIVE",
+          "note": "Direct prevent_death flag write"
+        },
+        {
+          "actionName": "Inspect unit",
+          "badge": "LIVE ONLY",
+          "note": "Needs live unit object"
+        },
+        {
+          "actionName": "Get hardpoints",
+          "badge": "LIVE ONLY",
+          "note": "Needs live hardpoint vector"
+        },
+        {
+          "actionName": "Spawn unit",
+          "badge": "PHASE 2 PENDING",
+          "note": "BLOCKED-NO-RVA — superseded by iter-109 SWFOC_SpawnUnitLua (engine Spawn_Unit Lua API via DoString; 3-arg form (player, type, position)). This entry stays PHASE 2 PENDING as a Phase-1 mirror legacy wire shape; iter-266 audit caught the operator-trust drift (rationale didn't cite the LIVE alternative). Operator should use the iter-109 SWFOC_SpawnUnitLua LIVE wire."
+        },
+        {
+          "actionName": "Use selected",
+          "badge": "LIVE",
+          "note": "Engine-selection probe (single)"
+        },
+        {
+          "actionName": "Refresh selection",
+          "badge": "LIVE",
+          "note": "Engine-selection probe (single)"
+        },
+        {
+          "actionName": "Make unit invulnerable (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 110 LIVE — calls engine Lua method Make_Invulnerable via DoString"
+        },
+        {
+          "actionName": "Hide unit (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 111 LIVE — calls engine Lua method Hide via DoString"
+        },
+        {
+          "actionName": "Lock unit from AI (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 111 LIVE — calls engine Lua method Prevent_AI_Usage via DoString"
+        },
+        {
+          "actionName": "Set unit selectable (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 111 LIVE — calls engine Lua method Set_Selectable via DoString"
+        },
+        {
+          "actionName": "Despawn unit (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 112 LIVE — calls engine Lua method Despawn via DoString"
+        },
+        {
+          "actionName": "Stop unit (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 112 LIVE — calls engine Lua method Stop via DoString"
+        },
+        {
+          "actionName": "Retreat unit (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 112 LIVE — calls engine Lua method Retreat via DoString"
+        },
+        {
+          "actionName": "Change unit owner (Lua)",
+          "badge": "LIVE",
+          "note": "Iter 108 LIVE — calls engine Lua method Change_Owner via DoString"
+        }
+      ]
+    },
+    {
+      "tabName": "World State",
+      "actions": [
+        {
+          "actionName": "Set corruption",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Remove corruption",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Set diplomacy",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Fire story event",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Toggle maphack",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        },
+        {
+          "actionName": "Dump state",
+          "badge": "LIVE",
+          "note": "Snapshot v2 emitter"
+        },
+        {
+          "actionName": "Engine Lua: Story_Event",
+          "badge": "LIVE",
+          "note": "Iter 159 LIVE — composes Story_Event(name) via DoString. Fires a named story event (mods/scripts can listen for it). Operator passes pre-quoted Lua string literal as arg, e.g. SWFOC_StoryEventLua('\"DEATH_STAR_DESTROYED\"'). Iter 201 native UX: WorldState tab 'Story & Audio (engine Lua, LIVE)' GroupBox — operator types name in shared StoryAudioNameLuaExpr field and clicks 'Story_Event'. Distinct from the upper 'Fire story event' button which routes through IStoryEventService (catalog/profile-mediated); this button hits the engine Lua API directly via SWFOC_StoryEventLua wire."
+        },
+        {
+          "actionName": "Engine Lua: Add_Objective",
+          "badge": "LIVE",
+          "note": "Iter 159 LIVE — composes Add_Objective(id) via DoString. Adds an objective to the player's UI tracker. Per docs/lua-api.md global functions section. Iter 201 native UX: WorldState tab Story & Audio GroupBox — pairs with the Story_Event button in the same row."
+        },
+        {
+          "actionName": "Engine Lua: Play_Music",
+          "badge": "LIVE",
+          "note": "Iter 159 LIVE — composes Play_Music(event) via DoString. Plays a named music event. Pair with SWFOC_StopAllMusic (deferred — needs separate no-arg helper). Iter 201 native UX: WorldState tab Story & Audio GroupBox button. Cinematic workflow: combine with iter-145 cinematic camera primitives (Set_Cinematic_Camera_Key in Camera tab) for full sound+camera filming control."
+        },
+        {
+          "actionName": "Engine Lua: Play_SFX_Event",
+          "badge": "LIVE",
+          "note": "Iter 159 LIVE — composes Play_SFX_Event(event) via DoString. Plays a named sound effect. Same dispatcher shape as Play_Music — both are 1-string-arg globals. Iter 201 native UX: WorldState tab Story & Audio GroupBox button."
+        },
+        {
+          "actionName": "Engine Lua: Stop_All_Music",
+          "badge": "LIVE",
+          "note": "Iter 166 LIVE — composes Stop_All_Music() via DoString. Stops all currently playing music tracks. Per docs/lua-api.md Audio section. First wire shipped via NEW iter-166 Lua_DispatchGlobalNoArgMethod helper (5th in dispatcher set; completes 2x2 matrix of receiver/arg shapes). Iter 202 native UX: WorldState tab Story & Audio GroupBox row 3. Pairs with iter-201 Play_Music for cinematic soundtrack swap workflow (Stop → Play → Resume_Mode_Based after)."
+        },
+        {
+          "actionName": "Engine Lua: Resume_Mode_Based_Music",
+          "badge": "LIVE",
+          "note": "Iter 166 LIVE — composes Resume_Mode_Based_Music() via DoString. Resumes music based on current game mode. Pair with SWFOC_StopAllMusicLua for cinematic-mode audio control. Reuses iter-166 global-no-arg helper. Iter 202 native UX: WorldState tab Story & Audio GroupBox row 3 — restores default game-mode music after a cinematic swap."
+        },
+        {
+          "actionName": "Engine Lua: Story_Event_Trigger",
+          "badge": "LIVE",
+          "note": "Iter 160 LIVE — composes Story_Event_Trigger(name) via DoString. Alternative to Story_Event (iter 159) per docs/lua-api.md. Some mods use the trigger variant. Iter 202 native UX: WorldState tab Story & Audio GroupBox row 3 — sibling to iter-201 Story_Event button. Operators can compare engine semantics of the two story-fire variants when debugging mod listener behavior."
+        },
+        {
+          "actionName": "Engine Lua: SFX VO on (typo: Reponse)",
+          "badge": "LIVE",
+          "note": "Iter 181 LIVE — composes SFXManager.Allow_Unit_Reponse_VO(bool) via iter-158 global-arg helper. **NOTE: engine has a typo** — actual function name is 'Reponse' (not 'Response'). docs/lua-api.md section 6 (Behavioral Warnings) flags this; the SWFOC_* name preserves the typo verbatim so future readers know it's not a copy-paste error. Toggles whether units play VO responses to player commands. Iter 204 native UX: WorldState tab Story & Audio GroupBox SFX VO toggle row — TWO BUTTONS 'VO on' / 'VO off' (hardcoded bool-string args 1/0). Engine TYPO 'Reponse' preserved verbatim through dispatcher method (SfxAllowUnitReponseVoLuaAsync), VM properties + commands (SfxAllowUnitReponseVoOn/Off), CapabilityAwareAction names, and XAML button tooltips. iter 204 pin tests assert the typo survives at every layer."
+        },
+        {
+          "actionName": "Engine Lua: SFX VO off (typo: Reponse)",
+          "badge": "LIVE",
+          "note": "Iter 181 LIVE — composes SFXManager.Allow_Unit_Reponse_VO(bool) via iter-158 global-arg helper. **NOTE: engine has a typo** — actual function name is 'Reponse' (not 'Response'). docs/lua-api.md section 6 (Behavioral Warnings) flags this; the SWFOC_* name preserves the typo verbatim so future readers know it's not a copy-paste error. Toggles whether units play VO responses to player commands. Iter 204 native UX: WorldState tab Story & Audio GroupBox SFX VO toggle row — TWO BUTTONS 'VO on' / 'VO off' (hardcoded bool-string args 1/0). Engine TYPO 'Reponse' preserved verbatim through dispatcher method (SfxAllowUnitReponseVoLuaAsync), VM properties + commands (SfxAllowUnitReponseVoOn/Off), CapabilityAwareAction names, and XAML button tooltips. iter 204 pin tests assert the typo survives at every layer."
+        },
+        {
+          "actionName": "Engine Lua: Lock_Controls(true)",
+          "badge": "LIVE",
+          "note": "Iter 160 LIVE — composes Lock_Controls(bool) via DoString. Toggles operator input lockout for cinematic sequences. Reuses iter-158 global-arg dispatcher. Iter 208 native UX: WorldState tab Story+Audio GroupBox 'Lock on'/'Lock off' buttons (hardcoded bool args, iter-204 pattern) — pairs with iter-180 SWFOC_UnlockControlsLua to bracket the cinematic-recording workflow (lock player input → record cutscene → unlock)."
+        },
+        {
+          "actionName": "Engine Lua: Lock_Controls(false)",
+          "badge": "LIVE",
+          "note": "Iter 160 LIVE — composes Lock_Controls(bool) via DoString. Toggles operator input lockout for cinematic sequences. Reuses iter-158 global-arg dispatcher. Iter 208 native UX: WorldState tab Story+Audio GroupBox 'Lock on'/'Lock off' buttons (hardcoded bool args, iter-204 pattern) — pairs with iter-180 SWFOC_UnlockControlsLua to bracket the cinematic-recording workflow (lock player input → record cutscene → unlock)."
+        },
+        {
+          "actionName": "Engine Lua: Unlock_Controls",
+          "badge": "LIVE",
+          "note": "Iter 180 LIVE — composes Unlock_Controls() via iter-166 global-no-arg helper. Pair-completion with iter-160 SWFOC_LockControlsLua (operator workflow: LockControls(true) → cinematic action → Unlock_Controls()). docs/lua-api.md section 5.2. Iter 208 native UX: WorldState tab Story+Audio GroupBox 'Unlock_Controls' button — symmetric pair with the Lock-on/Lock-off buttons (also iter-208) so operators can bracket cinematic recording without dropping into Lua Playground."
+        },
+        {
+          "actionName": "Trigger victory (engine)",
+          "badge": "PHASE 2 PENDING",
+          "note": "Programmatic victory trigger from the 18 VictoryType enum entries (Galactic_Conquer / Galactic_Control / Skirmish_Control / Sub_Tactical_All / Sub_Tactical_Story / etc; per rva_victory_type_enum_init @ 0x341FF0). iter-450 scaffolding: bridge wrapper validates the victory_type string against 14 known names (Galactic_*, Skirmish_*, Sub_Tactical_*) and stages pending state in g_victoryTriggerPending + g_victoryTriggerType. Iter 450: Event-driven subsystem (VictoryMonitorClass holds DynamicVector<AwaitingVictoryTestType> at instance+0x68; iterated each frame by parent tick @ 0x456970 which calls counter_inc @ 0x341FE0 once per tick; per iter-426 feedback_event_driven_defer_pattern.md rule -- MUST defer to multi-iter A1.x or commit fully). Hook strategy SELECTED at iter-449: Option C MinHook detour at counter_inc (LOW RISK; 16-byte trampoline; per-tick timing aligned with VictoryMonitor work) -- iter-450 installs the dormant trampoline (MH_CreateHook only); iter-450a needs (a) AwaitingVictoryTest 48-byte struct layout RE for safe injection, (b) capture-on-CTOR hook at 0x341850 to resolve the `rcx`-discriminator problem (0x341FE0 fires for many engine subsystems; we need to distinguish VictoryMonitor instances). No operator-LIVE alternative -- VictoryMonitor is the engine's only path to programmatic victory triggering."
+        }
+      ]
+    },
+    {
+      "tabName": "Probes & Scripts",
+      "actions": [
+        {
+          "actionName": "Send Lua probe",
+          "badge": "LIVE",
+          "note": "Free-form Lua escape hatch — bypasses typed validation"
+        }
+      ]
+    }
+  ]
+}

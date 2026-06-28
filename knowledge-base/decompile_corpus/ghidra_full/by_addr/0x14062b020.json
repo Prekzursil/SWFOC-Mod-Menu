@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BehaviorClass * FUN_14062b020(void)\n\n{\n  undefined **ppuVar1;\n  undefined *puVar2;\n  BehaviorClass *this;\n  longlong lVar3;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x40);\n  if (this == (BehaviorClass *)0x0) {\n    return (BehaviorClass *)0x0;\n  }\n                    /* inlined constructor: LureBehaviorClass::LureBehaviorClass */\n  BehaviorClass::BehaviorClass(this);\n  ppuVar1 = this->offset_0x18;\n  this->vftablePtr = (BehaviorClass_vftable0 *)&LureBehaviorClass::vftable;\n  this->vftablePtr = (BehaviorClass_vftable1 *)&LureBehaviorClass::vftable;\n  this->vftablePtr = (BehaviorClass_vftable2 *)&LureBehaviorClass::vftable;\n  if (ppuVar1 != (undefined **)0x0) {\n    if (ppuVar1[0x3b] == (undefined *)0x0) {\n      return this;\n    }\n    lVar3 = FUN_140397d90(ppuVar1,10);\n    if (lVar3 == 0) {\n      FUN_1402149d0(\n                   \"Object is trying to deactivate LURE behavior but does not have LURE unit ability!\"\n                   );\n      return this;\n    }\n  }\n  if (((this->offset_0x18 != (undefined **)0x0) &&\n      (puVar2 = this->offset_0x18[0x3b], puVar2 != (undefined *)0x0)) &&\n     (*(longlong *)(puVar2 + 0x18) != 0)) {\n    FUN_1402a6280(*(undefined8 *)(DAT_140b15418 + 0x18),\n                  *(undefined4 *)(*(longlong *)(puVar2 + 0x18) + 0x50));\n    *(undefined8 *)(puVar2 + 0x18) = 0;\n  }\n  BehaviorClass::vfunction25(this);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

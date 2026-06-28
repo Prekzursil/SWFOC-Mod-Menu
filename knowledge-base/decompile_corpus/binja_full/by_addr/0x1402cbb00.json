@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cbb00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402cbb10        if (arg2 == *(arg1 + 0x388))\n1402cbb12        *(arg1 + 0x388) = 0\n1402cbb20        if (arg2 == 0)\n1402cbb20        return \n1402cbb22        void* rcx = *(arg1 + 0x318)\n1402cbb2c        if (arg2 == rcx)\n1402cbb30        sub_1403a7bb0(rcx, 0, arg3)\n1402cbb35        *(arg1 + 0x318) = 0\n1402cbb45        return ",
+  "fetched_at": "2026-04-26T17:33:40Z"
+}

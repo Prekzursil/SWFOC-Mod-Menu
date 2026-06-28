@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406565e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406565fd        if ((*(arg1 + 0xc8) & arg3) == 0)\n14065660b        return (zx.o(0)).d\n140656636        int32_t i = 0\n140656645        int32_t r13 = 0\n14065664d        int128_t zmm6 = zx.o(0)\n140656650        int32_t rax = int.d((*arg2 f- *(arg1 + 0xa0)) f/ *(arg1 + 0xb8))\n140656662        if (rax s> 0)\n140656662        r13 = rax\n140656666        int32_t rsi_1 = *(arg1 + 0xb0) - 1\n140656675        int32_t rax_1 = int.d((*arg2 f- *(arg1 + 0xa0) f+ arg2[2]) f/ *(arg1 + 0xb8))\n14065668b        if (rax_1 s< rsi_1)\n14065668b        rsi_1 = rax_1\n14065668e        int32_t rdx_1 = *(arg1 + 0xb4) - 1\n1406566b2        int32_t i_1 = int.d((*(arg1 + 0xa4) f- (arg2[3] f+ arg2[1])) f/ *(arg1 + 0xbc))\n1406566b6        int32_t rax_2 = int.d((*(arg1 + 0xa4) f- arg2[1]) f/ *(arg1 + 0xbc))\n1406566bc        if (rax_2 s< rdx_1)\n1406566bc        rdx_1 = rax_2\n1406566c1        int32_t arg_8 = rdx_1\n1406566c5        if (i_1 s> 0)\n1406566c5        i = i_1\n1406566ca        while (i s<= rdx_1)\n1406566e0        int32_t rbx_1 = r13\n1406566e6        if (r13 s<= rsi_1)\n140656705        int32_t zmm0\n140656705        zmm0, zmm6 = sub_140656800(arg1, rbx_1, i, arg3, arg4, arg5)\n14065670a        rbx_1 += 1\n14065670c        zmm6.d = zmm6.d f+ zmm0\n140656712        do while (rbx_1 s<= rsi_1)\n140656714        rdx_1 = arg_8\n140656718        i += 1\n14065674e        return zmm6.d",
+  "fetched_at": "2026-04-26T17:06:48Z"
+}

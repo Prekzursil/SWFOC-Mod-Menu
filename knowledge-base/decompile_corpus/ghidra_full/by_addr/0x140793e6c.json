@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793e6c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _fcloseall\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl _fcloseall(void)\n\n{\n  longlong lVar1;\n  int iVar2;\n  int iVar3;\n  longlong lVar4;\n  int local_18;\n  \n  local_18 = 0;\n  __acrt_lock(8);\n  for (iVar3 = 3; iVar3 != DAT_140b3c0b0; iVar3 = iVar3 + 1) {\n    lVar4 = (longlong)iVar3;\n    lVar1 = *(longlong *)(DAT_140b3c0b8 + lVar4 * 8);\n    if (lVar1 != 0) {\n      if (((*(uint *)(lVar1 + 0x14) >> 0xd & 1) != 0) &&\n         (iVar2 = fclose(*(FILE **)(DAT_140b3c0b8 + lVar4 * 8)), iVar2 != -1)) {\n        local_18 = local_18 + 1;\n      }\n      DeleteCriticalSection((LPCRITICAL_SECTION)(*(longlong *)(DAT_140b3c0b8 + lVar4 * 8) + 0x30));\n      _free_base(*(undefined8 *)(DAT_140b3c0b8 + lVar4 * 8));\n      *(undefined8 *)(DAT_140b3c0b8 + lVar4 * 8) = 0;\n    }\n  }\n  __acrt_unlock(8);\n  return local_18;\n}",
+  "fetched_at": "2026-04-26T18:53:08Z"
+}

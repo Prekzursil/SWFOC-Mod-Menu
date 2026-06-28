@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d0e8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d0e8        return GetStringTypeW(dwInfoType, lpSrcStr, cchSrc, lpCharType) __tailcall",
+  "fetched_at": "2026-04-26T17:32:11Z"
+}

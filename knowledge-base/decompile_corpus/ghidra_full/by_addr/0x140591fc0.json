@@ -1,0 +1,7 @@
+{
+  "addr": "0x140591fc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall BarrageAreaBehaviorClass::vfunction9(void)\n\n{\n  return \"BarrageAreaBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:42:11Z"
+}

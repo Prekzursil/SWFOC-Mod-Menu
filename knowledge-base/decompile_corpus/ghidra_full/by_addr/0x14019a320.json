@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019a320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MultiLinkedListClass<class_alRenderable> * __thiscall\nMultiLinkedListClass<class_alRenderable>::scalar_deleting_destructor\n          (MultiLinkedListClass<class_alRenderable> *this,uint param_1)\n\n{\n  MultiLinkedListClass<class_alRenderable>_vftable *pMVar1;\n  undefined1 local_res8 [8];\n  \n                    /* inlined destructor:\n                       MultiLinkedListClass<class_alRenderable>::~MultiLinkedListClass<class_alRenderable>\n                        */\n  this->vftablePtr = &vftable;\n  pMVar1 = this[2].vftablePtr;\n  while (pMVar1 != (MultiLinkedListClass<class_alRenderable>_vftable *)(this + 1)) {\n    FUN_14020ac80(this,local_res8);\n    pMVar1 = this[2].vftablePtr;\n  }\n  GenericMultiLinkedList::~GenericMultiLinkedList((GenericMultiLinkedList *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:37:02Z"
+}

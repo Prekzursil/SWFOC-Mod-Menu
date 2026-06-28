@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140724810        *arg1 = &HeroClashInterface::`vftable'\n140724815        arg1[2] = 0\n140724819        arg1[1] = 0\n140724820        if ((arg2 & 1) != 0)\n140724825        j_sub_1407864b8(arg1)\n140724832        return arg1",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071f547        return \"Special_Ability_Action\"",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

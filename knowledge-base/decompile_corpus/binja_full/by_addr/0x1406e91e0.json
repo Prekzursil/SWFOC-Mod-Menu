@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e91e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e91f3        *arg1 = &LandTaskForceClass::`vftable'{for `TaskForceClass'}\n1406e9200        arg1[5] = &LandTaskForceClass::`vftable'{for `SignalListenerClass'}\n1406e920b        arg1[7] = &LandTaskForceClass::`vftable'{for `AIDiagnosticsClass'}\n1406e920f        sub_1405f9440(arg1)\n1406e9217        if ((arg2 & 1) != 0)\n1406e9221        j_sub_1407864b8(arg1)\n1406e9233        return arg1",
+  "fetched_at": "2026-04-26T17:26:11Z"
+}

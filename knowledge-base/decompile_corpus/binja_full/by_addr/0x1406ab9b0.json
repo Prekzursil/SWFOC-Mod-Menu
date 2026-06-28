@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ab9b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ab9c3        *arg1 = &MeleeHeroClashClass::`vftable'{for `HeroClashInterface'}\n1406ab9cb        __builtin_memset(&arg1[3], 0, 0x2c)\n1406ab9e2        arg1[9] = 0\n1406ab9e6        arg1[0xa].b = 0\n1406ab9e9        arg1[0xb] = 0\n1406ab9ed        arg1[0xc] = 0\n1406ab9f1        arg1[0x17] = 0\n1406ab9f8        arg1[0x16] = 0\n1406ab9ff        sub_1407247e0(arg1)\n1406aba07        if ((arg2 & 1) != 0)\n1406aba11        j_sub_1407864b8(arg1)\n1406aba23        return arg1",
+  "fetched_at": "2026-04-26T17:24:30Z"
+}

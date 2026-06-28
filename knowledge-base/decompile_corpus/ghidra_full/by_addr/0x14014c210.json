@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014c210",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alRenderableMesh::vfunction6_for_RefCountClass(alRenderableMesh *this)\n\n{\n  DynamicVectorClass<struct_alRenderableMesh::SubMesh> *this_00;\n  \n  this_00 = (DynamicVectorClass<struct_alRenderableMesh::SubMesh> *)FUN_140769c58(0x120);\n  if (this_00 != (DynamicVectorClass<struct_alRenderableMesh::SubMesh> *)0x0) {\n    DynamicVectorClass<struct_alRenderableMesh::SubMesh>::\n    DynamicVectorClass<struct_alRenderableMesh::SubMesh>(this_00,(longlong)this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:22Z"
+}

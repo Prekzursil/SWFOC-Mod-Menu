@@ -1,0 +1,7 @@
+{
+  "addr": "0x140173000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017300f        uint32_t result = GetCurrentThreadId()\n140173024        if (result != data_140a155d0 || data_140a62740 == 0)\n14017302a        int64_t r10_1 = sx.q(*(arg1 + 0xe8))\n140173034        if (r10_1.d s>= 0)\n14017303a        int64_t r9_1 = *(arg1 + 0xd0)\n140173041        result = 0\n14017304d        int64_t rdx_2 = (*(arg1 + 0xd8) - r9_1) s>> 3\n140173054        if (rdx_2 != 0)\n14017305a        uint64_t result_1 = 0\n140173060        void* r8_1 = *(r9_1 + (result_1 << 3))\n140173071        if (*(*(r8_1 + 0x118) + 0x410) == arg2)\n14017309b        sub_140161520(r8_1, *(*(*(r9_1 + (r10_1 << 3)) + 0x118) + 0x410))\n1401730b4        int512_t zmm1_1 = sub_140161520(*(*(arg1 + 0xd0) + (sx.q(*(arg1 + 0xe8)) << 3)), arg2)\n1401730b9        int64_t* rdx_6 = *(arg1 + 0xd8)\n1401730c0        int64_t* rcx_4 = *(arg1 + 0xd0)\n1401730d7        sub_140175b20(rcx_4, rdx_6, (rdx_6 - rcx_4) s>> 3, arg3, zmm1_1)\n1401730e1        return sub_140172bd0(arg1, arg2)\n140173073        result += 1\n140173075        result_1 = zx.q(result)\n14017307a        do while (result_1 u< rdx_2)\n1401730f0        return result",
+  "fetched_at": "2026-04-26T17:23:03Z"
+}

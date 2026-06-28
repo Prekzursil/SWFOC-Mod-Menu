@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403dcf20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403dcf3d        if (*(arg1 + 0x211c) != 1 || *(arg1 + 0x2a33) != 0)\n1403dd015        int64_t rax\n1403dd015        rax.b = 0\n1403dd01c        return rax\n1403dcf48        int32_t rbx = *(arg1 + 0xdf8)\n1403dcf5f        int32_t rax_1 = sub_140294a70(&data_140a16fd0)\n1403dcf66        int64_t rax_4\n1403dcf66        while (true)\n1403dcf66        int32_t temp0_1 = rbx\n1403dcf66        rbx -= 1\n1403dcf69        if (temp0_1 - 1 s< 0)\n1403dcf71        rbx = *(arg1 + 0xde8) - 1\n1403dcf84        char* rsi_1 = *(sx.q(rbx) * 0x188 + *(arg1 + 0xde0))\n1403dcf93        if (*(sub_1403956c0(rsi_1) + 4) == rax_1)\n1403dcfd7        sub_1403de570(arg1, rsi_1, 0)\n1403dcfe6        int32_t zmm1_1 = *(rsi_1 + 0x7c)\n1403dcff2        int32_t var_18 = *(rsi_1 + 0x78)\n1403dd000        int32_t var_10_1 = *(rsi_1 + 0x80)\n1403dd006        int32_t var_14_1 = zmm1_1\n1403dd00c        sub_140448c20(&data_140b30350, &var_18)\n1403dd011        rax_4.b = 1\n1403dd013        break\n1403dcf9b        if (rbx == *(arg1 + 0xdf8))\n1403dcfb2        sub_14032edd0(data_140b15418 + 0xa0, \"previous_planet\")\n1403dcfb7        rax_4.b = 0\n1403dcfb7        break\n1403dcfcd        return rax_4",
+  "fetched_at": "2026-04-26T17:25:03Z"
+}

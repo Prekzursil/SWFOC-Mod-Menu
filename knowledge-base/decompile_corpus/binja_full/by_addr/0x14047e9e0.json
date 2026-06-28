@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047e9e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047e9e3        if (arg4 == 0)\n14047e9e3        return \n14047ea02        int64_t rbx_1 = sx.q(arg3)\n14047ea05        int64_t rdi_1 = sx.q(arg2)\n14047ea08        if ((*(arg1 + 0x14) & 0x80000000) != 0)\n14047ea30        return memcpy(rdi_1 * 0x70 + *(arg1 + 8), rbx_1 * 0x70 + *(arg1 + 8), sx.q(arg4) * 0x70) __tailcall\n14047ea3c        if (rdi_1.d s> rbx_1.d)\n14047ea42        int32_t rdi_3 = rdi_1.d - 1 + arg4\n14047ea45        int32_t rbx_3 = rbx_1.d - 1 + arg4\n14047ea4b        if (arg4 s> 0)\n14047ea4d        uint64_t i_2 = zx.q(arg4)\n14047ea73        uint64_t i\n14047ea57        int64_t rax_4 = sx.q(rdi_3)\n14047ea5a        rdi_3 -= 1\n14047ea68        sub_14010a170(rax_4 * 0x70 + *(arg1 + 8), sx.q(rbx_3) * 0x70 + *(arg1 + 8))\n14047ea6d        rbx_3 -= 1\n14047ea6f        i = i_2\n14047ea6f        i_2 -= 1\n14047ea73        do while (i != 1)\n14047ea7a        if (arg4 s> 0)\n14047ea7c        uint64_t i_3 = zx.q(arg4)\n14047eaa3        uint64_t i_1\n14047ea96        sub_14010a170(sx.q(rdi_1.d) * 0x70 + *(arg1 + 8), sx.q(rbx_1.d) * 0x70 + *(arg1 + 8))\n14047ea9b        rbx_1 = zx.q(rbx_1.d + 1)\n14047ea9d        rdi_1 = zx.q(rdi_1.d + 1)\n14047ea9f        i_1 = i_3\n14047ea9f        i_3 -= 1\n14047eaa3        do while (i_1 != 1)\n14047eab9        return ",
+  "fetched_at": "2026-04-26T17:28:24Z"
+}

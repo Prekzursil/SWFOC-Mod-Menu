@@ -1,0 +1,7 @@
+{
+  "addr": "0x140580250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058026a        if (*(arg1 + 0x60) != 0)\n14058026c        int64_t* rbx_1 = *(arg3 + 0x10)\n14058027f        char const* const rdx\n14058027f        if (((*(arg3 + 0x18) - rbx_1) & 0xfffffffffffffff8) == 8)\n14058028a        int64_t* rbx_2 = *rbx_1\n140580290        if (rbx_2 != 0)\n140580298        void* i\n140580298        i, arg3 = (*(*rbx_2 + 0x20))(rbx_2)\n14058029e        while (i != 0)\n1405802aa        if (i == &data_140a157b0)\n1405802dc        (**rbx_2)(rbx_2)\n1405802de        void* rcx_3 = *(arg1 + 0x60)\n1405802e9        if (*(rcx_3 + 0x34c) != 0xff)\n140580331        *(rcx_3 + 0x3cb) = rbx_2[2].b\n14058033d        (*(*rbx_2 + 8))(rbx_2)\n140580351        return 0\n1405802f2        void** r8_1 = *(rcx_3 + 0x298) + 0xf8\n1405802fe        if (r8_1[3] u>= 0x10)\n140580300        r8_1 = *r8_1\n14058030d        sub_140248190(arg2, \"GameObjectWrapper::Set_Garrison_Spawn -- %s is set up to be capable of spawning garrisons.\", r8_1)\n140580318        (*(*rbx_2 + 8))(rbx_2)\n14058032c        return 0\n1405802ac        i = *(i + 8)\n1405802b5        rdx = \"GameObjectWrapper::Set_Garrison_Spawn -- invalid type for parameter 1.  Expected boolean.\"\n140580281        rdx = \"GameObjectWrapper::Set_Garrison_Spawn -- invalid number of parameters.  Expected 1, got %d.\"\n1405802bf        sub_140248190(arg2, rdx, arg3)\n1405802d5        return 0",
+  "fetched_at": "2026-04-26T17:35:21Z"
+}

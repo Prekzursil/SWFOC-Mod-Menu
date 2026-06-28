@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a784",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a792        __GSHandlerCheckCommon(arg2, arg4, *(arg4 + 0x38))\n14076a7a0        return 1",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

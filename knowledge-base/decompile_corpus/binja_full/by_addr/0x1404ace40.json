@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ace40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ace5a        void* result\n1404ace5a        int32_t rcx\n1404ace5a        switch (arg2)\n1404ace5f        case 1\n1404ace5f        rcx = *((sx.q(arg1) << 2) + &data_140875d58)\n1404ace81        label_1404ace81:\n1404ace84        if (rcx != 0xffffffff)\n1404acdfa        bool cond:0_1\n1404acdfa        switch (arg2)\n1404ace16        case 1\n1404ace16        result.b = 1\n1404ace18        return result\n1404ace02        case 2\n1404ace02        if (rcx - 0x12 u<= 2)\n1404ace16        result.b = 1\n1404ace18        return result\n1404ace0a        case 3\n1404ace0a        cond:0_1 = ((rcx - 0x12) & 0xfffffffb) != 0\n1404ace14        label_1404ace14:\n1404ace14        if (not(cond:0_1))\n1404ace16        result.b = 1\n1404ace18        return result\n1404ace11        case 4\n1404ace11        cond:0_1 = rcx != 0x15\n1404ace11        goto label_1404ace14\n1404ace04        result.b = 0\n1404ace06        return result\n1404ace6c        case 2, 4\n1404ace6c        rcx = *((sx.q(arg1) << 2) + &data_140875d70)\n1404ace74        goto label_1404ace81\n1404ace79        case 3\n1404ace79        rcx = *((sx.q(arg1) << 2) + &data_140875d80)\n1404ace79        goto label_1404ace81\n1404ace8a        result.b = 0\n1404ace8c        return result",
+  "fetched_at": "2026-04-26T17:29:31Z"
+}

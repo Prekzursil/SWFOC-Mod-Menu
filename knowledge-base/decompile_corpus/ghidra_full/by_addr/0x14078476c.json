@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078476c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _makepath\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl _makepath(char *_Path,char *_Drive,char *_Dir,char *_Filename,char *_Ext)\n\n{\n  _makepath_s(_Path,0xffffffffffffffff,_Drive,_Dir,_Filename,_Ext);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:20Z"
+}

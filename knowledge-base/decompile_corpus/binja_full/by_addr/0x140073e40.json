@@ -1,0 +1,7 @@
+{
+  "addr": "0x140073e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140073e5b        void* result = sub_14006a230(sub_140067c80(), arg2)\n140073e67        if (*(arg1 + 0x344) != 0)\n140073e6d        result = *(arg1 + 0x2d0)\n140073e74        void* rcx_1 = *(arg1 + 0x2d8)\n140073e7e        if (result != rcx_1)\n140073e90        void* result_1\n140073e90        while (true)\n140073e90        result_1 = result + 0x1d8\n140073e9b        if (*(result + 0x68) == arg2)\n140073e9b        break\n140073e9d        result = result_1\n140073ea3        if (result_1 == rcx_1)\n140073eb4        return result\n140073eb5        void* rsi_1 = rcx_1\n140073ebb        if (result_1 != rcx_1)\n140073eca        common_splitpath_internal<char,class <lambda_0a29fbdbce7e818b875cecd280c47f0b>,class <lambda_7224c10e0d9cf27ffd5accaa7469d6af> >(result_1 - 0x1d8, result_1)\n140073ecf        result_1 += 0x1d8\n140073ed9        do while (result_1 != rsi_1)\n140073edb        rsi_1 = *(arg1 + 0x2d8)\n140073ee9        sub_14001ece0(rsi_1 - 0x1d8)\n140073eee        *(arg1 + 0x2d8) -= 0x1d8\n140073efc        return sub_14006deb0(arg1)\n140073f10        return result",
+  "fetched_at": "2026-04-26T16:56:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140022470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall\nSingletonInstance<class_DatabaseConversionSystemClass>::\n~SingletonInstance<class_DatabaseConversionSystemClass>\n          (SingletonInstance<class_DatabaseConversionSystemClass> *this)\n\n{\n  undefined8 uVar1;\n  longlong *plVar2;\n  \n  plVar2 = DAT_140a7bc08;\n  if (DAT_140a7bc08 != DAT_140a7bc10) {\n    do {\n      if ((SingletonInstance<class_DatabaseConversionSystemClass> *)*plVar2 == this) break;\n      plVar2 = plVar2 + 1;\n    } while (plVar2 != DAT_140a7bc10);\n    if (plVar2 != DAT_140a7bc10) {\n      uVar1 = FUN_14076bd80(plVar2,plVar2 + 1,(longlong)DAT_140a7bc10 - (longlong)(plVar2 + 1));\n      plVar2 = DAT_140a7bc10 + -1;\n      if (DAT_140a7bc08 == DAT_140a7bc10 + -1) {\n        plVar2 = DAT_140a7bc08;\n      }\n      DAT_140a7bc10 = plVar2;\n      return CONCAT71((int7)((ulonglong)uVar1 >> 8),1);\n    }\n  }\n  return (ulonglong)this & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:53Z"
+}

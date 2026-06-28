@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050e780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14050e7b1        int32_t rax = int.d((data_140b36ba4 + arg2[1]) f/ data_140b36b9c)\n14050e7b5        int32_t arg_10 = int.d((data_140b36ba0 + *arg2) f/ data_140b36b98)\n14050e7be        int32_t arg_14 = rax\n14050e7cb        return sub_14050e6c0(arg1, &arg_10, arg3)",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14008c840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14008c848        void* rax = arg3 + 0x140\n14008c84f        if (*(arg3 + 0x158) u>= 8)\n14008c851        rax = *(arg3 + 0x140)\n14008c860        void* r9 = arg2 + 0x140\n14008c867        if (*(arg2 + 0x158) u>= 8)\n14008c869        r9 = *(arg2 + 0x140)\n14008c870        int64_t i_2 = *(arg3 + 0x150)\n14008c877        int64_t i_3 = *(arg2 + 0x150)\n14008c881        int64_t i_1 = i_3\n14008c884        if (i_2 u< i_3)\n14008c884        i_1 = i_2\n14008c88b        if (i_1 != 0)\n14008c88d        int16_t* r9_1 = r9 - rax\n14008c8a2        int64_t i\n14008c890        int16_t rdx = *(r9_1 + rax)\n14008c895        int16_t temp0_1 = *rax\n14008c898        if (rdx != temp0_1)\n14008c8af        int32_t rax_2 = 1\n14008c8b9        if (rdx u< temp0_1)\n14008c8b9        rax_2 = -1\n14008c8bf        return zx.q(rax_2 u>> 0x1f)\n14008c89a        rax += 2\n14008c89e        i = i_1\n14008c89e        i_1 -= 1\n14008c8a2        do while (i != 1)\n14008c8a7        if (i_3 u< i_2)\n14008c8ae        return 1\n14008c8c5        int32_t rax_4\n14008c8c5        rax_4.b = i_3 u> i_2\n14008c8cb        return zx.q(rax_4 u>> 0x1f)",
+  "fetched_at": "2026-04-26T16:57:48Z"
+}

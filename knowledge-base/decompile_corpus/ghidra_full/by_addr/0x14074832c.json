@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074832c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14074832c(PVOID param_1)\n\n{\n  PVOID pvVar1;\n  \n  if (DAT_140a44b50 != 0) {\n    pvVar1 = EncodePointer(param_1);\n    DAT_140a44b50 = DAT_140a44b50 + -1;\n    *(PVOID *)(&DAT_140b3b6c0 + DAT_140a44b50 * 8) = pvVar1;\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_140788f54();\n}",
+  "fetched_at": "2026-04-26T18:05:32Z"
+}

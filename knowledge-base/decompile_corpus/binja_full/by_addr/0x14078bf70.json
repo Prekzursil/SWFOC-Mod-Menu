@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078bf70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078bf75        int32_t arg_18 = arg3\n14078bf7a        int32_t arg_10 = arg2\n14078bf8b        if (arg3 == 0)\n14078bf8f        HMODULE rax_1 = GetModuleHandleW(nullptr)\n14078bfa2        if (rax_1 != 0 && rax_1->unused.w == 0x5a4d)\n14078bfa8        int32_t* rcx_1 = rax_1 * 2\n14078bfce        if (*rcx_1 == 0x4550 && rcx_1[6].w == 0x20b && rcx_1[0x21] u> 0xe && rcx_1[0x3e] != 0)\n14078bfd2        try_cor_exit_process(arg1)\n14078bfdb        char arg_20 = 0\n14078bfdf        int32_t* var_28 = &arg_10\n14078bfeb        int32_t* var_20 = &arg_18\n14078bff7        char* var_18 = &arg_20\n14078c008        int32_t var_34 = 2\n14078c00b        int32_t var_30 = 2\n14078c00e        void var_38\n14078c00e        int64_t result = __crt_seh_guarded_call<class <lambda_99476a1ad63dd22509b5d3e65b0ffc95>,class <lambda_ad1ced32f4ac17aa236e5ef05d6b3b7c>& __ptr64,class <lambda_f7424dd8d45958661754dc4f2697e9c3>,void>::operator()<class <lambda_99476a1ad63dd22509b5d3e65b0ffc95>,class <lambda_ad1ced32f4ac17aa236e5ef05d6b3b7c>& __ptr64,class <lambda_f7424dd8d45958661754dc4f2697e9c3> >(&var_38, &var_30, &var_28, &var_34)\n14078c017        if (arg_18 != 0)\n14078c023        return result\n14078c026        exit_or_terminate_process(arg1)\n14078c026        noreturn",
+  "fetched_at": "2026-04-26T17:31:26Z"
+}

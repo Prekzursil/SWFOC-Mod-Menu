@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532b9c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpaceRetreatCoordinatorClass::vfunction3(SpaceRetreatCoordinatorClass *this,uint param_1)\n\n{\n  ~SpaceRetreatCoordinatorClass\n            ((SpaceRetreatCoordinatorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:31Z"
+}

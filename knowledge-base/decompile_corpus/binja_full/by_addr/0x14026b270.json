@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026b270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026b274        bool cond:0 = *(arg1 + 0x4c0) == 0\n14026b286        uint128_t zmm0 = zx.o(*(arg1 + 0xe8))\n14026b2a4        arg4.d = arg4.d f/ _mm_cvtepi32_ps(zx.o(*(arg1 + 0xec))).d\n14026b2ad        int128_t zmm6\n14026b2ad        zmm6.d = 1f f- arg4.d\n14026b2b6        float zmm5 = arg3 f/ _mm_cvtepi32_ps(zmm0).d\n14026b2ba        if (not(cond:0))\n14026b2bf        zmm6 = arg4\n14026b2c2        zmm0.d = 1f - zmm5\n14026b2c6        zmm5 = zmm0.d\n14026b2c9        arg3 = *(arg1 + 0x60)\n14026b2d9        int128_t zmm8\n14026b2d9        zmm8.d = (*(arg1 + 0x6c)).d f- *(arg1 + 0x64)\n14026b2df        uint128_t zmm1 = *(arg1 + 0x64)\n14026b2e4        int128_t zmm7\n14026b2e4        zmm7.d = (*(arg1 + 0x68)).d f- arg3\n14026b2ec        arg4.d = zmm8.d f* zmm6.d\n14026b2f3        zmm6.d = zmm7.d f* zmm5\n14026b2f7        arg4.d = arg4.d f+ zmm1.d\n14026b2fb        zmm6.d = zmm6.d f+ arg3\n14026b302        if (not(zmm6.d f< arg3))\n14026b30c        zmm0.d = 1f f/ zmm7.d\n14026b314        arg3 = _mm_min_ss(*(arg1 + 0x68) f- zmm0.d, zmm6.d)\n14026b31b        if (not(arg4.d f< zmm1.d))\n14026b327        zmm1.d = (*(arg1 + 0x6c)).d f- 1f f/ zmm8.d\n14026b32b        zmm1 = _mm_min_ss(zmm1.d, arg4.d)\n14026b341        *arg2 = arg3\n14026b345        arg2[1] = zmm1.d\n14026b34e        return arg2",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

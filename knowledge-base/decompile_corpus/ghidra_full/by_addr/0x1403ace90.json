@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ace90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ScheduledEventClass * __thiscall\nEventFactoryClass<class_MoveToPositionEventClass,1>::vfunction1(void)\n\n{\n  ScheduledEventClass *this;\n  \n  this = (ScheduledEventClass *)FUN_140769c58(0x60);\n  if (this != (ScheduledEventClass *)0x0) {\n    ScheduledEventClass::ScheduledEventClass(this);\n    *(undefined4 *)&this[1].field_0xc = 0;\n    this->vftablePtr = (ScheduledEventClass_vftable *)&MoveToPositionEventClass::vftable;\n    (this->EventClass_data).offset_0x8 = 1;\n    *(undefined1 *)&this[1].LinkedListEntryClass<class_EventClass> = 0;\n    return this;\n  }\n  return (ScheduledEventClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:33:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bcfb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bcfbf        int64_t rax_2 = (*(arg3 + 0x18) - *(arg3 + 0x10)) s>> 3\n1406bcfc6        if (rax_2 == 0)\n1406bcfec        sub_1406927d0(*(*(arg1 + 0x28) + 0x88))\n1406bcff7        return 0\n1406bcfd5        sub_140248190(arg2, \"BudgetWrapper::Flush_Unallocated_Resources -- Invalid number of parameters: %d should be 0.\\n\", rax_2)\n1406bcfe0        return 0",
+  "fetched_at": "2026-04-26T17:24:56Z"
+}

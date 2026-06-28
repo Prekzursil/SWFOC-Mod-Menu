@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404adf40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WithdrawlEventClass::vfunction5(WithdrawlEventClass *this)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_140294bc0(&DAT_140a16fd0,(this->EventClass_data).offset_0xc);\n  if (lVar1 != 0) {\n                    /* WARNING: Could not recover jumptable at 0x0001404adf6f. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*DAT_140b31400 + 0x28))(DAT_140b31400,(this->EventClass_data).offset_0xc);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:06:03Z"
+}

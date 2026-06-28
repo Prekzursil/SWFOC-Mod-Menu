@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b880",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    TestDefaultLanguage\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 TestDefaultLanguage(uint param_1,int param_2)\n\n{\n  short sVar1;\n  short *psVar2;\n  int iVar3;\n  longlong lVar4;\n  undefined8 uVar5;\n  short *psVar6;\n  uint local_res8 [2];\n  \n  lVar4 = FUN_14078f07c();\n  iVar3 = GetLocaleInfoW(param_1 & 0x3ff | 0x400,0x20000001,(LPWSTR)local_res8,2);\n  if (iVar3 == 0) {\nLAB_14079b919:\n    uVar5 = 0;\n  }\n  else {\n    if ((param_1 != local_res8[0]) && (param_2 != 0)) {\n      psVar2 = *(short **)(lVar4 + 0x98);\n      iVar3 = 0;\n      sVar1 = *psVar2;\n      psVar6 = psVar2;\n      while ((psVar6 = psVar6 + 1, (ushort)(sVar1 - 0x41U) < 0x1a ||\n             ((ushort)(sVar1 - 0x61U) < 0x1a))) {\n        iVar3 = iVar3 + 1;\n        sVar1 = *psVar6;\n      }\n      lVar4 = -1;\n      do {\n        lVar4 = lVar4 + 1;\n      } while (psVar2[lVar4] != 0);\n      if (iVar3 == (int)lVar4) goto LAB_14079b919;\n    }\n    uVar5 = 1;\n  }\n  return uVar5;\n}",
+  "fetched_at": "2026-04-26T18:53:53Z"
+}

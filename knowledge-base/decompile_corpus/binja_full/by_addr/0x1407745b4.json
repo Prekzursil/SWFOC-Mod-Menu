@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407745b4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407745ca        void var_58\n1407745ca        int64_t rax_1 = __security_cookie ^ &var_58\n1407745df        if (*(arg1 + 0x54) == 0 || *(arg1 + 0x50) s<= 0)\n140774664        void* var_38_3 = arg1 + 0x10\n140774669        __crt_stdio_output::string_output_adapter<char>::write_string(arg1 + 0x468, *(arg1 + 0x48), *(arg1 + 0x50), arg1 + 0x28)\n1407745e1        wchar16* rsi_1 = *(arg1 + 0x48)\n1407745e5        int32_t rdi_1 = 0\n1407745e7        while (true)\n1407745e7        int128_t* rax_2 = *(arg1 + 8)\n1407745f0        wchar16 r9_1 = *rsi_1\n1407745f9        int32_t var_28 = 0\n1407745fe        rsi_1 = &rsi_1[1]\n140774614        void var_24\n140774614        if (_wctomb_s_l(&var_28, &var_24, 6, r9_1, rax_2) == 0)\n140774616        int32_t r8_1 = var_28\n14077461e        if (r8_1 != 0)\n140774628        void* var_38_2 = arg1 + 0x10\n140774639        __crt_stdio_output::string_output_adapter<char>::write_string(arg1 + 0x468, &var_24, r8_1, arg1 + 0x28)\n14077463e        rdi_1 += 1\n140774643        if (rdi_1 == *(arg1 + 0x50))\n140774643        break\n140774643        continue\n140774647        *(arg1 + 0x28) = 0xffffffff\n14077464b        break\n14077466e        int32_t result\n14077466e        result.b = 1\n140774678        __security_check_cookie(rax_1 ^ &var_58)\n14077468c        return result",
+  "fetched_at": "2026-04-26T17:30:49Z"
+}

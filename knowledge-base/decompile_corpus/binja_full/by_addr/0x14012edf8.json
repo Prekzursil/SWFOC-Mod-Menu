@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012edf8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012edfc        return TPI1::`scalar deleting destructor'(arg1 - 0x10, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:10:18Z"
+}

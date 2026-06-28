@@ -1,0 +1,7 @@
+{
+  "addr": "0x140749180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074919f        char* rcx\n14074919f        if (*(arg1 + 0x44) == 0)\n1407491a7        rcx = *(arg3 + 0x20)\n1407491a1        rcx = *(arg3 + 0x18)\n1407491b5        *(arg1 + 0x20) = std::_Maklocstr<wchar_t>(rcx)\n1407491b9        void* const rcx_1 = &data_1407ff8a8\n1407491c4        if (*(arg3 + 0x56) u<= 4)\n1407491c6        rcx_1 = *(arg3 + 0x40)\n1407491d4        *(arg1 + 0x28) = std::_Maklocstr<wchar_t>(rcx_1)\n1407491d8        void* const rcx_2 = &data_1408d07fc\n1407491e3        if (*(arg3 + 0x57) u<= 4)\n1407491e5        rcx_2 = *(arg3 + 0x48)\n1407491ee        int16_t* rax_2\n1407491ee        int32_t* r9\n1407491ee        rax_2, r9 = std::_Maklocstr<wchar_t>(rcx_2)\n1407491f3        *(arg1 + 0x30) = rax_2\n1407491fb        char* rax_3 = *(arg3 + 0x28)\n140749209        int16_t result_1 = 0\n14074920e        int64_t arg_20 = 0\n140749212        void* var_38 = arg1 + 0x48\n140749219        char arg_8[0x10]\n140749219        arg_8[0] = *rax_3\n140749220        int32_t* r9_1 = _Mbrtowc(&result_1, &arg_8, 1, r9)\n14074922d        *(arg1 + 0x18) = result_1\n140749235        char* rax_5 = *(arg3 + 0x30)\n14074923f        result_1 = 0\n140749244        arg_20 = 0\n140749248        void* var_38_1 = arg1 + 0x48\n14074924f        arg_8[0] = *rax_5\n140749256        _Mbrtowc(&result_1, &arg_8, 1, r9_1)\n14074925b        int16_t result = result_1\n14074925f        *(arg1 + 0x1a) = result\n14074926d        return result",
+  "fetched_at": "2026-04-26T17:29:33Z"
+}

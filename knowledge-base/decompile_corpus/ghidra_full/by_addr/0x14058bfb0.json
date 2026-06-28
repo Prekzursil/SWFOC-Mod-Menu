@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058bfb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DeathDataPackClass * __thiscall DeathDataPackClass::DeathDataPackClass(DeathDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_DeathDataPackClass,20,class_EmptyLockerClass> =\n       0x3f800000;\n  *(undefined8 *)\n   &(this->PooledObjectClass<class_DeathDataPackClass,20,class_EmptyLockerClass>).field_0x4 =\n       0x3f800000;\n  (this->DeathDataPackClass_data).offset_0x4 = 0x3f800000;\n  (this->DeathDataPackClass_data).offset_0x8 = 0x3f800000;\n  this->vftablePtr = &vftable;\n  (this->DeathDataPackClass_data).offset_0xc = 0xffffffff;\n  (this->DeathDataPackClass_data).offset_0x10 = (longlong *)0x0;\n  (this->DeathDataPackClass_data).offset_0x18 = 0;\n  (this->DeathDataPackClass_data).offset_0x20 = 0;\n  (this->DeathDataPackClass_data).offset_0x24 = 0;\n  (this->DeathDataPackClass_data).offset_0x28 = 0;\n  (this->DeathDataPackClass_data).offset_0x30 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:41:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013eec0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14013eec0(void)\n\n{\n  int iVar1;\n  \n  iVar1 = FUN_140176610();\n  return -1 < iVar1;\n}",
+  "fetched_at": "2026-04-26T17:17:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b41c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b41d8        int64_t rax\n1405b41d8        if (arg2 != 0xffffffff && arg3 != 0xffffffff)\n1405b41e1        rax = sub_1404dd350(*(arg1 + 0x40), arg3)\n1405b41e9        if (rax != 0)\n1405b41f0        enum PerceptionTokenType var_28 = arg2\n1405b41f9        int64_t var_20 = rax\n1405b4201        void*** var_18\n1405b4201        sub_140241df0(arg1, &var_18, &var_28)\n1405b4215        char result\n1405b4215        return result\n1405b421b        rax.b = 0\n1405b4222        return 0",
+  "fetched_at": "2026-04-26T17:37:29Z"
+}

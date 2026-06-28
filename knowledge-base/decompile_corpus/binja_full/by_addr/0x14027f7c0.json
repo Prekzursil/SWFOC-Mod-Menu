@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027f7c0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_lock_tech_add",
+  "body": "14027f7c6        int64_t rax = sx.q(*(arg1 + 0x1d0))\n14027f7d2        int64_t* result\n14027f7d2        if (rax.d s> 0)\n14027f7d7        int64_t r8_1 = 0\n14027f7da        result = *(arg1 + 0x1c8)\n14027f7e4        if (*result == arg2)\n14027f852        return result\n14027f7e6        r8_1 += 1\n14027f7e9        result = &result[1]\n14027f7f0        do while (r8_1 s< rax)\n14027f801        int32_t rax_1 = *(arg1 + 0x1d0)\n14027f806        int32_t rcx_2 = (*(arg1 + 0x1d4) * 2) s>> 1\n14027f80a        if (rax_1 s>= rcx_2)\n14027f81e        int32_t rdx_3 = rcx_2 s/ 0xa\n14027f827        if (rdx_3 s< 0xa)\n14027f827        rdx_3 = 0xa\n14027f832        sub_140047aa0(arg1 + 0x1c0, rdx_3 + rcx_2, 0, 1)\n14027f837        rax_1 = *(arg1 + 0x1d0)\n14027f83d        result = *(arg1 + 0x1c8)\n14027f841        result[sx.q(rax_1)] = arg2\n14027f845        *(arg1 + 0x1d0) += 1\n14027f852        return result",
+  "fetched_at": "2026-04-26T16:43:08Z"
+}

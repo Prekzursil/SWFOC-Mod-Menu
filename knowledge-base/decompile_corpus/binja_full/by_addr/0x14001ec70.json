@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001ec70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001ec76        struct ConsoleCommand::VTable* const result = &ConsoleCommand::`vftable'\n14001ec80        *arg1 = &ConsoleCommand::`vftable'\n14001ec83        int64_t rdx = arg1[4]\n14001ec8b        if (rdx u>= 0x10)\n14001ec8d        void* rcx = arg1[1]\n14001ec9b        if (rdx + 1 u>= 0x1000)\n14001ec9d        void* r8_1 = *(rcx - 8)\n14001ecb0        if (rcx - r8_1 - 8 u> 0x1f)\n14001ecd4        _invalid_parameter_noinfo_noreturn()\n14001ecd4        noreturn\n14001ecb2        rcx = r8_1\n14001ecb5        result = j_sub_1407864b8(rcx)\n14001ecba        arg1[3] = 0\n14001ecc2        arg1[4] = 0xf\n14001ecca        arg1[1].b = 0\n14001ecd3        return result",
+  "fetched_at": "2026-04-26T16:51:36Z"
+}

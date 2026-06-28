@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402164d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402164db        int32_t* rax = fopen(arg1, U\"rw\")\n1402164e3        if (rax == 0)\n1402164f8        return rax\n1402164e8        fclose(rax)\n1402164ed        uint64_t rax_1\n1402164ed        rax_1.b = 1\n1402164f3        return rax_1",
+  "fetched_at": "2026-04-26T17:28:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647c60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140647c7f        *arg1 = &MultiLinkedListClass<class AIBuildTaskClass>::`vftable'{for `GenericMultiLinkedList'}\n140647c86        while (arg1[2] != &arg1[1])\n140647c98        int64_t* arg_8\n140647c98        sub_14020ac80(arg1, &arg_8)\n140647ca6        sub_14020a960(arg1)\n140647caf        if ((arg2 & 1) != 0)\n140647cb9        j_sub_1407864b8(arg1)\n140647cd0        return arg1",
+  "fetched_at": "2026-04-26T17:04:24Z"
+}

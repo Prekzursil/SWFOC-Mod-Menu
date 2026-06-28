@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ac08",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined ** FUN_14076ac08(void)\n\n{\n  return &PTR_tls_callback_0_1408d0c20;\n}",
+  "fetched_at": "2026-04-26T18:10:19Z"
+}

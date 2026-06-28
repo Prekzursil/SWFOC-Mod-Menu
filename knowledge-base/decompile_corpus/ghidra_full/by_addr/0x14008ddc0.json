@@ -1,0 +1,7 @@
+{
+  "addr": "0x14008ddc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_14008ddc0(void)\n\n{\n  ModelComponentClass *pMVar1;\n  char cVar2;\n  undefined8 uVar3;\n  \n  if (DAT_140a61d38 != '\\0') {\n    if (DAT_140a61de0 != 0) {\n      FUN_1402d5a30(&DAT_140b27e60,DAT_140a61de0,DAT_1408007c0);\n      DAT_140a61de0 = 0;\n    }\n    if (DAT_140a61df8 != (longlong *)0x0) {\n      *(longlong *)(DAT_140b15418 + 0x2a8) = DAT_140a61df8[0x53];\n    }\n    FUN_1401c1d20(&DAT_140a78510,DAT_140a110d4,1);\n    DAT_140a110d4 = 0xffffffff;\n    if (DAT_140a61df8 != (longlong *)0x0) {\n      (**(code **)(*DAT_140a61df8 + 8))();\n      DAT_140a61df8 = (longlong *)0x0;\n    }\n    if (DAT_140a61d40 != (ModelComponentClass *)0x0) {\n      FUN_140271a10();\n      pMVar1 = DAT_140a61d40;\n      if (DAT_140a61d40 != (ModelComponentClass *)0x0) {\n        ModelComponentClass::~ModelComponentClass(DAT_140a61d40);\n        thunk_FUN_1407864b8(pMVar1,0x20);\n      }\n      DAT_140a61d40 = (ModelComponentClass *)0x0;\n    }\n    cVar2 = FUN_1402cd0c0(&DAT_140b27a10);\n    if (cVar2 != '\\0') {\n      uVar3 = FUN_14004fba0();\n      FUN_140262490(uVar3,0);\n    }\n    DAT_140b0a354 = 0;\n    DAT_140a61de8 = 0;\n    DAT_140a61d38 = '\\0';\n    DAT_140a61dd4 = 0;\n    _DAT_140b27ef8 = 0x3f800000;\n    DAT_140a110e0 = 0x3f800000;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:52Z"
+}

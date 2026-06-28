@@ -1,0 +1,7 @@
+{
+  "addr": "0x140707a40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140707a46        struct SpecialAbilityClass::PlanetIncomeBonusAbilityClass::VTable** result = arg1\n140707a49        sub_14048c780(arg1)\n140707a55        result[0x30].d = 0x3f800000\n140707a5f        *result = &PlanetIncomeBonusAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140707a69        result[1] = &PlanetIncomeBonusAbilityClass::`vftable'{for `RefCountClass'}\n140707a6f        result[0x2f] = 0\n140707a76        result[0x31] = 0\n140707a7d        result[0x33] = 0\n140707a87        result[0x34] = 0xf\n140707a92        result[8].w = 1\n140707a98        *(result + 0x3c) = 3\n140707aa4        return result",
+  "fetched_at": "2026-04-26T17:27:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034bb80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nIconComponentClass::vfunction37\n          (IconComponentClass *this,undefined8 param_2,char param_3,undefined4 param_4,\n          undefined4 param_5)\n\n{\n  byte *pbVar1;\n  longlong lVar2;\n  undefined8 *puVar3;\n  \n  pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n  *pbVar1 = *pbVar1 & 0xef;\n  pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n  *pbVar1 = *pbVar1 | param_3 << 4;\n  if (param_3 == '\\0') {\n    *(undefined4 *)((longlong)&(this->BaseComponentClass_data).offset_0xa8 + 4) = param_5;\n    *(undefined4 *)((longlong)&(this->BaseComponentClass_data).offset_0xa0 + 4) = param_4;\n  }\n  lVar2 = (this->BaseComponentClass_data).offset_0x78;\n  if ((lVar2 != 0) && (*(longlong *)(lVar2 + 0x110) != 0)) {\n    puVar3 = (undefined8 *)(lVar2 + 0x100);\n    if (0xf < *(ulonglong *)(lVar2 + 0x118)) {\n      puVar3 = (undefined8 *)*puVar3;\n    }\n    if (puVar3 != (undefined8 *)0x0) {\n      FUN_140354cc0(&(this->IconComponentClass_data).offset_0x120,puVar3,0,DAT_1407ffaf8);\n      (this->IconComponentClass_data).offset_0x14c = 100;\n      return;\n    }\n  }\n  FUN_14034b090(&(this->IconComponentClass_data).offset_0x120,\n                &(this->IconComponentClass_data).offset_0x80);\n  (this->IconComponentClass_data).offset_0x14c = 100;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:55Z"
+}

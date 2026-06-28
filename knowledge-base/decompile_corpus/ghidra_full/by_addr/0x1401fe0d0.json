@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fe0d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1401fe0d0(longlong param_1,int param_2)\n\n{\n  return (longlong)param_2 * 0x10 + param_1;\n}",
+  "fetched_at": "2026-04-26T17:54:50Z"
+}

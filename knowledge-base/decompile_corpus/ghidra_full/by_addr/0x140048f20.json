@@ -1,0 +1,7 @@
+{
+  "addr": "0x140048f20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140048f20(void)\n\n{\n  undefined1 auVar1 [16];\n  int iVar2;\n  undefined8 uVar3;\n  longlong lVar4;\n  uint uVar5;\n  uint *puVar6;\n  ulonglong uVar7;\n  _SYSTEM_INFO local_38;\n  \n  GetSystemInfo(&local_38);\n  uVar7 = (ulonglong)(int)local_38.dwNumberOfProcessors;\n  if (1 < (int)local_38.dwNumberOfProcessors) {\n    DAT_140a14b60 = local_38.dwNumberOfProcessors;\n  }\n  auVar1._8_8_ = 0;\n  auVar1._0_8_ = uVar7;\n  uVar3 = SUB168(ZEXT816(0x18) * auVar1,0);\n  if (SUB168(ZEXT816(0x18) * auVar1,8) != 0) {\n    uVar3 = 0xffffffffffffffff;\n  }\n  lVar4 = thunk_FUN_140769c58(uVar3);\n  FUN_14076c430(lVar4,0,uVar7 * 0x18);\n  iVar2 = CallNtPowerInformation(0xb,0,0,lVar4,local_38.dwNumberOfProcessors * 0x18);\n  if (iVar2 == 0) {\n    DAT_140a619e8 = 0;\n    if (0 < (int)local_38.dwNumberOfProcessors) {\n      DAT_140a619e8 = 0;\n      puVar6 = (uint *)(lVar4 + 8);\n      do {\n        uVar5 = puVar6[-1];\n        if (puVar6[-1] <= DAT_140a619e8) {\n          uVar5 = DAT_140a619e8;\n        }\n        DAT_140a619e8 = *puVar6;\n        if (*puVar6 <= uVar5) {\n          DAT_140a619e8 = uVar5;\n        }\n        uVar7 = uVar7 - 1;\n        puVar6 = puVar6 + 6;\n      } while (uVar7 != 0);\n    }\n    return;\n  }\n  DAT_140a619e8 = 0x929;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:09Z"
+}

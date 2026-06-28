@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407621f4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    protected: virtual unsigned short __cdecl std::ctype<unsigned short>::do_widen(char)const\n   __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nushort __thiscall std::ctype<unsigned_short>::do_widen(ctype<unsigned_short> *this,char param_1)\n\n{\n  int iVar1;\n  wchar_t local_res8 [4];\n  char local_res10 [8];\n  mbstate_t local_res18 [4];\n  \n  local_res18[0] = 0;\n  local_res18[1] = 0;\n  local_res10[0] = param_1;\n  iVar1 = _Mbrtowc(local_res8,local_res10,1,local_res18,(_Cvtvec *)(this + 3));\n  if (iVar1 < 0) {\n    local_res8[0] = L'\\xffff';\n  }\n  return local_res8[0];\n}",
+  "fetched_at": "2026-04-26T18:08:45Z"
+}

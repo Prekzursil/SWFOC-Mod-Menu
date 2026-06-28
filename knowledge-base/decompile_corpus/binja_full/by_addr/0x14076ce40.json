@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ce40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076ce56        *arg1 = &std::exception::`vftable'\n14076ce61        *(arg1 + 8) = zx.o(0)\n14076ce64        __std_exception_copy(arg2 + 8, &arg1[1])\n14076ce70        *arg1 = &std::bad_typeid::`vftable'{for `std::exception'}\n14076ce7b        return arg1",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

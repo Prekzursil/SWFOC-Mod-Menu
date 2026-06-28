@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f60d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f60e3        *arg1 = &CorruptPlanetAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f60f0        arg1[1] = &CorruptPlanetAbilityClass::`vftable'{for `RefCountClass'}\n1406f60f4        sub_14048c8d0(arg1)\n1406f60fc        if ((arg2 & 1) != 0)\n1406f6106        j_sub_1407864b8(arg1)\n1406f6118        return arg1",
+  "fetched_at": "2026-04-26T17:26:36Z"
+}

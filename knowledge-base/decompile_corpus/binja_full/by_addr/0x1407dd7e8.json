@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd7e8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd801        void* rbx = arg4[7]\n1407dd81b        __GSHandlerCheckCommon(arg2, arg4, rbx + 4)\n1407dd839        if ((*(rbx + 4) & (neg.d(sbb.d((rbx + 4).d, (rbx + 4).d, ((arg1->ExceptionFlags).b & 0x66) != 0)) + 1)) == 0)\n1407dd866        return 1\n1407dd847        __CxxFrameHandler3(arg1, arg2, arg3, arg4)\n1407dd847        noreturn",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

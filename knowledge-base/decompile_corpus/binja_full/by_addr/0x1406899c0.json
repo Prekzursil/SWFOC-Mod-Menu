@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406899c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406899c6        struct ScheduledEventClass::CinematicAnimationEventClass::VTable** result = arg1\n1406899c9        sub_140512c50(arg1)\n1406899d5        result[4].d = 0x1a\n1406899dc        *result = &CinematicAnimationEventClass::`vftable'{for `ScheduledEventClass'}\n1406899e7        return result",
+  "fetched_at": "2026-04-26T17:15:21Z"
+}

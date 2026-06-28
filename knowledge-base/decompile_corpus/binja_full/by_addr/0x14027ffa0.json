@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027ffa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027ffad        void* result = *(arg1 + 0x68)\n14027ffdb        if (result != 0 && arg2 s>= 0 && arg2 s< *(result + 0x20a0) && data_140b15418 != 0)\n14027ffed        result = zx.q(timeGetTime() - data_140a7bec0)\n14027fffb        if (result.d u>= *(arg1 + 0x3b4) + 0x1388)\n140280007        result = sub_14033e6c0(*(arg1 + 0x68), arg2)\n14028000f        if (result != 0)\n140280022        if (*(result + 0x18) u>= 0x10)\n140280024        result = *result\n14028002c        char var_108[0x100]\n14028002c        char* rdx_1 = &var_108 - result\n14028003c        char i\n140280030        i = *result\n140280033        *(rdx_1 + result) = i\n140280036        result += 1\n14028003c        do while (i != 0)\n140280043        _strupr(&var_108)\n14028004d        int64_t rax_1 = -1\n140280054        rax_1 += 1\n14028005b        do while (var_108[rax_1] != 0)\n140280067        int32_t rax_2 = sub_140215a30(&var_108, rax_1.d, 0)\n140280073        struct RefCountClass::EventClass::VTable** rax_3 = operator new(0x30)\n14028007b        struct EventClass::TauntEventClass::VTable** rbx_1\n14028007b        if (rax_3 == 0)\n14028008a        rbx_1 = nullptr\n140280085        rbx_1 = sub_1404d6a60(rax_3)\n140280091        sub_1404d6b90(rbx_1, rax_2)\n1402800a0        sub_1403b01f0(&data_140b2ed18, rbx_1)\n1402800ab        result = zx.q(timeGetTime() - data_140a7bec0)\n1402800b9        *(arg1 + 0x3b4) = result.d\n1402800cf        return result",
+  "fetched_at": "2026-04-26T17:32:09Z"
+}

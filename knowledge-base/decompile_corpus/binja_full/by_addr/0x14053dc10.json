@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053dc10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053dc17        return \"HideWhenFoggedBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

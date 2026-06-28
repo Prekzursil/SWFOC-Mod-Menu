@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bab60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407bab60(undefined8 param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  longlong lVar1;\n  undefined1 local_18 [16];\n  \n  lVar1 = FUN_1407c8360(param_2,local_18);\n  if (lVar1 == 0) {\n    param_3 = param_2;\n  }\n  FUN_1407bb2e0(param_1,param_3,\"perform arithmetic on\");\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:17Z"
+}

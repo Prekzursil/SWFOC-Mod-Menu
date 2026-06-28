@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062af00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LureBehaviorClass::vfunction3(LureBehaviorClass *this,uint param_1)\n\n{\n  ~LureBehaviorClass((LureBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

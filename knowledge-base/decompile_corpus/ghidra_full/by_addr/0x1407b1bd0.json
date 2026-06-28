@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b1bd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall al3DCable::vfunction10_for_RefCountClass(al3DCable *this,undefined8 param_1)\n\n{\n  undefined4 *puVar1;\n  int iVar2;\n  ulonglong uVar3;\n  ulonglong uVar4;\n  undefined4 local_28;\n  undefined4 local_24;\n  undefined4 local_20;\n  \n  uVar4 = 0;\n  if ((DAT_140b3cd64 != '\\0') &&\n     (iVar2 = (int)((longlong)(this->al3DCable_data).offset_0x48 -\n                    (longlong)(this->al3DCable_data).offset_0x40 >> 3), uVar3 = uVar4, 0 < iVar2)) {\n    do {\n      (**(code **)(*(longlong *)(this->al3DCable_data).offset_0x40[uVar3] + 0x40))();\n      uVar3 = uVar3 + 1;\n    } while ((longlong)uVar3 < (longlong)iVar2);\n  }\n  iVar2 = (int)((this->al3DCable_data).offset_0x18 - (this->al3DCable_data).offset_0x10 >> 3);\n  if (0 < iVar2) {\n    uVar3 = uVar4;\n    do {\n      puVar1 = *(undefined4 **)((this->al3DCable_data).offset_0x10 + uVar4 * 8);\n      local_28 = *puVar1;\n      local_24 = puVar1[1];\n      local_20 = puVar1[2];\n      FUN_1407b4840(&(this->al3DCable_data).field_0x58,uVar3,&local_28,0);\n      uVar3 = (ulonglong)((int)uVar3 + 1);\n      uVar4 = uVar4 + 1;\n    } while ((longlong)uVar4 < (longlong)iVar2);\n    FUN_1407b3b10(&(this->al3DCable_data).field_0x58,param_1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:36Z"
+}

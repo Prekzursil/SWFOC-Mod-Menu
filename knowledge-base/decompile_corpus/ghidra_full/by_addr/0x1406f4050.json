@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f4050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall CancelSpecialAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Cancel_Special_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:48:00Z"
+}

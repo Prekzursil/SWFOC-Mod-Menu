@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ce30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ce33        if (arg1 == 0)\n14078ce38        return 0xffffffff\n14078ce40        if (*arg1 == arg1[2])\n14078ce42        uint64_t __security_cookie_1 = __security_cookie\n14078ce49        *arg1 = __security_cookie_1\n14078ce4c        arg1[1] = __security_cookie_1\n14078ce50        arg1[2] = __security_cookie_1\n14078ce56        return 0",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

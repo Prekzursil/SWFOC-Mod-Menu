@@ -1,0 +1,7 @@
+{
+  "addr": "0x140072730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140072730(longlong param_1,int *param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  lVar2 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  iVar1 = (**(code **)(**(longlong **)(lVar2 + 0x18) + 0x48))();\n  if (*param_2 == iVar1) {\n    lVar2 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n    lVar2 = (**(code **)(**(longlong **)(lVar2 + 0x70) + 0x10))\n                      (*(longlong **)(lVar2 + 0x70),param_2 + 2,1);\n    if (lVar2 != -1) {\n      lVar3 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n      lVar2 = (**(code **)(**(longlong **)(lVar3 + 0x70) + 0x18))\n                        (*(longlong **)(lVar3 + 0x70),lVar2);\n      if (lVar2 != 0) {\n        if (*(longlong *)(param_1 + 0x148) != 0) {\n          SteamAPI_UnregisterCallResult(param_1 + 0x138);\n        }\n        *(longlong *)(param_1 + 0x148) = lVar2;\n        *(code **)(param_1 + 0x158) = FUN_140072c90;\n        *(longlong *)(param_1 + 0x150) = param_1;\n        SteamAPI_RegisterCallResult(param_1 + 0x138,lVar2);\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:35Z"
+}

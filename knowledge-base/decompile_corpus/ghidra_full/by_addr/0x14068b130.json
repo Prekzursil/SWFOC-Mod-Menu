@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b130(void)\n\n{\n  TacticalBribeAbilityClass *this;\n  \n  this = (TacticalBribeAbilityClass *)FUN_140769c58(0x1c8);\n  if (this != (TacticalBribeAbilityClass *)0x0) {\n    TacticalBribeAbilityClass::TacticalBribeAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:40Z"
+}

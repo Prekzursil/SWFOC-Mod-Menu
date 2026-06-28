@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b74e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1401b74e0(longlong param_1,float *param_2,undefined4 *param_3)\n\n{\n  int iVar1;\n  float fVar2;\n  float fVar3;\n  float local_48 [3];\n  undefined4 local_3c;\n  undefined1 local_38 [8];\n  float fStack_30;\n  float fStack_2c;\n  \n  iVar1 = FUN_140193e60(*(undefined8 *)(param_1 + 8));\n  local_48[1] = 1.0;\n  local_3c = 0x3f800000;\n  local_48[0] = (float)*(int *)(param_1 + 0x30) * DAT_1408007e8;\n  fVar2 = (DAT_1407ffaf8 / (float)iVar1) * _DAT_140a7849c;\n  fVar3 = DAT_1407ffaf8 - (DAT_1407ffaf8 / (float)iVar1) * _DAT_140a784a0;\n  local_48[2] = local_48[0] + _DAT_14084e0a8;\n  _local_38 = ZEXT416(0);\n  FUN_140238620(local_48,local_38);\n  param_2[1] = 0.0;\n  param_2[2] = 0.0;\n  local_48[1] = 1.0;\n  local_3c = 0x3f800000;\n  *param_2 = (float)local_38._4_4_ * fVar3 + (float)local_38._0_4_ * fVar2;\n  param_2[3] = fStack_2c * fVar3 + fStack_30 * fVar2;\n  local_48[2] = (float)*(int *)(param_1 + 0x34) * DAT_1408007e8;\n  local_48[0] = local_48[2] + _DAT_14084e0a8;\n  _local_38 = ZEXT416(0);\n  FUN_140238620(local_48,local_38);\n  *param_3 = 0;\n  param_3[2] = 0;\n  param_3[1] = (float)local_38._4_4_ * fVar3 + (float)local_38._0_4_ * fVar2;\n  param_3[3] = fStack_2c * fVar3 + fStack_30 * fVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:06Z"
+}

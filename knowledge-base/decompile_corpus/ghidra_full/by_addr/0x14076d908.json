@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d908",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __vcrt_getptd_noexit\n   \n   Library: Visual Studio 2019 Release */\n\nlonglong __vcrt_getptd_noexit(void)\n\n{\n  DWORD dwErrCode;\n  int iVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong lVar4;\n  \n  if (DAT_140a44bb0 == -1) {\n    lVar3 = 0;\n  }\n  else {\n    dwErrCode = GetLastError();\n    lVar2 = __vcrt_FlsGetValue(DAT_140a44bb0);\n    lVar4 = 0;\n    lVar3 = lVar4;\n    if (((lVar2 != -1) && (lVar3 = lVar2, lVar2 == 0)) &&\n       (iVar1 = __vcrt_FlsSetValue(DAT_140a44bb0), lVar3 = lVar4, iVar1 != 0)) {\n      lVar3 = _calloc_base(1);\n      if ((lVar3 == 0) || (iVar1 = __vcrt_FlsSetValue(DAT_140a44bb0,lVar3), iVar1 == 0)) {\n        __vcrt_FlsSetValue(DAT_140a44bb0,0);\n        lVar2 = lVar3;\n      }\n      else {\n        *(undefined4 *)(lVar3 + 0x78) = 0xfffffffe;\n        lVar2 = lVar4;\n        lVar4 = lVar3;\n      }\n      FUN_1407864b8(lVar2);\n      lVar3 = lVar4;\n    }\n    SetLastError(dwErrCode);\n  }\n  return lVar3;\n}",
+  "fetched_at": "2026-04-26T18:11:12Z"
+}

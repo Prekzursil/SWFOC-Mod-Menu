@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020eba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020eba6        int64_t* i = data_140a7c680\n14020ebb9        int32_t r9 = 0\n14020ebbf        while (i != data_140a7c688)\n14020ebc7        void* r8_1 = *(*i + 0x10)\n14020ebd3        int64_t rdx_4 = (*(r8_1 + 0x20) - *(r8_1 + 0x18)) s>> 3\n14020ebda        if (zx.q(r9) u<= rdx_4)\n14020ebda        r9 = rdx_4.d\n14020ebde        i = &i[1]\n14020ebe7        arg1[2] = 0\n14020ebeb        int64_t* rax = arg1\n14020ebf3        if (arg1[3] u>= 0x10)\n14020ebf5        rax = *arg1\n14020ebf8        *rax = 0\n14020ec18        int32_t var_18 = r9\n14020ec1d        data_140a7c660\n14020ec24        int32_t var_20 = data_140a7c678\n14020ec2e        int32_t var_28 = data_140a7c674\n14020ec38        int32_t var_30 = data_140a7c670\n14020ec42        int32_t var_38 = data_140a7c668\n14020ec4c        int32_t var_40 = data_140a7c66c\n14020ec5a        int32_t var_48 = data_140a7c664\n14020ec5e        uint64_t result = sub_140200cd0(arg1, \"TreeCull (%d) Ob(%d) Ry(%d) Bx(%d) Fr(%d) Ch(%d) ReB(%d) MaxD(%d) MaxR(%d)\\n\", (data_140a7c688 - data_140a7c680) s>> 3)\n14020ec7b        __builtin_memset(&data_140a7c664, 0, 0x14)\n14020ec86        return result",
+  "fetched_at": "2026-04-26T17:28:16Z"
+}

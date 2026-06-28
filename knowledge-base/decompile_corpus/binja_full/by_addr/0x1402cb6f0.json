@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cb6f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402cb6f0        int32_t rax_5 = *(arg1 + 0x38)\n1402cb6ff        if (arg2 == rax_5 + 1)\n1402cb701        void* rax = *(arg1 + 0x40)\n1402cb705        *(arg1 + 0x38) = rax_5 + 1\n1402cb708        void* rdx_1 = *(rax + 8)\n1402cb70c        *(arg1 + 0x40) = rdx_1\n1402cb713        int64_t rcx = *(rdx_1 + 0x18)\n1402cb71e        if (rcx == 0)\n1402cb71e        return 0\n1402cb722        return rcx - 0x18\n1402cb726        if (arg2 != rax_5)\n1402cb728        void* rdx_2 = *(arg1 + 0x10)\n1402cb72c        *(arg1 + 0x40) = rdx_2\n1402cb730        *(arg1 + 0x38) = 0\n1402cb737        if (arg2 s> 0)\n1402cb739        int32_t rax_2 = 0\n1402cb740        rdx_2 = *(rdx_2 + 8)\n1402cb744        rax_2 += 1\n1402cb746        *(arg1 + 0x40) = rdx_2\n1402cb74a        *(arg1 + 0x38) = rax_2\n1402cb750        do while (rax_2 s< arg2)\n1402cb756        int64_t rcx_1 = *(*(arg1 + 0x40) + 0x18)\n1402cb761        if (rcx_1 == 0)\n1402cb761        return 0\n1402cb765        return rcx_1 - 0x18",
+  "fetched_at": "2026-04-26T17:33:39Z"
+}

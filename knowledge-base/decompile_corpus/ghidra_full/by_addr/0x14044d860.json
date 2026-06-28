@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044d860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TextureRectClass * FUN_14044d860(undefined8 param_1,undefined8 param_2)\n\n{\n  int iVar1;\n  TextureRectClass *pTVar2;\n  TextureRectClass *pTVar3;\n  TextureRectClass_vftable_for_DrawPrimitiveClass *pTVar4;\n  TextureRectClass *this;\n  float fVar5;\n  float fVar6;\n  \n  pTVar3 = (TextureRectClass *)0x0;\n  pTVar4 = (TextureRectClass_vftable_for_DrawPrimitiveClass *)\n           CONCAT71((int7)((ulonglong)param_2 >> 8),1);\n  pTVar2 = (TextureRectClass *)FUN_14025e990(param_1,pTVar4,0);\n  this = pTVar3;\n  if (pTVar2 != (TextureRectClass *)0x0) {\n    pTVar4 = pTVar2->vftablePtr;\n    (*pTVar4->deleting_destructor_for_DrawPrimitiveClass)(pTVar2,(uint)pTVar4);\n    this = pTVar2;\n  }\n  iVar1 = FUN_140271cd0(this);\n  fVar5 = (float)iVar1 / DAT_14084e0ac;\n  iVar1 = FUN_140271c80(this);\n  fVar6 = (float)iVar1 / DAT_14085d698;\n  pTVar2 = (TextureRectClass *)FUN_140769c58(0x90);\n  if (pTVar2 != (TextureRectClass *)0x0) {\n    pTVar3 = TextureRectClass::TextureRectClass(pTVar2,pTVar4,0,fVar5,fVar6,&this->vftablePtr);\n  }\n  if (this != (TextureRectClass *)0x0) {\n    (*this->vftablePtr->vfunction2)(this,(DrawPrimitiveClass *)pTVar4);\n  }\n  return pTVar3;\n}",
+  "fetched_at": "2026-04-26T17:54:52Z"
+}

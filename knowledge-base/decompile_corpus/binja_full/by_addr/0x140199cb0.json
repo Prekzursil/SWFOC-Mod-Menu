@@ -1,0 +1,7 @@
+{
+  "addr": "0x140199cb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140199cb8        void* i = *(arg1 + 0x120)\n140199cc9        while (i != arg1 + 0x118)\n140199d00        void* rax = *(i + 0x18)\n140199d04        i = *(i + 8)\n140199d0b        int64_t* rbx_1 = rax - 0x10\n140199d0f        if (rax == 0)\n140199d0f        rbx_1 = nullptr\n140199d16        char* j\n140199d16        if (rbx_1 != 0)\n140199d1e        j = (*(*rbx_1 + 0x20))(rbx_1)\n140199d24        if (rbx_1 == 0 || j == 0)\n140199d3a        label_140199d3a:\n140199d3a        (*(*rbx_1 + 0x30))(rbx_1)\n140199d29        while (j != &data_140a12650)\n140199d2b        j = *(j + 8)\n140199d32        if (j == 0)\n140199d32        goto label_140199d3a\n140199d7f        int32_t rbp_1 = 0\n140199d89        int32_t rdi_1 = 0\n140199d8c        int32_t rsi_3 = ((rbx_1[0x1b] - rbx_1[0x1a]) s>> 3).d\n140199d92        if (rsi_3 s> 0)\n140199da8        j = sub_140172d60(rbx_1, rdi_1, nullptr)\n140199dad        rdi_1 += 1\n140199daf        rbp_1 += *(j + 0xf8)\n140199db7        do while (rdi_1 s< rsi_3)\n140199db9        int64_t* rcx_4 = rbx_1[0x3e]\n140199dca        if (rcx_4 != 0)\n140199dcf        j = (*(*rcx_4 + 0x30))(rcx_4)\n140199dd5        if (j != 0)\n140199dd7        int64_t* rcx_5 = rbx_1[0x3e]\n140199de1        (*(*rcx_5 + 0x30))(rcx_5)\n140199d77        return ",
+  "fetched_at": "2026-04-26T17:24:41Z"
+}

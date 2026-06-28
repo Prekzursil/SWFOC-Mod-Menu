@@ -1,0 +1,7 @@
+{
+  "addr": "0x140264150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140264165        struct RefCountClass::ModelClass::VTable** result = operator new(0x150)\n14026416d        if (result == 0)\n140264191        return result\n140264182        return sub_140263760(result, arg1, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:31:20Z"
+}

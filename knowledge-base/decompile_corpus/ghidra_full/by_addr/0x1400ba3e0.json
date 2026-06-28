@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400ba3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400ba3e0(int param_1)\n\n{\n  undefined1 uVar1;\n  undefined8 ****ppppuVar2;\n  undefined8 ***local_28 [2];\n  undefined8 local_18;\n  ulonglong local_10;\n  \n  if (DAT_140a61f29 != '\\0') {\n    uVar1 = (undefined1)param_1;\n    if (param_1 != -1) {\n      uVar1 = FUN_140055650(&PTR_vftable_140a10b18,param_1);\n    }\n    local_28[0] = (undefined8 ****)0x0;\n    local_18 = 0;\n    local_10 = 7;\n    FUN_140200c00(local_28,L\"%2.2X\",uVar1);\n    ppppuVar2 = local_28;\n    if (7 < local_10) {\n      ppppuVar2 = (undefined8 ****)local_28[0];\n    }\n    FUN_140025760(\"Broadcasting LAN SaveGame Select [%ls]\\n\",ppppuVar2);\n    FUN_1403397c0(&DAT_140b2ba20,0xe,local_28);\n    DAT_140a11758 = param_1;\n    FUN_1400b9e60(param_1);\n    if (7 < local_10) {\n      if (0xfff < local_10 * 2 + 2) {\n        if (0x1f < (ulonglong)((longlong)local_28[0] + (-8 - (longlong)local_28[0][-1]))) {\n                    /* WARNING: Subroutine does not return */\n          FUN_1407711cc(local_28[0][-1],local_10 * 2 + 0x29);\n        }\n      }\n      thunk_FUN_1407864b8();\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:59:58Z"
+}

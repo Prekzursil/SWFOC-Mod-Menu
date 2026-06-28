@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407388e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceMovementBlockStatus * __thiscall\nSpaceMovementBlockStatus::scalar_deleting_destructor(SpaceMovementBlockStatus *this,uint param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: SpaceMovementBlockStatus::~SpaceMovementBlockStatus */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  plVar1 = (longlong *)this->offset_0x68;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))(plVar1,1);\n  }\n  plVar1 = (longlong *)this->offset_0x70;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))(plVar1,1);\n  }\n  if ((longlong *)this->offset_0x48 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)this->offset_0x48 + 8))();\n  }\n  if ((longlong *)this->offset_0x40 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)this->offset_0x40 + 8))();\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (SpaceMovementBlockStatus_vftable1 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  if (*(longlong **)&this->field_0x28 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x28 + 8))();\n  }\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x80);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:02:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f78c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    protected: virtual unsigned short const * __ptr64 __cdecl std::ctype<unsigned\n   short>::do_is(unsigned short const * __ptr64,unsigned short const * __ptr64,short * __ptr64)const\n   __ptr64\n    protected: virtual wchar_t const * __ptr64 __cdecl std::ctype<wchar_t>::do_is(wchar_t const *\n   __ptr64,wchar_t const * __ptr64,short * __ptr64)const __ptr64\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __thiscall do_is(void *this,wchar_t *param_1,wchar_t *param_2,short *param_3)\n\n{\n  _Getwctypes(param_1,param_2,param_3,(_Ctypevec *)((longlong)this + 0x10));\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:06Z"
+}

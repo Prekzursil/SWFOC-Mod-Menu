@@ -1,0 +1,7 @@
+{
+  "addr": "0x140568230",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056823a        int64_t* rdi = *(arg1 + 0x28)\n14056823e        int64_t* rbx = arg2\n140568249        if (rdi == 0 || arg2 == 0)\n14056824b        int64_t result\n14056824b        result.b = 0\n140568257        return result\n14056826c        if (arg2[0x69].b != 0xff && *(rdi + 0x33b) != 0xff)\n14056827e        void* rax_1 = (*(*rdi + 0x10))(rdi, 9)\n140568287        if (rax_1 != 0)\n140568290        void* rax_3\n140568290        if (rbx[0x69].b != 0xff)\n14056829b        rax_3 = *(*(rax_1 + 0x28) + 0xf0)\n1405682a5        if (rbx[0x69].b == 0xff || rax_3 == 0)\n1405682df        rbx = rbx\n1405682a7        int64_t* rax_4 = *(rax_3 + 0x148)\n1405682ba        if (rax_4 == 0 || rbx != rax_4[0x56])\n1405682d5        rax_4 = sub_140404fc0((*(*rbx + 0x10))(rbx, 0x16), *(rax_1 + 0x28) + 0x78)\n1405682dd        if (rax_4 != 0)\n1405682df        rbx = rax_4\n1405682df        rbx = rax_4\n1405682f4        void var_18\n1405682f4        sub_14020acd0(&var_18, &rdi[0xf], &rbx[0xf])\n140568330        return sub_14020af60(&var_18, rdi + 0x84, sub_140372560(rdi[0x53]) / 2f) != 1",
+  "fetched_at": "2026-04-26T17:34:33Z"
+}

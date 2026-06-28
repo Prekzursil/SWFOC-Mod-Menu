@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402043b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402043c4        int32_t rbx = *(arg1 + 0x4c)\n1402043c9        int64_t rdx = sx.q(*(arg1 + 0x14))\n1402043cd        int32_t r11 = 0\n1402043d3        uint32_t r10 = 0\n1402043d6        int32_t rbp = rdx.d + arg2\n1402043db        if (rbp s>= rbx)\n1402043dd        return 0\n1402043f1        char* r9_3 = (rdx s>> 3) + *(arg1 + 8)\n1402043f7        int32_t rcx_1 = rdx.d & 7\n1402043ff        if (rcx_1 != 0)\n140204401        uint32_t r10_1 = zx.d(*r9_3)\n140204405        r11 = 8 - rcx_1\n140204408        r9_3 = &r9_3[1]\n14020440e        if (arg2 s< 8 - rcx_1)\n14020440e        r11 = arg2\n140204412        r10 = r10_1 u>> rcx_1.b\n140204418        if (r11 != arg2)\n140204422        if (rbx - rdx.d - r11 s> 0x20)\n140204431        r10 |= *r9_3 << ((8 - rcx_1).b & 7)\n140204439        if (r11 s< arg2)\n14020443d        int32_t r8_3 = (8 - rcx_1) & 7\n14020444c        uint64_t i_1 = zx.q(((arg2 - r11 - 1) u>> 3) + 1)\n140204468        uint64_t i\n140204450        uint32_t rdx_1 = zx.d(*r9_3)\n140204454        r9_3 = &r9_3[1]\n140204458        char rcx_3 = r8_3.b\n14020445b        r8_3 += 8\n140204461        r10 |= rdx_1 << rcx_3\n140204464        i = i_1\n140204464        i_1 -= 1\n140204468        do while (i != 1)\n14020446f        *(arg1 + 0x14) = rbp\n14020447b        return zx.q(0xffffffff u>> (0x20 - arg2.b)) & zx.q(r10)",
+  "fetched_at": "2026-04-26T17:27:49Z"
+}

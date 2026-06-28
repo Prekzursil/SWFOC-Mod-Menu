@@ -1,0 +1,7 @@
+{
+  "addr": "0x140248d10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140248d10(longlong param_1,undefined8 param_2)\n\n{\n  int iVar1;\n  \n  FUN_1407b94a0(*(undefined8 *)(param_1 + 0x58),\"LuaThreadTable\",0xe);\n  FUN_1407b8e90(*(undefined8 *)(param_1 + 0x58),0xffffd8ef);\n  iVar1 = FUN_1407b9e00(*(undefined8 *)(param_1 + 0x58),0xffffffff);\n  if (iVar1 == 5) {\n    FUN_1407b95e0(*(undefined8 *)(param_1 + 0x58),param_2);\n    FUN_1407b9510(*(undefined8 *)(param_1 + 0x58));\n    FUN_1407b9a60(*(undefined8 *)(param_1 + 0x58),0xfffffffd);\n    FUN_1407b9ab0(*(undefined8 *)(param_1 + 0x58),0xfffffffe);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:53Z"
+}

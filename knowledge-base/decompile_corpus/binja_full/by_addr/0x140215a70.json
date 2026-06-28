@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215a70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140215a84        int32_t temp0\n140215a84        int32_t temp1\n140215a84        temp0:temp1 = sx.q(arg2)\n140215a85        int32_t* r8 = arg1\n140215a8b        int32_t r9_1 = not.d(arg3)\n140215a90        int32_t i_4 = (temp1 + (temp0 & 3)) s>> 2\n140215a95        if (i_4 s> 0)\n140215a97        uint64_t i_3 = zx.q(i_4)\n140215aff        uint64_t i\n140215aa0        int32_t rdx_2 = *r8\n140215aaa        r8 = &r8[1]\n140215abc        int32_t r9_3 = r9_1 u>> 8 ^ *(&data_140a14d20 + ((zx.q(rdx_2.b) ^ zx.q(r9_1.b)) << 2))\n140215ad2        int32_t r9_5 = r9_3 u>> 8 ^ *(&data_140a14d20 + ((zx.q((rdx_2 u>> 8).b) ^ zx.q(r9_3.b)) << 2))\n140215ae3        int32_t r9_7 = r9_5 u>> 8 ^ *(&data_140a14d20 + ((zx.q((rdx_2 u>> 0x10).b) ^ zx.q(r9_5.b)) << 2))\n140215af7        r9_1 = r9_7 u>> 8 ^ *(&data_140a14d20 + ((zx.q((zx.q(rdx_2) u>> 0x18).b) ^ zx.q(r9_7.b)) << 2))\n140215afb        i = i_3\n140215afb        i_3 -= 1\n140215aff        do while (i != 1)\n140215b01        int32_t i_5 = arg2 & 3\n140215b05        if (i_5 u> 0)\n140215b07        uint64_t i_2 = zx.q(i_5)\n140215b2d        uint64_t i_1\n140215b10        char rcx_9 = *r8\n140215b14        r8 += 1\n140215b25        r9_1 = r9_1 u>> 8 ^ *(&data_140a14d20 + ((zx.q(rcx_9) ^ zx.q(r9_1.b)) << 2))\n140215b29        i_1 = i_2\n140215b29        i_2 -= 1\n140215b2d        do while (i_1 != 1)\n140215b3a        return zx.q(not.d(r9_1))",
+  "fetched_at": "2026-04-26T17:28:29Z"
+}

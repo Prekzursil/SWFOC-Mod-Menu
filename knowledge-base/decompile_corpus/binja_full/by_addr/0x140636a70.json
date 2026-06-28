@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636a70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140636a7b        struct BehaviorClass::InfectionBehaviorClass::VTable** result = operator new(0x40)\n140636a86        if (result == 0)\n140636abe        return result\n140636a8b        sub_1404c32d0(result)\n140636a97        *result = &InfectionBehaviorClass::`vftable'{for `BehaviorClass'}\n140636aa1        result[1] = &InfectionBehaviorClass::`vftable'{for `RefCountClass'}\n140636aac        result[3] = &InfectionBehaviorClass::`vftable'{for `SignalListenerClass'}\n140636ab8        return result",
+  "fetched_at": "2026-04-26T17:00:35Z"
+}

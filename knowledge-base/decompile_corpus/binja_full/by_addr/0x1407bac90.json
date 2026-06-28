@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bac90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bac90        void* i = *(arg1 + 0x58)\n1407bac9e        if (i == *(arg1 + 0x80))\n1407bacce        *(arg1 + 0x8e) = 1\n1407bacd5        return i\n1407baca0        char rdx_1 = (*(i + 0x10)).b\n1407bacab        if ((rdx_1 & 1) == 0 && (rdx_1 & 2) != 0)\n1407bacb4        *(i + 0x18) = **(i + 0x20)\n1407bacb8        i -= 0x30\n1407bacc3        do while (i != *(arg1 + 0x80))\n1407bacc5        *(arg1 + 0x8e) = 1\n1407baccd        return i",
+  "fetched_at": "2026-04-26T17:33:16Z"
+}

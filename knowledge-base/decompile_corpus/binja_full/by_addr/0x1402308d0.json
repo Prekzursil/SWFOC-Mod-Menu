@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402308d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402308d7        int32_t* r8_1 = sx.q(arg3) * 0x1c + *(arg1 + 0x90)\n1402308e1        *arg2 = *r8_1\n1402308e7        arg2[1] = r8_1[1]\n1402308ee        arg2[2] = r8_1[2]\n1402308f5        arg2[3] = r8_1[3]\n1402308fc        arg2[4] = r8_1[4]\n140230903        arg2[5] = r8_1[5]\n14023090a        arg2[6] = r8_1[6]\n140230910        return arg2",
+  "fetched_at": "2026-04-26T17:29:44Z"
+}

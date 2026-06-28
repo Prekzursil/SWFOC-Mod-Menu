@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023c1f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023c1ff        bool cond:0 = arg1[0x16].b == 0\n14023c20d        *arg1 = &PacketClass::`vftable'{for `BitStreamClass'}\n14023c21c        arg1[0xa] = &PacketClass::`vftable'{for `MultiLinkedListMember'}\n14023c227        arg1[0xc] = &PacketClass::`vftable'{for `RefCountClass'}\n14023c22b        if (not(cond:0))\n14023c22d        int64_t rcx = arg1[0x15]\n14023c237        if (rcx != 0)\n14023c239        j_sub_1407864b8(rcx)\n14023c23e        arg1[0x15] = 0\n14023c249        arg1[0x16].b = 0\n14023c25b        arg1[0xc] = &RefCountClass::`vftable'{for `IRefCountClass'}\n14023c25f        sub_14020a820(&arg1[0xa])\n14023c268        sub_14001e870(&arg1[6])\n14023c271        sub_14001e870(&arg1[3])\n14023c27a        if ((arg2 & 1) != 0)\n14023c284        j_sub_1407864b8(arg1)\n14023c29b        return arg1",
+  "fetched_at": "2026-04-26T17:30:03Z"
+}

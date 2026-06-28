@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401dff70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401dff70(undefined8 param_1,undefined8 *param_2,undefined8 param_3)\n\n{\n  char cVar1;\n  int iVar2;\n  undefined8 local_res10;\n  \n  if (param_2[1] != 0) {\n    iVar2 = 0;\n    local_res10 = *(undefined8 *)*param_2;\n    while( true ) {\n      cVar1 = FUN_1401dc440(param_1,&local_res10,*param_2,param_3);\n      if (cVar1 != '\\x01') break;\n      iVar2 = iVar2 + 1;\n    }\n    if (0 < iVar2) {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:50:46Z"
+}

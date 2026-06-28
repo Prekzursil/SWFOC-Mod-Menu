@@ -1,0 +1,7 @@
+{
+  "addr": "0x140747530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nstd::codecvt<char,char,struct__Mbstatet>::vfunction10\n          (codecvt<char,char,struct__Mbstatet> *this,undefined8 param_1,longlong param_2,\n          longlong param_3,ulonglong param_4)\n\n{\n  ulonglong uVar1;\n  \n  uVar1 = param_3 - param_2;\n  if (0x7fffffff < (longlong)uVar1) {\n    uVar1 = 0x7fffffff;\n  }\n  if (uVar1 < param_4) {\n    param_4 = uVar1;\n  }\n  return param_4 & 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T18:05:12Z"
+}

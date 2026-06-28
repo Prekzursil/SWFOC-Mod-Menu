@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053d994",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nHideWhenFoggedBehaviorClass::vfunction1(HideWhenFoggedBehaviorClass *this,uint param_1)\n\n{\n  ~HideWhenFoggedBehaviorClass\n            ((HideWhenFoggedBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:34:50Z"
+}

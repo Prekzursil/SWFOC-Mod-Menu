@@ -1,0 +1,7 @@
+{
+  "addr": "0x140742548",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074255c        *arg1 = &std::numpunct<char>::`vftable'{for `std::locale::facet'}\n140742565        free(arg1[2])\n14074256e        free(arg1[4])\n140742577        free(arg1[5])\n140742583        *arg1 = &std::_Facet_base::`vftable'\n140742589        if ((arg2 & 1) != 0)\n140742593        j_sub_1407864b8(arg1)\n1407425a5        return arg1",
+  "fetched_at": "2026-04-26T17:29:23Z"
+}

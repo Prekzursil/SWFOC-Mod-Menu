@@ -1,0 +1,7 @@
+{
+  "addr": "0x140397780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140397795        int64_t rax_1 = (*(*arg1 + 0x10))(arg1, 0x16)\n140397798        int64_t r8 = *arg1\n1403977a6        int64_t* rax_2 = (*(r8 + 0x10))(arg1, 1, r8)\n1403977b2        if (rax_1 != 0 && rax_2 != 0)\n1403977b4        int64_t rdx_1 = *rax_2\n1403977c2        if ((*(rdx_1 + 0x230))(rax_2, rdx_1) != 0)\n1403977d1        float arg_8\n1403977d1        float arg_10\n1403977d1        int512_t entry_zmm2\n1403977d1        sub_140396850(arg1, &arg_8, &arg_10, entry_zmm2)\n1403977d6        float zmm0 = arg_8\n1403977dc        float zmm1 = arg_10\n1403977fd        return sqrtf(zmm0 * zmm0 + zmm1 * zmm1)\n1403977fe        void* rcx_3 = arg1[0x53]\n140397808        if (rcx_3 != 0)\n140397822        return Concurrency::details::SchedulerBase::OneShotStaticConstruction(rcx_3) __tailcall\n14039780a        int512_t result\n14039780a        result.o = zx.o(0)\n140397817        return result",
+  "fetched_at": "2026-04-26T17:23:46Z"
+}

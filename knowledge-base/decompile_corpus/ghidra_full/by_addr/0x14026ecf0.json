@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026ecf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DrawPrimitiveClass * __thiscall\nDrawPrimitiveClass::DrawPrimitiveClass\n          (DrawPrimitiveClass *this,undefined4 param_2,undefined4 param_3,undefined4 param_4,\n          undefined4 param_5)\n\n{\n  this->vftablePtr = &vftable;\n  FUN_1401f92f0(&this->DrawPrimitiveClass_data);\n  *(undefined4 *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x10 + 4) = param_2;\n  *(undefined4 *)&(this->DrawPrimitiveClass_data).offset_0x18 = param_3;\n  *(undefined4 *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x18 + 4) = param_4;\n  (this->DrawPrimitiveClass_data).offset_0x20 = param_5;\n  *(undefined4 *)&(this->DrawPrimitiveClass_data).offset_0x10 = 2;\n  (this->DrawPrimitiveClass_data).offset_0x24 = 0x3f800000;\n  (this->DrawPrimitiveClass_data).offset_0x28 = 1;\n  (this->DrawPrimitiveClass_data).offset_0x30 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:19:15Z"
+}

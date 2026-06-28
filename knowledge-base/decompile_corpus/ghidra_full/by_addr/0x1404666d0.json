@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404666d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStoryEventObjectiveTimeoutClass::vfunction3\n          (StoryEventObjectiveTimeoutClass *this,int param_1,undefined8 *param_2)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  double dVar3;\n  \n  if (param_1 == 0) {\n    plVar1 = (longlong *)*param_2;\n    if (0xf < (ulonglong)plVar1[3]) {\n      plVar1 = (longlong *)*plVar1;\n    }\n    dVar3 = (double)FUN_1407857c4(plVar1);\n    *(float *)&this[1].SignalGeneratorClass_data.offset_0x8 = (float)dVar3;\n    return;\n  }\n  if (param_1 == 1) {\n    plVar1 = (longlong *)*param_2;\n    if (&this[1].StoryEventClass_data != (StoryEventClass_data *)plVar1) {\n      plVar2 = plVar1;\n      if (0xf < (ulonglong)plVar1[3]) {\n        plVar2 = (longlong *)*plVar1;\n      }\n      FUN_140022730(&this[1].StoryEventClass_data,plVar2,plVar1[2]);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:13Z"
+}

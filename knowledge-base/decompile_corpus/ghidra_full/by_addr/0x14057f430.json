@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057f430",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14057f430(longlong param_1,undefined8 param_2)\n\n{\n  longlong *plVar1;\n  char cVar2;\n  longlong lVar3;\n  int iVar4;\n  \n  plVar1 = *(longlong **)(param_1 + 0x60);\n  if ((plVar1 != (longlong *)0x0) && ((char)plVar1[0x6f] != -1)) {\n    lVar3 = (**(code **)(*plVar1 + 0x10))(plVar1,0x46);\n    if (lVar3 == 0) {\n      FUN_140248190(param_2,\n                    \"GameObjectWrapper::Reset_Ability_Counter -- could not obtain a pointer to AbilityCountdownBehaviorClass\"\n                   );\n      return 0;\n    }\n    iVar4 = 1;\n    do {\n      cVar2 = FUN_14042f8e0(lVar3,iVar4);\n      if (cVar2 == '\\0') {\n        FUN_14042fa70(lVar3,iVar4,1);\n      }\n      iVar4 = iVar4 + 1;\n    } while (iVar4 < 0x4d);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:41:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140162980",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14016298e        struct RefCountClass::alRenderable::VTable** rax = operator new(0x2d0)\n140162993        struct alRenderable::alParticles::VTable** result = nullptr\n140162998        if (rax != 0)\n1401629a9        result = sub_14015e2d0(rax, 0, *(arg1 + 0x118))\n1401629b3        void* rcx_1 = *(*(arg1 + 0x118) + 0x1110)\n1401629bd        int32_t rax_3\n1401629bd        if (rcx_1 == 0)\n1401629c7        rax_3 = -1\n1401629bf        rax_3 = *(rcx_1 + 0x410)\n1401629cc        *(result + 0x25c) = rax_3\n1401629d9        void* rcx_2 = *(*(arg1 + 0x118) + 0x1108)\n1401629e3        if (rcx_2 == 0)\n1401629fa        result[0x4b].d = 0xffffffff\n140162a0c        return result\n1401629eb        result[0x4b].d = *(rcx_2 + 0x410)\n1401629f9        return result",
+  "fetched_at": "2026-04-26T17:22:42Z"
+}

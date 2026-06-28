@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076f97c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl FH4::HandlerMap4::HandlerMap4(struct FH4::TryBlockMapEntry4 const *\n   __ptr64,unsigned __int64,int) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nHandlerMap4 * __thiscall\nFH4::HandlerMap4::HandlerMap4\n          (HandlerMap4 *this,TryBlockMapEntry4 *param_1,__uint64 param_2,int param_3)\n\n{\n  byte bVar1;\n  uint uVar2;\n  byte *pbVar3;\n  longlong lVar4;\n  \n  this[0x18] = (HandlerMap4)0x0;\n  *(undefined8 *)(this + 0x1c) = 0;\n  *(undefined8 *)(this + 0x24) = 0;\n  *(undefined8 *)(this + 0x30) = 0;\n  *(undefined8 *)(this + 0x38) = 0;\n  *(__uint64 *)(this + 0x40) = param_2;\n  *(int *)(this + 0x48) = param_3;\n  if (*(int *)(param_1 + 0xc) == 0) {\n    *(undefined4 *)this = 0;\n  }\n  else {\n    pbVar3 = (byte *)((longlong)*(int *)(param_1 + 0xc) + param_2);\n    *(byte **)(this + 8) = pbVar3;\n    bVar1 = (&DAT_1408d0c48)[*pbVar3 & 0xf];\n    lVar4 = (longlong)pbVar3 - (longlong)(char)(&DAT_1408d0c38)[*pbVar3 & 0xf];\n    uVar2 = *(uint *)(lVar4 + -4);\n    *(longlong *)(this + 8) = lVar4;\n    *(uint *)this = uVar2 >> (bVar1 & 0x1f);\n    *(longlong *)(this + 0x10) = lVar4;\n    DecompHandler(this);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:11:31Z"
+}

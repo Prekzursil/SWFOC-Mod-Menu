@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406470a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406470b3        *arg1 = &StunnableBehaviorClass::`vftable'{for `BehaviorClass'}\n1406470c0        arg1[1] = &StunnableBehaviorClass::`vftable'{for `RefCountClass'}\n1406470cb        arg1[3] = &StunnableBehaviorClass::`vftable'{for `SignalListenerClass'}\n1406470cf        sub_1404c3310(arg1)\n1406470d7        if ((arg2 & 1) != 0)\n1406470e1        j_sub_1407864b8(arg1)\n1406470f3        return arg1",
+  "fetched_at": "2026-04-26T17:04:03Z"
+}

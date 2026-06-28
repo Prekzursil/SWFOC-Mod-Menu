@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c0b20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c0b45        int32_t rsi = arg3.d\n1407c0b48        uint64_t rdi = zx.q(1 << arg3.b)\n1407c0b51        if (arg3.d s> 0x18)\n1407c0b61        sub_1407bad30(arg1, \"table overflow\", arg3)\n1407c0b61        noreturn\n1407c0bec        if (rsi != 0)\n1407c0b7b        *(arg2 + 0x20) = sub_1407bf7e0(arg1, 0, 0, (rdi * 5).d << 3)\n1407c0b7f        int64_t i_1 = sx.q(rdi.d)\n1407c0b84        if (rdi.d s> 0)\n1407c0b89        int64_t rax_1 = 0\n1407c0bb3        int64_t i\n1407c0b94        rax_1 += 0x28\n1407c0b98        *(*(arg2 + 0x20) + rax_1 - 8) = 0\n1407c0ba1        *(rax_1 + *(arg2 + 0x20) - 0x28) = 0\n1407c0baa        *(*(arg2 + 0x20) + rax_1 - 0x18) = 0\n1407c0baf        i = i_1\n1407c0baf        i_1 -= 1\n1407c0bb3        do while (i != 1)\n1407c0bfc        *(arg2 + 0x20) = arg1[4] + 0xe8\n1407c0bca        int64_t result = *(arg2 + 0x20)\n1407c0bce        *(arg2 + 0xb) = rsi.b\n1407c0bdf        *(arg2 + 0x28) = result + sx.q((rdi - 1).d) * 0x28\n1407c0be9        return result",
+  "fetched_at": "2026-04-26T17:33:33Z"
+}

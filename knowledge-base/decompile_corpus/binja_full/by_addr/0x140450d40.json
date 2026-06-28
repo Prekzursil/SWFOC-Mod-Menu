@@ -1,0 +1,7 @@
+{
+  "addr": "0x140450d40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140450d54        void* rcx = arg1[0x75]\n140450d60        if (rcx == 0)\n140450d60        goto label_140450daf\n140450d77        if (((arg1[0x77] - rcx) & 0xfffffffffffffffc) u< 0x1000)\n140450d77        goto label_140450d95\n140450d79        void* r8_1 = *(rcx - 8)\n140450d8c        if (rcx - r8_1 - 8 u<= 0x1f)\n140450d92        rcx = r8_1\n140450d95        label_140450d95:\n140450d95        j_sub_1407864b8(rcx)\n140450d9a        __builtin_memset(&arg1[0x75], 0, 0x18)\n140450daf        label_140450daf:\n140450daf        void* rcx_3 = arg1[0x72]\n140450db9        if (rcx_3 == 0)\n140450db9        goto label_140450e0b\n140450dd0        if (((arg1[0x74] - rcx_3) & 0xfffffffffffffffc) u< 0x1000)\n140450dd0        goto label_140450dea\n140450dd2        void* r8_2 = *(rcx_3 - 8)\n140450de5        if (rcx_3 - r8_2 - 8 u<= 0x1f)\n140450de7        rcx_3 = r8_2\n140450dea        label_140450dea:\n140450dea        j_sub_1407864b8(rcx_3)\n140450def        __builtin_memset(&arg1[0x72], 0, 0x18)\n140450e0b        label_140450e0b:\n140450e0b        sub_140066600(&arg1[0x6f])\n140450e17        sub_140066600(&arg1[0x6c])\n140450e1f        sub_140450600(arg1)\n140450e28        if ((arg2 & 1) != 0)\n140450e32        j_sub_1407864b8(arg1)\n140450e49        return arg1\n140450e4a        _invalid_parameter_noinfo_noreturn()\n140450e4a        noreturn",
+  "fetched_at": "2026-04-26T17:27:39Z"
+}

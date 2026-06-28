@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403057b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403057b0(longlong param_1,BaseComponentClass *param_2)\n\n{\n  BaseComponentClass *this;\n  longlong *plVar1;\n  longlong lVar2;\n  \n  plVar1 = (longlong *)FUN_14034c770(param_2,0);\n  if (plVar1 != (longlong *)0x0) {\n    lVar2 = (**(code **)(*plVar1 + 0x10))(plVar1,0x2b);\n    if (lVar2 == 0) {\n      return;\n    }\n    FUN_140524a80(lVar2,plVar1);\n  }\n  *(undefined4 *)(param_1 + 0x20b4) = 0;\n  *(undefined8 *)(param_1 + 0x20b8) = 0;\n  plVar1 = (longlong *)FUN_140347b50(0x210);\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 0x78))(plVar1,1);\n  }\n  this = *(BaseComponentClass **)(param_1 + 0x20d8);\n  if (param_2 == this) {\n    if (this != (BaseComponentClass *)0x0) {\n      BaseComponentClass::~BaseComponentClass(this);\n      thunk_FUN_1407864b8(this,200);\n    }\n    *(undefined8 *)(param_1 + 0x20d8) = 0;\n    *(undefined8 *)(param_1 + 0x21a0) = 0;\n  }\n  else {\n    FUN_140353ad0(param_2,0,0);\n    (*param_2->vftablePtr->vfunction16)(param_2,'\\x01');\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:30Z"
+}

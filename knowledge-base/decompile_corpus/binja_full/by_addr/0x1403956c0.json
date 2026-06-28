@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403956c0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_resolve_parent_owner",
+  "body": "1403956e6        TEB* gsbase\n1403956e6        void* rdi = *(gsbase->ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))\n1403956f3        if (data_140b2c3d8 s> *(rdi + 0xd4))\n1403957ac        _Init_thread_header(&data_140b2c3d8)\n1403957b8        if (data_140b2c3d8 == 0xffffffff)\n1403957c5        sub_1404ad870(&data_140b2c3a8)\n1403957d1        atexit(&data_1407f0580)\n1403957dd        _Init_thread_footer(&data_140b2c3d8)\n140395702        if (data_140b2c410 s> *(rdi + 0xd4))\n1403957ee        _Init_thread_header(&data_140b2c410)\n1403957fa        if (data_140b2c410 == 0xffffffff)\n140395807        sub_1404ad870(&data_140b2c3e0)\n140395813        atexit(&data_1407f0590)\n14039581f        _Init_thread_footer(&data_140b2c410)\n140395708        int64_t rax_3 = *(arg1 + 0xb8)\n140395712        if (rax_3 != 0)\n140395727        return rax_3 + 0x68\n140395728        int32_t rdx_1 = *(arg1 + 0x58)\n14039572e        if (rdx_1 != 0xffffffff && *(*(sub_140294bc0(&data_140a16fd0, rdx_1) + 0x68) + 0x108) == 0)\n140395749        int32_t rcx_1 = *(arg1 + 0x58)\n14039575b        data_140b2c3e0 = 0x3f800000\n140395763        data_140b2c3e4 = rcx_1\n140395778        return &data_140b2c3e0\n14039578d        data_140b2c3a8 = (zx.o(0)).d\n140395795        data_140b2c3ac = 0xffffffff\n1403957a4        return &data_140b2c3a8",
+  "fetched_at": "2026-04-26T16:43:23Z"
+}

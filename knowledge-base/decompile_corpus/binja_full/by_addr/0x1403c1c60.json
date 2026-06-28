@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c1c60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c1c6b        struct BehaviorClass::SelectBehaviorClass::VTable** result = operator new(0x58)\n1403c1c76        if (result == 0)\n1403c1cd7        return result\n1403c1c7b        sub_1404c32d0(result)\n1403c1c97        *result = &SelectBehaviorClass::`vftable'{for `BehaviorClass'}\n1403c1ca1        result[1] = &SelectBehaviorClass::`vftable'{for `RefCountClass'}\n1403c1cac        result[3] = &SelectBehaviorClass::`vftable'{for `SignalListenerClass'}\n1403c1cb2        *(result + 0x44) = 0\n1403c1cb6        *(result + 0x4c) = 0\n1403c1cbc        result[8].b = 0\n1403c1cc0        result[0xa].d = 0x3d99999a\n1403c1cc7        *(result + 0x54) = 1f / 0.075000003f\n1403c1cd1        return result",
+  "fetched_at": "2026-04-26T17:24:39Z"
+}

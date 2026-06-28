@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056c2b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HeroClashManagerClass * __thiscall\nHeroClashManagerClass::HeroClashManagerClass(HeroClashManagerClass *this)\n\n{\n  longlong lVar1;\n  \n  this->vftablePtr = &vftable;\n  (this->HeroClashManagerClass_data).offset_0x0 = 0;\n  (this->HeroClashManagerClass_data).offset_0x8 = 0;\n  lVar1 = FUN_140769c58(0x18);\n  *(longlong *)lVar1 = lVar1;\n  *(longlong *)(lVar1 + 8) = lVar1;\n  (this->HeroClashManagerClass_data).offset_0x0 = lVar1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:40:04Z"
+}

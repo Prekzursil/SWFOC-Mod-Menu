@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dcc90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLightningEffectClass::vfunction14_for_RefCountClass(LightningEffectClass *this,longlong *param_1)\n\n{\n  *(undefined1 *)((longlong)&(this->LightningEffectClass_data).offset_0x9c + 3) = 1;\n  *(undefined8 *)&(this->LightningEffectClass_data).offset_0xd8 = 0;\n                    /* WARNING: Could not recover jumptable at 0x0001407dccb2. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*param_1 + 0xd8))(param_1,this,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:58:57Z"
+}

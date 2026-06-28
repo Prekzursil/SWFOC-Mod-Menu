@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037ddc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037ddd8        void* rsi = *(arg1 + 0x18)\n14037dde6        int64_t** rbx = *(rsi + 0x1a98)\n14037ddf4        char* result\n14037ddf4        if (rbx == *(rsi + 0x1aa0))\n14037de34        label_14037de34:\n14037de34        result.b = 0\n14037ddf6        while (true)\n14037ddf6        int64_t* rdi_1 = *rbx\n14037ddfc        if (rdi_1 != 0)\n14037de04        result = (*(*rdi_1 + 0x10))(rdi_1)\n14037de0a        void* r8_1 = arg2 - result\n14037de21        uint32_t i\n14037de21        uint32_t rdx\n14037de10        rdx = zx.d(*result)\n14037de13        i = zx.d(*(result + r8_1))\n14037de1a        if (rdx != i)\n14037de1a        break\n14037de1c        result = &result[1]\n14037de21        do while (i != 0)\n14037de25        if (rdx - i == 0)\n14037de5f        (*(*rdi_1 + 0x78))(rdi_1, *(arg1 + 0x10), 3)\n14037de65        if (arg3 != 0)\n14037de6d        sub_14037bb10(arg1, rdi_1)\n14037de72        result.b = 1\n14037de74        break\n14037de27        rbx = &rbx[1]\n14037de32        if (rbx == *(rsi + 0x1aa0))\n14037de32        goto label_14037de34\n14037de4e        return result",
+  "fetched_at": "2026-04-26T17:19:29Z"
+}

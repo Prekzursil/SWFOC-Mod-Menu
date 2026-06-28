@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062ed50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TeamTargetingBehaviorClass * __thiscall\nTeamTargetingBehaviorClass::vfunction4(TeamTargetingBehaviorClass *this,int param_1)\n\n{\n  TeamTargetingBehaviorClass *pTVar1;\n  \n  pTVar1 = (TeamTargetingBehaviorClass *)0x0;\n  if (param_1 == 9) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T17:32:52Z"
+}

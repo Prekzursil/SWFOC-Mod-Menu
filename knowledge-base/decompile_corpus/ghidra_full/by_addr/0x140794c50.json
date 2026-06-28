@@ -1,0 +1,7 @@
+{
+  "addr": "0x140794c50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    bool __cdecl stream_is_at_end_of_file_nolock(class __crt_stdio_stream)\n   \n   Library: Visual Studio 2019 Release */\n\nbool __cdecl stream_is_at_end_of_file_nolock(longlong *param_1)\n\n{\n  bool bVar1;\n  BOOL BVar2;\n  HANDLE hFile;\n  LARGE_INTEGER local_res8;\n  LARGE_INTEGER local_res10 [3];\n  \n  if ((*(uint *)((longlong)param_1 + 0x14) >> 3 & 1) == 0) {\n    if (((((*(uint *)((longlong)param_1 + 0x14) & 0xc0) == 0) || (*param_1 != param_1[1])) &&\n        (hFile = (HANDLE)_get_osfhandle((int)param_1[3]), hFile != (HANDLE)0xffffffffffffffff)) &&\n       ((BVar2 = SetFilePointerEx(hFile,(LARGE_INTEGER)0x0,local_res10,1), BVar2 != 0 &&\n        (BVar2 = GetFileSizeEx(hFile,&local_res8), BVar2 != 0)))) {\n      return local_res10[0].QuadPart == local_res8.QuadPart;\n    }\n    bVar1 = false;\n  }\n  else {\n    bVar1 = true;\n  }\n  return bVar1;\n}",
+  "fetched_at": "2026-04-26T18:53:11Z"
+}

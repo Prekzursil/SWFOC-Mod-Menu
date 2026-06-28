@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c3310",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall BehaviorClass::~BehaviorClass(BehaviorClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (BehaviorClass_vftable2 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (BehaviorClass_vftable1 *)&RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:26Z"
+}

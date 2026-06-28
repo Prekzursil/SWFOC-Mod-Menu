@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403acf20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MoveToPositionEventClass * __thiscall\nSetupPhaseMoveEventClass::scalar_deleting_destructor(SetupPhaseMoveEventClass *this,uint param_1)\n\n{\n  DynamicVectorClass<int>::~DynamicVectorClass<int>\n            ((DynamicVectorClass<int> *)&(this->ScheduledEventClass_data).offset_0x8);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (SetupPhaseMoveEventClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x60);\n  }\n  return (MoveToPositionEventClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:33:20Z"
+}

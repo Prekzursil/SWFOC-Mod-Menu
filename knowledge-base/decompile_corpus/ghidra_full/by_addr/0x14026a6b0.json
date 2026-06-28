@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026a6b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14026a6b0(longlong param_1,char param_2)\n\n{\n  char cVar1;\n  DWORD DVar2;\n  longlong lVar3;\n  \n  lVar3 = *(longlong *)(param_1 + 0x38) - *(longlong *)(param_1 + 0x30);\n  lVar3 = SUB168(SEXT816(-0x3cf3cf3cf3cf3cf3) * SEXT816(lVar3),8) + lVar3;\n  if (lVar3 >> 6 != lVar3 >> 0x3f) {\n    *(longlong *)(param_1 + 0x38) = *(longlong *)(param_1 + 0x30);\n  }\n  lVar3 = *(longlong *)(param_1 + 0x20) - *(longlong *)(param_1 + 0x18);\n  lVar3 = SUB168(SEXT816(-0x3cf3cf3cf3cf3cf3) * SEXT816(lVar3),8) + lVar3;\n  if (lVar3 >> 6 != lVar3 >> 0x3f) {\n    *(longlong *)(param_1 + 0x20) = *(longlong *)(param_1 + 0x18);\n  }\n  DVar2 = GetCurrentThreadId();\n  if ((DVar2 != DAT_140a155d0) || (DAT_140a62740 == '\\0')) {\n    cVar1 = FUN_14026c1e0(param_1,*(undefined4 *)(param_1 + 0xe8),*(undefined4 *)(param_1 + 0xec),0)\n    ;\n    if (cVar1 != '\\0') {\n      *(undefined8 *)(param_1 + 0x470) = 0;\n      FUN_14013e3e0(*(undefined8 *)(param_1 + 0xb8),0,param_1 + 0x470);\n      if (*(longlong *)(param_1 + 0x470) != 0) {\n        if (param_2 != '\\0') {\n          FUN_14076c430(*(undefined8 *)(*(longlong *)(param_1 + 0x470) + 8),0,\n                        (longlong)(*(int *)(param_1 + 0xec) * *(int *)(param_1 + 0xe8) * 4));\n        }\n        return 1;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:18:35Z"
+}

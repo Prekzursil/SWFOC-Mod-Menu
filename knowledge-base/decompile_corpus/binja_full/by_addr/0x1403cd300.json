@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403cd300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403cd312        struct RefCountClass::EventClass::VTable** rax = operator new(0x158)\n1403cd31a        struct RefCountClass::EventClass::VTable** rbx\n1403cd31a        if (rax == 0)\n1403cd329        rbx = nullptr\n1403cd324        rbx = sub_1404b4210(rax)\n1403cd343        sub_1404b5400(rbx, *(arg1 + 0x2b74), *(arg1 + 0x2b78), data_140b27940)\n1403cd352        sub_1403b01f0(&data_140b2ed18, rbx)\n1403cd35c        *(arg1 + 0x2b70) = 0\n1403cd363        *(arg1 + 0x2b74) = 0x3fffff\n1403cd36d        *(arg1 + 0x2b78) = 0x3fffff\n1403cd377        int64_t* rax_2 = sub_140347b50(0x3b9)\n1403cd382        char result = sub_14034ce60(rax_2)\n1403cd389        if (result != 0)\n1403cd3b0        return result\n1403cd38b        int64_t r8_1 = *rax_2\n1403cd38e        int64_t rdx_2\n1403cd38e        rdx_2.b = 1\n1403cd393        (*(r8_1 + 0x80))(rax_2, rdx_2, r8_1)\n1403cd39a        int64_t r8_2 = *rax_2\n1403cd39d        int64_t rdx_3\n1403cd39d        rdx_3.b = 1\n1403cd3a2        return (*(r8_2 + 0x78))(rax_2, rdx_3, r8_2)",
+  "fetched_at": "2026-04-26T17:24:51Z"
+}

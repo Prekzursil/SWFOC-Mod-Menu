@@ -1,0 +1,7 @@
+{
+  "addr": "0x140452650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nStoryEventEnterClass::vfunction11(StoryEventEnterClass *this,undefined8 param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  int iVar4;\n  ulonglong in_RAX;\n  undefined8 *puVar5;\n  undefined4 extraout_var;\n  undefined8 *_Buf1;\n  void *_Buf2;\n  ulonglong uVar6;\n  \n  if (*(int *)((longlong)&(this->StoryEventClass_data).offset_0x20 + 4) == 0x3e) {\n    lVar1 = *(longlong *)&this[1].SignalGeneratorClass_data;\n    uVar6 = this[1].SignalGeneratorClass_data.offset_0x8 - lVar1 >> 5;\n    if (uVar6 != 0) {\n      lVar2 = *(longlong *)(param_2 + 0x298);\n      uVar3 = *(ulonglong *)(lVar2 + 0x110);\n      in_RAX = 0;\n      do {\n        _Buf2 = (void *)(lVar2 + 0xf8);\n        puVar5 = (undefined8 *)(in_RAX * 0x20 + lVar1);\n        if (0xf < uVar3) {\n          _Buf2 = *(void **)(lVar2 + 0xf8);\n        }\n        _Buf1 = puVar5;\n        if (0xf < (ulonglong)puVar5[3]) {\n          _Buf1 = (undefined8 *)*puVar5;\n        }\n        if (puVar5[2] == *(size_t *)(lVar2 + 0x108)) {\n          iVar4 = memcmp(_Buf1,_Buf2,puVar5[2]);\n          if (iVar4 == 0) {\n            return CONCAT71((int7)(CONCAT44(extraout_var,iVar4) >> 8),1);\n          }\n        }\n        in_RAX = (ulonglong)((int)in_RAX + 1);\n      } while (in_RAX < uVar6);\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:55:28Z"
+}

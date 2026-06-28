@@ -1,0 +1,7 @@
+{
+  "addr": "0x140749270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    protected: void __cdecl std::numpunct<unsigned short>::_Getvals<unsigned short>(unsigned\n   short,struct lconv const * __ptr64,struct _Cvtvec) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __thiscall\nstd::numpunct<unsigned_short>::_Getvals<unsigned_short>\n          (numpunct<unsigned_short> *this,ushort param_1,lconv *param_2,_Cvtvec *param_3)\n\n{\n  char local_48 [8];\n  wchar_t local_40 [4];\n  mbstate_t local_38 [4];\n  \n  local_40[0] = L'\\0';\n  local_38[0] = 0;\n  local_38[1] = 0;\n  local_48[0] = *param_2->decimal_point;\n  _Mbrtowc(local_40,local_48,1,local_38,param_3);\n  *(wchar_t *)&this[1]._Crt_new_delete = local_40[0];\n  local_40[0] = L'\\0';\n  local_38[0] = 0;\n  local_38[1] = 0;\n  local_48[0] = *param_2->thousands_sep;\n  _Mbrtowc(local_40,local_48,1,local_38,param_3);\n  *(wchar_t *)&this[1]._Crt_new_delete.field_0x2 = local_40[0];\n  return;\n}",
+  "fetched_at": "2026-04-26T18:05:41Z"
+}

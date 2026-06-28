@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a110(void)\n\n{\n  BattlefieldModifierAbilityClass *this;\n  \n  this = (BattlefieldModifierAbilityClass *)FUN_140769c58(0x198);\n  if (this != (BattlefieldModifierAbilityClass *)0x0) {\n    BattlefieldModifierAbilityClass::BattlefieldModifierAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:33Z"
+}

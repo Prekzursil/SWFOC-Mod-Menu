@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d6420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDynamicVectorRefClass<class_ParameterClass*___ptr64>::\n~DynamicVectorRefClass<class_ParameterClass*___ptr64>\n          (DynamicVectorRefClass<class_ParameterClass*___ptr64> *this)\n\n{\n  FUN_14029c770();\n  this->vftablePtr = &vftable;\n  FUN_14029c770(this);\n  DynamicVectorClass<class_ParameterClass*___ptr64>::\n  ~DynamicVectorClass<class_ParameterClass*___ptr64>\n            ((DynamicVectorClass<class_ParameterClass*___ptr64> *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:58:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140450ab0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_DynamicVectorClass<class_StoryEventClass*___ptr64>_> * __thiscall\nDynamicVectorClass<class_DynamicVectorClass<class_StoryEventClass*___ptr64>_>::\nscalar_deleting_destructor\n          (DynamicVectorClass<class_DynamicVectorClass<class_StoryEventClass*___ptr64>_> *this,\n          ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       DynamicVectorClass<class_DynamicVectorClass<class_StoryEventClass*___ptr64>_>::~DynamicVectorClass<class_DynamicVectorClass<class_StoryEventClass*___ptr64>_>\n                        */\n  this->vftablePtr = &vftable;\n  FUN_140326b80();\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:55:05Z"
+}

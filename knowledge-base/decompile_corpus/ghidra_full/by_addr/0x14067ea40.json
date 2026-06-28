@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067ea40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_14067ea40(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  bool bVar3;\n  bool bVar4;\n  float fVar5;\n  float fVar6;\n  float local_res10 [2];\n  float local_res20 [2];\n  float local_28;\n  float local_24 [7];\n  \n  if ((((param_2 != 0) && (param_3 != 0)) && (lVar1 = *(longlong *)(param_2 + 0x298), lVar1 != 0))\n     && (lVar2 = *(longlong *)(param_3 + 0x298), lVar2 != 0)) {\n    if (lVar1 == lVar2) {\n      return 1;\n    }\n    if (*(int *)(lVar1 + 0x16a0) == *(int *)(lVar2 + 0x16a0)) {\n      FUN_140396850(param_2,local_24,local_res20);\n      FUN_140396850(param_3,local_res10,&local_28);\n      fVar5 = (float)FUN_140371b10(lVar1);\n      fVar6 = fVar5 * DAT_1408007e8 * DAT_1408007c0;\n      fVar5 = (float)FUN_140371b10();\n      fVar5 = fVar5 * DAT_1408007e8 * DAT_1408007c0;\n      if ((fVar5 + local_res10[0] < local_24[0]) || (fVar5 + local_28 < local_res20[0])) {\n        bVar3 = false;\n      }\n      else {\n        bVar3 = true;\n      }\n      if ((fVar6 + local_24[0] < local_res10[0]) || (fVar6 + local_res20[0] < local_28)) {\n        bVar4 = false;\n      }\n      else {\n        bVar4 = true;\n      }\n      if ((bVar3) && (bVar4)) {\n        return 1;\n      }\n    }\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e9940",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_player_type_mgr_ctor",
+  "body": "\nTheAIPlayerTypeManagerClass * __thiscall\nTheAIPlayerTypeManagerClass::TheAIPlayerTypeManagerClass(TheAIPlayerTypeManagerClass *this)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  \n  this->vftablePtr = &vftable;\n  *(undefined4 *)&(this->Singleton<class_TheAIPlayerTypeManagerClass>).field_0x4 = 0;\n  *(undefined1 *)&this->Singleton<class_TheAIPlayerTypeManagerClass> = 0;\n  (this->TheAIPlayerTypeManagerClass_data).offset_0x0 = 0;\n  (this->TheAIPlayerTypeManagerClass_data).offset_0x8 = 0;\n  lVar2 = FUN_140769c58(0x38);\n  puVar1 = &(this->TheAIPlayerTypeManagerClass_data).offset_0x10;\n  *(longlong *)lVar2 = lVar2;\n  *(longlong *)(lVar2 + 8) = lVar2;\n  (this->TheAIPlayerTypeManagerClass_data).offset_0x0 = lVar2;\n  lVar2 = (this->TheAIPlayerTypeManagerClass_data).offset_0x0;\n  *puVar1 = 0;\n  (this->TheAIPlayerTypeManagerClass_data).offset_0x18 = 0;\n  (this->TheAIPlayerTypeManagerClass_data).offset_0x20 = 0;\n  (this->TheAIPlayerTypeManagerClass_data).offset_0x28 = 7;\n  (this->TheAIPlayerTypeManagerClass_data).offset_0x30 = 8;\n  *(undefined4 *)&(this->Singleton<class_TheAIPlayerTypeManagerClass>).field_0x4 = 0x3f800000;\n  FUN_140048250(puVar1,0x10,lVar2);\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:46Z"
+}

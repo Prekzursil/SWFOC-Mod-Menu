@@ -1,0 +1,7 @@
+{
+  "addr": "0x140533490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall SpaceRetreatCoordinatorClass::vfunction14(void)\n\n{\n  return DAT_140b26f0c;\n}",
+  "fetched_at": "2026-04-26T18:29:36Z"
+}

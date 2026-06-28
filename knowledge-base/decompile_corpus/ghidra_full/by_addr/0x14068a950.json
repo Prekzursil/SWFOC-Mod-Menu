@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a950",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a950(void)\n\n{\n  InfectionAbilityClass *this;\n  \n  this = (InfectionAbilityClass *)FUN_140769c58(0x1e8);\n  if (this != (InfectionAbilityClass *)0x0) {\n    InfectionAbilityClass::InfectionAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:08Z"
+}

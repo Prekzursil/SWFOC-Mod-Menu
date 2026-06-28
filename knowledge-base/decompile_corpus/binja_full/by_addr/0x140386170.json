@@ -1,0 +1,7 @@
+{
+  "addr": "0x140386170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140386170        float zmm2 = *arg1\n14038617a        float zmm1 = *arg2\n140386186        if (not(0f <= zmm2))\n140386188        zmm2 = zmm2 + 360f\n14038618f        if (not(0f <= zmm1))\n140386191        zmm1 = zmm1 + 360f\n1403861b0        int64_t result\n1403861b0        if (not(9.99999975e-05f <= zmm2 - zmm1) && not(9.99999975e-05f <= zmm1 - zmm2))\n1403861b2        zmm2 = arg1[1]\n1403861ba        zmm1 = arg2[1]\n1403861bf        if (not(0f <= zmm2))\n1403861c1        zmm2 = zmm2 + 360f\n1403861c8        if (not(0f <= zmm1))\n1403861ca        zmm1 = zmm1 + 360f\n1403861e1        if (not(9.99999975e-05f <= zmm2 - zmm1) && not(9.99999975e-05f <= zmm1 - zmm2))\n1403861e3        zmm2 = arg1[2]\n1403861eb        zmm1 = arg2[2]\n1403861f0        if (not(0f <= zmm2))\n1403861f2        zmm2 = zmm2 + 360f\n1403861f9        if (not(0f <= zmm1))\n1403861fb        zmm1 = zmm1 + 360f\n140386212        if (not(9.99999975e-05f <= zmm2 - zmm1) && not(9.99999975e-05f <= zmm1 - zmm2))\n140386214        result.b = 1\n140386216        return result\n140386217        result.b = 0\n140386219        return result",
+  "fetched_at": "2026-04-26T17:20:35Z"
+}

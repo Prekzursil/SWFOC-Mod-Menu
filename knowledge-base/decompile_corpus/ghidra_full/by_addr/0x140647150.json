@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall StunnableBehaviorClass::vfunction9(void)\n\n{\n  return \"StunnableBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:05Z"
+}

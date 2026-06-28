@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401864f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140186516        int32_t* rax = operator new(0x18)\n14018651e        if (rax != 0)\n140186520        *(rax + 8) = 0\n140186528        *(arg1 + 0x70) = rax\n140186533        *rax = arg3\n14018653a        *(arg1 + 0x68) = arg4\n14018653e        HRSRC hResInfo = FindResourceA(nullptr, arg2, \"TEXTURE\")\n14018654a        if (hResInfo != 0)\n14018655a        int32_t* rax_2 = LockResource(LoadResource(nullptr, hResInfo))\n140186568        uint32_t rax_3 = SizeofResource(nullptr, hResInfo)\n14018656e        void* rbx_1 = *(arg1 + 0x70)\n140186572        int64_t rdi_2 = sx.q(rax_3)\n140186577        int32_t* rax_4 = j_operator new(zx.q(rdi_2.d))\n14018657f        *(rbx_1 + 8) = rax_4\n140186586        *(rbx_1 + 0x10) = rdi_2.d\n14018658c        memcpy(rax_4, rax_2, rdi_2)\n140186591        hResInfo.b = 1\n1401865a7        return hResInfo",
+  "fetched_at": "2026-04-26T17:24:00Z"
+}

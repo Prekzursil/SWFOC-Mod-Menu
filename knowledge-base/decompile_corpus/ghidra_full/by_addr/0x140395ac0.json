@@ -1,0 +1,7 @@
+{
+  "addr": "0x140395ac0",
+  "tool": "ghidra",
+  "fact_id": "rva_query_interface",
+  "body": "\nGameObjectClass * __thiscall GameObjectClass::vfunction3(GameObjectClass *this,int param_1)\n\n{\n  char cVar1;\n  \n  if (param_1 == 0) {\n    return this;\n  }\n  cVar1 = *(char *)((longlong)&(this->RootClass_data).offset_0x292 + (longlong)param_1);\n  if (cVar1 == -1) {\n    return (GameObjectClass *)0x0;\n  }\n  return *(GameObjectClass **)((this->RootClass_data).offset_0x1d8 + (longlong)cVar1 * 8);\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:24Z"
+}

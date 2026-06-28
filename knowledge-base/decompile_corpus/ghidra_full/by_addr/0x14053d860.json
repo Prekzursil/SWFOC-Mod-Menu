@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053d860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nReinforcementPointBehaviorClass::vfunction7(ReinforcementPointBehaviorClass *this)\n\n{\n  bool bVar1;\n  char cVar2;\n  undefined4 uVar3;\n  int iVar4;\n  int iVar5;\n  \n  if (this->offset_0x18[0x35] == (undefined *)0x0) {\n    iVar5 = 0;\n  }\n  else {\n    iVar5 = *(int *)(this->offset_0x18[0x35] + 8);\n  }\n  uVar3 = FUN_140294a70(&DAT_140a16fd0);\n  cVar2 = FUN_14039a230(this->offset_0x18,uVar3,0);\n  if (cVar2 == '\\0') {\nLAB_14053d8d2:\n    bVar1 = false;\n  }\n  else {\n    cVar2 = FUN_1402f9c30(&DAT_140b27f60);\n    if (cVar2 == '\\0') {\n      iVar4 = FUN_140294a70(&DAT_140a16fd0);\n      if (*(int *)(*(longlong *)(DAT_140b15418 + 0x30) + 0x1c) != iVar4) goto LAB_14053d8d2;\n    }\n    bVar1 = true;\n  }\n  if (iVar5 == 0) {\n    if (bVar1) {\n      FUN_1403a8bd0(this->offset_0x18,5);\n      FUN_1403a8b70(this->offset_0x18,&DAT_140a436b8);\n      FUN_1403a8ba0(this->offset_0x18,DAT_1408007d8);\n      FUN_14039f2a0(this->offset_0x18);\n      uVar3 = FUN_140427410(&DAT_140b2f170,this->offset_0x18[0x53] + 0x1e00);\n      FUN_14038cd10(this->offset_0x18,uVar3,*(undefined4 *)(this->offset_0x18[0x53] + 0x1e20));\n    }\n  }\n  else if (!bVar1) {\n    FUN_1403a8bd0(this->offset_0x18,0);\n    FUN_1403a5630(this->offset_0x18);\n    return 0x650000;\n  }\n  return 0x650000;\n}",
+  "fetched_at": "2026-04-26T18:34:49Z"
+}

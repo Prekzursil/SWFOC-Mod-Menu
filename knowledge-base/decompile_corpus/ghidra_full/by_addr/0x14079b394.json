@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b394",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    GetLcidFromLanguage\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid GetLcidFromLanguage(byte *param_1)\n\n{\n  short sVar1;\n  longlong lVar2;\n  int iVar3;\n  short *psVar4;\n  longlong lVar5;\n  int iVar6;\n  \n  lVar2 = FUN_14078f07c();\n  lVar5 = -1;\n  iVar6 = 0;\n  psVar4 = *(short **)(lVar2 + 0x98);\n  do {\n    lVar5 = lVar5 + 1;\n  } while (psVar4[lVar5] != 0);\n  *(uint *)(lVar2 + 0xb0) = (uint)(lVar5 == 3);\n  iVar3 = 2;\n  if (lVar5 != 3) {\n    while( true ) {\n      sVar1 = *psVar4;\n      psVar4 = psVar4 + 1;\n      if ((0x19 < (ushort)(sVar1 - 0x41U)) && (iVar3 = iVar6, 0x19 < (ushort)(sVar1 - 0x61U)))\n      break;\n      iVar6 = iVar6 + 1;\n    }\n  }\n  *(int *)(lVar2 + 0xac) = iVar3;\n  EnumSystemLocalesW(FUN_14079b678,1);\n  if ((*param_1 & 4) == 0) {\n    param_1[0] = 0;\n    param_1[1] = 0;\n    param_1[2] = 0;\n    param_1[3] = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:51Z"
+}

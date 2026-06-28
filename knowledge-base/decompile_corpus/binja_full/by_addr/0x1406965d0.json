@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406965d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406965e3        if (sub_140220610(arg3) != 0)\n14069661a        char i\n1406965e8        int32_t rax = sub_140220710(arg3)\n1406965f0        if (rax == 7)\n140696603        sub_140220730(arg3, &data_140a44488, rax - 3, nullptr)\n14069660b        sub_1402206a0(arg3)\n140696613        i = sub_140220610(arg3)\n14069661a        do while (i != 0)\n140696623        return 1",
+  "fetched_at": "2026-04-26T17:20:03Z"
+}

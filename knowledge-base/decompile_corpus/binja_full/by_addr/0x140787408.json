@@ -1,0 +1,7 @@
+{
+  "addr": "0x140787408",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078740b        return common_strtod_l<float,wchar_t>(arg1, arg2, nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:31:20Z"
+}

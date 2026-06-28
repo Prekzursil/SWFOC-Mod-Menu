@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bdf10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407bdf10(longlong param_1,int param_2,int param_3,undefined8 param_4)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  undefined *puVar3;\n  \n  if (param_3 < param_2) {\n    uVar2 = FUN_1407c33a0(*(undefined8 *)(param_1 + 0x38),\"too many %s (limit=%d)\",param_4,param_3);\n    iVar1 = *(int *)(param_1 + 0x10);\n    if (iVar1 == 0x116) {\n      puVar3 = (undefined *)(*(longlong *)(param_1 + 0x18) + 0x18);\n    }\n    else if ((iVar1 == 0x11d) || (iVar1 == 0x11e)) {\n      puVar3 = (undefined *)**(undefined8 **)(param_1 + 0x48);\n    }\n    else if (iVar1 < 0x101) {\n      puVar3 = (undefined *)FUN_1407c33a0(*(undefined8 *)(param_1 + 0x38),&DAT_1408fd594,iVar1);\n    }\n    else {\n      puVar3 = (&PTR_vfunction13_for_RefCountClass_1408fcbf8)[iVar1];\n    }\n    FUN_1407bdfc0(param_1,uVar2,puVar3);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:34Z"
+}

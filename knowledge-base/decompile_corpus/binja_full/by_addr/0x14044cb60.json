@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044cb60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044cb6c        if (*arg1 == 0)\n14044cb6c        return \n14044cb72        void* rdx_1 = *(arg1 + 0x40)\n14044cb76        *(arg1 + 0x20) = 0\n14044cb7e        sub_14025c490(*(arg1 + 0x28), rdx_1)\n14044cb8b        int512_t zmm1_1\n14044cb8b        int512_t zmm2_1\n14044cb8b        zmm1_1, zmm2_1 = sub_14025c490(*(arg1 + 0x28), *(arg1 + 0x48))\n14044cb90        int64_t* rcx_2 = *(arg1 + 0x40)\n14044cb94        zmm2_1.o = zx.o(0)\n14044cb97        zmm1_1.o = 0x3f800000\n14044cb9f        *(arg1 + 0x22) = 0\n14044cba6        (*(*rcx_2 + 0x20))(rcx_2, zmm1_1, zmm2_1)\n14044cba9        int64_t* rcx_3 = *(arg1 + 0x48)\n14044cbad        zmm2_1.o = zx.o(0)\n14044cbb0        zmm1_1.o = 0x3f800000\n14044cbbb        (*(*rcx_3 + 0x20))(rcx_3, zmm1_1, zmm2_1)\n14044cbbe        int64_t* rcx_4 = *(arg1 + 0x40)\n14044cbc2        zmm2_1.o = zx.o(0)\n14044cbc5        zmm1_1.o = zx.o(0)\n14044cbcb        (*(*rcx_4 + 0x10))(rcx_4, zmm1_1, zmm2_1)\n14044cbce        int64_t* rcx_5 = *(arg1 + 0x48)\n14044cbd2        zmm1_1.o = zx.o(0)\n14044cbd5        zmm2_1.o = 0x3f800000\n14044cbe0        (*(*rcx_5 + 0x10))(rcx_5, zmm1_1, zmm2_1)\n14044cbeb        sub_14025c2b0(*(arg1 + 0x28), *(arg1 + 0x40))\n14044cbf8        sub_14025c2b0(*(arg1 + 0x28), *(arg1 + 0x48))\n14044cbff        *(arg1 + 0x22) = 1\n14044cc06        sub_14044afe0(arg1, 0)\n14044cc0b        *(arg1 + 0x1c) = 0\n14044cc17        return ",
+  "fetched_at": "2026-04-26T17:27:31Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ad950",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ad960        uint8_t result = sub_14013fc10(arg1)\n1407ad971        if (result == 0 && (*(arg1 + 0x30) & 0xd) == 0)\n1407ad97a        result = (*(arg2 + 0x14) u>> 8).b\n1407ad97f        if ((result & 1) != 0)\n1407ad985        void* rcx = *(arg1 + 0xc8)\n1407ad98f        if (rcx != 0)\n1407ad99f        int32_t rax_1 = sub_14022fe40(rcx)\n1407ad9a4        void* rdx = *(arg1 + 0xc8)\n1407ad9ab        uint64_t rsi_1 = zx.q(rax_1)\n1407ad9c5        int64_t rdx_1\n1407ad9c5        rdx_1:result = muls.dp.q(0x4924924924924925, *(rdx + 0x98) - *(rdx + 0x90))\n1407ad9cb        int64_t r14_2 = rdx_1 s>> 3\n1407ad9d6        int32_t r14_3 = r14_2.d + (r14_2 u>> 0x3f).d\n1407ad9e4        if (r14_3 != 0 && rsi_1.d != 0)\n1407ad9f0        struct MultiLinkedListMember::alRenderTask::VTable** rax_2 = operator new(0x70)\n1407ad9f5        struct MultiLinkedListMember::alRenderTask::VTable** rbx_1 = rax_2\n1407ad9fb        if (rax_2 == 0)\n1407ada2e        rbx_1 = nullptr\n1407ada15        sub_14015e020(rbx_1, arg2, arg1, 0, arg1 + 0x98)\n1407ada21        rbx_1[0xd] = -1\n1407ada29        *rbx_1 = &alSplineRendererRenderTask::`vftable'{for `alRenderTask'}\n1407ada34        rbx_1[0xb].d = 0\n1407ada3d        rbx_1[0xc].d = 0\n1407ada57        *(rbx_1 + 0x5c) = ((zx.q(rsi_1.d + r14_3 + (rsi_1 << 1).d) << 1) + -fffffffffffffffe).d\n1407ada5a        return sub_140149490(arg2, rbx_1, 8)\n1407ada78        return result",
+  "fetched_at": "2026-04-26T17:32:44Z"
+}

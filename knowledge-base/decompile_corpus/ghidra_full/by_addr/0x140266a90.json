@@ -1,0 +1,7 @@
+{
+  "addr": "0x140266a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SceneClass::~SceneClass(SceneClass *this)\n\n{\n  undefined **ppuVar1;\n  longlong lVar2;\n  undefined1 local_res8 [8];\n  \n  this->vftablePtr = &vftable;\n                    /* inlined destructor:\n                       ReferenceListClass<class_ModelClass>::~ReferenceListClass<class_ModelClass>\n                        */\n  (this->RefCountClass_data).offset_0x10 = &ReferenceListClass<class_ModelClass>::vftable;\n  lVar2 = FUN_14012ef50(&(this->RefCountClass_data).offset_0x10);\n  while (lVar2 != 0) {\n    lVar2 = FUN_14020ac80(&(this->RefCountClass_data).offset_0x10,local_res8);\n    if ((lVar2 != 0) && ((longlong *)(lVar2 + -0x10) != (longlong *)0x0)) {\n      (**(code **)(*(longlong *)(lVar2 + -0x10) + 8))();\n    }\n    lVar2 = FUN_14012ef50(&(this->RefCountClass_data).offset_0x10);\n  }\n  GenericMultiLinkedList::~GenericMultiLinkedList\n            ((GenericMultiLinkedList *)&(this->RefCountClass_data).offset_0x10);\n  ppuVar1 = (this->RefCountClass_data).offset_0x8;\n  if (ppuVar1 != (undefined **)0x0) {\n    (**(code **)(*ppuVar1 + 8))();\n  }\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (SceneClass_vftable *)&RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:14Z"
+}

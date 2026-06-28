@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017ceb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017cec6        *arg2 = *arg3\n14017cecc        arg2[1] = arg3[1]\n14017ced3        arg2[2] = arg3[2]\n14017cee2        uint128_t zmm0\n14017cee2        zmm0.d = _mm_cvtepi32_ps(zx.o(sx.d(arg3[3].w))).d f* 6.10351562e-05f\n14017cee6        arg2[3] = zmm0.d\n14017cef7        zmm0.d = _mm_cvtepi32_ps(zx.o(sx.d(*(arg3 + 0xe)))).d f* 6.10351562e-05f\n14017cefb        arg2[4] = zmm0.d\n14017cf0f        uint128_t zmm1\n14017cf0f        zmm1.d = _mm_cvtepi32_ps(zx.o(sx.d(arg3[4].w))).d f* 6.10351562e-05f\n14017cf16        arg2[5] = zmm1.d\n14017cf22        arg2[6] = arg3[6]\n14017cf29        arg2[7] = arg3[7]\n14017cf31        arg2[0x1c] = sx.d(*(arg3 + 0x12))\n14017cf34        int32_t rcx = arg3[5]\n14017cf5b        zmm1.d = float.s(zx.q((rcx u>> 8).b))\n14017cf60        uint64_t result = zx.q(rcx.b)\n14017cf63        zmm0.d = float.s(result)\n14017cf6c        zmm0.d = zmm0.d f* 0.00392156886f\n14017cf70        zmm1.d = zmm1.d f* 0.00392156886f\n14017cf74        arg2[0x17] = zmm0.d\n14017cf79        arg2[0x14] = float.s(zx.q(rcx u>> 0x18)) f* 0.00392156886f\n14017cf7e        arg2[0x15] = float.s(zx.q((rcx u>> 0x10).b)) f* 0.00392156886f\n14017cf83        arg2[0x16] = zmm1.d\n14017cf88        return result",
+  "fetched_at": "2026-04-26T17:23:38Z"
+}

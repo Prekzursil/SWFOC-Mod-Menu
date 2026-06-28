@@ -1,0 +1,7 @@
+{
+  "addr": "0x140136150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140136150(undefined8 param_1,int param_2,int param_3,int *param_4,int *param_5,int *param_6\n                  ,int *param_7)\n\n{\n  if (param_4 != (int *)0x0) {\n    *param_4 = param_2 * 0x1f;\n  }\n  if (param_5 != (int *)0x0) {\n    *param_5 = param_2 * 0x1f + 0x1f;\n  }\n  if (param_6 != (int *)0x0) {\n    *param_6 = param_3 * 0x1f;\n  }\n  if (param_7 != (int *)0x0) {\n    *param_7 = param_3 * 0x1f + 0x1f;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:22Z"
+}

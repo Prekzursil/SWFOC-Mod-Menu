@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793ba4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793bcd        int64_t rax = try_get_function(0x16, \"LocaleNameToLCID\", &data_1408d8308, \"LocaleNameToLCID\")\n140793bd8        if (rax == 0)\n140793be4        return sub_14079e7fc(arg1)\n140793bf3        return rax(arg1, zx.q(arg2))",
+  "fetched_at": "2026-04-26T17:31:52Z"
+}

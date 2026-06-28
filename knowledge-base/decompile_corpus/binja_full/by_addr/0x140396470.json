@@ -1,0 +1,7 @@
+{
+  "addr": "0x140396470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039647e        void* result\n14039647e        int128_t zmm0\n14039647e        int512_t zmm6\n14039647e        zmm0, result, zmm6 = sub_140396df0(arg1)\n140396483        void* rdx = arg1[0x5a]\n14039648a        zmm6.o = zmm0\n140396490        if (rdx != 0)\n140396492        int64_t i_1 = sx.q(*(rdx + 0x10))\n140396496        int32_t r8_1 = 0\n14039649c        if (i_1 s> 0)\n14039649e        void** rdx_1 = *(rdx + 8)\n1403964bf        int64_t i\n1403964a2        result = *rdx_1\n1403964a8        if (result != 0)\n1403964aa        result = *(result + 0x20)\n1403964b2        if (*(result + 0x4d) == 1)\n1403964b4        r8_1 += 1\n1403964b7        rdx_1 = &rdx_1[1]\n1403964bb        i = i_1\n1403964bb        i_1 -= 1\n1403964bf        do while (i != 1)\n1403964c5        if (r8_1 s>= 1)\n1403964c7        result = arg1[0x53]\n1403964d5        int32_t zmm0_1\n1403964d5        int32_t zmm6_1\n1403964d5        if (*(result + 0xa8) != i_1.b)\n1403964da        zmm0_1, result, zmm6_1 = sub_140396070(arg1)\n140396517        return result",
+  "fetched_at": "2026-04-26T17:23:43Z"
+}

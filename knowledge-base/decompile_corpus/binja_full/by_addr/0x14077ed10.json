@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077ed10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077ed19        char* rcx = *(arg1 + 8)\n14077ed23        int64_t result\n14077ed23        if (*rcx - 0x30 u<= 9)\n14077ed28        result = zx.q(sx.d(*rcx) - 0x30)\n14077ed33        if (*rcx - 0x61 u<= 0x19)\n14077ed38        result = zx.q(sx.d(*rcx) - 0x57)\n14077ed43        if (*rcx - 0x41 u> 0x19)\n14077ed4d        result = 0xffffffff\n14077ed48        result = zx.q(sx.d(*rcx) - 0x37)\n14077ed53        if (result.d u<= 9)\n14077ed59        int64_t arg_8 = 0\n14077ed6a        result = sub_140785824(rcx, &arg_8, 0xa)\n14077ed72        int64_t rcx_1\n14077ed72        if (result != 0)\n14077ed74        rcx_1 = arg_8\n14077ed7d        if (result == 0 || rcx_1 == *(arg1 + 8))\n14077ed89        *(arg1 + 0x14) = 0\n14077ed8d        *(arg1 + 0x18) = 0\n14077ed92        *(arg1 + 0x20) = 0\n14077ed97        *(arg1 + 0x28) = 0\n14077ed9b        *(arg1 + 0x30) = 0\n14077ed9f        result.b = 0\n14077eda1        *(arg1 + 0x1a) = 0\n14077eda5        *(arg1 + 0x2c) = 0\n14077eda9        *(arg1 + 0x10) = 0x16\n14077ed7f        *(arg1 + 0x20) = result\n14077ed83        *(arg1 + 8) = rcx_1\n14077ed55        result.b = 1\n14077ed55        result.b = 1\n14077edb5        return result",
+  "fetched_at": "2026-04-26T17:31:02Z"
+}

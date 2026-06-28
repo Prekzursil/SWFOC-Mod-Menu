@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f1d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071f1d6        struct ActionClass::SpecialAbilityActionClass::VTable** result = arg1\n14071f1d9        sub_1405e8e20(arg1)\n14071f1e5        *result = &SpecialAbilityActionClass::`vftable'{for `ActionClass'}\n14071f1ea        result[0x19] = 0\n14071f1f1        result[0x1b] = 0\n14071f1f8        result[0x1c] = 0xf\n14071f203        result[0x1d] = 0\n14071f20a        result[0x1e].b = 0\n14071f218        return result",
+  "fetched_at": "2026-04-26T17:28:14Z"
+}

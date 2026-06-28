@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017f810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * FUN_14017f810(void)\n\n{\n  if (DAT_140a6eb68 != '\\0') {\n    D3DXMatrixMultiply(&DAT_140a6f49c,&DAT_140a6eee4,&DAT_140a6ef24);\n    DAT_140a6eb68 = 0;\n    return &DAT_140a6f49c;\n  }\n  return &DAT_140a6f49c;\n}",
+  "fetched_at": "2026-04-26T17:30:42Z"
+}

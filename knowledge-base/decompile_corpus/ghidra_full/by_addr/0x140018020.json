@@ -1,0 +1,7 @@
+{
+  "addr": "0x140018020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid __thiscall OutgoingEventQueueClass::OutgoingEventQueueClass(void)\n\n{\n  EventQueueClass::EventQueueClass((EventQueueClass *)&DAT_140b2ed18);\n  _DAT_140b2ed18 = &vftable;\n  atexit((_func_5014 *)&LAB_1407f0830);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:37Z"
+}

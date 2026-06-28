@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035b2a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nGameModeClass * __thiscall\nGameModeClass::scalar_deleting_destructor(GameModeClass *this,uint param_1)\n\n{\n  ~GameModeClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,800);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d2070        struct DrawPrimitiveClass::VTable** rbx = arg1[1]\n1401d2077        int64_t r9 = *arg1\n1401d2090        int64_t rax\n1401d2090        int64_t rdx_2\n1401d2090        rdx_2:rax = muls.dp.q(0xe38e38e38e38e39, rbx - r9)\n1401d209d        uint64_t result = rdx_2 s>> 3 u>> 0x3f\n1401d20a1        int64_t r8_2 = (rbx - r9) s/ 0x90\n1401d20a7        if (arg2 u< r8_2)\n1401d20b6        int64_t* rsi_2 = arg2 * 0x90 + r9\n1401d20b9        int64_t* rdi_1 = rsi_2\n1401d20bf        if (rsi_2 != rbx)\n1401d20c9        result = (**rdi_1)(rdi_1, 0)\n1401d20cb        rdi_1 = &rdi_1[0x12]\n1401d20d5        do while (rdi_1 != rbx)\n1401d20d7        arg1[1] = rsi_2\n1401d20f0        return result\n1401d20f1        if (arg2 u> r8_2)\n1401d20fd        int64_t rax_3\n1401d20fd        int64_t rdx_3\n1401d20fd        rdx_3:rax_3 = muls.dp.q(0xe38e38e38e38e39, arg1[2] - r9)\n1401d2100        int64_t rdx_4 = rdx_3 s>> 3\n1401d2107        result = rdx_4 u>> 0x3f\n1401d2111        if (arg2 u> rdx_4 + result)\n1401d2133        return sub_1401ca3e0(arg1, arg2)\n1401d2134        int64_t i_1 = arg2 - r8_2\n1401d2137        if (arg2 != r8_2)\n1401d2153        int64_t i\n1401d2143        result = sub_140260490(rbx)\n1401d2148        rbx = &rbx[0x12]\n1401d214f        i = i_1\n1401d214f        i_1 -= 1\n1401d2153        do while (i != 1)\n1401d2155        arg1[1] = rbx\n1401d2169        return result",
+  "fetched_at": "2026-04-26T17:26:42Z"
+}

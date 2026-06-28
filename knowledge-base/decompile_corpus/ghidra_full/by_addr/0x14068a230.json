@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a230",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a230(void)\n\n{\n  CableAttackAbilityClass *this;\n  \n  this = (CableAttackAbilityClass *)FUN_140769c58(0x1c8);\n  if (this != (CableAttackAbilityClass *)0x0) {\n    CableAttackAbilityClass::CableAttackAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:38Z"
+}

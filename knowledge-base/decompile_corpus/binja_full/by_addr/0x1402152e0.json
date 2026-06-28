@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402152e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402152f4        int64_t rax = *(arg1 + 8)\n140215302        int64_t* r14_3 = ((*(arg1 + 0x30) & arg4) << 4) + *(arg1 + 0x18)\n140215306        int64_t* rbx = r14_3[1]\n14021530d        if (rbx == rax)\n14021530f        *arg2 = rax\n140215315        arg2[1] = 0\n14021532a        return arg2\n14021532b        int64_t r14_4 = *r14_3\n140215333        int64_t rbp = arg3[2]\n14021533c        int64_t r15 = arg3[3]\n140215345        while (true)\n140215345        void* rdx = &rbx[2]\n140215349        if (rbx[5] u>= 0x10)\n14021534b        rdx = rbx[2]\n14021534f        int64_t* rcx = arg3\n140215356        if (r15 u>= 0x10)\n140215358        rcx = *arg3\n14021535f        int32_t rax_2\n14021535f        if (rbp == rbx[4])\n140215364        rax_2 = memcmp(rcx, rdx, rbp)\n14021536b        if (rbp == rbx[4] && rax_2 == 0)\n14021537b        *arg2 = *rbx\n14021537e        arg2[1] = rbx\n1402153a9        return arg2\n140215370        if (rbx == r14_4)\n140215384        *arg2 = rbx\n140215387        arg2[1] = 0\n1402153a9        return arg2\n140215372        rbx = rbx[1]",
+  "fetched_at": "2026-04-26T17:28:29Z"
+}

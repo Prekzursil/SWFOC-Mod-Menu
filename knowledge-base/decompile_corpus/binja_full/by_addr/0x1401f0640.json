@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f0640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f065e        *arg1 = &GUIGadgetCheckboxClass::`vftable'{for `GUIGadgetClass'}\n1401f0672        sub_14025c490(data_140a619f0, &arg1[0x14])\n1401f0685        sub_14025c490(data_140a619f0, &arg1[0x26])\n1401f068d        sub_1401e3ed0(arg1)\n1401f0699        arg1[0x13].b = 0\n1401f06a1        sub_14025b390(&arg1[0x26])\n1401f06ad        sub_140260500(&arg1[0x14])\n1401f06b5        sub_1401e3cb0(arg1)\n1401f06be        if ((arg2 & 1) != 0)\n1401f06c8        j_sub_1407864b8(arg1)\n1401f06e5        return arg1",
+  "fetched_at": "2026-04-26T17:27:16Z"
+}

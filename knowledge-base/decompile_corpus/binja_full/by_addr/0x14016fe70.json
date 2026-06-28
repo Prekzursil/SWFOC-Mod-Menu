@@ -1,0 +1,7 @@
+{
+  "addr": "0x14016fe70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14016feee        char rbx = sub_14021fe20(arg2, 0, arg3, arg4) & 1 & sub_14021ffa0(arg2, 2) & sub_1402200b0(arg2, &arg1[3], 1, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 3) & sub_1402200b0(arg2, &arg1[4], 1, nullptr)\n14016ff26        rbx = rbx & sub_140220030(arg2) & sub_14021ffa0(arg2, 4) & sub_1402200b0(arg2, &arg1[5], 4, nullptr) & sub_140220030(arg2)\n14016ff28        char rax_10\n14016ff28        int64_t r8\n14016ff28        rax_10, r8 = sub_14021feb0(arg2)\n14016ff3c        rbx = rbx & rax_10 & sub_14021fe20(arg2, 1, r8, arg4)\n14016ff3e        int32_t i_1 = 0\n14016ff4e        if ((arg1[1] - *arg1) s>> 3 != 0)\n14016ff50        uint64_t i = 0\n14016ff52        int64_t rax_15 = *arg1\n14016ff60        int32_t arg_c = *(rax_15 + (i << 3) + 4)\n14016ff6d        char arg_8 = *(rax_15 + (i << 3))\n14016ff96        rbx = rbx & sub_14021ffa0(arg2, 5) & sub_1402200b0(arg2, &arg_8, 8, nullptr) & sub_140220030(arg2)\n14016ff98        i_1 += 1\n14016ffa5        i = zx.q(i_1)\n14016ffaa        do while (i u< (arg1[1] - *arg1) s>> 3)\n14016ffcb        return sub_14021feb0(arg2) & rbx",
+  "fetched_at": "2026-04-26T17:22:55Z"
+}

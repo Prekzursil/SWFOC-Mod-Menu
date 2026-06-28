@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b0920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b0934        if (arg3 == 0xa)\n1406b0a05        *(arg1 + 0x20) = 1\n1406b0a0e        return \n1406b094a        if (arg3 != 0xb && arg3 != 0x10 && arg3 != 0x1a)\n1406b093e        return \n1406b095e        void* const rbx_1 = arg1\n1406b0961        void* rdi_1 = nullptr\n1406b0966        if (arg1 == 0x30)\n1406b0966        rbx_1 = nullptr\n1406b097c        sub_140220eb0(sub_140058570(), arg2, rbx_1, 0xa)\n1406b0993        sub_140220eb0(sub_140058570(), arg2, rbx_1, 0xb)\n1406b09aa        sub_140220eb0(sub_140058570(), arg2, rbx_1, 0x10)\n1406b09c1        sub_140220eb0(sub_140058570(), arg2, rbx_1, 0x1a)\n1406b09c6        void* rcx_4 = *(arg1 + 0x10)\n1406b09d2        if (rcx_4 == 0)\n1406b09d2        return \n1406b09d7        void* rax_6 = arg2 - 0x38\n1406b09db        if (arg2 == 0)\n1406b09db        rax_6 = nullptr\n1406b09e2        if (rax_6 != 0)\n1406b09e4        rdi_1 = rax_6 + 0x18\n1406b09eb        sub_14020abe0(rcx_4, rdi_1)\n1406b09ff        return ",
+  "fetched_at": "2026-04-26T17:24:39Z"
+}

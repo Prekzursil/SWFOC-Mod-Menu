@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8550",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403a8550(longlong param_1)\n\n{\n  longlong lVar1;\n  int iVar2;\n  undefined4 uVar3;\n  undefined4 local_res8 [2];\n  undefined4 local_res10 [2];\n  undefined1 local_38 [48];\n  \n  uVar3 = DAT_140b26f7c;\n  local_res8[0] = DAT_140b26f80;\n  iVar2 = DAT_140b153fc;\n  if (DAT_140b15418 != (longlong *)0x0) {\n    iVar2 = (**(code **)(*DAT_140b15418 + 0xe0))();\n  }\n  if (iVar2 == 2) {\n    local_res8[0] = DAT_140b26f88;\n    uVar3 = DAT_140b26f84;\n  }\n  lVar1 = *(longlong *)(param_1 + 0xf0);\n  if (lVar1 != 0) {\n    FUN_1404ad4c0(local_38,param_1,0xffffffffffffffff);\n    local_res10[0] = 0;\n    FUN_14038c850(*(undefined8 *)(lVar1 + 0x138),local_res8,local_res10,local_38,\n                  \"Elevated_Vulnerability\",uVar3);\n    FUN_1404ad530(local_38);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:37Z"
+}

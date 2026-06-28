@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ef9f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ef9fc        int64_t result = sub_14048f2c0(arg1)\n1406efa11        if (*(arg1 + 0x178) != 0 || *(arg1 + 0x179) != 0)\n1406efa44        return result\n1406efa18        void* r8_1 = arg1 + 0x18\n1406efa1c        if (*(arg1 + 0x30) u>= 0x10)\n1406efa1e        r8_1 = *r8_1\n1406efa2d        char var_108[0x100]\n1406efa2d        sscanf_s(&var_108, \"Error: (%s) You should set either Destroy_Starbase or Destroy_Land_Base to \"Yes\"\\n otherwise this ability won't do anything!\", r8_1)\n1406efa37        return sub_1402149d0(&var_108)",
+  "fetched_at": "2026-04-26T17:26:21Z"
+}

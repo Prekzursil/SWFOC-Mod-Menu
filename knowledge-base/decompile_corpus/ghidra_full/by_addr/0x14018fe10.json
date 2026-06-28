@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fe10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall alD3dTerrainRender::vfunction13(alD3dTerrainRender *this)\n\n{\n  int iVar1;\n  \n  if (*(int *)((longlong)&this[1].vftablePtr[4].vfunction9 + 4) == 1) {\n    iVar1 = thunk_FUN_140178a60();\n    return iVar1 == 2;\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:34:24Z"
+}

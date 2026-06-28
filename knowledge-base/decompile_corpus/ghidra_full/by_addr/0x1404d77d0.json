@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d77d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall SpaceModeClass::vfunction70(SpaceModeClass *this)\n\n{\n  return (this->SpaceModeClass_data).offset_0x378;\n}",
+  "fetched_at": "2026-04-26T18:14:11Z"
+}

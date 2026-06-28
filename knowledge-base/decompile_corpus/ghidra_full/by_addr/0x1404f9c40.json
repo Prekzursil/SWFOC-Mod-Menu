@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f9c40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404f9c40(MultiLinkedListClass<class_GameObjectClass> *param_1)\n\n{\n  MultiLinkedListClass<class_GameObjectClass>::~MultiLinkedListClass<class_GameObjectClass>\n            (param_1 + 7);\n  MultiLinkedListClass<class_GameObjectClass>::~MultiLinkedListClass<class_GameObjectClass>(param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:35Z"
+}

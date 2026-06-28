@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015a150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015a15c        int64_t rcx = sx.q(*(arg1 + 0x78))\n14015a162        if (rcx.d s>= 0)\n14015a164        int64_t r10_1 = *(arg1 + 0x98)\n14015a17f        int64_t rax_1\n14015a17f        int64_t rdx\n14015a17f        rdx:rax_1 = muls.dp.q(0x2e8ba2e8ba2e8ba3, *(arg1 + 0xa0) - r10_1)\n14015a182        int64_t rdx_1 = rdx s>> 3\n14015a192        if (rdx_1.d + (rdx_1 u>> 0x3f).d s> 0)\n14015a197        int32_t* rcx_1 = rcx * 0x2c\n14015a19b        *(rcx_1 + r10_1) = *arg2\n14015a1a3        *(rcx_1 + r10_1 + 4) = arg2[1]\n14015a1ac        *(rcx_1 + r10_1 + 8) = arg2[2]\n14015a1b7        sub_14015caa0(arg1, *(arg1 + 0x78))\n14015a1bc        int32_t rdx_4 = *(arg1 + 0x78)\n14015a1c2        if (rdx_4 - 1 s>= 0)\n14015a1c7        sub_14015caa0(arg1, rdx_4 - 1)\n14015a1cf        sub_14015b020(arg1)\n14015a1d4        int64_t rax_6\n14015a1d4        rax_6.b = 1\n14015a1db        return rax_6\n14015a1dc        uint32_t rax\n14015a1dc        rax.b = 0\n14015a1e3        return rax",
+  "fetched_at": "2026-04-26T17:22:29Z"
+}

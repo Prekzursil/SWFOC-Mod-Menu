@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407045e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407045e7        if (*(arg1 + 0x199) == 1)\n1407045eb        return 0\n1407045f7        uint128_t zmm0\n1407045f7        zmm0.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f* 5f\n1407045ff        zmm0.d = zmm0.d f+ 0.5f\n14070460b        return zx.q(int.d(zmm0.d))",
+  "fetched_at": "2026-04-26T17:27:11Z"
+}

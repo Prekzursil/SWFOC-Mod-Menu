@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006beb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall SteamAsyncSocketImpl::vfunction6(SteamAsyncSocketImpl *this)\n\n{\n  *(undefined4 *)&(this->RefCountClass_data).field_0x28 = 0;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:02Z"
+}

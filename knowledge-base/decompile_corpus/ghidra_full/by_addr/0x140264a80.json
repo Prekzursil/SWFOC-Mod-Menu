@@ -1,0 +1,7 @@
+{
+  "addr": "0x140264a80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 * __thiscall\nModelClass::vfunction9_for_RefCountClass(ModelClass *this,undefined4 *param_1)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  \n  lVar2 = (*this->vftablePtr->vfunction8_for_RefCountClass)(this);\n  *param_1 = *(undefined4 *)(lVar2 + 0xc);\n  uVar1 = *(undefined4 *)(lVar2 + 0x1c);\n  param_1[2] = *(undefined4 *)(lVar2 + 0x2c);\n  param_1[1] = uVar1;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:16:44Z"
+}

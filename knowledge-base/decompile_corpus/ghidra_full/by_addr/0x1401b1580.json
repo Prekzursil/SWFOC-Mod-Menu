@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b1580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall alD3dEffect::vfunction7(alD3dEffect *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = &this->offset_0x40;\n  if (0xf < (ulonglong)this->offset_0x58) {\n    puVar1 = (undefined8 *)*puVar1;\n  }\n  return puVar1;\n}",
+  "fetched_at": "2026-04-26T17:43:15Z"
+}

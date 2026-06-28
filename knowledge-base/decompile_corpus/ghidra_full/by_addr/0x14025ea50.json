@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025ea50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_14025ea50(undefined8 param_1,undefined1 param_2,undefined4 param_3,undefined4 param_4,\n                  undefined4 param_5,undefined8 param_6,uint param_7)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  \n  DAT_140b0a100 = param_1;\n  lVar1 = FUN_140769c58(0x1c8);\n  uVar2 = 0;\n  if (lVar1 != 0) {\n    uVar2 = FUN_1401419f0(lVar1);\n  }\n  DAT_140b0a0c0 = uVar2;\n  thunk_FUN_14018a3b0(\".\\\\Data\\\\Art\\\\Shaders\\\\\");\n  thunk_FUN_14018a3b0(\".\\\\Data\\\\Art\\\\Shaders\\\\Terrain\\\\\");\n  DAT_140b0a114 = GetSystemMetrics(0);\n  DAT_140b0a118 = GetSystemMetrics(1);\n  if (DAT_140a7c448 == 0) {\n    param_2 = 0;\n    param_3 = 0x400;\n    DAT_140a7c441 = 0;\n    param_4 = 0x300;\n    DAT_140a7c350 = 0x400;\n    DAT_140a7c354 = 0x300;\n    PlayerProfileClass::vfunction2((PlayerProfileClass *)&DAT_140a7c230);\n  }\n  if (DAT_140b0a0d2 != '\\0') {\n    param_3 = 800;\n    param_4 = 600;\n    DAT_140a7c350 = 800;\n    param_2 = 1;\n    DAT_140a7c354 = 600;\n    DAT_140a7c441 = 1;\n    PlayerProfileClass::vfunction2((PlayerProfileClass *)&DAT_140a7c230);\n  }\n  DAT_140b0a10c = (float)((double)param_7 * _DAT_14081c078);\n  FUN_14013ed50(param_1,0,0,0,param_2,param_3,param_4,param_5,param_6);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:03Z"
+}

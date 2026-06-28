@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ca28",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ca2c        int64_t result = data_140b3c440\n14078ca36        if (result != 0)\n14078ca62        return result\n14078ca3f        if (data_140b3c438 != result)\n14078ca45        int32_t rax = common_initialize_environment_nolock<wchar_t>()\n14078ca4c        int32_t rax_1\n14078ca4c        if (rax != 0)\n14078ca4e        rax_1 = initialize_environment_by_cloning_nolock<wchar_t>()\n14078ca55        if (rax == 0 || rax_1 == 0)\n14078ca57        return data_140b3c440\n14078ca41        return 0",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

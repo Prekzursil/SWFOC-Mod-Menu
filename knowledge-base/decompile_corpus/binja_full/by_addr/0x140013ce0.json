@@ -1,0 +1,7 @@
+{
+  "addr": "0x140013ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140013ce8        float result = 3f / 1024f\n140013cf0        data_140a7989c = result\n140013cf8        return result",
+  "fetched_at": "2026-04-26T16:49:59Z"
+}

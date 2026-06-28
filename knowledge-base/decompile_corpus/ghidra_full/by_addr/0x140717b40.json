@@ -1,0 +1,7 @@
+{
+  "addr": "0x140717b40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall LeechShieldsAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Leech_Shields_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:56:58Z"
+}

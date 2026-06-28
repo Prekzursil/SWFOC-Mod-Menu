@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c3bcc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SquadLeaderBehaviorClass::vfunction1(SquadLeaderBehaviorClass *this,uint param_1)\n\n{\n  ~SquadLeaderBehaviorClass\n            ((SquadLeaderBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:35Z"
+}

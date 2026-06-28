@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ccf30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403ccf30(longlong param_1,longlong *param_2)\n\n{\n  int iVar1;\n  uint uVar2;\n  \n  iVar1 = (int)param_2[0x15];\n  if (iVar1 == 0x2c5) {\n    uVar2 = 1;\n  }\n  else if (iVar1 == 0x2c6) {\n    uVar2 = 2;\n  }\n  else if (iVar1 == 0x2c7) {\n    uVar2 = 4;\n  }\n  else {\n    if (iVar1 != 0x2c8) {\n      return;\n    }\n    uVar2 = 8;\n  }\n  iVar1 = (**(code **)(*param_2 + 0x1d8))(param_2);\n  if (iVar1 != 3) {\n    *(uint *)(param_1 + 0x2ae0) = *(uint *)(param_1 + 0x2ae0) & ~uVar2;\n    return;\n  }\n  *(uint *)(param_1 + 0x2ae0) = *(uint *)(param_1 + 0x2ae0) | uVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

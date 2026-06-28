@@ -1,0 +1,7 @@
+{
+  "addr": "0x140231de0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_140231de0(float *param_1,longlong param_2)\n\n{\n  undefined1 uVar1;\n  undefined1 uVar2;\n  float *pfVar3;\n  int iVar4;\n  float fVar5;\n  float fVar6;\n  \n  iVar4 = 0;\n  pfVar3 = (float *)(param_2 + 8);\n  fVar6 = DAT_140819834;\n  uVar1 = 0;\n  do {\n    fVar5 = *param_1 * pfVar3[-2] + param_1[1] * pfVar3[-1] + param_1[2] * *pfVar3;\n    uVar2 = (undefined1)iVar4;\n    if (fVar5 <= fVar6) {\n      uVar2 = uVar1;\n      fVar5 = fVar6;\n    }\n    fVar6 = fVar5;\n    iVar4 = iVar4 + 1;\n    pfVar3 = pfVar3 + 3;\n    uVar1 = uVar2;\n  } while (iVar4 < 0x100);\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:07:04Z"
+}

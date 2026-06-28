@@ -1,0 +1,7 @@
+{
+  "addr": "0x140707620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140707633        *arg1 = &PlanetDestructionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140707640        arg1[1] = &PlanetDestructionAbilityClass::`vftable'{for `RefCountClass'}\n140707644        sub_14048c8d0(arg1)\n14070764c        if ((arg2 & 1) != 0)\n140707656        j_sub_1407864b8(arg1)\n140707668        return arg1",
+  "fetched_at": "2026-04-26T17:27:20Z"
+}

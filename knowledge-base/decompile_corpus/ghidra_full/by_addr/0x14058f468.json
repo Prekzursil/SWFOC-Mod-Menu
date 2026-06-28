@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f468",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDeployTroopersBehaviorClass::vfunction3(DeployTroopersBehaviorClass *this,uint param_1)\n\n{\n  ~DeployTroopersBehaviorClass\n            ((DeployTroopersBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:42:02Z"
+}

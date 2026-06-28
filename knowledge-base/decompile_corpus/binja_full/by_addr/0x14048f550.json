@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048f550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048f550        int64_t rax_4 = sx.q(*(arg1 + 0x10))\n14048f554        int32_t r8 = 0\n14048f559        if (rax_4.d s> 0)\n14048f55b        int64_t r9_1 = *(arg1 + 8)\n14048f562        int64_t rax = 0\n14048f57a        if (*(*(r9_1 + (rax << 3)) + 0xb8) == arg2)\n14048f591        return *(r9_1 + (sx.q(r8) << 3))\n14048f57c        r8 += 1\n14048f57f        rax += 1\n14048f585        do while (rax s< rax_4)\n14048f589        return 0",
+  "fetched_at": "2026-04-26T17:29:00Z"
+}

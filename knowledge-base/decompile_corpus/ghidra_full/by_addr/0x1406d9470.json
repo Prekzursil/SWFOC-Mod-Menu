@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d9470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1406d9470(longlong *param_1,longlong param_2,double *param_3)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  char cVar3;\n  undefined8 uVar4;\n  uint uVar5;\n  ulonglong uVar6;\n  ulonglong uVar7;\n  float fVar8;\n  float extraout_XMM0_Da;\n  \n  if (param_1[0x13] == 0) {\nLAB_1406d953f:\n    uVar4 = 0;\n  }\n  else {\n    uVar6 = 0;\n    *param_3 = 0.0;\n    cVar3 = (**(code **)(*param_1 + 0x58))\n                      (param_1,param_1[0x13],*(undefined8 *)(*(longlong *)(param_2 + 0x58) + 0x50));\n    if (cVar3 != '\\0') {\n      lVar1 = *(longlong *)(param_1[0x13] + 0xb8);\n      if (lVar1 == 0) goto LAB_1406d953f;\n      uVar7 = uVar6;\n      if (0 < *(int *)(lVar1 + 0x160)) {\n        do {\n          lVar2 = *(longlong *)(uVar7 + *(longlong *)(lVar1 + 0x158));\n          if (lVar2 != 0) {\n            fVar8 = (float)FUN_140370e60(*(undefined8 *)(lVar2 + 0x298));\n            *param_3 = (double)fVar8 + *param_3;\n          }\n          uVar5 = (int)uVar6 + 1;\n          uVar6 = (ulonglong)uVar5;\n          uVar7 = uVar7 + 8;\n        } while ((int)uVar5 < *(int *)(lVar1 + 0x160));\n      }\n      FUN_1404b8000(lVar1,0xffffffffffffffff);\n      *param_3 = (double)extraout_XMM0_Da + *param_3;\n    }\n    uVar4 = 1;\n  }\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T17:44:03Z"
+}

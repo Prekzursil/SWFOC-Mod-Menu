@@ -1,0 +1,7 @@
+{
+  "addr": "0x140580180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140580180(longlong param_1,undefined8 param_2,longlong param_3)\n\n{\n  byte *pbVar1;\n  longlong *plVar2;\n  undefined *puVar3;\n  char *pcVar4;\n  \n  if (*(longlong *)(param_1 + 0x60) != 0) {\n    if ((*(longlong *)(param_3 + 0x18) - (longlong)*(longlong **)(param_3 + 0x10) &\n        0xfffffffffffffff8U) == 8) {\n      plVar2 = (longlong *)**(longlong **)(param_3 + 0x10);\n      if (plVar2 != (longlong *)0x0) {\n        for (puVar3 = (undefined *)(**(code **)(*plVar2 + 0x20))(plVar2); puVar3 != (undefined *)0x0\n            ; puVar3 = *(undefined **)(puVar3 + 8)) {\n          if (puVar3 == &DAT_140a157b0) {\n            (**(code **)*plVar2)(plVar2);\n            pbVar1 = (byte *)(*(longlong *)(param_1 + 0x60) + 0x3a2);\n            *pbVar1 = *pbVar1 ^ ((char)plVar2[2] << 6 ^\n                                *(byte *)(*(longlong *)(param_1 + 0x60) + 0x3a2)) & 0x40;\n            (**(code **)(*plVar2 + 8))(plVar2);\n            return 0;\n          }\n        }\n      }\n      pcVar4 = \n      \"GameObjectWrapper::Set_Check_Contested_Space -- invalid type for parameter 1.  Expected boolean.\"\n      ;\n    }\n    else {\n      pcVar4 = \n      \"GameObjectWrapper::Set_Check_Contested_Space -- invalid number of parameters.  Expected 1, got %d.\"\n      ;\n    }\n    FUN_140248190(param_2,pcVar4);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:41:03Z"
+}

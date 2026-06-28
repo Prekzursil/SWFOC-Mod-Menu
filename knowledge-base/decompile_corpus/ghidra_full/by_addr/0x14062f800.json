@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062f800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTeamLocomotorBehaviorClass::vfunction83(TeamLocomotorBehaviorClass *this,undefined1 param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  longlong *plVar4;\n  int iVar5;\n  \n  if ((DAT_140b15418 != (longlong *)0x0) &&\n     (lVar2 = (**(code **)(*DAT_140b15418 + 0x228))(), lVar2 != 0)) {\n    uVar3 = (**(code **)(*DAT_140b15418 + 0x228))();\n    FUN_140426d50(uVar3,this->offset_0x18);\n  }\n  FUN_1403a8e50(this->offset_0x18,1);\n  (*this->vftablePtr->vfunction65)(this);\n  lVar2 = (**(code **)(*this->offset_0x18 + 0x10))(this->offset_0x18,0x16);\n  if (lVar2 != 0) {\n    iVar5 = 0;\n    iVar1 = FUN_140405300(lVar2);\n    if (0 < iVar1) {\n      do {\n        plVar4 = (longlong *)FUN_1404052d0(lVar2,iVar5);\n        if ((plVar4 != (longlong *)0x0) &&\n           (plVar4 = (longlong *)(**(code **)(*plVar4 + 0x10))(plVar4,1), plVar4 != (longlong *)0x0)\n           ) {\n          (**(code **)(*plVar4 + 0x290))(plVar4,param_1);\n        }\n        iVar5 = iVar5 + 1;\n        iVar1 = FUN_140405300(lVar2);\n      } while (iVar5 < iVar1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:05Z"
+}

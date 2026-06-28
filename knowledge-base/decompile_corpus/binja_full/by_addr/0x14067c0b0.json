@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067c0b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14067c0d4        if (arg1 != 0 && arg2 != 0)\n14067c0e3        int512_t zmm2_1 = sub_1401584e0(&data_140b3a1a0, 0)\n14067c0e8        int32_t* rdx = data_140b3a1a8\n14067c0ef        bool cond:0_1 = rdx == data_140b3a1b0\n14067c0f6        int32_t rax_1 = arg2[0xa].d\n14067c0f9        int32_t arg_8 = rax_1\n14067c0fd        if (cond:0_1)\n14067c117        zmm2_1 = std::vector<uint64_t const& __ptr64,uint64_t,class std::allocator<uint64_t> >::_Emplace_reallocate<uint64_t const& __ptr64>(&data_140b3a1a0, rdx, &arg_8)\n14067c0ff        *rdx = rax_1\n14067c101        data_140b3a1a8 += 4\n14067c11c        data_140a443a8 = arg1\n14067c12b        data_140a443bc = arg2[0xa].d\n14067c131        void var_28\n14067c131        sub_14020cfb0(&var_28)\n14067c14a        if (sub_140677650(arg2, &var_28, &arg_8, zmm2_1) != 0)\n14067c156        float* result = sub_14020d310(&var_28, &arg_8)\n14067c15b        float zmm0 = *result\n14067c15f        int32_t zmm1 = result[1]\n14067c164        result.b = 1\n14067c166        *arg3 = zmm0\n14067c16a        arg3[1] = zmm1\n14067c16f        arg3[2] = 0\n14067c185        return result\n14067c197        return 0",
+  "fetched_at": "2026-04-26T17:11:38Z"
+}

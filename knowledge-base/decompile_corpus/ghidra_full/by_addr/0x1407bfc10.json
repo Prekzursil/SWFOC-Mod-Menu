@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bfc10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1407bfc10(longlong param_1,undefined8 param_2)\n\n{\n  int *piVar1;\n  int iVar2;\n  undefined8 uVar3;\n  \n  piVar1 = (int *)(param_1 + 0x54);\n  if (*piVar1 == 0) {\n    *piVar1 = 0x10;\n    uVar3 = FUN_1407bf7e0(param_1,0,0,0x80);\n  }\n  else {\n    if (*(int *)(param_1 + 0x50) + 1 <= *piVar1) goto LAB_1407bfc7a;\n    uVar3 = FUN_1407bf6f0(param_1,*(undefined8 *)(param_1 + 0x48),piVar1,8,0x7ffffffd,\n                          \"Udata size overflow\");\n  }\n  *(undefined8 *)(param_1 + 0x48) = uVar3;\nLAB_1407bfc7a:\n  iVar2 = *(int *)(param_1 + 0x50);\n  *(int *)(param_1 + 0x50) = iVar2 + 1;\n  *(undefined8 *)(*(longlong *)(param_1 + 0x48) + (longlong)iVar2 * 8) = param_2;\n  return *(undefined4 *)(param_1 + 0x50);\n}",
+  "fetched_at": "2026-04-26T18:56:41Z"
+}

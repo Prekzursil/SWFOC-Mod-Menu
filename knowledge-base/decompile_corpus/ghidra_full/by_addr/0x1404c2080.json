@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_1404c2080(int param_1)\n\n{\n  return param_1 == 1;\n}",
+  "fetched_at": "2026-04-26T18:09:39Z"
+}

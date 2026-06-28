@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ef860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nBaseDestructionAbilityClass::vfunction31_for_IXMLLoadableClass\n          (BaseDestructionAbilityClass *this,longlong param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  \n  uVar2 = (*this->vftablePtr->vfunction6_for_IXMLLoadableClass)(this,param_1,(longlong)param_2);\n  if ((((char)uVar2 != '\\0') && (uVar2 = (**(code **)(*param_2 + 0x10))(param_2,3), uVar2 != 0)) &&\n     (lVar1 = param_2[0x17], lVar1 != 0)) {\n    if (*(char *)&(this->BaseDestructionAbilityClass_data).offset_0x0 == '\\x01') {\n      *(undefined1 *)(param_2 + 0x66) = *(undefined1 *)(param_1 + 0x58);\n      FUN_1403f7440(uVar2,param_2);\n      uVar2 = FUN_1403fe750(uVar2,param_2,0,0);\n    }\n    if (*(char *)((longlong)&(this->BaseDestructionAbilityClass_data).offset_0x0 + 1) == '\\x01') {\n      uVar2 = FUN_1404bb1a0(lVar1,0,param_2,*(undefined4 *)(param_1 + 0x58));\n    }\n    if ((*(char *)&(this->BaseDestructionAbilityClass_data).offset_0x0 == '\\x01') ||\n       (*(char *)((longlong)&(this->BaseDestructionAbilityClass_data).offset_0x0 + 1) == '\\x01')) {\n      uVar2 = FUN_14048e4d0(this,param_1,param_2);\n    }\n    return CONCAT71((int7)(uVar2 >> 8),1);\n  }\n  return uVar2 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:47:06Z"
+}

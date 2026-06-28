@@ -1,0 +1,7 @@
+{
+  "addr": "0x140610a70",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_budgeted_category_struct_ctor",
+  "body": "140610a7d        struct AIDiagnosticsClass::AIBudgetClass::BudgetedCategoryStruct::VTable** result = arg1\n140610a80        sub_1405f6520(arg1)\n140610a8c        result[6] = arg2\n140610a95        *result = &AIBudgetClass::BudgetedCategoryStruct::`vftable'{for `AIDiagnosticsClass'}\n140610a9a        result[7] = 0\n140610a9e        __builtin_memset(&result[9], 0, 0x18)\n140610aaa        __builtin_memset(&result[0xd], 0, 0x18)\n140610ab9        result[5].d = 0xffffffff\n140610ac0        result[8] = 1\n140610ac8        result[0xc].d = 1\n140610ad4        return result",
+  "fetched_at": "2026-04-26T16:44:05Z"
+}

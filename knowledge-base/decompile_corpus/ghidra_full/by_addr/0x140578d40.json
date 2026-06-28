@@ -1,0 +1,7 @@
+{
+  "addr": "0x140578d40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8\nLuaValue<bool,5>::LuaValue<bool,5>_Constructor_or_Destructor(longlong param_1,undefined8 param_2)\n\n{\n  undefined1 uVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  undefined8 *puVar4;\n  \n  plVar3 = *(longlong **)(param_1 + 0x60);\n  if (plVar3 != (longlong *)0x0) {\n    if (*(char *)((longlong)plVar3 + 0x335) == -1) {\n      puVar4 = (undefined8 *)(plVar3[0x53] + 0xf8);\n      if (0xf < *(ulonglong *)(plVar3[0x53] + 0x110)) {\n        puVar4 = (undefined8 *)*puVar4;\n      }\n      FUN_140248190(param_2,\n                    \"GameObjectWrapper::Get_Is_Planet_AI_Usable -- object %s is not a planet.\",\n                    puVar4);\n    }\n    else {\n      lVar2 = (**(code **)(*plVar3 + 0x10))(plVar3,3);\n      if (lVar2 != 0) {\n        plVar3 = (longlong *)FUN_140769c58(0x18);\n        if (plVar3 == (longlong *)0x0) {\n          plVar3 = (longlong *)0x0;\n        }\n        else {\n          uVar1 = FUN_1403fa420(lVar2,*(undefined8 *)(param_1 + 0x60));\n          *(undefined4 *)(plVar3 + 1) = 0;\n          *plVar3 = (longlong)&vftable;\n          *(undefined1 *)(plVar3 + 2) = uVar1;\n        }\n        plVar3 = GetEvent::~GetEvent((GetEvent *)param_1,plVar3);\n        return plVar3;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:40:33Z"
+}

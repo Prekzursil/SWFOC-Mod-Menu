@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402b0470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402b0470        int64_t result = sx.q(*(arg1 + 0x478))\n1402b047c        if (result.d != 0)\n1402b0481        if (arg2 == 0)\n1402b04a9        result.b = 1\n1402b04ab        return result\n1402b0485        if (result.d s> 0)\n1402b048a        int64_t result_1 = result\n1402b048d        result = *(arg1 + 0x470)\n1402b0494        int64_t rcx = 0\n1402b0498        while (*result != *(arg2 + 0x50))\n1402b049a        rcx += 1\n1402b049d        result += 0x58\n1402b04a4        if (rcx s>= result_1)\n1402b04a4        goto label_1402b04a6\n1402b04a9        result.b = 1\n1402b04ab        return result\n1402b04a6        label_1402b04a6:\n1402b04a6        result.b = 0\n1402b04a8        return result",
+  "fetched_at": "2026-04-26T17:33:07Z"
+}

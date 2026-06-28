@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f82e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f82e6        struct GUIGadgetTextClass::GUIGadgetIMELocaleIndicatorClass::VTable** result = arg1\n1401f82e9        sub_1401edda0(arg1)\n1401f82f5        *result = &GUIGadgetIMELocaleIndicatorClass::`vftable'{for `GUIGadgetTextClass'}\n1401f8300        return result",
+  "fetched_at": "2026-04-26T17:27:25Z"
+}

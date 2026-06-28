@@ -1,0 +1,7 @@
+{
+  "addr": "0x140714160",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SaberThrowAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Saber_Throw_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:56:12Z"
+}

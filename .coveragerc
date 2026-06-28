@@ -15,6 +15,12 @@ omit =
     tools/ghidra/export_symbols.py
     # The test suite itself.
     tests/python/*
+    # Incorporated data tree (2026-06-28): knowledge-base (RE notes + decompile/
+    # data JSON). It is already outside `source` (scripts/, tools/) so coverage
+    # never measures it; listed here defensively so any stray .py added under it
+    # can never silently dilute the 100% gate. It contains no first-party Python
+    # today.
+    knowledge-base/*
 
 [report]
 show_missing = True

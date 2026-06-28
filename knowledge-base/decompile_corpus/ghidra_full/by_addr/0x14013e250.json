@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTexture2D * FUN_14013e250(longlong *param_1,uint param_2)\n\n{\n  undefined4 uVar1;\n  int iVar2;\n  alD3dTexture2D *paVar3;\n  \n  if (param_2 < 2) {\n    if ((param_1 != (longlong *)0x0) && (iVar2 = (**(code **)(*param_1 + 0x30))(), iVar2 != 0)) {\n      return (alD3dTexture2D *)0x0;\n    }\n    uVar1 = *(undefined4 *)(&DAT_140a12508 + (longlong)(int)param_2 * 4);\n    paVar3 = (alD3dTexture2D *)FUN_140769c58(0x98);\n    if (paVar3 != (alD3dTexture2D *)0x0) {\n      paVar3 = alD3dTexture2D::alD3dTexture2D(paVar3,(longlong)param_1,uVar1,-1,-1);\n      return paVar3;\n    }\n  }\n  return (alD3dTexture2D *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:16:27Z"
+}

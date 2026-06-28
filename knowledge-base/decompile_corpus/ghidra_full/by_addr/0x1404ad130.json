@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DebugEventClass * __thiscall\nDebugEventClass::scalar_deleting_destructor(DebugEventClass *this,uint param_1)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  uVar1 = (this->DebugEventClass_data).offset_0x18;\n  if (0xf < uVar1) {\n    lVar2 = (this->DebugEventClass_data).offset_0x0;\n    lVar3 = lVar2;\n    if (0xfff < uVar1 + 1) {\n      lVar3 = *(longlong *)(lVar2 + -8);\n      if (0x1f < (lVar2 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar2 - lVar3,uVar1 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar3);\n  }\n  (this->DebugEventClass_data).offset_0x10 = 0;\n  (this->DebugEventClass_data).offset_0x18 = 0xf;\n  *(undefined1 *)&(this->DebugEventClass_data).offset_0x0 = 0;\n  DynamicVectorClass<int>::~DynamicVectorClass<int>\n            ((DynamicVectorClass<int> *)&(this->ScheduledEventClass_data).offset_0x8);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (DebugEventClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x68);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:05:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140395c70",
+  "tool": "ghidra",
+  "fact_id": "rva_buff_modifier_read",
+  "body": "\nulonglong FUN_140395c70(longlong param_1,longlong param_2)\n\n{\n  ulonglong in_RAX;\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  if (param_2 == 0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  lVar1 = (**(code **)(*DAT_140b15418 + 0x220))(DAT_140b15418,*(undefined4 *)(param_1 + 0x58));\n  lVar2 = 0;\n  if (*(longlong *)(param_1 + 0xf0) != 0) {\n    lVar2 = *(longlong *)(*(longlong *)(param_1 + 0xf0) + 0x138);\n  }\n  if (lVar1 != 0) {\n    FUN_140536570(param_2,lVar1);\n  }\n  uVar3 = (ulonglong)(lVar1 != 0);\n  if (lVar2 != 0) {\n    FUN_140536570(param_2,lVar2);\n    uVar3 = 1;\n  }\n  return uVar3;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:24Z"
+}

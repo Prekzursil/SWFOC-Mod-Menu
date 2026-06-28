@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e4030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetClass member function inherited by GUIGadgetFrameClass\n   GUIGadgetClass member function inherited by GUIGadgetTextClass\n   GUIGadgetClass member function inherited by GUIGadgetPushbuttonClass\n   GUIGadgetClass member function inherited by GUIGadgetCheckboxClass\n   GUIGadgetClass member function inherited by GUIGadgetRadiobuttonClass\n   GUIGadgetClass member function inherited by GUIGadgetProgressbarClass\n   GUIGadgetClass member function inherited by GUIGadgetIMELocaleIndicatorClass */\n\nvoid __thiscall GUIGadgetClass::vfunction16(GUIGadgetClass *this)\n\n{\n  *(undefined4 *)((longlong)&(this->GUIGadgetClass_data).offset_0x80 + 4) =\n       *(undefined4 *)&(this->GUIGadgetClass_data).offset_0x80;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:10Z"
+}

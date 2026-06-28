@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c2b80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c2b94        *arg1 = &GalacticCameraClass::`vftable'\n1403c2b99        int64_t* rcx = arg1[3]\n1403c2ba0        if (rcx != 0)\n1403c2ba5        (*(*rcx + 8))(rcx)\n1403c2ba8        arg1[3] = 0\n1403c2bb4        if ((arg2 & 1) != 0)\n1403c2bbe        j_sub_1407864b8(arg1)\n1403c2bd0        return arg1",
+  "fetched_at": "2026-04-26T17:24:41Z"
+}

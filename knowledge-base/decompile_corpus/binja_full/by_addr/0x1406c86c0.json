@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c86c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406c86ce        struct AIDiagnosticsNodeClass::AIGoalSystemDiagnosticsNodeClass::VTable** result = operator new(0x30)\n1406c86d8        if (result == 0)\n1406c8706        return 0\n1406c86e1        result[1] = 0\n1406c86e5        *result = &AIGoalSystemDiagnosticsNodeClass::`vftable'{for `AIDiagnosticsNodeClass'}\n1406c86e8        __builtin_memset(&result[2], 0, 0x18)\n1406c86f4        result[5] = arg1\n1406c86fd        return result",
+  "fetched_at": "2026-04-26T17:25:20Z"
+}

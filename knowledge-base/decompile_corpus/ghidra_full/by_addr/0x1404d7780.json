@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d7780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float * __thiscall SpaceModeClass::vfunction64(SpaceModeClass *this,float *param_1)\n\n{\n  *param_1 = (this->SpaceModeClass_data).offset_0x388;\n  param_1[1] = (this->SpaceModeClass_data).offset_0x38c;\n  param_1[2] = (this->SpaceModeClass_data).offset_0x390;\n  param_1[3] = (this->SpaceModeClass_data).offset_0x394;\n  param_1[4] = (this->SpaceModeClass_data).offset_0x398;\n  param_1[5] = (this->SpaceModeClass_data).offset_0x39c;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:14:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140208ff0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140208ff8        arg1[0xf] = 1\n140209002        __builtin_memset(&arg1[6], 0, 0x18)\n14020900a        *arg1 = 0\n140209014        *(arg1 + 0x18) = &arg1[4]\n14020901b        *(arg1 + 0x48) = 0\n140209023        __builtin_memset(&arg1[8], 0, 0x1c)\n14020902b        arg1[0x10] = 0xfffffc19\n140209039        *(arg1 + 0x68) = 0\n14020903d        *(arg1 + 0x70) = 0\n140209041        __builtin_memset(&arg1[0x18], 0, 0x18)\n140209045        *(arg1 + 0x10) = &arg1[4]\n140209054        *(arg1 + 8) = &ReferenceListClass<class PacketClass>::`vftable'{for `GenericMultiLinkedList'}\n140209058        *(arg1 + 0x78) = 0\n14020905c        arg1[0x20] = 0\n140209062        *(arg1 + 0x90) = 0\n140209069        *(arg1 + 0x50) = &ReferenceListClass<class PacketClass>::`vftable'{for `GenericMultiLinkedList'}\n140209074        *(arg1 + 0x98) = 0\n140209080        arg1[0x21] = 1\n14020908a        arg1[0x22] = 0xfffffc19\n140209094        *(arg1 + 0x58) = &arg1[0x16]\n140209097        *(arg1 + 0x60) = &arg1[0x16]\n14020909b        InitializeCriticalSectionAndSpinCount(&arg1[0x28], 0xfa0)\n1402090a9        return arg1",
+  "fetched_at": "2026-04-26T17:28:01Z"
+}

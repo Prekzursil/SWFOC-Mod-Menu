@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068dee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068deeb        struct LuaUserVar::WeightedTypeListClass::VTable** rax = sub_14068da30(0x813)\n14068def6        if (rax == 0)\n14068defd        return rax\n14068df08        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** rax_1 = sub_14024a250()\n14068df10        struct LuaUserVar::WeightedTypeListClass::VTable** arg_20 = rax\n14068df1b        (*rax)->__offset(0x0).q(rax)\n14068df1d        int64_t* rdx = rax_1[3]\n14068df25        if (rdx == rax_1[4])\n14068df42        sub_140144900(&rax_1[2], rdx, &arg_20)\n14068df27        *rdx = rax\n14068df30        (*rax)->__offset(0x0).q(rax)\n14068df32        rax_1[3] = &rax_1[3]->vFunc_1\n14068df47        struct LuaUserVar::WeightedTypeListClass::VTable* rdx_1 = *rax\n14068df4d        rdx_1->__offset(0x8).q(rax, rdx_1)\n14068df62        return rax_1",
+  "fetched_at": "2026-04-26T17:17:01Z"
+}

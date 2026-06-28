@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044d860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044d86a        struct DrawPrimitiveClass::VTable** result = nullptr\n14044d87b        struct RefCountClass::TextureClass::VTable** rbx = nullptr\n14044d87d        struct RefCountClass::TextureClass::VTable** rax = sub_14025e990(arg1, 1, 0)\n14044d885        if (rax != 0)\n14044d887        struct RefCountClass::TextureClass::VTable* rdx_1 = *rax\n14044d88d        rbx = rax\n14044d890        rdx_1->__offset(0x0).q(rax, rdx_1)\n14044d8a4        uint128_t zmm6\n14044d8a4        zmm6.d = _mm_cvtepi32_ps(zx.o(sub_140271cd0(rbx))).d f/ 1024f\n14044d8bd        uint128_t zmm7\n14044d8bd        zmm7.d = _mm_cvtepi32_ps(zx.o(sub_140271c80(rbx))).d f/ 768f\n14044d8c5        struct DrawPrimitiveClass::VTable** rax_3 = operator new(0x90)\n14044d8cd        if (rax_3 != 0)\n14044d8eb        result = sub_14025ff10(rax_3, zx.o(0), zx.o(0), zmm6, zmm7.d, rbx)\n14044d8f1        if (rbx != 0)\n14044d8f9        (*rbx)->__offset(0x8).q(rbx)\n14044d913        return result",
+  "fetched_at": "2026-04-26T17:27:36Z"
+}

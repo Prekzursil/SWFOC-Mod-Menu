@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f2e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nSpecialAbilityActionClass::vfunction6\n          (SpecialAbilityActionClass *this,longlong param_1,undefined8 param_2,longlong *param_3)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  ulonglong in_RAX;\n  ulonglong uVar3;\n  SpecialAbilityActionClass_data *pSVar4;\n  longlong lVar5;\n  longlong lVar6;\n  \n  if (param_1 != 0) {\n    plVar1 = &(this->ActionClass_data).offset_0xa8;\n    (this->ActionClass_data).offset_0x98 = param_1;\n    (this->ActionClass_data).offset_0xa0 = param_2;\n    if (plVar1 != param_3) {\n      lVar6 = *plVar1;\n      lVar2 = *param_3;\n      lVar5 = param_3[1] - lVar2;\n      if ((ulonglong)((this->ActionClass_data).offset_0xb8 - lVar6 >> 3) < (ulonglong)(lVar5 >> 3))\n      {\n        FUN_140378eb0(plVar1);\n        lVar6 = *plVar1;\n      }\n      FUN_14076bd80(lVar6,lVar2,lVar5);\n      (this->ActionClass_data).offset_0xb0 = lVar6 + lVar5;\n    }\n    in_RAX = (this->ActionClass_data).offset_0x98;\n    if (*(longlong *)(in_RAX + 0x100) != 0) {\n      pSVar4 = &this->SpecialAbilityActionClass_data;\n      if (0xf < (ulonglong)(this->SpecialAbilityActionClass_data).offset_0x18) {\n        pSVar4 = (SpecialAbilityActionClass_data *)pSVar4->offset_0x0;\n      }\n      uVar3 = FUN_14037b750(*(longlong *)(in_RAX + 0x100) + 8,pSVar4,param_2,0);\n      return uVar3;\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:58:51Z"
+}

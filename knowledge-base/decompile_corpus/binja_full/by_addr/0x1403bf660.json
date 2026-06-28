@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bf660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403bf66a        int64_t* rax = *(arg1 + 0xe8)\n1403bf677        int64_t result\n1403bf677        if (rax == 0)\n1403bf714        result = sub_1403be2a0(arg1)\n1403bf67d        int64_t* rbp_1 = *rax\n1403bf68d        if (((rax[1] - rbp_1) & 0xfffffffffffffff8) == 0)\n1403bf714        result = sub_1403be2a0(arg1)\n1403bf693        void* rbp_2 = *rbp_1\n1403bf69a        if (rbp_2 == 0)\n1403bf714        result = sub_1403be2a0(arg1)\n1403bf6a4        int64_t* rax_3 = sub_1403bee10(arg1, rbp_2)\n1403bf6a9        *(arg1 + 0xe8) = rax_3\n1403bf6b0        int32_t i = 0\n1403bf6b2        int64_t rcx = *rax_3\n1403bf6c2        if (((rax_3[1] - rcx) s>> 3).d s> 0)\n1403bf6c9        int64_t* rdi_1 = nullptr\n1403bf6f8        int64_t* rax_7\n1403bf6d6        sub_1403a8bd0(*(rdi_1 + rcx), 0)\n1403bf6db        rax_7 = *(arg1 + 0xe8)\n1403bf6e2        rdi_1 = &rdi_1[1]\n1403bf6e6        i += 1\n1403bf6e8        rcx = *rax_7\n1403bf6f8        do while (i s< ((rax_7[1] - rcx) s>> 3).d)\n1403bf708        result = sub_1403c0020(arg1, rbp_2, 0)\n1403bf719        *(arg1 + 0xe8) = 0\n1403bf724        *(arg1 + 0x32) = 0\n1403bf734        return result",
+  "fetched_at": "2026-04-26T17:24:36Z"
+}

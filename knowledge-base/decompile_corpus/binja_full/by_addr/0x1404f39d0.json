@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f39d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f39db        struct BehaviorClass::TransportBehaviorClass::VTable** result = operator new(0x40)\n1404f39e6        if (result == 0)\n1404f3a1e        return result\n1404f39eb        sub_1404c32d0(result)\n1404f39f7        *result = &TransportBehaviorClass::`vftable'{for `BehaviorClass'}\n1404f3a01        result[1] = &TransportBehaviorClass::`vftable'{for `RefCountClass'}\n1404f3a0c        result[3] = &TransportBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404f3a18        return result",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

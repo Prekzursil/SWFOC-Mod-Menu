@@ -1,0 +1,7 @@
+{
+  "addr": "0x140561650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalSellDataPackClass * __thiscall\nTacticalSellDataPackClass::TacticalSellDataPackClass(TacticalSellDataPackClass *this)\n\n{\n  this->PooledObjectClass<class_TacticalSellDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_TacticalSellDataPackClass,20,class_EmptyLockerClass>)0x0;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:56Z"
+}

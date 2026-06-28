@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038c6e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14038c6e0(longlong param_1,int param_2)\n\n{\n  undefined4 *puVar1;\n  GarrisonDataPackClass *this;\n  GarrisonDataPackClass *pGVar2;\n  \n  pGVar2 = *(GarrisonDataPackClass **)(param_1 + 0x210);\n  if (pGVar2 == (GarrisonDataPackClass *)0x0) {\n    this = (GarrisonDataPackClass *)FUN_140769c58(0x38);\n    pGVar2 = (GarrisonDataPackClass *)0x0;\n    if (this != (GarrisonDataPackClass *)0x0) {\n      pGVar2 = GarrisonDataPackClass::GarrisonDataPackClass(this);\n    }\n    *(GarrisonDataPackClass **)(param_1 + 0x210) = pGVar2;\n  }\n  puVar1 = &(pGVar2->GarrisonDataPackClass_data).offset_0x24;\n  *puVar1 = *puVar1 + param_2;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:20:58Z"
+}

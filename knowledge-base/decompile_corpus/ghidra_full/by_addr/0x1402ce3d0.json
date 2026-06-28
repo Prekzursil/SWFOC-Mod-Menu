@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402ce3d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalCameraControllerClass * __thiscall\nTacticalCameraControllerClass::scalar_deleting_destructor\n          (TacticalCameraControllerClass *this,uint param_1)\n\n{\n  DynamicVectorClass<struct_alPrimVertex>::~DynamicVectorClass<struct_alPrimVertex>\n            ((DynamicVectorClass<struct_alPrimVertex> *)&this[2].RefCountClass_data.offset_0x18);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (TacticalCameraControllerClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x168);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:30:28Z"
+}

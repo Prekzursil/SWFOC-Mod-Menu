@@ -1,0 +1,7 @@
+{
+  "addr": "0x140124730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140124736        if (arg1 != 0)\n14012473b        if (arg1 == 1)\n14012477c        if (sub_14028af60(&data_140b153e0) == 0)\n1401247f7        if (data_140a62618 != 0)\n140124809        sub_1401c1d20(&data_140a78510, data_140a122c8, 1)\n14012480e        data_140a122c8 = 0xffffffff\n140124818        data_140a62618 = 0\n140124825        return sub_14005f6b0(1) __tailcall\n14012478a        if (data_140a62618 != 0)\n14012479c        sub_1401c1d20(&data_140a78510, data_140a122c8, 1)\n1401247a1        data_140a122c8 = 0xffffffff\n1401247ab        data_140a62618 = 0\n1401247b7        struct RefCountClass::EventClass::VTable** rax_2 = operator new(0x48)\n1401247bf        struct ScheduledEventClass::QuitGameEventClass::VTable** rbx\n1401247bf        if (rax_2 == 0)\n1401247ce        rbx = nullptr\n1401247c9        rbx = sub_1404993f0(rax_2)\n1401247eb        return sub_1403b01f0(&data_140b2ed18, rbx) __tailcall\n140124740        if (arg1 != 3)\n14012476d        return \n14012474a        int64_t* rcx_1 = &data_140a122d0\n140124758        if (data_140a122e8 u>= 0x10)\n140124758        rcx_1 = data_140a122d0\n140124764        return sub_140123d70(rcx_1, data_140a62619, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:07:30Z"
+}

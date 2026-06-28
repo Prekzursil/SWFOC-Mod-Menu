@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f8010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f8032        if (sub_14048d820(arg1, arg2, arg3, 0) != 0 && sub_14048e100(arg1, arg2, arg3, 0) != 1)\n1406f8054        void* result = (*(*arg2 + 0x10))(arg2, 0xb)\n1406f805a        if (result != 0)\n1406f8071        return sub_140631cc0(result, arg3) __tailcall\n1406f8076        result.b = 1\n1406f8087        return result\n1406f8099        return 0",
+  "fetched_at": "2026-04-26T17:26:42Z"
+}

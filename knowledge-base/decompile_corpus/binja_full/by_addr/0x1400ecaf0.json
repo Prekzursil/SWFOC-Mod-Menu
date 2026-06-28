@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400ecaf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400ecafe        void* rax = operator new(0x20)\n1400ecb0a        int64_t var_28 = 0x1b\n1400ecb18        int64_t var_20 = 0x1f\n1400ecb21        __builtin_strncpy(rax, \"IDC_SKIRMISH_CREDITS_SLIDER\", 0x1c)\n1400ecb51        int32_t rdx = data_140a11d60\n1400ecb57        void* var_38 = rax\n1400ecb66        uint128_t zmm6 = sub_1401c8fc0(&data_140a78510, rdx, &var_38)\n1400ecb6d        if (var_20 u>= 0x10)\n1400ecb6f        void* rcx_1 = var_38\n1400ecb77        void* rax_1 = rcx_1\n1400ecb81        if (var_20 + 1 u>= 0x1000)\n1400ecb83        rcx_1 = *(rcx_1 - 8)\n1400ecb96        if (rax_1 - rcx_1 - 8 u> 0x1f)\n1400ecc09        _invalid_parameter_noinfo_noreturn()\n1400ecc09        noreturn\n1400ecb98        j_sub_1407864b8(rcx_1)\n1400ecb9d        void* rax_4 = data_140a621e0\n1400ecba7        int32_t rcx_2\n1400ecba7        int32_t r8_1\n1400ecba7        if (rax_4 == 0)\n1400ecbb8        r8_1 = data_140b26f2c\n1400ecbbf        rcx_2 = data_140b26f30\n1400ecba9        r8_1 = *(rax_4 + 0x234)\n1400ecbb0        rcx_2 = *(rax_4 + 0x238)\n1400ecbd4        uint128_t zmm0\n1400ecbd4        zmm0.d = _mm_cvtepi32_ps(zx.o(rcx_2 - r8_1)).d f* zmm6.d\n1400ecbdd        zmm0.d = zmm0.d f+ 0.5f\n1400ecc08        return zx.q((int.d(zmm0.d) + 0x3e7) s/ 0x3e8 * 0x3e8 + r8_1)",
+  "fetched_at": "2026-04-26T17:03:30Z"
+}

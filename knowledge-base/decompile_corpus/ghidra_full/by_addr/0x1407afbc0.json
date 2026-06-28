@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407afbc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall PlaneCollisionBodyClass::vfunction8(PlaneCollisionBodyClass *this,float *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  undefined1 *puVar4;\n  float fVar5;\n  \n  puVar4 = (*this->vftablePtr->vfunction7)(this);\n  if ((char)puVar4 != '\\0') {\n    fVar1 = *(float *)&(this->RefCountClass_data).offset_0x70;\n    fVar2 = *(float *)((longlong)&(this->RefCountClass_data).offset_0x70 + 4);\n    fVar3 = *(float *)&(this->RefCountClass_data).offset_0x78;\n    fVar5 = ((fVar1 * *param_1 + param_1[1] * fVar2 + param_1[2] * fVar3) -\n            *(float *)((longlong)&(this->RefCountClass_data).offset_0x78 + 4)) + DAT_1408007c0;\n    *param_1 = *param_1 - fVar1 * fVar5;\n    param_1[2] = param_1[2] - fVar3 * fVar5;\n    param_1[1] = param_1[1] - fVar2 * fVar5;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:29Z"
+}

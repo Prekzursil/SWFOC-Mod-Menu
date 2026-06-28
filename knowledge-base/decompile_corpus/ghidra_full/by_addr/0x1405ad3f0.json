@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405ad3f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nLandTeamContainerLocomotorBehaviorClass::vfunction68\n          (LandTeamContainerLocomotorBehaviorClass *this,undefined8 param_1)\n\n{\n  undefined **ppuVar1;\n  ulonglong in_RAX;\n  CMFCToolTipInfo *pCVar2;\n  undefined8 uVar3;\n  ulonglong uVar4;\n  longlong local_98;\n  CMFCToolTipInfo *local_90;\n  CMFCToolTipInfo *local_88;\n  undefined4 local_68;\n  undefined1 local_48 [64];\n  \n  ppuVar1 = this->offset_0x18;\n  if ((ppuVar1 == (undefined **)0x0) || (ppuVar1[0x15] == (undefined *)0x0)) {\n    uVar4 = in_RAX & 0xffffffffffffff00;\n  }\n  else {\n    FUN_14054e620(&local_98);\n    pCVar2 = (CMFCToolTipInfo *)FUN_14054e4a0(local_48,ppuVar1 + 0xf,param_1);\n    if (local_90 == local_88) {\n      FUN_14040b910(&local_98,local_90,pCVar2);\n    }\n    else {\n      CMFCToolTipInfo::operator=(local_90,pCVar2);\n      local_90 = local_90 + 0x34;\n    }\n    local_68 = 5;\n    (*this->vftablePtr->vfunction51)(this,&local_98);\n    (*this->vftablePtr->vfunction42)(this);\n    uVar3 = FUN_14054e660(&local_98);\n    uVar4 = CONCAT71((int7)((ulonglong)uVar3 >> 8),1);\n  }\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T18:43:24Z"
+}

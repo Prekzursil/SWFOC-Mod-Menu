@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403513f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403513f0        uint64_t rax = zx.q(*(arg1 + 0x270))\n1403513f9        if ((rax.b & 1) != 0)\n140351401        if (arg2 == 0)\n140351403        rax.b &= 0xfb\n140351405        *(arg1 + 0x23c) = 0\n14035140f        *(arg1 + 0x270) = rax.b\n140351415        rax = *(arg1 + 0x80)\n14035142c        if (rax != 0 && (*(rax + 0x3e3) & 0x10) != 0)\n140351448        float zmm1 = *(arg1 + 0x78) * 255f\n140351450        float zmm0 = *(arg1 + 0x74)\n140351455        *(arg1 + 0x181) = (int.d(*(arg1 + 0x70) * 255f)).b\n140351463        *(arg1 + 0x182) = (int.d(zmm0 * 255f)).b\n140351469        char rax_3 = (int.d(zmm1)).b\n14035146d        *(arg1 + 0x183) = rax_3\n140351473        return rax_3\n14035147b        if ((rax.b & 4) == 0 || arg4 != 0)\n14035147d        rax.b &= 0xf7\n140351483        rax.b |= arg3 << 3\n140351486        rax.b |= 4\n140351488        *(arg1 + 0x270) = rax.b\n14035148e        rax = *(arg1 + 0x80)\n140351498        if (rax != 0)\n1403514a2        *(arg1 + 0x23c) = *(rax + 0x3a4)\n1403514aa        return rax\n1403514ae        *(arg1 + 0x23c) = 0\n1403514b6        return rax",
+  "fetched_at": "2026-04-26T17:10:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ce30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _initialize_onexit_table\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 _initialize_onexit_table(longlong *param_1)\n\n{\n  longlong lVar1;\n  \n  lVar1 = DAT_140a44b98;\n  if (param_1 == (longlong *)0x0) {\n    return 0xffffffff;\n  }\n  if (*param_1 == param_1[2]) {\n    *param_1 = DAT_140a44b98;\n    param_1[1] = lVar1;\n    param_1[2] = lVar1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:52:08Z"
+}

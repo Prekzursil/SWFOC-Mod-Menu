@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023c310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023c31b        *arg1 = 0\n14023c323        arg1[1] = 0\n14023c32b        InitializeCriticalSectionAndSpinCount(&arg1[2], 0xfa0)\n14023c339        return arg1",
+  "fetched_at": "2026-04-26T17:30:03Z"
+}

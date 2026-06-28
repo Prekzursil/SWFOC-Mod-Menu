@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001e5d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001e5e1        int64_t rsi = sx.q(arg3)\n14001e5e4        *arg1 = &DynamicVectorClass<float>::`vftable'\n14001e5ed        uint32_t rax_1 = zx.d(arg2) << 0x1f\n14001e5f0        arg1[1] = 0\n14001e5f8        arg1[2].d = 0\n14001e5ff        *(arg1 + 0x14) = rax_1\n14001e605        if (arg3 != 0)\n14001e60c        int64_t rax_3\n14001e60c        if (rax_1 s>= 0)\n14001e63b        uint64_t rax_4 = 4 * rsi\n14001e645        if (mulu.dp.q(4, rsi) u>> 0x40 != zx.o(0))\n14001e645        rax_4 = -1\n14001e64c        rax_3 = j_operator new(rax_4)\n14001e629        rax_3 = HeapAlloc(GetProcessHeap(), HEAP_NONE, rsi << 2)\n14001e651        arg1[1] = rax_3\n14001e659        *(arg1 + 0x14) &= 0x80000000\n14001e660        *(arg1 + 0x14) |= rsi.d & 0x7fffffff\n14001e663        arg1[2].d = 0\n14001e677        return arg1",
+  "fetched_at": "2026-04-26T16:51:32Z"
+}

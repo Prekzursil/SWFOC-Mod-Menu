@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c9b4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078c9b8        int64_t* rcx = *arg1\n14078c9c2        if (rcx != data_140b3c450)\n14078c9c4        free_environment<wchar_t>(rcx)\n14078c9cd        return ",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074667c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140746685        void var_28\n140746685        std::bad_cast::bad_cast(&var_28)\n140746696        sub_14076b00c(&var_28, &data_1409cb040)\n140746696        noreturn",
+  "fetched_at": "2026-04-26T17:29:28Z"
+}

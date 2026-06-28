@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405314f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpawnIndigenousUnitsBehaviorClass::vfunction12\n          (SpawnIndigenousUnitsBehaviorClass *this,\n          DynamicVectorClass<class_GameObjectClass*___ptr64> *param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  if ((((param_1 != (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) &&\n       (*(char *)(*(longlong *)\n                   &param_1[0x1b].DynamicVectorClass<class_GameObjectClass*___ptr64>_data.offset_0x8\n                 + 0xa9) != '\\0')) && (lVar2 = FUN_14028a890(&DAT_140b153e0), lVar2 != 0)) &&\n     ((iVar1 = FUN_140397450(lVar2), iVar1 == 4 &&\n      (iVar1 = 0, 0 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3))))) {\n    while ((lVar2 = FUN_140294bc0(&DAT_140a16fd0,iVar1), lVar2 == 0 ||\n           (*(char *)(*(longlong *)(lVar2 + 0x68) + 0x10b) == '\\0'))) {\n      iVar1 = iVar1 + 1;\n      if ((int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3) <= iVar1) {\n        return;\n      }\n    }\n    ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n    ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n              (param_1,*(int *)(lVar2 + 0x4c),(undefined8 *)0x0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:06Z"
+}

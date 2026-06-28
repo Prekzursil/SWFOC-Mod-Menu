@@ -1,0 +1,7 @@
+{
+  "addr": "0x140483e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTargetingPrioritySetManagerClass::vfunction4\n          (TargetingPrioritySetManagerClass *this,longlong param_1)\n\n{\n  if (param_1 != 0) {\n    FUN_140483c40(param_1,1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:33Z"
+}

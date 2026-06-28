@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d4570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407d4570(longlong *param_1,int param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  lVar2 = (longlong)param_2 + 2;\n  iVar1 = (int)param_1[(longlong)param_2 * 2 + 5];\n  if (iVar1 == -1) {\n    FUN_1407ce300(param_1[2],\"unfinished capture\");\n    lVar2 = param_1[lVar2 * 2];\n  }\n  else {\n    lVar2 = param_1[lVar2 * 2];\n    if (iVar1 == -2) {\n      FUN_1407b9520(param_1[2],(double)((lVar2 - *param_1) + 1));\n      return;\n    }\n  }\n  FUN_1407b94a0(param_1[2],lVar2,(longlong)iVar1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:58:21Z"
+}

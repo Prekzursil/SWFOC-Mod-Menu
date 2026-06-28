@@ -1,0 +1,7 @@
+{
+  "addr": "0x140067c80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140067c84        int64_t result = data_1409cf0a0\n140067c8e        if (result != 0)\n140067d08        return result\n140067c93        struct SteamClass::VTable** rax = operator new(zx.q((result + 0x18).d))\n140067c9b        if (rax == 0)\n140067cae        data_1409cf0a0 = 0\n140067ca5        data_1409cf0a0 = std::exception::exception(rax)\n140067cb9        int32_t* rdx_1 = data_140a7bc10\n140067cc7        bool cond:0_1 = rdx_1 == data_140a7bc18\n140067cce        void** arg_8 = &data_1409cf098\n140067cd3        if (cond:0_1)\n140067cf8        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n140067cfd        return data_1409cf0a0\n140067cd5        *rdx_1 = &data_1409cf098\n140067cd8        data_140a7bc10 += 8\n140067ceb        return data_1409cf0a0",
+  "fetched_at": "2026-04-26T16:55:49Z"
+}

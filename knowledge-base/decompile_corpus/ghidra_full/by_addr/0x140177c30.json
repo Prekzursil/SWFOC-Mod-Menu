@@ -1,0 +1,7 @@
+{
+  "addr": "0x140177c30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140177c30(int param_1,longlong *param_2)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  \n  plVar2 = DAT_140a6d480;\n  plVar1 = &DAT_140a70a70 + param_1;\n  if (param_2 == (longlong *)0x0) {\n    if (*plVar1 != 0) {\n      _DAT_140a72728 = _DAT_140a72728 + 1;\n      *plVar1 = 0;\n                    /* WARNING: Could not recover jumptable at 0x000140177cb0. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (**(code **)(*plVar2 + 0x208))(plVar2,param_1,0);\n      return;\n    }\n  }\n  else {\n    lVar3 = (**(code **)(*param_2 + 0x38))(param_2);\n    plVar2 = DAT_140a6d480;\n    if (lVar3 != *plVar1) {\n      _DAT_140a72728 = _DAT_140a72728 + 1;\n      *plVar1 = lVar3;\n                    /* WARNING: Could not recover jumptable at 0x000140177c7d. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (**(code **)(*plVar2 + 0x208))(plVar2,param_1,lVar3);\n      return;\n    }\n  }\n  _DAT_140a7272c = _DAT_140a7272c + 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:45Z"
+}

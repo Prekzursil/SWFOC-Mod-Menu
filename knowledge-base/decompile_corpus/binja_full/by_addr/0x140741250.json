@@ -1,0 +1,7 @@
+{
+  "addr": "0x140741250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074125a        int32_t* rbx = arg2\n140741264        char* rax = setlocale(0, 0)\n140741273        if (rax == 0)\n140741273        rax = &data_1407ff8a8\n14074127e        std::_Yarn<char>::operator=(arg1 + 0x48, rax)\n140741286        if (rbx != 0)\n140741292        rbx = setlocale(0, rbx)\n1407412a3        if (rbx == 0)\n1407412a3        rbx = &data_14080272c\n1407412b4        return std::_Yarn<char>::operator=(arg1 + 0x58, rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

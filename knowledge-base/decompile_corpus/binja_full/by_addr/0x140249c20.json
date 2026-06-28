@@ -1,0 +1,7 @@
+{
+  "addr": "0x140249c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140249c26        arg1[1].d = 0\n140249c34        *arg1 = &LuaUserVar::`vftable'{for `LuaVar'}\n140249c3a        arg1[2] = 0\n140249c42        arg1[3] = 0\n140249c4a        arg1[4].d = arg2\n140249c50        if (arg3 != 0)\n140249c5c        int64_t* rax_1 = operator new(0x40)\n140249c61        int64_t* rdi_1 = rax_1\n140249c67        if (rax_1 == 0)\n140249c95        rdi_1 = nullptr\n140249c71        sub_140249c20(rax_1, 0, 0)\n140249c7d        rdi_1[6] = arg1\n140249c81        *rdi_1 = &LuaMemberFunctionWrapper<class LuaUserVar>::`vftable'{for `LuaUserVar'}\n140249c8b        rdi_1[5] = sub_14024a10c\n140249c8f        rdi_1[7].b = 0\n140249ca4        sub_14024be40(arg1, \"Is_Pool_Safe\", rdi_1)\n140249cb6        return arg1",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

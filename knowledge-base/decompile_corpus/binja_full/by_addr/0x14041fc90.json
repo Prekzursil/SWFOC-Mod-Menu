@@ -1,0 +1,7 @@
+{
+  "addr": "0x14041fc90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14041fca7        void* rbx = *(arg2 + 0xa8)\n14041fcb3        int32_t var_38\n14041fcb3        uint64_t zmm2[0x2] = sub_140556710(*(arg1 + 0xa8), &var_38, data_140b2f0e8, arg3)\n14041fcc7        float var_28\n14041fcc7        int32_t* result\n14041fcc7        int128_t zmm6\n14041fcc7        result, zmm6 = sub_140556710(rbx, &var_28, data_140b2f0e8, zmm2)\n14041fccc        uint32_t zmm0[0x4] = var_38\n14041fcd2        float zmm1 = var_28\n14041fce0        if (not(zmm0[0] f> zmm1))\n14041fce2        zmm0[0] f- zmm1\n14041fce7        bool cond:2_1\n14041fce7        if (not(is_unordered.d(zmm0[0], zmm1)) && not(zmm0[0] f!= zmm1))\n14041fcf2        int128_t var_18_1 = zmm6\n14041fcff        int32_t var_34\n14041fcff        zmm6.d = fconvert.s(sub_1407760bc(_mm_cvtps_pd(var_34[0].q))[0].q)\n14041fd18        int32_t var_24\n14041fd18        cond:2_1 = fconvert.s(sub_1407760bc(_mm_cvtps_pd(var_24[0].q))) f> zmm6.d\n14041fd20        if (is_unordered.d(zmm0[0], zmm1) || zmm0[0] f!= zmm1 || not(cond:2_1))\n14041fd22        result.b = 0\n14041fd28        return result\n14041fd29        result.b = 1\n14041fd2f        return result",
+  "fetched_at": "2026-04-26T17:26:19Z"
+}

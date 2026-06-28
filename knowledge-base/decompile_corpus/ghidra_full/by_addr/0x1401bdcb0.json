@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bdcb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401bdcb0(void)\n\n{\n  DWORD dwMessageId;\n  HLOCAL local_res8 [4];\n  CHAR local_108 [256];\n  \n  dwMessageId = GetLastError();\n  FormatMessageA(0x1100,(LPCVOID)0x0,dwMessageId,0x400,(LPSTR)local_res8,0,(va_list *)0x0);\n  wsprintfA(local_108,\"failed with error %d: %s\");\n  MessageBoxA((HWND)0x0,local_108,\"Error\",0);\n  LocalFree(local_res8[0]);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033fb20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nRefCountClass * __thiscall RefCountClass::~RefCountClass(RefCountClass *this,ulonglong param_1)\n\n{\n  (this->RefCountClass_data).offset_0x0 = &vftable.vfunction1;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:13Z"
+}

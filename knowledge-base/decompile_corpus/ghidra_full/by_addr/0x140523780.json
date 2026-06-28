@@ -1,0 +1,7 @@
+{
+  "addr": "0x140523780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_140523780(longlong param_1,longlong param_2)\n\n{\n  if (param_2 == 0) {\n    return false;\n  }\n  if (*(float *)(param_1 + 4) <= 0.0) {\n    return true;\n  }\n  return *(float *)(param_1 + 4) <= *(float *)(param_2 + 0x70);\n}",
+  "fetched_at": "2026-04-26T18:26:38Z"
+}

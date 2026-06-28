@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ffae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGalaxyWideUpgradeAbilityClass::vfunction30_for_IXMLLoadableClass\n          (GalaxyWideUpgradeAbilityClass *this)\n\n{\n  undefined ***pppuVar1;\n  undefined1 local_108 [256];\n  \n  CorruptionAbilityClass::vfunction30_for_IXMLLoadableClass((CorruptionAbilityClass *)this);\n  if (*(int *)&(this->RefCountClass_data).field_0x2c != 3) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_108,\n                  \"Error: (%s) The only currently supported Activation_Style is Galactic_Automatic.\"\n                  ,pppuVar1);\n    FUN_1402149d0(local_108);\n    *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 3;\n    (this->RefCountClass_data).field_0x31 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:00Z"
+}

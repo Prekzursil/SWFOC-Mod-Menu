@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402225e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402225ea        int64_t i_1 = arg3\n1402225ed        char* result = arg2\n1402225f3        if (arg3 != 0)\n1402225fe        void* rbx_1 = &arg2[0x20]\n140222670        int64_t i\n140222612        __builtin_memset(rbx_1 - 0x1c, 0, 0x14)\n140222615        *result = 0\n140222622        int64_t* rax_1 = operator new(0x30)\n140222633        *rax_1 = rax_1\n140222636        rax_1[1] = rax_1\n14022263a        *(rbx_1 - 0x18) = rax_1\n14022263e        *(rbx_1 - 8) = 0\n140222641        *rbx_1 = 0\n140222644        *(rbx_1 + 8) = 0\n140222648        *(rbx_1 + 0x10) = 7\n140222650        *(rbx_1 + 0x18) = 8\n140222658        *(rbx_1 - 0x1c) = 0x3f800000\n14022265f        sub_140048250(rbx_1 - 8, 0x10, rax_1)\n140222664        result = &result[0x40]\n140222668        rbx_1 += 0x40\n14022266c        i = i_1\n14022266c        i_1 -= 1\n140222670        do while (i != 1)\n140222689        return result",
+  "fetched_at": "2026-04-26T17:29:13Z"
+}

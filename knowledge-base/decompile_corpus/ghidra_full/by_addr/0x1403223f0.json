@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403223f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined4 FUN_1403223f0(void)\n\n{\n  return CONCAT31((int3)(DAT_140a17250 - 1U >> 8),DAT_140a17250 - 1U < 2);\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:14Z"
+}

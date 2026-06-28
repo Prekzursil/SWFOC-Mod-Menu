@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403904c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403904c0(longlong param_1)\n\n{\n  CorruptSystemsDataPackClass *pCVar1;\n  \n  if (*(longlong *)(param_1 + 0x230) == 0) {\n    pCVar1 = (CorruptSystemsDataPackClass *)FUN_140769c58(0x18);\n    if (pCVar1 != (CorruptSystemsDataPackClass *)0x0) {\n      pCVar1 = CorruptSystemsDataPackClass::CorruptSystemsDataPackClass(pCVar1);\n      *(CorruptSystemsDataPackClass **)(param_1 + 0x230) = pCVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x230) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f8060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403f8060(PlanetFactionChangeClass *param_1,longlong *param_2,int param_3)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  float fVar3;\n  \n  lVar1 = param_2[0x17];\n  if (lVar1 != 0) {\n    lVar2 = *(longlong *)(lVar1 + 0xa0);\n    FUN_140084de0(lVar1 + 0xa0,lVar1 + 0xa0,*(undefined8 *)(lVar2 + 8));\n    fVar3 = DAT_1407ffaf8;\n    *(longlong *)(lVar2 + 8) = lVar2;\n    *(longlong *)lVar2 = lVar2;\n    *(longlong *)(lVar2 + 0x10) = lVar2;\n    *(undefined8 *)(lVar1 + 0xa8) = 0;\n    PlanetaryDataPackClass::PlanetFactionChangeClass::~PlanetFactionChangeClass\n              (param_1,param_2,param_3,fVar3);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:28Z"
+}

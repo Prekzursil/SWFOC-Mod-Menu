@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405944f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpawnSquadronBehaviorClass::vfunction2\n          (SpawnSquadronBehaviorClass *this,longlong param_1,int param_2,undefined8 param_3)\n\n{\n  undefined *puVar1;\n  undefined4 uVar2;\n  char cVar3;\n  undefined8 uVar4;\n  int iVar5;\n  SpawnSquadronBehaviorClass *pSVar6;\n  \n  if (param_2 != 10) {\n    BehaviorClass::vfunction2((BehaviorClass *)this,param_1,param_2,param_3);\n    return;\n  }\n  iVar5 = 0;\n  puVar1 = this->offset_0x0[0x23];\n  pSVar6 = this;\n  if (this == (SpawnSquadronBehaviorClass *)&DAT_00000018) {\n    pSVar6 = (SpawnSquadronBehaviorClass *)0x0;\n  }\n  uVar4 = FUN_140058570();\n  FUN_140220eb0(uVar4,param_1,pSVar6,10);\n  uVar2 = DAT_1407ffaf8;\n  *(undefined8 *)(puVar1 + 0x58) = 0;\n  cVar3 = FUN_1403a92f0(this->offset_0x0,0x46,0xffff,0,0,uVar2,0,0,0,0);\n  if (cVar3 == '\\0') {\n    *(undefined4 *)(puVar1 + 0x50) = 0;\n    if (DAT_140b15418 != 0) {\n      iVar5 = *(int *)(DAT_140b15418 + 0x10);\n    }\n    *(int *)(puVar1 + 100) =\n         (int)((float)DAT_140b0a340 * *(float *)(this->offset_0x0[0x53] + 0xa98) + (float)iVar5);\n  }\n  else {\n    *(undefined4 *)(puVar1 + 0x50) = 3;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:42:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140543060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054306a        int64_t* rbx = *(arg3 + 0x10)\n140543080        if ((*(arg3 + 0x18) - rbx) s>> 3 u< 1)\n14054308c        sub_140248190(arg2, \"LuaLockControls -- Expected float parameter 1\", arg3)\n14054309d        return 0\n14054309e        int64_t* rbx_1 = *rbx\n1405430a9        void* i\n1405430a9        if (rbx_1 != 0)\n1405430b1        (**rbx_1)(rbx_1)\n1405430b9        i, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n1405430bf        int64_t* rdi\n1405430bf        if (rbx_1 != 0 && i != 0)\n1405430cb        while (i != &data_140a157c0)\n1405430cd        i = *(i + 8)\n1405430d4        if (i == 0)\n1405430d4        goto label_1405430d6\n14054311f        (**rbx_1)(rbx_1)\n140543121        rdi = rbx_1\n1405430cb        goto label_1405430e3\n1405430d6        label_1405430d6:\n1405430d6        rdi = nullptr\n1405430db        if (rbx_1 != 0)\n1405430e3        label_1405430e3:\n1405430e3        arg3 = (*(*rbx_1 + 8))(rbx_1)\n1405430e9        if (rdi != 0)\n1405430eb        double zmm1 = rdi[2]\n1405430fa        data_140a28c91 = zmm1 > 0.0\n140543104        (*(*rdi + 8))(rdi, zmm1)\n140543118        return 0\n140543130        sub_140248190(arg2, \"LuaLockControls -- Invalid parameter 1, expected a float\", arg3)\n140543141        data_140a28c91 = 0\n14054314d        return 0",
+  "fetched_at": "2026-04-26T17:33:59Z"
+}

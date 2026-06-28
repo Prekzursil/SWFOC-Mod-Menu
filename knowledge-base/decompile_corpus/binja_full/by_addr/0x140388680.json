@@ -1,0 +1,7 @@
+{
+  "addr": "0x140388680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140388680        int32_t* result = arg3\n140388686        if (arg1 != arg2)\n14038868f        void* r8 = arg1 + 0x30\n140388693        void* r9_2 = result - arg1\n1403886a0        int32_t rax_1 = *(r8 - 0x30)\n1403886a4        r8 += 0x38\n1403886a8        *result = rax_1\n1403886b3        result = &result[0xe]\n1403886b7        *(r9_2 + r8 - 0x64) = *(r8 - 0x64)\n1403886c0        *(r9_2 + r8 - 0x60) = *(r8 - 0x60)\n1403886c9        *(r9_2 + r8 - 0x5c) = *(r8 - 0x5c)\n1403886d2        *(r9_2 + r8 - 0x58) = *(r8 - 0x58)\n1403886d7        *(r9_2 + r8 - 0x50) = 0\n1403886dc        *(r9_2 + r8 - 0x40) = 0\n1403886e1        *(r9_2 + r8 - 0x38) = 0\n1403886eb        *(r9_2 + r8 - 0x50) = *(r8 - 0x50)\n1403886f6        *(r9_2 + r8 - 0x40) = *(r8 - 0x40)\n1403886fc        *(r8 - 0x40) = 0\n140388700        *(r8 - 0x38) = 0xf\n140388708        *(r8 - 0x50) = 0\n14038870f        do while (r8 - 0x30 != arg2)\n140388714        return result",
+  "fetched_at": "2026-04-26T17:20:49Z"
+}

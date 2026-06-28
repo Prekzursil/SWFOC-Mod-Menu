@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a9ef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alLaserBeam * __thiscall\nalLaserBeam::scalar_deleting_destructor(alLaserBeam *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: alLaserBeam::~alLaserBeam */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  plVar1 = (this->alLaserBeam_data).offset_0x30;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->alLaserBeam_data).offset_0x30 = (longlong *)0x0;\n  }\n  FUN_1400e5160(&DAT_140b3cc38,0);\n  plVar1 = (this->alLaserBeam_data).offset_0x30;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  alRenderable::~alRenderable((alRenderable *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,400);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:55:01Z"
+}

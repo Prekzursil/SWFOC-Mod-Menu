@@ -1,0 +1,7 @@
+{
+  "addr": "0x140241980",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140241985        float zmm2[0x2] = *arg1\n140241989        double temp0 = _mm_min_ss((*(arg1 + 4)).d, arg2)\n14024198d        float temp0_1[0x2] = _mm_max_ss(zmm2[0], temp0.d)\n140241991        temp0_1[0] = temp0_1[0] f- *arg1\n140241995        temp0_1[0] = temp0_1[0] f/ arg1[1].d\n1402419aa        return int.q(_mm_cvtps_pd(temp0_1) + 0.5)",
+  "fetched_at": "2026-04-26T17:30:14Z"
+}

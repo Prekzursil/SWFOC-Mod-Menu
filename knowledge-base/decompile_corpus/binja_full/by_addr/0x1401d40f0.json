@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d40f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d40fb        data_140a7a0e8 = 0\n1401d410c        sub_1401d28e0(&data_140a7baa0, &data_1407ff7e8)\n1401d4124        return memset(&data_140a7a0f0, 0, 0x100) __tailcall",
+  "fetched_at": "2026-04-26T17:26:45Z"
+}

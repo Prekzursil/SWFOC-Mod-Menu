@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bd2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403bd303        *arg1 = &SetupPhaseManagerClass::`vftable'{for `SignalListenerClass'}\n1403bd310        arg1[2] = &SetupPhaseManagerClass::`vftable'{for `RefCountClass'}\n1403bd314        sub_1403be2a0(arg1)\n1403bd31c        sub_1403be390(arg1)\n1403bd321        void* rcx_1 = arg1[0x1c]\n1403bd32b        if (rcx_1 != 0)\n1403bd335        (*(*(rcx_1 + 0x40) + 8))(rcx_1 + 0x40)\n1403bd33f        sub_1400466c0(&arg1[0x19])\n1403bd344        void* rcx_4 = arg1[0x16]\n1403bd34e        if (rcx_4 != 0)\n1403bd365        if (((arg1[0x18] - rcx_4) & 0xfffffffffffffff8) u>= 0x1000)\n1403bd367        void* r8_1 = *(rcx_4 - 8)\n1403bd37a        if (rcx_4 - r8_1 - 8 u> 0x1f)\n1403bd3f4        _invalid_parameter_noinfo_noreturn()\n1403bd3f4        noreturn\n1403bd37c        rcx_4 = r8_1\n1403bd37f        j_sub_1407864b8(rcx_4)\n1403bd386        __builtin_memset(&arg1[0x16], 0, 0x18)\n1403bd39f        sub_14007b260(&arg1[0xe])\n1403bd3a8        sub_1403bd250(&arg1[0xb])\n1403bd3b1        sub_14001eb00(&arg1[7])\n1403bd3c0        arg1[2] = &RefCountClass::`vftable'{for `IRefCountClass'}\n1403bd3cb        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1403bd3ce        sub_14020a820(arg1)\n1403bd3d7        if ((arg2 & 1) != 0)\n1403bd3e1        j_sub_1407864b8(arg1)\n1403bd3f3        return arg1",
+  "fetched_at": "2026-04-26T17:24:32Z"
+}

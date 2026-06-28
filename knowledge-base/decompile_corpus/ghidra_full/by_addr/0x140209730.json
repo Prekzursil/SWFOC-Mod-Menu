@@ -1,0 +1,7 @@
+{
+  "addr": "0x140209730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140209730(longlong param_1)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  \n  lVar1 = *(longlong *)(param_1 + 0x20);\n  if (lVar1 != 0) {\n    FUN_14023c5a0(lVar1);\n    thunk_FUN_1407864b8(lVar1,0x120);\n    *(undefined8 *)(param_1 + 0x20) = 0;\n  }\n  if (*(longlong *)(param_1 + 0x28) != 0) {\n    FUN_1402067f0(*(longlong *)(param_1 + 0x28),FUN_14020a180,param_1);\n  }\n  if ((*(char *)(param_1 + 0x30) != '\\0') &&\n     (puVar2 = *(undefined8 **)(param_1 + 0x28), puVar2 != (undefined8 *)0x0)) {\n    (**(code **)*puVar2)(puVar2,1);\n    *(undefined8 *)(param_1 + 0x28) = 0;\n  }\n  if (*(longlong *)(param_1 + 8) != 0) {\n    thunk_FUN_1407864b8();\n    *(undefined8 *)(param_1 + 8) = 0;\n  }\n  if (*(longlong *)(param_1 + 0x10) != 0) {\n    thunk_FUN_1407864b8();\n    *(undefined8 *)(param_1 + 0x10) = 0;\n  }\n  DeleteCriticalSection((LPCRITICAL_SECTION)(param_1 + 0x68));\n  FUN_140207250(param_1 + 0x48);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:50Z"
+}

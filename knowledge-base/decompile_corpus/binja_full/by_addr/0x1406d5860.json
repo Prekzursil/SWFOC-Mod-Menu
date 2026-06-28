@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d5860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d5889        int64_t* result = sub_14028a950(&data_140b153e0, 1)\n1406d588e        int64_t* result_1 = result\n1406d5894        if (result == 0)\n1406d5938        result.b = 0\n1406d589f        if (result[7] == 0)\n1406d592d        *arg3 = 0\n1406d5934        result.b = 1\n1406d58a9        void* rbp_1 = *(*(arg2 + 0x58) + 0x50)\n1406d58b0        if (rbp_1 == 0)\n1406d592d        *arg3 = 0\n1406d5934        result.b = 1\n1406d58b2        int64_t rdx_1 = arg1[0x15]\n1406d58bc        void* r8_1\n1406d58bc        if (rdx_1 == 0)\n1406d58fc        r8_1 = arg1[0x1e]\n1406d5906        if (r8_1 != 0)\n1406d5906        goto label_1406d5913\n1406d5938        result.b = 0\n1406d58c8        result = (*(*result + 0x180))(result_1, rdx_1 + 0x78)\n1406d58da        if (result != 0 && result != arg1[0x1e])\n1406d58dc        int64_t r8 = *arg1\n1406d58e5        (*(r8 + 0x68))(arg1, result, r8)\n1406d58f1        if (arg1[0x1e] == 0)\n1406d592d        *arg3 = 0\n1406d5934        result.b = 1\n1406d58f3        r8_1 = arg1[0x1e]\n1406d5913        label_1406d5913:\n1406d591a        if (sub_140494540(result_1[7], *(rbp_1 + 0x4c), r8_1 + 0x30).b == 0)\n1406d592d        *arg3 = 0\n1406d5934        result.b = 1\n1406d5926        *arg3 = 0x3ff0000000000000\n1406d5929        result.b = 1\n1406d594e        return result",
+  "fetched_at": "2026-04-26T17:25:39Z"
+}

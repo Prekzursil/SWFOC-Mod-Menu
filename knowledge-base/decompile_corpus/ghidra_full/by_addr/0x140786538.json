@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786538",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_uninitialize_locks\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 __acrt_uninitialize_locks(void)\n\n{\n  ulonglong uVar1;\n  \n  uVar1 = (ulonglong)DAT_140b3c300;\n  while ((int)uVar1 != 0) {\n    uVar1 = (ulonglong)((int)uVar1 - 1);\n    DeleteCriticalSection((LPCRITICAL_SECTION)(&DAT_140b3c0d0 + uVar1 * 0x28));\n    DAT_140b3c300 = DAT_140b3c300 - 1;\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:51:37Z"
+}

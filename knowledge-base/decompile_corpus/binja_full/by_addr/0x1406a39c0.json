@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a39c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a39cb        struct LuaUserVar::LuaDiscreteDistributionClass::VTable** rax = sub_1406a3a50(0x823)\n1406a39d6        if (rax == 0)\n1406a39dd        return rax\n1406a39e8        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** rax_1 = sub_14024a250()\n1406a39f0        struct LuaUserVar::LuaDiscreteDistributionClass::VTable** arg_20 = rax\n1406a39fb        (*rax)->__offset(0x0).q(rax)\n1406a39fd        int64_t* rdx = rax_1[3]\n1406a3a05        if (rdx == rax_1[4])\n1406a3a22        sub_140144900(&rax_1[2], rdx, &arg_20)\n1406a3a07        *rdx = rax\n1406a3a10        (*rax)->__offset(0x0).q(rax)\n1406a3a12        rax_1[3] = &rax_1[3]->vFunc_1\n1406a3a27        struct LuaUserVar::LuaDiscreteDistributionClass::VTable* rdx_1 = *rax\n1406a3a2d        rdx_1->__offset(0x8).q(rax, rdx_1)\n1406a3a42        return rax_1",
+  "fetched_at": "2026-04-26T17:21:33Z"
+}

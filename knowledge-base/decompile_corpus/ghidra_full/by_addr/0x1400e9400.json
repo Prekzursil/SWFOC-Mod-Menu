@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400e9400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400e9400(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)\n\n{\n  undefined8 *puVar1;\n  undefined8 local_res18;\n  undefined8 local_res20;\n  \n  local_res18 = param_3;\n  local_res20 = param_4;\n  puVar1 = (undefined8 *)FUN_140022b20();\n  FID_conflict___stdio_common_vfwprintf(*puVar1,param_1,param_2,0,&local_res18);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a53b0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_fow_disable_rendering_impl",
+  "body": "1406a53ba        int64_t* rcx = data_140b15418\n1406a53ca        char rax_1\n1406a53ca        int64_t r8\n1406a53ca        rax_1, r8 = (*(*rcx + 0xf0))(rcx)\n1406a53d2        if (rax_1 == 0)\n1406a53de        sub_140248190(arg2, \"LuaFOWRevealCommandClass -- Command only valid in a tactical game.\", r8)\n1406a53ef        return 0\n1406a53f0        int64_t* rbx_1 = *(arg3 + 0x10)\n1406a5400        int64_t rdi\n1406a5400        rdi.b = 0\n1406a5409        if (((*(arg3 + 0x18) - rbx_1) & 0xfffffffffffffff8) != 0)\n1406a540b        int64_t* rbx_2 = *rbx_1\n1406a5411        void* i\n1406a5411        if (rbx_2 != 0)\n1406a5419        i = (*(*rbx_2 + 0x20))(rbx_2)\n1406a541f        if (rbx_2 == 0 || i == 0)\n1406a5436        label_1406a5436:\n1406a5436        rbx_2 = nullptr\n1406a542b        while (i != &data_140a157b0)\n1406a542d        i = *(i + 8)\n1406a5434        if (i == 0)\n1406a5434        goto label_1406a5436\n1406a5471        (**rbx_2)(rbx_2)\n1406a5442        rdi.b = rbx_2[2].b == 0\n1406a5446        (*(*rbx_2 + 8))(rbx_2)\n1406a544d        data_140a284c4 = rdi.b\n1406a5454        sub_14013ecc0(rdi.b)\n1406a546a        return 0",
+  "fetched_at": "2026-04-26T16:44:09Z"
+}

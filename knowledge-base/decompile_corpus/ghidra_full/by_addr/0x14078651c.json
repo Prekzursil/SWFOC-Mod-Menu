@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078651c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Different Base Names\n    __acrt_lock\n    __acrt_unlock\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_lock(int param_1)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014078652e. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  EnterCriticalSection((LPCRITICAL_SECTION)(&DAT_140b3c0d0 + (longlong)param_1 * 0x28));\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:37Z"
+}

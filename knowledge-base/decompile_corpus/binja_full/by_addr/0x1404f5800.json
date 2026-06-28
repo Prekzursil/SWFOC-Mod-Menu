@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f5800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f5804        void* rdx = *(arg1 + 0x28)\n1404f5808        void* rax = *(rdx + 0x2d0)\n1404f581c        if (rax == 0 || *(rax + 0x10) == 0)\n1404f58d0        return (zx.o(0)).d\n1404f582a        void* rbx = *(rdx + 0x108)\n1404f5836        float zmm0_1 = sub_14020b6d0(arg2)\n1404f583b        float zmm1 = *(rbx + 0x3c)\n1404f5843        float zmm2 = *(rbx + 0x44)\n1404f5853        int128_t zmm6 = zx.o(0)\n1404f586b        if (not(zmm2 <= zmm1))\n1404f586d        zmm1 = zmm2\n1404f5870        zmm6 = 0x42b40000\n1404f5873        zmm2 = *(rbx + 0x40)\n1404f5880        if (zmm2 > zmm1)\n1404f58b4        zmm6 = 0xc2b40000\n1404f5882        zmm2 - zmm1\n1404f5887        if (not(is_unordered.d(zmm2, zmm1)) && not(zmm2 != zmm1))\n1404f5889        zmm6.d f- 0f\n1404f588e        if ((is_unordered.d(zmm6.d, 0f) || not(zmm6.d f== 0f)) && not((zmm0_1 & 0x7fffffff) <= (sub_14020b6d0(90f - zmm0_1) & 0x7fffffff)))\n1404f58b4        zmm6 = 0xc2b40000\n1404f58c8        return zmm6.d",
+  "fetched_at": "2026-04-26T17:31:43Z"
+}

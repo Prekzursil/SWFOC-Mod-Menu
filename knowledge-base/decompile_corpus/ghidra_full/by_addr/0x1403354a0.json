@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403354a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8 * FUN_1403354a0(longlong param_1)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  \n  if (*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) + 0xd4\n              ) < DAT_140b2bc70) {\n    _Init_thread_header(&DAT_140b2bc70);\n    if (DAT_140b2bc70 == -1) {\n      atexit(FUN_1407efb70);\n      _Init_thread_footer(&DAT_140b2bc70);\n    }\n  }\n  lVar1 = FUN_1403355d0(param_1);\n  if (((lVar1 != 0) && (*(char *)(lVar1 + 0xc4) == '\\0')) && (*(char *)(param_1 + 0x228) != '\\0')) {\n    puVar2 = (undefined8 *)(param_1 + 0x98);\n    DAT_140a17444 = 1;\n    _DAT_140a1743c = *(undefined4 *)(param_1 + 0xc0);\n    if (puVar2 != (undefined8 *)&DAT_140a173d0) {\n      if (7 < *(ulonglong *)(param_1 + 0xb0)) {\n        puVar2 = (undefined8 *)*puVar2;\n      }\n      FUN_1400228a0(&DAT_140a173d0,puVar2,*(undefined8 *)(param_1 + 0xa8));\n    }\n    _DAT_140a17448 = *(undefined4 *)(param_1 + 0x220);\n    DAT_140a17445 = 1;\n    FUN_14002c5f0(&PTR_vftable_140a17458,param_1 + 0x230);\n    _DAT_140a1744c = *(undefined4 *)(param_1 + 0x248);\n    _DAT_140a17450 = *(undefined4 *)(param_1 + 0x24c);\n    return &DAT_140a17390;\n  }\n  return (undefined8 *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:34Z"
+}

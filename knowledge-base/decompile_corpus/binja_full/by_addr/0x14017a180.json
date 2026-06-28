@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017a180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017a190        HWND hWnd = data_140a6e658\n14017a197        if (data_140a6d420 == 0)\n14017a1d7        SetWindowLongA(hWnd, 0xfffffff0, 0x90080000)\n14017a1e5        if (data_140a6d470 == 0)\n14017a1ee        HMENU rax_2 = GetMenu(data_140a6e658)\n14017a1f4        HWND hWnd_1 = data_140a6e658\n14017a1fd        data_140a6d470 = rax_2\n14017a204        SetMenu(hWnd_1, nullptr)\n14017a1a0        SetWindowLongA(hWnd, 0xfffffff0, data_140a6d488)\n14017a1a6        HMENU hMenu = data_140a6d470\n14017a1b0        if (hMenu != 0)\n14017a1b9        SetMenu(data_140a6e658, hMenu)\n14017a1c1        data_140a6d470 = 0\n14017a210        return 0",
+  "fetched_at": "2026-04-26T17:23:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b9a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDrawTextClass::vfunction20\n          (DrawTextClass *this,undefined4 *param_1,float *param_2,undefined4 *param_3,float *param_4\n          )\n\n{\n  int iVar1;\n  int iVar2;\n  \n  iVar2 = 0;\n  *param_1 = 0;\n  if (this->StringTextureClass == (StringTextureClass)0x0) {\n    iVar1 = 0;\n  }\n  else {\n    iVar1 = FUN_140271cd0();\n  }\n  *param_2 = (float)(this->DrawTextClass_data).offset_0x8 / (float)iVar1;\n  *param_3 = 0;\n  if (this->StringTextureClass != (StringTextureClass)0x0) {\n    iVar2 = FUN_140271c80();\n  }\n  *param_4 = (float)(this->DrawTextClass_data).offset_0xc / (float)iVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eeb8c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nArcSweepAttackAbilityClass::vfunction3_for_RefCountClass\n          (ArcSweepAttackAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((ArcSweepAttackAbilityClass *)&this[-1].ArcSweepAttackAbilityClass_data.offset_0x38,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:46:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140756c7c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Different Base Names\n    protected: void __cdecl std::_Mpunct<wchar_t>::_Getvals<wchar_t>(wchar_t,struct lconv const *\n   __ptr64) __ptr64\n    protected: void __cdecl std::_Mpunct<wchar_t>::_Getvals(wchar_t,struct lconv const * __ptr64)\n   __ptr64\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid FID_conflict__Getvals(longlong param_1,undefined8 param_2,longlong param_3)\n\n{\n  undefined8 uVar1;\n  undefined **ppuVar2;\n  undefined2 *puVar3;\n  \n  if (*(char *)(param_1 + 0x44) == '\\0') {\n    uVar1 = *(undefined8 *)(param_3 + 0x70);\n  }\n  else {\n    uVar1 = *(undefined8 *)(param_3 + 0x68);\n  }\n  uVar1 = FUN_140759520(uVar1);\n  *(undefined8 *)(param_1 + 0x20) = uVar1;\n  ppuVar2 = &PTR_1407ff7e8;\n  if (*(byte *)(param_3 + 0x56) < 5) {\n    ppuVar2 = *(undefined ***)(param_3 + 0x88);\n  }\n  uVar1 = FUN_140759520(ppuVar2);\n  *(undefined8 *)(param_1 + 0x28) = uVar1;\n  puVar3 = &DAT_1408d07dc;\n  if (*(byte *)(param_3 + 0x57) < 5) {\n    puVar3 = *(undefined2 **)(param_3 + 0x90);\n  }\n  uVar1 = FUN_140759520(puVar3);\n  *(undefined8 *)(param_1 + 0x30) = uVar1;\n  *(undefined2 *)(param_1 + 0x18) = **(undefined2 **)(param_3 + 0x78);\n  *(undefined2 *)(param_1 + 0x1a) = **(undefined2 **)(param_3 + 0x80);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:07:05Z"
+}

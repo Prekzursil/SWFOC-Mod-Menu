@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a31b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a31bf        sub_1401584e0(arg1 + 0x40, 0)\n1401a31ca        int64_t result = sub_1401584e0(arg1 + 0x58, 0)\n1401a31cf        __builtin_memcpy(arg1 + 0xc, \"\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\", 0x30)\n1401a3228        return result",
+  "fetched_at": "2026-04-26T17:25:00Z"
+}

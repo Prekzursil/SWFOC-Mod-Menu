@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd6e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd6f7        void* result = _ValidateImageBase(&__dos_header)\n1407dd6fe        if (result.d != 0)\n1407dd709        result = _FindPESection(&__dos_header, arg1 - &__dos_header)\n1407dd711        if (result != 0)\n1407dd71b        return zx.q(not.d(*(result + 0x24) u>> 0x1f)) & 1\n1407dd72c        return result",
+  "fetched_at": "2026-04-26T17:34:07Z"
+}

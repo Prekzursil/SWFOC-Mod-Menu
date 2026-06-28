@@ -1,0 +1,7 @@
+{
+  "addr": "0x140742b80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140742b9d        char rsi = 0\n140742b9f        int32_t arg_8 = 0\n140742bb2        if (arg1 != 0 && *arg1 == 0)\n140742bbb        struct std::ctype_base::std::ctype<char>::VTable** rax_1 = operator new(0x30)\n140742bc0        struct std::ctype_base::std::ctype<char>::VTable** rbx_1 = rax_1\n140742bc3        arg_8.q = rax_1\n140742bce        void var_78\n140742bce        if (rax_1 == 0)\n140742c27        rbx_1 = nullptr\n140742bd0        void* rax_2 = *(arg2 + 8)\n140742bd7        void* rdx\n140742bd7        if (rax_2 == 0)\n140742be8        rdx = &data_1407ff8a8\n140742bd9        rdx = *(rax_2 + 0x28)\n140742be0        if (rdx == 0)\n140742be2        rdx = rax_2 + 0x30\n140742bf4        std::_Locinfo::_Locinfo(&var_78, rdx)\n140742bf9        rsi = 1\n140742bfe        rbx_1[1].d = 0\n140742c09        *rbx_1 = &std::ctype<char>::`vftable'{for `std::ctype_base'}\n140742c11        void var_98\n140742c11        int32_t* rax_3 = _Getctype(&var_98)\n140742c19        *(rbx_1 + 0x10) = *rax_3\n140742c21        *(rbx_1 + 0x20) = *(rax_3 + 0x10)\n140742c29        *arg1 = rbx_1\n140742c30        if ((rsi & 1) != 0)\n140742c37        std::_Locinfo::~_Locinfo(&var_78)\n140742c59        return 2",
+  "fetched_at": "2026-04-26T17:29:24Z"
+}

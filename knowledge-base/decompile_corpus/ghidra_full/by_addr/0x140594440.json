@@ -1,0 +1,7 @@
+{
+  "addr": "0x140594440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SpawnSquadronBehaviorClass::vfunction9(void)\n\n{\n  return \"SpawnSquadronBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:42:22Z"
+}

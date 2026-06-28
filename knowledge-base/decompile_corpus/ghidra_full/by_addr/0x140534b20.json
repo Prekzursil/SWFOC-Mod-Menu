@@ -1,0 +1,7 @@
+{
+  "addr": "0x140534b20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceRetreatCoordinatorClass::vfunction11(SpaceRetreatCoordinatorClass *this)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  int iVar4;\n  \n  lVar1 = (**(code **)(*DAT_140b15418 + 0x228))();\n  iVar4 = 0;\n  if (0 < *(int *)&(this->RefCountClass_data).field_0x30) {\n    lVar3 = 0;\n    do {\n      plVar2 = *(longlong **)(lVar3 + *(longlong *)&(this->RefCountClass_data).field_0x28);\n      if (plVar2 != (longlong *)0x0) {\n        if (lVar1 != 0) {\n          FUN_140426d50(lVar1,plVar2);\n        }\n        plVar2 = (longlong *)(**(code **)(*plVar2 + 0x10))(plVar2,1);\n        if (plVar2 != (longlong *)0x0) {\n          (**(code **)(*plVar2 + 0x140))(plVar2,0);\n        }\n      }\n      iVar4 = iVar4 + 1;\n      lVar3 = lVar3 + 8;\n    } while (iVar4 < *(int *)&(this->RefCountClass_data).field_0x30);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:44Z"
+}

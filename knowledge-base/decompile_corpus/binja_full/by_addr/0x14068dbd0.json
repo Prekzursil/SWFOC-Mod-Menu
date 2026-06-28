@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068dbd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068dbd6        if (arg2 == 0)\n14068dbdb        return (zx.o(0)).q\n14068dbdc        void* r11 = *(arg1 + 0x28)\n14068dbe0        int32_t r8 = 0\n14068dbf4        double zmm1 = (zx.o(0)).q\n14068dbf7        int64_t rax\n14068dbf7        int64_t rdx\n14068dbf7        rdx:rax = muls.dp.q(0x6666666666666667, *(arg1 + 0x30) - r11)\n14068dbfa        int32_t r10 = 0\n14068dbfd        int64_t rdx_1 = rdx s>> 4\n14068dc08        int32_t rdx_2 = rdx_1.d + (rdx_1 u>> 0x3f).d\n14068dc0d        if (rdx_2 s> 0)\n14068dc0f        void* rcx_2 = r11 + 8\n14068dc17        if (*(rcx_2 + 0x10) == arg2)\n14068dc69        return *(r11 + sx.q(r10) * 0x28)\n14068dc30        if ((*(arg2 + 0x1648) & *rcx_2) != 0 || (*(arg2 + 0x1650) & *(rcx_2 + 0x18)) != 0)\n14068dc32        zmm1 = zmm1 f+ *(rcx_2 - 8)\n14068dc37        r8 += 1\n14068dc3a        r10 += 1\n14068dc3d        rcx_2 += 0x28\n14068dc44        do while (r10 s< rdx_2)\n14068dc49        if (r8 != 0)\n14068dc5b        return zmm1 f/ _mm_cvtepi32_pd(zx.q(r8))\n14068dc70        return (zx.o(0)).q",
+  "fetched_at": "2026-04-26T17:16:57Z"
+}

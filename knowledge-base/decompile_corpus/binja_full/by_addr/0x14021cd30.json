@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021cd30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021cd42        if (*arg1 == 0 || *(arg1 + 4) s< 0)\n14021cd42        return \n14021cd48        sub_140228410(arg1 + 0x68)\n14021cd54        sub_140229f30(arg1 + 0x490)\n14021cd5d        sub_14022be40(arg1 + 0x10)\n14021cd69        sub_14022c7b0(arg1 + 0xf40)\n14021cd6e        *(arg1 + 4) += 1\n14021cd76        return ",
+  "fetched_at": "2026-04-26T17:28:57Z"
+}

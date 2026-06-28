@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f90c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LandObstacleBehaviorClass::vfunction7(LandObstacleBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  \n  if (((this->offset_0x18 != (undefined **)0x0) &&\n      (puVar1 = this->offset_0x18[0x41], puVar1 != (undefined *)0x0)) && (puVar1[8] == '\\0')) {\n    FUN_1404f88b0();\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:19:27Z"
+}

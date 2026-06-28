@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b9c30        void* rax_2\n1407b9c30        if (arg2 s<= 0)\n1407b9c4a        rax_2 = sub_1407b9f20(arg1, arg2)\n1407b9c4f        label_1407b9c4f:\n1407b9c52        if (rax_2 != 0)\n1407b9c54        int32_t rdx = *rax_2\n1407b9c59        if (rdx == 2)\n1407b9c78        label_1407b9c78:\n1407b9c7b        if (arg2 s<= 0)\n1407b9c96        rax_2 = sub_1407b9f20(arg1, arg2)\n1407b9c9b        label_1407b9c9b:\n1407b9c9e        if (rax_2 != 0)\n1407b9ca0        int32_t rcx_1 = *rax_2\n1407b9ca5        if (rcx_1 == 2)\n1407b9c77        return *(rax_2 + 8)\n1407b9caa        if (rcx_1 == 7)\n1407b9cb8        return *(rax_2 + 8) + 0x20\n1407b9c84        rax_2 = (sx.q(arg2 - 1) << 4) + *(arg1 + 0x18)\n1407b9c8c        if (rax_2 u< *(arg1 + 0x10))\n1407b9c8c        goto label_1407b9c9b\n1407b9c63        if (rdx == 5 || rdx == 6)\n1407b9c77        return *(rax_2 + 8)\n1407b9c68        if (rdx == 7)\n1407b9c68        goto label_1407b9c78\n1407b9c6d        if (rdx == 8)\n1407b9c77        return *(rax_2 + 8)\n1407b9c39        rax_2 = (sx.q(arg2 - 1) << 4) + *(arg1 + 0x18)\n1407b9c41        if (rax_2 u< *(arg1 + 0x10))\n1407b9c41        goto label_1407b9c4f\n1407b9c49        return 0",
+  "fetched_at": "2026-04-26T17:33:10Z"
+}

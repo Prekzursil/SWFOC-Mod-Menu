@@ -1,0 +1,7 @@
+{
+  "addr": "0x140245b90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall LuaScriptClass::vfunction10(LuaScriptClass *this,LuaScriptClass *param_1)\n\n{\n  LuaScriptClass *pLVar1;\n  ulonglong in_RAX;\n  undefined *puVar2;\n  LuaScriptClass *this_00;\n  \n  if (param_1 != (LuaScriptClass *)0x0) {\n    for (puVar2 = (*param_1->vftablePtr->vfunction5)(param_1); in_RAX = 0,\n        puVar2 != (undefined *)0x0; puVar2 = *(undefined **)(puVar2 + 8)) {\n      if (puVar2 == &DAT_140a15740) {\n        (*param_1->vftablePtr->vfunction1)(param_1);\n        this_00 = param_1;\n        goto LAB_140245bd5;\n      }\n    }\n  }\n  this_00 = (LuaScriptClass *)0x0;\n  if (param_1 != (LuaScriptClass *)0x0) {\nLAB_140245bd5:\n    for (puVar2 = (*param_1->vftablePtr->vfunction5)(param_1); in_RAX = 0,\n        puVar2 != (undefined *)0x0; puVar2 = *(undefined **)(puVar2 + 8)) {\n      if (puVar2 == &DAT_140a15918) {\n        (*param_1->vftablePtr->vfunction1)(param_1);\n        pLVar1 = *(LuaScriptClass **)&param_1->field_0x38;\n        goto LAB_140245c08;\n      }\n    }\n  }\n  param_1 = (LuaScriptClass *)0x0;\n  pLVar1 = this_00;\n  if (this_00 == (LuaScriptClass *)0x0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\nLAB_140245c08:\n  if (param_1 != (LuaScriptClass *)0x0) {\n    (*param_1->vftablePtr->vfunction2)(param_1);\n  }\n  if (this_00 != (LuaScriptClass *)0x0) {\n    (*this_00->vftablePtr->vfunction2)(this_00);\n  }\n  return (ulonglong)(pLVar1 == this);\n}",
+  "fetched_at": "2026-04-26T18:10:29Z"
+}

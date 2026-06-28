@@ -1,0 +1,7 @@
+{
+  "addr": "0x140443270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140443283        *arg1 = &GarrisonUnitBehaviorClass::`vftable'{for `BehaviorClass'}\n140443290        arg1[1] = &GarrisonUnitBehaviorClass::`vftable'{for `RefCountClass'}\n14044329b        arg1[3] = &GarrisonUnitBehaviorClass::`vftable'{for `SignalListenerClass'}\n14044329f        sub_1404c3310(arg1)\n1404432a7        if ((arg2 & 1) != 0)\n1404432b1        j_sub_1407864b8(arg1)\n1404432c3        return arg1",
+  "fetched_at": "2026-04-26T17:27:18Z"
+}

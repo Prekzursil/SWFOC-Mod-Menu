@@ -1,0 +1,7 @@
+{
+  "addr": "0x140275730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027574d        char rax\n14027574d        int64_t r8\n14027574d        rax, r8 = sub_14021fe20(arg2, 4, arg3, arg4)\n14027575f        int512_t zmm1 = sub_140275830(arg1, arg2, r8, arg4)\n140275767        char rax_1\n140275767        int64_t r8_1\n140275767        rax_1, r8_1 = sub_14021feb0(arg2)\n140275777        char rax_2\n140275777        int64_t r8_2\n140275777        rax_2, r8_2 = sub_14021fe20(arg2, 2, r8_1, zmm1)\n140275785        sub_140267db0(arg1, arg2, r8_2, zmm1)\n14027578d        char rax_3\n14027578d        int64_t r8_3\n14027578d        rax_3, r8_3 = sub_14021feb0(arg2)\n1402757de        char rdi = rax & 1 & rax_1 & rax_2 & rax_3 & sub_14021fe20(arg2, 8, r8_3, zmm1) & sub_14021ffa0(arg2, 0x25) & sub_1402200b0(arg2, arg1 + 0xa0, 4, nullptr) & sub_140220030(arg2)\n14027580d        rdi = rdi & sub_14021ffa0(arg2, 0x2a) & sub_1402200b0(arg2, arg1 + 0xa4, 4, nullptr) & sub_140220030(arg2)\n140275827        return sub_14021feb0(arg2) & rdi",
+  "fetched_at": "2026-04-26T17:31:54Z"
+}

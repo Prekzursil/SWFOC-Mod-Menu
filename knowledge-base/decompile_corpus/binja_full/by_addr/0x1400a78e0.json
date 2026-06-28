@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a78e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400a78e4        int32_t rdx = *arg1\n1400a78e8        if (rdx != 0)\n1400a78ed        if (rdx != 1)\n1400a78fb        if (rdx == 0xc && data_140a61ee4 != 0)\n1400a78fd        uint32_t rax_1 = timeGetTime()\n1400a791a        if (data_140a61ee0 + data_140a61ee4 u< rax_1 - data_140a7bec0)\n1400a791c        data_140a61ee4 = 0\n1400a792a        return sub_1400a7980() __tailcall\n1400a796a        return \n1400a7938        void* rcx_1 = &arg1[2]\n1400a793b        if (*(arg1 + 0x20) u>= 0x10)\n1400a793d        rcx_1 = *(arg1 + 8)\n1400a7945        if (*(arg1 + 0x18) != 0x1f)\n1400a796a        return \n1400a795b        if (memcmp(rcx_1, \"IDC_INTERNET_WAIT_CANCEL_BUTTON\", 0x1f).d != 0)\n1400a796a        return \n1400a7961        return sub_1400a7980() __tailcall",
+  "fetched_at": "2026-04-26T16:59:03Z"
+}

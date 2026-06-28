@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f8d00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402f8d06        int64_t result = 0\n1402f8d08        *(arg1 + 0x20ac) = 0\n1402f8d0f        *(arg1 + 0x2098) = 0\n1402f8d19        *(arg1 + 0x2090) = 0\n1402f8d20        int64_t* rcx = *(arg1 + 0x2070)\n1402f8d2a        int64_t rdx\n1402f8d2a        if (rcx != 0)\n1402f8d2f        rdx.b = 1\n1402f8d31        result, rdx = (*(*rcx + 0x78))(rcx, rdx)\n1402f8d34        int64_t* rcx_1 = *(arg1 + 0x2080)\n1402f8d3e        if (rcx_1 != 0)\n1402f8d43        rdx.b = 1\n1402f8d45        result, rdx = (*(*rcx_1 + 0x78))(rcx_1, rdx)\n1402f8d48        int64_t* rcx_2 = *(arg1 + 0x2078)\n1402f8d52        if (rcx_2 != 0)\n1402f8d57        rdx.b = 1\n1402f8d59        result, rdx = (*(*rcx_2 + 0x78))(rcx_2, rdx)\n1402f8d5c        int64_t* rcx_3 = *(arg1 + 0x2088)\n1402f8d66        if (rcx_3 == 0)\n1402f8d7b        return result\n1402f8d6b        rdx.b = 1\n1402f8d72        jump(*(*rcx_3 + 0x78))",
+  "fetched_at": "2026-04-26T17:23:04Z"
+}

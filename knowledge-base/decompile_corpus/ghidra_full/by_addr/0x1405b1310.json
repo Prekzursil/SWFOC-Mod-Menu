@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b1310",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RemoveCorruptionAbilityClass * __thiscall\nRemoveCorruptionAbilityClass::RemoveCorruptionAbilityClass(RemoveCorruptionAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->RemoveCorruptionAbilityClass_data).offset_0x0 = 1;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->RemoveCorruptionAbilityClass_data).offset_0x4 = 0x3f800000;\n  (this->RemoveCorruptionAbilityClass_data).offset_0x8 = 0x41200000;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:44Z"
+}

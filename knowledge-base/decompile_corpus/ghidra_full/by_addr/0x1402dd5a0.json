@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dd5a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1402dd5a0(longlong param_1,undefined8 *param_2)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  int iVar4;\n  longlong lVar5;\n  int iVar6;\n  \n  iVar4 = *(int *)(param_1 + 0x10);\n  iVar6 = *(int *)(param_1 + 0x14) * 2 >> 1;\n  if (iVar6 <= iVar4) {\n    iVar4 = iVar6 / 10;\n    if (iVar4 < 10) {\n      iVar4 = 10;\n    }\n    FUN_140303cf0(param_1,iVar4 + iVar6,0,1);\n    iVar4 = *(int *)(param_1 + 0x10);\n  }\n  uVar3 = param_2[1];\n  lVar5 = (longlong)iVar4;\n  lVar2 = *(longlong *)(param_1 + 8);\n  puVar1 = (undefined8 *)(lVar2 + lVar5 * 0x28);\n  *puVar1 = *param_2;\n  puVar1[1] = uVar3;\n  uVar3 = param_2[3];\n  puVar1 = (undefined8 *)(lVar2 + 0x10 + lVar5 * 0x28);\n  *puVar1 = param_2[2];\n  puVar1[1] = uVar3;\n  *(undefined8 *)(lVar2 + 0x20 + lVar5 * 0x28) = param_2[4];\n  *(int *)(param_1 + 0x10) = *(int *)(param_1 + 0x10) + 1;\n  return CONCAT71((int7)((ulonglong)lVar2 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:24:19Z"
+}

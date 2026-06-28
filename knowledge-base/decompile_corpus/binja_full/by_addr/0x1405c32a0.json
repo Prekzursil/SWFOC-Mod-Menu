@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c32a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c32a4        int64_t* r8 = *(arg1 + 0x3b0)\n1405c32b4        if (r8 == 0)\n1405c32b4        return \n1405c32ba        int32_t rcx = *(arg1 + 0x3a8)\n1405c32cd        if (rcx == arg2 && **(arg1 + 0x3b8) == rcx)\n1405c32c2        return \n1405c32d3        *(arg1 + 0x3a8) = arg2\n1405c32dd        void* rax_1 = *r8\n1405c32e0        int64_t rdx = r8[1]\n1405c32f1        int32_t* rcx_1 = rax_1 + 0xcc\n1405c32f8        if (rax_1 == 0)\n1405c32f8        rcx_1 = nullptr\n1405c3300        int32_t var_18 = *rcx_1\n1405c330b        int32_t var_14_1 = rcx_1[1]\n1405c3316        int32_t var_10_1 = rcx_1[2]\n1405c331c        void* rax_2 = *r8\n1405c3327        int32_t* rcx_2 = rax_2 + 0xd8\n1405c332e        if (rax_2 == 0)\n1405c332e        rcx_2 = nullptr\n1405c3336        int32_t var_28 = *rcx_2\n1405c3341        int32_t var_24_1 = rcx_2[1]\n1405c334f        int32_t var_20_1 = rcx_2[2]\n1405c3355        sub_1405c2590(arg1, rdx, &var_18, &var_28, arg2)\n1405c335e        return ",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

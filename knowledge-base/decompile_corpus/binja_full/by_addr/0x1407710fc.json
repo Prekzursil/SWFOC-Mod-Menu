@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407710fc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077111c        void* rax = __acrt_getptd_noexit()\n140771124        int64_t rax_1\n140771124        if (rax != 0)\n140771126        rax_1 = *(rax + 0x3b8)\n140771130        int64_t var_18\n140771130        int64_t rdx_1\n140771130        int64_t r8\n140771130        uint64_t r9\n140771130        if (rax == 0 || rax_1 == 0)\n140771163        uint64_t __security_cookie_1 = __security_cookie\n14077116a        r9 = zx.q(arg4)\n140771170        r8 = arg3\n14077117d        int64_t r10_2 = ror.q(__security_cookie_1 ^ data_140b3c0a8, __security_cookie_1.b & 0x3f)\n140771180        rdx_1 = arg2\n140771186        if (r10_2 == 0)\n14077119f        int64_t var_18_1 = arg5\n1407711a4        _invoke_watson()\n1407711a4        noreturn\n14077118d        rax_1 = r10_2\n140771190        var_18 = arg5\n140771137        r9 = zx.q(arg4)\n14077113a        var_18 = arg5\n14077113f        r8 = arg3\n140771142        rdx_1 = arg2\n140771162        return rax_1(arg1, rdx_1, r8, r9, var_18)",
+  "fetched_at": "2026-04-26T17:30:40Z"
+}

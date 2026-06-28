@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023b170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8 FUN_14023b170(longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  ulonglong uVar4;\n  longlong *plVar5;\n  \n  plVar3 = DAT_140b09358;\n  plVar1 = (longlong *)*DAT_140b09358;\n  while( true ) {\n    if (plVar1 == DAT_140b09358) {\n      return 0;\n    }\n    if (plVar1[6] == param_1) break;\n    plVar1 = (longlong *)*plVar1;\n  }\n  uVar4 = FUN_14011f9c0(&DAT_140b09350,plVar1 + 2);\n  plVar5 = (longlong *)(DAT_140b09368 + (uVar4 & _DAT_140b09380) * 0x10);\n  if ((longlong *)plVar5[1] == plVar1) {\n    if ((longlong *)*plVar5 == plVar1) {\n      *plVar5 = (longlong)plVar3;\n      plVar5[1] = (longlong)plVar3;\n    }\n    else {\n      plVar5[1] = plVar1[1];\n    }\n  }\n  else if ((longlong *)*plVar5 == plVar1) {\n    *plVar5 = *plVar1;\n  }\n  lVar2 = *plVar1;\n  _DAT_140b09360 = _DAT_140b09360 + -1;\n  *(longlong *)plVar1[1] = lVar2;\n  *(longlong *)(lVar2 + 8) = plVar1[1];\n  FUN_140144c90(&DAT_140b09358,plVar1);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:08:17Z"
+}

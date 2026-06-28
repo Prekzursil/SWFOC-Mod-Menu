@@ -1,0 +1,7 @@
+{
+  "addr": "0x140288800",
+  "tool": "ghidra",
+  "fact_id": "rva_make_ally_make_enemy_engine",
+  "body": "\nvoid FUN_140288800(longlong param_1,int param_2,undefined4 param_3)\n\n{\n  *(undefined4 *)(*(longlong *)(param_1 + 0x370) + (longlong)param_2 * 4) = param_3;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:11Z"
+}

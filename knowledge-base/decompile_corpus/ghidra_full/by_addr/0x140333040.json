@@ -1,0 +1,7 @@
+{
+  "addr": "0x140333040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140333040(longlong *param_1)\n\n{\n  undefined8 *puVar1;\n  undefined8 uVar2;\n  BOOL BVar3;\n  DWORD DVar4;\n  \n  puVar1 = (undefined8 *)*param_1;\n  if (puVar1 != (undefined8 *)0x0) {\n    uVar2 = puVar1[1];\n    puVar1[1] = 0;\n    BVar3 = ReleaseMutex((HANDLE)*puVar1);\n    if (BVar3 == 0) {\n      DVar4 = GetLastError();\n      FUN_140025760(\"ReleaseMutex failed with error code %d - %s (mutex owner is %s)\\n\",DVar4,\n                    \"RunDebugBuild\",uVar2);\n    }\n    *param_1 = 0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:03Z"
+}

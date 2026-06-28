@@ -1,0 +1,7 @@
+{
+  "addr": "0x140771944",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077194b        int64_t result\n14077194b        if (arg3 == 2)\n14077197f        result.b = 0\n14077195d        if (arg3 == 3 || arg3 == 0xc || arg3 == 0xd)\n14077197c        result.b = 1\n14077197e        return result\n14077195f        uint64_t rcx = zx.q(arg1) & 4\n140771968        result.b = rcx.d != 0\n140771973        if ((0xffef & (arg2 - 0x63)) != 0)\n140771978        result.b = rcx == 0\n140771981        return result",
+  "fetched_at": "2026-04-26T17:30:42Z"
+}

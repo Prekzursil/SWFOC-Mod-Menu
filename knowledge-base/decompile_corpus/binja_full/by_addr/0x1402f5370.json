@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f5370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402f538f        int32_t rax_2\n1402f538f        void** rdx_1\n1402f538f        void** r8\n1402f538f        if (arg2 != 0)\n1402f5391        int64_t rax_1 = -1\n1402f53a0        rax_1 += 1\n1402f53a7        do while (arg2[rax_1] != 0)\n1402f53b1        rax_2 = sub_140215a30(arg2, rax_1.d, 0)\n1402f53b6        rdx_1 = *(arg1 + 0x640)\n1402f53bd        r8 = rdx_1\n1402f53c0        void** rcx_1 = rdx_1[1]\n1402f53c8        while (*(rcx_1 + 0x19) == 0)\n1402f53d3        if (rcx_1[4].d u>= rax_2)\n1402f53db        rdx_1 = rcx_1\n1402f53de        rcx_1 = *rcx_1\n1402f53d5        rcx_1 = rcx_1[2]\n1402f53f5        int64_t* rdx_2\n1402f53f5        if (arg2 == 0 || *(rdx_1 + 0x19) != 0 || rax_2 u< rdx_1[4].d || rdx_1 == r8)\n1402f53fd        rdx_2 = nullptr\n1402f53f7        rdx_2 = rdx_1[5]\n1402f5412        if (rdx_2[0x15].d == 0x232 && *(arg1 + 0x1140) s> 0)\n1402f541b        rdx_2 = **(arg1 + 0x1138)\n1402f5437        return sub_1402f50c0(arg1, rdx_2, zx.q(arg3), arg4) __tailcall",
+  "fetched_at": "2026-04-26T17:23:00Z"
+}

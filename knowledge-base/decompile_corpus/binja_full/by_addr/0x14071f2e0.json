@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f2e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071f2f1        if (arg2 != 0)\n14071f303        *(arg1 + 0xa0) = arg2\n14071f30a        *(arg1 + 0xa8) = arg3\n14071f314        if (arg1 + 0xb0 != arg4)\n14071f328        int32_t* rsi_1 = *(arg1 + 0xb0)\n14071f333        int32_t* r15_1 = *arg4\n14071f336        void* rbp_2 = arg4[1] - r15_1\n14071f340        int64_t rdx_1 = rbp_2 s>> 3\n14071f347        if (rdx_1 u> (*(arg1 + 0xc0) - rsi_1) s>> 3)\n14071f34c        sub_140378eb0(arg1 + 0xb0, rdx_1)\n14071f351        rsi_1 = *(arg1 + 0xb0)\n14071f35d        memcpy(rsi_1, r15_1, rbp_2)\n14071f375        *(arg1 + 0xb8) = rsi_1 + rbp_2\n14071f385        void* rcx_2 = *(*(arg1 + 0xa0) + 0x100)\n14071f38f        if (rcx_2 != 0)\n14071f395        void* rdx_3 = arg1 + 0xc8\n14071f3a1        if (*(rdx_3 + 0x18) u>= 0x10)\n14071f3a3        rdx_3 = *rdx_3\n14071f3b3        return sub_14037b750(rcx_2 + 8, rdx_3, arg3) __tailcall\n14071f3b8        void* result\n14071f3b8        result.b = 0\n14071f3c1        return result",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

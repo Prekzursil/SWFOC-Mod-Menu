@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b5f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b5f4a        int64_t lpMem = arg1[1]\n1404b5f4e        struct DynamicVectorClass<class PlanetaryDataPackClass::TradeRouteLinkEntryClass>::VTable* const result = &DynamicVectorClass<class PlanetaryDataPackClass::TradeRouteLinkEntryClass>::`vftable'\n1404b5f55        *arg1 = &DynamicVectorClass<class PlanetaryDataPackClass::TradeRouteLinkEntryClass>::`vftable'\n1404b5f5e        if (lpMem != 0)\n1404b5f67        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1404b5f82        j_sub_1407864b8(lpMem)\n1404b5f77        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1404b5f87        result = nullptr\n1404b5f89        *(arg1 + 0x14) &= 0x80000000\n1404b5f90        arg1[1] = 0\n1404b5f94        arg1[2].d = 0\n1404b5fa1        return result",
+  "fetched_at": "2026-04-26T17:29:56Z"
+}

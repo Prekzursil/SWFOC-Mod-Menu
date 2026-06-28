@@ -1,0 +1,7 @@
+{
+  "addr": "0x140469200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140469214        if (arg1[2] u>= 0x400)\n140469214        return \n14046921b        int64_t* rax_1 = arg1\n14046921e        if (arg1[3] u>= 0x10)\n140469220        rax_1 = *arg1\n140469228        char var_408[0x400]\n140469228        char* rdx_1 = &var_408 - rax_1\n14046923c        char i\n140469230        i = *rax_1\n140469233        *(rdx_1 + rax_1) = i\n140469236        rax_1 += 1\n14046923c        do while (i != 0)\n140469243        _strupr(&var_408)\n14046924d        void* r8_1 = -ffffffffffffffff\n140469254        r8_1 += 1\n14046925c        do while (*(&var_408 + r8_1) != 0)\n140469266        sub_140022730(arg1, &var_408, r8_1)\n140469273        return ",
+  "fetched_at": "2026-04-26T17:28:02Z"
+}

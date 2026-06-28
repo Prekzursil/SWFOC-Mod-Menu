@@ -1,0 +1,7 @@
+{
+  "addr": "0x140476c00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140476c00(longlong *param_1)\n\n{\n  ulonglong uVar1;\n  AIGoalProposalFunctionSetClass *this;\n  AIGoalProposalFunctionSetClass *pAVar2;\n  \n  this = (AIGoalProposalFunctionSetClass *)*param_1;\n  if (this != (AIGoalProposalFunctionSetClass *)0x0) {\n    pAVar2 = (AIGoalProposalFunctionSetClass *)param_1[1];\n    if (this != pAVar2) {\n      do {\n        AIGoalProposalFunctionSetClass::~AIGoalProposalFunctionSetClass(this);\n        this = (AIGoalProposalFunctionSetClass *)\n               &this[2].DatabaseObjectManagerClass<class_AIGoalProposalFunctionClass>_data;\n      } while (this != pAVar2);\n      this = (AIGoalProposalFunctionSetClass *)*param_1;\n    }\n    uVar1 = ((param_1[2] - (longlong)this) / 0x38) * 0x38;\n    pAVar2 = this;\n    if (0xfff < uVar1) {\n      pAVar2 = (AIGoalProposalFunctionSetClass *)\n               this[-1].DatabaseObjectManagerClass<class_AIGoalProposalFunctionClass>_data.\n               offset_0x8;\n      if ((undefined1 *)0x1f < (undefined1 *)((longlong)this + (-8 - (longlong)pAVar2))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(param_1[2] - (longlong)this,uVar1 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(pAVar2);\n    *param_1 = 0;\n    param_1[1] = 0;\n    param_1[2] = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:54Z"
+}

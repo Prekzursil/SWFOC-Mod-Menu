@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018a850",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018a85b        sub_14018a880(\"*.fx\")\n14018a86b        return sub_14018a880(\"*.fxo\") __tailcall",
+  "fetched_at": "2026-04-26T17:24:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140748134",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall std::numpunct<char>::vfunction8(numpunct<char> *this,undefined8 *param_1)\n\n{\n  _Crt_new_delete _Var1;\n  \n  _Var1 = this[2]._Crt_new_delete;\n  *param_1 = 0;\n  param_1[2] = 0;\n  param_1[3] = 0xf;\n  *(undefined1 *)param_1 = 0;\n  FUN_1401dc3a0(param_1,_Var1);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:05:26Z"
+}

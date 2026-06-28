@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407048e0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_ion_cannon_shot",
+  "body": "1407048e6        struct SpecialAbilityClass::IonCannonShotAttackAbilityClass::VTable** result = arg1\n1407048e9        sub_14048c780(arg1)\n1407048f5        result[8].w = 1\n1407048fb        *result = &IonCannonShotAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140704905        result[1] = &IonCannonShotAttackAbilityClass::`vftable'{for `RefCountClass'}\n14070490c        *(result + 0x3c) = 9\n140704918        return result",
+  "fetched_at": "2026-04-26T16:44:18Z"
+}

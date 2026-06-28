@@ -1,0 +1,7 @@
+{
+  "addr": "0x140741040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140741053        *arg1 = &std::locale::_Locimp::`vftable'{for `std::locale::facet'}\n140741059        std::locale::_Locimp::_Locimp_dtor(arg1)\n14074105e        int64_t rcx = arg1[5]\n140741065        if (rcx != 0)\n140741067        free(rcx)\n14074106c        arg1[5] = 0\n140741078        *arg1 = &std::_Facet_base::`vftable'\n14074107f        if ((arg2 & 1) != 0)\n140741089        j_sub_1407864b8(arg1)\n14074109b        return arg1",
+  "fetched_at": "2026-04-26T17:29:18Z"
+}

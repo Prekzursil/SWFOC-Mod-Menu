@@ -1,0 +1,7 @@
+{
+  "addr": "0x140666010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140666023        *arg1 = &GalacticPlayerPerceptualEvaluatorClass::`vftable'{for `PlayerPerceptualEvaluatorClass'}\n140666032        arg1[3] = &GalacticPlayerPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n14066603d        arg1[0x11] = &GalacticPlayerPerceptualEvaluatorClass::`vftable'{for `SignalListenerClass'}\n140666044        sub_14066d6c0(arg1, nullptr)\n14066604c        sub_1406dfb20(arg1)\n140666054        if ((arg2 & 1) != 0)\n14066605e        j_sub_1407864b8(arg1)\n140666070        return arg1",
+  "fetched_at": "2026-04-26T17:09:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060eba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14060ebae        struct LuaUserVar::PositionWrapper::VTable** result = sub_14060ebd0(0x820)\n14060ebb5        result[5].d = *arg1\n14060ebbb        *(result + 0x2c) = arg1[1]\n14060ebc1        result[6].d = arg1[2]\n14060ebc9        return result",
+  "fetched_at": "2026-04-26T17:23:09Z"
+}

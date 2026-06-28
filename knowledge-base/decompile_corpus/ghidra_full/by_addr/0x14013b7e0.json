@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b7e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall alBlob::vfunction7(void)\n\n{\n  return \"Space_Selection_Blob\";\n}",
+  "fetched_at": "2026-04-26T17:14:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060e014",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAITargetLocationWrapper::vfunction1_for_SignalListenerClass\n          (AITargetLocationWrapper *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor((AITargetLocationWrapper *)&this[-1].offset_0x68,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:26:39Z"
+}

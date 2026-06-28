@@ -1,0 +1,7 @@
+{
+  "addr": "0x140350910",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140350929        float result = *(arg1 + 0xac) - arg2\n140350933        *(arg1 + 0xac) = result\n14035093b        if (not(0f < result))\n14035093d        *(arg1 + 0xb4) -= 1\n140350953        if (*(arg1 + 0xb4) s> 0 || (*(arg1 + 0xc0) & 0x10) != 0)\n140350969        *(arg1 + 0xac) = result + 0.5f\n140350957        *(arg1 + 0xb4) = 0\n14035095d        *(arg1 + 0xac) = 0\n140350971        result = *(arg1 + 0xac)\n14035097c        if (result <= 0f)\n1403509d9        return result\n14035098b        result = result * 255f / 0.5f\n14035098f        *(arg1 + 0xb0) = result\n1403509a2        sub_1401f9530(arg1 + 0x134, (int.d(result)).b)\n1403509b6        sub_1401f9550(arg1 + 0x134, (int.d(fconvert.t(*(arg1 + 0xb0)))).b)\n1403509ca        return sub_1401f9570(arg1 + 0x134, (int.d(fconvert.t(*(arg1 + 0xb0)))).b)",
+  "fetched_at": "2026-04-26T17:09:50Z"
+}

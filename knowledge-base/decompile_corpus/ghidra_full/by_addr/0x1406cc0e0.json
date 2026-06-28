@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc0e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall CompanyCombatantClass::vfunction38(CompanyCombatantClass *this)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = *(longlong **)&this->field_0x40;\n  if (plVar1 != (longlong *)0x0) {\n    plVar1 = (longlong *)(**(code **)(*plVar1 + 0x10))(plVar1,0x13);\n    if (plVar1 != (longlong *)0x0) {\n      (**(code **)*plVar1)(plVar1);\n      (**(code **)(*plVar1 + 0x128))(plVar1);\n      *(undefined8 *)&this->field_0x40 = 0;\n                    /* WARNING: Could not recover jumptable at 0x0001406cc136. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (**(code **)(*plVar1 + 8))(plVar1);\n      return;\n    }\n    *(undefined8 *)&this->field_0x40 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:07Z"
+}

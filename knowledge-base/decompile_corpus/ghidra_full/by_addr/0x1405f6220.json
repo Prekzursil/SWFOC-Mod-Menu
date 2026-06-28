@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall AIDiagsNode::vfunction5(void)\n\n{\n  return &DAT_140a441b0;\n}",
+  "fetched_at": "2026-04-26T17:23:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140772b20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140772b26        int64_t r8 = sx.q(*(arg1 + 0x41))\n140772b2e        *(arg1 + 0x54) = 0\n140772b36        int32_t rcx_1\n140772b36        if (r8.d s< 0xffffffff)\n140772b4f        rcx_1 = 0\n140772b47        rcx_1 = zx.d(*(***(arg1 + 8) + (r8 << 1))) & 0x8000\n140772b53        void* result\n140772b53        if (rcx_1 == 0)\n140772bba        result.b = 1\n140772b73        int32_t rax_4\n140772b73        if (((*(*(arg1 + 0x468) + 0x14) u>> 0xc).b & 1) == 0 || *(*(arg1 + 0x468) + 8) != 0)\n140772b7f        rax_4, rcx_1 = _fputc_nolock_internal(r8.b, *(arg1 + 0x468))\n140772b87        if ((((*(*(arg1 + 0x468) + 0x14) u>> 0xc).b & 1) == 0 || *(*(arg1 + 0x468) + 8) != 0) && rax_4 == 0xffffffff)\n140772b8e        *(arg1 + 0x28) = 0xffffffff\n140772b89        *(arg1 + 0x28) += 1\n140772b92        char* rax_5 = *(arg1 + 0x18)\n140772b96        rcx_1.b = *rax_5\n140772b9b        *(arg1 + 0x41) = rcx_1.b\n140772b9e        *(arg1 + 0x18) = &rax_5[1]\n140772ba4        if (rcx_1.b != 0)\n140772bba        result.b = 1\n140772bab        *_errno() = 0x16\n140772bb1        _invalid_parameter_noinfo()\n140772bb6        result.b = 0\n140772bc1        return result",
+  "fetched_at": "2026-04-26T17:30:46Z"
+}

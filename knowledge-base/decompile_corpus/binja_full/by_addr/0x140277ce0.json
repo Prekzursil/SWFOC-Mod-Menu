@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140277cef        struct DrawPrimitiveClass::DrawLineSegmentClass::VTable** result = arg1\n140277d07        sub_14026ed80(arg1)\n140277d1d        result[9].d = 0\n140277d20        *result = &DrawLineSegmentClass::`vftable'{for `DrawPrimitiveClass'}\n140277d2a        result[8] = &DrawLineSegmentClass::`vftable'{for `RefCountClass'}\n140277d2e        __builtin_memset(result + 0x54, 0, 0x18)\n140277d3f        void var_48\n140277d3f        int32_t* rax = sub_1401f9320(&var_48, arg6)\n140277d5c        result[0xc].d = arg5.d\n140277d61        *(result + 0x54) = arg2.d\n140277d66        result[0xb].d = arg3.d\n140277d6b        *(result + 0x5c) = arg4.d\n140277d71        result[6].b = 0\n140277d78        struct DrawPrimitiveClass::DrawLineSegmentClass::VTable* rax_1 = *result\n140277d7b        result[0xa].d = arg7.d\n140277d80        *(result + 8) = *rax\n140277d84        rax_1->__offset(0x48).q(result)\n140277db9        return result",
+  "fetched_at": "2026-04-26T17:31:57Z"
+}

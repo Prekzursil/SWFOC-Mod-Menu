@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0a4c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407a0a4c(void)\n\n{\n  if (DAT_140a457a0 < (HANDLE)0xfffffffffffffffe) {\n    CloseHandle(DAT_140a457a0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:18Z"
+}

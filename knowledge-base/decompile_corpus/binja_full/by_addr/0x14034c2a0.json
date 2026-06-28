@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034c2a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14034c2ae        int64_t rax = *(arg1 + 0xe0)\n14034c2b5        int64_t r8_1 = sx.q(*(arg1 + 0x2dc)) * 0xa\n14034c2b8        float zmm1 = *(rax + (r8_1 << 3) + 0x14)\n14034c2bf        zmm1 - 0f\n14034c2c4        if (not(is_unordered.d(zmm1, 0f)) && not(zmm1 != 0f))\n14034c2c8        *arg2 = 0\n14034c2ce        return arg2\n14034c2e4        int32_t zmm0 = *(rax + (r8_1 << 3) + 0x30) f* *(rax + (r8_1 << 3) + 0x14)\n14034c2ee        arg2[1] = *(rax + (r8_1 << 3) + 0x18) f* *(rax + (r8_1 << 3) + 0x30)\n14034c2f3        *arg2 = zmm0\n14034c2f7        return arg2",
+  "fetched_at": "2026-04-26T17:08:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013de10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTextureCube * FUN_14013de10(LPCSTR param_1)\n\n{\n  char *pcVar1;\n  char cVar2;\n  alD3dTextureCube *paVar3;\n  alD3dTextureCube *paVar4;\n  alD3dTextureCube *paVar5;\n  CHAR local_338 [272];\n  char local_228 [272];\n  char local_118 [272];\n  \n  paVar5 = (alD3dTextureCube *)0x0;\n  lstrcpyA(local_338,param_1);\n  FUN_1407802c4(local_338,&DAT_14080329c);\n  lstrcatA(local_338,\".dds\");\n  paVar4 = paVar5;\n  do {\n    pcVar1 = local_338 + (longlong)paVar4;\n    local_228[(longlong)paVar4] = *pcVar1;\n    paVar4 = (alD3dTextureCube *)((longlong)&paVar4->vftablePtr + 1);\n    paVar3 = paVar5;\n  } while (*pcVar1 != '\\0');\n  do {\n    pcVar1 = local_338 + (longlong)paVar3;\n    local_118[(longlong)paVar3] = *pcVar1;\n    paVar3 = (alD3dTextureCube *)((longlong)&paVar3->vftablePtr + 1);\n  } while (*pcVar1 != '\\0');\n  cVar2 = FUN_14013f450(local_338,local_228,local_118);\n  if (cVar2 != '\\0') {\n    paVar4 = (alD3dTextureCube *)FUN_140769c58(0x80);\n    if (paVar4 != (alD3dTextureCube *)0x0) {\n      paVar5 = alD3dTextureCube::alD3dTextureCube(paVar4);\n    }\n    FUN_140198ec0(paVar5,local_118,local_228,0,1);\n  }\n  return paVar5;\n}",
+  "fetched_at": "2026-04-26T17:16:19Z"
+}

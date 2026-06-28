@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f1060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f1066        int64_t rcx = data_140b2f0b0\n1407f1070        if (rcx != 0)\n1407f1077        j_sub_1407864b8(rcx)\n1407f107e        data_140b2f0b0 = 0\n1407f1085        data_140b2f0b8 = 0\n1407f1092        sub_1403699b0(&data_140b2f0c0)\n1407f109e        sub_1404076a0(&data_140b2f098)\n1407f10aa        sub_140407570(&data_140b2f080)\n1407f10b6        sub_1404075e0(&data_140b2f070)\n1407f10bb        void* rcx_1 = data_140b2f060.q\n1407f10c2        void** rbx = *(rcx_1 + 8)\n1407f10ca        if (*(rbx + 0x19) == 0)\n1407f10e2        sub_14006c2e0(&data_140b2f060, &data_140b2f060, rbx[2])\n1407f10e7        void** rcx_2 = rbx\n1407f10ef        rbx = *rbx\n1407f10f2        j_sub_1407864b8(rcx_2)\n1407f10fb        do while (*(rbx + 0x19) == 0)\n1407f10fd        rcx_1 = data_140b2f060.q\n1407f1109        j_sub_1407864b8(rcx_1)\n1407f111c        data_140b2f048 = &DynamicVectorRefClass<class GameObjectTypeClass* __ptr64>::`vftable'{for `DynamicVectorClass<class GameObjectTypeClass* __ptr64>'}\n1407f1123        sub_14029c770(&data_140b2f048)\n1407f112f        sub_1403699b0(&data_140b2f048)\n1407f1140        return DeleteCriticalSection(&data_140b2f020) __tailcall",
+  "fetched_at": "2026-04-26T17:36:54Z"
+}

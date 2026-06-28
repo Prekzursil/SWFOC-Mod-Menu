@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d3400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalPlayerPerceptualEvaluatorClass * __thiscall\nSpacePlayerPerceptualEvaluatorClass::scalar_deleting_destructor\n          (SpacePlayerPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  PlayerPerceptualEvaluatorClass::~PlayerPerceptualEvaluatorClass\n            ((PlayerPerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xa8);\n  }\n  return (TacticalPlayerPerceptualEvaluatorClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:42:34Z"
+}

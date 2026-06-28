@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784d0c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    fwrite\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nsize_t __cdecl fwrite(void *_Str,size_t _Size,size_t _Count,FILE *_File)\n\n{\n  ulong *puVar1;\n  size_t sVar2;\n  void *local_res8;\n  size_t local_res10;\n  size_t local_res18;\n  FILE *local_res20;\n  undefined1 local_48 [8];\n  FILE *local_40;\n  FILE *local_38;\n  FILE **local_30;\n  void **local_28;\n  size_t *local_20;\n  size_t *local_18;\n  \n  if ((_Size != 0) && (_Count != 0)) {\n    local_res8 = _Str;\n    local_res10 = _Size;\n    local_res18 = _Count;\n    local_res20 = _File;\n    if (_File != (FILE *)0x0) {\n      local_30 = &local_res20;\n      local_28 = &local_res8;\n      local_20 = &local_res10;\n      local_18 = &local_res18;\n      local_40 = _File;\n      local_38 = _File;\n      sVar2 = operator()<>(local_48,&local_38,&local_30,&local_40);\n      return sVar2;\n    }\n    puVar1 = __doserrno();\n    *puVar1 = 0x16;\n    FUN_1407711ac();\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:51:23Z"
+}

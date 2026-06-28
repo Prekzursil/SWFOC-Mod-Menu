@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079ea48",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _putwch_nolock\n   \n   Library: Visual Studio 2019 Release */\n\nwint_t __cdecl _putwch_nolock(wchar_t _WCh)\n\n{\n  int iVar1;\n  wchar_t local_res8 [4];\n  undefined1 local_res10 [24];\n  \n  local_res8[0] = _WCh;\n  iVar1 = __dcrt_lowio_ensure_console_output_initialized();\n  if ((iVar1 == 0) || (iVar1 = __dcrt_write_console(local_res8,1,local_res10), iVar1 == 0)) {\n    local_res8[0] = L'\\xffff';\n  }\n  return local_res8[0];\n}",
+  "fetched_at": "2026-04-26T18:54:07Z"
+}

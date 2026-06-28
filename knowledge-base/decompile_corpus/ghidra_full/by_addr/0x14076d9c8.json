@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d9c8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n/* Library Function - Single Match\n    __vcrt_initialize_ptd\n   \n   Library: Visual Studio 2019 Release */\n\nundefined4 __vcrt_initialize_ptd(void)\n\n{\n  int iVar1;\n  \n  DAT_140a44bb0 = __vcrt_FlsAlloc(FUN_14076d8cc);\n  if (DAT_140a44bb0 != -1) {\n    iVar1 = __vcrt_FlsSetValue(DAT_140a44bb0,&DAT_140b3bf50);\n    if (iVar1 != 0) {\n      _DAT_140b3bfc8 = 0xfffffffe;\n      return 1;\n    }\n    __vcrt_uninitialize_ptd();\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:11:13Z"
+}

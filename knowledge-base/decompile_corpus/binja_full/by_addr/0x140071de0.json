@@ -1,0 +1,7 @@
+{
+  "addr": "0x140071de0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140071e03        jump(*(**(SteamInternal_ContextInit(&data_140a10e00) + 0x10) + 0xe0))",
+  "fetched_at": "2026-04-26T16:56:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390510(longlong param_1)\n\n{\n  DamageTrackingDataPackClass *pDVar1;\n  \n  if (*(longlong *)(param_1 + 0x1a0) == 0) {\n    pDVar1 = (DamageTrackingDataPackClass *)FUN_140769c58(0x58);\n    if (pDVar1 != (DamageTrackingDataPackClass *)0x0) {\n      pDVar1 = DamageTrackingDataPackClass::DamageTrackingDataPackClass(pDVar1);\n      *(DamageTrackingDataPackClass **)(param_1 + 0x1a0) = pDVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x1a0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:39Z"
+}

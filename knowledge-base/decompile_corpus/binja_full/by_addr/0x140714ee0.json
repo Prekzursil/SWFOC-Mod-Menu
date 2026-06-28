@@ -1,0 +1,7 @@
+{
+  "addr": "0x140714ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140714ef1        struct IXMLLoadableClass::SpecialAbilityClass::VTable** result = arg1\n140714ef4        *arg1 = &SuperLaserAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140714f00        arg1[1] = &SuperLaserAbilityClass::`vftable'{for `RefCountClass'}\n140714f10        int64_t rdx = result[0x35]\n140714f1b        if (rdx u>= 0x10)\n140714f1d        void* rcx_1 = result[0x32]\n140714f2e        if (rdx + 1 u>= 0x1000)\n140714f30        void* r8_1 = *(rcx_1 - 8)\n140714f43        if (rcx_1 - r8_1 - 8 u> 0x1f)\n140714f93        _invalid_parameter_noinfo_noreturn()\n140714f93        noreturn\n140714f45        rcx_1 = r8_1\n140714f48        j_sub_1407864b8(rcx_1)\n140714f50        result[0x34] = 0\n140714f5b        result[0x35] = 0xf\n140714f66        result[0x32].b = 0\n140714f6d        sub_14048c8d0(result)\n140714f76        if ((arg2 & 1) != 0)\n140714f80        j_sub_1407864b8(result)\n140714f92        return result",
+  "fetched_at": "2026-04-26T17:27:52Z"
+}

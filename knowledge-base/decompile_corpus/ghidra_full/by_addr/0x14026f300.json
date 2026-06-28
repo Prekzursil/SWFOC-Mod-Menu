@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026f300",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DrawPrimitiveClass member function inherited by TextureRectClass */\n\nvoid __thiscall DrawPrimitiveClass::vfunction4(DrawPrimitiveClass *this,float param_1,float param_2)\n\n{\n  float fVar1;\n  DrawPrimitiveClass_vftable *pDVar2;\n  DWORD DVar3;\n  \n  DVar3 = GetCurrentThreadId();\n  if ((DVar3 != DAT_140a155d0) || (DAT_140a62740 == '\\0')) {\n    fVar1 = *(float *)&(this->DrawPrimitiveClass_data).offset_0x18;\n    pDVar2 = this->vftablePtr;\n    *(float *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x10 + 4) =\n         param_1 + *(float *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x10 + 4);\n    *(float *)&(this->DrawPrimitiveClass_data).offset_0x18 = param_2 + fVar1;\n    (*pDVar2->_guard_check_icall)(this);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140651140",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140651150        if (arg1 != 0 && sub_140370320(arg1, 3, 0xffffffff) != 0)\n140651169        struct GameObjectTypePerceptualEvaluatorClass::PlanetTypePerceptualEvaluatorClass::VTable** result = operator new(0x90)\n140651174        if (result != 0)\n140651179        sub_14064f400(result)\n140651188        *result = &PlanetTypePerceptualEvaluatorClass::`vftable'{for `GameObjectTypePerceptualEvaluatorClass'}\n140651192        result[3] = &PlanetTypePerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n140651196        result[0x11] = arg1\n14065119d        sub_140651200(result)\n1406511b0        return result\n1406511bd        return 0",
+  "fetched_at": "2026-04-26T17:06:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nint thunk_FUN_140178a70(void)\n\n{\n  int iVar1;\n  longlong lVar2;\n  undefined8 uStack_18;\n  undefined8 uStack_10;\n  \n  iVar1 = 3;\n  uStack_18 = _DAT_14081a480;\n  uStack_10 = _UNK_14081a488;\n  if (DAT_140a6d55c < 0x200) {\n    lVar2 = 3;\n    do {\n      if (lVar2 < 1) {\n        return iVar1;\n      }\n      lVar2 = lVar2 + -1;\n      iVar1 = iVar1 + -1;\n    } while ((int)(uint)DAT_140a6d55c < *(int *)((longlong)&uStack_18 + lVar2 * 4));\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T17:17:53Z"
+}

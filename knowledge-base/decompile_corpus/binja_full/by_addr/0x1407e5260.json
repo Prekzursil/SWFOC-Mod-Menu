@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e5260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e5260        void* arg_10 = arg2\n1407e526f        int64_t rcx = *(arg2 + 0x38)\n1407e527a        int32_t* r9 = *(arg2 + 0x88)\n1407e5281        int32_t* rdi_2 = &r9[rcx * 4]\n1407e5284        void* rbx = &r9[rcx * 2]\n1407e5295        std::vector<uint64_t,class std::allocator<uint64_t> >::_Umove(*(arg2 + 0x80), rbx, rdi_2, r9)\n1407e529e        int64_t* rbx_1 = *(arg2 + 0x98)\n1407e52ab        std::_Uninitialized_move<uint64_t* __ptr64,class std::allocator<uint64_t> >(rdi_2, *rbx_1, rbx)\n1407e52b4        *rbx_1 = *(arg2 + 0x20)\n1407e52bb        sub_14076b00c(nullptr, nullptr)\n1407e52bb        noreturn",
+  "fetched_at": "2026-04-26T17:34:26Z"
+}

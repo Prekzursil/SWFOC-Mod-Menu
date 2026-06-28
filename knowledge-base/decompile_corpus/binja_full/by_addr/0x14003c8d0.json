@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003c8d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14003c8d4        int64_t* rcx = data_140b15418\n14003c8de        int32_t result\n14003c8de        if (rcx != 0)\n14003c8eb        result = (*(*rcx + 0xe0))(rcx)\n14003c8f1        rcx = data_140b15418\n14003c8e0        result = data_140b153fc\n14003c8fb        if (result == 2)\n14003c909        int64_t var_18\n14003c909        sub_140261a40(rcx[0x12], &var_18)\n14003c914        float zmm1_1 = var_18.d\n14003c91a        int32_t result_2\n14003c91a        result = result_2\n14003c91e        int64_t var_28 = var_18\n14003c924        int64_t zmm0_1 = data_140b1583c\n14003c92f        int32_t result_1 = result\n14003c933        if (zmm0_1.d f<= zmm1_1)\n14003c93d        zmm0_1 = var_28.d\n14003c935        var_28.d = zmm0_1.d\n14003c943        int64_t zmm2_1 = data_140b15840\n14003c94e        if (not(zmm1_1 f<= zmm2_1.d))\n14003c950        var_28.d = zmm2_1.d\n14003c956        zmm0_1 = zmm2_1\n14003c959        zmm0_1.d f- zmm1_1\n14003c95e        if (is_unordered.d(zmm0_1.d, zmm1_1) || not(zmm0_1.d f== zmm1_1))\n14003c973        return sub_140261c90(*(data_140b15418 + 0x90), &var_28)\n14003c97c        return result",
+  "fetched_at": "2026-04-26T16:53:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044d670",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044d687        sub_14027bf00(&data_140b0a320, *(arg1 + 0x48), *(arg1 + 0x4c))\n14044d693        uint64_t result = sub_14028af60(&data_140b153e0)\n14044d69a        if (result.b != 0)\n14044d6a0        result = data_140b30678\n14044d6aa        if (result != 0)\n14044d6b3        result(arg1)\n14044d6bc        result = sub_140294a70(&data_140a16fd0)\n14044d6c4        if (*(arg1 + 0x24) != result.d)\n14044d6cf        void* rax = operator new(0x20)\n14044d6db        int64_t var_18_1 = 0x17\n14044d6e9        int64_t var_10_1 = 0x1f\n14044d6f5        __builtin_strncpy(rax, \"GUI_Common_Chat_Receive\", 0x18)\n14044d701        int512_t zmm2\n14044d701        zmm2.o = zx.o(0)\n14044d724        void* var_28 = rax\n14044d731        result = sub_1402d5010(&data_140b27e60, &var_28, zmm2, 0, 0)\n14044d73f        if (var_10_1 u>= 0x10)\n14044d741        void* rcx_1 = var_28\n14044d749        void* rax_1 = rcx_1\n14044d753        if (var_10_1 + 1 u>= 0x1000)\n14044d755        rcx_1 = *(rcx_1 - 8)\n14044d768        if (rax_1 - rcx_1 - 8 u> 0x1f)\n14044d775        _invalid_parameter_noinfo_noreturn()\n14044d775        noreturn\n14044d76a        return j_sub_1407864b8(rcx_1)\n14044d774        return result",
+  "fetched_at": "2026-04-26T17:27:36Z"
+}

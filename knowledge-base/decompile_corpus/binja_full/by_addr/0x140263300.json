@@ -1,0 +1,7 @@
+{
+  "addr": "0x140263300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026330c        if (*arg1 == 0)\n14026330c        return \n14026331c        int32_t i_2 = 0\n140263323        void* rsi_1 = &arg1[0x40]\n140263331        int64_t i_3 = 0x35\n140263399        int64_t i\n140263340        int32_t j = 0\n140263345        if (*(rsi_1 + 0x10) s> 0)\n140263347        int64_t rdi_1 = 0\n140263350        int64_t* r14_1 = *(rsi_1 + 8)\n140263354        int64_t* rcx = *(r14_1 + rdi_1)\n14026335b        if (rcx != 0)\n140263360        (*(*rcx + 8))(rcx)\n140263363        *(r14_1 + rdi_1) = 0\n140263367        j += 1\n140263369        rdi_1 += 8\n140263370        do while (j s< *(rsi_1 + 0x10))\n140263372        int32_t rbx_1 = *(rsi_1 + 0x14)\n14026337c        sub_1400471e0(rsi_1)\n14026338c        sub_140047c20(rsi_1, (rbx_1 * 2) s>> 1, 0, 1)\n140263391        rsi_1 += 0x50\n140263395        i = i_3\n140263395        i_3 -= 1\n140263399        do while (i != 1)\n14026339b        int64_t* rcx_3 = *(arg1 + 0x10b0)\n1402633be        if (rcx_3 != 0)\n1402633c8        (**rcx_3)(rcx_3, 1)\n1402633ca        *(arg1 + 0x10b0) = 0\n1402633e7        int32_t i_1\n1402633de        if (ShowCursor(1) s> 0)\n1402633de        break\n1402633e0        i_1 = i_2\n1402633e2        i_2 += 1\n1402633e7        do while (i_1 s< 0x64)\n1402633e9        sub_14013ea90()\n1402633f3        arg1[0x10bb] = 0\n1402633fb        *arg1 = 0\n140263405        return ",
+  "fetched_at": "2026-04-26T17:31:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c3e00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c3e10        *arg1 = *arg2\n1404c3e16        arg1[1] = 0\n1404c3e27        int32_t rax_2 = data_140a2bb40\n1404c3e2d        int32_t rcx_1 = (data_140a2bb44 * 2) s>> 1\n1404c3e31        if (rax_2 s>= rcx_1)\n1404c3e45        int32_t rdx_2 = rcx_1 s/ 0xa\n1404c3e4e        if (rdx_2 s< 0xa)\n1404c3e4e        rdx_2 = 0xa\n1404c3e5d        sub_140047aa0(&data_140a2bb30, rdx_2 + rcx_1, 0, 1)\n1404c3e62        rax_2 = data_140a2bb40\n1404c3e72        *(data_140a2bb38 + (sx.q(rax_2) << 3)) = arg1\n1404c3e76        data_140a2bb40 += 1\n1404c3e7c        int64_t rcx_3 = arg1[1]\n1404c3e80        char* rbx_1 = arg2[1]\n1404c3e87        if (rcx_3 != 0)\n1404c3e89        j_sub_1407864b8(rcx_3)\n1404c3e8e        arg1[1] = 0\n1404c3e99        if (rbx_1 != 0)\n1404c3e9b        int64_t rcx_4 = -1\n1404c3ea2        rcx_4 += 1\n1404c3ea9        do while (rbx_1[rcx_4] != 0)\n1404c3eae        char* rax_6 = j_operator new(rcx_4 + 1)\n1404c3eb3        arg1[1] = rax_6\n1404c3ecf        char i\n1404c3ec0        i = *rbx_1\n1404c3ec3        rbx_1 = &rbx_1[1]\n1404c3ec7        *rax_6 = i\n1404c3ec9        rax_6 = &rax_6[1]\n1404c3ecf        do while (i != 0)\n1404c3ede        return arg1",
+  "fetched_at": "2026-04-26T17:30:39Z"
+}

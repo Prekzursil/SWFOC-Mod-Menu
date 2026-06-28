@@ -1,0 +1,7 @@
+{
+  "addr": "0x140536edc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RevealBehaviorClass::vfunction1(RevealBehaviorClass *this,uint param_1)\n\n{\n  ~RevealBehaviorClass((RevealBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:30:10Z"
+}

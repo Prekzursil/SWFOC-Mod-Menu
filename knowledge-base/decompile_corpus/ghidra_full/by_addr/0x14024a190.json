@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n* __thiscall\nLuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n::scalar_deleting_destructor\n          (LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n           *this,ulonglong param_1)\n\n{\n  FUN_1400466c0(&(this->RefCountClass_data).offset_0x8);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr =\n       (LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>_vftable\n        *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x28);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:11:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140691660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "InstantiatedGoalClass * __thiscall\nInstantiatedGoalClass::InstantiatedGoalClass(InstantiatedGoalClass *this,undefined8 param_1)\n\n{\n                    /* inlined constructor: RefCountClass::RefCountClass */\n  this->vftablePtr = (InstantiatedGoalClass_vftable_for_RefCountClass *)&RefCountClass::vftable;\n                    /* inlined constructor: SignalListenerClass::SignalListenerClass */\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->vftablePtr =\n       (InstantiatedGoalClass_vftable_for_SignalListenerClass *)&SignalListenerClass::vftable;\n  this->offset_0x10 = 0;\n  AIDiagnosticsClass::AIDiagnosticsClass((AIDiagnosticsClass *)&this->vftablePtr);\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  this->offset_0x40 = 0;\n  this->offset_0x48 = 0;\n  this->offset_0x50 = (longlong *)0x0;\n  this->offset_0x58 = 0;\n  this->offset_0x60 = 0;\n  this->offset_0x68 = 0;\n  this->offset_0x70 = 0;\n  this->offset_0x78 = 0;\n  this->offset_0x80 = 0;\n  this->offset_0x88 = param_1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:19:02Z"
+}

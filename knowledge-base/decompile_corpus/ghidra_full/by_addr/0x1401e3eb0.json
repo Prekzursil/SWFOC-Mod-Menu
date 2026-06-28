@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e3eb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetClass member function inherited by GUIGadgetTrackbarSliderClass\n   GUIGadgetClass member function inherited by GUIGadgetFrameClass\n   GUIGadgetClass member function inherited by GUIGadgetEditboxClass\n   GUIGadgetClass member function inherited by GUIGadgetCustomImageClass\n   GUIGadgetClass member function inherited by GUIGadgetVScrollbarClass\n   GUIGadgetClass member function inherited by GUIGadgetTextClass\n   GUIGadgetClass member function inherited by GUIGadgetPushbuttonClass\n   GUIGadgetClass member function inherited by GUIGadgetCheckboxClass\n   GUIGadgetClass member function inherited by GUIGadgetRadiobuttonClass\n   GUIGadgetClass member function inherited by GUIGadgetProgressbarClass */\n\nvoid __thiscall GUIGadgetClass::vfunction7(GUIGadgetClass *this,undefined8 param_1)\n\n{\n  (this->GUIGadgetClass_data).offset_0x78 = param_1;\n  (this->GUIGadgetClass_data).offset_0x80 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:06Z"
+}

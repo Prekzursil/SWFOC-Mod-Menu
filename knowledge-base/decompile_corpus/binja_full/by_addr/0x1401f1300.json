@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f1300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f1314        struct GUIGadgetClass::GUIGadgetRadiobuttonClass::VTable** result = arg1\n1401f1317        sub_1401e3c30(arg1)\n1401f132a        *result = &GUIGadgetRadiobuttonClass::`vftable'{for `GUIGadgetClass'}\n1401f132d        sub_140260490(&result[0x15])\n1401f1339        sub_14025b330(&result[0x27])\n1401f1347        __builtin_memset(&result[0x40], 0, 0x40)\n1401f1386        sub_14025c490(data_140a619f0, &result[0x27])\n1401f1399        sub_14025c490(data_140a619f0, &result[0x15])\n1401f13a1        sub_1401e3ed0(result)\n1401f13ae        result[0x13].b = 0\n1401f13b5        *(result + 0x9c) = 0\n1401f13bb        result[0x14].b = 0\n1401f13d1        return result",
+  "fetched_at": "2026-04-26T17:27:18Z"
+}

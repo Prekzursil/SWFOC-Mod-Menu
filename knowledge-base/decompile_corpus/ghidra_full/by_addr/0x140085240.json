@@ -1,0 +1,7 @@
+{
+  "addr": "0x140085240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140085240(int *param_1)\n\n{\n  char cVar1;\n  int iVar2;\n  longlong lVar3;\n  int *_Buf1;\n  int *_Buf1_00;\n  ulonglong uVar4;\n  \n  cVar1 = FUN_1401c1e90(&DAT_140a78510,DAT_140a11030);\n  if (cVar1 != '\\0') {\n    if (*param_1 == 0) {\n      if (DAT_140a61c28 != '\\0') {\n        FUN_1401c1d20(&DAT_140a78510,DAT_140a11030,1);\n        DAT_140a11030 = 0xffffffff;\n        DAT_140a61c28 = 0;\n        return;\n      }\n    }\n    else if (*param_1 == 1) {\n      _Buf1_00 = param_1 + 2;\n      uVar4 = *(ulonglong *)(param_1 + 8);\n      _Buf1 = _Buf1_00;\n      if (0xf < uVar4) {\n        _Buf1 = *(int **)_Buf1_00;\n      }\n      lVar3 = *(longlong *)(param_1 + 6);\n      if ((lVar3 == 0x13) && (iVar2 = memcmp(_Buf1,\"IDC_CONTINUE_BUTTON\",0x13), iVar2 == 0)) {\n        FUN_140085200();\n        uVar4 = *(ulonglong *)(param_1 + 8);\n        lVar3 = *(longlong *)(param_1 + 6);\n      }\n      if (0xf < uVar4) {\n        _Buf1_00 = *(int **)_Buf1_00;\n      }\n      if ((lVar3 == 0x16) && (iVar2 = memcmp(_Buf1_00,\"IDC_GOTO_PLANET_BUTTON\",0x16), iVar2 == 0)) {\n        lVar3 = FUN_1402a87d0(*(undefined8 *)(DAT_140b15418 + 0x18),DAT_140a61c30,0);\n        if ((lVar3 != 0) && (0 < *(int *)(lVar3 + 0x10))) {\n          FUN_1402b04b0(**(undefined8 **)(lVar3 + 8));\n        }\n        FUN_140085200();\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:31Z"
+}

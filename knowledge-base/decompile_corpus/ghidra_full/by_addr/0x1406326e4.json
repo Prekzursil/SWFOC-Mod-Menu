@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406326e4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGuardSpawnHouseBehaviorClass::vfunction3(GuardSpawnHouseBehaviorClass *this,uint param_1)\n\n{\n  ~GuardSpawnHouseBehaviorClass\n            ((GuardSpawnHouseBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037b460",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpecialAbilityManagerClass::~SpecialAbilityManagerClass(SpecialAbilityManagerClass *this)\n\n{\n  undefined8 uVar1;\n  \n  this->vftablePtr = &vftable;\n  (this->SignalListenerClass_data).offset_0x0 = (undefined **)0x0;\n  (this->SignalListenerClass_data).offset_0x8 = (undefined **)0x0;\n  FUN_14032f9f0(*(undefined8 *)&(this->SignalListenerClass_data).field_0x18,\n                *(undefined8 *)&(this->SignalListenerClass_data).field_0x20,\n                &(this->SignalListenerClass_data).field_0x18);\n  *(undefined8 *)&(this->SignalListenerClass_data).field_0x20 =\n       *(undefined8 *)&(this->SignalListenerClass_data).field_0x18;\n  *(undefined1 *)&(this->SignalListenerClass_data).offset_0x10 = 0;\n  uVar1 = FUN_140058570();\n  FUN_140220ef0(uVar1,this);\n  FUN_140330090(&(this->SignalListenerClass_data).field_0x18);\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (SpecialAbilityManagerClass_vftable *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:18:53Z"
+}

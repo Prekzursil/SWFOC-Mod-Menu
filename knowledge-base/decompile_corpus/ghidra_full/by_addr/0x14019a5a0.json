@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019a5a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alScene member function inherited by alSimpleScene */\n\nchar * __thiscall alScene::vfunction7_for_RefCountClass(void)\n\n{\n  return \"alScene\";\n}",
+  "fetched_at": "2026-04-26T17:37:06Z"
+}

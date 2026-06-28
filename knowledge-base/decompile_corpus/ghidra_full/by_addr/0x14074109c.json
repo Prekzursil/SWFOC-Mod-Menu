@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074109c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl std::_Facet_Register(class std::_Facet_base * __ptr64)\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl std::_Facet_Register(_Facet_base *param_1)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x10);\n  if (puVar1 != (undefined8 *)0x0) {\n    *puVar1 = DAT_140b3b608;\n    puVar1[1] = param_1;\n  }\n  DAT_140b3b608 = puVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075ae5c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14075ae5f        return zx.q(*(arg1 + 0x28))",
+  "fetched_at": "2026-04-26T17:29:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140071f40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140071f40(undefined8 param_1,undefined8 *param_2)\n\n{\n  longlong lVar1;\n  \n  lVar1 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  if (0xf < (ulonglong)param_2[3]) {\n    param_2 = (undefined8 *)*param_2;\n  }\n                    /* WARNING: Could not recover jumptable at 0x000140071f6f. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(**(longlong **)(lVar1 + 0x10) + 0xe0))(*(longlong **)(lVar1 + 0x10),param_2);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:31Z"
+}

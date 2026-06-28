@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407320d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407320d6        struct TacticalObjectPerceptualEvaluatorClass::TacticalUnitPerceptualEvaluatorClass::VTable** result = arg1\n1407320d9        sub_140730580(arg1, arg2)\n1407320e5        *result = &TacticalUnitPerceptualEvaluatorClass::`vftable'{for `TacticalObjectPerceptualEvaluatorClass'}\n1407320ef        result[3] = &TacticalUnitPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n1407320fa        result[0x11] = &TacticalUnitPerceptualEvaluatorClass::`vftable'{for `SignalListenerClass'}\n140732109        return result",
+  "fetched_at": "2026-04-26T17:28:59Z"
+}

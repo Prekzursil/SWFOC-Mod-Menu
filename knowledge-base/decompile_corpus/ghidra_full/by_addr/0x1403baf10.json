@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403baf10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall LandModeClass::vfunction13(LandModeClass *this,longlong param_1,char param_2)\n\n{\n  byte bVar1;\n  \n  bVar1 = GameModeClass::vfunction13((GameModeClass *)this,param_1,param_2);\n  return bVar1 & 1;\n}",
+  "fetched_at": "2026-04-26T17:35:30Z"
+}

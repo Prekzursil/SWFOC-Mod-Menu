@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042b430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042b430        void* result = *(arg1 + 0x28)\n14042b43b        *(*(result + 0x148) + 0x50) = arg2\n14042b440        return result",
+  "fetched_at": "2026-04-26T17:26:41Z"
+}

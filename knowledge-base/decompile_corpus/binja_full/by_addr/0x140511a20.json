@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140511a32        struct LuaVar::LuaValue<bool, 5>::VTable** rax = operator new(0x18)\n140511a3d        if (rax == 0)\n140511ac1        return rax\n140511a3f        rax[1].d = 0\n140511a4d        *rax = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n140511a54        rax[2].b = *(arg1 + 0x41)\n140511a5c        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** rax_1 = sub_14024a250()\n140511a61        struct LuaVar::LuaValue<bool, 5>::VTable* rdx = *rax\n140511a6a        struct LuaVar::LuaValue<bool, 5>::VTable** arg_20 = rax\n140511a6f        rdx->vFunc_0(rax)\n140511a71        int64_t* rdx_1 = rax_1[3]\n140511a79        if (rdx_1 == rax_1[4])\n140511a96        sub_140144900(&rax_1[2], rdx_1, &arg_20)\n140511a7b        *rdx_1 = rax\n140511a84        (*rax)->vFunc_0(rax)\n140511a86        rax_1[3] = &rax_1[3]->vFunc_1\n140511aa1        (*rax)->vFunc_1(rax)\n140511ab6        return rax_1",
+  "fetched_at": "2026-04-26T17:32:15Z"
+}

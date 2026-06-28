@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071a460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071a471        struct IXMLLoadableClass::SpecialAbilityClass::VTable** result = arg1\n14071a474        *arg1 = &ProximityMinesAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071a480        arg1[1] = &ProximityMinesAbilityClass::`vftable'{for `RefCountClass'}\n14071a48b        sub_1404c47c0(&arg1[0x34])\n14071a497        sub_1404c4770(&result[0x31])\n14071a49f        sub_14048c8d0(result)\n14071a4a7        if ((arg2 & 1) != 0)\n14071a4b1        j_sub_1407864b8(result)\n14071a4c3        return result",
+  "fetched_at": "2026-04-26T17:28:02Z"
+}

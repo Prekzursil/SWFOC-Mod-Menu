@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059fd90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14059fd90(longlong param_1,float *param_2,float *param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float local_58;\n  float local_54;\n  float local_50;\n  \n  if (*(float *)(param_1 + 0x140) != 0.0) {\n    fVar2 = param_3[2] - param_2[2];\n    fVar3 = param_3[1] - param_2[1];\n    fVar4 = *param_3 - *param_2;\n    local_58 = fVar4;\n    local_54 = fVar3;\n    local_50 = fVar2;\n    fVar1 = (float)FUN_140776d48(fVar3 * fVar3 + fVar4 * fVar4 + fVar2 * fVar2);\n    if (0.0 < fVar1) {\n      fVar1 = DAT_1407ffaf8 / fVar1;\n      local_58 = fVar4 * fVar1;\n      local_54 = fVar3 * fVar1;\n      local_50 = fVar2 * fVar1;\n    }\n    fVar1 = (float)FUN_1405a1660(param_1,param_2,&local_58);\n    fVar2 = (float)FUN_1405a1660(param_1,param_3,&local_58);\n    if ((*(float *)(param_1 + 0x140) <= fVar1) && (*(float *)(param_1 + 0x140) <= fVar2)) {\n      fVar1 = (float)FUN_1405a1490(param_1,param_2,param_3);\n      return *(float *)(param_1 + 0x140) <= fVar1;\n    }\n  }\n  return true;\n}",
+  "fetched_at": "2026-04-26T18:42:49Z"
+}

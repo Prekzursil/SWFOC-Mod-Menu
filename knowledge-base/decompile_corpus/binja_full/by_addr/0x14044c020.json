@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044c020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044c033        int64_t* rcx = *(arg1 + 0x30)\n14044c04b        if (rcx == 0 || *arg1 == 0)\n14044c04b        return \n14044c056        float zmm6[0x4] = 0xc3b40000\n14044c078        if (not(-360f > arg2))\n14044c07d        zmm6 = _mm_min_ss(0x43b40000, arg2)\n14044c085        if (-360f > arg2 || not(0f <= zmm6[0]))\n14044c087        zmm6[0] = zmm6[0] + 360f\n14044c094        double zmm0[0x2] = *((*(*rcx + 0x1e8))() + 0x14)\n14044c099        zmm6[0] = zmm6[0] f- zmm0[0].d\n14044c09d        *(arg1 + 0x74) = zmm0[0].d\n14044c0a2        double temp0_2[0x2] = _mm_cvtps_pd(zmm6[0].q)\n14044c0a5        *(arg1 + 0x70) = zmm6[0]\n14044c0b7        arg2 = fconvert.s(sub_1407760bc(temp0_2))\n14044c0be        bool cond:1_1\n14044c0be        if (arg4 == 0)\n14044c0e2        cond:1_1 = 180f <= arg2\n14044c0c0        cond:1_1 = arg2 <= 180f\n14044c0c7        if (not(cond:1_1))\n14044c0c9        double zmm0_1 = *(arg1 + 0x70)\n14044c0d2        if (0f f<= zmm0_1.d)\n14044c0e7        zmm0_1.d = zmm0_1.d f- 360f\n14044c0d4        zmm0_1.d = zmm0_1.d f+ 360f\n14044c0eb        *(arg1 + 0x70) = zmm0_1.d\n14044c0fb        *(arg1 + 0x78) = arg3.d\n14044c101        *(arg1 + 0x7c) = 0\n14044c108        arg1[0x80] = 1\n14044c11f        return ",
+  "fetched_at": "2026-04-26T17:27:30Z"
+}

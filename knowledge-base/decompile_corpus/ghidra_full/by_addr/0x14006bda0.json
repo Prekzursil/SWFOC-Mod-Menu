@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006bda0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14006bda0(void)\n\n{\n  if ((DAT_140a61b90 != 0) && (DAT_140a61b90 = DAT_140a61b90 + -1, DAT_140a61b90 == 0)) {\n                    /* WARNING: Could not recover jumptable at 0x00014006bdb5. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    SteamAPI_Shutdown();\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:01Z"
+}

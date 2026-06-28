@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405315c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405315c7        return \"SpawnIndigenousUnitsBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:33:34Z"
+}

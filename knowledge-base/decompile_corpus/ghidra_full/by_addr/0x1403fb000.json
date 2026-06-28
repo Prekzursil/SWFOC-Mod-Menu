@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403fb000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall BehaviorClass::vfunction11(BehaviorClass *this,undefined **param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  \n  this->offset_0x18 = param_1;\n  if (*(int *)&this->field_0x30 == 0) {\n    uVar2 = (*this->vftablePtr->vfunction19)();\n    if (1 < (int)uVar2) {\n      uVar2 = (*this->vftablePtr->vfunction19)(this);\n      iVar1 = FUN_1401ffb40(&DAT_140a13e24,0,(int)uVar2 + -1);\n      *(int *)&this->field_0x30 = iVar1 + *(int *)(*(longlong *)(param_1[0x57] + 0x20) + 0x10);\n      return;\n    }\n    *(undefined4 *)&this->field_0x30 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:29Z"
+}

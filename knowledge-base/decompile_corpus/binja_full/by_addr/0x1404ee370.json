@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ee3a3        char rdi = sub_14021fe20(arg2, 0, arg3, arg4) & 1 & sub_14021ffa0(arg2, 1)\n1404ee3a6        void** rdx = arg1 + 8\n1404ee3af        if (rdx[3] u>= 0x10)\n1404ee3b1        rdx = *rdx\n1404ee3cd        rdi = rdi & sub_140220140(arg2, rdx, nullptr) & sub_140220030(arg2)\n1404ee3e7        return sub_14021feb0(arg2) & rdi",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

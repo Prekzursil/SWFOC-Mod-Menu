@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dc3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 * FUN_1402dc3e0(undefined4 *param_1,undefined4 *param_2)\n\n{\n  undefined4 *puVar1;\n  uint uVar2;\n  int iVar3;\n  ulonglong uVar4;\n  ulonglong uVar5;\n  \n  *param_1 = *param_2;\n  puVar1 = param_1 + 4;\n  *(undefined8 *)(param_1 + 2) = *(undefined8 *)(param_2 + 2);\n  if (puVar1 != param_2 + 4) {\n    FUN_14001f910(puVar1);\n    param_1[9] = param_1[9] ^ (param_1[9] ^ param_2[9]) & 0x7fffffff;\n    uVar2 = (param_1[9] ^ param_2[9]) & 0x7fffffff ^ param_2[9];\n    param_1[9] = uVar2;\n    iVar3 = (int)(uVar2 * 2) >> 1;\n    if (iVar3 != 0) {\n      FUN_140047aa0(puVar1,iVar3,0,1);\n      iVar3 = param_2[8];\n      uVar4 = 0;\n      uVar5 = uVar4;\n      if (0 < iVar3) {\n        do {\n          uVar2 = (int)uVar5 + 1;\n          *(undefined8 *)(uVar4 + *(longlong *)(param_1 + 6)) =\n               *(undefined8 *)(uVar4 + *(longlong *)(param_2 + 6));\n          iVar3 = param_2[8];\n          uVar4 = uVar4 + 8;\n          uVar5 = (ulonglong)uVar2;\n        } while ((int)uVar2 < iVar3);\n      }\n      param_1[8] = iVar3;\n    }\n  }\n  param_1[10] = param_2[10];\n  param_1[0xb] = param_2[0xb];\n  *(undefined1 *)(param_1 + 0xc) = *(undefined1 *)(param_2 + 0xc);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:23:57Z"
+}

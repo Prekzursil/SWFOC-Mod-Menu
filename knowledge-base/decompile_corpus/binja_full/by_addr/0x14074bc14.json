@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074bc14",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074bc28        *arg1 = &std::_Mpunct<uint16_t>::`vftable'{for `std::money_base'}\n14074bc31        free(arg1[2])\n14074bc3a        free(arg1[4])\n14074bc43        free(arg1[5])\n14074bc4c        free(arg1[6])\n14074bc58        *arg1 = &std::_Facet_base::`vftable'\n14074bc5e        if ((arg2 & 1) != 0)\n14074bc68        j_sub_1407864b8(arg1)\n14074bc7a        return arg1",
+  "fetched_at": "2026-04-26T17:29:38Z"
+}

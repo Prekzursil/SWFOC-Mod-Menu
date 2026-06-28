@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018a6c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14018a6c0(undefined8 param_1)\n\n{\n  undefined *puVar1;\n  undefined **ppuVar2;\n  \n  if ((undefined **)PTR_LOOP_140a12a30 != &PTR_LOOP_140a12a28) {\n    ppuVar2 = (undefined **)PTR_LOOP_140a12a30;\n    do {\n      puVar1 = ppuVar2[3] + -0x10;\n      if (ppuVar2[3] == (undefined *)0x0) {\n        puVar1 = (undefined *)0x0;\n      }\n      FUN_1401b03e0(puVar1,param_1);\n      ppuVar2 = (undefined **)ppuVar2[1];\n    } while (ppuVar2 != &PTR_LOOP_140a12a28);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140264150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ModelClass::clone_for_RefCountClass(ModelClass *this,undefined8 param_1)\n\n{\n  ModelClass *this_00;\n  \n  this_00 = (ModelClass *)FUN_140769c58(0x150);\n  if (this_00 != (ModelClass *)0x0) {\n    ModelClass(this_00,(longlong)this,param_1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:23Z"
+}

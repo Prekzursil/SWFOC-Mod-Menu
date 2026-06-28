@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018b880",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dEffectInstance::vfunction20_for_RefCountClass\n          (alD3dEffectInstance *this,int param_1,undefined8 param_2)\n\n{\n  longlong *plVar1;\n  \n  FUN_14018cfb0();\n  plVar1 = *(longlong **)(*(longlong *)&this->field_0x38 + (longlong)param_1 * 8);\n                    /* WARNING: Could not recover jumptable at 0x00014018b8ba. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*plVar1 + 0x20))(plVar1,param_2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:09Z"
+}

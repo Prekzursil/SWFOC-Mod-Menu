@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637e78",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall BoardableBehaviorClass::vfunction1(BoardableBehaviorClass *this)\n\n{\n  FUN_140637e90(&this[-1].RootClass_data.offset_0x328);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:04Z"
+}

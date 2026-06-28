@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406af410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406af422        struct DynamicVectorClass<int32_t>::VTable* rax = operator new(0x18)\n1406af427        int64_t* rbx = rax\n1406af42d        if (rax == 0)\n1406af4d9        return rax\n1406af43c        if (*(arg1 + 0x41) != 0)\n1406af441        sub_1406aebf0(arg1)\n1406af44a        if (*(arg1 + 0x40) == 0)\n1406af450        rax = sub_1405791e0(*(arg1 + 0x48))\n1406af458        if (*(arg1 + 0x40) != 0 || rax == 0)\n1406af45e        rax.b = 1\n1406af45a        rax.b = 0\n1406af467        rbx[1].d = 0\n1406af46e        *rbx = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n1406af471        rbx[2].b = rax.b\n1406af474        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** rax_1 = sub_14024a250()\n1406af47c        int64_t* arg_20 = rbx\n1406af487        (**rbx)(rbx)\n1406af489        int64_t** rdx = rax_1[3]\n1406af491        if (rdx == rax_1[4])\n1406af4ae        sub_140144900(&rax_1[2], rdx, &arg_20)\n1406af493        *rdx = rbx\n1406af49c        (**rbx)(rbx)\n1406af49e        rax_1[3] = &rax_1[3]->vFunc_1\n1406af4b3        int64_t rdx_1 = *rbx\n1406af4b9        (*(rdx_1 + 8))(rbx, rdx_1)\n1406af4ce        return rax_1",
+  "fetched_at": "2026-04-26T17:24:36Z"
+}

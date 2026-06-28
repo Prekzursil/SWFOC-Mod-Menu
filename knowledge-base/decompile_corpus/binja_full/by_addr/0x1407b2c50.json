@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b2c50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b2c62        int64_t* rbx = *(arg1 + 0x10)\n1407b2c75        if (rbx == 0)\n1407b2c75        return \n1407b2c81        uint64_t i = (*(*rbx + 0x20))(rbx)\n1407b2c87        while (i != 0)\n1407b2c97        if (i == &data_140a626d0)\n1407b2cab        *(arg1 + 0x70) = arg5\n1407b2cae        *(arg1 + 0x68) = arg3\n1407b2cb1        *(arg1 + 0x6c) = arg4\n1407b2cc2        i = (rbx[0x1c] - rbx[0x1b]) s>> 3\n1407b2cc8        if (i.d s> 0)\n1407b2cca        int32_t rsi_1 = 0\n1407b2cdd        if (i.d s> 0)\n1407b2cdf        int64_t j = 0\n1407b2cf2        int32_t* rcx_1 = *(rbx[0x1b] + (j << 3))\n1407b2cfa        int32_t var_28 = *rcx_1\n1407b2d05        int32_t var_24_1 = rcx_1[1]\n1407b2d13        int32_t var_20_1 = rcx_1[2]\n1407b2d19        sub_1407b4840(&rbx[0x24], rsi_1, &var_28, 1)\n1407b2d1e        rsi_1 += 1\n1407b2d20        j += 1\n1407b2d26        do while (j s< sx.q(i.d))\n1407b2d2e        sub_1407b3bf0(&rbx[0x24], arg2)\n1407b2cc8        break\n1407b2c99        i = *(i + 8)\n1407b2d4a        return ",
+  "fetched_at": "2026-04-26T17:32:57Z"
+}

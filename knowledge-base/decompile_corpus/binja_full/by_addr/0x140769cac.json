@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769cac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769cb7        int64_t result\n140769cb7        if (sub_14076a8b8().d == 0)\n140769cda        label_140769cda:\n140769cda        result.b = 0\n140769cc2        TEB* gsbase\n140769cc2        void* StackBase = gsbase->NtTib.Self->NtTib.StackBase\n140769ccd        result = 0\n140769ccf        bool z_1\n140769ccf        if (0 == data_140b3b918)\n140769ccf        data_140b3b918 = StackBase\n140769ccf        z_1 = true\n140769ccf        result = data_140b3b918\n140769ccf        z_1 = false\n140769cd8        if (z_1)\n140769cd8        goto label_140769cda\n140769ccb        do while (StackBase != result)\n140769ce1        result.b = 1\n140769ce0        return result",
+  "fetched_at": "2026-04-26T17:30:16Z"
+}

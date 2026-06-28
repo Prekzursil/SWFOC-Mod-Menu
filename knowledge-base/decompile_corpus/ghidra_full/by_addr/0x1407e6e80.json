@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e6e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e6e80(void)\n\n{\n  DynamicVectorClass<class_DrawTextClass*___ptr64>::\n  ~DynamicVectorClass<class_DrawTextClass*___ptr64>\n            ((DynamicVectorClass<class_DrawTextClass*___ptr64> *)&PTR_vftable_140a109c0);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:00:58Z"
+}

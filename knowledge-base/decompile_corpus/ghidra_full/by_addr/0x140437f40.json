@@ -1,0 +1,7 @@
+{
+  "addr": "0x140437f40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SelectAllEventClass * __thiscall SelectAllEventClass::SelectAllEventClass(SelectAllEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x25;\n  this->vftablePtr = &vftable;\n  FUN_14028d930(&DAT_140b153e0,0);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fe780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fe786        struct SpecialAbilityClass::ForceWhirlwindAbilityClass::VTable** result = arg1\n1406fe789        sub_14048c780(arg1)\n1406fe795        result[8].w = 1\n1406fe79b        *result = &ForceWhirlwindAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fe7a5        result[1] = &ForceWhirlwindAbilityClass::`vftable'{for `RefCountClass'}\n1406fe7b0        result[0x2f] = &LinearInterpolator::`vftable'{for `Interpolator'}\n1406fe7b9        __builtin_memset(&result[0x31], 0, 0x2c)\n1406fe7e5        result[0x30].b = 0\n1406fe7ec        *(result + 0x3c) = 9\n1406fe7f8        return result",
+  "fetched_at": "2026-04-26T17:26:52Z"
+}

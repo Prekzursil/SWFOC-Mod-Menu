@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052afc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14052afc6        struct ScheduledEventClass::PlanetaryBombardEventClass::VTable** result = arg1\n14052afc9        sub_140512c50(arg1)\n14052afd5        result[4].d = 0x36\n14052afdc        *result = &PlanetaryBombardEventClass::`vftable'{for `ScheduledEventClass'}\n14052afe7        return result",
+  "fetched_at": "2026-04-26T17:33:20Z"
+}

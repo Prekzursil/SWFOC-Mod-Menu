@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053b6a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053b6bf        *arg1 = &MultiLinkedListClass<class AIPlanetBuildTaskClass>::`vftable'{for `GenericMultiLinkedList'}\n14053b6c6        while (arg1[2] != &arg1[1])\n14053b6d8        int64_t* arg_8\n14053b6d8        sub_14020ac80(arg1, &arg_8)\n14053b6e6        sub_14020a960(arg1)\n14053b6ef        if ((arg2 & 1) != 0)\n14053b6f9        j_sub_1407864b8(arg1)\n14053b710        return arg1",
+  "fetched_at": "2026-04-26T17:33:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077dedc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: void __cdecl __crt_stdio_input::scanset_buffer<wchar_t>::invert(void) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall __crt_stdio_input::scanset_buffer<wchar_t>::invert(scanset_buffer<wchar_t> *this)\n\n{\n  undefined8 uVar1;\n  byte *pbVar2;\n  byte *pbVar3;\n  \n  pbVar3 = *(byte **)this;\n  if (pbVar3 == (byte *)0x0) {\n    uVar1 = _calloc_base(0x2000,1);\n    _free_base(*(undefined8 *)this);\n    *(undefined8 *)this = uVar1;\n    _free_base(0);\n    pbVar3 = *(byte **)this;\n  }\n  pbVar2 = pbVar3;\n  if (pbVar3 <= pbVar3 + 0x2000) {\n    do {\n      *pbVar2 = ~*pbVar2;\n      pbVar2 = pbVar2 + 1;\n    } while ((longlong)pbVar2 - (longlong)pbVar3 !=\n             (ulonglong)(~-(uint)(pbVar3 + 0x2000 < pbVar3) & 0x2000));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:50:44Z"
+}

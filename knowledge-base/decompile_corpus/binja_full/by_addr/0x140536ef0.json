@@ -1,0 +1,7 @@
+{
+  "addr": "0x140536ef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140536f04        *arg1 = &RevealBehaviorClass::`vftable'{for `BehaviorClass'}\n140536f10        arg1[1] = &RevealBehaviorClass::`vftable'{for `RefCountClass'}\n140536f1b        arg1[3] = &RevealBehaviorClass::`vftable'{for `SignalListenerClass'}\n140536f1f        void* rcx = arg1[0xa]\n140536f26        if (rcx != 0)\n140536f3a        if (((arg1[0xc] - rcx) & 0xfffffffffffffffc) u>= 0x1000)\n140536f3c        void* r8_1 = *(rcx - 8)\n140536f4f        if (rcx - r8_1 - 8 u> 0x1f)\n140536f90        _invalid_parameter_noinfo_noreturn()\n140536f90        noreturn\n140536f51        rcx = r8_1\n140536f54        j_sub_1407864b8(rcx)\n140536f5b        __builtin_memset(&arg1[0xa], 0, 0x18)\n140536f6a        sub_1404c3310(arg1)\n140536f73        if ((arg2 & 1) != 0)\n140536f7d        j_sub_1407864b8(arg1)\n140536f8f        return arg1",
+  "fetched_at": "2026-04-26T17:33:48Z"
+}

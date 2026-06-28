@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ee4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    atexit\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl atexit(_func_5014 *param_1)\n\n{\n  _onexit_t p_Var1;\n  \n  p_Var1 = _onexit((_onexit_t)param_1);\n  return (p_Var1 != (_onexit_t)0x0) - 1;\n}",
+  "fetched_at": "2026-04-26T18:09:54Z"
+}

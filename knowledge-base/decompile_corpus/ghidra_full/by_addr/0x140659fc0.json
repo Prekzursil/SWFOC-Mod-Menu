@@ -1,0 +1,7 @@
+{
+  "addr": "0x140659fc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nPlanetPerceptualEvaluatorClass * __thiscall\nPlanetPerceptualEvaluatorClass::scalar_deleting_destructor\n          (PlanetPerceptualEvaluatorClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       PlanetPerceptualEvaluatorClass::~PlanetPerceptualEvaluatorClass */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &(this->SignalListenerClass_data).offset_0x28);\n  GameObjectPerceptualEvaluatorClass::~GameObjectPerceptualEvaluatorClass\n            ((GameObjectPerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xe8);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:21Z"
+}

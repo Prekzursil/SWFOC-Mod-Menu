@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403af2c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MoveObjectToObjectEventClass * __thiscall\nAllyEventClass::scalar_deleting_destructor(AllyEventClass *this,uint param_1)\n\n{\n  DynamicVectorClass<int>::~DynamicVectorClass<int>\n            ((DynamicVectorClass<int> *)&(this->ScheduledEventClass_data).offset_0x8);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (AllyEventClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x50);\n  }\n  return (MoveObjectToObjectEventClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:33:56Z"
+}

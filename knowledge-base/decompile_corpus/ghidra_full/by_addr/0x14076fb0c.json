@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076fb0c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bad_exception * __thiscall std::bad_exception::bad_exception(bad_exception *this)\n\n{\n  (this->exception_data).offset_0x8 = 0;\n  (this->exception_data).offset_0x0 = \"bad exception\";\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:11:33Z"
+}

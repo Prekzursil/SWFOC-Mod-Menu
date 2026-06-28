@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ec6b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407ec6b0(void)\n\n{\n  undefined *puVar1;\n  longlong lVar2;\n  \n  lVar2 = 0x1a;\n  puVar1 = &DAT_140a7be40;\n  do {\n    puVar1 = puVar1 + -0x10;\n    FUN_1401f9440(puVar1);\n    lVar2 = lVar2 + -1;\n  } while (lVar2 != 0);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:18Z"
+}

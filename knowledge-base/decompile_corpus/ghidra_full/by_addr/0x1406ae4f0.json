@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ae4f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AbilityBlockStatus::vfunction2(AbilityBlockStatus *this,undefined8 param_1)\n\n{\n  undefined8 uVar1;\n  \n  *(int *)&this->offset_0x8 = *(int *)&this->offset_0x8 + -1;\n  if (this == (AbilityBlockStatus *)0x30) {\n    this = (AbilityBlockStatus *)0x0;\n  }\n  uVar1 = FUN_140058570();\n  FUN_140220eb0(uVar1,param_1,this,0x29);\n  uVar1 = FUN_140058570();\n  FUN_140220eb0(uVar1,param_1,this,0x10);\n  uVar1 = FUN_140058570();\n  FUN_140220eb0(uVar1,param_1,this,0xb);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:35:54Z"
+}

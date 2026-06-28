@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407139f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407139f6        struct SpecialAbilityClass::ForceSightAbilityClass::VTable** result = arg1\n1407139f9        sub_14048c780(arg1)\n140713a05        result[0x2f].d = 0\n140713a0f        *result = &ForceSightAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140713a19        result[1] = &ForceSightAbilityClass::`vftable'{for `RefCountClass'}\n140713a25        return result",
+  "fetched_at": "2026-04-26T17:27:49Z"
+}

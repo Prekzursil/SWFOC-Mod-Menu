@@ -1,0 +1,7 @@
+{
+  "addr": "0x140788f54",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140788f60        if (__acrt_get_sigabrt_handler() != 0)\n140788f67        raise(0x16)\n140788f73        if ((data_140a44da0 & 2) != 0)\n140788f82        if (IsProcessorFeaturePresent(PF_FASTFAIL_AVAILABLE) != 0)\n140788f89        trap(0xd)\n140788f9a        __acrt_call_reportfault(3, 0x40000015)\n140788fa4        sub_14078c0fc(3)\n140788fa9        breakpoint",
+  "fetched_at": "2026-04-26T17:31:21Z"
+}

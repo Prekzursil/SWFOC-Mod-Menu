@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a0130",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a0147        if ((arg1[0x74].b & 2) != 0)\n1403a019d        label_1403a019d:\n1403a01a0        if (arg2 != 0)\n1403a01a9        int64_t* r8_2 = *(arg2 + 0x298) + 0xf8\n1403a01b5        if (r8_2[3] u>= 0x10)\n1403a01b7        *r8_2\n1403a01c1        int64_t* rdx_3 = arg1[0x53] + 0xf8\n1403a01cd        if (rdx_3[3] u>= 0x10)\n1403a01cf        *rdx_3\n1403a0151        int64_t rax_2 = (*(*arg1 + 0x10))(arg1, 4)\n1403a0157        uint64_t rax\n1403a0157        if (rax_2 == 0)\n1403a0171        int64_t rax_4 = (*(*arg1 + 0x10))(arg1, 5)\n1403a0177        if (rax_4 != 0)\n1403a017f        rax = sub_1404f4610(rax_4, arg1)\n1403a0184        goto label_1403a0199\n1403a0186        rax = arg1[0x20]\n1403a0190        if (rax != 0)\n1403a0192        rax = zx.q(*(rax + 0x98))\n1403a0192        goto label_1403a0199\n1403a015f        rax = sub_1404357d0(rax_2, arg1)\n1403a0199        label_1403a0199:\n1403a019b        if (rax.b != 0)\n1403a019b        goto label_1403a019d\n1403a01e8        return ",
+  "fetched_at": "2026-04-26T17:23:59Z"
+}

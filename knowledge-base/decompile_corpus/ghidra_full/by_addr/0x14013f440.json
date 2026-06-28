@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong thunk_FUN_140182a60(int param_1)\n\n{\n  int iVar1;\n  ulonglong in_RAX;\n  char *_Str1;\n  undefined4 extraout_var;\n  \n  if (param_1 == 0xb) {\n    if (*(longlong *)(DAT_140a6fe38 + 0x70) != 0) {\n      _Str1 = (char *)FUN_1401aeed0();\n      iVar1 = _stricmp(_Str1,\"t0\");\n      in_RAX = CONCAT44(extraout_var,iVar1);\n      if (iVar1 != 0) {\n        return CONCAT71((int7)(in_RAX >> 8),1);\n      }\n    }\n  }\n  else if (param_1 == 0xc) {\n    return CONCAT71((int7)((ulonglong)DAT_140a6fd08 >> 8),*(longlong *)(DAT_140a6fd08 + 0x70) != 0);\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:19:02Z"
+}

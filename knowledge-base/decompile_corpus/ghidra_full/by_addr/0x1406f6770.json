@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f6770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDemolitionAbilityClass::vfunction14_for_IXMLLoadableClass\n          (DemolitionAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  \n  if (((param_1 != 0) && (param_2 != 0)) && (cVar1 = FUN_14048df60(), cVar1 != '\\0')) {\n    (*this->vftablePtr->vfunction32_for_IXMLLoadableClass)(this,param_1,param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403057b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403057ca        int64_t* rax = sub_14034c770(arg2, 0)\n1403057d5        if (rax == 0)\n1403057d5        goto label_140305806\n1403057d7        int64_t r8_1 = *rax\n1403057e2        int64_t* result = (*(r8_1 + 0x10))(rax, 0x2b, r8_1)\n1403057e9        if (result != 0)\n1403057f5        sub_140524a80(result, rax)\n140305806        label_140305806:\n140305806        *(arg1 + 0x20b4) = 0\n14030580c        *(arg1 + 0x20b8) = 0\n140305813        result = sub_140347b50(0x210)\n14030581b        if (result != 0)\n14030581d        int64_t r8_2 = *result\n140305820        int64_t rdx\n140305820        rdx.b = 1\n140305825        result = (*(r8_2 + 0x78))(result, rdx, r8_2)\n140305829        struct BaseComponentClass::VTable** rdi_1 = *(arg1 + 0x20d8)\n140305833        if (arg2 != rdi_1)\n140305867        sub_140353ad0(arg2, 0, 0)\n140305874        return (*(*arg2 + 0x78))(arg2, 1)\n140305838        if (rdi_1 != 0)\n14030583d        sub_14034a770(rdi_1)\n14030584a        result = j_sub_1407864b8(rdi_1)\n14030584f        *(arg1 + 0x20d8) = 0\n140305856        *(arg1 + 0x21a0) = 0\n14030588b        return result",
+  "fetched_at": "2026-04-26T17:23:18Z"
+}

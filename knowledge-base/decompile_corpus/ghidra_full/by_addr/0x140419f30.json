@@ -1,0 +1,7 @@
+{
+  "addr": "0x140419f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nbool FUN_140419f30(longlong param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  float *pfVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  undefined1 local_48 [64];\n  \n  lVar1 = *(longlong *)(param_1 + 0xa8);\n  lVar2 = *(longlong *)(param_2 + 0xa8);\n  if ((lVar1 != 0) && (lVar2 != 0)) {\n    pfVar3 = (float *)FUN_1405566a0(lVar1,local_48);\n    fVar4 = pfVar3[2];\n    fVar5 = pfVar3[1];\n    fVar6 = *pfVar3;\n    fVar8 = *(float *)(lVar1 + 0x134);\n    fVar7 = *(float *)(lVar1 + 0x130);\n    fVar9 = *(float *)(lVar1 + 300);\n    pfVar3 = (float *)FUN_1405566a0(lVar2,local_48);\n    fVar9 = (fVar6 + fVar9) - _DAT_140b2f0f8;\n    fVar7 = (fVar5 + fVar7) - _DAT_140b2f0fc;\n    fVar8 = (fVar4 + fVar8) - _DAT_140b2f100;\n    fVar4 = (pfVar3[1] + *(float *)(lVar2 + 0x130)) - _DAT_140b2f0fc;\n    fVar6 = (pfVar3[2] + *(float *)(lVar2 + 0x134)) - _DAT_140b2f100;\n    fVar5 = (*(float *)(lVar2 + 300) + *pfVar3) - _DAT_140b2f0f8;\n    return fVar9 * fVar9 + fVar7 * fVar7 + fVar8 * fVar8 <\n           fVar5 * fVar5 + fVar4 * fVar4 + fVar6 * fVar6;\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:46:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791e84",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl __acrt_stdio_free_stream(class __crt_stdio_stream)\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl __acrt_stdio_free_stream(undefined8 *param_1)\n\n{\n  *(undefined4 *)(param_1 + 3) = 0xffffffff;\n  *param_1 = 0;\n  param_1[1] = 0;\n  *(undefined4 *)(param_1 + 2) = 0;\n  *(undefined8 *)((longlong)param_1 + 0x1c) = 0;\n  param_1[5] = 0;\n  LOCK();\n  *(undefined4 *)((longlong)param_1 + 0x14) = 0;\n  UNLOCK();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:50Z"
+}

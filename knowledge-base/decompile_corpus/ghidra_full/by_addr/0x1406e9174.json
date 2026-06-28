@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e9174",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandTaskForceClass::vfunction1_for_AIDiagnosticsClass(LandTaskForceClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((LandTaskForceClass *)&this[-1].offset_0x58,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:46:18Z"
+}

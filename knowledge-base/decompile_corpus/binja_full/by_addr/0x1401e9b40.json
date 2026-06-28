@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e9b40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e9b53        *arg1 = &GUIGadgetCustomImageClass::`vftable'{for `GUIGadgetClass'}\n1401e9b59        sub_1401eb4e0(arg1)\n1401e9b65        sub_14001eb00(&arg1[0x5a])\n1401e9b6a        int64_t rdx = arg1[0x59]\n1401e9b75        if (rdx u>= 0x10)\n1401e9b77        void* rcx_1 = arg1[0x56]\n1401e9b88        if (rdx + 1 u>= 0x1000)\n1401e9b8a        void* r8_1 = *(rcx_1 - 8)\n1401e9b9d        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1401e9c2d        _invalid_parameter_noinfo_noreturn()\n1401e9c2d        noreturn\n1401e9ba3        rcx_1 = r8_1\n1401e9ba6        j_sub_1407864b8(rcx_1)\n1401e9bb2        arg1[0x58] = 0\n1401e9bbd        arg1[0x59] = 0xf\n1401e9bc8        arg1[0x56].b = 0\n1401e9bcf        sub_14025b390(&arg1[0x3c])\n1401e9bdb        sub_140260500(&arg1[0x2a])\n1401e9be7        sub_1401cb190(&arg1[0x27])\n1401e9bff        sub_140260500(&arg1[0x13])\n1401e9c07        sub_1401e3cb0(arg1)\n1401e9c10        if ((arg2 & 1) != 0)\n1401e9c1a        j_sub_1407864b8(arg1)\n1401e9c2c        return arg1",
+  "fetched_at": "2026-04-26T17:27:06Z"
+}

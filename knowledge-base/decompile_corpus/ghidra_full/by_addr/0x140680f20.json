@@ -1,0 +1,7 @@
+{
+  "addr": "0x140680f20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong __thiscall\nMovingVsMovingCollisionClass::vfunction15_for_SignalListenerClass\n          (MovingVsMovingCollisionClass *this,undefined8 param_1,byte *param_2)\n\n{\n  undefined8 uVar1;\n  ulonglong uVar2;\n  \n  uVar1 = CollisionClass::vfunction15_for_SignalListenerClass\n                    ((CollisionClass *)this,param_1,param_2);\n  if ((char)uVar1 == '\\0') {\n    uVar2 = FUN_1402205a0(param_1);\n    if ((int)uVar2 != 0x10000) {\n      return uVar2 & 0xffffffffffffff00;\n    }\n    uVar1 = FUN_140680f90(this,param_1);\n    *param_2 = *param_2 & (byte)uVar1;\n  }\n  return CONCAT71((int7)((ulonglong)uVar1 >> 8),1);\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:43Z"
+}

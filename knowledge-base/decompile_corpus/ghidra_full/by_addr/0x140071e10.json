@@ -1,0 +1,7 @@
+{
+  "addr": "0x140071e10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140071e10(void)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  undefined8 ****ppppuVar3;\n  undefined8 ***local_28 [2];\n  undefined8 local_18;\n  ulonglong local_10;\n  \n  local_10 = 0xf;\n  local_28[0] = (undefined8 ****)0x0;\n  local_18 = 0;\n  lVar2 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  uVar1 = (**(code **)(**(longlong **)(lVar2 + 0x18) + 0x48))();\n  FUN_140200cd0(local_28,\"http://store.steampowered.com/app/%d/\",uVar1);\n  lVar2 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  ppppuVar3 = local_28;\n  if (0xf < local_10) {\n    ppppuVar3 = (undefined8 ****)local_28[0];\n  }\n  (**(code **)(**(longlong **)(lVar2 + 0x10) + 0xf0))(*(longlong **)(lVar2 + 0x10),ppppuVar3);\n  if (0xf < local_10) {\n    if (0xfff < local_10 + 1) {\n      if (0x1f < (ulonglong)((longlong)local_28[0] + (-8 - (longlong)local_28[0][-1]))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(local_28[0][-1],local_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:30Z"
+}

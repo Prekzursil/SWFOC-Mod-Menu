@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c86c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* AIGoalSystemClass member function inherited by LandGoalSystemClass\n   AIGoalSystemClass member function inherited by SpaceGoalSystemClass\n   AIGoalSystemClass member function inherited by GalacticGoalSystemClass */\n\nundefined8 * __thiscall AIGoalSystemClass::vfunction2(AIGoalSystemClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x30);\n  if (puVar1 != (undefined8 *)0x0) {\n    puVar1[1] = 0;\n    *puVar1 = &AIGoalSystemDiagnosticsNodeClass::vftable;\n    puVar1[2] = 0;\n    puVar1[3] = 0;\n    puVar1[4] = 0;\n    puVar1[5] = this;\n    return puVar1;\n  }\n  return (undefined8 *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:40:16Z"
+}

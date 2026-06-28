@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c3ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c3add        struct DynamicVectorClass<class NameReferenceClass>::VTable** arg_8 = arg1\n1404c3ae2        *arg1 = &DynamicVectorClass<class NameReferenceClass>::`vftable'\n1404c3aef        arg1[1] = 0\n1404c3af3        arg1[2] = 0\n1404c3afe        sub_140046fc0(&data_140a28588, &arg_8)\n1404c3b06        arg1[3].b = 0\n1404c3b0f        return arg1",
+  "fetched_at": "2026-04-26T17:30:39Z"
+}

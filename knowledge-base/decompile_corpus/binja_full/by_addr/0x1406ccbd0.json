@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ccbd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ccbf1        if (arg2 != 0 && arg3 != 0)\n1406ccbf7        int64_t rsi_1 = *(arg1 + 0x1b8)\n1406ccc01        if (rsi_1 != 0)\n1406ccc07        void* rax_1 = arg2[0x54]\n1406ccc16        int32_t rdi = -1\n1406ccc28        if (rax_1 != 0 && *(arg1 + 0x198) != 0)\n1406ccc2a        void* rdi_1 = arg1 + 0x188\n1406ccc36        if (*(rdi_1 + 0x18) u>= 0x10)\n1406ccc38        rdi_1 = *rdi_1\n1406ccc4e        rdi = sub_14012d2a0(sub_1402648b0(rax_1), rdi_1)\n1406ccc57        int64_t* var_58\n1406ccc57        sub_140549d70(&var_58, 0)\n1406ccc61        var_58 = arg2\n1406ccc66        int32_t var_40 = rdi\n1406ccc6a        int64_t var_20 = rsi_1\n1406ccc6f        int64_t var_38 = arg3\n1406ccc84        if (sub_14054ade0(&var_58) != 0)\n1406ccc8e        sub_1403a9840(arg2, 0x42)\n1406ccc93        struct IRootClass::RootClass::VTable** rax_4\n1406ccc93        rax_4.b = 1\n1406ccca6        return rax_4\n1406cccac        int64_t rax\n1406cccac        rax.b = 0\n1406cccba        return rax",
+  "fetched_at": "2026-04-26T17:25:28Z"
+}

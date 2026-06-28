@@ -1,0 +1,7 @@
+{
+  "addr": "0x140092850",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140092860        *arg1 = &LoadingThreadClass::`vftable'{for `ThreadClass'}\n140092863        int64_t* rcx = arg1[5]\n14009286a        if (rcx != 0)\n14009286f        (*(*rcx + 8))(rcx)\n140092872        arg1[5] = 0\n14009287a        int64_t rdx = arg1[0xb]\n140092882        if (rdx u>= 0x10)\n140092884        void* rcx_1 = arg1[8]\n140092892        if (rdx + 1 u>= 0x1000)\n140092894        void* r8_1 = *(rcx_1 - 8)\n1400928a7        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1400928e1        _invalid_parameter_noinfo_noreturn()\n1400928e1        noreturn\n1400928a9        rcx_1 = r8_1\n1400928ac        j_sub_1407864b8(rcx_1)\n1400928b1        arg1[0xa] = 0\n1400928b9        arg1[0xb] = 0xf\n1400928c1        arg1[8].b = 0\n1400928c5        int64_t* rcx_3 = arg1[5]\n1400928cc        if (rcx_3 != 0)\n1400928d1        (*(*rcx_3 + 8))(rcx_3)\n1400928dc        return sub_14022e3e0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T16:58:13Z"
+}

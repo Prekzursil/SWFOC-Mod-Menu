@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048fa20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048fa2b        struct ScheduledEventClass::SaveGameEventClass::VTable** result = operator new(0x70)\n14048fa36        if (result == 0)\n14048fa7e        return result\n14048fa3b        sub_140512c50(result)\n14048fa47        result[9].d = 0xffffffff\n14048fa4e        *result = &SaveGameEventClass::`vftable'{for `ScheduledEventClass'}\n14048fa54        result[0xa] = 0\n14048fa5c        result[0xc] = 0\n14048fa64        result[0xd] = 7\n14048fa6c        result[4].d = 0x24\n14048fa78        return result",
+  "fetched_at": "2026-04-26T17:29:01Z"
+}

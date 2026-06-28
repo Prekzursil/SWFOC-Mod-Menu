@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001d794",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001d79b        return atexit(std::_Fac_tidy_reg_t::~_Fac_tidy_reg_t) __tailcall",
+  "fetched_at": "2026-04-26T16:51:27Z"
+}

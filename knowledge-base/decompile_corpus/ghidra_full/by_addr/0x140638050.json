@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nDynamicTransformBehaviorClass::vfunction10(DynamicTransformBehaviorClass *this,undefined **param_1)\n\n{\n  float fVar1;\n  undefined *puVar2;\n  undefined *puVar3;\n  undefined8 uVar4;\n  float fVar5;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  if (((param_1 != (undefined **)0x0) && (puVar2 = param_1[0x48], puVar2 != (undefined *)0x0)) &&\n     (puVar3 = param_1[0x53], puVar3 != (undefined *)0x0)) {\n    puVar2[0x58] = 1;\n    *(int *)(puVar2 + 0x54) = (int)((float)DAT_140b0a340 * *(float *)(puVar3 + 0x2400));\n    uVar4 = *(undefined8 *)(puVar3 + 0x2418);\n    *(undefined8 *)(puVar2 + 8) = *(undefined8 *)(puVar3 + 0x2410);\n    *(undefined8 *)(puVar2 + 0x10) = uVar4;\n    uVar4 = *(undefined8 *)(puVar3 + 0x2428);\n    *(undefined8 *)(puVar2 + 0x18) = *(undefined8 *)(puVar3 + 0x2420);\n    *(undefined8 *)(puVar2 + 0x20) = uVar4;\n    fVar5 = DAT_1407ffaf8;\n    fVar1 = *(float *)(puVar3 + 0x240c);\n    *(float *)(puVar2 + 0x38) = fVar1;\n    *(float *)(puVar2 + 0x3c) = fVar5 / fVar1;\n    *(undefined4 *)(puVar2 + 0x40) = *(undefined4 *)(puVar3 + 0x2404);\n    *(undefined4 *)(puVar2 + 0x44) = *(undefined4 *)(puVar3 + 0x2408);\n    FUN_1403ac530(param_1,0);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401096e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401096fd        void* var_28\n1401096fd        __builtin_strncpy(&var_28, \"IDC_STATIC\", 0xb)\n140109708        int64_t var_10 = 0xf\n140109711        int64_t var_18 = 0xa\n14010971f        void* rax = sub_1401fa460(&data_140a7bc58, arg1)\n140109739        int16_t var_20\n140109739        int64_t result = sub_1401c8ea0(&data_140a78510, zx.q(data_140a12218), &var_28, rax, var_28, var_20, var_18, var_10)\n140109747        if (var_10 u< 0x10)\n14010977b        return result\n140109749        void* rcx = var_28\n140109751        void* rax_1 = rcx\n14010975b        if (var_10 + 1 u>= 0x1000)\n14010975d        rcx = *(rcx - 8)\n140109770        if (rax_1 - rcx - 8 u> 0x1f)\n14010977c        _invalid_parameter_noinfo_noreturn()\n14010977c        noreturn\n140109772        return j_sub_1407864b8(rcx)",
+  "fetched_at": "2026-04-26T17:05:57Z"
+}

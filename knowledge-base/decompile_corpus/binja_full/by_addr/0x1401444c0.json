@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401444c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401444da        struct RefCountClass::alRenderable::VTable** rax = operator new(0x2f8)\n1401444e2        struct alRenderable::alEmitter::VTable** rbx\n1401444e2        if (rax == 0)\n1401444f1        rbx = nullptr\n1401444ec        rbx = sub_14013b820(rax)\n140144500        if (sub_14013bcd0(rbx, arg2) == 0)\n140144547        if (rbx != 0)\n140144554        (*rbx)->vFunc_2(rbx, 1)\n140144568        return 0\n140144508        sub_14014a000(arg3, rbx)\n140144510        char* result = sub_1402203d0(arg2)\n140144515        void* rbx_1 = rbx - result\n140144530        char i\n140144520        i = *result\n140144523        *(rbx_1 + result + 0x1d6) = i\n14014452a        result = &result[1]\n140144530        do while (i != 0)\n140144532        result.b = 1\n140144543        return result",
+  "fetched_at": "2026-04-26T17:19:55Z"
+}

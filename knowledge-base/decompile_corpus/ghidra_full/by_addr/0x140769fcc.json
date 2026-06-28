@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769fcc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140769fcc(void)\n\n{\n  DeleteCriticalSection((LPCRITICAL_SECTION)&DAT_140b3b968);\n  if (DAT_140b3b960 != (HANDLE)0x0) {\n    CloseHandle(DAT_140b3b960);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:56Z"
+}

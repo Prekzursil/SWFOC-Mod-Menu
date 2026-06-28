@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b91d0",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_newuserdata",
+  "body": "1407b91da        void* r8 = arg1[4]\n1407b91ec        if (*(r8 + 0x74) u>= *(r8 + 0x70))\n1407b91ee        sub_1407bc850(arg1)\n1407b91f9        int64_t* rax_1 = sub_1407bfad0(arg1, arg2)\n1407b91fe        int32_t* rcx_1 = arg1[2]\n1407b9202        *(rcx_1 + 8) = rax_1\n1407b9206        *rcx_1 = 7\n1407b920c        arg1[2] += 0x10\n1407b921f        return &rax_1[4]",
+  "fetched_at": "2026-04-26T16:44:28Z"
+}

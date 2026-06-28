@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546a70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaRotateCameraBy::vfunction5(void)\n\n{\n  return &DAT_140a43798;\n}",
+  "fetched_at": "2026-04-26T18:37:13Z"
+}

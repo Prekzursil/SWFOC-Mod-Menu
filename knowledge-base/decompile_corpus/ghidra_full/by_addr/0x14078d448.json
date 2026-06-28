@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d448",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: void __cdecl __crt_seh_guarded_call<void>::operator()<class\n   <lambda_410d79af7f07d98d83a3f525b3859a53>,class <lambda_3e16ef9562a7dcce91392c22ab16ea36> &\n   __ptr64,class <lambda_38119f0e861e05405d8a144b9b982f0a> >(class\n   <lambda_410d79af7f07d98d83a3f525b3859a53> && __ptr64,class\n   <lambda_3e16ef9562a7dcce91392c22ab16ea36> & __ptr64,class\n   <lambda_38119f0e861e05405d8a144b9b982f0a> && __ptr64) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __thiscall\n__crt_seh_guarded_call<void>::\noperator()<class_<lambda_410d79af7f07d98d83a3f525b3859a53>,class_<lambda_3e16ef9562a7dcce91392c22ab16ea36>&___ptr64,class_<lambda_38119f0e861e05405d8a144b9b982f0a>_>\n          (__crt_seh_guarded_call<void> *this,<lambda_410d79af7f07d98d83a3f525b3859a53> *param_1,\n          <lambda_3e16ef9562a7dcce91392c22ab16ea36> *param_2,\n          <lambda_38119f0e861e05405d8a144b9b982f0a> *param_3)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n  __acrt_lock(*(undefined4 *)param_1);\n  for (plVar2 = &DAT_140b3c4c8; plVar2 != &DAT_140b3c4d0; plVar2 = plVar2 + 1) {\n    if ((undefined **)*plVar2 != &PTR_DAT_140a44dc0) {\n      lVar1 = _updatetlocinfoEx_nolock(plVar2,&PTR_DAT_140a44dc0);\n      *plVar2 = lVar1;\n    }\n  }\n  __acrt_unlock(*(undefined4 *)param_3);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140706d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall MaximumFirepowerAttackAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Maximum_Firepower_Attack_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:52:49Z"
+}

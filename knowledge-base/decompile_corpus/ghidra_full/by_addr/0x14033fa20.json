@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033fa20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall RetreatCoordinatorClass::~RetreatCoordinatorClass(RetreatCoordinatorClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  vfunction5(this);\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &(this->RefCountClass_data).field_0x38);\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &(this->RefCountClass_data).field_0x20);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (RetreatCoordinatorClass_vftable1 *)&RefCountClass::vftable;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140713ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140713ee6        struct SpecialAbilityClass::SaberThrowAbilityClass::VTable** result = arg1\n140713ee9        sub_14048c780(arg1)\n140713ef5        *result = &SaberThrowAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140713eff        result[1] = &SaberThrowAbilityClass::`vftable'{for `RefCountClass'}\n140713f05        result[0x2f] = 0\n140713f0c        result[0x30].d = 0\n140713f12        result[0x31] = 0\n140713f19        result[0x33] = 0\n140713f23        result[0x34] = 0xf\n140713f33        return result",
+  "fetched_at": "2026-04-26T17:27:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d0d70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404d0d85        arg2[1] = *arg2\n1404d0d8c        int64_t rsi\n1404d0d8c        rsi.b = 1\n1404d0d96        if (sub_140220610(arg1) != 0)\n1404d0df4        char i\n1404d0d9b        int32_t rax_2 = sub_140220710(arg1)\n1404d0da3        if (rax_2 == 3)\n1404d0db9        int32_t arg_10\n1404d0db9        rsi.b &= sub_140220730(arg1, &arg_10, rax_2 + 1, nullptr)\n1404d0dbc        if (rsi.b != 0)\n1404d0dbe        int32_t* rdx_1 = arg2[1]\n1404d0dc6        if (rdx_1 == arg2[2])\n1404d0ddd        std::vector<uint64_t const& __ptr64,uint64_t,class std::allocator<uint64_t> >::_Emplace_reallocate<uint64_t const& __ptr64>(arg2, rdx_1, &arg_10)\n1404d0dcc        *rdx_1 = arg_10\n1404d0dce        arg2[1] += 4\n1404d0de5        sub_1402206a0(arg1)\n1404d0ded        i = sub_140220610(arg1)\n1404d0df4        do while (i != 0)\n1404d0e09        return zx.q(rsi.b)",
+  "fetched_at": "2026-04-26T17:30:54Z"
+}

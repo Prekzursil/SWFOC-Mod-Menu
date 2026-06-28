@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0288",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    feholdexcept\n   \n   Library: Visual Studio 2019 Release */\n\nundefined8 feholdexcept(undefined8 *param_1)\n\n{\n  undefined8 uVar1;\n  int iVar2;\n  uint local_res10;\n  undefined4 uStackX_14;\n  \n  local_res10 = 0;\n  uStackX_14 = 0;\n  iVar2 = fegetenv(&local_res10);\n  if (iVar2 == 0) {\n    uVar1 = CONCAT44(uStackX_14,local_res10);\n    local_res10 = local_res10 | 0x1f;\n    *param_1 = uVar1;\n    iVar2 = fesetenv(&local_res10);\n    if (iVar2 == 0) {\n      _clearfp();\n      return 0;\n    }\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:54:16Z"
+}

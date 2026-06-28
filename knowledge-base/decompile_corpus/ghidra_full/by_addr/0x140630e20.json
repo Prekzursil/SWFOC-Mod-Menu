@@ -1,0 +1,7 @@
+{
+  "addr": "0x140630e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "InvulnerableBehaviorClass * __thiscall\nInvulnerableBehaviorClass::vfunction4(InvulnerableBehaviorClass *this,int param_1)\n\n{\n  InvulnerableBehaviorClass *pIVar1;\n  \n  pIVar1 = (InvulnerableBehaviorClass *)0x0;\n  if (param_1 == 0x4b) {\n    pIVar1 = this;\n  }\n  return pIVar1;\n}",
+  "fetched_at": "2026-04-26T17:33:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d8b40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d8b40        void* const* result = &__return_addr\n1407d8b4e        int128_t zmm6 = 0x3f800000\n1407d8b62        int128_t zmm8 = *arg1\n1407d8b6c        int128_t zmm9 = *(arg1 + 4)\n1407d8b77        int128_t zmm10 = *(arg1 + 8)\n1407d8b7f        int512_t zmm0\n1407d8b7f        if (arg2 s<= 0)\n1407d8c11        zmm0.o = zx.o(0)\n1407d8b97        uint64_t i_1 = zx.q(arg2)\n1407d8bfc        uint64_t i\n1407d8ba0        zmm8.d = zmm8.d f* zmm6.d\n1407d8baa        zmm9.d = zmm9.d f* zmm6.d\n1407d8baf        zmm10.d = zmm10.d f* zmm6.d\n1407d8bb4        int32_t var_78 = zmm8.d\n1407d8bbb        int32_t var_74_1 = zmm9.d\n1407d8bc2        int32_t var_70_1 = zmm10.d\n1407d8bc9        float zmm0_1\n1407d8bc9        float zmm7_1\n1407d8bc9        int32_t zmm11_1\n1407d8bc9        zmm0_1, result, zmm6, zmm7_1, zmm8, zmm9, zmm10, zmm11_1 = sub_1407d8590(&var_78)\n1407d8bef        zmm6.d = zmm6.d f* zmm11_1\n1407d8bf8        i = i_1\n1407d8bf8        i_1 -= 1\n1407d8bfc        do while (i != 1)\n1407d8c3a        return result",
+  "fetched_at": "2026-04-26T17:34:03Z"
+}

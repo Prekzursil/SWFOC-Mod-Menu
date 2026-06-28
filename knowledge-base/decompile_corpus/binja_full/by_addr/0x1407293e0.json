@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407293e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407293fa        int64_t* rcx = *arg2\n1407293fd        *arg1 = rcx\n140729403        if (rcx != 0)\n140729408        (**rcx)()\n14072940e        arg1[1] = arg2[1]\n140729414        __builtin_memset(&arg1[2], 0, 0x18)\n140729420        int32_t* r12 = arg2[2]\n140729424        int64_t rbp = arg2[3]\n14072942b        if (r12 != rbp)\n14072943b        void* rbp_1 = rbp - r12\n140729441        int64_t rdi_2 = rbp_1 s>> 2\n140729448        void* rax_3 = sub_140048c40(&arg1[2], rdi_2)\n14072944d        arg1[2] = rax_3\n140729454        arg1[3] = rax_3\n14072945f        arg1[4] = rax_3 + (rdi_2 << 2)\n140729463        int32_t* rbx_1 = arg1[2]\n14072946a        memcpy(rbx_1, r12, rbp_1)\n14072947d        arg1[3] = &rbx_1[rdi_2]\n14072948a        arg1[5].d = arg2[5].d\n140729491        arg1[6] = arg2[6]\n14072949a        arg1[7].b = arg2[7].b\n1407294a2        *(arg1 + 0x39) = *(arg2 + 0x39)\n1407294a9        arg1[8] = arg2[8]\n1407294b1        arg1[9].d = arg2[9].d\n1407294b8        *(arg1 + 0x4c) = *(arg2 + 0x4c)\n1407294cd        return arg1",
+  "fetched_at": "2026-04-26T17:28:35Z"
+}

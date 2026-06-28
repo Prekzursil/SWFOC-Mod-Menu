@@ -1,0 +1,7 @@
+{
+  "addr": "0x14046e870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* EnumConversionClass<enum_GameObjectCategoryType> member function inherited by\n   DynamicBitfieldConversionClass<enum_GameObjectCategoryType> */\n\nvfunction1 * __thiscall\nEnumConversionClass<enum_GameObjectCategoryType>::vfunction4\n          (EnumConversionClass<enum_GameObjectCategoryType> *this,undefined8 *param_1)\n\n{\n  undefined8 uVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  EnumConversionClass<enum_GameObjectCategoryType>_vftable *pEVar4;\n  vfunction1 *local_res8;\n  undefined1 local_18 [16];\n  \n  if (0xf < (ulonglong)param_1[3]) {\n    param_1 = (undefined8 *)*param_1;\n  }\n  uVar1 = FUN_140200350(param_1);\n  uVar1 = FUN_140200ad0(uVar1);\n  uVar2 = FUN_14011f9c0(this + 9,uVar1);\n  lVar3 = FUN_14011f570(this + 9,local_18,uVar1,uVar2);\n  pEVar4 = *(EnumConversionClass<enum_GameObjectCategoryType>_vftable **)(lVar3 + 8);\n  if (pEVar4 == (EnumConversionClass<enum_GameObjectCategoryType>_vftable *)0x0) {\n    pEVar4 = this[10].vftablePtr;\n  }\n  if (pEVar4 != this[10].vftablePtr) {\n    return pEVar4[1].vfunction1;\n  }\n  return local_res8;\n}",
+  "fetched_at": "2026-04-26T17:57:58Z"
+}

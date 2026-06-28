@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dc3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402dc3fb        *arg1 = *arg2\n1402dc408        *(arg1 + 8) = *(arg2 + 8)\n1402dc412        if (&arg1[4] != &arg2[4])\n1402dc417        sub_14001f910(&arg1[4])\n1402dc426        arg1[9] ^= (arg1[9] ^ arg2[9]) & 0x7fffffff\n1402dc433        int32_t rax_8 = ((arg1[9] ^ arg2[9]) & 0x7fffffff) ^ arg2[9]\n1402dc436        arg1[9] = rax_8\n1402dc43c        int32_t rdx_1 = (rax_8 * 2) s>> 1\n1402dc43e        if (rdx_1 != 0)\n1402dc449        sub_140047aa0(&arg1[4], rdx_1, 0, 1)\n1402dc44e        int32_t rax_9 = arg2[8]\n1402dc451        int32_t r8_1 = 0\n1402dc456        if (rax_9 s> 0)\n1402dc458        int64_t rdx_2 = 0\n1402dc464        rdx_2 += 8\n1402dc46c        r8_1 += 1\n1402dc474        *(rdx_2 + *(arg1 + 0x18) - 8) = *(rdx_2 + *(arg2 + 0x18) - 8)\n1402dc479        rax_9 = arg2[8]\n1402dc47f        do while (r8_1 s< rax_9)\n1402dc481        arg1[8] = rax_9\n1402dc492        arg1[0xa] = arg2[0xa]\n1402dc499        arg1[0xb] = arg2[0xb]\n1402dc4a1        arg1[0xc].b = arg2[0xc].b\n1402dc4b2        return arg1",
+  "fetched_at": "2026-04-26T17:22:38Z"
+}

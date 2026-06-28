@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354e50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall BarComponentClass::vfunction1(BarComponentClass *this)\n\n{\n  FUN_140355340(&this->BarComponentClass_data);\n  FUN_140355340(&(this->BarComponentClass_data).offset_0x18);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:00Z"
+}

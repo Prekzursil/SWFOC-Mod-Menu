@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e9bb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e9bc1        arg1[0x1a].d = 0xffffffff\n1405e9bcb        *arg1 = &MoveActionClass::`vftable'{for `ActionClass'}\n1405e9bd2        *(arg1 + 0xd4) = 0xffff\n1405e9bdd        arg1[0x19] = 0\n1405e9be7        *(arg1 + 0xdc) = 0\n1405e9bee        arg1[0x1d].w = 0\n1405e9bf5        *(arg1 + 0xec) = 0\n1405e9bfc        *(arg1 + 0xe4) = 0x1000000\n1405e9c06        sub_1405e8f80(arg1)\n1405e9c0e        if ((arg2 & 1) != 0)\n1405e9c18        j_sub_1407864b8(arg1)\n1405e9c2a        return arg1",
+  "fetched_at": "2026-04-26T17:38:31Z"
+}

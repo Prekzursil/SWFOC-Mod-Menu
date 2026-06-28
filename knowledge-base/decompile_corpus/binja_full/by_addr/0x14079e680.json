@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079e680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079e68c        uint64_t rbx = zx.q(arg1)\n14079e697        void* var_28\n14079e697        _LocaleUpdate::_LocaleUpdate(&var_28, arg3)\n14079e6a4        uint64_t result\n14079e6a4        int64_t var_18\n14079e6a4        if (arg2 == 1)\n14079e6d7        int32_t rcx_1\n14079e6d7        rcx_1.b = *(rbx + var_18 + 0x19)\n14079e6db        rcx_1.b &= 8\n14079e6de        char temp0_1 = rcx_1.b\n14079e6de        rcx_1.b = neg.b(rcx_1.b)\n14079e6e7        result = zx.q((sbb.d(rcx_1, rcx_1, temp0_1 != 0) & 3) - 1)\n14079e6a6        char rdx_1 = *(rbx + var_18 + 0x19)\n14079e6ad        int64_t* var_20\n14079e6ad        if ((rdx_1 & 4) != 0)\n14079e6e7        result = 1\n14079e6cc        if ((*(*var_20 + (rbx << 1)) & 0x157) != 0 || (rdx_1 & 3) != 0)\n14079e6d3        result = 0\n14079e6ce        result = 0xffffffff\n14079e6ee        char var_10\n14079e6ee        if (var_10 != 0)\n14079e6f0        void* rcx_6 = var_28\n14079e6f5        *(rcx_6 + 0x3a8) &= 0xfffffffd\n14079e706        return result",
+  "fetched_at": "2026-04-26T17:32:15Z"
+}

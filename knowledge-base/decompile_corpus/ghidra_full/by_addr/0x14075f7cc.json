@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f7cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    protected: virtual int __cdecl std::codecvt<unsigned short,char,struct\n   _Mbstatet>::do_length(struct _Mbstatet & __ptr64,char const * __ptr64,char const *\n   __ptr64,unsigned __int64)const __ptr64\n    protected: virtual int __cdecl std::codecvt<wchar_t,char,struct _Mbstatet>::do_length(struct\n   _Mbstatet & __ptr64,char const * __ptr64,char const * __ptr64,unsigned __int64)const __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nulonglong __thiscall\ndo_length(void *this,mbstate_t *param_1,char *param_2,char *param_3,longlong param_4)\n\n{\n  uint uVar1;\n  ulonglong uVar2;\n  char *pcVar3;\n  longlong lVar4;\n  \n  lVar4 = param_4;\n  for (pcVar3 = param_2; (lVar4 != 0 && (pcVar3 != param_3)); pcVar3 = pcVar3 + uVar2) {\n    uVar1 = _Mbrtowc((wchar_t *)&param_4,pcVar3,(longlong)param_3 - (longlong)pcVar3,param_1,\n                     (_Cvtvec *)((longlong)this + 0x10));\n    if ((int)uVar1 < 0) break;\n    uVar2 = (ulonglong)uVar1;\n    if (uVar1 == 0) {\n      uVar2 = 1;\n    }\n    lVar4 = lVar4 + -1;\n  }\n  uVar2 = (longlong)pcVar3 - (longlong)param_2 & 0xffffffff;\n  if (0x7fffffff < (longlong)pcVar3 - (longlong)param_2) {\n    uVar2 = 0x7fffffff;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:08:08Z"
+}

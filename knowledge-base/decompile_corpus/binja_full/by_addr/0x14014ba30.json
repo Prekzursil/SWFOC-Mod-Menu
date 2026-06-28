@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014ba30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014ba3a        bool cond:0 = arg1[0x24] == 0\n14014ba49        *arg1 = &alLightSource::`vftable'{for `alRenderable'}\n14014ba58        arg1[2] = &alLightSource::`vftable'{for `MultiLinkedListMember'}\n14014ba63        arg1[4] = &alLightSource::`vftable'{for `CullObjectClass'}\n14014ba67        if (not(cond:0))\n14014ba69        int64_t* rax_1 = sub_14013fe60(arg1)\n14014ba71        if (rax_1 != 0)\n14014ba76        void* rax_2 = sub_140199c20(rax_1)\n14014ba7e        if (rax_2 != 0)\n14014ba8a        sub_140136ba0(rax_2, arg1[0x24])\n14014ba8f        int64_t* rcx_2 = arg1[0x24]\n14014ba99        if (rcx_2 != 0)\n14014ba9e        (*(*rcx_2 + 8))(rcx_2)\n14014baa1        arg1[0x24] = 0\n14014baac        int64_t rdx_1 = arg1[0x1c]\n14014bab7        if (rdx_1 u>= 0x10)\n14014bab9        void* rcx_3 = arg1[0x19]\n14014baca        if (rdx_1 + 1 u>= 0x1000)\n14014bacc        void* r8_1 = *(rcx_3 - 8)\n14014badf        if (rcx_3 - r8_1 - 8 u> 0x1f)\n14014bb2f        _invalid_parameter_noinfo_noreturn()\n14014bb2f        noreturn\n14014bae1        rcx_3 = r8_1\n14014bae4        j_sub_1407864b8(rcx_3)\n14014baec        arg1[0x1b] = 0\n14014baf7        arg1[0x1c] = 0xf\n14014bb02        arg1[0x19].b = 0\n14014bb09        sub_14013f770(arg1)\n14014bb12        if ((arg2 & 1) != 0)\n14014bb1c        j_sub_1407864b8(arg1)\n14014bb2e        return arg1",
+  "fetched_at": "2026-04-26T17:21:18Z"
+}

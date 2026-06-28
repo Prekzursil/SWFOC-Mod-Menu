@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075ae68",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nstd::messages<wchar_t>::vfunction5(messages<wchar_t> *this,undefined8 *param_1)\n\n{\n  undefined8 in_stack_00000030;\n  \n  *param_1 = 0;\n  param_1[2] = 0;\n  param_1[3] = 0;\n  FUN_14074c04c(param_1,in_stack_00000030);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:07:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140691840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14069185e        *arg1 = &InstantiatedGoalClass::`vftable'{for `RefCountClass'}\n14069186a        arg1[2] = &InstantiatedGoalClass::`vftable'{for `SignalListenerClass'}\n140691875        arg1[4] = &InstantiatedGoalClass::`vftable'{for `AIDiagnosticsClass'}\n140691879        void* rcx = arg1[0xc]\n140691880        if (rcx != 0)\n140691882        sub_1405f6a50(rcx)\n140691887        void* rcx_1 = arg1[0xc]\n14069188e        if (rcx_1 != 0)\n140691898        (*(*(rcx_1 + 0x10) + 8))(rcx_1 + 0x10)\n14069189b        arg1[0xc] = 0\n1406918ab        if (*(arg1 + 0x74) - 1 u<= 1)\n1406918b0        sub_140693750(arg1)\n1406918b5        void* rcx_4 = arg1[0xd]\n1406918bc        if (rcx_4 != 0)\n1406918c6        (*(*(rcx_4 + 0x10) + 8))(rcx_4 + 0x10)\n1406918c9        void* rcx_6 = arg1[0xc]\n1406918d0        if (rcx_6 != 0)\n1406918da        (*(*(rcx_6 + 0x10) + 8))(rcx_6 + 0x10)\n1406918e1        sub_1405f6540(&arg1[4])\n1406918f1        arg1[2] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1406918f5        sub_14020a820(&arg1[2])\n140691901        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n140691908        if ((arg2 & 1) != 0)\n140691912        j_sub_1407864b8(arg1)\n14069192e        return arg1",
+  "fetched_at": "2026-04-26T17:19:05Z"
+}

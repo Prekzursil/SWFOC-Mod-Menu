@@ -1,0 +1,7 @@
+{
+  "addr": "0x140420790",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140420790        float zmm2 = data_140b2f10c\n1404207ca        int64_t result\n1404207ca        result.b = *(arg1 + 0x78) f* data_140b2f108 + zmm2 f* *(arg1 + 0x7c) > *(arg2 + 0x78) f* data_140b2f108 + zmm2 f* *(arg2 + 0x7c)\n1404207cd        return result",
+  "fetched_at": "2026-04-26T17:26:20Z"
+}

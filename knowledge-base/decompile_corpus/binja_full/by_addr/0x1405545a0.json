@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405545a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405545c0        if ((*(arg1 + 0xd0) == 0 && *(arg1 + 0xd4) s< 0) || *(arg1 + 0xd1) == 1)\n1405545c0        return \n1405545c5        if (arg2 == 1)\n1405545c7        *(arg1 + 0xd0) = 0x100\n1405545d0        *(arg1 + 0xd4) = 0xffffffff\n1405545da        return \n1405545e1        if (not(0f f<= arg3))\n1405545e3        *(arg1 + 0xd0) = 0\n1405545ea        *(arg1 + 0xd4) = 0xffffffff\n1405545f4        return \n140554600        uint64_t rax = *(*(data_140b15418 + 0x18) + 0x20)\n140554607        if (rax == 0)\n140554607        return \n140554609        int32_t rax_2 = *(rax + 0x10)\n140554614        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(data_140b0a340))\n140554617        *(arg1 + 0xd0) = 0\n140554621        zmm0.d = zmm0.d f* arg3\n140554629        int32_t rdx_1 = int.d(zmm0.d) + rax_2\n14055462b        rax = zx.q(*(arg1 + 0xd4))\n140554634        if (rax.d s<= rdx_1)\n140554634        rax = zx.q(rdx_1)\n140554637        *(arg1 + 0xd4) = rax.d\n14055463e        return ",
+  "fetched_at": "2026-04-26T17:34:19Z"
+}

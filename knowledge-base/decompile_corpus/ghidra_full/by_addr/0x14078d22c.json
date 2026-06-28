@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d22c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _setmode_nolock\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl _setmode_nolock(int _FileHandle,int _Mode)\n\n{\n  byte bVar1;\n  char cVar2;\n  longlong lVar3;\n  int iVar4;\n  ulonglong uVar5;\n  longlong lVar6;\n  \n  lVar6 = (longlong)_FileHandle >> 6;\n  uVar5 = (ulonglong)(_FileHandle & 0x3f);\n  lVar3 = (&DAT_140b3c4d0)[lVar6];\n  bVar1 = *(byte *)(lVar3 + 0x38 + uVar5 * 0x48);\n  cVar2 = *(char *)(lVar3 + 0x39 + uVar5 * 0x48);\n  if (_Mode == 0x4000) {\n    *(byte *)(lVar3 + 0x38 + uVar5 * 0x48) = bVar1 | 0x80;\n    *(undefined1 *)((&DAT_140b3c4d0)[lVar6] + 0x39 + uVar5 * 0x48) = 0;\n  }\n  else if (_Mode == 0x8000) {\n    *(byte *)(lVar3 + 0x38 + uVar5 * 0x48) = bVar1 & 0x7f;\n  }\n  else if ((_Mode - 0x10000U & 0xfffeffff) == 0) {\n    *(byte *)(lVar3 + 0x38 + uVar5 * 0x48) = bVar1 | 0x80;\n    *(undefined1 *)((&DAT_140b3c4d0)[lVar6] + 0x39 + uVar5 * 0x48) = 2;\n  }\n  else if (_Mode == 0x40000) {\n    *(byte *)(lVar3 + 0x38 + uVar5 * 0x48) = bVar1 | 0x80;\n    *(undefined1 *)((&DAT_140b3c4d0)[lVar6] + 0x39 + uVar5 * 0x48) = 1;\n  }\n  if ((bVar1 & 0x80) == 0) {\n    iVar4 = 0x8000;\n  }\n  else if (cVar2 == '\\0') {\n    iVar4 = 0x4000;\n  }\n  else {\n    iVar4 = 0x10000;\n    if (cVar2 == '\\x01') {\n      iVar4 = 0x40000;\n    }\n  }\n  return iVar4;\n}",
+  "fetched_at": "2026-04-26T18:52:15Z"
+}

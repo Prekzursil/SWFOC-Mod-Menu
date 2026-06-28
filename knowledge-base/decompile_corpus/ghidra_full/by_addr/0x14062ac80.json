@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062ac80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall DebrisBehaviorClass::vfunction9(void)\n\n{\n  return \"DebrisBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:32:02Z"
+}

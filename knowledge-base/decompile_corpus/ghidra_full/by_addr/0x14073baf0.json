@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073baf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandMovementBlockStatus * __thiscall\nLandMovementBlockStatus::LandMovementBlockStatus(LandMovementBlockStatus *this)\n\n{\n  LuaMemberFunctionWrapper<class_BlockingStatus>::LuaMemberFunctionWrapper<class_BlockingStatus>\n            ((LuaMemberFunctionWrapper<class_BlockingStatus> *)this);\n  *(undefined8 *)&this->field_0x38 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->field_0x40 = 0;\n  this->offset_0x40 = 0;\n  this->offset_0x60 = 0;\n  *(undefined4 *)&this->offset_0x68 = 0;\n  *(undefined4 *)&this->offset_0x48 = 0x5d5e0b6b;\n  *(undefined2 *)((longlong)&this->offset_0x48 + 4) = 0;\n  *(undefined1 *)((longlong)&this->offset_0x48 + 6) = 0;\n  this->offset_0x50 = (longlong *)0x0;\n  this->offset_0x58 = 0;\n  this->offset_0x70 = 0;\n  this->offset_0x78 = 0;\n  *(undefined4 *)&this->offset_0x80 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:03:10Z"
+}

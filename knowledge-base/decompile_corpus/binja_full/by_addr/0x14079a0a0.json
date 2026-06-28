@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a0a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a0a3        if (arg1 == 0)\n14079a0a3        return \n14079a0c2        free_crt_array_internal(arg1, 7)\n14079a0cd        free_crt_array_internal(&arg1[7], 7)\n14079a0db        free_crt_array_internal(&arg1[0xe], 0xc)\n14079a0e9        free_crt_array_internal(&arg1[0x1a], 0xc)\n14079a0f8        free_crt_array_internal(&arg1[0x26], 2)\n14079a104        _free_base(arg1[0x28])\n14079a110        _free_base(arg1[0x29])\n14079a11c        _free_base(arg1[0x2a])\n14079a12a        free_crt_array_internal(&arg1[0x2c], 7)\n14079a138        free_crt_array_internal(&arg1[0x33], 7)\n14079a146        free_crt_array_internal(&arg1[0x3a], 0xc)\n14079a154        free_crt_array_internal(&arg1[0x46], 0xc)\n14079a163        free_crt_array_internal(&arg1[0x52], 2)\n14079a16f        _free_base(arg1[0x54])\n14079a17b        _free_base(arg1[0x55])\n14079a187        _free_base(arg1[0x56])\n14079a193        _free_base(arg1[0x57])\n14079a1a7        return ",
+  "fetched_at": "2026-04-26T17:32:06Z"
+}

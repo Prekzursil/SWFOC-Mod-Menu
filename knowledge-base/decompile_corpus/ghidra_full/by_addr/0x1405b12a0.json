@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b12a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SetGUIIndexEventClass::vfunction5(SetGUIIndexEventClass *this)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  longlong lVar3;\n  \n  plVar1 = DAT_140b15418;\n  if (DAT_140b15418 != (longlong *)0x0) {\n    iVar2 = (**(code **)(*DAT_140b15418 + 0xe0))(DAT_140b15418);\n    if (iVar2 == 0) {\n      lVar3 = FUN_1402aca60(plVar1[3],*(undefined4 *)&(this->SetGUIIndexEventClass_data).offset_0x0)\n      ;\n      if (lVar3 != 0) {\n        FUN_1403907e0(lVar3);\n        if (*(longlong *)(lVar3 + 0x1b0) != 0) {\n          *(bool *)(*(longlong *)(lVar3 + 0x1b0) + 0x32) =\n               *(int *)((longlong)&(this->SetGUIIndexEventClass_data).offset_0x0 + 4) ==\n               DAT_140b278b0;\n        }\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:43:43Z"
+}

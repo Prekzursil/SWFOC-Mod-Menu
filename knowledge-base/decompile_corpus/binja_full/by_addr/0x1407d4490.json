@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d4490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d44b6        int64_t r8 = sub_1407ce280(arg1[2], arg1[3].d, \"too many captures\")\n1407d44bb        int32_t result = arg1[3].d\n1407d44c5        if (result == 0 && arg2 != 0)\n1407d44d4        sub_1407b94a0(arg1[2], arg2, arg3 - arg2)\n1407d44ed        return 1\n1407d44f3        int32_t rbp = 0\n1407d44f7        if (result s> 0)\n1407d44f9        void* rbx_1 = &arg1[4]\n1407d4500        int64_t rsi_2 = sx.q(*(rbx_1 + 8))\n1407d4507        if (rsi_2.d == 0xffffffff)\n1407d4514        sub_1407ce300(arg1[2], \"unfinished capture\", r8)\n1407d4514        noreturn\n1407d454a        char* rdx_2 = *rbx_1\n1407d4550        if (rsi_2.d != 0xfffffffe)\n1407d4523        r8 = sub_1407b94a0(arg1[2], rdx_2, rsi_2)\n1407d4564        sub_1407b9520(arg1[2], float.d(rdx_2 - *arg1 + 1))\n1407d4528        result = arg1[3].d\n1407d452b        rbp += 1\n1407d452d        rbx_1 += 0x10\n1407d4533        do while (rbp s< result)\n1407d4549        return result",
+  "fetched_at": "2026-04-26T17:34:01Z"
+}

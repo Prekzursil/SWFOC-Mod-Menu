@@ -1,0 +1,7 @@
+{
+  "addr": "0x140025760",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140025760        int64_t rdx\n140025760        int64_t arg_10 = rdx\n140025765        int64_t r8\n140025765        int64_t arg_18 = r8\n14002576a        int64_t r9\n14002576a        int64_t arg_20 = r9\n14002576f        return ",
+  "fetched_at": "2026-04-26T16:52:06Z"
+}

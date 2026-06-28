@@ -1,0 +1,7 @@
+{
+  "addr": "0x140395b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140395b36        void* rcx = *(arg1 + 0x2a0)\n140395b43        if (rcx != 0)\n140395b4a        return sub_140264870(rcx, arg2) __tailcall\n140395b54        int64_t* var_38\n140395b54        sub_140278e50(&var_38)\n140395b59        int64_t* rdx_1 = *arg2\n140395b5c        int64_t* rcx_3 = var_38\n140395b64        if (rdx_1 != rcx_3)\n140395b69        if (rdx_1 != 0)\n140395b71        (*(*rdx_1 + 8))(rdx_1)\n140395b74        rcx_3 = var_38\n140395b79        *arg2 = rcx_3\n140395b7f        if (rcx_3 != 0)\n140395b84        (**rcx_3)()\n140395b9b        int32_t var_30\n140395b9b        arg2[1].d = var_30\n140395ba2        int32_t var_2c\n140395ba2        *(arg2 + 0xc) = var_2c\n140395ba9        int32_t var_20\n140395ba9        arg2[3].d = var_20\n140395bb4        int32_t var_28\n140395bb4        arg2[2].d = var_28\n140395bbb        int32_t var_24\n140395bbb        *(arg2 + 0x14) = var_24\n140395bc3        int32_t var_1c\n140395bc3        *(arg2 + 0x1c) = var_1c\n140395bce        int32_t var_14\n140395bce        *(arg2 + 0x24) = var_14\n140395bd9        char var_18\n140395bd9        arg2[4].b = var_18\n140395bdc        int32_t var_10\n140395bdc        arg2[5].d = var_10\n140395be1        int32_t var_c\n140395be1        *(arg2 + 0x2c) = var_c\n140395bf0        return sub_140278e80(&var_38)",
+  "fetched_at": "2026-04-26T17:23:42Z"
+}

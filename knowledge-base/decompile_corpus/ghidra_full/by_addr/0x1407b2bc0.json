@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b2bc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall al3DCableRenderTask::vfunction3(al3DCableRenderTask *this,undefined8 param_1)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  \n  plVar1 = (this->alRenderTask_data).offset_0x0;\n  if ((plVar1 != (longlong *)0x0) &&\n     (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1), puVar2 != (undefined *)0x0)) {\n    while (puVar2 != &DAT_140a626d0) {\n      puVar2 = *(undefined **)(puVar2 + 8);\n      if (puVar2 == (undefined *)0x0) {\n        return;\n      }\n    }\n    if ((*(int *)&(this->alRenderTask_data).offset_0x58 != -1) &&\n       (*(int *)&(this->alRenderTask_data).offset_0x60 != -1)) {\n      FUN_1407b4200(plVar1 + 0x24,param_1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:39Z"
+}

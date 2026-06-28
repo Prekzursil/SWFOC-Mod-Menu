@@ -1,0 +1,7 @@
+{
+  "addr": "0x140711150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140711164        int64_t result = sub_14048f2c0(arg1)\n140711169        int32_t zmm6 = (zx.o(0)).d\n140711173        char var_118[0x100]\n140711173        if (not(0f f<= *(arg1 + 0x180)))\n14071117a        void* r8_1 = arg1 + 0x18\n14071117e        if (*(arg1 + 0x30) u>= 0x10)\n140711180        r8_1 = *r8_1\n14071118f        sscanf_s(&var_118, \"Error: (%s) Activation_Min_Range cannot be less than zero.\", r8_1)\n140711199        result, zmm6 = sub_1402149d0(&var_118)\n14071119e        *(arg1 + 0x180) = 0\n1407111af        if (not(zmm6 f<= *(arg1 + 0x184)))\n1407111b6        void* r8_2 = arg1 + 0x18\n1407111ba        if (*(arg1 + 0x30) u>= 0x10)\n1407111bc        r8_2 = *r8_2\n1407111cb        sscanf_s(&var_118, \"Error: (%s) Activation_Max_Range cannot be less than zero.\", r8_2)\n1407111d5        result = sub_1402149d0(&var_118)\n1407111da        *(arg1 + 0x184) = 0\n1407111ef        if (*(arg1 + 0x60) != 0 || *(arg1 + 0x78) s> 0)\n14071122a        return result\n1407111f6        void* r8_3 = arg1 + 0x18\n1407111fa        if (*(arg1 + 0x30) u>= 0x10)\n1407111fc        r8_3 = *r8_3\n14071120b        sscanf_s(&var_118, \"Warning: (%s) You should really specify a value for either Applicable_Unit_Categories\\nor Applicable_Unit_Types, otherwise this ability won't be able to activate.\", r8_3)\n140711215        return sub_1402149d0(&var_118)",
+  "fetched_at": "2026-04-26T17:27:42Z"
+}

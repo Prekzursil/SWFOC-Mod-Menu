@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b88d0",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_space_goal_system_ctor",
+  "body": "\nSpaceGoalSystemClass * __thiscall\nSpaceGoalSystemClass::SpaceGoalSystemClass(SpaceGoalSystemClass *this,undefined8 param_1)\n\n{\n  AIGoalSystemClass::AIGoalSystemClass((AIGoalSystemClass *)this,param_1);\n  this->vftablePtr = &vftable;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:11Z"
+}

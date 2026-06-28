@@ -1,0 +1,7 @@
+{
+  "addr": "0x140706b10",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_maximum_firepower",
+  "body": "140706b16        struct SpecialAbilityClass::MaximumFirepowerAttackAbilityClass::VTable** result = arg1\n140706b19        sub_14048c780(arg1)\n140706b25        result[8].w = 1\n140706b2b        *result = &MaximumFirepowerAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140706b35        result[1] = &MaximumFirepowerAttackAbilityClass::`vftable'{for `RefCountClass'}\n140706b3c        *(result + 0x3c) = 9\n140706b48        return result",
+  "fetched_at": "2026-04-26T16:44:18Z"
+}

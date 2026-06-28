@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405324d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405324e0        int32_t rax_1 = 0x41c64e6d * data_140a13e24 + 0xbdf\n1405324e6        data_140a13e24 = rax_1\n140532501        return float.s(zx.q(rax_1 u>> 0xa) & 0x7fff) f/ 32767f",
+  "fetched_at": "2026-04-26T17:33:36Z"
+}

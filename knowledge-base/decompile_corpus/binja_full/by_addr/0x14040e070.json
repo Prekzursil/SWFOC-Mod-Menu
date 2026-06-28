@@ -1,0 +1,7 @@
+{
+  "addr": "0x14040e070",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14040e088        *arg1 = &FormationClass::`vftable'{for `SignalListenerClass'}\n14040e08e        sub_140410b80(arg1)\n14040e097        sub_140410d80(&arg1[2])\n14040e0a0        sub_140410c60(&arg1[2])\n14040e0a9        sub_14040d940(&arg1[2])\n14040e0b8        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14040e0bb        sub_14020a820(arg1)\n14040e0c4        if ((arg2 & 1) != 0)\n14040e0ce        j_sub_1407864b8(arg1)\n14040e0e5        return arg1",
+  "fetched_at": "2026-04-26T17:25:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ac9d0",
+  "tool": "ghidra",
+  "fact_id": "rva_select_event_ctor",
+  "body": "\nSelectEventClass * __thiscall SelectEventClass::SelectEventClass(SelectEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->SelectEventClass_data).offset_0x1fc = 0;\n  this->vftablePtr = &vftable;\n  (this->EventClass_data).offset_0x8 = 5;\n  FUN_14028d930(&DAT_140b153e0,0);\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:31Z"
+}

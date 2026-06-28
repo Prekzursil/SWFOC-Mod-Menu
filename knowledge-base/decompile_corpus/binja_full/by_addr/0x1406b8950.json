@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8950",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b895c        void* rax = sub_1404b0500(*(*(arg1 + 0x28) + 0x28))\n1406b896c        uint128_t zmm0\n1406b896c        zmm0.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f* *(rax + 0x44)\n1406b8979        return zx.q(int.d(zmm0.d))",
+  "fetched_at": "2026-04-26T17:24:49Z"
+}

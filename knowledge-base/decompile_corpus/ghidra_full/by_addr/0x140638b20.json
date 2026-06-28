@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638b20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong __thiscall CombatantBehaviorClass::vfunction33(CombatantBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  \n  puVar1 = (undefined *)0x0;\n  if ((this->offset_0x18 != (undefined **)0x0) &&\n     (puVar1 = this->offset_0x18[0x53], puVar1[0xb8] != '\\0')) {\n    return CONCAT71((int7)((ulonglong)puVar1 >> 8),1);\n  }\n  return (ulonglong)puVar1 & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:33Z"
+}

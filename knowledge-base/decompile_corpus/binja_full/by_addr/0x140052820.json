@@ -1,0 +1,7 @@
+{
+  "addr": "0x140052820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140052829        *arg1 = &DynamicVectorClass<struct SaveLoadManagerClass::SaveGameStruct>::`vftable'\n140052833        __builtin_memset(&arg1[1], 0, 0x11)\n14005283b        data_140b313d8 = sub_140057600\n140052849        data_140b313f0 = sub_140057850\n140052856        arg1[4] = 0\n14005285a        arg1[5].d = 0\n14005285d        return arg1",
+  "fetched_at": "2026-04-26T16:54:48Z"
+}

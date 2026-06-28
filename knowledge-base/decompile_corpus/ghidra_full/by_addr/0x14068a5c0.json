@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a5c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a5c0(void)\n\n{\n  ForceCloakAbilityClass *this;\n  \n  this = (ForceCloakAbilityClass *)FUN_140769c58(400);\n  if (this != (ForceCloakAbilityClass *)0x0) {\n    ForceCloakAbilityClass::ForceCloakAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:53Z"
+}

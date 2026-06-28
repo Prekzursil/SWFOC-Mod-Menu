@@ -1,0 +1,7 @@
+{
+  "addr": "0x140181bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140181bd4        void* rcx = data_140a6eb48\n140181be6        if (rcx == 0)\n140181be6        return \n140181be8        int512_t zmm2\n140181be8        zmm2.o = arg1\n140181bf2        sub_1401b0220(rcx, \"BlendFactor\", zmm2)\n140181c05        zmm2.o = arg2\n140181c08        sub_1401b0220(data_140a6eb48, \"RadialBlur\", zmm2)\n140181c16        return ",
+  "fetched_at": "2026-04-26T17:23:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406899f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall CinematicAnimationEventClass::vfunction5(CinematicAnimationEventClass *this)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  lVar1 = FUN_1402ad080(*(undefined8 *)(DAT_140b15418 + 0x18),(this->EventClass_data).offset_0xc);\n  if (lVar1 != 0) {\n    lVar3 = *(longlong *)(lVar1 + 0x10);\n    if (lVar3 != lVar1 + 8) {\n      do {\n        lVar2 = *(longlong *)(lVar3 + 0x18) + -0x18;\n        if (*(longlong *)(lVar3 + 0x18) == 0) {\n          lVar2 = 0;\n        }\n        if ((lVar2 != 0) && ((*(byte *)(lVar2 + 0x3a0) & 2) == 0)) {\n          FUN_14038de00();\n        }\n        lVar3 = *(longlong *)(lVar3 + 8);\n      } while (lVar3 != lVar1 + 8);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:22Z"
+}

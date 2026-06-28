@@ -1,0 +1,7 @@
+{
+  "addr": "0x140183d80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140183d89        char result = sub_14013ec70()\n140183d9a        if (result != 0 && *(arg1 + 0x20) != 0)\n140183da0        result = sub_14013ec90()\n140183da7        if (result == 0)\n140183db6        sub_140198380(data_140a6fd18, 0)\n140183dd4        sub_1401b0280(data_140a6fe20, \"SceneTexture\", *(data_140a6fdd8 + 0x38))\n140183df2        sub_1401b0280(data_140a6fe20, \"DistortionTexture\", *(data_140a6fd18 + 0x38))\n140183df7        int64_t* rcx_3 = data_140a6fe20\n140183e06        (*(*rcx_3 + 0x40))(rcx_3, 0, 0)\n140183e09        int64_t* rcx_4 = data_140a6fe20\n140183e15        (*(*rcx_4 + 0x48))(rcx_4, 0)\n140183e1f        sub_140177dd0(data_140a6fe98)\n140183e36        sub_140177df0(0, data_140a6fe90, 0, 8)\n140183e44        sub_140177e90(5, 0, 2)\n140183e49        int64_t* rcx_6 = data_140a6fe20\n140183e53        (*(*rcx_6 + 0x50))(rcx_6)\n140183e65        jump(*(*data_140a6fe20 + 0x58))\n140183e6e        return result",
+  "fetched_at": "2026-04-26T17:23:56Z"
+}

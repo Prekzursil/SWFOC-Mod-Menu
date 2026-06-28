@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SpecialAbilityActionClass::vfunction3(void)\n\n{\n  return \"Special_Ability_Action\";\n}",
+  "fetched_at": "2026-04-26T17:58:53Z"
+}

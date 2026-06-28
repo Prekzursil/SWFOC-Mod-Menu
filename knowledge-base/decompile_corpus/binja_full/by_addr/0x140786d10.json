@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786d10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140786d15        int32_t* arg_20 = arg4\n140786d27        __vcrt_unlock(*arg2)\n140786d30        char* result = <lambda_2116bde18c9e5f34230805ea4a4660ed>::operator()(arg3)\n140786d3a        __vcrt_lock(*arg4)\n140786d4c        return result",
+  "fetched_at": "2026-04-26T17:31:19Z"
+}

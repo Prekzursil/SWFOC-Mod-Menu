@@ -1,0 +1,7 @@
+{
+  "addr": "0x140106ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140106aee        int32_t rdx = data_140a121f0\n140106b07        int64_t var_10 = 0xf\n140106b10        int64_t var_18 = 0xe\n140106b19        void* var_28\n140106b19        __builtin_strncpy(&var_28, \"IDC_STORY_TEXT\", 0xf)\n140106b24        int64_t result = sub_1401c40b0(&data_140a78510, rdx, &var_28, 1)\n140106b32        if (var_10 u< 0x10)\n140106b66        return result\n140106b34        void* rcx_1 = var_28\n140106b3c        void* rax = rcx_1\n140106b46        if (var_10 + 1 u>= 0x1000)\n140106b48        rcx_1 = *(rcx_1 - 8)\n140106b5b        if (rax - rcx_1 - 8 u> 0x1f)\n140106b67        _invalid_parameter_noinfo_noreturn()\n140106b67        noreturn\n140106b5d        return j_sub_1407864b8(rcx_1)",
+  "fetched_at": "2026-04-26T17:05:40Z"
+}

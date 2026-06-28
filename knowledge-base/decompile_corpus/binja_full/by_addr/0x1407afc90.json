@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407afc90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407afc97        struct alRenderable::al3DCable::VTable** result = arg1\n1407afc9a        sub_14013f590(arg1)\n1407afca8        *result = &al3DCable::`vftable'{for `alRenderable'}\n1407afcb9        result[0x1b] = 0\n1407afcc0        result[2] = &al3DCable::`vftable'{for `MultiLinkedListMember'}\n1407afccb        result[4] = &al3DCable::`vftable'{for `CullObjectClass'}\n1407afccf        __builtin_memset(&result[0x1c], 0, 0x40)\n1407afd07        sub_1407b3300(&result[0x24])\n1407afd11        result[0x19] = 0\n1407afd1b        result[0x1a].d = 0xc1700000\n1407afd28        *(result + 0x264) = 0\n1407afd33        int32_t var_38 = 0xff\n1407afd3b        int128_t var_28\n1407afd3b        sub_1401f93e0(&var_28, 0xff, 0xff, 0xff, 0xff)\n1407afd4f        char arg_8\n1407afd4f        var_38.q = &arg_8\n1407afd63        *(result + 0x240) = var_28\n1407afd6a        char arg_10\n1407afd6a        char arg_18\n1407afd6a        char arg_20\n1407afd6a        sub_1401f94d0(&var_28, &arg_10, &arg_18, &arg_20, var_38)\n1407afd94        result[0x4c].d = ((zx.d(arg_8) << 8 | zx.d(arg_10)) << 8 | zx.d(arg_18)) << 8 | zx.d(arg_20)\n1407afd9f        sub_1401f9590(&var_28, 0)\n1407afda4        int128_t zmm0_1 = var_28\n1407afdae        result[0x51].b = 0\n1407afdb5        *(result + 0x28c) = 0\n1407afdbb        *(result + 0x250) = zmm0_1\n1407afdd0        return result",
+  "fetched_at": "2026-04-26T17:32:46Z"
+}

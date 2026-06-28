@@ -1,0 +1,7 @@
+{
+  "addr": "0x140762458",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 *\nFUN_140762458(undefined8 *param_1,ulonglong param_2,ulonglong param_3,undefined2 param_4)\n\n{\n  ulonglong uVar1;\n  undefined8 *puVar2;\n  undefined2 *puVar3;\n  undefined1 local_res8;\n  \n  uVar1 = param_1[2];\n  if (uVar1 < param_2) {\n                    /* WARNING: Subroutine does not return */\n    FUN_1400501e0();\n  }\n  if (param_1[3] - uVar1 < param_3) {\n    param_1 = (undefined8 *)\n              FUN_140749bdc(param_1,param_3,CONCAT71((int7)(uVar1 >> 8),local_res8),param_2,param_3,\n                            param_4);\n  }\n  else {\n    param_1[2] = uVar1 + param_3;\n    puVar2 = param_1;\n    if (7 < (ulonglong)param_1[3]) {\n      puVar2 = (undefined8 *)*param_1;\n    }\n    puVar3 = (undefined2 *)((longlong)puVar2 + param_2 * 2);\n    FUN_14076bd80(puVar3 + param_3,puVar3,(uVar1 - param_2) * 2 + 2);\n    if (param_3 != 0) {\n      for (; param_3 != 0; param_3 = param_3 - 1) {\n        *puVar3 = param_4;\n        puVar3 = puVar3 + 1;\n      }\n    }\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:08:49Z"
+}

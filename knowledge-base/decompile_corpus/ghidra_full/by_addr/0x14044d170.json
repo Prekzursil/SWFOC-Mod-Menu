@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044d170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EventClass * __thiscall EventFactoryClass<class_ChatEventClass,16>::vfunction1(void)\n\n{\n  EventClass *this;\n  \n  this = (EventClass *)FUN_140769c58(0x50);\n  if (this != (EventClass *)0x0) {\n    EventClass::EventClass(this);\n    (this->EventClass_data).offset_0x8 = 0x10;\n    this->vftablePtr = (EventClass_vftable *)&ChatEventClass::vftable;\n    this[1].vftablePtr = (EventClass_vftable *)0x0;\n    this[1].LinkedListEntryClass<class_EventClass> = (LinkedListEntryClass<class_EventClass>)0x0;\n    this[1].EventClass_data.offset_0x0 = 7;\n    return this;\n  }\n  return (EventClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:54:39Z"
+}

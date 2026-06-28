@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LureBehaviorClass::vfunction25(LureBehaviorClass *this)\n\n{\n  undefined **ppuVar1;\n  undefined *puVar2;\n  longlong lVar3;\n  \n  ppuVar1 = this->offset_0x18;\n  if (ppuVar1 != (undefined **)0x0) {\n    if (ppuVar1[0x3b] == (undefined *)0x0) {\n      return;\n    }\n    lVar3 = FUN_140397d90(ppuVar1,10);\n    if (lVar3 == 0) {\n      FUN_1402149d0(\n                   \"Object is trying to deactivate LURE behavior but does not have LURE unit ability!\"\n                   );\n      return;\n    }\n  }\n  if (((this->offset_0x18 != (undefined **)0x0) &&\n      (puVar2 = this->offset_0x18[0x3b], puVar2 != (undefined *)0x0)) &&\n     (*(longlong *)(puVar2 + 0x18) != 0)) {\n    FUN_1402a6280(*(undefined8 *)(DAT_140b15418 + 0x18),\n                  *(undefined4 *)(*(longlong *)(puVar2 + 0x18) + 0x50));\n    *(undefined8 *)(puVar2 + 0x18) = 0;\n  }\n  BehaviorClass::vfunction25((BehaviorClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:11Z"
+}

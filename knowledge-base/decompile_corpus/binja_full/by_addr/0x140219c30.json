@@ -1,0 +1,7 @@
+{
+  "addr": "0x140219c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140219c3f        int32_t rsi = arg3.d\n140219c45        void* result = sub_14021b210(arg1, arg2, arg3)\n140219c50        if (result == 0)\n140219c61        return result\n140219c62        int64_t* rbx_1 = &arg1[5]\n140219c66        int32_t rdi_1\n140219c66        if (arg1 != -0x28)\n140219c78        if (WaitForSingleObject(*rbx_1, 0x2710) == WAIT_OBJECT_0)\n140219cab        rbx_1[1] = 0\n140219cba        rdi_1 = sub_1402404e0(result + 0x28, rsi)\n140219c7a        rbx_1[1]\n140219ca3        rdi_1 = sub_1402404e0(result + 0x28, rsi)\n140219c78        goto label_140219cd5\n140219cc9        rbx_1 = arg4\n140219cce        rdi_1 = sub_1402404e0(result + 0x28, rsi)\n140219cd3        if (rbx_1 != 0)\n140219cd5        label_140219cd5:\n140219cd5        rbx_1[1]\n140219cd9        HANDLE hMutex = *rbx_1\n140219cdc        rbx_1[1] = 0\n140219cec        if (ReleaseMutex(hMutex) == 0)\n140219cee        GetLastError()\n140219d1d        return zx.q(rdi_1)",
+  "fetched_at": "2026-04-26T17:28:43Z"
+}

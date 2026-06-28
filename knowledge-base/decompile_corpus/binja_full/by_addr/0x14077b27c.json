@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077b27c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077b2bc        wchar16 rbx_1\n14077b2bc        int32_t i\n14077b293        int16_t* rax_1 = *(arg1 + 0x10)\n14077b29b        if (rax_1 == *(arg1 + 8))\n14077b2c0        rbx_1 = -1\n14077b2c0        break\n14077b29d        rbx_1 = *rax_1\n14077b2a4        *(arg1 + 0x10) = &rax_1[1]\n14077b2ab        if (rbx_1 == 0xffff)\n14077b2ab        break\n14077b2b5        i = iswctype(rbx_1, 8)\n14077b2bc        do while (i != 0)\n14077b2d4        return zx.q(rbx_1)",
+  "fetched_at": "2026-04-26T17:30:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d7ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405d7ee0        int64_t r8 = *arg1\n1405d7eea        int64_t result = (arg1[1] - r8) s>> 3\n1405d7ef1        if (result == 0)\n1405d7ef3        return result\n1405d7ef4        uint64_t rdx = zx.q(arg1[3].d)\n1405d7efa        if (rdx u>= result)\n1405d7efc        rdx = zx.q((result - 1).d)\n1405d7f03        return *(r8 + (rdx << 3))",
+  "fetched_at": "2026-04-26T17:38:16Z"
+}

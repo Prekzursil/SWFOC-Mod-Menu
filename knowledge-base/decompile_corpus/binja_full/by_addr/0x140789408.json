@@ -1,0 +1,7 @@
+{
+  "addr": "0x140789408",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078940a        return _Getmonths_l(nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:31:22Z"
+}

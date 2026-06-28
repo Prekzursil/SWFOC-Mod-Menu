@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074c000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "time_put<wchar_t,class_std::ostreambuf_iterator<wchar_t,struct_std::char_traits<wchar_t>_>_> *\n__thiscall\nstd::time_put<wchar_t,class_std::ostreambuf_iterator<wchar_t,struct_std::char_traits<wchar_t>_>_>::\nscalar_deleting_destructor\n          (time_put<wchar_t,class_std::ostreambuf_iterator<wchar_t,struct_std::char_traits<wchar_t>_>_>\n           *this,ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       std::time_put<wchar_t,class_std::ostreambuf_iterator<wchar_t,struct_std::char_traits<wchar_t>_>_>::~time_put<wchar_t,class_std::ostreambuf_iterator<wchar_t,struct_std::char_traits<wchar_t>_>_>\n                        */\n  this->vftablePtr = &vftable;\n  FUN_1407864b8(this[1].vftablePtr);\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr =\n       (time_put<wchar_t,class_std::ostreambuf_iterator<wchar_t,struct_std::char_traits<wchar_t>_>_>_vftable\n        *)&_Facet_base::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:06:27Z"
+}

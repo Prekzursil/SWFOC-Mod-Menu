@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798db4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798dba        int32_t rbx = 0\n140798dbc        int16_t* r9 = arg1\n140798dc7        if (arg1 == 0 || arg2 == 0)\n140798dc2        goto label_140798dd1\n140798dcc        if (arg3 != 0)\n140798ded        while (*arg1 != 0)\n140798def        arg1 = &arg1[1]\n140798df3        int64_t temp0_1 = arg2\n140798df3        arg2 -= 1\n140798df7        if (temp0_1 == 1)\n140798df7        break\n140798dfc        if (arg2 == 0)\n140798dfe        *r9 = 0\n140798e02        goto label_140798dd1\n140798e04        int16_t* r8 = arg3 - arg1\n140798e1c        int64_t i\n140798e07        int16_t rax_3 = *(r8 + arg1)\n140798e0c        *arg1 = rax_3\n140798e0f        arg1 = &arg1[1]\n140798e16        if (rax_3 == 0)\n140798e16        break\n140798e18        i = arg2\n140798e18        arg2 -= 1\n140798e1c        do while (i != 1)\n140798e21        if (arg2 == 0)\n140798e23        *r9 = 0\n140798e2c        rbx = 0x22\n140798ddb        *_errno() = rbx\n140798ddd        _invalid_parameter_noinfo()\n140798dce        *arg1 = 0\n140798dd1        label_140798dd1:\n140798dd6        rbx = 0x16\n140798ddb        *_errno() = rbx\n140798ddd        _invalid_parameter_noinfo()\n140798de9        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

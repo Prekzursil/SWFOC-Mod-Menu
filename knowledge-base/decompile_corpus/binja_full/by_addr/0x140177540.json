@@ -1,0 +1,7 @@
+{
+  "addr": "0x140177540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140177555        if (data_140a6d421 != 0 && data_140a6d480 != 0)\n14017755c        CURSORINFO pci\n14017755c        pci.cbSize = 0x18\n14017755c        pci.flags = 0\n14017756d        int64_t point\n14017756d        if (GetCursorInfo(&pci) == 0)\n14017757b        point = 0\n14017756f        int64_t point_1\n14017756f        point_1.d = pci.ptScreenPos.x\n14017756f        point_1:4.d = pci.ptScreenPos.y\n140177574        point = point_1\n14017758b        if (data_140a6d420 == 0)\n140177599        ScreenToClient(data_140a6e658, &point)\n14017759f        int64_t* rcx_3 = data_140a6d480\n1401775b5        (*(*rcx_3 + 0x58))(rcx_3, zx.q(point.d), zx.q(point:4.d), 0)\n1401775be        return 0",
+  "fetched_at": "2026-04-26T17:23:12Z"
+}

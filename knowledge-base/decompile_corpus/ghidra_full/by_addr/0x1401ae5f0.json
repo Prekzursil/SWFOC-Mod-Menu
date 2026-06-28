@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ae5f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall alD3dEffect::vfunction3(alD3dEffect *this)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  \n  if (*(longlong **)&this->field_0x38 == (longlong *)0x0) {\n    return true;\n  }\n  iVar1 = (**(code **)(**(longlong **)&this->field_0x38 + 0x230))();\n  if (iVar1 < 0) {\n    return false;\n  }\n  uVar2 = thunk_FUN_1401789f0();\n  iVar1 = FUN_1401aead0(&this[-1].alD3dEffect_data.offset_0x120,uVar2);\n  return iVar1 == 0;\n}",
+  "fetched_at": "2026-04-26T17:42:19Z"
+}

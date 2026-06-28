@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f1fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetRadiobuttonClass::vfunction11(GUIGadgetRadiobuttonClass *this,char param_1)\n\n{\n  undefined4 *puVar1;\n  undefined1 *puVar2;\n  undefined4 local_18;\n  undefined4 uStack_14;\n  undefined4 uStack_10;\n  undefined4 uStack_c;\n  \n  *(char *)((longlong)&(this->GUIGadgetClass_data).offset_0x70 + 1) = param_1;\n  if (param_1 == '\\0') {\n    *(undefined1 *)&(this->GUIGadgetClass_data).offset_0x70 = 0;\n    FUN_1401f92f0(&local_18);\n    uStack_c = 0;\n  }\n  else {\n    FUN_1401f92f0(&local_18);\n    uStack_c = 0x3f800000;\n  }\n  puVar2 = &(this->GUIGadgetRadiobuttonClass_data).field_0x10;\n  (**(code **)(*(longlong *)puVar2 + 0x28))(puVar2,&local_18);\n  puVar2 = &(this->GUIGadgetRadiobuttonClass_data).field_0xa0;\n  puVar1 = (undefined4 *)(**(code **)(*(longlong *)puVar2 + 0x30))(puVar2);\n  local_18 = *puVar1;\n  uStack_14 = puVar1[1];\n  uStack_10 = puVar1[2];\n  uStack_c = 0x3f800000;\n  if (param_1 == '\\0') {\n    uStack_c = 0;\n  }\n  (**(code **)(*(longlong *)puVar2 + 0xc0))(puVar2,&local_18);\n  puVar1 = (undefined4 *)(**(code **)(*(longlong *)puVar2 + 0x38))(puVar2);\n  local_18 = *puVar1;\n  uStack_14 = puVar1[1];\n  uStack_10 = puVar1[2];\n  uStack_c = 0x3f800000;\n  if (param_1 == '\\0') {\n    uStack_c = 0;\n  }\n  (**(code **)(*(longlong *)puVar2 + 200))(puVar2,&local_18);\n  FUN_1401f9440(&local_18);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:09Z"
+}

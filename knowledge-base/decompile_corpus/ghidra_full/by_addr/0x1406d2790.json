@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d2790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nSpaceShipPerceptualEvaluatorClass * FUN_1406d2790(undefined **param_1)\n\n{\n  SpaceShipPerceptualEvaluatorClass *pSVar1;\n  \n  if (param_1 == (undefined **)0x0) {\n    return (SpaceShipPerceptualEvaluatorClass *)0x0;\n  }\n  pSVar1 = (SpaceShipPerceptualEvaluatorClass *)FUN_140769c58(0x1f0);\n  if (pSVar1 != (SpaceShipPerceptualEvaluatorClass *)0x0) {\n    pSVar1 = SpaceShipPerceptualEvaluatorClass::SpaceShipPerceptualEvaluatorClass(pSVar1,param_1);\n    (*pSVar1->vftablePtr->vfunction9)(pSVar1);\n    return pSVar1;\n  }\n  (**(code **)(_DAT_00000000 + 0x40))(0);\n  return (SpaceShipPerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:42:16Z"
+}

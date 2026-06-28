@@ -1,0 +1,7 @@
+{
+  "addr": "0x14016f640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall alParticles::vfunction7(alParticles *this)\n\n{\n  return (this->alParticles_data).offset_0x48 + 2;\n}",
+  "fetched_at": "2026-04-26T17:25:44Z"
+}

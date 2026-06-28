@@ -1,0 +1,7 @@
+{
+  "addr": "0x140189f20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140189f33        *arg1 = &ReferenceListClass<class alD3dEffect>::`vftable'{for `GenericMultiLinkedList'}\n140189f41        if (sub_14012ef50(arg1) != 0)\n140189f6f        int64_t i\n140189f4b        int64_t* arg_8\n140189f4b        void* rax_1 = sub_14020ac80(arg1, &arg_8)\n140189f5c        if (rax_1 != 0 && rax_1 != 0x10)\n140189f61        (*(*(rax_1 - 0x10) + 8))(rax_1 - 0x10)\n140189f67        i = sub_14012ef50(arg1)\n140189f6f        do while (i != 0)\n140189f74        sub_14020a960(arg1)\n140189f7d        if ((arg2 & 1) != 0)\n140189f87        j_sub_1407864b8(arg1)\n140189f99        return arg1",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

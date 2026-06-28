@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019e700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alRawAnim::vfunction12(alRawAnim *this,undefined4 param_2,longlong param_3)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  iVar2 = 0;\n  iVar1 = (*this->vftablePtr->vfunction9)();\n  if (0 < iVar1) {\n    do {\n      (*this->vftablePtr->vfunction13)(this);\n      iVar2 = iVar2 + 1;\n      iVar1 = (*this->vftablePtr->vfunction9)(this);\n    } while (iVar2 < iVar1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:41Z"
+}

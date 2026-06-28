@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d30c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d311        int32_t* arg_20 = arg4\n14078d323        __vcrt_unlock(*arg2)\n14078d33d        _copytlocinfo_nolock(**arg3, *(*arg3[1] + 0x90))\n14078d355        int16_t* rax_2 = sub_14078e15c(**arg3, *arg3[3], *arg3[4])\n14078d35e        *arg3[2] = rax_2\n14078d364        if (rax_2 == 0)\n14078d423        __acrt_release_locale_ref(**arg3)\n14078d42e        __acrt_free_locale(**arg3)\n14078d36e        void* rcx_6 = *arg3[4]\n14078d374        if (rcx_6 != 0)\n14078d37d        void* r8_2 = &data_140a44f28 - rcx_6\n14078d392        uint32_t rax_4\n14078d392        uint32_t i\n14078d380        rax_4 = zx.d(*rcx_6)\n14078d383        i = zx.d(*(rcx_6 + r8_2))\n14078d38a        if (rax_4 != i)\n14078d38a        break\n14078d38c        rcx_6 += 2\n14078d392        do while (i != 0)\n14078d396        if (rax_4 - i != 0)\n14078d39d        data_140b3c49c\n14078d39d        data_140b3c49c = 1\n14078d3b7        _updatetlocinfoEx_nolock(*arg3[1] + 0x90, **arg3)\n14078d3c2        __acrt_release_locale_ref(**arg3)\n14078d3cb        void* rdx_5 = *arg3[1]\n14078d3de        if ((*(rdx_5 + 0x3a8) & 2) == 0 && (data_140a44f90.b & 1) == 0)\n14078d3ee        _updatetlocinfoEx_nolock(&data_140b3c4c8, *(rdx_5 + 0x90))\n14078d3f3        int64_t* rax_9 = data_140b3c4c8\n14078d401        data_140a44d88 = rax_9[0x1f]\n14078d40b        data_140a44ce0 = *rax_9\n14078d415        data_140a44f2c = rax_9[1].d\n14078d445        return __vcrt_lock(*arg4)",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

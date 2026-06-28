@@ -1,0 +1,7 @@
+{
+  "addr": "0x140633a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall TargetingBehaviorClass::vfunction9(void)\n\n{\n  return \"TargetingBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:34:32Z"
+}

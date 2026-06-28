@@ -1,0 +1,7 @@
+{
+  "addr": "0x140200ba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140200baf        int64_t* i = arg1\n140200bb2        void* rbx_1\n140200bb2        if (arg1[3] u< 0x10)\n140200bc4        rbx_1 = arg1[2] + arg1\n140200bb7        rbx_1 = *arg1 + arg1[2]\n140200bbb        i = *arg1\n140200bca        while (i != rbx_1)\n140200bd8        *i = toupper(sx.d(*i))\n140200bda        i += 1\n140200bec        return ",
+  "fetched_at": "2026-04-26T17:27:41Z"
+}

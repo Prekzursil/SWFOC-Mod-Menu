@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798268",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __dcrt_get_narrow_environment_from_os\n   \n   Library: Visual Studio 2019 Release */\n\nlonglong __dcrt_get_narrow_environment_from_os(void)\n\n{\n  WCHAR WVar1;\n  int iVar2;\n  LPWCH pWVar3;\n  longlong lVar4;\n  longlong lVar5;\n  WCHAR *pWVar6;\n  ulonglong uVar7;\n  longlong lVar8;\n  \n  pWVar3 = GetEnvironmentStringsW();\n  lVar8 = 0;\n  if (pWVar3 != (LPWCH)0x0) {\n    WVar1 = *pWVar3;\n    pWVar6 = pWVar3;\n    while (WVar1 != L'\\0') {\n      lVar4 = -1;\n      do {\n        lVar5 = lVar4;\n        lVar4 = lVar5 + 1;\n      } while (pWVar6[lVar4] != L'\\0');\n      pWVar6 = pWVar6 + lVar5 + 2;\n      WVar1 = *pWVar6;\n    }\n    uVar7 = (longlong)pWVar6 + (2 - (longlong)pWVar3) >> 1;\n    iVar2 = __acrt_WideCharToMultiByte(0,0,pWVar3,uVar7 & 0xffffffff,0,0,0,0);\n    if (iVar2 != 0) {\n      lVar5 = _malloc_base((longlong)iVar2);\n      lVar4 = lVar8;\n      if ((lVar5 != 0) &&\n         (iVar2 = __acrt_WideCharToMultiByte(0,0,pWVar3,uVar7 & 0xffffffff,lVar5,iVar2,0,0),\n         iVar2 != 0)) {\n        lVar4 = lVar5;\n        lVar5 = lVar8;\n      }\n      _free_base(lVar5);\n      lVar8 = lVar4;\n    }\n  }\n  if (pWVar3 != (LPWCH)0x0) {\n    FreeEnvironmentStringsW(pWVar3);\n  }\n  return lVar8;\n}",
+  "fetched_at": "2026-04-26T18:53:33Z"
+}

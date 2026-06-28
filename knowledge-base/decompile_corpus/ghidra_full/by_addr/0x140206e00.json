@@ -1,0 +1,7 @@
+{
+  "addr": "0x140206e00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140206e00(longlong param_1,longlong param_2,longlong param_3)\n\n{\n  int iVar1;\n  longlong lVar2;\n  int iVar3;\n  \n  if (0 < *(int *)(param_1 + 0xf8)) {\n    lVar2 = 0;\n    do {\n      if ((*(longlong *)(*(longlong *)(param_1 + 0xf0) + lVar2 * 8) == param_2) &&\n         (*(longlong *)(*(longlong *)(param_1 + 0x108) + lVar2 * 8) == param_3)) {\n        return;\n      }\n      lVar2 = lVar2 + 1;\n    } while (lVar2 < *(int *)(param_1 + 0xf8));\n  }\n  iVar1 = *(int *)(param_1 + 0xf8);\n  iVar3 = *(int *)(param_1 + 0xfc) * 2 >> 1;\n  if (iVar3 <= iVar1) {\n    iVar1 = iVar3 / 10;\n    if (iVar3 / 10 < 10) {\n      iVar1 = 10;\n    }\n    FUN_140047aa0(param_1 + 0xe8,iVar1 + iVar3,0,1);\n    iVar1 = *(int *)(param_1 + 0xf8);\n  }\n  *(longlong *)(*(longlong *)(param_1 + 0xf0) + (longlong)iVar1 * 8) = param_2;\n  *(int *)(param_1 + 0xf8) = *(int *)(param_1 + 0xf8) + 1;\n  iVar1 = *(int *)(param_1 + 0x110);\n  iVar3 = *(int *)(param_1 + 0x114) * 2 >> 1;\n  if (iVar3 <= iVar1) {\n    iVar1 = iVar3 / 10;\n    if (iVar3 / 10 < 10) {\n      iVar1 = 10;\n    }\n    FUN_140047aa0(param_1 + 0x100,iVar1 + iVar3,0,1);\n    iVar1 = *(int *)(param_1 + 0x110);\n  }\n  *(longlong *)(*(longlong *)(param_1 + 0x108) + (longlong)iVar1 * 8) = param_3;\n  *(int *)(param_1 + 0x110) = *(int *)(param_1 + 0x110) + 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:56Z"
+}

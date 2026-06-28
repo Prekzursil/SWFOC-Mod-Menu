@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048e3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048e400        uint64_t result\n14048e400        if (arg2 != 0 && arg3 != 0)\n14048e402        int64_t* rcx = data_140b15418\n14048e40c        if (rcx != 0)\n14048e411        result = zx.q(*(arg1 + 0x3c) - 1)\n14048e416        bool cond:0_1\n14048e416        if (result.d u<= 0xb)\n14048e42c        switch (&__dos_header.e_magic[zx.q(jump_table_14048e49c[sx.q(result.d)])])\n14048e431        case 0x14048e42e\n14048e439        if ((*(*rcx + 0xf0))().b != 0)\n14048e494        jump(*(*arg1 + 0xf8))\n14048e456        case 0x14048e44d\n14048e456        cond:0_1 = (*(*rcx + 0xe0))().d != 2\n14048e477        label_14048e477:\n14048e477        if (not(cond:0_1))\n14048e494        jump(*(*arg1 + 0xf8))\n14048e464        case 0x14048e45b\n14048e464        cond:0_1 = (*(*rcx + 0xe0))().d != 1\n14048e467        goto label_14048e477\n14048e475        case 0x14048e469\n14048e475        cond:0_1 = sub_14028afb0(&data_140b153e0).b != 1\n14048e475        goto label_14048e477\n14048e494        case 0x14048e479\n14048e494        jump(*(*arg1 + 0xf8))\n14048e43b        result.b = 0\n14048e44c        return result",
+  "fetched_at": "2026-04-26T17:28:59Z"
+}

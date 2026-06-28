@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405594c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405594d3        int64_t* rbx = *arg1\n1405594e5        if (rbx != 0)\n1405594ec        int64_t rsi_1 = arg1[1]\n1405594f3        if (rbx != rsi_1)\n1405594f8        sub_14040db50(rbx)\n1405594fd        rbx = &rbx[0xe]\n140559504        do while (rbx != rsi_1)\n140559506        rbx = *arg1\n14055951f        int64_t rax_1\n14055951f        int64_t rdx\n14055951f        rdx:rax_1 = muls.dp.q(0x4924924924924925, arg1[2] - rbx)\n140559522        int64_t rdx_1 = rdx s>> 5\n14055953b        if ((rdx_1 + (rdx_1 u>> 0x3f)) * 0x70 u>= 0x1000)\n14055953d        int64_t* rax_4 = rbx[-1]\n140559550        if (rbx - rax_4 - 8 u> 0x1f)\n14055958a        _invalid_parameter_noinfo_noreturn()\n14055958a        noreturn\n140559552        rbx = rax_4\n140559558        j_sub_1407864b8(rbx)\n140559562        *arg1 = arg2\n14055956c        arg1[1] = arg3 * 0x70 + arg2\n140559574        int64_t result = arg4 * 0x70 + arg2\n14055957c        arg1[2] = result\n140559589        return result",
+  "fetched_at": "2026-04-26T17:34:21Z"
+}

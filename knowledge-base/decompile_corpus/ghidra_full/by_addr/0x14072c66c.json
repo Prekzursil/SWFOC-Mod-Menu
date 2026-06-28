@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072c66c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nVisiblePerceptualEvaluatorClass<class_TacticalLocationPerceptualEvaluatorClass>::\nvfunction1_for_AIDiagnosticsClass\n          (VisiblePerceptualEvaluatorClass<class_TacticalLocationPerceptualEvaluatorClass> *this,\n          uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((VisiblePerceptualEvaluatorClass<class_TacticalLocationPerceptualEvaluatorClass> *)\n             &this[-1].\n              VisiblePerceptualEvaluatorClass<class_TacticalLocationPerceptualEvaluatorClass>_data.\n              offset_0x10,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:01:08Z"
+}

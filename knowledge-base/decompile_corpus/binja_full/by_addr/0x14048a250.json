@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048a250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048a269        *arg1 = &alExtraRenderPass::`vftable'{for `RefCountClass'}\n14048a275        arg1[2] = &alExtraRenderPass::`vftable'{for `MultiLinkedListMember'}\n14048a279        int64_t* rcx = arg1[5]\n14048a280        if (rcx != 0)\n14048a285        (*(*rcx + 8))(rcx)\n14048a288        arg1[5] = 0\n14048a294        sub_14020a820(&arg1[2])\n14048a2a0        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n14048a2a7        if ((arg2 & 1) != 0)\n14048a2b1        j_sub_1407864b8(arg1)\n14048a2c8        return arg1",
+  "fetched_at": "2026-04-26T17:28:43Z"
+}

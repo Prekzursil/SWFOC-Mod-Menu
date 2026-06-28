@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407872a8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407872a8        return _realloc_base(arg1, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:31:20Z"
+}

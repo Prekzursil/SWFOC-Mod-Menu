@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406242a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406242ab        struct BehaviorClass::TerrainTextureModificationBehaviorClass::VTable** result = operator new(0x40)\n1406242b6        if (result == 0)\n1406242ee        return result\n1406242bb        sub_1404c32d0(result)\n1406242c7        *result = &TerrainTextureModificationBehaviorClass::`vftable'{for `BehaviorClass'}\n1406242d1        result[1] = &TerrainTextureModificationBehaviorClass::`vftable'{for `RefCountClass'}\n1406242dc        result[3] = &TerrainTextureModificationBehaviorClass::`vftable'{for `SignalListenerClass'}\n1406242e8        return result",
+  "fetched_at": "2026-04-26T17:23:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140795f88",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140795fa2        void* const rax = &data_1408d83e0\n140795fa5        int32_t r8 = 0\n140795faa        int64_t rax_1\n140795faa        while (true)\n140795faa        if (*rax == arg2)\n140795fc9        rax_1 = (&data_1408d83e8)[sx.q(r8) * 2]\n140795fc9        break\n140795fac        r8 += 1\n140795fb6        rax += 0x10\n140795fbd        if (rax s>= &data_1408d85b0)\n140795fbf        rax_1 = 0\n140795fc1        break\n140795fdb        int64_t var_30 = rax_1\n140795fe3        int32_t result\n140795fe3        if (rax_1 == 0)\n140796041        _ctrlfp(arg6, 0xffc0)\n140796048        int512_t zmm0_1\n140796048        result, zmm0_1 = _set_errno_from_matherr(arg1)\n14079604d        zmm0_1.o = zx.o(arg5)\n140795fe9        int32_t var_28_1 = arg3.d\n140795ff1        int32_t var_24_1 = arg3:4.d\n140795ff9        int32_t var_20_1 = arg4.d\n140796001        int32_t var_1c_1 = arg4:4.d\n140796017        int32_t var_14_1 = arg5:4.d\n14079601b        int32_t var_38 = arg1\n14079601f        _ctrlfp(arg6, 0xffc0)\n140796029        int512_t zmm0\n140796029        result, zmm0 = __acrt_invoke_user_matherr(&var_38)\n140796030        if (result == 0)\n140796034        result, zmm0 = _set_errno_from_matherr(arg1)\n140796039        zmm0.o = zx.o(arg5.d.q)\n14079605b        return result",
+  "fetched_at": "2026-04-26T17:31:57Z"
+}

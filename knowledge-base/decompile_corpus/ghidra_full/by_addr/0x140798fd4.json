@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798fd4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_lowio_lock_fh\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_lowio_lock_fh(uint param_1)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x000140798ff4. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  EnterCriticalSection\n            ((LPCRITICAL_SECTION)\n             ((&DAT_140b3c4d0)[(longlong)(int)param_1 >> 6] + (ulonglong)(param_1 & 0x3f) * 0x48));\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:38Z"
+}

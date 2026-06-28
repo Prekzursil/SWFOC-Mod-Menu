@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780628",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078062f        void** r9\n14078062f        if (data_140b3c49c != 0)\n14078063a        r9 = nullptr\n140780631        r9 = &data_140a44f18\n14078063d        return _mbstowcs_l_helper(arg1, arg2, arg3, r9) __tailcall",
+  "fetched_at": "2026-04-26T17:31:05Z"
+}

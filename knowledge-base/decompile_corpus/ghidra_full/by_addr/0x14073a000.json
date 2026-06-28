@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073a000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceAmbushBlockStatus * __thiscall\nSpaceAmbushBlockStatus::scalar_deleting_destructor(SpaceAmbushBlockStatus *this,uint param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: SpaceAmbushBlockStatus::~SpaceAmbushBlockStatus */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  plVar1 = (longlong *)this->offset_0x58;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))(plVar1,1);\n  }\n  plVar1 = (longlong *)this->offset_0x60;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))(plVar1,1);\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (SpaceAmbushBlockStatus_vftable1 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  if (*(longlong **)&this->field_0x28 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x28 + 8))();\n  }\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x70);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:02:54Z"
+}

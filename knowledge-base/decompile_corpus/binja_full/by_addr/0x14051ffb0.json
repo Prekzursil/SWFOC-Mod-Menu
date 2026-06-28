@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051ffb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14051ffb9        uint128_t zmm2\n14051ffb9        int128_t zmm3\n14051ffb9        uint128_t zmm4\n14051ffb9        if (not((*(arg2 + 0x24)).d f<= *(arg1 + 0x24)))\n14051ffbe        zmm3 = *arg2\n14051ffc1        zmm4 = arg2[1]\n14051ffc5        zmm2 = zx.o(arg2[2].q)\n14051ffca        *arg2 = *arg1\n14051ffd1        arg2[1] = arg1[1]\n14051ffda        arg2[2].q = arg1[2].q\n14051ffdf        *arg1 = zmm3\n14051ffe2        arg1[1] = zmm4\n14051ffe6        arg1[2].q = zmm2.q\n14051ffeb        uint128_t result = *(arg3 + 0x24)\n14051fff5        if (not(result.d f<= *(arg2 + 0x24)))\n14051fffa        zmm2 = *arg3\n14051fffe        zmm3 = arg3[1]\n140520003        zmm4 = zx.o(arg3[2].q)\n140520009        *arg3 = *arg2\n140520011        arg3[1] = arg2[1]\n140520016        result = zx.o(arg2[2].q)\n14052001b        arg3[2].q = result.q\n140520021        *arg2 = zmm2\n140520024        arg2[1] = zmm3\n140520028        arg2[2].q = zmm4.q\n140520036        if (not((*(arg2 + 0x24)).d f<= *(arg1 + 0x24)))\n14052003b        *arg2 = *arg1\n140520042        arg2[1] = arg1[1]\n140520046        result = zx.o(arg1[2].q)\n14052004b        arg2[2].q = result.q\n140520050        *arg1 = zmm2\n140520053        arg1[1] = zmm3\n140520057        arg1[2].q = zmm4.q\n14052005c        return result",
+  "fetched_at": "2026-04-26T17:32:59Z"
+}

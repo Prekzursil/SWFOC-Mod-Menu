@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ede60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetTextClass::~GUIGadgetTextClass(GUIGadgetTextClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  vfunction25(this);\n  FID_conflict__Tidy_deallocate(&(this->GUIGadgetTextClass_data).offset_0x20);\n  DynamicVectorClass<class_DrawTextClass*___ptr64>::\n  ~DynamicVectorClass<class_DrawTextClass*___ptr64>\n            ((DynamicVectorClass<class_DrawTextClass*___ptr64> *)&this->GUIGadgetTextClass_data);\n  GUIGadgetClass::~GUIGadgetClass((GUIGadgetClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:32Z"
+}

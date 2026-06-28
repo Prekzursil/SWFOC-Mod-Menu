@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f14b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f14bb        sub_1404456f0(&data_140b30160)\n1407f14c7        sub_140066590(&data_140b30308)\n1407f14d3        sub_1404c47c0(&data_140b302f8)\n1407f14df        sub_1404c47c0(&data_140b302e8)\n1407f14eb        sub_1404c47c0(&data_140b302d8)\n1407f14f7        sub_1404c47c0(&data_140b302c8)\n1407f1503        sub_1404c47c0(&data_140b302b8)\n1407f150f        sub_1404c47c0(&data_140b302a8)\n1407f151b        sub_1404c47c0(&data_140b30298)\n1407f1527        sub_1404c47c0(&data_140b30288)\n1407f1533        sub_1404c47c0(&data_140b30278)\n1407f153f        sub_1404c46f0(&data_140b30250)\n1407f154b        sub_1404c46f0(&data_140b30228)\n1407f1557        sub_1404c46f0(&data_140b30200)\n1407f1563        sub_1404c47c0(&data_140b301e8)\n1407f156f        sub_1404c47c0(&data_140b301d8)\n1407f157b        sub_1404c47c0(&data_140b301c8)\n1407f1587        int64_t* result = sub_1404c47c0(&data_140b301b8)\n1407f158c        int64_t rdx = data_140b30180:8\n1407f1597        if (rdx u>= 0x10)\n1407f1599        void* rcx_1 = data_140b30170.q\n1407f15aa        if (rdx + 1 u>= 0x1000)\n1407f15ac        void* r8_1 = *(rcx_1 - 8)\n1407f15bf        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1407f15e5        _invalid_parameter_noinfo_noreturn()\n1407f15e5        noreturn\n1407f15c1        rcx_1 = r8_1\n1407f15c4        result = j_sub_1407864b8(rcx_1)\n1407f15d1        data_140b30180 = data_140802a40\n1407f15d9        data_140b30170 = 0\n1407f15e4        return result",
+  "fetched_at": "2026-04-26T17:36:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140483ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DatabaseObjectManagerClass<class_TargetingPrioritySetClass> member function inherited by\n   TargetingPrioritySetManagerClass */\n\nundefined1 __thiscall\nDatabaseObjectManagerClass<class_TargetingPrioritySetClass>::vfunction2\n          (DatabaseObjectManagerClass<class_TargetingPrioritySetClass> *this,undefined8 param_1,\n          longlong *param_2)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_140380990();\n  if (lVar1 != 0) {\n    *param_2 = lVar1;\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:00:34Z"
+}

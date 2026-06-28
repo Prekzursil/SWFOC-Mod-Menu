@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070c120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nReduceTechnologyPriceAbilityClass::vfunction32_for_IXMLLoadableClass\n          (ReduceTechnologyPriceAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  undefined1 uVar3;\n  \n  if ((param_1 != 0) && (param_2 != 0)) {\n    lVar1 = FUN_1403956c0(param_1);\n    if (*(int *)(lVar1 + 4) != -1) {\n      uVar2 = FUN_140294bc0(&DAT_140a16fd0);\n      uVar3 = FUN_14070c180(this,param_1,uVar2);\n      return uVar3;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:54:13Z"
+}

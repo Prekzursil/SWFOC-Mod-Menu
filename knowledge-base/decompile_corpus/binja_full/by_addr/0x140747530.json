@@ -1,0 +1,7 @@
+{
+  "addr": "0x140747530",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140747530        int64_t r9 = arg4 - arg3\n14074753b        if (r9 s> 0x7fffffff)\n14074753b        r9 = 0x7fffffff\n140747547        if (r9 u< arg5)\n140747547        return zx.q(r9.d)\n14074754b        return arg5",
+  "fetched_at": "2026-04-26T17:29:30Z"
+}

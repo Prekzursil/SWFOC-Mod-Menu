@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f7770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* MovementCoordinatorClass member function inherited by SpaceMovementCoordinatorClass\n   MovementCoordinatorClass member function inherited by LandMovementCoordinatorClass */\n\nvoid __thiscall\nMovementCoordinatorClass::vfunction7(MovementCoordinatorClass *this,undefined8 param_1)\n\n{\n  uint uVar1;\n  ulonglong uVar2;\n  \n  uVar1 = 0;\n  if ((longlong)(this->SignalListenerClass_data).offset_0x8 -\n      (longlong)(this->SignalListenerClass_data).offset_0x0 >> 3 != 0) {\n    uVar2 = 0;\n    do {\n      FUN_140420f70((this->SignalListenerClass_data).offset_0x0[uVar2],param_1);\n      uVar1 = uVar1 + 1;\n      uVar2 = (ulonglong)uVar1;\n    } while (uVar2 < (ulonglong)\n                     ((longlong)(this->SignalListenerClass_data).offset_0x8 -\n                      (longlong)(this->SignalListenerClass_data).offset_0x0 >> 3));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:07Z"
+}

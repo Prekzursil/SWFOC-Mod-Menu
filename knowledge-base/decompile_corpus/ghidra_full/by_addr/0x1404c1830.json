@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1830",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404c1830(longlong *param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  int iVar2;\n  \n  iVar2 = 0;\n  if (0 < (int)param_1[4]) {\n    lVar1 = 0;\n    do {\n      if (*(short *)(param_1[1] + lVar1 * 2) == 0) {\n        *(undefined1 *)(*param_1 + lVar1) = 0;\n        *(undefined1 *)(lVar1 + param_1[2]) = 0;\n        if (param_2 != (longlong *)0x0) {\n          if (*(short *)(param_2[1] + lVar1 * 2) == 0) {\n            *(undefined1 *)(*param_2 + lVar1) = 0;\n            *(undefined1 *)(lVar1 + param_2[2]) = 0;\n          }\n          else {\n            *(undefined1 *)(*param_2 + lVar1) = 0xff;\n            *(undefined1 *)(lVar1 + param_2[2]) = 0;\n            *(undefined2 *)(param_2[1] + lVar1 * 2) = 1;\n          }\n        }\n      }\n      else {\n        *(undefined1 *)(*param_1 + lVar1) = 0xff;\n        *(undefined1 *)(lVar1 + param_1[2]) = 0;\n        if (param_2 != (longlong *)0x0) {\n          *(undefined1 *)(lVar1 + *param_2) = 0;\n          *(undefined1 *)(lVar1 + param_2[2]) = 0;\n          *(undefined2 *)(param_2[1] + lVar1 * 2) = 0;\n        }\n      }\n      iVar2 = iVar2 + 1;\n      lVar1 = lVar1 + 1;\n    } while (iVar2 < (int)param_1[4]);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:11Z"
+}

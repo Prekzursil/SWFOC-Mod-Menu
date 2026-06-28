@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b20b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTransitionEffectAlphaFade * __thiscall\nalD3dTransitionEffectAlphaFade::alD3dTransitionEffectAlphaFade(alD3dTransitionEffectAlphaFade *this)\n\n{\n  undefined4 uVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  \n  this->offset_0x10 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->offset_0x18 = (undefined **)0x0;\n  *(undefined8 *)&this->field_0x28 = 0;\n  *(undefined4 *)&this->field_0x30 = 0xffffffff;\n  *(undefined8 *)&this->field_0x34 = 0x3f800000;\n  plVar2 = (longlong *)FUN_14013e0f0(PTR_s_Engine_FrameEffectAlpha_140a13428);\n  plVar3 = *(longlong **)&this->field_0x28;\n  if (plVar3 != plVar2) {\n    if (plVar3 != (longlong *)0x0) {\n      (**(code **)(*plVar3 + 8))();\n    }\n    *(longlong **)&this->field_0x28 = plVar2;\n    plVar3 = (longlong *)0x0;\n    if (plVar2 != (longlong *)0x0) {\n      (**(code **)*plVar2)();\n      plVar3 = *(longlong **)&this->field_0x28;\n    }\n  }\n  uVar1 = (**(code **)(*plVar3 + 0x88))(plVar3,PTR_s_PrevSceneTexture_140a13430);\n  *(undefined4 *)&this->field_0x30 = uVar1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:43:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140623330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140623337        return \"StarshipLocomotorBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:23:46Z"
+}

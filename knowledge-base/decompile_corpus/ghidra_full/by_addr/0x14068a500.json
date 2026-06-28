@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a500",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a500(void)\n\n{\n  EnableRadarAbilityClass *this;\n  \n  this = (EnableRadarAbilityClass *)FUN_140769c58(0x180);\n  if (this != (EnableRadarAbilityClass *)0x0) {\n    EnableRadarAbilityClass::EnableRadarAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:49Z"
+}

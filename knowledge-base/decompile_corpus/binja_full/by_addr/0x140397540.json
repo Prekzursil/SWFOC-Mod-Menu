@@ -1,0 +1,7 @@
+{
+  "addr": "0x140397540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039755a        *arg2 = 0\n140397587        if (*(arg1 + 0x38e) != 0xff && (*(arg1 + 0x3a0) & 2) == 0 && not(0f f>= *(arg1 + 0x5c)))\n14039758d        void* result = *(arg1 + 0x298)\n140397594        int32_t rsi_1 = *(result + 0x8a0)\n14039759a        int32_t rax_1 = sub_14038dff0(arg1)\n1403975a4        if (rax_1 s< 1)\n1403975b2        if (*(result + 0x110) u>= 0x10)\n1403975b4        *(result + 0xf8)\n1403975c3        *arg2 = rsi_1\n1403975c6        return result\n1403975cd        if (rax_1 s< rsi_1)\n1403975c3        *arg2 = rsi_1\n1403975c6        return result\n1403975d2        int32_t rax_2 = sub_14038e030(arg1)\n1403975d9        if (rax_2 s< rax_1)\n1403975e3        int32_t rcx_3 = rsi_1 - divs.dp.d(sx.q(rax_2 * rsi_1), rax_1)\n1403975e5        int32_t rax_6 = 0\n1403975e9        if (rcx_3 s> 0)\n1403975e9        rax_6 = rcx_3\n1403975ec        int32_t rcx_4 = rsi_1\n1403975f0        if (rax_6 s< rsi_1)\n1403975f0        rcx_4 = rax_6\n1403975f3        *arg2 = rcx_4\n1403975f8        if (rcx_4 != 0)\n1403975fc        if (rcx_4 == rsi_1)\n1403975c6        return result\n140397600        while (true)\n140397600        result = *(result + 0x8b0)\n14039760a        if (result == 0)\n140397619        *arg2 = 0\n140397619        break\n140397612        if (*(result + 0x8a0) == rcx_4)\n140397614        return result\n140397620        return nullptr",
+  "fetched_at": "2026-04-26T17:23:46Z"
+}

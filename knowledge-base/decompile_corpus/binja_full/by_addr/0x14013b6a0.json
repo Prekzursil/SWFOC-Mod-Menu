@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b6a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013b6b3        *arg1 = &alBlob::`vftable'{for `alRenderable'}\n14013b6c2        arg1[2] = &alBlob::`vftable'{for `MultiLinkedListMember'}\n14013b6c6        int32_t i_1 = 0\n14013b6d0        arg1[4] = &alBlob::`vftable'{for `CullObjectClass'}\n14013b6db        int64_t r8 = data_140a62668\n14013b6ec        if ((data_140a62670 - r8) s>> 3 != 0)\n14013b6ee        uint64_t i = 0\n14013b6f0        *(r8 + (i << 3)) = 0\n14013b6f4        i_1 += 1\n14013b6fe        r8 = data_140a62668\n14013b708        i = zx.q(i_1)\n14013b712        do while (i u< (data_140a62670 - r8) s>> 3)\n14013b71b        data_140a62670 = r8\n14013b72a        sub_14013f770(arg1)\n14013b733        if ((arg2 & 1) != 0)\n14013b73d        j_sub_1407864b8(arg1)\n14013b74f        return arg1",
+  "fetched_at": "2026-04-26T17:14:46Z"
+}

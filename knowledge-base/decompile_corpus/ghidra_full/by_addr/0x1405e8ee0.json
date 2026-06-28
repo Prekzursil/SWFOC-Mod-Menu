@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e8ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LinearInterpolator * __thiscall\nLinearInterpolator::LinearInterpolator(LinearInterpolator *this,longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong lVar4;\n  \n  plVar1 = &(this->LinearInterpolator_data).offset_0x8;\n  lVar4 = 0;\n  *plVar1 = 0;\n  this->vftablePtr = &vftable;\n  (this->LinearInterpolator_data).offset_0x10 = 0;\n  (this->LinearInterpolator_data).offset_0x18 = 0;\n  (this->LinearInterpolator_data).offset_0x0 = *(undefined1 *)(param_1 + 8);\n  if (plVar1 != (longlong *)(param_1 + 0x10)) {\n    lVar2 = *(longlong *)(param_1 + 0x10);\n    lVar3 = *(longlong *)(param_1 + 0x18) - lVar2;\n    if (lVar3 >> 3 != 0) {\n      FUN_140378eb0(plVar1);\n      lVar4 = *plVar1;\n    }\n    FUN_14076bd80(lVar4,lVar2,lVar3);\n    (this->LinearInterpolator_data).offset_0x10 = lVar4 + lVar3;\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:46:18Z"
+}

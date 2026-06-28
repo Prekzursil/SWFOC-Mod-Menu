@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051fa20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14051fa23        int32_t* rdx = arg1[1]\n14051fa2b        if (rdx == arg1[2])\n14051fa42        return sub_140514000(arg1, rdx, arg2) __tailcall\n14051fa30        *rdx = *arg2\n14051fa36        rdx[1] = arg2[1]\n14051fa3d        arg1[1] = &rdx[2]\n14051fa41        return &rdx[2]",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025bb00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawTextClass::vfunction12(DrawTextClass *this)\n\n{\n  longlong *plVar1;\n  DrawTextClass *local_res8 [4];\n  \n  local_res8[0] = this;\n  FUN_140046fc0(&PTR_vftable_140a16ce8,local_res8);\n  plVar1 = (this->DrawTextClass_data).offset_0x68;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 0x60))(plVar1,1);\n    local_res8[0] = (DrawTextClass *)(this->DrawTextClass_data).offset_0x68;\n    FUN_140046fc0(&PTR_vftable_140a16ce8,local_res8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:18Z"
+}

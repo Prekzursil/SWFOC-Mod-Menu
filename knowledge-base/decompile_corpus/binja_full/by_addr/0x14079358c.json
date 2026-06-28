@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079358c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793596        int64_t arg_8 = arg1\n1407935c2        int64_t rax = try_get_function(2, \"EnumSystemLocalesEx\", &data_1408d81f8, \"EnumSystemLocalesEx\")\n1407935ca        if (rax != 0)\n140793620        return rax(arg_8, zx.q(arg2), arg3, arg4)\n1407935e6        int64_t* var_18 = &arg_8\n1407935ff        int32_t var_24 = 4\n140793608        int32_t var_20 = 4\n14079360c        void var_28\n14079360c        return __crt_seh_guarded_call<class <lambda_48fc4a32460bb0512d3b13f8499328be>,class <lambda_6c3dac0a4f3f9cefca9bb494422f9b77>& __ptr64,class <lambda_0a2f2c9f9a56eb2b08bfa6ff61d331c5>,int32_t>::operator()<class <lambda_48fc4a32460bb0512d3b13f8499328be>,class <lambda_6c3dac0a4f3f9cefca9bb494422f9b77>& __ptr64,class <lambda_0a2f2c9f9a56eb2b08bfa6ff61d331c5> >(&var_28, &var_20, &var_18, &var_24)",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

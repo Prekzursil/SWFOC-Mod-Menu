@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f17d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f17e3        char result = (*(*arg1 + 0x28))()\n1406f17e8        if (result == 0)\n1406f17f4        return result\n1406f1807        if (*(arg1 + 0x196) == 0)\n1406f1820        return sub_1406f13b0(arg1, arg2)\n1406f1821        char rax_2 = sub_1406f02c0(arg1, arg2)\n1406f1832        sub_14048e4d0(arg1, arg2, nullptr)\n1406f184a        return zx.q(rax_2)",
+  "fetched_at": "2026-04-26T17:26:24Z"
+}

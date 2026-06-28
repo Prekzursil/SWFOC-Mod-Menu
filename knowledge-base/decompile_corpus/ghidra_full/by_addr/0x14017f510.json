@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017f510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_14017f510(undefined4 *param_1)\n\n{\n  _DAT_140a6ee74 = *param_1;\n  _DAT_140a6ee78 = param_1[1];\n  _DAT_140a6ee7c = param_1[2];\n  _DAT_140a6ee80 = param_1[3];\n  _DAT_140a6ee84 = param_1[4];\n  _DAT_140a6ee88 = param_1[5];\n  _DAT_140a6ee8c = param_1[6];\n  _DAT_140a6ee90 = param_1[7];\n  _DAT_140a6ee94 = param_1[8];\n  _DAT_140a6ee98 = param_1[9];\n  _DAT_140a6ee9c = param_1[10];\n  _DAT_140a6eea0 = param_1[0xb];\n  _DAT_140a6eea4 = *param_1;\n  _DAT_140a6eea8 = param_1[4];\n  _DAT_140a6eeac = param_1[8];\n  _DAT_140a6eeb0 = 0;\n  _DAT_140a6eeb4 = param_1[1];\n  _DAT_140a6eeb8 = param_1[5];\n  _DAT_140a6eebc = param_1[9];\n  _DAT_140a6eec0 = 0;\n  _DAT_140a6eec4 = param_1[2];\n  _DAT_140a6eec8 = param_1[6];\n  _DAT_140a6eecc = param_1[10];\n  _DAT_140a6eed0 = 0;\n  _DAT_140a6eed4 = param_1[3];\n  _DAT_140a6eed8 = param_1[7];\n  _DAT_140a6eedc = param_1[0xb];\n  _DAT_140a6eee0 = DAT_1407ffaf8;\n  DAT_140a6eb61 = 1;\n  _DAT_140a6eb63 = 0x1010101;\n  DAT_140a6eb67 = 1;\n  DAT_140a6eb69 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002dc80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nSingletonInstance<class_MousePointerClass>::vfunction1\n          (SingletonInstance<class_MousePointerClass> *this)\n\n{\n  SingletonInstance<class_MousePointerClass>_vftable *pSVar1;\n  \n  if (this[1].vftablePtr != (SingletonInstance<class_MousePointerClass>_vftable *)0x0) {\n    SingletonInstance<class_DatabaseConversionSystemClass>::\n    ~SingletonInstance<class_DatabaseConversionSystemClass>\n              ((SingletonInstance<class_DatabaseConversionSystemClass> *)this);\n    pSVar1 = this[1].vftablePtr;\n    if (pSVar1 != (SingletonInstance<class_MousePointerClass>_vftable *)0x0) {\n      DynamicVectorClass<class_SmartPtr<class_TextureClass>_>::\n      DynamicVectorClass<class_SmartPtr<class_TextureClass>_>_Constructor_or_Destructor\n                ((char *)pSVar1);\n      thunk_FUN_1407864b8(pSVar1,0x10c8);\n    }\n    this[1].vftablePtr = (SingletonInstance<class_MousePointerClass>_vftable *)0x0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064f400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nGameObjectTypePerceptualEvaluatorClass * __thiscall\nGameObjectTypePerceptualEvaluatorClass::GameObjectTypePerceptualEvaluatorClass\n          (GameObjectTypePerceptualEvaluatorClass *this)\n\n{\n  PerceptualEvaluatorClass::~PerceptualEvaluatorClass((PerceptualEvaluatorClass *)this);\n  (this->GameObjectTypePerceptualEvaluatorClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_SignalGeneratorClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:55Z"
+}

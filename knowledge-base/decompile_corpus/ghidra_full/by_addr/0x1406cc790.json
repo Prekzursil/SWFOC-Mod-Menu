@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1406cc790(longlong param_1,longlong param_2,undefined8 param_3)\n\n{\n  byte bVar1;\n  char cVar2;\n  \n  if ((((((param_1 != 0) && (param_2 != 0)) && (param_1 != param_2)) &&\n       ((bVar1 = *(byte *)(param_2 + 0x3a0), (bVar1 & 0x40) == 0 && (-1 < (char)bVar1)))) &&\n      (((bVar1 & 2) == 0 &&\n       ((*(char *)(param_2 + 0x33a) == -1 && (*(char *)(param_2 + 0x333) != -1)))))) &&\n     ((*(longlong *)(param_2 + 0x2a0) != 0 && (*(char *)(param_2 + 0x3a7) == '\\0')))) {\n    cVar2 = FUN_14039f300(param_2,param_3,0,0,0);\n    if (cVar2 != '\\0') {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:41:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140431b50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_140431b50(longlong param_1,float param_2)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  undefined8 uVar4;\n  int iVar5;\n  longlong lVar6;\n  float fVar7;\n  float fVar8;\n  \n  iVar5 = 0;\n  fVar7 = 0.0;\n  lVar1 = *(longlong *)(*(longlong *)(param_1 + 0x28) + 0xc0);\n  if (0 < *(int *)(lVar1 + 0x18)) {\n    lVar6 = 0;\n    fVar8 = fVar7;\n    do {\n      plVar2 = *(longlong **)(lVar6 + *(longlong *)(lVar1 + 0x10));\n      if (*(char *)((longlong)plVar2 + 0x336) == -1) {\n        fVar7 = *(float *)(plVar2[0x53] + 0x1a00);\n      }\n      else {\n        uVar4 = (**(code **)(*plVar2 + 0x10))(plVar2,4);\n        lVar3 = *(longlong *)(*(longlong *)(lVar6 + *(longlong *)(lVar1 + 0x10)) + 0xc0);\n        fVar7 = (float)FUN_140431b50(uVar4,*(undefined4 *)(lVar3 + 0x78));\n        *(float *)(lVar3 + 0x78) = fVar7;\n      }\n      if (fVar7 == param_2) {\n        return param_2;\n      }\n      if (fVar7 <= fVar8) {\n        fVar7 = fVar8;\n      }\n      iVar5 = iVar5 + 1;\n      lVar6 = lVar6 + 8;\n      fVar8 = fVar7;\n    } while (iVar5 < *(int *)(lVar1 + 0x18));\n  }\n  return fVar7;\n}",
+  "fetched_at": "2026-04-26T17:50:53Z"
+}

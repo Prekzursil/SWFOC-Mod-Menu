@@ -1,0 +1,7 @@
+{
+  "addr": "0x140440b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140440b14        int32_t rdx = *(arg1 + 0x4c)\n140440b1d        int64_t* result\n140440b1d        if (rdx == 0x3fffff)\n140440b6a        result = sub_1402aca60(*(data_140b15418 + 0x18), *(arg1 + 0x48))\n140440b6f        int64_t* result_1 = result\n140440b75        if (result != 0)\n140440b7e        int64_t rdx_3\n140440b7e        if (*(result + 0x382) != 0xff)\n140440ba0        rdx_3 = 0x50\n140440bab        label_140440bab:\n140440bab        result = (*(*result + 0x10))(result_1, rdx_3)\n140440bb1        if (result != 0)\n140440bc5        return sub_140444ab0(result, result_1, 0) __tailcall\n140440b87        if (*(result + 0x381) != 0xff)\n140440b99        rdx_3 = 0x4f\n140440b9e        goto label_140440bab\n140440b90        if (result[0x71].b != 0xff)\n140440b92        rdx_3 = 0x56\n140440b97        goto label_140440bab\n140440b2a        result = sub_1402aca60(*(data_140b15418 + 0x18), rdx)\n140440b36        if (*(result + 0x383) != 0xff)\n140440b3c        int64_t r8 = *result\n140440b52        return sub_140444490((*(r8 + 0x10))(result, 0x51, r8)) __tailcall\n140440bd3        return result",
+  "fetched_at": "2026-04-26T17:27:17Z"
+}

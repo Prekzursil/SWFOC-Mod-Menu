@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b580",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025b597        struct DrawPrimitiveClass::DrawTextClass::VTable** result = operator new(0xc8)\n14025b5a2        if (result == 0)\n14025b65e        return 0\n14025b5ae        sub_14026ec70(result, arg1)\n14025b5bb        sub_14026ccb0(&result[0xa], arg1 + 0x50)\n14025b5c7        struct DrawPrimitiveClass::TextureRectClass::VTable** rdi = nullptr\n14025b5c9        *result = &DrawTextClass::`vftable'{for `DrawPrimitiveClass'}\n14025b5da        result[9].d = 0\n14025b5e4        result[8] = &DrawTextClass::`vftable'{for `RefCountClass'}\n14025b5e8        sub_1401f9320(&result[0x14], arg1 + 0xa0)\n14025b5fb        sub_1401f9320(&result[0x16], arg1 + 0xb0)\n14025b600        result[0x18] = 0\n14025b60e        if (*(arg1 + 0xc0) != 0)\n14025b615        struct DrawPrimitiveClass::VTable** rax = operator new(0x90)\n14025b61d        if (rax != 0)\n14025b62e        rdi = sub_1401caf90(rax, *(arg1 + 0xc0))\n14025b631        result[0x18] = rdi\n14025b64a        return result",
+  "fetched_at": "2026-04-26T17:31:03Z"
+}

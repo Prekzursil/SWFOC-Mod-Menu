@@ -1,0 +1,7 @@
+{
+  "addr": "0x140220520",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140220520(longlong param_1)\n\n{\n  int *piVar1;\n  int iVar2;\n  int iVar3;\n  uint uVar4;\n  \n  iVar3 = *(int *)(param_1 + 0x10);\n  uVar4 = *(uint *)(*(longlong *)(param_1 + 0x20) + -4 + (longlong)iVar3 * 8) & 0x7fffffff;\n  iVar2 = *(int *)(*(longlong *)(param_1 + 0x18) + -4 + (longlong)iVar3 * 4);\n  if (iVar2 < (int)uVar4) {\n    (**(code **)(**(longlong **)(param_1 + 8) + 0x38))(*(longlong **)(param_1 + 8),uVar4 - iVar2,1);\n    iVar3 = *(int *)(param_1 + 0x10);\n  }\n  iVar2 = iVar3 + -1;\n  *(int *)(param_1 + 0x10) = iVar2;\n  if (0 < iVar2) {\n    iVar2 = uVar4 + 8;\n    piVar1 = (int *)(*(longlong *)(param_1 + 0x18) + (longlong)iVar3 * 4 + -8);\n    *piVar1 = *piVar1 + iVar2;\n  }\n  return CONCAT71((uint7)(uint3)((uint)iVar2 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:03:17Z"
+}

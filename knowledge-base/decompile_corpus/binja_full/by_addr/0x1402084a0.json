@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402084a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402084ad        char* rbx = arg2\n1402084b0        int64_t rcx = *(arg1 + 0x20)\n1402084b7        if (rcx != 0)\n1402084b9        j_sub_1407864b8(rcx)\n1402084be        *(arg1 + 0x20) = 0\n1402084c9        if (rbx == 0)\n1402084c9        return \n1402084cb        int64_t rax_1 = -1\n1402084d2        rax_1 += 1\n1402084d9        do while (rbx[rax_1] != 0)\n1402084e0        char* rax = j_operator new(sx.q(rax_1.d + 1))\n1402084e5        *(arg1 + 0x20) = rax\n1402084ff        char i\n1402084f0        i = *rbx\n1402084f3        rbx = &rbx[1]\n1402084f7        *rax = i\n1402084f9        rax = &rax[1]\n1402084ff        do while (i != 0)\n14020850b        return ",
+  "fetched_at": "2026-04-26T17:27:59Z"
+}

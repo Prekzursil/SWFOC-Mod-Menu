@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404509b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404509bf        if ((arg2 & 2) == 0)\n140450a8e        sub_140450590(arg1)\n140450a97        if ((arg2 & 1) != 0)\n140450aa1        j_sub_1407864b8(arg1)\n140450aaf        return arg1\n1404509ca        int64_t i = arg1[-1]\n1404509db        void* rbx_1 = &arg1[i * 3]\n1404509e2        while (i != 0)\n140450a00        int64_t lpMem = *(rbx_1 - 0x10)\n140450a04        rbx_1 -= 0x18\n140450a08        i -= 1\n140450a0b        *rbx_1 = &DynamicVectorClass<class StoryEventClass* __ptr64>::`vftable'\n140450a11        if (lpMem != 0)\n140450a1a        if ((*(rbx_1 + 0x14) & 0x80000000) == 0)\n140450a35        j_sub_1407864b8(lpMem)\n140450a2a        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140450a3a        *(rbx_1 + 0x14) &= 0x80000000\n140450a41        *(rbx_1 + 8) = 0\n140450a45        *(rbx_1 + 0x10) = 0\n140450a66        if ((arg2 & 1) != 0)\n140450a7a        j_sub_1407864b8(&arg1[-1])\n140450a8d        return &arg1[-1]",
+  "fetched_at": "2026-04-26T17:27:38Z"
+}

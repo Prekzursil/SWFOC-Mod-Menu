@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013f32e        struct alTexture::alD3dTexture::VTable** result = operator new(0x98)\n14013f336        if (result == 0)\n14013f359        return result\n14013f353        return sub_14018d090(result, arg1, nullptr, 0, 1)",
+  "fetched_at": "2026-04-26T17:18:56Z"
+}

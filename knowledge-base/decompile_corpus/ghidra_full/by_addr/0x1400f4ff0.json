@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400f4ff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400f4ff0(undefined4 *param_1)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  undefined8 *puVar5;\n  longlong lVar6;\n  \n  plVar1 = (longlong *)(param_1 + 2);\n  *param_1 = 0xffffffff;\n  *(undefined8 *)(param_1 + 6) = 0;\n  plVar4 = plVar1;\n  if (0xf < *(ulonglong *)(param_1 + 8)) {\n    plVar4 = (longlong *)*plVar1;\n  }\n  *(undefined1 *)plVar4 = 0;\n  *(undefined1 *)(param_1 + 10) = 0;\n  *(undefined8 *)(param_1 + 0xb) = 0;\n  *(undefined8 *)(param_1 + 0xd) = 0;\n  *(undefined8 *)(param_1 + 0x18) = 0;\n  *(undefined8 *)(param_1 + 0x1a) = 0;\n  puVar5 = (undefined8 *)(param_1 + 0x10);\n  *(undefined8 *)(param_1 + 0x14) = 0;\n  if (7 < *(ulonglong *)(param_1 + 0x16)) {\n    puVar5 = (undefined8 *)*puVar5;\n  }\n  *(undefined2 *)puVar5 = 0;\n  FID_conflict__Tidy_deallocate();\n  uVar2 = *(ulonglong *)(param_1 + 8);\n  if (0xf < uVar2) {\n    lVar3 = *plVar1;\n    lVar6 = lVar3;\n    if (0xfff < uVar2 + 1) {\n      lVar6 = *(longlong *)(lVar3 + -8);\n      if (0x1f < (lVar3 - lVar6) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar3 - lVar6,uVar2 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar6);\n  }\n  *(undefined8 *)(param_1 + 6) = 0;\n  *(undefined8 *)(param_1 + 8) = 0xf;\n  *(undefined1 *)plVar1 = 0;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:04Z"
+}

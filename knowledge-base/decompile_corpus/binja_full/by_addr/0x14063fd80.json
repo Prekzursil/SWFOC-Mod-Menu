@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063fd80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063fd87        return \"VehicleThiefBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:02:47Z"
+}

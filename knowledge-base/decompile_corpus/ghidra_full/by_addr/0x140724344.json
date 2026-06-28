@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724344",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryPlotWrapper::vfunction1(StoryPlotWrapper *this,uint param_1)\n\n{\n  StoryEventWrapper::scalar_deleting_destructor((StoryEventWrapper *)&this[-1].offset_0x68,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:43Z"
+}

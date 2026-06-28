@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a88a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void DynamicVectorClass<class_GameObjectClass*___ptr64>::\n     DynamicVectorClass<class_GameObjectClass*___ptr64>_Constructor_or_Destructor(longlong param_1)\n\n{\n  HANDLE hHeap;\n  DynamicVectorClass<class_GameObjectClass*___ptr64>_vftable *local_2a8;\n  longlong *local_2a0;\n  undefined4 local_298;\n  uint local_294;\n  undefined8 local_290;\n  undefined4 local_288;\n  undefined1 local_278 [624];\n  \n  SetUnitAbilityModeEventClass::SetUnitAbilityModeEventClass\n            ((SetUnitAbilityModeEventClass *)local_278,0);\n  local_2a8 = &vftable;\n  local_2a0 = (longlong *)0x0;\n  local_294 = 0;\n  local_2a0 = (longlong *)thunk_FUN_140769c58(0x50);\n  local_294 = local_294 & 0x8000000a | 10;\n  *local_2a0 = param_1;\n  local_298 = 1;\n  local_290 = 0;\n  local_288 = 0;\n  FUN_1404305d0(local_278,&local_2a8,3,*(undefined4 *)(param_1 + 0x58),&local_290,1,0x3fffff);\n  SetUnitAbilityModeEventClass::vfunction5((SetUnitAbilityModeEventClass *)local_278);\n  *(undefined1 *)(param_1 + 0x3ca) = 1;\n  local_2a8 = &vftable;\n  if (local_2a0 != (longlong *)0x0) {\n    if ((local_294 & 0x80000000) == 0) {\n      thunk_FUN_1407864b8();\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,local_2a0);\n    }\n    local_294 = local_294 & 0x80000000;\n    local_2a0 = (longlong *)0x0;\n    local_298 = 0;\n  }\n  DynamicVectorClass<int>::~DynamicVectorClass<int>((DynamicVectorClass<int> *)(local_278 + 0x30));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:42Z"
+}

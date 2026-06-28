@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637fe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140637feb        struct BehaviorClass::DynamicTransformBehaviorClass::VTable** result = operator new(0x40)\n140637ff6        if (result == 0)\n14063802e        return result\n140637ffb        sub_1404c32d0(result)\n140638007        *result = &DynamicTransformBehaviorClass::`vftable'{for `BehaviorClass'}\n140638011        result[1] = &DynamicTransformBehaviorClass::`vftable'{for `RefCountClass'}\n14063801c        result[3] = &DynamicTransformBehaviorClass::`vftable'{for `SignalListenerClass'}\n140638028        return result",
+  "fetched_at": "2026-04-26T17:01:14Z"
+}

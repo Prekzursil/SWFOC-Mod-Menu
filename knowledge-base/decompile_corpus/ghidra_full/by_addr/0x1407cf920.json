@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cf920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407cf920(undefined8 param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  \n  FUN_1407ce130(param_1,1);\n  iVar1 = FUN_1407b9b70(param_1,1);\n  if (iVar1 == 0) {\n    uVar2 = FUN_1407ce8c0(param_1,2,\"assertion failed!\",0);\n    uVar2 = FUN_1407ce300(param_1,&DAT_140802464,uVar2);\n    return uVar2;\n  }\n  FUN_1407b9ab0(param_1,1);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:57:56Z"
+}

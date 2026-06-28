@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079f908",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079f913        void var_58\n14079f913        int64_t rax_1 = __security_cookie ^ &var_58\n14079f91b        uint64_t i = 0\n14079f91d        char* r9 = arg2\n14079f920        bool cond:0 = false\n14079f924        char* result = arg1\n14079f935        char var_38[0x20]\n14079f927        if (cond:0)\n14079f9a0        __report_rangecheckfailure()\n14079f9a0        noreturn\n14079f929        var_38[i] = 0\n14079f92e        i += 1\n14079f931        cond:0 = i u>= 0x20\n14079f935        do while (i s< 0x20)\n14079f937        i.b = *arg2\n14079f95c        while (i.b != 0)\n14079f93e        uint64_t rdx_1 = zx.q(i.b) u>> 3\n14079f950        r9 = &r9[1]\n14079f953        var_38[rdx_1] |= (1 << ((zx.d(i.b) & 7) u% 0x20)).b\n14079f957        i.b = *r9\n14079f97f        while (true)\n14079f97f        r9.b = *result\n14079f985        if (r9.b == 0)\n14079f991        __security_check_cookie(rax_1 ^ &var_58)\n14079f99a        return nullptr\n14079f97a        if ((var_38[zx.q(r9.b) u>> 3] & (1 << (r9.b & 7)).b) != 0)\n14079f991        __security_check_cookie(rax_1 ^ &var_58)\n14079f99a        return result\n14079f97c        result = &result[1]",
+  "fetched_at": "2026-04-26T17:32:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d050",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d050        uint64_t __security_cookie_1 = __security_cookie\n14078d066        int64_t rdx_1 = ror.q(__security_cookie_1 ^ data_140b3c490, __security_cookie_1.b & 0x3f)\n14078d06c        if (rdx_1 != 0)\n14078d070        return rdx_1(arg1, rdx_1) __tailcall\n14078d070        return 0",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402fca50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402fca56        bool cond:0 = *(arg1 + 0x211c) != 1\n1402fca60        int64_t arg_8 = 0\n1402fca69        if (cond:0)\n1402fca69        return \n1402fca6f        char rax_1 = *(arg1 + 0x2a34)\n1402fca89        char const* const rbx_1 = \"day_clock\"\n1402fca90        if (rax_1 == 0)\n1402fca90        rbx_1 = \"fight_bar_g\"\n1402fcabd        float var_28\n1402fcabd        sub_14034be40(sub_140347b50(sbb.d(0x4085d4e0, 0x4085d4e0, rax_1 != 0) & 0x2b2), rbx_1, &var_28)\n1402fcad5        var_28 = floorf(var_28) + 0.5f\n1402fcaee        void* r14_1 = arg1 + 0x21c8\n1402fcaf5        int64_t i_1 = 0xa\n1402fcafd        float var_24\n1402fcafd        float var_24_1 = floorf(var_24) + 0.5f\n1402fcb84        int64_t i\n1402fcb03        void* rbx_2 = *r14_1\n1402fcb09        float* rax_3 = sub_14034c660(rbx_2)\n1402fcb2c        sub_140261e40(*(arg1 + 0xfc0), &var_28, &arg_8, &arg_8:4, nullptr)\n1402fcb42        void* r9_1\n1402fcb42        r9_1.b = 1\n1402fcb5b        arg_8.d = arg_8.d f* *(arg1 + 0x1008)\n1402fcb61        arg_8:4.d = arg_8:4.d f* *(arg1 + 0x100c)\n1402fcb67        sub_140352650(rbx_2, &arg_8, nullptr, r9_1.b)\n1402fcb72        r14_1 += 8\n1402fcb7a        var_28 = var_28 + *rax_3\n1402fcb80        i = i_1\n1402fcb80        i_1 -= 1\n1402fcb84        do while (i != 1)\n1402fcba8        return ",
+  "fetched_at": "2026-04-26T17:23:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a82e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a82ea        int32_t r8 = arg1[4]\n1401a82f7        if (r8 == 0)\n1401a8308        return 0x80004005\n1401a8313        int32_t* rdi = *(arg1 + 8)\n1401a831a        int32_t rcx\n1401a831a        if (rdi != 0)\n1401a831c        rcx = arg1[5]\n1401a8325        if (rdi == 0 || rcx + 1 u> arg1[6])\n1401a8327        int32_t rsi_1 = arg1[6]\n1401a832c        int32_t rsi_2\n1401a832c        if (rsi_1 != 0)\n1401a8335        rsi_2 = rsi_1 * 2\n1401a832e        rsi_2 = 0x10\n1401a833e        int32_t* rax_3 = j_operator new(zx.q(r8 * rsi_2))\n1401a8343        rdi = rax_3\n1401a8349        if (rax_3 == 0)\n1401a834b        return 0x8007000e\n1401a8352        int32_t* rdx = *(arg1 + 8)\n1401a8359        if (rdx != 0)\n1401a8367        memcpy(rdi, rdx, zx.q(arg1[5] * arg1[4]))\n1401a8370        j_sub_1407864b8(*(arg1 + 8))\n1401a8375        rcx = arg1[5]\n1401a8378        *(arg1 + 8) = rdi\n1401a837c        arg1[6] = rsi_2\n1401a8382        if (*arg1 != 0)\n1401a839c        *(rdi + (zx.q(rcx) << 3)) = arg2\n1401a8384        int32_t rax_5 = arg1[4]\n1401a8393        memcpy(zx.q(rcx * rax_5) + rdi, arg2, zx.q(rax_5))\n1401a83a0        arg1[5] += 1\n1401a83a3        return 0",
+  "fetched_at": "2026-04-26T17:25:17Z"
+}

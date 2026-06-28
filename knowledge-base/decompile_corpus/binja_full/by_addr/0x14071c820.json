@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c820",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_shield_flare",
+  "body": "14071c826        struct SpecialAbilityClass::ShieldFlareAbilityClass::VTable** result = arg1\n14071c829        sub_14048c780(arg1)\n14071c835        *result = &ShieldFlareAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071c83f        result[1] = &ShieldFlareAbilityClass::`vftable'{for `RefCountClass'}\n14071c845        result[0x2f] = 0\n14071c84c        result[0x30].d = 0\n14071c85a        return result",
+  "fetched_at": "2026-04-26T16:44:21Z"
+}

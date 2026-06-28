@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013ffa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alRenderable * __thiscall alRenderable::scalar_deleting_destructor(alRenderable *this,uint param_1)\n\n{\n                    /* inlined destructor: alRenderable::~alRenderable */\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n                    /* inlined destructor: CullObjectClass::~CullObjectClass */\n  this->vftablePtr = (alRenderable_vftable_for_CullObjectClass *)&CullObjectClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (alRenderable_vftable_for_RefCountClass *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,200);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:19:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034bf80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* IconComponentClass member function inherited by ButtonComponentClass\n   IconComponentClass member function inherited by TextButtonComponentClass */\n\nIconComponentClass_data * __thiscall IconComponentClass::vfunction32(IconComponentClass *this)\n\n{\n  return &this->IconComponentClass_data;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:20Z"
+}

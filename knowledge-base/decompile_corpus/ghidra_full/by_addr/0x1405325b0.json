@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405325b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RetreatEventClass::vfunction5(RetreatEventClass *this)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  char cVar3;\n  \n  plVar2 = *(longlong **)(DAT_140b15418 + 0x30);\n  if (plVar2 != (longlong *)0x0) {\n    cVar3 = (this->RetreatEventClass_data).offset_0x0;\n    if (cVar3 == '\\x01') {\n      iVar1 = (this->EventClass_data).offset_0xc;\n      if (*(int *)((longlong)plVar2 + 0x1c) == iVar1) {\n                    /* WARNING: Could not recover jumptable at 0x0001405325f0. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n        (**(code **)(*plVar2 + 0x78))(plVar2,iVar1,1);\n        return;\n      }\n    }\n    else if (cVar3 == '\\0') {\n      cVar3 = FUN_1403400b0(plVar2);\n      if (cVar3 == '\\0') {\n        (**(code **)(*plVar2 + 0x70))(plVar2,(this->EventClass_data).offset_0xc);\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:19Z"
+}

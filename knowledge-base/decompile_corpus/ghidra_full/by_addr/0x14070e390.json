@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070e390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SiphonCreditsAbilityClass * __thiscall\nSiphonCreditsAbilityClass::SiphonCreditsAbilityClass(SiphonCreditsAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->SiphonCreditsAbilityClass_data).offset_0x0 = 0;\n  (this->SiphonCreditsAbilityClass_data).offset_0x8 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:54:44Z"
+}

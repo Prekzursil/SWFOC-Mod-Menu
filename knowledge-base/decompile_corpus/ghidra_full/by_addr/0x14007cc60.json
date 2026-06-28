@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007cc60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14007cc60(void)\n\n{\n                    /* WARNING: Subroutine does not return */\n  FUN_1407408dc(\"deque<T> too long\");\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:05Z"
+}

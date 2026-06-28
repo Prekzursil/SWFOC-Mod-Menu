@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403726f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1403726f0(longlong param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  \n  if (param_2 == 0) {\n    return *(int *)(param_1 + 0x92c) + *(int *)(param_1 + 0x928);\n  }\n  lVar1 = *(longlong *)(param_2 + 0xb8);\n  if (lVar1 == 0) {\n    return *(int *)(param_1 + 0x92c) + *(int *)(param_1 + 0x928);\n  }\n  return *(int *)(lVar1 + 0x230) + *(int *)(lVar1 + 0x234);\n}",
+  "fetched_at": "2026-04-26T17:16:09Z"
+}

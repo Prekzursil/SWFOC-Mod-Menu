@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055c590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14055c5a3        *arg1 = &SpawnSquadronDataPackClass::`vftable'{for `BaseDataPackClass'}\n14055c5a9        *(arg1 + 0x64) = 0\n14055c5ac        void* rcx = arg1[7]\n14055c5b3        if (rcx == 0)\n14055c5b3        goto label_14055c5f2\n14055c5c7        if (((arg1[9] - rcx) & 0xfffffffffffffffc) u< 0x1000)\n14055c5c7        goto label_14055c5e1\n14055c5c9        void* r8_1 = *(rcx - 8)\n14055c5dc        if (rcx - r8_1 - 8 u<= 0x1f)\n14055c5de        rcx = r8_1\n14055c5e1        label_14055c5e1:\n14055c5e1        j_sub_1407864b8(rcx)\n14055c5e6        __builtin_memset(&arg1[7], 0, 0x18)\n14055c5f2        label_14055c5f2:\n14055c5f2        void* rcx_3 = arg1[4]\n14055c5f9        if (rcx_3 == 0)\n14055c646        return sub_140369ff0(&arg1[1]) __tailcall\n14055c60d        if (((arg1[6] - rcx_3) & 0xfffffffffffffff8) u< 0x1000)\n14055c60d        goto label_14055c627\n14055c60f        void* r8_2 = *(rcx_3 - 8)\n14055c622        if (rcx_3 - r8_2 - 8 u<= 0x1f)\n14055c624        rcx_3 = r8_2\n14055c627        label_14055c627:\n14055c627        j_sub_1407864b8(rcx_3)\n14055c62c        __builtin_memset(&arg1[4], 0, 0x18)\n14055c646        return sub_140369ff0(&arg1[1]) __tailcall\n14055c64b        _invalid_parameter_noinfo_noreturn()\n14055c64b        noreturn",
+  "fetched_at": "2026-04-26T17:34:23Z"
+}

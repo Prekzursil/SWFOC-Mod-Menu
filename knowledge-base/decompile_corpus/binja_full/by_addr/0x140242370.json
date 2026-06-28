@@ -1,0 +1,7 @@
+{
+  "addr": "0x140242370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024238b        int32_t r10_2 = (arg3[2].d ^ 0xdeadbeef) & 0x7fffffff\n1402423b2        int32_t rax_1 = r10_2 u/ 0x1f31d * 0xb14\n1402423b9        int32_t rcx = r10_2 u% 0x1f31d * 0x41a7\n1402423c0        int32_t rcx_1 = rcx - rax_1\n1402423c2        int32_t rax_2 = rcx_1 + 0x7fffffff\n1402423c8        if (rcx - rax_1 s>= 0)\n1402423c8        rax_2 = rcx_1\n1402423d6        int64_t* rdx_4 = ((sx.q(rax_2) & *(arg1 + 0x30)) << 4) + *(arg1 + 0x18)\n1402423da        int64_t rax_3 = *rdx_4\n1402423e1        if (rdx_4[1] != arg3)\n140242402        if (rax_3 == arg3)\n140242407        *rdx_4 = *arg3\n1402423e6        if (rax_3 != arg3)\n1402423f9        rdx_4[1] = arg3[1]\n1402423e8        int64_t rax_4 = *(arg1 + 8)\n1402423ec        *rdx_4 = rax_4\n1402423ef        rdx_4[1] = rax_4\n14024240a        void* rbx = *arg3\n140242412        *(arg1 + 0x10) -= 1\n14024241d        *arg3[1] = rbx\n140242424        *(rbx + 8) = arg3[1]\n140242428        j_sub_1407864b8(arg3)\n14024242d        *arg2 = rbx\n14024243d        return arg2",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

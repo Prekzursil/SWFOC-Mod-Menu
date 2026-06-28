@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038f7b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14038f7b4        void* rdx = *(arg1 + 0x210)\n14038f7c8        if (rdx == 0 || *(rdx + 8) - 1 u> 1)\n14038f7c8        return \n14038f7dd        uint64_t rax = sub_1402aca60(*(data_140b15418 + 0x18), *(rdx + 0xc))\n14038f7e2        uint64_t rbx_1 = rax\n14038f7e8        if (rax == 0)\n14038f7e8        return \n14038f7ea        rax = *(rax + 0x210)\n14038f7f4        if (rax == 0)\n14038f7f9        rax = operator new(zx.q((rax + 0x38).d))\n14038f801        if (rax != 0)\n14038f806        struct BaseDataPackClass::GarrisonDataPackClass::VTable** rax_2 = sub_140563b30(rax)\n14038f80b        *(rbx_1 + 0x210) = rax_2\n14038f817        *(rax_2 + 0x34) -= 1\n14038f81e        return \n14038f81f        *(rbx_1 + 0x210) = rax\n14038f826        *(rax + 0x34) -= 1\n14038f832        return ",
+  "fetched_at": "2026-04-26T17:21:23Z"
+}

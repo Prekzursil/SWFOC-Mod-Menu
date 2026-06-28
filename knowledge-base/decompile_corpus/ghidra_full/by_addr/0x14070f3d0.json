@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070f3d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SystemSpyAbilityClass * __thiscall\nSystemSpyAbilityClass::SystemSpyAbilityClass(SystemSpyAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->SystemSpyAbilityClass_data).offset_0x0 = 0x41f00000;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->SystemSpyAbilityClass_data).offset_0x8 = 0;\n  (this->SystemSpyAbilityClass_data).offset_0x10 = 0;\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 0x101;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 6;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:54:58Z"
+}

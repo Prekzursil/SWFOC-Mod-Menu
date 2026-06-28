@@ -1,0 +1,7 @@
+{
+  "addr": "0x140570460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140570478        *arg1 = &GameObjectWrapper::`vftable'{for `LuaUserVar'}\n140570485        arg1[5] = &GameObjectWrapper::`vftable'{for `SignalListenerClass'}\n140570489        sub_14057f310(arg1)\n14057048e        int64_t* rcx = arg1[0xc]\n140570495        if (rcx != 0)\n14057049a        (*(*rcx + 8))(rcx)\n14057049d        int64_t* rcx_1 = arg1[0xb]\n1405704a4        if (rcx_1 != 0)\n1405704a9        (*(*rcx_1 + 8))(rcx_1)\n1405704b0        sub_1405702a0(&arg1[8])\n1405704c0        arg1[5] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1405704c4        sub_14020a820(&arg1[5])\n1405704cc        sub_140249eb0(arg1)\n1405704d5        if ((arg2 & 1) != 0)\n1405704df        j_sub_1407864b8(arg1)\n1405704f6        return arg1",
+  "fetched_at": "2026-04-26T17:34:57Z"
+}

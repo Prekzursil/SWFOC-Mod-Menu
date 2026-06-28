@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012ef30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* alRenderable member function inherited by alBlob\n   alRenderable member function inherited by alEmitter\n   alRenderable member function inherited by alLightSource\n   alRenderable member function inherited by alRenderableMesh\n   alRenderable member function inherited by alParticles\n   alRenderable member function inherited by alParticleGroup\n   alRenderable member function inherited by alScene\n   alRenderable member function inherited by alSimpleScene\n   alRenderable member function inherited by LineSubClass\n   alRenderable member function inherited by WaypointLineSubClass\n   alRenderable member function inherited by alLaserBeam\n   alRenderable member function inherited by alLaserKite\n   alRenderable member function inherited by alLensFlare\n   alRenderable member function inherited by alSplineRenderer\n   alRenderable member function inherited by al3DCable\n   alRenderable member function inherited by LightningEffectClass\n   alRenderable member function inherited by alRenderablePlane\n   alRenderable member function inherited by alLightningBolt\n   alRenderable member function inherited by alHModel */\n\nundefined8 * __thiscall alRenderable::vfunction2_for_CullObjectClass(alRenderable *this)\n\n{\n  FUN_14013fc40(&this[-1].alRenderable_data.offset_0x10,0);\n  return &this->offset_0x70;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f5f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpecialAbilityActionClass::vfunction13(SpecialAbilityActionClass *this)\n\n{\n  undefined4 uVar1;\n  \n  _guard_check_icall();\n  uVar1 = FUN_14022f9c0((float)DAT_140b0a340 *\n                        *(float *)&(this->SpecialAbilityActionClass_data).offset_0x20);\n  *(undefined4 *)((longlong)&(this->SpecialAbilityActionClass_data).offset_0x20 + 4) = uVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:56Z"
+}

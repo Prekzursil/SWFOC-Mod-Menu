@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222a00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint __thiscall RAMFileClass::vfunction6(RAMFileClass *this,undefined8 param_1,uint param_2)\n\n{\n  undefined8 *puVar1;\n  int iVar2;\n  LPVOID pvVar3;\n  uint uVar4;\n  \n  if (((this->RAMFileClass_data).offset_0x14 != '\\0') &&\n     (pvVar3 = (this->RAMFileClass_data).offset_0x0, pvVar3 != (LPVOID)0x0)) {\n    iVar2 = *(int *)&(this->RAMFileClass_data).offset_0x8;\n    uVar4 = *(int *)((longlong)&(this->RAMFileClass_data).offset_0x8 + 4) - iVar2;\n    if (param_2 < uVar4) {\n      uVar4 = param_2;\n    }\n    FUN_14076bd80(param_1,(longlong)pvVar3 + (longlong)iVar2,uVar4);\n    puVar1 = &(this->RAMFileClass_data).offset_0x8;\n    *(uint *)puVar1 = *(int *)puVar1 + uVar4;\n    return uVar4;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:03:58Z"
+}

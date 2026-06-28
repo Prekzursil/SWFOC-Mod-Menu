@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390cf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390cf0(longlong param_1)\n\n{\n  ProjectileDataPackClass *pPVar1;\n  \n  if (*(longlong *)(param_1 + 0xe8) == 0) {\n    pPVar1 = (ProjectileDataPackClass *)FUN_140769c58(0xb8);\n    if (pPVar1 != (ProjectileDataPackClass *)0x0) {\n      pPVar1 = ProjectileDataPackClass::ProjectileDataPackClass(pPVar1);\n      *(ProjectileDataPackClass **)(param_1 + 0xe8) = pPVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0xe8) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:58Z"
+}

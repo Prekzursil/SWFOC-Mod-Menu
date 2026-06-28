@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall EvaluateGalacticContextClass::vfunction5(void)\n\n{\n  return &DAT_140a445f0;\n}",
+  "fetched_at": "2026-04-26T18:35:36Z"
+}

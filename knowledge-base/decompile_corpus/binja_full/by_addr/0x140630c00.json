@@ -1,0 +1,7 @@
+{
+  "addr": "0x140630c00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140630c07        return \"SelfDestructBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:24:12Z"
+}

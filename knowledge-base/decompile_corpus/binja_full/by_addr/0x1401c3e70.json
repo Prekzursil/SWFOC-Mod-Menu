@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c3e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c3e87        if (arg2 == 0 || *(arg2 + 0x30) != 0xb)\n1401c3e87        return \n1401c3e9f        int64_t var_18_1 = arg10\n1401c3eaf        char var_20_1 = arg9\n1401c3ebb        char var_28_1 = arg8\n1401c3ed7        sub_1401cb4e0(arg2, arg3, zx.q(arg4), arg5, arg6, arg7)\n1401c3ee1        return ",
+  "fetched_at": "2026-04-26T17:26:21Z"
+}

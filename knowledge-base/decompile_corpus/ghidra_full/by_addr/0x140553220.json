@@ -1,0 +1,7 @@
+{
+  "addr": "0x140553220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "IdleDataPackClass * __thiscall IdleDataPackClass::IdleDataPackClass(IdleDataPackClass *this)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  \n  this->vftablePtr = &vftable;\n  *(undefined4 *)\n   &(this->PooledObjectClass<class_IdleDataPackClass,20,class_EmptyLockerClass>).field_0x4 = 0;\n  (this->IdleDataPackClass_data).offset_0x0 = 0;\n  (this->IdleDataPackClass_data).offset_0x4 = 0;\n  (this->IdleDataPackClass_data).offset_0x8 = 0;\n  (this->IdleDataPackClass_data).offset_0x10 = 0;\n  lVar2 = FUN_140769c58(0x18);\n  puVar1 = &(this->IdleDataPackClass_data).offset_0x18;\n  *(longlong *)lVar2 = lVar2;\n  *(longlong *)(lVar2 + 8) = lVar2;\n  (this->IdleDataPackClass_data).offset_0x8 = lVar2;\n  *puVar1 = 0;\n  (this->IdleDataPackClass_data).offset_0x20 = 0;\n  (this->IdleDataPackClass_data).offset_0x28 = 0;\n  (this->IdleDataPackClass_data).offset_0x30 = 7;\n  (this->IdleDataPackClass_data).offset_0x38 = 8;\n  (this->IdleDataPackClass_data).offset_0x4 = 0x3f800000;\n  FUN_140048250(puVar1,0x10,(this->IdleDataPackClass_data).offset_0x8);\n  (this->IdleDataPackClass_data).offset_0x40 = 0;\n  (this->IdleDataPackClass_data).offset_0x48 = 0;\n  (this->IdleDataPackClass_data).offset_0x4c = 0xffffffff;\n  *(undefined4 *)&this->PooledObjectClass<class_IdleDataPackClass,20,class_EmptyLockerClass> = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:15Z"
+}

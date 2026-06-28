@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014e3f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014e3f0        int32_t* result = arg4\n14014e3f6        if (arg2 != arg3)\n14014e3ff        void* r9 = arg2 + 0x18\n14014e403        void* r10_2 = result - arg2\n14014e410        int32_t rax_1 = *(r9 - 0x18)\n14014e414        r9 += 0x30\n14014e418        *result = rax_1\n14014e41b        result = &result[0xc]\n14014e423        *(r10_2 + r9 - 0x44) = *(r9 - 0x44)\n14014e42c        *(r10_2 + r9 - 0x40) = *(r9 - 0x40)\n14014e435        *(r10_2 + r9 - 0x3c) = *(r9 - 0x3c)\n14014e43e        *(r10_2 + r9 - 0x38) = *(r9 - 0x38)\n14014e447        *(r10_2 + r9 - 0x34) = *(r9 - 0x34)\n14014e450        *(r10_2 + r9 - 0x30) = *(r9 - 0x30)\n14014e459        *(r10_2 + r9 - 0x2c) = *(r9 - 0x2c)\n14014e462        *(r10_2 + r9 - 0x28) = *(r9 - 0x28)\n14014e46b        *(r10_2 + r9 - 0x24) = *(r9 - 0x24)\n14014e474        *(r10_2 + r9 - 0x20) = *(r9 - 0x20)\n14014e47d        *(r10_2 + r9 - 0x1c) = *(r9 - 0x1c)\n14014e489        do while (r9 - 0x18 != arg3)\n14014e48e        return result",
+  "fetched_at": "2026-04-26T17:21:45Z"
+}

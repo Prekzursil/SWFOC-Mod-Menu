@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065a8b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<class_GameObjectClass*___ptr64> * FUN_14065a8b0(void)\n\n{\n  DynamicVectorClass<class_GameObjectClass*___ptr64> *pDVar1;\n  \n  pDVar1 = (DynamicVectorClass<class_GameObjectClass*___ptr64> *)FUN_140769c58(0xe8);\n  if (pDVar1 != (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) {\n    pDVar1 = DynamicVectorClass<class_GameObjectClass*___ptr64>::\n             DynamicVectorClass<class_GameObjectClass*___ptr64>(pDVar1);\n    if (pDVar1 != (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) {\n      (*pDVar1->vftablePtr[8].deleting_destructor)(pDVar1,(ulonglong)pDVar1->vftablePtr);\n      return pDVar1;\n    }\n  }\n  return (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:26Z"
+}

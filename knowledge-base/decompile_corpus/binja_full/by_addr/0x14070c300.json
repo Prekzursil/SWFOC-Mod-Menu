@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070c300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070c30a        struct SpecialAbilityClass::RepairAbilityClass::VTable** result = arg1\n14070c30d        sub_14048c780(arg1)\n14070c322        result[0x2f] = 0\n14070c329        *result = &RepairAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070c33a        result[0x30] = 0\n14070c341        result[1] = &RepairAbilityClass::`vftable'{for `RefCountClass'}\n14070c345        result[0x32] = 0\n14070c349        result[0x33] = 0xf\n14070c351        sub_140022730(&result[0x30], \"Repair_Electicity_Zaps\", 0x16)\n14070c356        result[0x34] = 0\n14070c364        result[0x37] = 0xf\n14070c379        result[0x36] = 0\n14070c38b        __builtin_memcpy(&result[0x3a], \"\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x0f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x01\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\", 0x18)\n14070c396        __builtin_strncpy(&result[0x38], \"B_Turret\", 9)\n14070c3b8        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x3d])\n14070c3c0        result[8].w = 1\n14070c3c6        *(result + 0x3c) = 0xb\n14070c3d7        return result",
+  "fetched_at": "2026-04-26T17:27:30Z"
+}

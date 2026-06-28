@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405247d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405247e3        *arg1 = &TacticalSellBehaviorClass::`vftable'{for `BehaviorClass'}\n1405247f0        arg1[1] = &TacticalSellBehaviorClass::`vftable'{for `RefCountClass'}\n1405247fb        arg1[3] = &TacticalSellBehaviorClass::`vftable'{for `SignalListenerClass'}\n1405247ff        sub_1404c3310(arg1)\n140524807        if ((arg2 & 1) != 0)\n140524811        j_sub_1407864b8(arg1)\n140524823        return arg1",
+  "fetched_at": "2026-04-26T17:33:04Z"
+}

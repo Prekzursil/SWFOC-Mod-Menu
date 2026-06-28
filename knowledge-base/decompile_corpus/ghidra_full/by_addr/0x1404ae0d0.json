@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ae0d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ResumeGameEventClass::vfunction5(ResumeGameEventClass *this)\n\n{\n  FUN_14028c7e0(&DAT_140b153e0,*(undefined1 *)&this[1].vftablePtr);\n  FUN_14028c7c0(&DAT_140b153e0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:06:08Z"
+}

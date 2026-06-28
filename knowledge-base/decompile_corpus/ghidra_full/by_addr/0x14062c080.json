@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062c080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandTeamInfantryLocomotorBehaviorClass::vfunction12(LandTeamInfantryLocomotorBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  undefined *puVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float local_res8;\n  float local_resc;\n  \n  _guard_check_icall();\n  puVar1 = this->offset_0x18[0x15];\n  if ((puVar1 != (undefined *)0x0) && (puVar2 = this->offset_0x18[0x56], puVar2 != (undefined *)0x0)\n     ) {\n    fVar4 = *(float *)(puVar2 + 0x7c);\n    fVar3 = *(float *)(puVar2 + 0x78);\n    FUN_14041c000(puVar2 + 0x84,&local_res8);\n    fVar5 = (float)((uint)local_resc ^ DAT_140800860);\n    fVar4 = *(float *)((longlong)this->offset_0x18 + 0x7c) - fVar4;\n    fVar3 = *(float *)(this->offset_0x18 + 0xf) - fVar3;\n    *(undefined4 *)(puVar1 + 0x11c) = 0;\n    *(float *)(puVar1 + 0x118) = fVar5 * fVar3 + fVar4 * local_res8;\n    *(float *)(puVar1 + 0x114) = fVar3 * local_res8 + fVar4 * local_resc;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:24Z"
+}

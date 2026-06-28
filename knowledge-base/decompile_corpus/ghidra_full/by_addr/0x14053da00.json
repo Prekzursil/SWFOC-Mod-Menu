@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053da00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BehaviorClass * FUN_14053da00(void)\n\n{\n  BehaviorClass *this;\n  float fVar1;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x60);\n  if (this != (BehaviorClass *)0x0) {\n                    /* inlined constructor: HideWhenFoggedBehaviorClass::HideWhenFoggedBehaviorClass\n                        */\n    BehaviorClass::BehaviorClass(this);\n    fVar1 = DAT_1407ffaf8 / DAT_1408054d0;\n    this->vftablePtr = (BehaviorClass_vftable0 *)&HideWhenFoggedBehaviorClass::vftable;\n    *(undefined4 *)&this->field_0x40 = 0x3f800000;\n    this->vftablePtr = (BehaviorClass_vftable1 *)&HideWhenFoggedBehaviorClass::vftable;\n    *(undefined8 *)&this->field_0x44 = 0x3f800000;\n    this->vftablePtr = (BehaviorClass_vftable2 *)&HideWhenFoggedBehaviorClass::vftable;\n    *(undefined4 *)&this->field_0x4c = 0x3e800000;\n    *(undefined2 *)((longlong)&this->offset_0x40 + 4) = 0x100;\n    *(undefined1 *)((longlong)&this->offset_0x40 + 6) = 0;\n    this->offset_0x48 = 0;\n    *(float *)&this->offset_0x40 = fVar1;\n    FUN_1404ad380(&this->offset_0x48,0);\n    return this;\n  }\n  return (BehaviorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:34:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d27c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d27ce        int32_t rax = *(arg1 + 0xc)\n1401d27d1        int32_t rbp = arg4\n1401d27d4        int64_t r14 = sx.q(arg2)\n1401d27e0        if (r14.d s<= rax)\n1401d27ea        if (arg4 == 0xffffffff)\n1401d27f5        rbp = lstrlenW(arg3)\n1401d27f7        rax = *(arg1 + 0xc)\n1401d27fa        int32_t rdx = rax + rbp\n1401d2803        if (rdx s< 0xffff)\n1401d2808        if (rdx s>= arg1[1].d)\n1401d280f        rax = sub_1401d24f0(arg1, rdx + 1)\n1401d2816        if (rdx s< arg1[1].d || rax.b != 0)\n1401d281b        int64_t rcx_2 = *arg1\n1401d282b        int64_t rbx = sx.q(rbp)\n1401d2836        int64_t rdi = r14 * 2\n1401d2846        memcpy(rcx_2 + ((rbx + r14) << 1), rdi + rcx_2, sx.q(*(arg1 + 0xc) - r14.d + 1) * 2)\n1401d2858        memcpy(*arg1 + rdi, arg3, rbx * 2)\n1401d285d        *(arg1 + 0xc) += rbp\n1401d2860        int32_t* rax_6\n1401d2860        rax_6.b = 1\n1401d286c        arg1[3].b = 1\n1401d287e        return rax_6\n1401d2884        rax.b = 0\n1401d288f        return rax",
+  "fetched_at": "2026-04-26T17:26:43Z"
+}

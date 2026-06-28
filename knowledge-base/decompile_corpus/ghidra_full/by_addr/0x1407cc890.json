@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cc890",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407cc890(longlong *param_1,int param_2,int param_3)\n\n{\n  uint uVar1;\n  uint *puVar2;\n  uint uVar3;\n  \n  uVar1 = (param_3 - param_2) - 1;\n  uVar3 = (int)uVar1 >> 0x1f;\n  puVar2 = (uint *)(*(longlong *)(*param_1 + 0x18) + (longlong)param_2 * 4);\n  if (0x1ffff < (int)((uVar1 ^ uVar3) - uVar3)) {\n    FUN_1407be9e0(param_1[3],\"control structure too long\");\n  }\n  *puVar2 = *puVar2 & 0xff00003f;\n  *puVar2 = *puVar2 | ((param_3 - param_2) + 0x1fffe) * 0x40 & 0xffffc0U;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:57:27Z"
+}

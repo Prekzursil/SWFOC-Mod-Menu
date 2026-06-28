@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2a00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401d2a00(void)\n\n{\n  if (DAT_140a7a0a0 != (HMODULE)0x0) {\n    PTR_FUN_140a13608 = FUN_1401d2170;\n    PTR_FUN_140a13610 = FUN_1401d2170;\n    PTR_FUN_140a13618 = FUN_1401d2170;\n    PTR_FUN_140a13620 = FUN_1401d2170;\n    PTR_FUN_140a13628 = FUN_1401d2170;\n    PTR_vfunction19_140a13630 = DrawPrimitiveClass::vfunction19;\n    PTR_vfunction19_140a13638 = DrawPrimitiveClass::vfunction19;\n    FreeLibrary(DAT_140a7a0a0);\n    DAT_140a7a0a0 = (HMODULE)0x0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403911f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403911f0(longlong param_1)\n\n{\n  VehicleThiefDataPackClass *pVVar1;\n  \n  if (*(longlong *)(param_1 + 0x180) == 0) {\n    pVVar1 = (VehicleThiefDataPackClass *)FUN_140769c58(0x18);\n    if (pVVar1 != (VehicleThiefDataPackClass *)0x0) {\n      pVVar1 = VehicleThiefDataPackClass::VehicleThiefDataPackClass(pVVar1);\n      *(VehicleThiefDataPackClass **)(param_1 + 0x180) = pVVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x180) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:07Z"
+}

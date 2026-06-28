@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c30f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c30fa        char rax = *(arg1 + 0x3c4)\n1405c3109        if (arg2 == 0)\n1405c3154        if (rax != 0)\n1405c3156        void* rcx_2 = *(arg1 + 0x3b0)\n1405c315d        int64_t rdx_1 = *(rcx_2 + 0x10)\n1405c3164        if (rdx_1 != 0)\n1405c3166        int64_t* rcx_3 = *(rcx_2 + 8)\n1405c316d        if (rcx_3 != 0)\n1405c3172        rax = (*(*rcx_3 + 0x30))(rcx_3, rdx_1)\n1405c3175        *(arg1 + 0x3c4) = arg2\n1405c3186        return rax\n1405c310d        if (rax == 0)\n1405c310f        void* rcx = *(arg1 + 0x3b0)\n1405c3116        int64_t rdx = *(rcx + 0x10)\n1405c311d        if (rdx != 0)\n1405c311f        int64_t* rcx_1 = *(rcx + 8)\n1405c3126        if (rcx_1 != 0)\n1405c312b        int64_t rax_2 = (*(*rcx_1 + 0x28))(rcx_1, rdx)\n1405c312e        *(arg1 + 0x3c4) = 1\n1405c313f        return rax_2\n1405c3140        *(arg1 + 0x3c4) = 0\n1405c3151        return rax\n1405c318c        *(arg1 + 0x3c4) = arg2\n1405c3198        return rax",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

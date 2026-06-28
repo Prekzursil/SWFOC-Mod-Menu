@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018b7d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint __thiscall\nalD3dEffectInstance::vfunction18_for_RefCountClass(alD3dEffectInstance *this,longlong param_1)\n\n{\n  int iVar1;\n  uint uVar2;\n  ulonglong uVar3;\n  ulonglong uVar4;\n  \n  uVar3 = 0xffffffffffffffff;\n  do {\n    uVar3 = uVar3 + 1;\n  } while (*(char *)(param_1 + uVar3) != '\\0');\n  iVar1 = FUN_140215a30(param_1,uVar3 & 0xffffffff,0);\n  uVar2 = 0;\n  uVar3 = *(longlong *)&this->field_0x40 - *(longlong *)&this->field_0x38 >> 3;\n  if (uVar3 != 0) {\n    uVar4 = 0;\n    do {\n      if (*(int *)(*(longlong *)(*(longlong *)&this->field_0x38 + uVar4 * 8) + 0x10) == iVar1) {\n        return uVar2;\n      }\n      uVar2 = uVar2 + 1;\n      uVar4 = (ulonglong)uVar2;\n    } while (uVar4 < uVar3);\n  }\n  return 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T17:33:07Z"
+}

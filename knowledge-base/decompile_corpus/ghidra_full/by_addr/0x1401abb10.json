@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401abb10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_1401abb10(void)\n\n{\n  longlong *plVar1;\n  byte bVar2;\n  byte bVar3;\n  \n  bVar3 = 1;\n  for (plVar1 = DAT_140a70a40; plVar1 != (longlong *)0x0; plVar1 = (longlong *)plVar1[1]) {\n    bVar2 = (**(code **)(*plVar1 + 0x10))(plVar1);\n    bVar3 = bVar3 & bVar2;\n  }\n  return bVar3;\n}",
+  "fetched_at": "2026-04-26T17:40:46Z"
+}

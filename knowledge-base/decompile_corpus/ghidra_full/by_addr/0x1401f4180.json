@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f4180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401f4180(longlong param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  BOOL BVar4;\n  HGLOBAL hMem;\n  LPVOID pvVar5;\n  \n  if (*(int *)(param_1 + 0x2c4) != *(int *)(param_1 + 0x2cc)) {\n    BVar4 = OpenClipboard((HWND)0x0);\n    if (BVar4 != 0) {\n      EmptyClipboard();\n      hMem = GlobalAlloc(2,(longlong)*(int *)(param_1 + 0x2a4) * 2 + 2);\n      if (hMem != (HGLOBAL)0x0) {\n        pvVar5 = GlobalLock(hMem);\n        if (pvVar5 != (LPVOID)0x0) {\n          iVar1 = *(int *)(param_1 + 0x2cc);\n          iVar2 = *(int *)(param_1 + 0x2c4);\n          iVar3 = iVar2;\n          if (iVar2 <= iVar1) {\n            iVar3 = iVar1;\n          }\n          if (iVar1 <= iVar2) {\n            iVar2 = iVar1;\n          }\n          if (0 < iVar3 - iVar2) {\n            FUN_14076bd80(pvVar5,*(longlong *)(param_1 + 0x298) + (longlong)iVar2 * 2,\n                          (longlong)(iVar3 - iVar2) * 2);\n          }\n          *(undefined2 *)((longlong)pvVar5 + (longlong)(iVar3 - iVar2) * 2) = 0;\n          GlobalUnlock(hMem);\n        }\n        SetClipboardData(0xd,hMem);\n        CloseClipboard();\n                    /* WARNING: Could not recover jumptable at 0x0001401f427b. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n        GlobalFree(hMem);\n        return;\n      }\n      CloseClipboard();\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:28Z"
+}

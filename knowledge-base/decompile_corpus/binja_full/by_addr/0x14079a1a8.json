@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a1a8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a1c3        void** const rbx\n14079a1c3        if (*(arg1 + 0x150) != 0)\n14079a1d8        void** rax_1 = _calloc_base(1, 0x2c0)\n14079a1dd        rbx = rax_1\n14079a1e3        if (rax_1 == 0)\n14079a202        _free_base(nullptr)\n14079a207        return 1\n14079a1f2        if (initialize_lc_time(rax_1, arg1) == 0)\n14079a1f7        __acrt_locale_free_time(rbx)\n14079a202        _free_base(rbx)\n14079a207        return 1\n14079a210        *(rbx + 0x15c) = 1\n14079a21a        _free_base(0)\n14079a1c5        rbx = &data_1408d68c0\n14079a226        __acrt_locale_release_lc_time_reference(*(arg1 + 0x120))\n14079a22d        *(arg1 + 0x120) = rbx\n14079a243        return 0",
+  "fetched_at": "2026-04-26T17:32:07Z"
+}

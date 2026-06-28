@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405a8e20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405a8e34        *arg1 = &AIHintZoneClass::`vftable'{for `RefCountClass'}\n1405a8e40        sub_14007b260(&arg1[0x22])\n1405a8e4c        sub_1401450b0(&arg1[0x1a])\n1405a8e58        sub_1402da8d0(&arg1[0x12])\n1405a8e61        sub_1402da8d0(&arg1[0xa])\n1405a8e6f        int64_t rdx = arg1[5]\n1405a8e77        if (rdx u>= 0x10)\n1405a8e79        void* rcx_5 = arg1[2]\n1405a8e87        if (rdx + 1 u>= 0x1000)\n1405a8e89        void* r8_1 = *(rcx_5 - 8)\n1405a8e9c        if (rcx_5 - r8_1 - 8 u> 0x1f)\n1405a8ee5        _invalid_parameter_noinfo_noreturn()\n1405a8ee5        noreturn\n1405a8e9e        rcx_5 = r8_1\n1405a8ea1        j_sub_1407864b8(rcx_5)\n1405a8ea6        arg1[4] = 0\n1405a8eb5        arg1[5] = 0xf\n1405a8ebd        arg1[2].b = 0\n1405a8ec1        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1405a8ec8        if ((arg2 & 1) != 0)\n1405a8ed2        j_sub_1407864b8(arg1)\n1405a8ee4        return arg1",
+  "fetched_at": "2026-04-26T17:37:04Z"
+}

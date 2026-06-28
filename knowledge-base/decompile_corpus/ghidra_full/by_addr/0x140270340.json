@@ -1,0 +1,7 @@
+{
+  "addr": "0x140270340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140270340(longlong param_1,WCHAR param_2,int *param_3)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  uint uVar3;\n  tagSIZE local_res8;\n  WCHAR local_res10 [4];\n  RECT local_38;\n  \n  plVar1 = (longlong *)(param_1 + 0x58);\n  uVar3 = (uint)(ushort)param_2;\n  if ((*(int *)(param_1 + 0x60) <= (int)uVar3) ||\n     (lVar2 = *plVar1, *(longlong *)(lVar2 + 8 + (ulonglong)(ushort)param_2 * 0x10) == 0)) {\n    if (*(HDC *)(param_1 + 0x20) != (HDC)0x0) {\n      local_res10[1] = 0;\n      local_res10[0] = param_2;\n      GetTextExtentPoint32W(*(HDC *)(param_1 + 0x20),local_res10,1,&local_res8);\n      *(LONG *)(param_1 + 0x38) = local_res8.cx;\n      local_38.right = local_res8.cx + -1;\n      local_38.left = 0;\n      local_38.top = 0;\n      local_38.bottom = local_res8.cy + -1;\n      ExtTextOutW(*(HDC *)(param_1 + 0x20),0,0,2,&local_38,local_res10,1,(INT *)0x0);\n    }\n    FUN_140270100(param_1,param_2);\n    lVar2 = *plVar1;\n  }\n  *param_3 = (int)*(short *)(lVar2 + (ulonglong)uVar3 * 0x10);\n  return *(undefined8 *)(*plVar1 + 8 + (ulonglong)uVar3 * 0x10);\n}",
+  "fetched_at": "2026-04-26T18:19:36Z"
+}

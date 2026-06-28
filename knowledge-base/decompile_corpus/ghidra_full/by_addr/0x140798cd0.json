@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798cd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_140798cd0(void)\n\n{\n  DAT_140b3cc00 = GetProcessHeap();\n  return DAT_140b3cc00 != (HANDLE)0x0;\n}",
+  "fetched_at": "2026-04-26T18:53:36Z"
+}

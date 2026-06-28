@@ -1,0 +1,7 @@
+{
+  "addr": "0x140697010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14069701f        struct LuaUserVar::FindPlanetClass::VTable** result = arg1\n140697022        sub_140249c20(arg1, 0, 1)\n140697033        *result = &FindPlanetClass::`vftable'{for `LuaUserVar'}\n140697036        int64_t* rax = operator new(0x40)\n14069703b        int64_t* rbx = rax\n140697041        if (rax == 0)\n14069706f        rbx = nullptr\n14069704b        sub_140249c20(rax, 0, 0)\n140697057        rbx[6] = result\n14069705b        *rbx = &LuaMemberFunctionWrapper<class FindPlanetClass>::`vftable'{for `LuaUserVar'}\n140697065        rbx[5] = &data_140254a1c\n140697069        rbx[7].b = 0\n14069707e        sub_14024be40(result, \"Get_All_Planets\", rbx)\n140697090        return result",
+  "fetched_at": "2026-04-26T17:20:13Z"
+}

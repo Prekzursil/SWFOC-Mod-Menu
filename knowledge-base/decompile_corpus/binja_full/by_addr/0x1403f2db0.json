@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f2db0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f2dbb        std::_Xruntime_error(\"vector<bool> too long\")\n1403f2dbb        noreturn",
+  "fetched_at": "2026-04-26T17:25:24Z"
+}

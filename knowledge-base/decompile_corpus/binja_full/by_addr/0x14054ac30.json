@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054ac30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054ac3c        void* result = sub_1404c30b0(arg1)\n14054ac41        void* r15 = *(arg1 + 0x28)\n14054ac45        void* rsi = *(r15 + 0xf0)\n14054ac5c        if (rsi != 0 && *(rsi + 0x80) == arg1)\n14054ac6a        int32_t i = 0\n14054ac73        if (*(rsi + 0xd0) s> 0)\n14054ac90        result = *(rsi + 0xc8)\n14054ac97        int64_t i_1 = sx.q(i)\n14054ac9e        if (*(result + (i_1 << 2)) s> 0)\n14054aca0        *(result + (i_1 << 2)) = 0\n14054acaf        int64_t r14_1 = sx.q(i.b) << 2\n14054acbe        int32_t rdi_1 = *(r14_1 + *(rsi + 0xa8))\n14054acc2        int64_t* rax_2 = sub_1402648b0(*(r15 + 0x2a0))\n14054accf        result = sub_14012d6f0(rax_2, rdi_1)\n14054acd4        *(result + 0x30) |= 1\n14054ace1        if (sx.d(*(rsi + 0xe8)) s> i)\n14054acf1        result = sub_14012d6f0(rax_2, *(r14_1 + *(rsi + 0xd8)))\n14054acf6        *(result + 0x30) |= 1\n14054acfa        i += 1\n14054ad02        do while (i s< *(rsi + 0xd0))\n14054ad20        return result",
+  "fetched_at": "2026-04-26T17:34:10Z"
+}

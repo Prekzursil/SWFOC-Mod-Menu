@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013e06d        char const* const rdx\n14013e06d        struct alShaderInstance::alD3dEffectInstance::VTable** result\n14013e06d        if (arg1 == 0)\n14013e098        struct RefCountClass::alShaderInstance::VTable** rax_2 = operator new(0x60)\n14013e0a0        if (rax_2 == 0)\n14013e0af        result = nullptr\n14013e0aa        result = sub_14018b120(rax_2)\n14013e0b1        rdx = \"MeshGloss\"\n14013e06f        struct RefCountClass::alShaderInstance::VTable** rax = operator new(0x60)\n14013e077        if (rax == 0)\n14013e08d        result = nullptr\n14013e08f        rdx = \"RSkinGloss\"\n14013e081        result = sub_14018b120(rax)\n14013e084        rdx = \"RSkinGloss\"\n14013e0c2        if (sub_14018b4d0(result, rdx) != 0)\n14013e0df        return result\n14013e0ca        (*result)->__offset(0x0).q(result)\n14013e0d2        (*result)->vFunc_1(result)\n14013e0d5        return nullptr",
+  "fetched_at": "2026-04-26T17:16:22Z"
+}

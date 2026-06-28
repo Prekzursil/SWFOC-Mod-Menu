@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052b0c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14052b0c6        struct SpecialAbilityClass::CorruptionAbilityClass::VTable** result = arg1\n14052b0c9        sub_14048c780(arg1)\n14052b0d5        result[8].w = 0x101\n14052b0db        *result = &CorruptionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14052b0e5        result[1] = &CorruptionAbilityClass::`vftable'{for `RefCountClass'}\n14052b0ec        *(result + 0x3c) = 6\n14052b0f8        return result",
+  "fetched_at": "2026-04-26T17:33:20Z"
+}

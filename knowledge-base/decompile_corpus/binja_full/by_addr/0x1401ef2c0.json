@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ef2c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ef2d2        struct GUIGadgetClass::VTable** rax = operator new(0x420)\n1401ef2da        struct GUIGadgetClass::GUIGadgetPushbuttonClass::VTable** result\n1401ef2da        if (rax == 0)\n1401ef2e9        result = nullptr\n1401ef2e4        result = sub_1401ee950(rax)\n1401ef2f6        result[1].d = *(arg1 + 8)\n1401ef2fc        if (&result[2] != arg1 + 0x10)\n1401ef303        int32_t* rdx_1 = arg1 + 0x10\n1401ef306        if (*(arg1 + 0x28) u>= 0x10)\n1401ef308        rdx_1 = *(arg1 + 0x10)\n1401ef30f        sub_140022730(&result[2], rdx_1, *(arg1 + 0x20))\n1401ef31b        result[6].d = *(arg1 + 0x30)\n1401ef326        *(result + 0x34) = *(arg1 + 0x34)\n1401ef32d        *(result + 0x44) = *(arg1 + 0x44)\n1401ef333        result[9].d = *(arg1 + 0x48)\n1401ef339        *(result + 0x4c) = *(arg1 + 0x4c)\n1401ef33f        result[0xa].d = *(arg1 + 0x50)\n1401ef345        if (&result[0xb] != arg1 + 0x58)\n1401ef34c        int32_t* rdx_2 = arg1 + 0x58\n1401ef34f        if (*(arg1 + 0x70) u>= 8)\n1401ef351        rdx_2 = *(arg1 + 0x58)\n1401ef358        sub_1400228a0(&result[0xb], rdx_2, *(arg1 + 0x68))\n1401ef363        result[0x13].d = *(arg1 + 0x98)\n1401ef376        return result",
+  "fetched_at": "2026-04-26T17:27:15Z"
+}

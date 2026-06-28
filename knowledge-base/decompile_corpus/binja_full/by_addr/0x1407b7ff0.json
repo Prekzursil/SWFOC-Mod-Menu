@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b7ff0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b7ff3        if (arg2 == arg3)\n1407b7ff3        return \n1407b7ff9        int32_t* rcx = arg4 + 0x14\n1407b7ffd        int32_t* rdx = arg2 - arg4\n1407b8004        rcx[-5] = *(rcx + rdx - 0x14)\n1407b800b        rcx[-4] = *(rdx + rcx - 0x10)\n1407b8012        rcx[-3] = *(rcx + rdx - 0xc)\n1407b8019        rcx[-2] = *(rcx + rdx - 8)\n1407b8020        rcx[-1] = *(rdx + rcx - 4)\n1407b8026        *rcx = *(rdx + rcx)\n1407b802c        rcx[1] = *(rcx + rdx + 4)\n1407b8033        rcx[2] = *(rdx + rcx + 8)\n1407b803a        rcx[3] = *(rdx + rcx + 0xc)\n1407b8041        rcx[4] = *(rcx + rdx + 0x10)\n1407b8048        rcx[5] = *(rcx + rdx + 0x14)\n1407b804f        rcx[6] = *(rdx + rcx + 0x18)\n1407b8056        rcx[7] = *(rdx + rcx + 0x1c)\n1407b805d        rcx[8] = *(rcx + rdx + 0x20)\n1407b8064        rcx[9] = *(rcx + rdx + 0x24)\n1407b8067        rcx = &rcx[0xf]\n1407b8075        do while (&rdx[-5] + rcx != arg3)\n1407b8077        return ",
+  "fetched_at": "2026-04-26T17:33:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140495250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14049525f        if (arg2 s< 0 || arg2 s>= *(arg1 + 0x28))\n140495352        return zx.o(0)\n14049527a        char* rdi_1 = sx.q(arg2) * 0x78 + *(arg1 + 0x20)\n14049527e        int32_t rbx = *(*(arg1 + 8) + 0x10)\n140495284        if (*rdi_1 != 0)\n14049528a        int64_t* rcx = data_140b15418\n140495294        if (rcx == 0)\n1404952f3        label_1404952f3:\n1404952f3        int32_t rax_7 = sub_1404950f0(rdi_1, rbx)\n1404952fc        if (rbx s>= rax_7)\n1404952ed        return 0x3f800000\n1404952fe        int32_t rax_8 = *(rdi_1 + 0xc)\n14049530c        if (rax_7 s> rax_8 && rax_8 != 0xffffffff && rbx s> rax_8)\n14049532a        uint128_t result\n14049532a        result.d = _mm_cvtepi32_ps(zx.o(rbx - rax_8)).d f/ _mm_cvtepi32_ps(zx.o(rax_7 - rax_8)).d\n140495335        return result\n140495299        void* rax_3 = (*(*rcx + 0x220))(rcx)\n1404952a2        if (rax_3 == 0)\n1404952a2        goto label_1404952f3\n1404952ae        if (sub_140527550(rax_3) != 0)\n1404952c2        if (sub_14028af80(&data_140b153e0) != 0)\n1404952ed        return 0x3f800000\n1404952d2        if (sub_14028b060(&data_140b153e0) == 0)\n1404952d2        goto label_1404952f3\n1404952ed        return 0x3f800000\n14049534a        return zx.o(0)",
+  "fetched_at": "2026-04-26T17:29:09Z"
+}

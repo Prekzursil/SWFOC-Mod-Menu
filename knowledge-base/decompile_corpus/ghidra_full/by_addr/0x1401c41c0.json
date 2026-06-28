@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c41c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8\nFUN_1401c41c0(longlong param_1,int param_2,undefined8 param_3,undefined4 param_4,undefined8 *param_5\n             ,undefined8 param_6)\n\n{\n  int *piVar1;\n  undefined8 *puVar2;\n  longlong lVar3;\n  undefined8 uVar4;\n  \n  param_5[2] = 0;\n  puVar2 = param_5;\n  if (7 < (ulonglong)param_5[3]) {\n    puVar2 = (undefined8 *)*param_5;\n  }\n  *(undefined2 *)puVar2 = 0;\n  if (*(longlong *)(param_1 + 0x98) != 0) {\n    for (puVar2 = (undefined8 *)**(undefined8 **)(param_1 + 0x90);\n        puVar2 != *(undefined8 **)(param_1 + 0x90); puVar2 = (undefined8 *)*puVar2) {\n      piVar1 = (int *)puVar2[2];\n      if (((char)piVar1[0x38] == '\\0') && (*piVar1 == param_2)) {\n        if (piVar1 == (int *)0x0) {\n          return 0xffffffff;\n        }\n        lVar3 = FUN_1401e1ef0(piVar1,param_3);\n        if (lVar3 == 0) {\n          return 0xffffffff;\n        }\n        uVar4 = FUN_1401ce760(lVar3,param_4,param_5,param_6);\n        return uVar4;\n      }\n    }\n  }\n  return 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T17:47:29Z"
+}

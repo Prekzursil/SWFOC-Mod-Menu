@@ -1,0 +1,7 @@
+{
+  "addr": "0x140193f60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_140193f60(longlong param_1)\n\n{\n  alD3dDepthBuffer *paVar1;\n  longlong *plVar2;\n  alD3dDepthBuffer *this;\n  \n  plVar2 = *(longlong **)(param_1 + 0x400);\n  if ((plVar2 == (longlong *)0x0) ||\n     (*(int *)((longlong)plVar2 + 0x4c) != *(int *)(param_1 + 0x3f0))) {\n    paVar1 = (alD3dDepthBuffer *)FUN_140769c58(0x60);\n    if (paVar1 == (alD3dDepthBuffer *)0x0) {\n      paVar1 = (alD3dDepthBuffer *)0x0;\n    }\n    else {\n      paVar1 = alD3dDepthBuffer::alD3dDepthBuffer(paVar1);\n    }\n    this = *(alD3dDepthBuffer **)(param_1 + 0x400);\n    if (this != paVar1) {\n      if (this != (alD3dDepthBuffer *)0x0) {\n        (*this->vftablePtr->vfunction2)(this);\n      }\n      *(alD3dDepthBuffer **)(param_1 + 0x400) = paVar1;\n      this = (alD3dDepthBuffer *)0x0;\n      if (paVar1 != (alD3dDepthBuffer *)0x0) {\n        (*paVar1->vftablePtr->vfunction1)(paVar1);\n        this = *(alD3dDepthBuffer **)(param_1 + 0x400);\n      }\n    }\n    FUN_140198aa0(this,*(undefined4 *)(param_1 + 0x3f0),*(undefined4 *)(param_1 + 0x3f0),0x50);\n    plVar2 = *(longlong **)(param_1 + 0x400);\n    if ((plVar2[7] == 0) && (plVar2 != (longlong *)0x0)) {\n      (**(code **)(*plVar2 + 8))(plVar2);\n      plVar2 = (longlong *)0x0;\n      *(undefined8 *)(param_1 + 0x400) = 0;\n    }\n  }\n  return plVar2;\n}",
+  "fetched_at": "2026-04-26T17:35:00Z"
+}

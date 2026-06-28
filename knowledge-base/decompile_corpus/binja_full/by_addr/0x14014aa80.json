@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014aa80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014aa80        void* r8 = -ffffffffffffffff\n14014aa90        r8 += 1\n14014aa98        do while (*(arg2 + r8) != 0)\n14014aaa1        return sub_140022730(arg1 + 0xc8, arg2, r8) __tailcall",
+  "fetched_at": "2026-04-26T17:21:02Z"
+}

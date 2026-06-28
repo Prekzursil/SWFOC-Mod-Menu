@@ -1,0 +1,7 @@
+{
+  "addr": "0x140704880",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070488c        int64_t result = sub_14048f2c0(arg1)\n14070489b        if (not(0f f< *(arg1 + 0x180)))\n1407048a2        void* r8_1 = arg1 + 0x18\n1407048a6        if (*(arg1 + 0x30) u>= 0x10)\n1407048a8        r8_1 = *r8_1\n1407048b7        char var_108[0x100]\n1407048b7        sscanf_s(&var_108, \"Error: (%s) Interval_Multiplier must be greater than zero!\", r8_1)\n1407048c1        result = sub_1402149d0(&var_108)\n1407048c6        *(arg1 + 0x180) = 0x3f800000\n1407048d8        return result",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

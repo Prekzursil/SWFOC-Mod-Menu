@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079799c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407979a2        uint32_t rbx = arg1\n1407979ab        void* var_28\n1407979ab        _LocaleUpdate::_LocaleUpdate(&var_28, nullptr)\n1407979b0        data_140b3cbc8 = 0\n1407979ba        if (rbx == 0xfffffffe)\n1407979bc        data_140b3cbc8 = 1\n1407979e3        rbx = GetOEMCP()\n1407979d1        if (rbx == 0xfffffffd)\n1407979d3        data_140b3cbc8 = 1\n1407979e3        rbx = GetACP()\n1407979ea        if (rbx == 0xfffffffc)\n1407979f1        data_140b3cbc8 = 1\n1407979fb        void* var_20\n1407979fb        rbx = *(var_20 + 0xc)\n140797a03        char var_10\n140797a03        if (var_10 != 0)\n140797a05        void* rcx_1 = var_28\n140797a0a        *(rcx_1 + 0x3a8) &= 0xfffffffd\n140797a18        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:32:01Z"
+}

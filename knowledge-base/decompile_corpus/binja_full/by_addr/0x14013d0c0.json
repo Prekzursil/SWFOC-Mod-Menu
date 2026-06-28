@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d0c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013d0db        struct RefCountClass::alRenderTarget::VTable** rax = operator new(0x68)\n14013d0e3        struct alRenderTarget::alD3dRenderTarget::VTable** result\n14013d0e3        if (rax == 0)\n14013d0f2        result = nullptr\n14013d0ed        result = sub_140197f80(rax)\n14013d103        sub_1401980c0(result, arg1, arg2, 0x15)\n14013d11a        return result",
+  "fetched_at": "2026-04-26T17:15:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406df710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nPerceptualEvaluatorClass * __thiscall\nRootLookupPerceptualEvaluatorClass::~RootLookupPerceptualEvaluatorClass(undefined4 param_1)\n\n{\n  PerceptualEvaluatorClass *this;\n  \n  this = (PerceptualEvaluatorClass *)FUN_140769c58(0xb0);\n  if (this != (PerceptualEvaluatorClass *)0x0) {\n    PerceptualEvaluatorClass::~PerceptualEvaluatorClass(this);\n    this->vftablePtr =\n         (PerceptualEvaluatorClass_vftable_for_SignalGeneratorClass *)\n         &vftable_for_SignalGeneratorClass;\n    this->vftablePtr =\n         (PerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)&vftable_for_AIDiagnosticsClass;\n    this[1].SignalGeneratorClass_data.offset_0x0 = '\\0';\n    *(undefined3 *)&this[1].SignalGeneratorClass_data.field_0x1 = 0;\n    this[1].SignalGeneratorClass_data.offset_0x4 = 0;\n    this[1].vftablePtr = (PerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)0x0;\n    this[1].AIDiagnosticsClass_data.offset_0x0 = 0xf;\n    *(undefined4 *)&this[1].vftablePtr = param_1;\n    return this;\n  }\n  _DAT_00000088 = param_1;\n  return (PerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:44:53Z"
+}

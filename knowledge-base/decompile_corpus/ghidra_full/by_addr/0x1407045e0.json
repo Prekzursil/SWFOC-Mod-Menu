@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407045e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall\nIncomeStreamModAbilityClass::vfunction4_for_IXMLLoadableClass(IncomeStreamModAbilityClass *this)\n\n{\n  if (*(char *)((longlong)&(this->IncomeStreamModAbilityClass_data).offset_0x20 + 1) == '\\x01') {\n    return 0;\n  }\n  return (int)((float)DAT_140b0a340 * DAT_140803520 + DAT_1408007c0);\n}",
+  "fetched_at": "2026-04-26T17:52:07Z"
+}

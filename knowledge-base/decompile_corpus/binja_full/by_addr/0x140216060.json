@@ -1,0 +1,7 @@
+{
+  "addr": "0x140216060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021606a        void* rax = data_140a7cc28\n140216071        int32_t r8 = 0\n140216099        if (rax != 0 && arg1 != 0 && *(rax + 0x20) != 0 && *(arg1 + 0x20) != 0 && *(rax + 0x28) != 0)\n14021609b        *(arg1 + 0x28)\n1402160b0        void* rax_4 = *(arg1 + 8)\n1402160b7        if (rax_4 == 0)\n1402160dd        r8 = 0x64\n1402160c3        if (*(rax_4 + 0x20) != 0 && *(arg1 + 0x20) != 0)\n1402160c5        int64_t rcx_1 = *(rax_4 + 0x28)\n1402160cc        if (rcx_1 != 0)\n1402160d8        r8 = (divs.dp.q(sx.o(*(arg1 + 0x28) * 0x64), rcx_1)).d\n1402160ed        int32_t var_10 = *(arg1 + 0x20)\n1402160f3        int32_t var_18 = r8\n1402160fc        int64_t r8_2 = sub_140216150(arg2, \"<Node name=\"%s\" perc_tot=\"%d\" perc_parent=\"%d\" calls=\"%d\">\\n\", *(arg1 + 0x18))\n140216101        int64_t* i = *(arg1 + 0x10)\n140216108        while (i != 0)\n140216116        r8_2 = sub_140216060(i, arg2 + 1)\n14021611b        i = *i\n14021613b        return sub_140216150(arg2, \"</Node>\\n\", r8_2) __tailcall",
+  "fetched_at": "2026-04-26T17:28:32Z"
+}

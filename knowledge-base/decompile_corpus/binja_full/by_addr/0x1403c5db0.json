@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c5db0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c5dba        void** rdi = arg1\n1403c5dbd        void* rcx = *arg1\n1403c5dc0        void** rbx = *(rcx + 8)\n1403c5dc8        if (*(rbx + 0x19) == 0)\n1403c5dda        sub_14010cb00(rdi, rdi, rbx[2])\n1403c5ddf        void** rcx_2 = rbx\n1403c5de7        rbx = *rbx\n1403c5dea        j_sub_1407864b8(rcx_2)\n1403c5df3        do while (*(rbx + 0x19) == 0)\n1403c5df5        rcx = *rdi\n1403c5e07        return j_sub_1407864b8(rcx) __tailcall",
+  "fetched_at": "2026-04-26T17:24:45Z"
+}

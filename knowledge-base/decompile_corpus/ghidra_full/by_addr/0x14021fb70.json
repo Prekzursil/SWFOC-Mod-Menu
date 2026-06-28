@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fb70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14021fb70(undefined8 *param_1,LPCSTR param_2,uint param_3)\n\n{\n  uint local_res18 [4];\n  \n  local_res18[0] = param_3 & 0xff;\n  if ((HKEY)*param_1 != (HKEY)0x0) {\n    RegSetValueExA((HKEY)*param_1,param_2,0,4,(BYTE *)local_res18,4);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:59Z"
+}

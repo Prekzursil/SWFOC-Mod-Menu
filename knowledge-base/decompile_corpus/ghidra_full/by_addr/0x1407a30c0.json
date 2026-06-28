@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a30c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1407a30c0(longlong param_1)\n\n{\n  ulonglong uVar1;\n  \n  uVar1 = FUN_1407a30f0();\n  if ((int)uVar1 == 0) {\n    FUN_1407a3980(*(undefined8 *)(param_1 + 0x28));\n    uVar1 = uVar1 & 0xffffffff;\n  }\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:54:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d648",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d64d        int32_t* arg_20 = arg4\n14079d65f        __acrt_lowio_unlock_fh(*arg2)\n14079d668        int64_t rcx_1 = sx.q(**arg3)\n14079d68c        int32_t rbx_1\n14079d68c        if ((*((&data_140b3c4d0)[rcx_1 s>> 6] + (zx.q(rcx_1.d) & 0x3f) * 0x48 + 0x38) & 1) == 0)\n14079d6b7        *_errno() = 9\n14079d6bd        rbx_1 = -1\n14079d69c        rbx_1 = 0\n14079d6a0        if (FlushFileBuffers(_get_osfhandle(rcx_1.d)) == 0)\n14079d6a2        void* rax_6 = __doserrno()\n14079d6b0        *rax_6 = GetLastError()\n14079d6b7        *_errno() = 9\n14079d6bd        rbx_1 = -1\n14079d6c2        sub_1407990bc(*arg4)\n14079d6d3        return zx.q(rbx_1)",
+  "fetched_at": "2026-04-26T17:32:14Z"
+}

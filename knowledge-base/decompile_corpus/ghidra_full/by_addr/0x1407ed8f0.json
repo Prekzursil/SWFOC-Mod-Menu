@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ed8f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void DynamicVectorClass<struct_BandwidthStatsClass::StatsStruct>::\n     DynamicVectorClass<struct_BandwidthStatsClass::StatsStruct>_Constructor_or_Destructor(void)\n\n{\n  HANDLE hHeap;\n  \n  PTR_vftable_140a15348 = (undefined *)&vftable;\n  if (DAT_140a15350 != (LPVOID)0x0) {\n    if ((DAT_140a1535c & 0x80000000) == 0) {\n      thunk_FUN_1407864b8();\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,DAT_140a15350);\n    }\n    DAT_140a1535c = DAT_140a1535c & 0x80000000;\n    DAT_140a15350 = (LPVOID)0x0;\n    DAT_140a15358 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:32Z"
+}

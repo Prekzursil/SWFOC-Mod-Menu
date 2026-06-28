@@ -1,0 +1,7 @@
+{
+  "addr": "0x140085380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140085387        data_140b15658 = sub_140088050\n140085395        data_140b15660 = sub_140086150\n14008539c        return sub_140086150",
+  "fetched_at": "2026-04-26T16:57:31Z"
+}

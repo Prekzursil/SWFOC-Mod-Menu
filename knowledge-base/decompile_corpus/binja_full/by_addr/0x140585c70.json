@@ -1,0 +1,7 @@
+{
+  "addr": "0x140585c70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140585c84        __builtin_memset(arg1, 0, 0x18)\n140585c8f        int64_t* rbx = *arg2\n140585c92        int64_t rbp = arg2[1]\n140585c99        if (rbx != rbp)\n140585ca6        int64_t rdi_3 = (rbp - rbx) s>> 3\n140585cad        int64_t* rax_1 = sub_140022650(arg1, rdi_3)\n140585cb2        *arg1 = rax_1\n140585cb5        arg1[1] = rax_1\n140585cc2        arg1[2] = &rax_1[rdi_3]\n140585cd0        int64_t rcx_1 = *rbx\n140585cd3        rbx = &rbx[1]\n140585cd7        *rax_1 = rcx_1\n140585cda        rax_1 = &rax_1[1]\n140585ce1        do while (rbx != rbp)\n140585ce3        arg1[1] = rax_1\n140585cf9        return arg1",
+  "fetched_at": "2026-04-26T17:35:58Z"
+}

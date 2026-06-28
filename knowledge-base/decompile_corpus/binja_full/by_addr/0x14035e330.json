@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035e330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14035e340        int64_t rbx = sx.q(arg2)\n14035e354        if ((*(*arg1 + 0x240))() != 0 && data_140b15490 == 0)\n14035e356        int64_t rcx = arg1[0x33]\n14035e36c        if (rcx != 0 && rbx.d s>= 0 && rbx.d s< arg1[0x32].d)\n14035e37c        return *(rcx + (rbx << 3))\n14035e389        return 0",
+  "fetched_at": "2026-04-26T17:12:37Z"
+}

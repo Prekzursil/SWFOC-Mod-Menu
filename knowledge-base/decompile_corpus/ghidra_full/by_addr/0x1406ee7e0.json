@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ee7e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AbsorbBlasterAbilityClass * __thiscall\nAbsorbBlasterAbilityClass::scalar_deleting_destructor(AbsorbBlasterAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: AbsorbBlasterAbilityClass::~AbsorbBlasterAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->AbsorbBlasterAbilityClass_data).offset_0x0 = 0;\n  (this->AbsorbBlasterAbilityClass_data).offset_0x8 = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x188);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:46:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140524f09        struct FiniteStateMachineClass<enum BuildTaskStates>::VTable** rax\n140524f09        float zmm0\n140524f09        rax, zmm0 = operator new(0xe8)\n140524f14        struct FiniteStateMachineClass<enum BuildTaskStates>::VTable** result\n140524f14        if (rax == 0)\n140524f23        result = nullptr\n140524f1e        result = sub_1406478c0(rax)\n140524f43        sub_140649200(result, arg2, arg3, arg4, zmm0, arg5, arg6)\n140524f4c        void* rdx_1 = &result[8]\n140524f56        if (result == 0)\n140524f56        rdx_1 = nullptr\n140524f61        if (sub_14020aa60(*(arg1 + 0x40), rdx_1, 1) == 1)\n140524f6b        result[6]->vFunc_0(&result[6])\n140524f88        return result",
+  "fetched_at": "2026-04-26T17:33:07Z"
+}

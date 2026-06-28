@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DrawTextClass * __thiscall DrawTextClass::DrawTextClass(DrawTextClass *this)\n\n{\n  DrawPrimitiveClass::DrawPrimitiveClass((DrawPrimitiveClass *)this);\n  FUN_14026ce70(&this->StringTextureClass);\n  *(undefined4 *)&this->field_0x48 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  FUN_1401f92f0(&(this->DrawTextClass_data).field_0x48);\n  FUN_1401f92f0(&(this->DrawTextClass_data).field_0x58);\n  (this->DrawTextClass_data).offset_0x68 = (longlong *)0x0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:14:03Z"
+}

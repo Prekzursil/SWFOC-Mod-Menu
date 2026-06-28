@@ -1,0 +1,7 @@
+{
+  "addr": "0x140272d40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RtsSceneClass * __thiscall\nRtsSceneClass::scalar_deleting_destructor(RtsSceneClass *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: RtsSceneClass::~RtsSceneClass */\n  this->vftablePtr = &vftable;\n  plVar1 = (longlong *)(this->RefCountClass_data).offset_0x78;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->RefCountClass_data).offset_0x78 = 0;\n  }\n  DynamicVectorClass<class_RtsSceneClass::Environment>::\n  ~DynamicVectorClass<class_RtsSceneClass::Environment>\n            ((DynamicVectorClass<class_RtsSceneClass::Environment> *)\n             &(this->RefCountClass_data).offset_0x80);\n  plVar1 = (longlong *)(this->RefCountClass_data).offset_0x78;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  SceneClass::~SceneClass((SceneClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x140);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:20:00Z"
+}

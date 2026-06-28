@@ -1,0 +1,7 @@
+{
+  "addr": "0x140411560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140411566        int64_t r9 = *(arg1 + 0xa0)\n14041156d        int32_t r8 = arg2\n140411587        int64_t rax\n140411587        int64_t rdx_2\n140411587        rdx_2:rax = muls.dp.q(0x2aaaaaaaaaaaaaab, *(arg1 + 0xa8) - r9)\n14041158a        int64_t rdx_3 = rdx_2 s>> 1\n140411594        int64_t rdx_4 = rdx_3 + (rdx_3 u>> 0x3f)\n14041159b        if (rdx_4 u> 1)\n14041159d        int32_t rax_3 = (rdx_4 - 1).d\n1404115a0        int32_t rcx = r8\n1404115a6        if (r8 u> rax_3)\n1404115a6        rcx = rax_3\n1404115b2        int64_t rcx_1 = r9 + (zx.q(rcx) + 1) * 0xc\n1404115bd        if (rcx_1 != *(arg1 + 0xa8))\n1404115bf        *(arg1 + 0xa8) = rcx_1\n1404115c6        int64_t rcx_2 = *(arg1 + 0xd0)\n1404115d7        int64_t result = (*(arg1 + 0xd8) - rcx_2) s>> 2\n1404115df        if (result u> 1)\n1404115e1        int32_t* rdx_5 = *(arg1 + 0xd8)\n1404115e8        result = zx.q(result.d - 1)\n1404115f2        if (r8 u> result.d)\n1404115f2        r8 = result.d\n1404115fc        int32_t* rsi_3 = rcx_2 + ((zx.q(r8) + 1) << 2)\n140411603        if (rsi_3 != rdx_5)\n140411610        void* rbx_2 = 0\n140411616        memcpy(rsi_3, rdx_5, rbx_2)\n14041161b        result = rbx_2 + rsi_3\n140411624        *(arg1 + 0xd8) = result\n140411635        return result",
+  "fetched_at": "2026-04-26T17:26:02Z"
+}

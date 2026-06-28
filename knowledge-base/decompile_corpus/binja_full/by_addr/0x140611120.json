@@ -1,0 +1,7 @@
+{
+  "addr": "0x140611120",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061112a        void* rdi = *(arg1 + 8)\n14061112e        int64_t* result = *(rdi + 0x30)\n140611132        void** i = *result\n140611138        if (i != result)\n140611158        if (data_140a10970 == 0)\n14061115f        struct AIDiagnosticsManagerClass::VTable** rax = operator new(0xc0)\n140611167        if (rax == 0)\n14061117a        data_140a10970 = 0\n140611171        data_140a10970 = sub_140475660(rax)\n140611181        int32_t* rdx_1 = data_140a7bc10\n140611188        bool cond:0_1 = rdx_1 == data_140a7bc18\n14061118f        void** arg_8 = &data_140a10968\n140611194        if (cond:0_1)\n1406111af        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n140611196        *rdx_1 = &data_140a10968\n140611199        data_140a7bc10 += 8\n1406111bf        result = sub_140475af0(data_140a10970, i[3])\n1406111c4        i = *i\n1406111cb        do while (i != *(rdi + 0x30))\n1406111e1        return result",
+  "fetched_at": "2026-04-26T17:23:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140620710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nWalkLocomotorBehaviorClass::vfunction95(WalkLocomotorBehaviorClass *this,undefined8 param_1)\n\n{\n  undefined **ppuVar1;\n  float fVar2;\n  float fVar3;\n  undefined4 local_68;\n  undefined4 local_64;\n  undefined4 local_60;\n  undefined8 local_58;\n  float local_50;\n  undefined1 local_48 [8];\n  undefined4 local_40;\n  undefined1 local_38 [48];\n  \n  fVar2 = (float)FUN_140372560(this->offset_0x18[0x53]);\n  ppuVar1 = this->offset_0x18;\n  local_68 = *(undefined4 *)((longlong)ppuVar1 + 0x84);\n  local_64 = *(undefined4 *)(ppuVar1 + 0x11);\n  local_60 = *(undefined4 *)((longlong)ppuVar1 + 0x8c);\n  FUN_14020b100(param_1,local_48,&local_68);\n  fVar3 = (float)FUN_14020b6d0(local_40);\n  local_50 = 0.0;\n  if (fVar3 != 0.0) {\n    if (fVar3 <= 0.0) {\n      local_50 = (float)((uint)fVar2 ^ DAT_140800860);\n      if ((float)((uint)fVar2 ^ DAT_140800860) <= fVar3) {\n        local_50 = fVar3;\n      }\n    }\n    else {\n      local_50 = fVar2;\n      if (fVar3 <= fVar2) {\n        local_50 = fVar3;\n      }\n    }\n  }\n  local_58 = 0;\n  FUN_14020b070((longlong)this->offset_0x18 + 0x84,local_38,&local_58);\n  FUN_1403a8710(this->offset_0x18,local_38);\n  (*this->vftablePtr->vfunction96)(this,(undefined4 *)(this->offset_0x18 + 0xf));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:49Z"
+}

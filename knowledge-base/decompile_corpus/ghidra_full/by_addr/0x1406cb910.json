@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cb910",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall BaseCombatantClass::vfunction27(BaseCombatantClass *this)\n\n{\n  return *(int *)&this->field_0x48 != 0;\n}",
+  "fetched_at": "2026-04-26T17:40:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404828d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Removing unreachable block (ram,0x000140482969) */\n\nvoid FUN_1404828d0(undefined8 *param_1)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  \n  puVar1 = param_1 + 5;\n  if (*(char *)(param_1 + 5) == '\\x01') {\n    lVar3 = param_1[0x1c];\n    while (lVar3 != 0) {\n      lVar3 = *(longlong *)param_1[0x1b];\n      plVar2 = *(longlong **)(lVar3 + 0x28);\n      if (plVar2 != (longlong *)0x0) {\n        (**(code **)*plVar2)(plVar2);\n        (**(code **)(*plVar2 + 8))(plVar2);\n      }\n      lVar3 = FUN_140069ba0(param_1 + 0x1b,lVar3);\n      if (*(longlong **)(lVar3 + 0x28) != (longlong *)0x0) {\n        (**(code **)(**(longlong **)(lVar3 + 0x28) + 8))();\n      }\n      thunk_FUN_1407864b8(lVar3,0x30);\n      lVar3 = param_1[0x1c];\n    }\n    param_1[2] = 0;\n    if (0xf < (ulonglong)param_1[3]) {\n      param_1 = (undefined8 *)*param_1;\n    }\n    *(undefined1 *)param_1 = 0;\n    *(undefined1 *)puVar1 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:21Z"
+}

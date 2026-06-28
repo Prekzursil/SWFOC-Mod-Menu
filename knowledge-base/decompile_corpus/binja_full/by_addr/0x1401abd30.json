@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401abd30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401abd32        __builtin_memset(arg1, 0, 0x50)\n1401abd59        *(arg1 + 0x50) = 0x3f800000\n1401abd60        *(arg1 + 0x54) = 0x3f800000\n1401abd67        *(arg1 + 0x58) = 0x3f800000\n1401abd6e        *(arg1 + 0x5c) = 0x3f800000\n1401abd75        *(arg1 + 0x60) = 0x3f800000\n1401abd7c        *(arg1 + 0x64) = 0x3f800000\n1401abd83        *(arg1 + 0x68) = 0x3f800000\n1401abd8a        *(arg1 + 0x6c) = 0x3f800000\n1401abd92        *(arg1 + 0x74) = 0\n1401abd96        *(arg1 + 0x7c) = 0\n1401abd99        *(arg1 + 0x80) = 0x3f800000\n1401abda4        *(arg1 + 0x88) = 0\n1401abdab        return 0",
+  "fetched_at": "2026-04-26T17:25:24Z"
+}

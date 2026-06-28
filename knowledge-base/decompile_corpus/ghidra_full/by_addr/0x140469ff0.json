@@ -1,0 +1,7 @@
+{
+  "addr": "0x140469ff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140469ff0(longlong param_1,longlong param_2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  ulonglong in_RAX;\n  longlong *plVar5;\n  \n  if (param_2 == 0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  bVar1 = FUN_14021ffa0(param_2,0);\n  bVar2 = FUN_1402200b0(param_2,param_1 + 0x438,4);\n  bVar3 = FUN_140220030(param_2);\n  bVar4 = FUN_1404ad430(param_1 + 0x44c,param_2,1);\n  bVar4 = bVar1 & 1 & bVar2 & bVar3 & bVar4;\n  if (*(longlong *)(param_1 + 0x420) != 0) {\n    bVar1 = FUN_14021ffa0(param_2,2);\n    plVar5 = *(longlong **)(param_1 + 0x420);\n    if (0xf < (ulonglong)plVar5[3]) {\n      plVar5 = (longlong *)*plVar5;\n    }\n    bVar2 = FUN_140220140(param_2,plVar5,0);\n    bVar3 = FUN_140220030(param_2);\n    bVar4 = bVar4 & bVar1 & bVar2 & bVar3;\n  }\n  return (ulonglong)bVar4;\n}",
+  "fetched_at": "2026-04-26T17:57:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006b370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006b383        arg1[1].d = 0\n14006b389        *arg1 = &SteamAsyncSocketImpl::`vftable'{for `PGNetAsyncSocketImpl'}\n14006b38c        arg1[2] = 0\n14006b390        arg1[3] = 0\n14006b397        int64_t* rax = operator new(0x30)\n14006b39c        *rax = rax\n14006b39f        rax[1] = rax\n14006b3a3        rax[2] = rax\n14006b3a7        rax[3].w = 0x101\n14006b3ad        arg1[2] = rax\n14006b3b4        arg1[4] = 0\n14006b3b8        arg1[5] = -1\n14006b3c0        arg1[6].d = 0\n14006b3c3        arg1[7] = 0\n14006b3c7        arg1[8].b = 0\n14006b3d5        return arg1",
+  "fetched_at": "2026-04-26T16:55:58Z"
+}

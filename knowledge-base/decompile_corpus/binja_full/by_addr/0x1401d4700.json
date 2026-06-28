@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d4700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d4709        int64_t rax = data_140a136a8()\n1401d4712        data_140a7a0c0 = rax\n1401d471c        data_140a136b0(arg1, rax)\n1401d4729        return 0",
+  "fetched_at": "2026-04-26T17:26:45Z"
+}

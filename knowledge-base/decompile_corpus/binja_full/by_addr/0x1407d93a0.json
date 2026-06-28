@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d93a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d93a8        if (arg1 == 0)\n1407d941c        struct RefCountClass::CameraEffectClass::VTable** rax_3 = operator new(0x58)\n1407d9427        if (rax_3 != 0)\n1407d9449        __builtin_memset(&rax_3[1], 0, 0x50)\n1407d9453        *rax_3 = &CameraEffectClass::`vftable'{for `RefCountClass'}\n1407d9456        Concurrency::details::_Interruption_exception::_Interruption_exception(&rax_3[2])\n1407d9468        *rax_3 = &CameraShakeEffectClass::`vftable'{for `CameraEffectClass'}\n1407d946b        sub_1407d9ed0(rax_3)\n1407d9476        return rax_3\n1407d93ad        if (arg1 == 1)\n1407d93b8        struct RefCountClass::CameraEffectClass::VTable** rax_1 = operator new(0x58)\n1407d93c3        if (rax_1 != 0)\n1407d93e9        __builtin_memset(&rax_1[1], 0, 0x50)\n1407d93f3        *rax_1 = &CameraEffectClass::`vftable'{for `RefCountClass'}\n1407d93f6        Concurrency::details::_Interruption_exception::_Interruption_exception(&rax_1[2])\n1407d9408        *rax_1 = &CameraAnimeSpiralEffectClass::`vftable'{for `CameraEffectClass'}\n1407d940b        sub_1407d9a80(rax_1)\n1407d9416        return rax_1\n1407d947e        return 0",
+  "fetched_at": "2026-04-26T17:34:04Z"
+}

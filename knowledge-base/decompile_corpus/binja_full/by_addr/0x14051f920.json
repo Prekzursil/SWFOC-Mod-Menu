@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051f920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14051f929        int64_t* rcx = arg1[1]\n14051f931        if (rcx == arg1[2])\n14051f95f        return sub_140514b70(arg1, rcx, arg2) __tailcall\n14051f93a        *rcx = *arg2\n14051f941        struct DynamicVectorClass<class NameReferenceClass>::VTable** result = sub_1404c3a80(&rcx[1], &arg2[1])\n14051f946        arg1[1] += 0x28\n14051f950        return result",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

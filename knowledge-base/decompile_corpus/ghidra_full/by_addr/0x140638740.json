@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* CombatantBehaviorClass member function inherited by BaseCombatantClass\n   CombatantBehaviorClass member function inherited by SquadronCombatantClass\n   CombatantBehaviorClass member function inherited by CompanyCombatantClass */\n\nchar * __thiscall CombatantBehaviorClass::vfunction9(void)\n\n{\n  return \"CombatantBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:22Z"
+}

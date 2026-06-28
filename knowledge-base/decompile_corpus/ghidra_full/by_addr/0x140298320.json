@@ -1,0 +1,7 @@
+{
+  "addr": "0x140298320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_140298320(undefined8 param_1,longlong param_2)\n\n{\n  char cVar1;\n  byte bVar2;\n  int iVar3;\n  int iVar4;\n  byte bVar5;\n  undefined4 local_res18 [2];\n  \n  bVar5 = 1;\n  cVar1 = FUN_140220610();\n  while (cVar1 != '\\0') {\n    iVar3 = FUN_140220710(param_1);\n    if (iVar3 == 4) {\n      bVar2 = FUN_140220730(param_1,local_res18,4,0);\n      bVar5 = bVar5 & bVar2;\n      if (bVar5 != 0) {\n        iVar3 = *(int *)(param_2 + 0x10);\n        iVar4 = *(int *)(param_2 + 0x14) * 2 >> 1;\n        if (iVar4 <= iVar3) {\n          iVar3 = iVar4 / 10;\n          if (iVar4 / 10 < 10) {\n            iVar3 = 10;\n          }\n          FUN_140021ec0(param_2,iVar3 + iVar4,0);\n          iVar3 = *(int *)(param_2 + 0x10);\n        }\n        *(undefined4 *)(*(longlong *)(param_2 + 8) + (longlong)iVar3 * 4) = local_res18[0];\n        *(int *)(param_2 + 0x10) = *(int *)(param_2 + 0x10) + 1;\n      }\n    }\n    FUN_1402206a0(param_1);\n    cVar1 = FUN_140220610(param_1);\n  }\n  return bVar5;\n}",
+  "fetched_at": "2026-04-26T18:25:15Z"
+}

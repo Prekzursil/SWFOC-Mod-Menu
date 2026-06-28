@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406387a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406387b2        int64_t result\n1406387b2        float zmm0[0x4]\n1406387b2        zmm0, result = sub_140396830(*(arg1 + 0x28))\n1406387b7        int64_t* rcx_1 = *(arg1 + 0x28)\n1406387bb        float zmm6[0x4] = zmm0\n1406387c5        if (*(rcx_1 + 0x337) != 0xff)\n1406387cc        int32_t rdi_1 = 0\n1406387ce        int64_t* rbx_1 = nullptr\n1406387d3        if (rcx_1 != 0)\n1406387db        int64_t* rax_1 = (*(*rcx_1 + 0x10))(rcx_1, 5)\n1406387de        rbx_1 = rax_1\n1406387e4        if (rax_1 != 0)\n1406387ec        (**rax_1)(rbx_1)\n1406387ee        void* rdx_2 = rbx_1[5]\n1406387fc        if (sub_1404f3ba0(rbx_1, rdx_2) != 0)\n140638833        int32_t rax_5\n14063880a        void* rax_4 = sub_1404f3b80(rbx_1, rbx_1[5], rdi_1)\n140638812        if (rax_4 != 0)\n140638820        zmm6 = _mm_max_ss(sub_140396830(rax_4)[0], zmm6[0])\n140638823        rdx_2 = rbx_1[5]\n14063882a        rdi_1 += 1\n14063882c        rax_5 = sub_1404f3ba0(rbx_1, rdx_2)\n140638833        do while (rdi_1 u< rax_5)\n14063883b        result = (*(*rbx_1 + 8))(rbx_1, rdx_2)\n140638850        return result",
+  "fetched_at": "2026-04-26T17:01:26Z"
+}

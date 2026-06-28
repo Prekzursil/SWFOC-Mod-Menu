@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f29a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetProgressbarClass::vfunction13(GUIGadgetProgressbarClass *this)\n\n{\n  longlong lVar1;\n  undefined1 *puVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  uint uVar5;\n  ulonglong uVar6;\n  \n  puVar2 = &(this->GUIGadgetProgressbarClass_data).field_0x8;\n  (**(code **)(*(longlong *)puVar2 + 0x28))(puVar2,&DAT_140a7bb28);\n  puVar2 = &(this->GUIGadgetProgressbarClass_data).field_0x98;\n  (**(code **)(*(longlong *)puVar2 + 0x28))(puVar2,&DAT_140a7bb28);\n  lVar3 = (longlong)(this->GUIGadgetProgressbarClass_data).offset_0x130 -\n          (longlong)(this->GUIGadgetProgressbarClass_data).offset_0x128;\n  uVar5 = 0;\n  lVar1 = lVar3 >> 0x3f;\n  if (lVar3 / 0x90 + lVar1 != lVar1) {\n    uVar6 = 0;\n    do {\n      plVar4 = (this->GUIGadgetProgressbarClass_data).offset_0x128 + uVar6 * 0x12;\n      (**(code **)(*plVar4 + 0x28))(plVar4,&DAT_140a7bb28);\n      uVar5 = uVar5 + 1;\n      uVar6 = (ulonglong)uVar5;\n    } while (uVar6 < (ulonglong)\n                     (((longlong)(this->GUIGadgetProgressbarClass_data).offset_0x130 -\n                      (longlong)(this->GUIGadgetProgressbarClass_data).offset_0x128) / 0x90));\n    *(undefined1 *)&(this->GUIGadgetClass_data).offset_0x70 = 0;\n    return;\n  }\n  *(undefined1 *)&(this->GUIGadgetClass_data).offset_0x70 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:15Z"
+}

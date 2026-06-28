@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cd940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall GalacticTaskForceClass::vfunction5_for_LuaUserVar(void)\n\n{\n  return &DAT_140a44a40;\n}",
+  "fetched_at": "2026-04-26T17:41:42Z"
+}

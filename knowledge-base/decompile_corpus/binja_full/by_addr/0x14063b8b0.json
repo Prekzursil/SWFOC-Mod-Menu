@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063b8b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063b8bb        struct LocomotorCommonClass::FlyingLocomotorBehaviorClass::VTable** result = operator new(0x40)\n14063b8c6        if (result == 0)\n14063b8fe        return result\n14063b8cb        sub_14042b9f0(result)\n14063b8d7        *result = &FlyingLocomotorBehaviorClass::`vftable'{for `LocomotorCommonClass'}\n14063b8e1        result[1] = &FlyingLocomotorBehaviorClass::`vftable'{for `RefCountClass'}\n14063b8ec        result[3] = &FlyingLocomotorBehaviorClass::`vftable'{for `SignalListenerClass'}\n14063b8f8        return result",
+  "fetched_at": "2026-04-26T17:01:58Z"
+}

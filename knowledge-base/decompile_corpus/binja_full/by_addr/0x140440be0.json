@@ -1,0 +1,7 @@
+{
+  "addr": "0x140440be0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140440bf0        uint128_t zmm0\n140440bf0        zmm0.q = 0x400921fb54442d18 f* 2.0\n140440bfb        __builtin_memset(arg1, 0, 0x18)\n140440c06        *(arg1 + 0x18) = arg2\n140440c15        __builtin_memset(arg1 + 0x48, 0, 0x14)\n140440c1d        __builtin_memset(arg1 + 0x78, 0, 0x30)\n140440c44        zmm0 = _mm_cvtpd_ps(zmm0)\n140440c48        __builtin_memset(arg1 + 0x20, 0, 0x1c)\n140440c4c        *(arg1 + 0x40) = 0x3f800000\n140440c57        *(arg1 + 0x5c) = 0x1000000\n140440c5e        *(arg1 + 0x60) = 0\n140440c61        *(arg1 + 0x64) = 0\n140440c64        *(arg1 + 0x3c) = zmm0.d\n140440c69        *(arg1 + 0x68) = 0x3f800000\n140440c71        *(arg1 + 0x70) = 0\n140440c74        *(arg1 + 0xa8) = 0xffffffff\n140440c7e        void* rcx = *(arg1 + 0x18)\n140440c85        if (rcx != 0)\n140440c8a        *(arg1 + 0x24) = *(rcx + 0x78)\n140440c90        *(arg1 + 0x28) = *(rcx + 0x7c)\n140440c99        *(arg1 + 0x2c) = *(rcx + 0x80)\n140440ca2        *(arg1 + 0x30) = *(arg2 + 0x84)\n140440cab        *(arg1 + 0x34) = *(arg2 + 0x88)\n140440cb4        *(arg1 + 0x38) = *(arg2 + 0x8c)\n140440cbe        float zmm0_1 = sub_140371b10(*(arg2 + 0x298))\n140440cc3        void* rax_7 = *(arg1 + 0x18)\n140440cd7        *(arg1 + 0x48) = zmm0_1 * 20f * 0.25f\n140440ce9        *(arg1 + 0xa8) = *(*(rax_7 + 0x298) + 0x1688)\n140440cf7        return arg1",
+  "fetched_at": "2026-04-26T17:27:17Z"
+}

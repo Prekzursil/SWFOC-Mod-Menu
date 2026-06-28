@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ba4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769bb8        int64_t rbx = sx.q(arg4)\n140769bc6        if (arg4 s> 0)\n140769bce        int64_t r11\n140769bce        int32_t rax_1 = wcsnlen(arg3, rbx, r11)\n140769bd3        bool cond:0_1 = rax_1 s< rbx.d\n140769bd5        rbx = zx.q(rax_1 + 1)\n140769bd8        if (not(cond:0_1))\n140769bda        rbx = zx.q(rax_1)\n140769c2b        return LCMapStringEx(arg1, arg2, arg3, rbx.d, arg5, arg6, nullptr, nullptr, 0)",
+  "fetched_at": "2026-04-26T17:30:16Z"
+}

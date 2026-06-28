@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020af60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020af6c        float zmm3 = arg3\n14020af6f        float i = *(arg1 + 8) f- *(arg2 + 8)\n14020af74        if (not(arg3 < 90f))\n14020af76        zmm3 = 0.00999999978f\n14020af91        if (not(i <= 180f))\n14020af93        i = i - 360f\n14020af9a        do while (i > 180f)\n14020afa7        if (not(-180f < i))\n14020afb0        i = i + 360f\n14020afb7        do while (-180f >= i)\n14020afd0        int64_t result\n14020afd0        result.b = (i & 0x7fffffff) <= zmm3\n14020afd3        return result",
+  "fetched_at": "2026-04-26T17:28:08Z"
+}

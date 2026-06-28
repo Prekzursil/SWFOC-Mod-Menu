@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793a58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_LCIDToLocaleName\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_LCIDToLocaleName(undefined4 param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(0x15,\"LCIDToLocaleName\",(module_id *)&DAT_1408d82e8,\n                            (module_id *)\"LCIDToLocaleName\");\n  if (pvVar1 == (void *)0x0) {\n    FUN_14079e708(param_1,param_2,param_3);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b9cf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b9cf6        if (arg1 s>= 0)\n1401b9d1a        int64_t rax\n1401b9d1a        rax.b = 1\n1401b9d20        return rax\n1401b9d00        OutputDebugStringA(sub_140001000(arg1))\n1401b9d0d        OutputDebugStringA(&data_140819c5c)\n1401b9d13        int64_t rax_2\n1401b9d13        rax_2.b = 0\n1401b9d19        return rax_2",
+  "fetched_at": "2026-04-26T17:25:54Z"
+}

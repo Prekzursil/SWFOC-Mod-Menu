@@ -1,0 +1,7 @@
+{
+  "addr": "0x140588710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nUnitSurvivalDiagnosticsNodeClass::vfunction5\n          (UnitSurvivalDiagnosticsNodeClass *this,undefined8 *param_1)\n\n{\n  *param_1 = 0;\n  param_1[3] = 0xf;\n  param_1[2] = 0xd;\n  FUN_14076bd80(param_1,\"Unit survival\",0xd);\n  *(undefined1 *)((longlong)param_1 + 0xd) = 0;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:41:32Z"
+}

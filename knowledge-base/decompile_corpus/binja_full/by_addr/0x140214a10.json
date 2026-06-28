@@ -1,0 +1,7 @@
+{
+  "addr": "0x140214a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140214a31        int64_t entry_r8\n140214a31        sub_140214a70(\"_warn_message_popup.txt\", &data_140819c5c, sub_140214a70(\"_warn_message_popup.txt\", arg1, entry_r8))\n140214a3c        return 0",
+  "fetched_at": "2026-04-26T17:28:28Z"
+}

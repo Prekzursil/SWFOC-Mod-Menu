@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407691d4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407691e2        *arg1 = ___lc_collate_cp_func()\n1407691e9        int64_t rcx = *(___lc_locale_name_func() + 8)\n1407691ed        *(arg1 + 8) = rcx\n1407691f4        if (rcx != 0)\n1407691fb        *(arg1 + 8) = sub_140788fac(rcx)\n140769207        return arg1",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

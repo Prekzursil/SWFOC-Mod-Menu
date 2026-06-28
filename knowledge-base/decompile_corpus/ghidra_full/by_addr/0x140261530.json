@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FUN_140261530(void *this)\n\n{\n  longlong lVar1;\n  \n  lVar1 = *(longlong *)((longlong)this + 0x40);\n                    /* inlined constructor or destructor (approx location) for CameraClass */\n  *(CameraClass_vftable **)this = &CameraClass::vftable;\n  if (lVar1 != 0) {\n    FUN_140140500(lVar1);\n    thunk_FUN_1407864b8(lVar1,0x308);\n  }\n                    /* inlined constructor or destructor (approx location) for RefCountClass */\n  *(undefined8 *)((longlong)this + 0x40) = 0;\n  *(RefCountClass_vftable **)this = &RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076abd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076abd7        return InitializeSListHead(&data_140b3b9c0) __tailcall",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a5180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a51af        int32_t var_48\n1401a51af        char rdx_1 = sub_140220730(arg2, &var_48, 0x40, nullptr) & 1\n1401a51bc        int32_t var_2c\n1401a51bc        arg1[7] = var_2c\n1401a51c7        int32_t var_20\n1401a51c7        arg1[0xa] = var_20\n1401a51d2        int32_t var_18\n1401a51d2        arg1[0xc] = var_18\n1401a51dd        int32_t var_10\n1401a51dd        arg1[0xf] = var_10\n1401a51e8        int32_t var_14\n1401a51e8        arg1[0xe] = var_14\n1401a51f3        int32_t var_38\n1401a51f3        arg1[4] = var_38\n1401a51fe        int32_t var_c\n1401a51fe        arg1[0x10] = var_c\n1401a5209        int32_t var_30\n1401a5209        arg1[6] = var_30\n1401a5214        int32_t var_34\n1401a5214        arg1[5] = var_34\n1401a521f        int32_t var_40\n1401a521f        arg1[2] = var_40\n1401a522a        int32_t var_44\n1401a522a        arg1[1] = var_44\n1401a5235        char var_24\n1401a5235        arg1[9].b = var_24\n1401a5238        int32_t rcx_2 = var_48\n1401a523c        char var_1c\n1401a523c        arg1[0xb].b = var_1c\n1401a5242        int32_t var_28\n1401a5242        arg1[8] = var_28\n1401a5247        int32_t var_3c\n1401a5247        arg1[3] = var_3c\n1401a524c        *arg1 = rcx_2\n1401a5253        return zx.q(rdx_1)",
+  "fetched_at": "2026-04-26T17:25:05Z"
+}

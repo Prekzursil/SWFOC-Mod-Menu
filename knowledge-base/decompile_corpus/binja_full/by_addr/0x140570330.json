@@ -1,0 +1,7 @@
+{
+  "addr": "0x140570330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140570340        *arg1 = &std::wstring_convert<class std::codecvt_utf8<wchar_t, 1114111, 0>, wchar_t, class std::allocator<wchar_t>, class std::allocator<char> >::`vftable'\n140570347        int64_t* result = sub_14001eb00(&arg1[8])\n14057034c        int64_t rdx = arg1[7]\n140570354        if (rdx u>= 0x10)\n140570356        void* rcx_1 = arg1[4]\n140570364        if (rdx + 1 u>= 0x1000)\n140570366        void* r8_1 = *(rcx_1 - 8)\n140570379        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1405703c4        _invalid_parameter_noinfo_noreturn()\n1405703c4        noreturn\n14057037b        rcx_1 = r8_1\n14057037e        result = j_sub_1407864b8(rcx_1)\n140570383        arg1[6] = 0\n14057038b        arg1[7] = 0xf\n140570393        arg1[4].b = 0\n140570397        int64_t* rcx_3 = arg1[3]\n14057039e        if (rcx_3 != 0)\n1405703a3        result = (*(*rcx_3 + 0x10))(rcx_3)\n1405703a9        if (result != 0)\n1405703bb        jump(**result)\n1405703c3        return result",
+  "fetched_at": "2026-04-26T17:34:56Z"
+}

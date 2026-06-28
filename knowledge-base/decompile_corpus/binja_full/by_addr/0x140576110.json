@@ -1,0 +1,7 @@
+{
+  "addr": "0x140576110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140576125        if (*(arg1 + 0x60) != 0)\n14057612a        int64_t* rcx\n14057612a        if (arg3 != 0)\n14057612c        rcx = *(arg3 + 0x10)\n14057613d        char const* const rdx_1\n14057613d        if (arg3 == 0 || ((*(arg3 + 0x18) - rcx) & 0xfffffffffffffff8) == 0)\n140576177        rdx_1 = \"GameObjectWrapper::Face_Immediate -- Missing required position or gameobject parameter.\"\n14057614a        void var_18\n14057614a        char rax_3\n14057614a        rax_3, arg3 = sub_1404990b0(*rcx, &var_18, nullptr)\n140576151        if (rax_3 != 0)\n140576165        sub_140394440(*(arg1 + 0x60), &var_18)\n140576176        return 0\n140576153        rdx_1 = \"GameObjectWrapper::Face_Immediate -- could not extract a position from parameter 1.\"\n140576181        sub_140248190(arg2, rdx_1, arg3)\n140576192        return 0",
+  "fetched_at": "2026-04-26T17:35:04Z"
+}

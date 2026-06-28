@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dc560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402dc574        void** rbx = *arg1\n1402dc57c        int32_t var_20 = 0\n1402dc583        void** r8 = rbx\n1402dc586        void** rax = rbx[1]\n1402dc58a        void** var_28 = rax\n1402dc593        if (*(rax + 0x19) == 0)\n1402dc595        int32_t r9_1 = *arg2\n1402dc5a0        var_28 = rax\n1402dc5a9        if (rax[4].d u>= r9_1)\n1402dc5b5        r8 = rax\n1402dc5b8        int32_t var_20_2 = 1\n1402dc5c0        rax = *rax\n1402dc5ab        rax = rax[2]\n1402dc5af        int32_t var_20_1 = 0\n1402dc5c7        do while (*(rax + 0x19) == 0)\n1402dc5d5        if (*(r8 + 0x19) != 0 || *arg2 u< r8[4].d)\n1402dc5e5        if (arg1[1] == 0x555555555555555)\n1402dc641        sub_1400501c0()\n1402dc641        noreturn\n1402dc5ec        void** rax_2 = operator new(0x30)\n1402dc603        var_28.o = var_28.o\n1402dc608        rax_2[4].d = *arg2\n1402dc60c        rax_2[5] = 0\n1402dc610        *rax_2 = rbx\n1402dc613        rax_2[1] = rbx\n1402dc617        rax_2[2] = rbx\n1402dc61b        rax_2[3].w = 0\n1402dc625        r8 = sub_14004fe80(arg1, &var_28, rax_2)\n1402dc640        return &r8[5]",
+  "fetched_at": "2026-04-26T17:22:38Z"
+}

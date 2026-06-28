@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ab00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ab00(void)\n\n{\n  PersonalFlameThrowerAbilityClass *this;\n  \n  this = (PersonalFlameThrowerAbilityClass *)FUN_140769c58(0x1b8);\n  if (this != (PersonalFlameThrowerAbilityClass *)0x0) {\n    PersonalFlameThrowerAbilityClass::PersonalFlameThrowerAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f3a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404f3a20(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  longlong lVar1;\n  DynamicVectorClass<class_GameObjectClass*___ptr64> *this;\n  char cVar2;\n  longlong lVar3;\n  int iVar4;\n  \n  if (((param_2 != 0) && (lVar1 = *(longlong *)(param_2 + 200), lVar1 != 0)) &&\n     (iVar4 = 0, 0 < *(int *)(lVar1 + 0x18))) {\n    lVar3 = 0;\n    do {\n      this = *(DynamicVectorClass<class_GameObjectClass*___ptr64> **)\n              (lVar3 + *(longlong *)(lVar1 + 0x10));\n      if (this != (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) {\n        cVar2 = FUN_14039a600(this);\n        if ((cVar2 != '\\0') && (FUN_1403a01f0(this,param_3), param_3 != 0)) {\n          FUN_14039fe20(param_3,this);\n        }\n        DynamicVectorClass<class_GameObjectClass*___ptr64>::\n        ~DynamicVectorClass<class_GameObjectClass*___ptr64>(this,'\\x01');\n      }\n      iVar4 = iVar4 + 1;\n      lVar3 = lVar3 + 8;\n    } while (iVar4 < *(int *)(lVar1 + 0x18));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:17Z"
+}

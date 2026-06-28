@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407100e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407100f3        *arg1 = &TractorBeamAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140710100        arg1[1] = &TractorBeamAttackAbilityClass::`vftable'{for `RefCountClass'}\n140710104        sub_14048c8d0(arg1)\n14071010c        if ((arg2 & 1) != 0)\n140710116        j_sub_1407864b8(arg1)\n140710128        return arg1",
+  "fetched_at": "2026-04-26T17:27:40Z"
+}

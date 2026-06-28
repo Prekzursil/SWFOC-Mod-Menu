@@ -1,0 +1,7 @@
+{
+  "addr": "0x140196c70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140196c70        int32_t zmm3 = *arg1\n140196c74        data_140a12b50 = zmm3\n140196c7c        int32_t zmm2 = arg1[1]\n140196c81        data_140a12b54 = zmm2\n140196c89        int32_t zmm1 = arg1[2]\n140196c8e        data_140a12b58 = zmm1\n140196c96        int32_t result = arg1[3]\n140196c9b        data_140a12b5c = result\n140196ca3        data_140a7037c = result\n140196cab        data_140a70370 = zmm3\n140196cb3        data_140a70374 = zmm2\n140196cbb        data_140a70378 = zmm1\n140196cc3        return result",
+  "fetched_at": "2026-04-26T17:24:29Z"
+}

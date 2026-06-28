@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b5640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alShaderInstance member function inherited by alD3dEffect */\n\nint __thiscall alShaderInstance::vfunction18_for_RefCountClass(alShaderInstance *this,char *param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  char *_Str1;\n  uint uVar3;\n  ulonglong uVar4;\n  \n  uVar4 = 0;\n  uVar2 = (*this->vftablePtr->vfunction19)();\n  if (0 < (int)uVar2) {\n    do {\n      _Str1 = (char *)(*this->vftablePtr->vfunction19)(this,uVar4);\n      iVar1 = _stricmp(_Str1,param_1);\n      if (iVar1 == 0) {\n        return (int)uVar4;\n      }\n      uVar3 = (int)uVar4 + 1;\n      uVar4 = (ulonglong)uVar3;\n      uVar2 = (*this->vftablePtr->vfunction19)(this);\n    } while ((int)uVar3 < (int)uVar2);\n  }\n  return -1;\n}",
+  "fetched_at": "2026-04-26T17:44:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a84f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a84f0        float result = *(arg1 + 0x90)\n1403a84f8        float temp0 = *arg2\n1403a84f8        result - temp0\n1403a84fd        if (is_unordered.d(result, temp0) || result != temp0)\n1403a8521        label_1403a8521:\n1403a8521        *(arg1 + 0x90) = *arg2\n1403a852a        *(arg1 + 0x94) = arg2[1]\n1403a8530        int32_t rax_3 = arg2[2]\n1403a8533        *(arg1 + 0x3a1) |= 1\n1403a853a        *(arg1 + 0x98) = rax_3\n1403a84ff        result = *(arg1 + 0x94)\n1403a8507        float temp1_1 = arg2[1]\n1403a8507        result - temp1_1\n1403a850d        if (is_unordered.d(result, temp1_1) || result != temp1_1)\n1403a850b        goto label_1403a8521\n1403a850f        result = *(arg1 + 0x98)\n1403a8517        float temp2_1 = arg2[2]\n1403a8517        result - temp2_1\n1403a851d        if (is_unordered.d(result, temp2_1) || not(result == temp2_1))\n1403a851b        goto label_1403a8521\n1403a8540        return result",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

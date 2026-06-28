@@ -1,0 +1,7 @@
+{
+  "addr": "0x140686fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nStoppedVsStoppedCollisionDiagnosticsNodeClass::vfunction6\n          (StoppedVsStoppedCollisionDiagnosticsNodeClass *this,undefined8 *param_1)\n\n{\n  param_1[3] = 0xf;\n  *param_1 = 0;\n  param_1[2] = 0;\n  FUN_140022730(param_1,\"Stopped Vs Stopped\",0x12);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:14:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140196fb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140196fb0        float result[0x4] = _mm_shuffle_ps(arg1, arg1, 0)\n140196fb4        data_140a704d8 = result[0]\n140196fbc        data_140a701f0 = result\n140196fc3        return result",
+  "fetched_at": "2026-04-26T17:24:30Z"
+}

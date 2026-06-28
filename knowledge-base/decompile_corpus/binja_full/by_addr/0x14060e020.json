@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060e020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14060e038        *arg1 = &AITargetLocationWrapper::`vftable'{for `LuaUserVar'}\n14060e045        arg1[5] = &AITargetLocationWrapper::`vftable'{for `SignalListenerClass'}\n14060e049        sub_14060e910(arg1)\n14060e04e        int64_t* rcx = arg1[7]\n14060e055        if (rcx != 0)\n14060e05a        (*(*rcx + 8))(rcx)\n14060e068        arg1[5] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14060e06c        sub_14020a820(&arg1[5])\n14060e074        sub_140249eb0(arg1)\n14060e07d        if ((arg2 & 1) != 0)\n14060e087        j_sub_1407864b8(arg1)\n14060e09e        return arg1",
+  "fetched_at": "2026-04-26T17:23:07Z"
+}

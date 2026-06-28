@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b05a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SetMarkerIDEventClass * __thiscall\nSetMarkerIDEventClass::SetMarkerIDEventClass(SetMarkerIDEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->SetMarkerIDEventClass_data).offset_0x0 = 0xffffffffffffffff;\n  this->vftablePtr = &vftable;\n  (this->EventClass_data).offset_0x8 = 0x35;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:36Z"
+}

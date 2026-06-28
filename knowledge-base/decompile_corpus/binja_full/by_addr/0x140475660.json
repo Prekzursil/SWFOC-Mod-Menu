@@ -1,0 +1,7 @@
+{
+  "addr": "0x140475660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140475678        *arg1 = &AIDiagnosticsManagerClass::`vftable'\n14047567e        __builtin_memset(&arg1[1], 0, 0x11)\n14047568b        __builtin_memset(arg1 + 0x1c, 0, 0x14)\n140475699        int64_t* rax = operator new(0x20)\n1404756a5        *rax = rax\n1404756a8        rax[1] = rax\n1404756ac        arg1[4] = rax\n1404756b0        int64_t r8 = arg1[4]\n1404756b4        __builtin_memset(&arg1[6], 0, 0x18)\n1404756bf        arg1[9] = 7\n1404756c7        arg1[0xa] = 8\n1404756cf        *(arg1 + 0x1c) = 0x3f800000\n1404756d6        sub_140048250(&arg1[6], 0x10, r8)\n1404756db        __builtin_memset(&arg1[0xb], 0, 0x30)\n1404756f1        arg1[0x12] = 0\n1404756f8        arg1[0x13] = 0xf\n14047570b        arg1[0x14].b = 1\n140475712        __builtin_memset(&arg1[0x15], 0, 0x11)\n140475727        struct AIDiagnosticsClass::VTable** rax_1 = operator new(0x28)\n140475732        if (rax_1 == 0)\n140475777        arg1[0x15] = 0\n140475790        return arg1\n140475737        struct AIDiagnosticsNodeClass::RootAIDiagnosticsNodeClass::VTable** rax_2 = operator new(8)\n14047573f        if (rax_2 == 0)\n14047574d        rax_2 = nullptr\n140475748        *rax_2 = &RootAIDiagnosticsNodeClass::`vftable'{for `AIDiagnosticsNodeClass'}\n14047575d        arg1[0x15] = sub_1405f64f0(rax_1, 0, rax_2)\n140475776        return arg1",
+  "fetched_at": "2026-04-26T17:28:12Z"
+}

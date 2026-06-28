@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401991e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401991e0(longlong *param_1,undefined8 param_2)\n\n{\n  DWORD DVar1;\n  DWORD DVar2;\n  longlong *plVar3;\n  \n  if ((longlong *)param_1[0xf] != (longlong *)0x0) {\n    (**(code **)(*(longlong *)param_1[0xf] + 0x10))();\n  }\n  plVar3 = param_1 + 4;\n  param_1[0xf] = 0;\n  param_1[6] = 0;\n  if (0xf < (ulonglong)param_1[7]) {\n    plVar3 = (longlong *)*plVar3;\n  }\n  *(undefined1 *)plVar3 = 0;\n  plVar3 = param_1 + 9;\n  param_1[0xb] = 0;\n  if (0xf < (ulonglong)param_1[0xc]) {\n    plVar3 = (longlong *)*plVar3;\n  }\n  *(undefined1 *)plVar3 = 0;\n  FUN_1401864f0(param_1,param_2,0,1);\n  DVar1 = GetCurrentThreadId();\n  DVar2 = FUN_1401771d0();\n  if (DVar1 == DVar2) {\n                    /* WARNING: Could not recover jumptable at 0x00014019925f. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*param_1 + 0x40))(param_1);\n    return;\n  }\n  FUN_14013cad0(&LAB_14018df60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:37Z"
+}

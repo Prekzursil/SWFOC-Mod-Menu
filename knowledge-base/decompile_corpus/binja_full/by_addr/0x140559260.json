@@ -1,0 +1,7 @@
+{
+  "addr": "0x140559260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14055926f        void* rbx = nullptr\n140559274        *(arg1 + 0x1e8) = 0\n140559280        if (arg2 == 0)\n140559280        return \n140559286        void* rcx = *(arg1 + 0x138)\n1405592a1        int64_t rax_1\n1405592a1        int64_t rdx\n1405592a1        rdx:rax_1 = muls.dp.q(0x4924924924924925, *(arg1 + 0x140) - rcx)\n1405592a4        int64_t rdx_1 = rdx s>> 5\n1405592ab        uint64_t rax_3 = rdx_1 u>> 0x3f\n1405592b2        if (rdx_1 != neg.q(rax_3))\n1405592bc        rbx = rcx - 0x70 + (rdx_1 + rax_3) * 0x70\n1405592c5        int64_t rdx_2\n1405592c5        rdx_2.b = rbx != 0\n1405592d2        if ((sub_140397900(arg2, rdx_2.b, arg3).d & 0xffffffef) == 0)\n1405592d2        return \n1405592d4        int64_t* rcx_2 = data_140b15418\n1405592de        uint64_t rax = (*(*rcx_2 + 0x238))(rcx_2)\n1405592e7        if (rax == 0)\n1405592e7        return \n1405592f2        if (rbx != 0)\n140559307        return sub_14053a900(rax, arg2, rbx + 0x18) __tailcall\n140559313        if (*(arg1 + 0x260) != 0)\n140559324        return sub_14053ae20(rax, arg2) __tailcall\n14055932c        sub_14053acf0(rax, arg2, 1)\n140559340        return ",
+  "fetched_at": "2026-04-26T17:34:21Z"
+}

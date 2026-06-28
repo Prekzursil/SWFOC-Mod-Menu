@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcscmp\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl wcscmp(wchar_t *_Str1,wchar_t *_Str2)\n\n{\n  wchar_t wVar1;\n  longlong lVar2;\n  int iVar3;\n  \n  wVar1 = *_Str2;\n  iVar3 = (uint)(ushort)*_Str1 - (uint)(ushort)wVar1;\n  if (iVar3 == 0) {\n    lVar2 = (longlong)_Str1 - (longlong)_Str2;\n    do {\n      if (wVar1 == L'\\0') break;\n      _Str2 = _Str2 + 1;\n      wVar1 = *_Str2;\n      iVar3 = (uint)*(ushort *)(lVar2 + (longlong)_Str2) - (uint)(ushort)wVar1;\n    } while (iVar3 == 0);\n  }\n  return (iVar3 >> 0x1f) - (-iVar3 >> 0x1f);\n}",
+  "fetched_at": "2026-04-26T18:54:15Z"
+}

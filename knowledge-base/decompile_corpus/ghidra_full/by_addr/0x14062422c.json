@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062422c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTerrainTextureModificationBehaviorClass::vfunction1\n          (TerrainTextureModificationBehaviorClass *this,uint param_1)\n\n{\n  ~TerrainTextureModificationBehaviorClass\n            ((TerrainTextureModificationBehaviorClass *)&this[-1].RootClass_data.offset_0x328,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:38Z"
+}

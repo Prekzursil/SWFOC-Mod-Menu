@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050b2f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14050b2f0(longlong param_1,int param_2)\n\n{\n  uint uVar1;\n  undefined4 extraout_var;\n  longlong lVar3;\n  int local_res10 [6];\n  ulonglong uVar2;\n  \n  local_res10[0] = param_2;\n  uVar1 = BitwiseOr<enum_tVisibilityLevelType>::\n          BitwiseOr<enum_tVisibilityLevelType>_Constructor_or_Destructor(param_1,local_res10);\n  uVar2 = CONCAT44(extraout_var,uVar1);\n  if (((param_1 != 0) && (*(longlong *)(param_1 + 0xb8) != 0)) &&\n     (*(int *)(*(longlong *)(param_1 + 0xb8) + 0x2f4) != -1)) {\n    lVar3 = FUN_140294bc0(&DAT_140a16fd0,local_res10[0]);\n    uVar2 = 0;\n    if (((lVar3 != 0) && (uVar2 = *(ulonglong *)(lVar3 + 0x68), uVar2 != 0)) &&\n       (*(char *)(uVar2 + 0x10b) == '\\x01')) goto LAB_14050b354;\n  }\n  if ((uVar1 >> 0xe & 1) == 0) {\n    return uVar2 & 0xffffffffffffff00;\n  }\nLAB_14050b354:\n  return CONCAT71((int7)(uVar2 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:21:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_GalacticSellEventClass,46>::vfunction2(void)\n\n{\n  return 0x2e;\n}",
+  "fetched_at": "2026-04-26T18:29:21Z"
+}

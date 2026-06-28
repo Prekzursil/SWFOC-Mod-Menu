@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405608c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> * __thiscall\nDynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>::\nDynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>\n          (DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> *this)\n\n{\n                    /* inlined constructor: SquadLeaderDataPackClass::SquadLeaderDataPackClass */\n  *(undefined4 *)((longlong)&this[1].vftablePtr + 4) = 0x80000000;\n  this->vftablePtr =\n       (DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>_vftable *)\n       &SquadLeaderDataPackClass::vftable;\n  (this->DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>_data).offset_0x0 =\n       &vftable;\n  (this->DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>_data).offset_0x8 = 0\n  ;\n  (this->DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>_data).offset_0xc = 0\n  ;\n  *(undefined4 *)&this[1].vftablePtr = 0;\n  *(undefined4 *)\n   &this[1].DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>_data.offset_0x0 =\n       0;\n  *(undefined1 *)\n   ((longlong)\n    &this[1].DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>_data.offset_0x0\n   + 4) = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:52Z"
+}

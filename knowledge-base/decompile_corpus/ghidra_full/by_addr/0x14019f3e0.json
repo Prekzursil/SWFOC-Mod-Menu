@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019f3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall alRawAnim::vfunction7(alRawAnim *this)\n\n{\n  return *(int *)&(this->RefCountClass_data).field_0x28 + -1;\n}",
+  "fetched_at": "2026-04-26T17:38:03Z"
+}

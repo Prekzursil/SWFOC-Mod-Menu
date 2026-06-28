@@ -1,0 +1,7 @@
+{
+  "addr": "0x140534bd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandRetreatCoordinatorClass * __thiscall\nLandRetreatCoordinatorClass::LandRetreatCoordinatorClass(LandRetreatCoordinatorClass *this)\n\n{\n  RetreatCoordinatorClass::RetreatCoordinatorClass((RetreatCoordinatorClass *)this);\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:29:45Z"
+}

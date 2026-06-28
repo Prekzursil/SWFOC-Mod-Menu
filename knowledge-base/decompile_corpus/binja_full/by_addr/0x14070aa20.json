@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070aa20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070aa4b        uint64_t result\n14070aa4b        if (arg2 != 0 && arg3 != 0)\n14070aa54        if (arg2 != arg3)\n14070aac8        result = sub_140294bc0(&data_140a16fd0, *(arg2 + 0x58))\n14070aad3        if (result != 0 && sub_1403963f0(arg2) == arg3)\n14070aae7        uint64_t rbp\n14070aae7        rbp.b = 0\n14070aaf2        if (result == arg4 || arg4 == 0)\n14070ab06        rbp = zx.q((*(*arg1 + 0xf8))(arg1, arg2, arg3))\n14070ab0e        if (result == arg5)\n14070ab10        int64_t r9_2 = *arg1\n14070ab23        rbp.b |= (*(r9_2 + 0xf0))(arg1, arg2, arg3, r9_2)\n14070ab26        return zx.q(rbp.b)\n14070aa5d        if (arg1[0x30].b == 1)\n14070aa63        uint64_t rsi\n14070aa63        rsi.b = 0\n14070aa69        if (arg4 != 0)\n14070aa82        rsi = zx.q(sub_14070ad80(arg1, arg3, arg4))\n14070aa85        sub_14048e920(arg1, arg3, arg3, 1)\n14070aa92        if (arg5 != 0)\n14070aa9f        rsi.b |= sub_14070a640(arg1, arg3, arg5)\n14070aab3        sub_14048cca0(arg1, arg3, arg3, 1, 1)\n14070aab8        return zx.q(rsi.b)\n14070ab31        result.b = 0\n14070ab46        return result",
+  "fetched_at": "2026-04-26T17:27:28Z"
+}

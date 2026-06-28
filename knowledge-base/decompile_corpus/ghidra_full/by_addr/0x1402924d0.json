@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402924d0",
+  "tool": "ghidra",
+  "fact_id": "rva_player_list_set_current_by_faction",
+  "body": "\nvoid FUN_1402924d0(longlong *param_1,undefined8 param_2,longlong param_3,longlong param_4)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  longlong *plVar3;\n  int iVar4;\n  \n  if ((param_3 != 0) || (param_4 != 0)) {\n    iVar2 = DAT_140b153fc;\n    if (DAT_140b15418 != (longlong *)0x0) {\n      iVar2 = (**(code **)(*DAT_140b15418 + 0xe0))();\n    }\n    if ((iVar2 == 0) && ((param_4 != 0 || (param_4 = FUN_1404af360(), param_4 != 0)))) {\n      plVar1 = (longlong *)*param_1;\n      iVar2 = 0;\n      iVar4 = (int)(param_1[1] - (longlong)plVar1 >> 3);\n      plVar3 = plVar1;\n      if (0 < iVar4) {\n        while ((*(longlong *)(*plVar3 + 0x68) == 0 || (*(longlong *)(*plVar3 + 0x68) != param_4))) {\n          iVar2 = iVar2 + 1;\n          plVar3 = plVar3 + 1;\n          if (iVar4 <= iVar2) {\n            return;\n          }\n        }\n        *(int *)(param_1 + 6) = iVar2;\n        *(undefined1 *)(plVar1[iVar2] + 0x62) = 1;\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:12Z"
+}

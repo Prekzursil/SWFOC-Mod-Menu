@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404300f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140430104        if (arg2 == 0)\n140430106        int64_t result\n140430106        result.b = 0\n140430113        return result\n1404301f6        char rsi = sub_140512d00(arg1, arg2) & sub_1402046f0(arg2, *(arg1 + 0x244), 7) & sub_1402046f0(arg2, *(arg1 + 0x248), 7) & sub_1402046f0(arg2, zx.d(*(arg1 + 0x24c)), 1) & sub_1402046f0(arg2, zx.d(*(arg1 + 0x25c)), 1) & sub_1402046f0(arg2, zx.d(*(arg1 + 0x25d)), 1) & sub_1402046f0(arg2, *(arg1 + 0x260), 0x20) & sub_140204bd0(arg2, *(arg1 + 0x250), 1) & sub_140204bd0(arg2, *(arg1 + 0x254), 2) & sub_140204bd0(arg2, *(arg1 + 0x258), 3)\n1404301f9        if (rsi != 0)\n140430200        int32_t i = 0\n140430208        if (*(arg1 + 0x244) s> 0)\n14043020f        void* rdi_1 = arg1 + 0x48\n140430230        rsi &= sub_1402046f0(arg2, *rdi_1, 0x20)\n140430233        if (rsi == 0)\n140430233        break\n140430235        i += 1\n140430237        rdi_1 += 4\n140430241        do while (i s< *(arg1 + 0x244))\n140430261        return zx.q(rsi)",
+  "fetched_at": "2026-04-26T17:26:51Z"
+}

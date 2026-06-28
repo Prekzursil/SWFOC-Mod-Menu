@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d28e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d28e0(undefined8 param_1)\n\n{\n  ulonglong local_res10 [3];\n  \n  FUN_1407ce170(param_1,1,local_res10);\n  if (-1 < (longlong)local_res10[0]) {\n    FUN_1407b9520(param_1,(double)(longlong)local_res10[0]);\n    return 1;\n  }\n  FUN_1407b9520(param_1,(double)local_res10[0]);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:58:12Z"
+}

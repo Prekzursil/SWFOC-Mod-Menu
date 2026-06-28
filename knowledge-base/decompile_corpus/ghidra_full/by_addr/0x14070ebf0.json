@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070ebf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall\nStarbaseUpgradeAbilityClass::vfunction31_for_IXMLLoadableClass(StarbaseUpgradeAbilityClass *this)\n\n{\n  ulonglong uVar1;\n  longlong in_RDX;\n  longlong in_R8;\n  \n  uVar1 = (*this->vftablePtr->vfunction6_for_IXMLLoadableClass)(this,in_RDX,in_R8);\n  return (char)uVar1 != '\\0';\n}",
+  "fetched_at": "2026-04-26T17:54:53Z"
+}

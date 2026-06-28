@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eb540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407eb544        int64_t rcx = data_140a12930\n1407eb54b        struct DynamicVectorClass<class alD3dVertexTypeInterface* __ptr64>::VTable* const result = &DynamicVectorClass<class alD3dVertexTypeInterface* __ptr64>::`vftable'\n1407eb552        data_140a12928 = &DynamicVectorClass<class alD3dVertexTypeInterface* __ptr64>::`vftable'\n1407eb55c        if (rcx != 0)\n1407eb568        if ((data_140a1293c & 0x80000000) == 0)\n1407eb584        j_sub_1407864b8(rcx)\n1407eb57c        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a12930)\n1407eb589        result = nullptr\n1407eb58b        data_140a1293c &= 0x80000000\n1407eb595        data_140a12930 = 0\n1407eb59c        data_140a12938 = 0\n1407eb5a6        return result",
+  "fetched_at": "2026-04-26T17:35:21Z"
+}

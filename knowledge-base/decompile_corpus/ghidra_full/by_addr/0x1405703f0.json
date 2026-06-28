@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405703f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "codecvt<wchar_t,char,struct__Mbstatet> * __thiscall\nstd::codecvt<unsigned_short,char,struct__Mbstatet>::scalar_deleting_destructor\n          (codecvt<unsigned_short,char,struct__Mbstatet> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr = (codecvt<unsigned_short,char,struct__Mbstatet>_vftable *)&_Facet_base::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x40);\n  }\n  return (codecvt<wchar_t,char,struct__Mbstatet> *)this;\n}",
+  "fetched_at": "2026-04-26T18:40:12Z"
+}

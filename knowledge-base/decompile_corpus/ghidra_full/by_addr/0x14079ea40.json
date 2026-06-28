@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079ea40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "__int64 __cdecl common_lseek_nolock<__int64>(int param_1,__int64 param_2,int param_3)\n\n{\n  byte *pbVar1;\n  BOOL BVar2;\n  DWORD DVar3;\n  HANDLE hFile;\n  ulong *puVar4;\n  LARGE_INTEGER LStackX_20;\n  \n  hFile = (HANDLE)_get_osfhandle(param_1);\n  if (hFile == (HANDLE)0xffffffffffffffff) {\n    puVar4 = __doserrno();\n    *puVar4 = 9;\n  }\n  else {\n    BVar2 = SetFilePointerEx(hFile,(LARGE_INTEGER)param_2,&LStackX_20,param_3);\n    if (BVar2 == 0) {\n      DVar3 = GetLastError();\n      __acrt_errno_map_os_error(DVar3);\n    }\n    else if (LStackX_20.QuadPart != -1) {\n      pbVar1 = (byte *)((&DAT_140b3c4d0)[(longlong)param_1 >> 6] + 0x38 +\n                       (ulonglong)(param_1 & 0x3f) * 0x48);\n      *pbVar1 = *pbVar1 & 0xfd;\n      return (__int64)LStackX_20.s;\n    }\n  }\n  return -1;\n}",
+  "fetched_at": "2026-04-26T18:54:07Z"
+}

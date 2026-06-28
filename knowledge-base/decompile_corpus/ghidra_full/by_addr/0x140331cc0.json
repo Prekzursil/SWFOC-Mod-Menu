@@ -1,0 +1,7 @@
+{
+  "addr": "0x140331cc0",
+  "tool": "ghidra",
+  "fact_id": "rva_find_planet_type",
+  "body": "\nlonglong FUN_140331cc0(longlong param_1)\n\n{\n  ulonglong uVar1;\n  longlong *plVar2;\n  ulonglong uVar3;\n  \n  uVar1 = 0;\n  if (0 < *(int *)(param_1 + 0x18)) {\n    plVar2 = *(longlong **)(param_1 + 0x10);\n    uVar3 = uVar1;\n    do {\n      if (*(char *)(*plVar2 + 0x108) != '\\0') {\n        return (*(longlong **)(param_1 + 0x10))[(int)uVar3];\n      }\n      uVar3 = (ulonglong)((int)uVar3 + 1);\n      uVar1 = uVar1 + 1;\n      plVar2 = plVar2 + 1;\n    } while ((longlong)uVar1 < (longlong)*(int *)(param_1 + 0x18));\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:15Z"
+}

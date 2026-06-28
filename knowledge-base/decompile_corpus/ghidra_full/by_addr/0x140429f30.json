@@ -1,0 +1,7 @@
+{
+  "addr": "0x140429f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalSuperWeaponBehaviorClass::vfunction3(TacticalSuperWeaponBehaviorClass *this,uint param_1)\n\n{\n  ~TacticalSuperWeaponBehaviorClass\n            ((TacticalSuperWeaponBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:42Z"
+}

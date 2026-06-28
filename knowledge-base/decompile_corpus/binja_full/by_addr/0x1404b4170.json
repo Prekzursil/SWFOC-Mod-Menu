@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b4170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b417b        struct RefCountClass::EventClass::VTable** rax = operator new(0x158)\n1404b4180        struct ScheduledEventClass::SpecialAbilityEventClass::VTable** rbx = rax\n1404b4186        if (rax == 0)\n1404b420a        return rax\n1404b418b        sub_140512c50(rax)\n1404b419d        *rbx = &SpecialAbilityEventClass::`vftable'{for `ScheduledEventClass'}\n1404b41a0        sub_1404bdf20(&rbx[9], 0)\n1404b41a9        rbx[0xb] = 0\n1404b41b3        rbx[0xc].d = 0\n1404b41ba        *(rbx + 0x64) = 0\n1404b41be        sub_1404b3db0(&rbx[0xd], nullptr)\n1404b41ca        sub_140522d70(&rbx[0x1a])\n1404b41d2        rbx[0x27].d = 0\n1404b41dc        *(rbx + 0x13c) = 0x3fffff\n1404b41e6        rbx[0x28] = 0x3fffff\n1404b41f1        rbx[0x2a].b = 0\n1404b41f8        rbx[4].d = 0xd\n1404b4204        return rbx",
+  "fetched_at": "2026-04-26T17:29:53Z"
+}

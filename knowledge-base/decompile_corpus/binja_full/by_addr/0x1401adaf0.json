@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401adaf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401adafe        struct alD3dSimpleEngineParam::alWindGrassParam::VTable** result = operator new(0x10)\n1401adb06        if (result == 0)\n1401adb21        return result\n1401adb0f        result[1] = arg1\n1401adb13        *result = &alWindGrassParam::`vftable'{for `alD3dSimpleEngineParam'}\n1401adb1b        return result",
+  "fetched_at": "2026-04-26T17:25:29Z"
+}

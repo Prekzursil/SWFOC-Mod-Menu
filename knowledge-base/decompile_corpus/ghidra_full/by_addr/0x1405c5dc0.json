@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c5dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405c5dc0(longlong param_1)\n\n{\n  int iVar1;\n  \n  iVar1 = (int)((*(longlong *)(param_1 + 0x20) - *(longlong *)(param_1 + 0x18)) / 0x34);\n  if (iVar1 != 0) {\n    *(int *)(param_1 + 0x60) = iVar1 + -1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:47Z"
+}

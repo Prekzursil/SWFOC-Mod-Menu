@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062a990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062a99b        struct BehaviorClass::AmbientSFXBehaviorClass::VTable** result = operator new(0x40)\n14062a9a6        if (result == 0)\n14062a9de        return result\n14062a9ab        sub_1404c32d0(result)\n14062a9b7        *result = &AmbientSFXBehaviorClass::`vftable'{for `BehaviorClass'}\n14062a9c1        result[1] = &AmbientSFXBehaviorClass::`vftable'{for `RefCountClass'}\n14062a9cc        result[3] = &AmbientSFXBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062a9d8        return result",
+  "fetched_at": "2026-04-26T17:24:00Z"
+}

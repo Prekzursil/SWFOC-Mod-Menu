@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404376a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404376ab        struct BehaviorClass::NebulaBehaviorClass::VTable** result = operator new(0x40)\n1404376b6        if (result == 0)\n1404376ee        return result\n1404376bb        sub_1404c32d0(result)\n1404376c7        *result = &NebulaBehaviorClass::`vftable'{for `BehaviorClass'}\n1404376d1        result[1] = &NebulaBehaviorClass::`vftable'{for `RefCountClass'}\n1404376dc        result[3] = &NebulaBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404376e8        return result",
+  "fetched_at": "2026-04-26T17:27:08Z"
+}

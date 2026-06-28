@@ -42,4 +42,11 @@ paths = [
   #   - MinHook (swfoc_lua_bridge/minhook): vendored hooking library.
   '''(^|/)swfoc_overlay/imgui/''',
   '''(^|/)swfoc_lua_bridge/minhook/''',
+  # Incorporated data tree (2026-06-28):
+  #   - knowledge-base: reverse-engineering notes + machine-generated decompile/
+  #     data JSON + a SQLite call-graph index.
+  # Baseline gitleaks scan 2026-06-28 found 0 leaks; allowlisted so future
+  # high-entropy decompile/data bytes (hex RVAs, base64-looking literals) cannot
+  # add secrets-noise. Not first-party source.
+  '''(^|/)knowledge-base/''',
 ]

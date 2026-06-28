@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a9de0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a9e01        int64_t rbx_2 = (data_140b3cc40 - data_140b3cc38) s>> 3\n1407a9e0a        if (rbx_2.d == 0)\n1407a9ec0        *(arg1 + 0x84) = arg4\n1407a9ec6        *(arg1 + 0x80) = arg3\n1407a9ed4        return arg4\n1407a9e2b        void var_28\n1407a9e2b        j_sub_1401803f0((rbx_2 * 3).d * 2, &var_28, &data_140a457c8)\n1407a9e42        void arg_8\n1407a9e42        j_sub_1401802b0((rbx_2 * 3).d << 2, &arg_8, &data_140a457cc)\n1407a9e47        int16_t rsi = 0\n1407a9e4e        if (rbx_2.d s> 0)\n1407a9e50        int64_t i = 0\n1407a9e60        sub_1407a93f0(*(data_140b3cc38 + (i << 3)), arg2)\n1407a9e7e        sub_1407a9980(*(data_140b3cc38 + (i << 3)), &var_28, &arg_8, rsi)\n1407a9e83        i += 1\n1407a9e86        rsi += 6\n1407a9e8d        do while (i s< sx.q(rbx_2.d))\n1407a9e9d        *(arg1 + 0x84) = arg4\n1407a9ea3        *(arg1 + 0x80) = arg3\n1407a9eb6        return arg4",
+  "fetched_at": "2026-04-26T17:32:37Z"
+}

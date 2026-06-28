@@ -1,0 +1,7 @@
+{
+  "addr": "0x140428870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall WaypointLineSubClass::vfunction7_for_RefCountClass(void)\n\n{\n  return \"WaypointLineSubClass\";\n}",
+  "fetched_at": "2026-04-26T17:48:19Z"
+}

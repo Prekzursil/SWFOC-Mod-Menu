@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077061c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077064f        int32_t rbx = sub_14076dad0(arg3, arg2)\n140770651        void arg_20\n140770651        _GetEstablisherFrame(arg1, arg2, arg3, &arg_20)\n140770666        if (rbx s<= __GetUnwindTryBlock(arg1, arg2, arg3))\n140770699        rbx = __GetUnwindTryBlock(arg1, arg2, arg3)\n140770673        __FrameHandler3::SetState(&arg_20, arg3, rbx)\n140770684        __FrameHandler3::SetUnwindTryBlock(arg1, arg2, arg3, rbx)\n1407706b1        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:30:38Z"
+}

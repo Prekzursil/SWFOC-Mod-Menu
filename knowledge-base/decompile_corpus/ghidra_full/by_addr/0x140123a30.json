@@ -1,0 +1,7 @@
+{
+  "addr": "0x140123a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140123a30(void)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  longlong local_28 [2];\n  undefined8 local_18;\n  ulonglong local_10;\n  \n  if (-1 < DAT_140a1223c) {\n    local_28[0] = 0;\n    local_18 = 0;\n    local_10 = 0xf;\n    plVar1 = (longlong *)FUN_1401faa50(DAT_140a625f8);\n    if (local_28 != plVar1) {\n      plVar3 = plVar1;\n      if (0xf < (ulonglong)plVar1[3]) {\n        plVar3 = (longlong *)*plVar1;\n      }\n      FUN_140022730(local_28,plVar3,plVar1[2]);\n    }\n    lVar2 = FUN_140320b90(&DAT_140b2b300,local_28);\n    if (lVar2 == 0) {\n      lVar2 = FUN_1402d4a00(&DAT_140b27e60,local_28);\n      if (lVar2 != 0) {\n        FUN_1402d5290(&DAT_140b27e60,lVar2,DAT_1407ffaf8,0,0);\n      }\n    }\n    else {\n      FUN_140321170(&DAT_140b2b300,lVar2);\n    }\n    if (0xf < local_10) {\n      if (0xfff < local_10 + 1) {\n        if (0x1f < (local_28[0] - *(longlong *)(local_28[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n          FUN_1407711cc(*(longlong *)(local_28[0] + -8),local_10 + 0x28);\n        }\n      }\n      thunk_FUN_1407864b8();\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055e1e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14055e1ef        int64_t lpMem = *(arg1 + 0x1c8)\n14055e1fe        if (lpMem != 0)\n14055e20a        if ((*(arg1 + 0x1d4) & 0x80000000) == 0)\n14055e225        j_sub_1407864b8(lpMem)\n14055e21a        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14055e22a        *(arg1 + 0x1d4) &= 0x80000000\n14055e234        *(arg1 + 0x1c8) = 0\n14055e23b        *(arg1 + 0x1d0) = 0\n14055e241        int64_t lpMem_1 = *(arg1 + 0x1e0)\n14055e24b        if (lpMem_1 != 0)\n14055e257        if ((*(arg1 + 0x1ec) & 0x80000000) == 0)\n14055e272        j_sub_1407864b8(lpMem_1)\n14055e267        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem_1)\n14055e277        *(arg1 + 0x1ec) &= 0x80000000\n14055e281        *(arg1 + 0x1e0) = 0\n14055e288        *(arg1 + 0x1e8) = 0\n14055e28e        int64_t lpMem_2 = *(arg1 + 0x1f8)\n14055e298        if (lpMem_2 == 0)\n14055e298        return \n14055e2a4        if ((*(arg1 + 0x204) & 0x80000000) == 0)\n14055e2bf        j_sub_1407864b8(lpMem_2)\n14055e2b4        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem_2)\n14055e2c4        *(arg1 + 0x204) &= 0x80000000\n14055e2ce        *(arg1 + 0x1f8) = 0\n14055e2d5        *(arg1 + 0x200) = 0\n14055e2ea        return ",
+  "fetched_at": "2026-04-26T17:34:24Z"
+}

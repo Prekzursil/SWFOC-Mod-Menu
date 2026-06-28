@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ea9b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetCustomImageClass::vfunction12(GUIGadgetCustomImageClass *this)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  undefined1 local_18 [16];\n  \n  (**(code **)(*(longlong *)&this->GUIGadgetCustomImageClass_data + 0x28))\n            (&this->GUIGadgetCustomImageClass_data,\n             &(this->GUIGadgetCustomImageClass_data).field_0x90);\n  lVar1 = *(longlong *)&(this->GUIGadgetCustomImageClass_data).field_0x148;\n  uVar2 = FUN_1401f9320(local_18,&(this->GUIGadgetCustomImageClass_data).field_0x90);\n  (**(code **)(lVar1 + 0x28))(&(this->GUIGadgetCustomImageClass_data).field_0x148,uVar2);\n  FUN_1401f9440(local_18);\n  *(undefined1 *)&(this->GUIGadgetClass_data).offset_0x70 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:01Z"
+}

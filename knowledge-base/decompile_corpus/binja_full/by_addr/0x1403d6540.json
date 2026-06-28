@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403d6540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403d6542        if (arg2 s< 0)\n1403d6542        return \n1403d654d        int64_t r9_1 = sx.q(arg2)\n1403d6553        int64_t rcx = *(arg1 + 0x2910)\n1403d656e        int64_t rax_1\n1403d656e        int64_t rdx\n1403d656e        rdx:rax_1 = muls.dp.q(0x4ec4ec4ec4ec4ec5, *(arg1 + 0x2918) - rcx)\n1403d6571        int64_t rdx_1 = rdx s>> 5\n1403d6582        if (r9_1.d s>= rdx_1.d + (rdx_1 u>> 0x3f).d)\n1403d6582        return \n1403d6589        int64_t rsi_1 = r9_1 * 0x68\n1403d659c        if (*(rsi_1 + rcx + 0x61) == 0 || *(arg1 + 0x2930) == 0)\n1403d659c        return \n1403d65a8        struct RefCountClass::EventClass::VTable** rax_3 = operator new(0x158)\n1403d65b0        struct RefCountClass::EventClass::VTable** rdi_1\n1403d65b0        if (rax_3 == 0)\n1403d65bf        rdi_1 = nullptr\n1403d65ba        rdi_1 = sub_1404b4210(rax_3)\n1403d65dc        sub_1404b5420(rdi_1, *(arg1 + 0x2910) + rsi_1, *(arg1 + 0x2928), *(arg1 + 0x2930))\n1403d65eb        sub_1403b01f0(&data_140b2ed18, rdi_1)\n1403d65f3        sub_1403d25d0(arg1)\n1403d6607        return ",
+  "fetched_at": "2026-04-26T17:24:58Z"
+}

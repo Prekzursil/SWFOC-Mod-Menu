@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a090",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14020a090(int *param_1,longlong param_2)\n\n{\n  LPCRITICAL_SECTION lpCriticalSection;\n  undefined8 uVar1;\n  char cVar2;\n  \n  if ((*(longlong *)(param_1 + 0x14) == 0) || (*param_1 != 4)) {\n    return 0;\n  }\n  lpCriticalSection = (LPCRITICAL_SECTION)(param_1 + 0x1a);\n  EnterCriticalSection(lpCriticalSection);\n  uVar1 = *(undefined8 *)(**(longlong **)(param_1 + 0x12) + 0x10);\n  if ((param_2 != 0) && (cVar2 = FUN_1402074d0(param_2,uVar1), cVar2 == '\\0')) {\n    LeaveCriticalSection(lpCriticalSection);\n    return 0;\n  }\n  LeaveCriticalSection(lpCriticalSection);\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T17:57:59Z"
+}

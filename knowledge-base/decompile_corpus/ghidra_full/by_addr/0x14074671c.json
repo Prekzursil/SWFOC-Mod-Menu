@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074671c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall std::numpunct<char>::vfunction7(numpunct<char> *this,undefined8 *param_1)\n\n{\n  numpunct<char>_vftable *pnVar1;\n  \n  pnVar1 = this[2].vftablePtr;\n  *param_1 = 0;\n  param_1[2] = 0;\n  param_1[3] = 0xf;\n  *(undefined1 *)param_1 = 0;\n  FUN_1401dc3a0(param_1,pnVar1);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:04:59Z"
+}

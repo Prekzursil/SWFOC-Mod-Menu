@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198778",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alRenderTarget::vfunction1(alRenderTarget *this,uint param_1)\n\n{\n  alDepthBuffer::scalar_deleting_destructor((alDepthBuffer *)&this[-1].offset_0x80,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

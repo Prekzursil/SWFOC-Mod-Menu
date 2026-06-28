@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f324",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078f327        if (arg1 != 0 && HeapFree(data_140b3cc00, HEAP_NONE, arg1) == 0)\n14078f349        BOOL* rbx_1 = _errno()\n14078f359        *rbx_1 = __acrt_errno_from_os_error(GetLastError())\n14078f360        return ",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

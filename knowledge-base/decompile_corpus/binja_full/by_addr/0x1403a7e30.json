@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a7e30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a7e54        if ((*(arg1 + 0x3a0) & 2) != 0 || *(arg1 + 0x3b9) == 1)\n1403a7e54        return \n1403a7e66        void* rdi_1 = *(arg1 + 0x298)\n1403a7e6d        if (*(arg1 + 0x348) != 0xff)\n1403a7e6f        void* rcx = *(arg1 + 0x110)\n1403a7e79        if (rcx == 0)\n1403a7e79        goto label_1403a7e9a\n1403a7e7b        uint64_t rax = sub_1404ec820(rcx)\n1403a7e83        if (rax == 0)\n1403a7e83        goto label_1403a7e9a\n1403a7e85        rdi_1 = *(rax + 0x298)\n1403a7e8f        if (rdi_1 != 0)\n1403a7e8f        goto label_1403a7e9a\n1403a7e8f        return \n1403a7e9a        label_1403a7e9a:\n1403a7e9a        int64_t* rsi_1 = *(rdi_1 + 0x1410)\n1403a7ea5        if (arg2 != 1)\n1403a7f0e        if (arg2 == 0 && *(arg1 + 0x3b5) == 1)\n1403a7f13        if (rsi_1 != 0)\n1403a7f21        if (*(rdi_1 + 0x110) u>= 0x10)\n1403a7f23        *(rdi_1 + 0xf8)\n1403a7f26        *(arg1 + 0x50)\n1403a7f4b        sub_1402d5c00(&data_140b27e60, rsi_1, arg1, rsi_1[0x18].d)\n1403a7f50        *(arg1 + 0x3b5) = 0\n1403a7eae        if (*(arg1 + 0x3b5) == 0)\n1403a7eb7        if (rsi_1 != 0)\n1403a7ec5        if (*(rdi_1 + 0x110) u>= 0x10)\n1403a7ec7        *(rdi_1 + 0xf8)\n1403a7eca        *(arg1 + 0x50)\n1403a7ef4        sub_1402d5320(&data_140b27e60, rsi_1, arg1, *(rsi_1 + 0xbc), arg3, 0)\n1403a7ef9        *(arg1 + 0x3b5) = 1\n1403a7f6b        return ",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b867f        if (sub_1406bae50(*(*(arg1 + 0x28) + 0x48), arg2) != 0)\n1406b8687        float zmm0_1 = sub_140692860(arg2, zx.o(0))\n1406b86a4        if ((fconvert.d(zmm0_1) f<= 0.0 || not(*(arg2 + 0x7c) f> zmm0_1)) && sub_1406139f0(arg1 + 0x190, arg2) != 0)\n1406b86c5        return 1\n1406b86d2        return 0",
+  "fetched_at": "2026-04-26T17:24:48Z"
+}

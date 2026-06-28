@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ab9f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dResource * __thiscall alD3dResource::alD3dResource(alD3dResource *this)\n\n{\n  (this->alD3dResource_data).offset_0x0 = (void *)0x0;\n  this->vftablePtr = &vftable;\n  (this->alD3dResource_data).offset_0x8 = 0;\n  (this->alD3dResource_data).offset_0x0 = DAT_140a70a40;\n  if (DAT_140a70a40 != (void *)0x0) {\n    *(alD3dResource **)((longlong)DAT_140a70a40 + 0x10) = this;\n  }\n  (this->alD3dResource_data).offset_0x8 = 0;\n  DAT_140a70a40 = this;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:40:44Z"
+}

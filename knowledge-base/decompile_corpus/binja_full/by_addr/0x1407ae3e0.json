@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ae3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ae3f4        *arg1 = &alSplineRenderer::`vftable'{for `alRenderable'}\n1407ae400        arg1[2] = &alSplineRenderer::`vftable'{for `MultiLinkedListMember'}\n1407ae40b        arg1[4] = &alSplineRenderer::`vftable'{for `CullObjectClass'}\n1407ae40f        int64_t* rcx = arg1[0x19]\n1407ae419        if (rcx != 0)\n1407ae41e        (*(*rcx + 8))(rcx)\n1407ae421        arg1[0x19] = 0\n1407ae42f        sub_14013f770(arg1)\n1407ae438        if ((arg2 & 1) != 0)\n1407ae442        j_sub_1407864b8(arg1)\n1407ae454        return arg1",
+  "fetched_at": "2026-04-26T17:32:44Z"
+}

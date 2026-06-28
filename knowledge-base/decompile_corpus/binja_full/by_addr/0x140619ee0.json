@@ -1,0 +1,7 @@
+{
+  "addr": "0x140619ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140619ee5        int64_t* arg_8 = arg1\n140619f03        int64_t r13_2 = (arg1[1] - *arg1) s>> 4\n140619f07        void* rax = sub_140058890(arg1, arg2)\n140619f0f        void* arg_18 = rax\n140619f17        int64_t r14 = arg1[1]\n140619f1b        int64_t* rdi = *arg1\n140619f1e        int64_t* var_68 = rdi\n140619f23        void* var_58 = rax\n140619f28        void* rbx = rax\n140619f2b        void* var_50 = rax\n140619f30        int64_t* var_48 = arg1\n140619f35        void* rsi = rax\n140619f3b        while (rdi != r14)\n140619f43        sub_1404bdf00(rbx, rdi)\n140619f48        rbx += 0x10\n140619f4c        rsi = rbx\n140619f4f        void* var_50_1 = rbx\n140619f54        rdi = &rdi[2]\n140619f58        int64_t* var_68_1 = rdi\n140619f5f        void* var_58_1 = rbx\n140619f64        while (true)\n140619f64        void* var_60_1 = rbx\n140619f6c        if (rbx == rsi)\n140619f6c        break\n140619f71        LCRec::`default constructor closure'(rbx)\n140619f76        rbx += 0x10\n140619f9c        return sub_140619de0(arg1, rax, r13_2, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:23:34Z"
+}

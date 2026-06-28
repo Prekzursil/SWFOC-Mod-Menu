@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c078",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078c07e        HMODULE hLibModule_1 = nullptr\n14078c094        int64_t result = GetModuleHandleExW(0, u\"mscoree.dll\", &hLibModule_1)\n14078c09c        if (result.d != 0)\n14078c0aa        result = GetProcAddress(hLibModule_1, \"CorExitProcess\")\n14078c0b3        if (result != 0)\n14078c0b7        result = result(zx.q(arg1))\n14078c0bd        HMODULE hLibModule = hLibModule_1\n14078c0c5        if (hLibModule == 0)\n14078c0d2        return result\n14078c0c7        return FreeLibrary(hLibModule)",
+  "fetched_at": "2026-04-26T17:31:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a1a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a1a0(void)\n\n{\n  BlastAbilityClass *this;\n  \n  this = (BlastAbilityClass *)FUN_140769c58(0x1a0);\n  if (this != (BlastAbilityClass *)0x0) {\n    BlastAbilityClass::BlastAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401abc20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dResource * __thiscall\nalD3dResource::scalar_deleting_destructor(alD3dResource *this,ulonglong param_1)\n\n{\n  longlong lVar1;\n  void *pvVar2;\n  \n                    /* inlined destructor: alD3dResource::~alD3dResource */\n  this->vftablePtr = &vftable;\n  lVar1 = (this->alD3dResource_data).offset_0x8;\n  if (lVar1 != 0) {\n    *(void **)(lVar1 + 8) = (this->alD3dResource_data).offset_0x0;\n  }\n  pvVar2 = (this->alD3dResource_data).offset_0x0;\n  if (pvVar2 != (void *)0x0) {\n    *(longlong *)((longlong)pvVar2 + 0x10) = (this->alD3dResource_data).offset_0x8;\n  }\n  if (DAT_140a70a40 == this) {\n    DAT_140a70a40 = (this->alD3dResource_data).offset_0x0;\n  }\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:40:48Z"
+}

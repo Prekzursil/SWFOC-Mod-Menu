@@ -1,0 +1,7 @@
+{
+  "addr": "0x140365c90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140365c9a        int64_t rdx = *(arg1 + 0x10)\n140365ca5        int64_t rbx = *(arg1 + 0x38)\n140365cac        float zmm0\n140365cac        if (rdx + 1 s< 0)\n140365cc1        zmm0 = float.s((rdx + 1) u>> 1 | (zx.q((rdx + 1).d) & 1))\n140365cc6        zmm0 = zmm0 + zmm0\n140365cae        zmm0 = float.s(rdx + 1)\n140365ccf        float zmm0_1 = ceilf(zmm0 f/ *(arg1 + 4))\n140365cdc        int64_t rcx = 0\n140365ce1        if (not(zmm0_1 < 9.22337204e+18f))\n140365ce3        zmm0_1 = zmm0_1 - 9.22337204e+18f\n140365cea        if (not(zmm0_1 >= 9.22337204e+18f))\n140365cf6        rcx = -0x8000000000000000\n140365cfe        int64_t rax_5 = int.q(zmm0_1) + rcx\n140365d01        int64_t rcx_1 = 8\n140365d09        if (rax_5 u> 8)\n140365d09        rcx_1 = rax_5\n140365d10        if (rbx u< rcx_1)\n140365d19        if (rbx u>= 0x200)\n140365d28        rbx = rcx_1\n140365d1b        rbx <<= 3\n140365d26        if (rbx u< rcx_1)\n140365d28        rbx = rcx_1\n140365d3b        return sub_140048860(arg1, rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:14:39Z"
+}

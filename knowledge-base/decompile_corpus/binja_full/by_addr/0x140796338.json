@@ -1,0 +1,7 @@
+{
+  "addr": "0x140796338",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079634c        int32_t arg_10 = 3\n140796354        int32_t arg_18 = 3\n140796365        void arg_8\n140796365        return __crt_seh_guarded_call<class <lambda_c36588078e9f5dfd39652860aa6b3aaf>,class <lambda_ec61778202f4f5fc7e7711acc23c3bca>& __ptr64,class <lambda_dc9d2797ccde5d239b4a0efae8ebd7db>,void (__cdecl*)(int32_t)>::operator()<class <lambda_c36588078e9f5dfd39652860aa6b3aaf>,class <lambda_ec61778202f4f5fc7e7711acc23c3bca>& __ptr64,class <lambda_dc9d2797ccde5d239b4a0efae8ebd7db> >(&arg_8, &arg_18, &arg_8, &arg_10)",
+  "fetched_at": "2026-04-26T17:31:58Z"
+}

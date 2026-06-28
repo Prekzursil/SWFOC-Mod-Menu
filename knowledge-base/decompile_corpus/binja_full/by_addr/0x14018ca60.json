@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ca60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018ca6e        struct alD3dEffectParamInterface::VTable** result = operator new(0x20)\n14018ca76        if (result == 0)\n14018caab        return result\n14018ca7f        *result = &alD3dEffectParamInterface::`vftable'\n14018ca8d        result[1] = *(arg1 + 8)\n14018ca94        result[2].d = *(arg1 + 0x10)\n14018ca97        *result = &alD3dEffectParam<float>::`vftable'{for `alD3dEffectParamInterface'}\n14018ca9d        result[3].d = *(arg1 + 0x18)\n14018caa5        return result",
+  "fetched_at": "2026-04-26T17:24:12Z"
+}

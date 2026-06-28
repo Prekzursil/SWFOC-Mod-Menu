@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400178a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400178a0(void)\n\n{\n  DynamicVectorClass<class_CorruptionChoiceProperties>::\n  DynamicVectorClass<class_CorruptionChoiceProperties>\n            ((DynamicVectorClass<class_CorruptionChoiceProperties> *)&DAT_140b27f60);\n  atexit((_func_5014 *)&LAB_1407ef570);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:27Z"
+}

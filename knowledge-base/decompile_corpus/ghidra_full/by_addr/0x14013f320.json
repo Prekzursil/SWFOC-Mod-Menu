@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14013f320(longlong param_1)\n\n{\n  alD3dTexture2D *this;\n  \n  this = (alD3dTexture2D *)FUN_140769c58(0x98);\n  if (this != (alD3dTexture2D *)0x0) {\n    alD3dTexture2D::alD3dTexture2D(this,param_1,0,0,1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:18:56Z"
+}

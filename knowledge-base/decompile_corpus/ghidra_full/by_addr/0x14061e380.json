@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061e380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall WalkLocomotorBehaviorClass::vfunction53(WalkLocomotorBehaviorClass *this)\n\n{\n  ulonglong uVar1;\n  undefined *puVar2;\n  \n  puVar2 = this->offset_0x18[0x15];\n  if (puVar2 == (undefined *)0x0) {\n    return 1;\n  }\n  if (*(int *)(puVar2 + 0x48) == 0x19) {\n    if ((puVar2[0x2b3] != '\\0') ||\n       (puVar2 = this->offset_0x18[0x53], *(float *)(puVar2 + 0x23b0) <= 0.0)) {\nLAB_14061e3c7:\n      return (ulonglong)puVar2 & 0xffffffffffffff00;\n    }\n  }\n  else if (*(int *)(puVar2 + 0x48) == 0x18) goto LAB_14061e3c7;\n  uVar1 = LocomotorCommonClass::vfunction53((LocomotorCommonClass *)this);\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T17:29:35Z"
+}

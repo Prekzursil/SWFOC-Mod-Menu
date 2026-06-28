@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071cd00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SummonAbilityClass * __thiscall SummonAbilityClass::SummonAbilityClass(SummonAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->SummonAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1404c3df0(&(this->SummonAbilityClass_data).field_0x8);\n  (this->SummonAbilityClass_data).offset_0x18 = 0;\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &(this->SummonAbilityClass_data).field_0x20);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:58:09Z"
+}

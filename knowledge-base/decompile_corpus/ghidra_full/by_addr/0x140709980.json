@@ -1,0 +1,7 @@
+{
+  "addr": "0x140709980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nPoliticalTransitionBonusAbilityClass::vfunction6_for_IXMLLoadableClass\n          (PoliticalTransitionBonusAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  undefined1 uVar1;\n  \n  if ((param_1 == 0) || (param_2 == 0)) {\n    return 0;\n  }\n  if ((*(char *)(param_1 + 0x335) != -1) && (param_1 == param_2)) {\n    return 1;\n  }\n  uVar1 = FUN_14048e0c0();\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T17:53:35Z"
+}

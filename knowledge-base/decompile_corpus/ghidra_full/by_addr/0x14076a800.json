@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __GSHandlerCheck_EH4\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __GSHandlerCheck_EH4(longlong param_1,undefined8 param_2,undefined8 param_3,longlong param_4)\n\n{\n  longlong lVar1;\n  \n  lVar1 = *(longlong *)(param_4 + 0x38);\n  __GSHandlerCheckCommon(param_2,param_4);\n  if ((*(uint *)(lVar1 + 4) & ((*(uint *)(param_1 + 4) & 0x66) != 0) + 1) != 0) {\n    __CxxFrameHandler4(param_1,param_2,param_3,param_4);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:08Z"
+}

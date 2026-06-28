@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403d63f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403d6426        if (arg2 == 0 || arg3 == 0 || arg2 == arg3)\n1403d6426        return \n1403d6436        struct BaseDataPackClass::GUIDataPackClass::VTable** rax = sub_14034c770(arg3, 0)\n1403d6441        if (rax == 0)\n1403d6441        return \n1403d645e        if (sub_140370320(rax[0x53], 0x2c, 2) != 0)\n1403d6473        int512_t zmm2\n1403d6473        zmm2.o = zx.o(0)\n1403d647a        sub_1402d5290(&data_140b27e60, data_140b301c8, zmm2, 0, 0)\n1403d647a        return \n1403d648c        void* rax_2 = sub_140347b50(*(arg2 + 0xa8) + 1)\n1403d64a4        if (rax_2 == 0 || *(rax_2 + 0x90) == *(arg3 + 0x90))\n1403d64bd        void* rdx_2 = rax[0x56]\n1403d64cb        if (*(rdx_2 + 0x336) != 0xff)\n1403d64d0        sub_1403ccdd0(arg1, rdx_2)\n1403d64b6        sub_1403d0790(&data_140b27f60, arg2, arg3, arg4)\n1403d64d5        int32_t rsi_2 = data_140b278b0\n1403d64e0        struct RefCountClass::EventClass::VTable** rax_3 = operator new(0x50)\n1403d64e8        struct ScheduledEventClass::SetGUIIndexEventClass::VTable** rbx_2\n1403d64e8        if (rax_3 == 0)\n1403d64f7        rbx_2 = nullptr\n1403d64f2        rbx_2 = sub_1405b1170(rax_3)\n1403d6502        sub_1405b06b0(rbx_2, rax[0xa].d, rsi_2)\n1403d6511        sub_1403b01f0(&data_140b2ed18, rbx_2)\n1403d651b        sub_1403a87c0(rax, rsi_2)\n1403d653a        return ",
+  "fetched_at": "2026-04-26T17:24:58Z"
+}

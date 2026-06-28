@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400c6440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400c6440(undefined1 param_1)\n\n{\n  if (DAT_140a61fc8 != '\\0') {\n    FUN_1401c1d20(&DAT_140a78510,DAT_140a118e8,param_1);\n    DAT_140a118e8 = 0xffffffff;\n    if (DAT_140a61fe8 != (undefined8 *)0x0) {\n      FUN_14025c490(DAT_140a619f0);\n      if (DAT_140a61fe8 != (undefined8 *)0x0) {\n        (**(code **)*DAT_140a61fe8)(DAT_140a61fe8,1);\n      }\n      DAT_140a61fe8 = (undefined8 *)0x0;\n    }\n    if (DAT_140a61ff0 != (undefined8 *)0x0) {\n      FUN_14025c490(DAT_140a619f0);\n      if (DAT_140a61ff0 != (undefined8 *)0x0) {\n        (**(code **)*DAT_140a61ff0)(DAT_140a61ff0,1);\n      }\n      DAT_140a61ff0 = (undefined8 *)0x0;\n    }\n    if (DAT_140a61fd8 != 0) {\n      FUN_140260f10(&DAT_140b0a130);\n      DAT_140a61fd8 = 0;\n    }\n    if (DAT_140a61fe0 != 0) {\n      FUN_140260f10(&DAT_140b0a130);\n      DAT_140a61fe0 = 0;\n    }\n    if (DAT_140a61ff8 != (undefined8 *)0x0) {\n      (**(code **)*DAT_140a61ff8)(DAT_140a61ff8,1);\n      DAT_140a61ff8 = (undefined8 *)0x0;\n    }\n    if (DAT_140a62000 != (undefined8 *)0x0) {\n      FUN_14025c490(DAT_140a619f8);\n      if (DAT_140a62000 != (undefined8 *)0x0) {\n        (**(code **)*DAT_140a62000)(DAT_140a62000,1);\n      }\n      DAT_140a62000 = (undefined8 *)0x0;\n    }\n    FUN_14009da90();\n    DAT_140a61fc8 = '\\0';\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:47Z"
+}

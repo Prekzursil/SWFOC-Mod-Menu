@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079399c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_InitializeCriticalSectionEx\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_InitializeCriticalSectionEx(LPCRITICAL_SECTION param_1,DWORD param_2,undefined4 param_3)\n\n{\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(0x12,\"InitializeCriticalSectionEx\",(module_id *)&DAT_1408d82a8,\n                            (module_id *)&DAT_1408d82b0);\n  if (pvVar1 == (void *)0x0) {\n    InitializeCriticalSectionAndSpinCount(param_1,param_2);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(param_1,param_2,param_3);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:04Z"
+}

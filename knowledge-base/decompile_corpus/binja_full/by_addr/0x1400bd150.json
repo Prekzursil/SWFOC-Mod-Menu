@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400bd150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400bd157        if (arg1 != 1)\n1400bd157        return \n1400bd159        int64_t rdx_1 = sx.q(data_140a11804)\n1400bd163        if (rdx_1.d == 0xffffffff)\n1400bd16c        return \n1400bd16c        if (data_140a61f61 == 0)\n1400bd19c        char entry_r8\n1400bd19c        sub_1400545f0(&data_140a10b18, rdx_1.d, entry_r8)\n1400bd1a8        sub_140053c10(&data_140a10b18)\n1400bd1b1        return sub_1400bdbb0() __tailcall\n1400bd175        void** lpFileName = (rdx_1 << 5) + data_140a61f68\n1400bd181        if (lpFileName[3] u>= 0x10)\n1400bd183        lpFileName = *lpFileName\n1400bd186        DeleteFileA(lpFileName)\n1400bd190        return sub_1400be650() __tailcall\n1400bd1ba        return ",
+  "fetched_at": "2026-04-26T17:00:12Z"
+}

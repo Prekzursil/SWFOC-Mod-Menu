@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RAMFileClass * __thiscall\nRAMFileClass::scalar_deleting_destructor(RAMFileClass *this,ulonglong param_1)\n\n{\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = (this->RAMFileClass_data).offset_0x0;\n                    /* inlined destructor: RAMFileClass::~RAMFileClass */\n  this->vftablePtr = &vftable;\n  if (lpMem != (LPVOID)0x0) {\n    hHeap = GetProcessHeap();\n    HeapFree(hHeap,0,lpMem);\n  }\n  (this->RAMFileClass_data).offset_0x0 = (LPVOID)0x0;\n  FileClass::~FileClass((FileClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xa0);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:04:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f8a90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f8a97        return \"PlanetaryBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:25:29Z"
+}

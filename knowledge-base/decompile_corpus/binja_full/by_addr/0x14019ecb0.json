@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019ecb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019ecbd        sub_14020b8b0(arg1 + 0x80)\n14019ecc6        sub_14020b8b0(&arg1[0xe])\n14019eccf        sub_14019eff0(&arg1[0xb])\n14019ecd8        sub_14019f060(&arg1[8])\n14019ece1        struct DynamicVectorClass<class Vector3>::VTable* result = sub_14019f060(&arg1[5])\n14019ece6        int64_t rdx = arg1[3]\n14019ecee        if (rdx u>= 0x10)\n14019ecf0        void* rcx_5 = *arg1\n14019ecfd        if (rdx + 1 u>= 0x1000)\n14019ecff        void* r8_1 = *(rcx_5 - 8)\n14019ed12        if (rcx_5 - r8_1 - 8 u> 0x1f)\n14019ed35        _invalid_parameter_noinfo_noreturn()\n14019ed35        noreturn\n14019ed14        rcx_5 = r8_1\n14019ed17        result = j_sub_1407864b8(rcx_5)\n14019ed1c        arg1[2] = 0\n14019ed24        arg1[3] = 0xf\n14019ed2c        *arg1 = 0\n14019ed34        return result",
+  "fetched_at": "2026-04-26T17:24:51Z"
+}

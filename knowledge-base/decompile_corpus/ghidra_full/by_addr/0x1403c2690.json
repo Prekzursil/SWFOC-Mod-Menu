@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c2690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SelectBehaviorClass::vfunction16(SelectBehaviorClass *this,undefined8 param_1)\n\n{\n  FUN_1403c1e60();\n  FUN_1403c1d80(this,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:40Z"
+}

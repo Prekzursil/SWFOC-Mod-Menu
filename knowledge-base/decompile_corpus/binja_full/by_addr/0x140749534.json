@@ -1,0 +1,7 @@
+{
+  "addr": "0x140749534",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140749546        int64_t result = (arg4 - arg3) s>> 1\n14074954f        if (result s<= (arg2 - arg1) s>> 1)\n140749558        memcpy(arg1, arg3, result * 2)\n140749565        return result",
+  "fetched_at": "2026-04-26T17:29:34Z"
+}

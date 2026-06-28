@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407936b4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_FlsGetValue\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_FlsGetValue(undefined4 param_1)\n\n{\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(5,\"FlsGetValue\",(module_id *)&DAT_1408d8228,(module_id *)&DAT_1408d8230)\n  ;\n  if (pvVar1 != (void *)0x0) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    return;\n  }\n                    /* WARNING: Could not recover jumptable at 0x0001407936f3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  TlsGetValue(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:02Z"
+}

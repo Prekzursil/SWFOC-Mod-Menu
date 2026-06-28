@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034c250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nlonglong __thiscall BarComponentClass::vfunction77(BarComponentClass *this)\n\n{\n  longlong lVar1;\n  \n  lVar1 = (this->BarComponentClass_data).offset_0x0;\n  if ((lVar1 == (this->BarComponentClass_data).offset_0x8) &&\n     (lVar1 = (this->BarComponentClass_data).offset_0x18,\n     lVar1 == (this->BarComponentClass_data).offset_0x20)) {\n    return 0;\n  }\n  return (longlong)*(int *)((longlong)&(this->BarComponentClass_data).offset_0x210 + 4) * 0x50 +\n         lVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403751a0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_faction_affiliation_check",
+  "body": "1403751a0        int64_t* result = *(arg1 + 0xef0)\n1403751b1        int32_t r8_2 = ((*(arg1 + 0xef8) - result) s>> 3).d\n1403751b8        if (r8_2 s> 0)\n1403751bd        int64_t i = 0\n1403751c3        if (*result == arg2)\n1403751d4        result.b = 1\n1403751d6        return result\n1403751c5        i += 1\n1403751c8        result = &result[1]\n1403751cf        do while (i s< sx.q(r8_2))\n1403751d1        result.b = 0\n1403751d3        return result",
+  "fetched_at": "2026-04-26T16:43:17Z"
+}

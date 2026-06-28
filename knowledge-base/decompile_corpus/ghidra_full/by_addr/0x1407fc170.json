@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407fc170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl _Init_atexit::~_Init_atexit(void) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall _Init_atexit::~_Init_atexit(_Init_atexit *this)\n\n{\n  longlong lVar1;\n  PVOID pvVar2;\n  \n  while (DAT_140a44b50 < 10) {\n    lVar1 = DAT_140a44b50 * 8;\n    DAT_140a44b50 = DAT_140a44b50 + 1;\n    pvVar2 = DecodePointer(*(PVOID *)(&DAT_140b3b6c0 + lVar1));\n    if (pvVar2 != (PVOID)0x0) {\n      (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:05:37Z"
+}

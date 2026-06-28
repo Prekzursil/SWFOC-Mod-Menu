@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ae90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ae90(void)\n\n{\n  SabotagePoliticalControlAbilityClass *this;\n  \n  this = (SabotagePoliticalControlAbilityClass *)FUN_140769c58(0x188);\n  if (this != (SabotagePoliticalControlAbilityClass *)0x0) {\n    SabotagePoliticalControlAbilityClass::SabotagePoliticalControlAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:29Z"
+}

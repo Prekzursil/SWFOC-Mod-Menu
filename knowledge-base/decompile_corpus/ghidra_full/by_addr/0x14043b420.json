@@ -1,0 +1,7 @@
+{
+  "addr": "0x14043b420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14043b420(longlong param_1,longlong param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  \n  if ((param_1 != 0) && (param_2 != 0)) {\n    fVar1 = (float)FUN_14041b2a0();\n    fVar2 = (float)FUN_14041b2a0(param_2);\n    return fVar2 < fVar1;\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:52:21Z"
+}

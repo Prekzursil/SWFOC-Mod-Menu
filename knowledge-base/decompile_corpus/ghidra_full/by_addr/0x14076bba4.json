@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076bba4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _GetImageBase\n   \n   Library: Visual Studio 2019 Release */\n\nundefined8 _GetImageBase(void)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_14076d8ec();\n  return *(undefined8 *)(lVar1 + 0x60);\n}",
+  "fetched_at": "2026-04-26T18:10:44Z"
+}

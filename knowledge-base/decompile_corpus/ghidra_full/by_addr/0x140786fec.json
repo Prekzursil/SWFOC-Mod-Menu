@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786fec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    setlocale\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nchar * __cdecl setlocale(int _Category,char *_Locale)\n\n{\n  char *pcVar1;\n  int local_res8 [2];\n  char *local_res10;\n  undefined1 local_res18 [8];\n  undefined4 local_res20 [2];\n  undefined4 local_28 [2];\n  int *local_20;\n  char **local_18;\n  \n  local_res8[0] = _Category;\n  local_res10 = _Locale;\n  __acrt_eagerly_load_locale_apis();\n  local_20 = local_res8;\n  local_18 = &local_res10;\n  local_res20[0] = 4;\n  local_28[0] = 4;\n  pcVar1 = (char *)operator()<>(local_res18,local_28,&local_20,local_res20);\n  return pcVar1;\n}",
+  "fetched_at": "2026-04-26T18:51:41Z"
+}

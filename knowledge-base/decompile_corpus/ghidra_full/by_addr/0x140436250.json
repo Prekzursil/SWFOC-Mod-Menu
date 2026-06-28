@@ -1,0 +1,7 @@
+{
+  "addr": "0x140436250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ScheduledEventClass * __thiscall EventFactoryClass<class_PlaceBeaconEventClass,48>::vfunction1(void)\n\n{\n  ScheduledEventClass *this;\n  \n  this = (ScheduledEventClass *)FUN_140769c58(0x68);\n  if (this != (ScheduledEventClass *)0x0) {\n    ScheduledEventClass::ScheduledEventClass(this);\n    *(undefined4 *)&this[1].vftablePtr = 0xffffffff;\n    this->vftablePtr = (ScheduledEventClass_vftable *)&PlaceBeaconEventClass::vftable;\n    *(undefined8 *)((longlong)&this[1].vftablePtr + 4) = 0;\n    *(undefined8 *)&this[1].field_0xc = 0;\n    *(undefined8 *)&this[1].LinkedListEntryClass<class_EventClass>.field_0x4 = 0;\n    *(undefined4 *)((longlong)&this[1].EventClass_data.offset_0x0 + 4) = 0xffffffff;\n    (this->EventClass_data).offset_0x8 = 0x30;\n    return this;\n  }\n  return (ScheduledEventClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:51:40Z"
+}

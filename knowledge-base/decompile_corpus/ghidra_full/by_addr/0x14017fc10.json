@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017fc10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1\nFUN_14017fc10(undefined4 param_1,undefined8 *param_2,undefined4 param_3,undefined8 *param_4)\n\n{\n  undefined8 uVar1;\n  undefined8 uVar2;\n  \n  uVar1 = FUN_1401854d0(DAT_140a6fe48,param_1);\n  uVar2 = DAT_140a6fe60;\n  *param_2 = uVar1;\n  uVar1 = FUN_1401ace10(uVar2,param_3);\n  *param_4 = uVar1;\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:30:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403acdd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403acdd6        int32_t r9 = 0\n1403acdd9        int32_t i = 0\n1403acde6        if (*(arg2 + 0x10) s<= 0)\n1403ace7c        *(arg1 + 0x244) = 0\n1403ace84        return \n1403acdf1        int64_t r8 = 0\n1403acdf4        int64_t* r11 = nullptr\n1403acdfc        void* rbx = arg1 + 0x48\n1403ace04        void* rcx = *(r11 + *(arg2 + 8))\n1403ace08        void* rax_2 = *(rcx + 0x2b0)\n1403ace1b        if (rax_2 != 0 && *(rax_2 + 0x348) != 0xff)\n1403ace1b        rcx = rax_2\n1403ace1f        int32_t j = *(rcx + 0x50)\n1403ace22        int64_t rcx_1 = 0\n1403ace27        if (r8 s<= 0)\n1403ace40        label_1403ace40:\n1403ace40        r9 += 1\n1403ace43        *rbx = j\n1403ace45        r8 += 1\n1403ace48        rbx += 4\n1403ace29        rax_2 = arg1 + 0x48\n1403ace32        while (*rax_2 != j)\n1403ace34        rcx_1 += 1\n1403ace37        rax_2 += 4\n1403ace3e        if (rcx_1 s>= r8)\n1403ace3e        goto label_1403ace40\n1403ace50        if (r8 == 0x7f)\n1403ace50        break\n1403ace52        i += 1\n1403ace55        r11 = &r11[1]\n1403ace5d        do while (i s< *(arg2 + 0x10))\n1403ace69        *(arg1 + 0x244) = r9\n1403ace76        return ",
+  "fetched_at": "2026-04-26T17:24:11Z"
+}

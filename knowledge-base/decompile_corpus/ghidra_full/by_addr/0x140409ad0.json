@@ -1,0 +1,7 @@
+{
+  "addr": "0x140409ad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ScheduledEventClass * __thiscall EventFactoryClass<class_FacingEventClass,20>::vfunction1(void)\n\n{\n  ScheduledEventClass *this;\n  \n  this = (ScheduledEventClass *)FUN_140769c58(0x250);\n  if (this != (ScheduledEventClass *)0x0) {\n    ScheduledEventClass::ScheduledEventClass(this);\n    *(undefined4 *)&this[1].vftablePtr = 0;\n    this->vftablePtr = (ScheduledEventClass_vftable *)&FacingEventClass::vftable;\n    *(undefined4 *)&this[8].field_0x8 = 0;\n    (this->EventClass_data).offset_0x8 = 0x14;\n    return this;\n  }\n  return (ScheduledEventClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:44:50Z"
+}

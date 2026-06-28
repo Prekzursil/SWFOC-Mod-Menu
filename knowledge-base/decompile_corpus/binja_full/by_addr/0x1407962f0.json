@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407962f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407962f5        int32_t* arg_20 = arg4\n140796304        __vcrt_unlock(*arg2)\n14079630a        uint64_t __security_cookie_1 = __security_cookie\n14079631d        int64_t result = ror.q(__security_cookie_1 ^ data_140b3cab0, __security_cookie_1.b & 0x3f)\n140796322        __vcrt_lock(*arg4)\n140796334        return result",
+  "fetched_at": "2026-04-26T17:31:58Z"
+}

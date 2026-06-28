@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012d480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012d492        int32_t* rdx_2 = sx.q(arg2) * 0x30 + *(*(arg1 + 0xe8) + 0x58)\n14012d499        *rdx_2 = *arg3\n14012d49f        rdx_2[1] = arg3[1]\n14012d4a6        rdx_2[2] = arg3[2]\n14012d4ad        rdx_2[3] = arg3[3]\n14012d4b4        rdx_2[4] = arg3[4]\n14012d4bb        rdx_2[5] = arg3[5]\n14012d4c2        rdx_2[6] = arg3[6]\n14012d4c9        rdx_2[7] = arg3[7]\n14012d4d0        rdx_2[8] = arg3[8]\n14012d4d7        rdx_2[9] = arg3[9]\n14012d4de        rdx_2[0xa] = arg3[0xa]\n14012d4e1        int32_t result = arg3[0xb]\n14012d4e5        rdx_2[0xb] = result\n14012d4e8        *(arg1 + 0x30) |= 0x20\n14012d4ec        return result",
+  "fetched_at": "2026-04-26T17:08:23Z"
+}

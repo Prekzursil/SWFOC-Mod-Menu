@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062ec60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062ec6b        struct TargetingInterfaceClass::TeamTargetingBehaviorClass::VTable** result = operator new(0x40)\n14062ec76        if (result == 0)\n14062ecae        return result\n14062ec7b        sub_1404c32d0(result)\n14062ec87        *result = &TeamTargetingBehaviorClass::`vftable'{for `TargetingInterfaceClass'}\n14062ec91        result[1] = &TeamTargetingBehaviorClass::`vftable'{for `RefCountClass'}\n14062ec9c        result[3] = &TeamTargetingBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062eca8        return result",
+  "fetched_at": "2026-04-26T17:24:08Z"
+}

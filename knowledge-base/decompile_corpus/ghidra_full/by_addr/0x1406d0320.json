@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d0320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGalacticTaskForceClass::vfunction23_for_LuaUserVar(GalacticTaskForceClass *this,float param_1)\n\n{\n  longlong *plVar1;\n  \n  TaskForceClass::vfunction23((TaskForceClass *)this,param_1);\n  if (((this->offset_0x78 - this->offset_0x70 & 0xfffffffffffffff8) == 0) &&\n     (plVar1 = (longlong *)(this->GalacticTaskForceClass_data).offset_0x88,\n     plVar1 != (longlong *)0x0)) {\n    (**(code **)(*plVar1 + 8))();\n    (this->GalacticTaskForceClass_data).offset_0x88 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:54Z"
+}

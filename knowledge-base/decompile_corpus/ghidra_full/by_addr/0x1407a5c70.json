@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5c70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    bi_flush\n   \n   Library: Visual Studio 2019 Release */\n\nvoid bi_flush(longlong param_1)\n\n{\n  if (*(int *)(param_1 + 0x1714) == 0x10) {\n    *(undefined1 *)((ulonglong)*(uint *)(param_1 + 0x28) + *(longlong *)(param_1 + 0x10)) =\n         *(undefined1 *)(param_1 + 0x1710);\n    *(int *)(param_1 + 0x28) = *(int *)(param_1 + 0x28) + 1;\n    *(undefined1 *)((ulonglong)*(uint *)(param_1 + 0x28) + *(longlong *)(param_1 + 0x10)) =\n         *(undefined1 *)(param_1 + 0x1711);\n    *(int *)(param_1 + 0x28) = *(int *)(param_1 + 0x28) + 1;\n    *(undefined4 *)(param_1 + 0x1714) = 0;\n    *(undefined2 *)(param_1 + 0x1710) = 0;\n    return;\n  }\n  if (7 < *(int *)(param_1 + 0x1714)) {\n    *(undefined1 *)((ulonglong)*(uint *)(param_1 + 0x28) + *(longlong *)(param_1 + 0x10)) =\n         *(undefined1 *)(param_1 + 0x1710);\n    *(int *)(param_1 + 0x28) = *(int *)(param_1 + 0x28) + 1;\n    *(int *)(param_1 + 0x1714) = *(int *)(param_1 + 0x1714) + -8;\n    *(ushort *)(param_1 + 0x1710) = (ushort)*(byte *)(param_1 + 0x1711);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:35Z"
+}

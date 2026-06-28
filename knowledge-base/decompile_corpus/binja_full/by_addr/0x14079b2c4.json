@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b2c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079b2d6        int64_t r8 = -1\n14079b2da        int64_t r9 = -1\n14079b2df        void* rdx = __acrt_getptd() + 0x98\n14079b2e9        r9 += 1\n14079b2f1        do while (*(*rdx + (r9 << 1)) != 0)\n14079b2f9        int32_t rax_2\n14079b2f9        rax_2.b = r9 == 3\n14079b2fc        *(rdx + 0x18) = rax_2\n14079b303        r8 += 1\n14079b30b        do while (*(*(rdx + 8) + (r8 << 1)) != 0)\n14079b313        int32_t r8_1 = 2\n14079b319        int32_t rax_4\n14079b319        rax_4.b = r8 == 3\n14079b31c        *(rdx + 0x1c) = rax_4\n14079b31f        arg1[1] = 0\n14079b325        if (*(rdx + 0x18) == 0)\n14079b327        int16_t* rcx = *rdx\n14079b32a        int32_t r10_1 = 0\n14079b32d        while (true)\n14079b32d        int16_t r9_1 = *rcx\n14079b331        rcx = &rcx[1]\n14079b348        if (r9_1 - 0x41 u> 0x19 && r9_1 - 0x61 u> 0x19)\n14079b348        break\n14079b34a        r10_1 += 1\n14079b34f        r8_1 = r10_1\n14079b352        *(rdx + 0x14) = r8_1\n14079b362        EnumSystemLocalesW(LangCountryEnumProc, 1)\n14079b368        int32_t rcx_1 = *arg1\n14079b379        bool result = test_bit(rcx_1, 8)\n14079b382        if ((result & (rcx_1.b & 7) != 0 & test_bit(rcx_1, 9)) == 0)\n14079b384        *arg1 = 0\n14079b390        return result",
+  "fetched_at": "2026-04-26T17:32:09Z"
+}

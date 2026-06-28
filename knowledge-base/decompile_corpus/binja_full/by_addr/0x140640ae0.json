@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140640ae7        return \"JetPackLocomotorBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:03:04Z"
+}

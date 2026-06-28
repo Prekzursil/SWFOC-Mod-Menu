@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f7b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f7b2d        *(arg1 + 0x18c) = -1\n1406f7b3f        arg1[0x2f] = 0\n1406f7b46        arg1[0x30] = 0\n1406f7b54        *arg1 = &EatAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f7b59        arg1[0x31].d = 0\n1406f7b67        arg1[1] = &EatAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406f7b6e        *(arg1 + 0x194) = 0\n1406f7b7f        sub_140025840(&arg1[0x33], arg1[0x33], arg1[0x34])\n1406f7b8e        arg1[0x34] = arg1[0x33]\n1406f7b9c        sub_140025840(&arg1[0x36], arg1[0x36], arg1[0x37])\n1406f7ba4        arg1[0x37] = arg1[0x36]\n1406f7ba8        arg1[0x39] = 0\n1406f7baf        arg1[0x3a].d = 0xffffffff\n1406f7bb9        arg1[0x3f].d = 0\n1406f7bc0        int64_t rdx_2 = arg1[0x3e]\n1406f7bcb        if (rdx_2 u>= 0x10)\n1406f7bcd        void* rcx_2 = arg1[0x3b]\n1406f7bde        if (rdx_2 + 1 u>= 0x1000)\n1406f7be0        void* r8_2 = *(rcx_2 - 8)\n1406f7bf3        if (rcx_2 - r8_2 - 8 u> 0x1f)\n1406f7c5f        _invalid_parameter_noinfo_noreturn()\n1406f7c5f        noreturn\n1406f7bf5        rcx_2 = r8_2\n1406f7bf8        j_sub_1407864b8(rcx_2)\n1406f7c00        arg1[0x3d] = 0\n1406f7c07        arg1[0x3e] = 0xf\n1406f7c12        arg1[0x3b].b = 0\n1406f7c19        sub_140066600(&arg1[0x36])\n1406f7c21        sub_140066600(&arg1[0x33])\n1406f7c29        sub_14048c8d0(arg1)\n1406f7c32        if ((arg2 & 1) != 0)\n1406f7c3c        j_sub_1407864b8(arg1)\n1406f7c5e        return arg1",
+  "fetched_at": "2026-04-26T17:26:41Z"
+}

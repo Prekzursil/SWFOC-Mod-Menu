@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071a3f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ProximityMinesAbilityClass * __thiscall\nProximityMinesAbilityClass::ProximityMinesAbilityClass(ProximityMinesAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->ProximityMinesAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->ProximityMinesAbilityClass_data).offset_0x8 = 0;\n  FUN_1404c3df0(&(this->ProximityMinesAbilityClass_data).field_0x10);\n  (this->ProximityMinesAbilityClass_data).offset_0x20 = 0;\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &(this->ProximityMinesAbilityClass_data).field_0x28);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:57:29Z"
+}

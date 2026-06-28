@@ -1,0 +1,7 @@
+{
+  "addr": "0x140697010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LuaMemberFunctionWrapper<class_FindPlanetClass> * __thiscall\nLuaMemberFunctionWrapper<class_FindPlanetClass>::LuaMemberFunctionWrapper<class_FindPlanetClass>\n          (LuaMemberFunctionWrapper<class_FindPlanetClass> *this)\n\n{\n  LuaMemberFunctionWrapper<class_LuaUserVar> *this_00;\n  \n  LuaMemberFunctionWrapper<class_LuaUserVar>::LuaMemberFunctionWrapper<class_LuaUserVar>\n            ((LuaMemberFunctionWrapper<class_LuaUserVar> *)this,0,'\\x01');\n                    /* inlined constructor: FindPlanetClass::FindPlanetClass */\n  this->vftablePtr =\n       (LuaMemberFunctionWrapper<class_FindPlanetClass>_vftable *)&FindPlanetClass::vftable;\n  this_00 = (LuaMemberFunctionWrapper<class_LuaUserVar> *)FUN_140769c58(0x40);\n  if (this_00 == (LuaMemberFunctionWrapper<class_LuaUserVar> *)0x0) {\n    this_00 = (LuaMemberFunctionWrapper<class_LuaUserVar> *)0x0;\n  }\n  else {\n    LuaMemberFunctionWrapper<class_LuaUserVar>::LuaMemberFunctionWrapper<class_LuaUserVar>\n              (this_00,0,'\\0');\n    *(LuaMemberFunctionWrapper<class_FindPlanetClass> **)&(this_00->RefCountClass_data).field_0x28 =\n         this;\n    this_00->vftablePtr = (LuaMemberFunctionWrapper<class_LuaUserVar>_vftable *)&vftable;\n    *(undefined1 **)&(this_00->RefCountClass_data).field_0x20 = &LAB_140254a1c;\n    (this_00->RefCountClass_data).field_0x30 = 0;\n  }\n  FUN_14024be40(this,\"Get_All_Planets\",this_00);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:20:13Z"
+}

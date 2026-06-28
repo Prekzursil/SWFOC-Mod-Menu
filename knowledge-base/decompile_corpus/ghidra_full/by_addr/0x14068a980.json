@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a980(void)\n\n{\n  IonCannonShotAttackAbilityClass *this;\n  \n  this = (IonCannonShotAttackAbilityClass *)FUN_140769c58(0x180);\n  if (this != (IonCannonShotAttackAbilityClass *)0x0) {\n    IonCannonShotAttackAbilityClass::IonCannonShotAttackAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140176d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140176d90(longlong param_1)\n\n{\n  int iVar1;\n  longlong local_res8;\n  longlong *local_res10 [3];\n  \n  if (((DAT_140a6d420 != '\\0') && (DAT_140a6e720 != (longlong *)0x0)) && (param_1 != *DAT_140a6e720)\n     ) {\n    local_res8 = param_1;\n    if (param_1 == DAT_140a6e658) {\n      DAT_140a6e720 = &DAT_140a6e658;\n      iVar1 = (**(code **)(*DAT_140a6d480 + 0x128))(DAT_140a6d480,0,DAT_140a6e718);\n    }\n    else {\n      DAT_140a6e720 = (longlong *)FUN_14017add0(&DAT_140a6e6d0,&local_res8);\n      local_res10[0] = (longlong *)0x0;\n      iVar1 = (**(code **)(*(longlong *)DAT_140a6e720[6] + 0x28))\n                        ((longlong *)DAT_140a6e720[6],0,0,local_res10);\n      if (iVar1 < 0) {\n        return 0;\n      }\n      iVar1 = (**(code **)(*DAT_140a6d480 + 0x128))(DAT_140a6d480,0,local_res10[0]);\n      if (local_res10[0] != (longlong *)0x0) {\n        (**(code **)(*local_res10[0] + 0x10))();\n      }\n    }\n    if (iVar1 < 0) {\n      return 0;\n    }\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

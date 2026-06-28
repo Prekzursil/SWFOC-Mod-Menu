@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077b638",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077b640        if (arg1[1].b != 0)\n14077b649        return *arg1\n14077b64a        int64_t var_18 = 0\n14077b66b        _invoke_watson()\n14077b66b        noreturn",
+  "fetched_at": "2026-04-26T17:30:58Z"
+}

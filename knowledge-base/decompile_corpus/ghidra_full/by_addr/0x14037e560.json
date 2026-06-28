@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037e560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LineSubClass * __thiscall LineSubClass::scalar_deleting_destructor(LineSubClass *this,uint param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n                    /* inlined destructor: LineSubClass::~LineSubClass */\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  lVar1 = (this->LineSubClass_data).offset_0x8b0;\n  if (lVar1 != 0) {\n    thunk_FUN_1407864b8(lVar1,0xc);\n    (this->LineSubClass_data).offset_0x8b0 = 0;\n  }\n  lVar1 = (this->LineSubClass_data).offset_0x8b8;\n  if (lVar1 != 0) {\n    thunk_FUN_1407864b8(lVar1,8);\n    (this->LineSubClass_data).offset_0x8b8 = 0;\n  }\n  plVar2 = (longlong *)(this->LineSubClass_data).offset_0x8a8;\n  if (plVar2 != (longlong *)0x0) {\n    (**(code **)(*plVar2 + 8))();\n  }\n  FUN_14037e490(&(this->LineSubClass_data).offset_0x888);\n  plVar2 = (longlong *)(this->LineSubClass_data).offset_0x78;\n  if (plVar2 != (longlong *)0x0) {\n    (**(code **)(*plVar2 + 8))();\n  }\n  plVar2 = (longlong *)(this->LineSubClass_data).offset_0x70;\n  if (plVar2 != (longlong *)0x0) {\n    (**(code **)(*plVar2 + 8))();\n  }\n  FUN_1401f9440(&(this->LineSubClass_data).offset_0x5c);\n  alRenderable::~alRenderable((alRenderable *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x990);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:19:37Z"
+}

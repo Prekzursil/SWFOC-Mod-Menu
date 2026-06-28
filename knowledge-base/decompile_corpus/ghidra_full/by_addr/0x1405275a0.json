@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405275a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool BitwiseAnd<bool>::BitwiseAnd<bool>_Constructor_or_Destructor(longlong param_1)\n\n{\n  char cVar1;\n  undefined1 uVar2;\n  BitwiseAnd<bool>_vftable *local_res8 [4];\n  \n  if (*(longlong *)(param_1 + 600) == 0) {\n    cVar1 = FUN_14028afb0(&DAT_140b153e0);\n    return cVar1 == '\\0';\n  }\n  local_res8[0] = &vftable;\n  uVar2 = FUN_1402800d0(param_1 + 0x250,local_res8);\n  return (bool)uVar2;\n}",
+  "fetched_at": "2026-04-26T18:27:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140222940        int64_t result\n140222940        result.b = 0\n140222942        return result",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

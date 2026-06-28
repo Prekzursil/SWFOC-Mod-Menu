@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792148",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl common_flush_all(bool)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl common_flush_all(bool param_1)\n\n{\n  char local_res8 [8];\n  __crt_seh_guarded_call<void> local_res10 [8];\n  int local_res18 [2];\n  int local_res20 [2];\n  undefined4 local_28;\n  undefined4 local_24;\n  int *local_20;\n  char *local_18;\n  int *local_10;\n  \n  local_res20[0] = 0;\n  local_20 = local_res20;\n  local_res18[0] = 0;\n  local_18 = local_res8;\n  local_10 = local_res18;\n  local_28 = 8;\n  local_24 = 8;\n  local_res8[0] = param_1;\n  __crt_seh_guarded_call<void>::\n  operator()<class_<lambda_886d6c58226a84441f68b9f2b8217b83>,class_<lambda_ab61a845afdef5b7c387490eaf3616ee>&___ptr64,class_<lambda_f7f22ab5edc0698d5f6905b0d3f44752>_>\n            (local_res10,(<lambda_886d6c58226a84441f68b9f2b8217b83> *)&local_24,\n             (<lambda_ab61a845afdef5b7c387490eaf3616ee> *)&local_20,\n             (<lambda_f7f22ab5edc0698d5f6905b0d3f44752> *)&local_28);\n  if (local_res8[0] != '\\0') {\n    local_res18[0] = local_res20[0];\n  }\n  return local_res18[0];\n}",
+  "fetched_at": "2026-04-26T18:52:52Z"
+}

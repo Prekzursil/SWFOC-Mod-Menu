@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d1450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d1461        int32_t* r9 = arg1\n1407d1464        int32_t temp0\n1407d1464        int32_t temp1\n1407d1464        temp0:temp1 = sx.q(arg2)\n1407d1465        int32_t r8 = not.d(arg3)\n1407d146d        int32_t i_4 = (temp1 + (temp0 & 3)) s>> 2\n1407d1472        if (i_4 s> 0)\n1407d1474        uint64_t i_3 = zx.q(i_4)\n1407d14e1        uint64_t i\n1407d1480        int32_t rcx = *r9\n1407d1486        uint64_t rdx_2 = zx.q(rcx)\n1407d148f        r9 = &r9[1]\n1407d149c        int32_t r8_2 = r8 u>> 8 ^ *(&data_140a458e0 + ((zx.q(rcx.b) ^ zx.q(r8.b)) << 2))\n1407d14b7        int32_t r8_4 = r8_2 u>> 8 ^ *(&data_140a458e0 + ((zx.q((zx.q(rdx_2.d) u>> 8).b) ^ zx.q(r8_2.b)) << 2))\n1407d14c8        int32_t r8_6 = r8_4 u>> 8 ^ *(&data_140a458e0 + ((zx.q((zx.q(rdx_2.d) u>> 0x10).b) ^ zx.q(r8_4.b)) << 2))\n1407d14d9        r8 = r8_6 u>> 8 ^ *(&data_140a458e0 + ((zx.q((rdx_2 u>> 0x18).b) ^ zx.q(r8_6.b)) << 2))\n1407d14dd        i = i_3\n1407d14dd        i_3 -= 1\n1407d14e1        do while (i != 1)\n1407d14e3        int32_t i_5 = arg2 & 3\n1407d14e7        if (i_5 u> 0)\n1407d14e9        uint64_t i_2 = zx.q(i_5)\n1407d150d        uint64_t i_1\n1407d14f0        char rcx_8 = *r9\n1407d14f4        r9 += 1\n1407d1505        r8 = r8 u>> 8 ^ *(&data_140a458e0 + ((zx.q(rcx_8) ^ zx.q(r8.b)) << 2))\n1407d1509        i_1 = i_2\n1407d1509        i_2 -= 1\n1407d150d        do while (i_1 != 1)\n1407d151a        return zx.q(not.d(r8))",
+  "fetched_at": "2026-04-26T17:33:58Z"
+}

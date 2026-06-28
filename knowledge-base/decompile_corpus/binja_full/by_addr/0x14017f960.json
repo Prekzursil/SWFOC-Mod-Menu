@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017f960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017f96d        if (data_140a6eb63:3.b == 0)\n14017f9d2        return &data_140a6f41c\n14017f976        if (data_140a6eb63:2.b != 0)\n14017f98d        D3DXMatrixMultiply(&data_140a6f3dc, &data_140a6eea4, &data_140a6eee4)\n14017f992        data_140a6eb63:2.b = 0\n14017f9b1        D3DXMatrixMultiply(&data_140a6f41c, &data_140a6f3dc, &data_140a6ef24)\n14017f9b9        data_140a6eb63:3.b = 0\n14017f9c5        return &data_140a6f41c",
+  "fetched_at": "2026-04-26T17:23:47Z"
+}

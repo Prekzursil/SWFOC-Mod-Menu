@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405822a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405822a0        int32_t temp0 = *(arg1 + 8)\n1405822a0        *(arg1 + 8) -= 1\n1405822aa        if (temp0 == 1)\n1405822aa        return arg1\n1405822ae        return nullptr",
+  "fetched_at": "2026-04-26T17:35:31Z"
+}

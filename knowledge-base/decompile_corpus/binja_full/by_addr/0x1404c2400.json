@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2409        struct BehaviorClass::DestroyAfterPlanetaryBombardDummyBehaviorClass::VTable** result = operator new(0x40)\n1404c2413        if (result == 0)\n1404c2459        return 0\n1404c2415        result[2].d = 0\n1404c2418        __builtin_memset(&result[4], 0, 0x14)\n1404c2423        *(result + 0x3c) = 0\n1404c242d        *result = &DestroyAfterPlanetaryBombardDummyBehaviorClass::`vftable'{for `BehaviorClass'}\n1404c2437        result[1] = &DestroyAfterPlanetaryBombardDummyBehaviorClass::`vftable'{for `RefCountClass'}\n1404c2442        result[3] = &DestroyAfterPlanetaryBombardDummyBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404c2446        *(result + 0x34) = 1\n1404c2451        return result",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8630",
+  "tool": "binary_ninja",
+  "fact_id": "rva_set_front_shield",
+  "body": "1403a8643        int128_t zmm6 = zx.o(0)\n1403a864c        int512_t zmm0\n1403a864c        if (0f f<= arg2.d)\n1403a868b        int64_t rax_2 = (*(*arg1 + 0x10))(arg1, 0xf)\n1403a8694        if (rax_2 != 0)\n1403a86a4        sub_14056c1b0(rax_2, arg1, arg2)\n1403a86af        sub_14056bfb0(rax_2, arg1)\n1403a8696        zmm0.o = zx.o(0)\n1403a86c8        return \n1403a8655        if (*(arg1 + 0x341) != 0xff)\n1403a8657        void* rax = arg1[0x1e]\n1403a8661        if (rax != 0)\n1403a8663        zmm6 = *(rax + 0xf8)\n1403a866b        zmm0.o = zmm6\n1403a867d        return ",
+  "fetched_at": "2026-04-26T16:43:27Z"
+}

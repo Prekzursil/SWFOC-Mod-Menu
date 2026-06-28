@@ -1,0 +1,7 @@
+{
+  "addr": "0x14041a530",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14041a530        int64_t r8 = *(arg1 + 0xe8)\n14041a54b        int64_t rax\n14041a54b        int64_t rdx\n14041a54b        rdx:rax = muls.dp.q(0x4ec4ec4ec4ec4ec5, *(arg1 + 0xf0) - r8)\n14041a54e        int64_t rdx_1 = rdx s>> 5\n14041a555        uint64_t rax_2 = rdx_1 u>> 0x3f\n14041a55c        if (rdx_1 == neg.q(rax_2))\n14041a571        return &data_140a28a30\n14041a569        return (rdx_1 + rax_2) * 0x68 - 0x68 + r8",
+  "fetched_at": "2026-04-26T17:26:10Z"
+}

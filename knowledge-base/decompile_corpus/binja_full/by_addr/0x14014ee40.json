@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014ee40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014ee46        struct alTerrainShadowBlob::alTerrainDecal::VTable** result = arg1\n14014ee49        sub_14012f3e0(arg1)\n14014ee55        *(result + 0x21c) = 3\n14014ee60        *result = &alTerrainDecal::`vftable'{for `alTerrainShadowBlob'}\n14014ee6a        result[2] = &alTerrainDecal::`vftable'{for `MultiLinkedListMember'}\n14014ee70        __builtin_memset(&result[0x34], 0, 0x7c)\n14014eed9        result[4] = 0\n14014eedd        result[0x2a].d = 0\n14014eee3        result[0x29].d = 0\n14014eee9        *(result + 0x224) = 0\n14014eeef        *(result + 0x164) = 0\n14014eef6        *(result + 0xe4) = 0\n14014ef05        *(result + 0x15c) = 0x10\n14014ef0f        result[0x45].d = 0x3f800000\n14014ef19        *(result + 0x2d) = 1\n14014ef1d        result[0x2c].d = 1\n14014ef2c        return result",
+  "fetched_at": "2026-04-26T17:22:00Z"
+}

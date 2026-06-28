@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fc010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass\n   TaskForceClass member function inherited by SpaceTaskForceClass\n   TaskForceClass member function inherited by LandTaskForceClass */\n\nundefined8 __thiscall TaskForceClass::vfunction38(TaskForceClass *this)\n\n{\n  if ((longlong)(this[1].offset_0x70 - this[1].offset_0x68) >> 2 != 0) {\n    this[1].offset_0x70 = this[1].offset_0x68;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

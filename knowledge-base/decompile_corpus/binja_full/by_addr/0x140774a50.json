@@ -1,0 +1,7 @@
+{
+  "addr": "0x140774a50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140774a66        if (arg4 == 0 || arg2 == 0 || arg3 == 0)\n140774a9f        *_errno() = 0x16\n140774a7c        int32_t result = sub_140771284(arg1, arg2, arg3, arg4, arg5, arg6)\n140774a83        if (result s< 0)\n140774a85        *arg2 = 0\n140774a8b        if (result != 0xfffffffe)\n140774ab2        return result\n140774a92        *_errno() = 0x22\n140774aa5        _invalid_parameter_noinfo()\n140774aaa        return -1",
+  "fetched_at": "2026-04-26T17:30:50Z"
+}

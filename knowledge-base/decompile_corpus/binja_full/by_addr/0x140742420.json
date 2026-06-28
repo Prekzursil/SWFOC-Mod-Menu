@@ -1,0 +1,7 @@
+{
+  "addr": "0x140742420",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140742429        std::_Locinfo::_Locinfo_dtor(arg1)\n14074242e        int64_t rcx = *(arg1 + 0x58)\n140742435        if (rcx != 0)\n140742437        free(rcx)\n14074243c        *(arg1 + 0x58) = 0\n140742441        int64_t rcx_1 = *(arg1 + 0x48)\n140742448        if (rcx_1 != 0)\n14074244a        free(rcx_1)\n14074244f        *(arg1 + 0x48) = 0\n140742454        int64_t rcx_2 = *(arg1 + 0x38)\n14074245b        if (rcx_2 != 0)\n14074245d        free(rcx_2)\n140742462        *(arg1 + 0x38) = 0\n140742467        int64_t rcx_3 = *(arg1 + 0x28)\n14074246e        if (rcx_3 != 0)\n140742470        free(rcx_3)\n140742475        *(arg1 + 0x28) = 0\n14074247a        int64_t rcx_4 = *(arg1 + 0x18)\n140742481        if (rcx_4 != 0)\n140742483        free(rcx_4)\n140742488        *(arg1 + 0x18) = 0\n14074248d        int64_t rcx_5 = *(arg1 + 8)\n140742494        if (rcx_5 != 0)\n140742496        free(rcx_5)\n14074249b        *(arg1 + 8) = 0\n1407424a8        return std::_Lockit::~_Lockit(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

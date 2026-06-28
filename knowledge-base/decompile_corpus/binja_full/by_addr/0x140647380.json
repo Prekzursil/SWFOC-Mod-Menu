@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140647386        struct BehaviorClass::BeaconBehaviorClass::VTable** result = arg1\n140647389        sub_1404c32d0(arg1)\n140647395        result[8].d = 0xffffffff\n14064739c        *result = &BeaconBehaviorClass::`vftable'{for `BehaviorClass'}\n1406473a6        result[1] = &BeaconBehaviorClass::`vftable'{for `RefCountClass'}\n1406473b1        result[3] = &BeaconBehaviorClass::`vftable'{for `SignalListenerClass'}\n1406473bd        return result",
+  "fetched_at": "2026-04-26T17:04:09Z"
+}

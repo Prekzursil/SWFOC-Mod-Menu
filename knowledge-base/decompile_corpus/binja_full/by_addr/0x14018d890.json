@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018d890",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018d8a9        *arg1 = &alD3dTexture2D::`vftable'{for `alD3dTexture'}\n14018d8ac        int32_t rdi = 0\n14018d8b5        int32_t rsi = 0\n14018d8b7        arg1[2] = &alD3dTexture2D::`vftable'{for `MultiLinkedListMember'}\n14018d8bb        int64_t* rcx = arg1[0xf]\n14018d8c2        void var_28\n14018d8c2        if (rcx != 0 && (*(*rcx + 0x88))(rcx, 0, &var_28) == 0)\n14018d8d8        int32_t var_10\n14018d8d8        rdi = var_10\n14018d8dc        int32_t var_c\n14018d8dc        rsi = var_c\n14018d8fb        data_140a6e748 = data_140a6e748 f+ _mm_cvtepi32_ps(zx.o(neg.d(rdi * rsi) << 2)).d\n14018d903        int64_t* rcx_1 = arg1[0xf]\n14018d90a        if (rcx_1 != 0)\n14018d90f        (*(*rcx_1 + 0x10))(rcx_1)\n14018d915        arg1[0xf] = 0\n14018d92c        return sub_140185e50(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

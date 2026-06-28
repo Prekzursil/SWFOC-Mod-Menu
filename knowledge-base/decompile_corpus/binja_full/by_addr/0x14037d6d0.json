@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037d6d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037d6e3        int64_t* rsi = arg4\n14037d6ec        if (*(arg1 + 0x20) == 1)\n14037d6ec        return \n14037d6f5        void* i\n14037d6f5        if (arg4 != 0)\n14037d6fd        i = (**arg4)(arg4)\n14037d702        if (arg4 == 0 || i == 0)\n14037d722        label_14037d722:\n14037d722        i.b = 0\n14037d713        while (i != &data_140a2ab90)\n14037d719        i = *(i + 8)\n14037d720        if (i == 0)\n14037d720        goto label_14037d722\n14037d7d3        i.b = 1\n14037d728        if (i.b == 0)\n14037d728        rsi = nullptr\n14037d738        if (arg3 != 0xe || rsi == 0)\n14037d738        return \n14037d743        void* r14_1 = *(arg1 + 0x18)\n14037d747        int64_t** i_1 = *(r14_1 + 0x1a98)\n14037d755        while (i_1 != *(r14_1 + 0x1aa0))\n14037d760        int64_t* rdi_1 = *i_1\n14037d766        if (rdi_1 != 0 && sub_14037c270(arg1, rdi_1, nullptr).b != 0 && sub_14037be10(arg1, rdi_1).d == 1)\n14037d7a5        (*(*rdi_1 + 0xa8))(rdi_1, *(arg1 + 0x10), rsi[5], rsi[3], rsi[4])\n14037d7ac        i_1 = &i_1[1]\n14037d7d2        return ",
+  "fetched_at": "2026-04-26T17:19:24Z"
+}

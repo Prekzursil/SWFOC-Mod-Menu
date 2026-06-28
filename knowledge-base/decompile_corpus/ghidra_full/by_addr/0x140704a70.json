@@ -1,0 +1,7 @@
+{
+  "addr": "0x140704a70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall IonCannonShotAttackAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Ion_Cannon_Shot_Attack_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:52:16Z"
+}

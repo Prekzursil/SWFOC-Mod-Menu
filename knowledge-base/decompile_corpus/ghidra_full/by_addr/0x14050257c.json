@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050257c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAffectedByShieldBehaviorClass::vfunction3(AffectedByShieldBehaviorClass *this,uint param_1)\n\n{\n  ~AffectedByShieldBehaviorClass\n            ((AffectedByShieldBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:21Z"
+}

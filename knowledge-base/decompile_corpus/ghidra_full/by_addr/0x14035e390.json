@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035e390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* GameModeClass member function inherited by GalacticModeClass\n   GameModeClass member function inherited by GalacticModeClass */\n\nundefined4 * __thiscall GameModeClass::vfunction64(GameModeClass *this,undefined4 *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  \n  fVar1 = DAT_1408007c0;\n  fVar2 = DAT_1408007c0 * 0.0;\n  param_1[1] = DAT_1408007c0 * 0.0;\n  *param_1 = fVar2;\n  param_1[2] = fVar1 * 0.0;\n  param_1[3] = 0;\n  param_1[4] = 0;\n  param_1[3] = (float)param_1[3] * fVar1;\n  param_1[5] = 0;\n  param_1[5] = (float)param_1[5] * fVar1;\n  param_1[4] = (float)param_1[4] * fVar1;\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:37Z"
+}

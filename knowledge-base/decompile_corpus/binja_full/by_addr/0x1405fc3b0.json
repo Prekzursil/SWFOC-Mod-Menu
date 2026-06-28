@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fc3b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405fc3c4        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x30)\n1405fc3cc        struct LuaUserVar::BlockingStatus::VTable** rbx\n1405fc3cc        if (rax == 0)\n1405fc3db        rbx = nullptr\n1405fc3d6        rbx = sub_1407d8d80(rax)\n1405fc3dd        rbx[4].d = 0x40\n1405fc3e4        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result = sub_14024a250()\n1405fc3e9        struct LuaUserVar::BlockingStatus::VTable* rdx = *rbx\n1405fc3f2        struct LuaUserVar::BlockingStatus::VTable** arg_20 = rbx\n1405fc3f7        rdx->__offset(0x0).q(rbx, rdx)\n1405fc3f9        struct LuaUserVar::BlockingStatus::VTable*** rdx_1 = result[3]\n1405fc401        if (rdx_1 == result[4])\n1405fc41e        sub_140144900(&result[2], rdx_1, &arg_20)\n1405fc403        *rdx_1 = rbx\n1405fc409        struct LuaUserVar::BlockingStatus::VTable* rdx_2 = *rbx\n1405fc40c        rdx_2->__offset(0x0).q(rbx, rdx_2)\n1405fc40e        result[3] = &result[3]->vFunc_1\n1405fc429        (*rbx)->__offset(0x8).q(rbx)\n1405fc43e        return result",
+  "fetched_at": "2026-04-26T17:22:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065a900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<class_GameObjectClass*___ptr64> *\nFUN_14065a900(undefined8 param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  DynamicVectorClass<class_GameObjectClass*___ptr64> *pDVar2;\n  \n  if (param_2 != (longlong *)0x0) {\n    lVar1 = (**(code **)(*param_2 + 0x10))(param_2,3);\n    if (lVar1 != 0) {\n      pDVar2 = (DynamicVectorClass<class_GameObjectClass*___ptr64> *)FUN_140769c58(0xe8);\n      if (pDVar2 != (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) {\n        pDVar2 = DynamicVectorClass<class_GameObjectClass*___ptr64>::\n                 DynamicVectorClass<class_GameObjectClass*___ptr64>(pDVar2);\n        if (pDVar2 != (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0) {\n          (*pDVar2->vftablePtr[9].deleting_destructor)(pDVar2,(ulonglong)param_2);\n          (*pDVar2->vftablePtr[8].deleting_destructor)(pDVar2,(ulonglong)pDVar2->vftablePtr);\n          return pDVar2;\n        }\n      }\n    }\n  }\n  return (DynamicVectorClass<class_GameObjectClass*___ptr64> *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:26Z"
+}

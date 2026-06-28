@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f8c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_14013f8c0(undefined8 param_1)\n\n{\n  longlong lVar1;\n  int iVar2;\n  longlong lVar3;\n  longlong lVar4;\n  \n  lVar4 = -1;\n  lVar3 = FUN_14076c698(param_1,PTR_DAT_140a12510);\n  if (lVar3 == 0) {\n    return -1;\n  }\n  do {\n    lVar1 = lVar4 + 1;\n    lVar4 = lVar4 + 1;\n  } while (PTR_DAT_140a12510[lVar1] != '\\0');\n  iVar2 = FID_conflict_atoi((char *)(lVar4 + lVar3));\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T17:19:07Z"
+}

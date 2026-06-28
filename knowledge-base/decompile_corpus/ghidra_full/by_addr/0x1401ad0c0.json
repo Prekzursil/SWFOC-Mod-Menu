@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ad0c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dEyeObjPosParam::vfunction2(alD3dEyeObjPosParam *this,longlong param_1)\n\n{\n  undefined8 uVar1;\n  \n  uVar1 = FUN_14017fa70();\n                    /* WARNING: Could not recover jumptable at 0x0001401ad0ed. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(**(longlong **)(param_1 + 0x68) + 0x110))\n            (*(longlong **)(param_1 + 0x68),\n             this->PooledObjectClass<class_alD3dSimpleEngineParam,256,class_EmptyLockerClass>,uVar1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:09Z"
+}

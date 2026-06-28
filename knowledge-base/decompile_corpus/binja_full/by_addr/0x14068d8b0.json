@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068d8b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068d8d4        int64_t var_48 = (zx.o(0)).q\n14068d8d9        int64_t var_40 = 0\n14068d8e3        void var_38\n14068d8e3        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&var_38)\n14068d8e8        int64_t var_28 = 0\n14068d8ed        int64_t* rbx = *(arg1 + 0x30)\n14068d8f5        if (rbx == *(arg1 + 0x38))\n14068d934        sub_14068d280(arg1 + 0x28, rbx, &var_48)\n14068d901        *rbx = var_48\n14068d90f        rbx[1] = var_40\n14068d913        sub_1404c3d60(&rbx[2], &var_38)\n14068d91d        rbx[4] = var_28\n14068d921        *(arg1 + 0x30) += 0x28\n14068d93e        sub_1404c4770(&var_38)\n14068d943        void* result = *(arg1 + 0x30)\n14068d954        *(result - 0x28) = arg3.q\n14068d95e        *(result - 0x10) = arg2\n14068d96c        return result",
+  "fetched_at": "2026-04-26T17:16:52Z"
+}

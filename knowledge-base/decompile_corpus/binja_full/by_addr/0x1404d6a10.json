@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d6a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404d6a1b        struct EventClass::TauntEventClass::VTable** result = operator new(0x30)\n1404d6a26        if (result == 0)\n1404d6a4f        return result\n1404d6a2b        sub_1405126c0(result)\n1404d6a37        result[4].d = 0x32\n1404d6a3e        *result = &TauntEventClass::`vftable'{for `EventClass'}\n1404d6a49        return result",
+  "fetched_at": "2026-04-26T17:31:03Z"
+}

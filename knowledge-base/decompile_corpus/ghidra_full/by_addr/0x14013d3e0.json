@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_140178720(undefined4 param_1,undefined4 param_2,int param_3)\n\n{\n  if (param_3 != -1) {\n    DAT_140a6d400 = param_3;\n  }\n  DAT_140a6d3f8 = param_1;\n  DAT_140a6d3fc = param_2;\n  FUN_14017a180();\n  FUN_14017a010(0,0);\n  FUN_140179dc0();\n  EnumDisplayMonitors((HDC)0x0,(LPCRECT)0x0,(MONITORENUMPROC)&LAB_14017ac80,0);\n  SetWindowPos(DAT_140a6e658,(HWND)0xffffffffffffffff,DAT_140a6e708,DAT_140a6e70c,\n               DAT_140a6e710 - DAT_140a6e708,DAT_140a6e714 - DAT_140a6e70c,0x40);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078f304        uint32_t rcx = data_140a44db0\n14078f30d        if (rcx != 0xffffffff)\n14078f30f        __acrt_FlsFree(rcx)\n14078f314        data_140a44db0 = 0xffffffff\n14078f31b        int64_t result\n14078f31b        result.b = 1\n14078f321        return result",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

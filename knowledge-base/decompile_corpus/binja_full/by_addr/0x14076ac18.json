@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ac18",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076ac22        void* const i = &data_140941218\n14076ac47        while (i u< &data_140941218)\n14076ac32        int64_t rax = *i\n14076ac38        if (rax != 0)\n14076ac3a        rax()\n14076ac40        i += 8\n14076ac53        return ",
+  "fetched_at": "2026-04-26T17:30:20Z"
+}

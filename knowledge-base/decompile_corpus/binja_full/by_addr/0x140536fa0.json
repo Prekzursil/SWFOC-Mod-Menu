@@ -1,0 +1,7 @@
+{
+  "addr": "0x140536fa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140536fab        struct BehaviorClass::RevealBehaviorClass::VTable** result = operator new(0x70)\n140536fb6        if (result == 0)\n140537007        return result\n140536fbb        sub_1404c32d0(result)\n140536fc7        *result = &RevealBehaviorClass::`vftable'{for `BehaviorClass'}\n140536fd1        result[1] = &RevealBehaviorClass::`vftable'{for `RefCountClass'}\n140536fdc        result[3] = &RevealBehaviorClass::`vftable'{for `SignalListenerClass'}\n140536fe2        result[8] = 0\n140536fe6        result[9].d = 0\n140536fe9        __builtin_memset(&result[0xa], 0, 0x1a)\n140537001        return result",
+  "fetched_at": "2026-04-26T17:33:48Z"
+}

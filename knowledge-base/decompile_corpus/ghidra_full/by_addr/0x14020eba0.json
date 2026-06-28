@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020eba0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14020eba0(undefined8 *param_1)\n\n{\n  longlong *plVar1;\n  undefined8 *puVar2;\n  ulonglong uVar3;\n  undefined4 uVar4;\n  ulonglong uVar5;\n  \n  uVar5 = 0;\n  uVar4 = 0;\n  for (plVar1 = DAT_140a7c680; plVar1 != DAT_140a7c688; plVar1 = plVar1 + 1) {\n    uVar3 = *(longlong *)(*(longlong *)(*plVar1 + 0x10) + 0x20) -\n            *(longlong *)(*(longlong *)(*plVar1 + 0x10) + 0x18) >> 3;\n    if (uVar5 <= uVar3) {\n      uVar5 = uVar3 & 0xffffffff;\n    }\n    uVar4 = (undefined4)uVar5;\n  }\n  param_1[2] = 0;\n  puVar2 = param_1;\n  if (0xf < (ulonglong)param_1[3]) {\n    puVar2 = (undefined8 *)*param_1;\n  }\n  *(undefined1 *)puVar2 = 0;\n  FUN_140200cd0(param_1,\n                \"TreeCull (%d) Ob(%d) Ry(%d) Bx(%d) Fr(%d) Ch(%d) ReB(%d) MaxD(%d) MaxR(%d)\\n\",\n                (longlong)DAT_140a7c688 - (longlong)DAT_140a7c680 >> 3,DAT_140a7c660,DAT_140a7c664,\n                DAT_140a7c66c,DAT_140a7c668,DAT_140a7c670,DAT_140a7c674,DAT_140a7c678,uVar4);\n  DAT_140a7c674 = 0;\n  DAT_140a7c670 = 0;\n  DAT_140a7c668 = 0;\n  DAT_140a7c66c = 0;\n  DAT_140a7c664 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:22Z"
+}

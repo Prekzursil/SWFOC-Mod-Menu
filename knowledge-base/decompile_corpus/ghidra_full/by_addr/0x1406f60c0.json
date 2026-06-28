@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f60c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCorruptPlanetAbilityClass::vfunction3_for_RefCountClass\n          (CorruptPlanetAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((CorruptPlanetAbilityClass *)&this[-1].CorruptPlanetAbilityClass_data,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:22Z"
+}

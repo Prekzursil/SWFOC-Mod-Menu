@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551de0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall\nCashPointDataPackClass::vfunction2(CashPointDataPackClass *this,undefined8 param_1)\n\n{\n  char cVar1;\n  undefined4 uVar2;\n  int iVar3;\n  PooledObjectClass<class_CashPointDataPackClass,8,class_EmptyLockerClass> *pPVar4;\n  \n  uVar2 = FUN_1402204a0(param_1);\n  cVar1 = (char)uVar2;\n  do {\n    if (cVar1 == '\\0') {\n      return CONCAT31((int3)((uint)uVar2 >> 8),1);\n    }\n    iVar3 = FUN_1402205a0(param_1);\n    if (iVar3 == 1) {\n      cVar1 = FUN_140220610(param_1);\n      while (cVar1 != '\\0') {\n        iVar3 = FUN_140220710(param_1);\n        if (iVar3 == 0) {\n          pPVar4 = &this->PooledObjectClass<class_CashPointDataPackClass,8,class_EmptyLockerClass>;\nLAB_140551e3b:\n          FUN_140220730(param_1,pPVar4,4);\n        }\n        else if (iVar3 == 1) {\n          pPVar4 = (PooledObjectClass<class_CashPointDataPackClass,8,class_EmptyLockerClass> *)\n                   &(this->PooledObjectClass<class_CashPointDataPackClass,8,class_EmptyLockerClass>)\n                    .field_0x4;\n          goto LAB_140551e3b;\n        }\n        FUN_1402206a0(param_1);\n        cVar1 = FUN_140220610(param_1);\n      }\n    }\n    FUN_140220520(param_1);\n    uVar2 = FUN_1402204a0(param_1);\n    cVar1 = (char)uVar2;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:38:08Z"
+}

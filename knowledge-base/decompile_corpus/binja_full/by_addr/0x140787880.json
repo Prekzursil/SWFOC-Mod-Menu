@@ -1,0 +1,7 @@
+{
+  "addr": "0x140787880",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140787884        void* rax = __acrt_getptd()\n140787895        void* arg_8 = *(rax + 0x90)\n14078789d        __acrt_update_locale_info(rax, &arg_8)\n1407878b2        return *(arg_8 + 0xf8)",
+  "fetched_at": "2026-04-26T17:31:20Z"
+}

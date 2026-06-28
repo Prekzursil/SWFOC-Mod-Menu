@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033fe40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033fe88        int32_t r9 = *(sub_140294d30(&data_140a16fd0, sub_140331cc0(&data_140a172d0)) + 0x4c)\n14033fe94        void* rcx = data_140b15418\n14033fe9b        double var_18 = 0.0\n14033fea4        int32_t var_10 = 0\n14033feb0        void* result = sub_1402a9ff0(*(rcx + 0x18), 0xffffffff, 0xffffffff, r9, &var_18, 0, 0x7fffffff, 0xffffffff)\n14033feb5        int32_t i = 0\n14033feb7        void* result_1 = result\n14033febd        if (*(result + 0x10) s> 0)\n14033fec9        int64_t* rsi_1 = nullptr\n14033fed4        int64_t* rbx_1 = *(rsi_1 + *(result_1 + 8))\n14033fedb        if (rbx_1 != 0)\n14033fee0        sub_140392570(rbx_1)\n14033fef0        int64_t* rax_3 = (*(*rbx_1 + 0x10))(rbx_1, 9)\n14033fef6        if (rax_3 != 0)\n14033fef8        int64_t rdx_1 = *rax_3\n14033fefe        (*(rdx_1 + 0xc0))(rax_3, rdx_1)\n14033ff0f        result = (*(*rbx_1 + 0x10))(rbx_1, 0xa)\n14033ff15        if (result != 0)\n14033ff17        int64_t rdx_2 = *result\n14033ff1d        result = (*(rdx_2 + 0xc0))(result, rdx_2)\n14033ff23        i += 1\n14033ff25        rsi_1 = &rsi_1[1]\n14033ff2c        do while (i s< *(result_1 + 0x10))\n14033ff42        return result",
+  "fetched_at": "2026-04-26T17:05:31Z"
+}

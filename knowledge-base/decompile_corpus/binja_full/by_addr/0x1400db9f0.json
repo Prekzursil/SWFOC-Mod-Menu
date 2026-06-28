@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400db9f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400db9f9        int64_t rcx = *(arg1 + 0x10)\n1400dba00        if (rcx == 0)\n1400dba00        return \n1400dba11        if (*(arg1 + 0x38) u>> 3 u> rcx)\n1400dba13        void*** rdx_1 = *(arg1 + 8)\n1400dba25        return sub_1400db820(arg1, *rdx_1, rdx_1) __tailcall\n1400dba2a        int64_t* rcx_3 = *(arg1 + 8)\n1400dba3e        *rcx_3[1] = 0\n1400dba41        int64_t* i_1 = *rcx_3\n1400dba47        if (i_1 != 0)\n1400dba63        int64_t* i\n1400dba50        i = *i_1\n1400dba58        j_sub_1407864b8(i_1)\n1400dba5d        i_1 = i\n1400dba63        do while (i != 0)\n1400dba65        int64_t* rax_5 = *(arg1 + 8)\n1400dba69        *rax_5 = rax_5\n1400dba6c        void* rax = *(arg1 + 8)\n1400dba70        *(rax + 8) = rax\n1400dba74        *(arg1 + 0x10) = 0\n1400dba78        int64_t rdi_1 = *(arg1 + 0x18)\n1400dba87        uint64_t rcx_7 = (*(arg1 + 0x20) - rdi_1 + 7) u>> 3\n1400dba8f        if (rdi_1 u> *(arg1 + 0x20))\n1400dba8f        rcx_7 = 0\n1400dba9b        int64_t rcx_8\n1400dba9b        int64_t rdi_2\n1400dba9b        if (rcx_7 != 0)\n1400dbaa1        rdi_2, rcx_8 = __memfill_u64(rdi_1, *(arg1 + 8), rcx_7)\n1400dbaae        return ",
+  "fetched_at": "2026-04-26T17:02:27Z"
+}

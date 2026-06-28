@@ -1,0 +1,7 @@
+{
+  "addr": "0x140155fc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140155ff0        int32_t result = sub_14022fe40(arg1 + 0x20)\n140155ff5        int128_t zmm8 = *arg2\n140155ffa        int32_t result_2 = result\n140155ffc        int128_t zmm9 = *(arg2 + 4)\n140156002        int32_t result_3 = -1\n140156007        float zmm6[0x4] = 0x5bb1a2bc\n14015600f        int32_t result_1 = 0\n140156013        if (result s> 0)\n140156015        float zmm7[0x4]\n140156015        float var_28_1[0x4] = zmm7\n14015602c        zmm7 = zmm6\n14015602f        void var_58\n14015602f        int32_t* rax = sub_14022fd40(arg1 + 0x20, &var_58, result_1)\n140156040        float zmm1 = *rax f- zmm8.d\n140156045        float zmm0 = rax[1] f- zmm9.d\n140156056        float temp0_1[0x4] = _mm_sqrt_ss(zx.o(0)[0], zmm0 * zmm0 + zmm1 * zmm1)\n14015605d        if (not(temp0_1[0] >= zmm6[0]))\n14015605f        zmm6 = temp0_1\n140156065        result = result_1\n140156067        if (zmm7[0] <= temp0_1[0])\n140156067        result = result_3\n14015606a        result_1 += 1\n14015606c        result_3 = result\n140156070        do while (result_1 s< result_2)\n1401560a7        if (zmm6[0] f>= *(arg1 + 0xe8))\n1401560bf        *(arg1 + 0xec) = 0xffffffff\n1401560c9        result.b = 0\n1401560d8        return result\n1401560a9        *(arg1 + 0xec) = result_3\n1401560af        result.b = 1\n1401560be        return result",
+  "fetched_at": "2026-04-26T17:22:24Z"
+}

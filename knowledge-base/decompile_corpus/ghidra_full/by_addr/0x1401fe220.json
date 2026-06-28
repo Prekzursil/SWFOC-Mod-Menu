@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fe220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8 FUN_1401fe220(undefined8 param_1)\n\n{\n  timeBeginPeriod(1);\n  _DAT_140a7bec0 = timeGetTime();\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:54:53Z"
+}

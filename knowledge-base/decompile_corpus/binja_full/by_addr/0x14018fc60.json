@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fc60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018fc90        int64_t* rax = sub_1401427f0(data_140a62700, \"W_Generic_White.tga\", 1, 1, 0)\n14018fc9b        if (rax != 0)\n14018fca3        (**rax)(rax)\n14018fca8        sub_140196c10(rax)\n14018fcb4        sub_140196c70(arg1 + 0xd8)\n14018fcc0        sub_140196ce0(arg1 + 0xe8)\n14018fcc5        int32_t i = 0\n14018fcc7        *(arg1 + 0x410) = 1\n14018fcd1        if (*(arg1 + 0x14) s> 0)\n14018fcd8        int32_t j = 0\n14018fcdd        if (*(arg1 + 0x10) s> 0)\n14018fcf3        char rax_6 = sub_1401b7690(*(*(arg1 + 0x20) + (sx.q(i * *(arg1 + 0x10) + j) << 3)))\n14018fcf8        *(arg1 + 0x410) &= rax_6\n14018fcfe        j += 1\n14018fd03        do while (j s< *(arg1 + 0x10))\n14018fd05        i += 1\n14018fd0a        do while (i s< *(arg1 + 0x14))\n14018fd13        int64_t result = sub_140196c10(nullptr)\n14018fd25        if (rax == 0)\n14018fd3b        return result\n14018fd32        jump(*(*rax + 8))",
+  "fetched_at": "2026-04-26T17:24:17Z"
+}

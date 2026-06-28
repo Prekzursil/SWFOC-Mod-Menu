@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nWinsockAsyncSocketImpl::vfunction9\n          (WinsockAsyncSocketImpl *this,char *param_1,int param_2,longlong *param_3,\n          undefined8 param_4)\n\n{\n  int iVar1;\n  undefined4 extraout_var;\n  sockaddr local_18;\n  \n  FUN_1402023e0(param_4,&local_18);\n  iVar1 = sendto((SOCKET)(this->RefCountClass_data).offset_0x8,param_1,param_2,0,&local_18,0x10);\n  if (iVar1 != -1) {\n    *param_3 = (longlong)iVar1;\n  }\n  return CONCAT71((int7)(CONCAT44(extraout_var,iVar1) >> 8),iVar1 != -1);\n}",
+  "fetched_at": "2026-04-26T18:04:53Z"
+}

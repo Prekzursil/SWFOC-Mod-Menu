@@ -1,0 +1,7 @@
+{
+  "addr": "0x140359a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140359a90(longlong *param_1,undefined4 *param_2)\n\n{\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  \n  if (((int)param_1[0x9d] == 0) && (*param_1 != 0)) {\n    local_18 = *param_2;\n    local_14 = param_2[1];\n    local_10 = param_2[2];\n    FUN_14026add0(*param_1,&local_18);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:37Z"
+}

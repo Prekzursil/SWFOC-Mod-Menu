@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056cda0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nHeroClashManagerClass::scalar_deleting_destructor(HeroClashManagerClass *this,undefined8 *param_1)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  \n  if (param_1 != (undefined8 *)0x0) {\n    vbase_destructor(0x140b27a10,(longlong)param_1);\n    plVar2 = (longlong *)(this->HeroClashManagerClass_data).offset_0x0;\n    for (plVar3 = (longlong *)*plVar2; plVar3 != plVar2; plVar3 = (longlong *)*plVar3) {\n      if ((undefined8 *)plVar3[2] == param_1) {\n        *(longlong *)plVar3[1] = *plVar3;\n        *(longlong *)(*plVar3 + 8) = plVar3[1];\n        puVar1 = &(this->HeroClashManagerClass_data).offset_0x8;\n        *puVar1 = *puVar1 + -1;\n        thunk_FUN_1407864b8(plVar3,0x18);\n        break;\n      }\n    }\n    (**(code **)*param_1)(param_1,1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:40:07Z"
+}

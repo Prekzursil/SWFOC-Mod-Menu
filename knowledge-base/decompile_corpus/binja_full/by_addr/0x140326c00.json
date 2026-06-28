@@ -1,0 +1,7 @@
+{
+  "addr": "0x140326c00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140326c23        int64_t* var_28\n140326c23        sub_14001e680(&var_28, *(arg2 + 0x298) + 0xf8)\n140326c2e        int64_t* rdx_2 = &var_28\n140326c3a        int64_t var_10\n140326c3a        if (var_10 u>= 0x10)\n140326c3a        rdx_2 = var_28\n140326c40        sub_140327b10(\"STORY - PLANET CONQUERED %s\\r\\n\", rdx_2)\n140326c59        sub_14032e5f0(arg1, 3, 0, &var_28, arg2)\n140326c74        int64_t result = sub_14032e5f0(arg1, 0xf, 0, arg2, 0)\n140326c82        if (var_10 u< 0x10)\n140326cbc        return result\n140326c84        int64_t* rcx_3 = var_28\n140326c8c        int64_t* rax = rcx_3\n140326c96        if (var_10 + 1 u>= 0x1000)\n140326c98        rcx_3 = rcx_3[-1]\n140326cab        if (rax - rcx_3 - 8 u> 0x1f)\n140326cbd        _invalid_parameter_noinfo_noreturn()\n140326cbd        noreturn\n140326cad        return j_sub_1407864b8(rcx_3)",
+  "fetched_at": "2026-04-26T17:01:16Z"
+}

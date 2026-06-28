@@ -1,0 +1,7 @@
+{
+  "addr": "0x140405230",
+  "tool": "binary_ninja",
+  "fact_id": "rva_hull_ratio_via_hardpoints",
+  "body": "14040523e        void* rdi = *(*(arg1 + 0x28) + 0x110)\n140405248        if (rdi != 0)\n14040524a        int64_t rbp_1 = sx.q(*(rdi + 0x18))\n14040524e        int32_t temp0_1 = rbp_1.d\n140405250        if (temp0_1 != 0)\n14040525c        uint128_t result = zx.o(0)\n14040525f        if (temp0_1 s> 0)\n140405266        int64_t rbx_1 = 0\n140405274        int64_t* rcx = *(*(rdi + 0x10) + (rbx_1 << 3))\n14040527b        if (rcx != 0)\n14040527d        uint128_t zmm0\n14040527d        zmm0, result = sub_140396df0(rcx)\n140405282        result.d = result.d f+ zmm0.d\n140405286        rbx_1 += 1\n14040528c        do while (rbx_1 s< rbp_1)\n14040529f        result.d = result.d f/ _mm_cvtepi32_ps(zx.o(rbp_1.d)).d\n1404052b5        return result\n1404052c3        return zx.o(0)",
+  "fetched_at": "2026-04-26T16:43:36Z"
+}

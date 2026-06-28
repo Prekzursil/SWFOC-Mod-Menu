@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390f70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390f70(longlong param_1)\n\n{\n  TacticalBuildObjectsDataPackClass *pTVar1;\n  \n  if (*(longlong *)(param_1 + 0x150) == 0) {\n    pTVar1 = (TacticalBuildObjectsDataPackClass *)FUN_140769c58(0x30);\n    if (pTVar1 != (TacticalBuildObjectsDataPackClass *)0x0) {\n      pTVar1 = TacticalBuildObjectsDataPackClass::TacticalBuildObjectsDataPackClass(pTVar1);\n      *(TacticalBuildObjectsDataPackClass **)(param_1 + 0x150) = pTVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x150) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:02Z"
+}

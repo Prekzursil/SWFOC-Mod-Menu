@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bd2dc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSetupPhaseManagerClass::vfunction3_for_RefCountClass(SetupPhaseManagerClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor\n            ((SetupPhaseManagerClass *)&this[-1].SetupPhaseManagerClass_data.offset_0x50,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:35:54Z"
+}

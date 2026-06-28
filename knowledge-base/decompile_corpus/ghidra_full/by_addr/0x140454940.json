@@ -1,0 +1,7 @@
+{
+  "addr": "0x140454940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventDifficultyClass::vfunction4(StoryEventDifficultyClass *this)\n\n{\n  if (DAT_140b15498 == *(int *)&this[1].SignalGeneratorClass_data) {\n    FUN_140467540(\"STORY EVENT - Difficulty level %s triggered\\r\\n\");\n    FUN_140455db0(this,0,0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:41Z"
+}

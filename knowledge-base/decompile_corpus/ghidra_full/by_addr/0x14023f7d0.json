@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023f7d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FileClass * FUN_14023f7d0(longlong *param_1,int param_2)\n\n{\n  FileClass *pFVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  if ((int)param_1[0x19] != 0) {\n    pFVar1 = (FileClass *)FUN_140769c58(0x88);\n    if (pFVar1 == (FileClass *)0x0) {\n      pFVar1 = (FileClass *)0x0;\n    }\n    else {\n      lVar2 = (**(code **)(*param_1 + 0x50))(param_1);\n      pFVar1 = FileClass::FileClass(pFVar1,lVar2);\n    }\n    uVar3 = (*pFVar1->vftablePtr->vfunction2)(pFVar1,0,0);\n    if ((char)uVar3 != '\\0') {\n      (*pFVar1->vftablePtr->vfunction8)\n                (pFVar1,*(uint *)(param_1[0x1a] + 0xc + (longlong)param_2 * 0x14),0);\n      return pFVar1;\n    }\n  }\n  return (FileClass *)&DAT_fffffffff;\n}",
+  "fetched_at": "2026-04-26T18:09:20Z"
+}

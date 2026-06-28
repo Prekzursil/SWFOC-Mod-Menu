@@ -1,0 +1,7 @@
+{
+  "addr": "0x140624140",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062414b        struct BehaviorClass::BurningBehaviorClass::VTable** result = operator new(0x40)\n140624156        if (result == 0)\n14062418e        return result\n14062415b        sub_1404c32d0(result)\n140624167        *result = &BurningBehaviorClass::`vftable'{for `BehaviorClass'}\n140624171        result[1] = &BurningBehaviorClass::`vftable'{for `RefCountClass'}\n14062417c        result[3] = &BurningBehaviorClass::`vftable'{for `SignalListenerClass'}\n140624188        return result",
+  "fetched_at": "2026-04-26T17:23:47Z"
+}

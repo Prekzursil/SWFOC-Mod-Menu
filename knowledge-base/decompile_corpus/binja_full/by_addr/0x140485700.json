@@ -1,0 +1,7 @@
+{
+  "addr": "0x140485700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140485709        void* rcx = *(arg1 + 0x10)\n140485710        if (rcx == 0)\n140485758        return zx.q(arg2)\n140485717        int32_t rax = sub_140243630(rcx, arg2, arg3)\n140485722        void** r8_1 = *(arg1 + 0x10) + 0x68\n14048572b        if (r8_1[3] u>= 0x10)\n14048572d        r8_1 = *r8_1\n14048573f        sub_14027d370(8, \"TheGameScoringManagerClass::Get_CRC -- %s, CRC: 0x%8.8X\\n\", r8_1)\n140485750        return zx.q(rax)",
+  "fetched_at": "2026-04-26T17:28:33Z"
+}

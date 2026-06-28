@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406561d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Type propagation algorithm not settling */\n\nvoid FUN_1406561d0(longlong param_1,longlong param_2,longlong param_3)\n\n{\n  float fVar1;\n  longlong *plVar2;\n  float local_58;\n  float local_54;\n  undefined4 local_50;\n  \n  fVar1 = DAT_1408007c0;\n  plVar2 = (longlong *)**(longlong **)(param_2 + 8);\n  if (plVar2 != *(longlong **)(param_2 + 8)) {\n    do {\n      local_50 = 0;\n      local_58 = ((float)(*(uint *)(plVar2 + 2) & 0xffff) + fVar1) * *(float *)(param_1 + 0xb8) +\n                 *(float *)(param_1 + 0xa0);\n      local_54 = *(float *)(param_1 + 0xa4) -\n                 ((float)(*(uint *)(plVar2 + 2) >> 0x10) + fVar1) * *(float *)(param_1 + 0xbc);\n      FUN_14035f3b0(DAT_140b15418,*(undefined4 *)(param_3 + 0x4c),&local_58,1);\n      if (DAT_140b15418 != (longlong *)0x0) {\n        (**(code **)(*DAT_140b15418 + 0xe0))(DAT_140b15418);\n      }\n      plVar2 = (longlong *)*plVar2;\n    } while (plVar2 != (longlong *)*(longlong *)(param_2 + 8));\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:46Z"
+}

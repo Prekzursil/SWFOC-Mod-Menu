@@ -1,0 +1,7 @@
+{
+  "addr": "0x140497460",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140497460(longlong *param_1,longlong param_2,longlong param_3)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  ulonglong uVar3;\n  \n  uVar2 = 0;\n  lVar1 = *param_1;\n  uVar3 = uVar2;\n  if (param_1[1] - lVar1 >> 3 != 0) {\n    do {\n      lVar1 = *(longlong *)(lVar1 + uVar3 * 8);\n      if (*(int *)(lVar1 + 0x2c) == *(int *)(param_2 + 0x50)) {\n        *(undefined4 *)(lVar1 + 0x2c) = *(undefined4 *)(param_3 + 0x50);\n      }\n      lVar1 = *param_1;\n      uVar3 = (ulonglong)((int)uVar3 + 1);\n    } while (uVar3 < (ulonglong)(param_1[1] - lVar1 >> 3));\n  }\n  lVar1 = param_1[3];\n  if (param_1[4] - lVar1 >> 3 != 0) {\n    do {\n      lVar1 = *(longlong *)(lVar1 + uVar2 * 8);\n      if (*(int *)(lVar1 + 0x2c) == *(int *)(param_2 + 0x50)) {\n        *(undefined4 *)(lVar1 + 0x2c) = *(undefined4 *)(param_3 + 0x50);\n      }\n      lVar1 = param_1[3];\n      uVar2 = (ulonglong)((int)uVar2 + 1);\n    } while (uVar2 < (ulonglong)(param_1[4] - lVar1 >> 3));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:44Z"
+}

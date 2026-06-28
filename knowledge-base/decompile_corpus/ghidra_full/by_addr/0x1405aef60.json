@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405aef60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SetupPhaseTriggerEndEventClass::vfunction5(SetupPhaseTriggerEndEventClass *this)\n\n{\n  longlong lVar1;\n  \n  if (DAT_140b15418 != 0) {\n    lVar1 = FUN_140294bc0(&DAT_140a16fd0,(this->EventClass_data).offset_0xc);\n    if (lVar1 != 0) {\n      *(undefined1 *)(lVar1 + 0x184) = 1;\n      lVar1 = FUN_14035e4c0(DAT_140b15418);\n      if (lVar1 != 0) {\n        FUN_1403bed70(lVar1);\n        return;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:43:31Z"
+}

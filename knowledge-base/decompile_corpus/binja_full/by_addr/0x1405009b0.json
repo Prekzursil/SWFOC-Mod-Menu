@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405009b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405009bb        struct BehaviorClass::CapturePointBehaviorClass::VTable** result = operator new(0x40)\n1405009c6        if (result == 0)\n1405009fe        return result\n1405009cb        sub_1404c32d0(result)\n1405009d7        *result = &CapturePointBehaviorClass::`vftable'{for `BehaviorClass'}\n1405009e1        result[1] = &CapturePointBehaviorClass::`vftable'{for `RefCountClass'}\n1405009ec        result[3] = &CapturePointBehaviorClass::`vftable'{for `SignalListenerClass'}\n1405009f8        return result",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

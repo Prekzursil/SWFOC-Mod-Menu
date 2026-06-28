@@ -1,0 +1,7 @@
+{
+  "addr": "0x140350840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall TextButtonComponentClass::vfunction12(TextButtonComponentClass *this,float param_1)\n\n{\n  longlong lVar1;\n  float fVar2;\n  undefined4 uVar3;\n  \n  ButtonComponentClass::vfunction12((ButtonComponentClass *)this,param_1);\n  if ((this->TextButtonComponentClass_data).offset_0x1e1 != '\\0') {\n    FUN_1401f9530(&(this->TextButtonComponentClass_data).field_0x124,\n                  (int)*(float *)&(this->BaseComponentClass_data).offset_0xa8);\n    FUN_1401f9550(&(this->TextButtonComponentClass_data).field_0x124,\n                  (int)*(float *)&(this->BaseComponentClass_data).offset_0xa8);\n    FUN_1401f9570(&(this->TextButtonComponentClass_data).field_0x124,\n                  (int)*(float *)&(this->BaseComponentClass_data).offset_0xa8);\n  }\n  if ((this->TextButtonComponentClass_data).offset_0x1c4 != '\\0') {\n    uVar3 = 0;\n    fVar2 = (float)(this->TextButtonComponentClass_data).offset_0x1d0 - param_1;\n    (this->TextButtonComponentClass_data).offset_0x1d0 = fVar2;\n    if (fVar2 <= 0.0) {\n      lVar1 = (this->BaseComponentClass_data).offset_0x78;\n      if (lVar1 != 0) {\n        uVar3 = *(undefined4 *)(lVar1 + 0x39c);\n      }\n      (this->TextButtonComponentClass_data).offset_0x1d0 = uVar3;\n      (this->TextButtonComponentClass_data).offset_0x1d4 =\n           (this->TextButtonComponentClass_data).offset_0x1d4 == '\\0';\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:50Z"
+}

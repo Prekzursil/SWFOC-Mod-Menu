@@ -1,0 +1,7 @@
+{
+  "addr": "0x140253970",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140253974        int32_t* r10 = arg4\n14025397d        if (arg2 != arg3)\n140253983        void* r9 = arg4 - arg2\n14025398d        void* rax_1 = arg2 + 0x20\n140253991        int32_t rcx = *(rax_1 - 0x20)\n140253994        rax_1 += 0x50\n140253998        *r10 = rcx\n14025399f        int32_t rcx_1 = *(rax_1 - 0x6c)\n1402539a2        r10 = &r10[0x14]\n1402539a6        *(r9 + rax_1 - 0x68) = 0\n1402539ab        *(r9 + rax_1 - 0x58) = 0\n1402539b0        *(r9 + rax_1 - 0x50) = 0\n1402539b5        *(r9 + rax_1 - 0x6c) = rcx_1\n1402539be        *(r9 + rax_1 - 0x68) = *(rax_1 - 0x68)\n1402539c8        *(r9 + rax_1 - 0x58) = *(rax_1 - 0x58)\n1402539ce        *(rax_1 - 0x58) = 0\n1402539d2        *(rax_1 - 0x50) = 0xf\n1402539da        *(rax_1 - 0x68) = 0\n1402539e0        *(r9 + rax_1 - 0x48) = *(rax_1 - 0x48)\n1402539e5        *(r9 + rax_1 - 0x40) = 0\n1402539ea        *(r9 + rax_1 - 0x30) = 0\n1402539ef        *(r9 + rax_1 - 0x28) = 0\n1402539f8        *(r9 + rax_1 - 0x40) = *(rax_1 - 0x40)\n140253a02        *(r9 + rax_1 - 0x30) = *(rax_1 - 0x30)\n140253a08        *(rax_1 - 0x30) = 0\n140253a0c        *(rax_1 - 0x28) = 0xf\n140253a14        *(rax_1 - 0x40) = 0\n140253a1a        do while (rax_1 - 0x20 != arg3)\n140253a32        return sub_14024c6c0(r10, r10) __tailcall",
+  "fetched_at": "2026-04-26T17:30:42Z"
+}

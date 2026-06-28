@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad9a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_1404ad9a0(float *param_1)\n\n{\n  char cVar1;\n  longlong lVar2;\n  \n  lVar2 = FUN_140294bc0(&DAT_140a16fd0);\n  if (lVar2 != 0) {\n    cVar1 = FUN_1402823c0(lVar2,param_1[1]);\n    if ((cVar1 != '\\0') && (0.0 < *param_1)) {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:05:55Z"
+}

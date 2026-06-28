@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b4930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall alSimpleSceneIterator::vfunction5(alSimpleSceneIterator *this)\n\n{\n  vfunction2 **ppvVar1;\n  \n  ppvVar1 = &(this[2].vftablePtr)->vfunction2;\n  return CONCAT71((int7)((ulonglong)ppvVar1 >> 8),\n                  this[3].vftablePtr == (alSimpleSceneIterator_vftable *)ppvVar1);\n}",
+  "fetched_at": "2026-04-26T17:44:10Z"
+}

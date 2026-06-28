@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e5e00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTheAIGoalProposalFunctionSetManagerClass::vfunction4\n          (TheAIGoalProposalFunctionSetManagerClass *this,undefined8 *param_1)\n\n{\n  if (param_1 != (undefined8 *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x0001405e5e13. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)*param_1)(param_1,1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:46:08Z"
+}

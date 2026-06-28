@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f9610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401f9610(float *param_1,uint param_2)\n\n{\n  float fVar1;\n  \n  fVar1 = DAT_1408054e8;\n  *param_1 = (float)(param_2 >> 0x10 & 0xff) / DAT_1408054e8;\n  param_1[1] = (float)(param_2 >> 8 & 0xff) / fVar1;\n  param_1[2] = (float)(param_2 & 0xff) / fVar1;\n  param_1[3] = (float)(param_2 >> 0x18) / fVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2260",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MarkerBehaviorClass * __thiscall\nMarkerBehaviorClass::vfunction4(MarkerBehaviorClass *this,int param_1)\n\n{\n  MarkerBehaviorClass *pMVar1;\n  \n  pMVar1 = (MarkerBehaviorClass *)0x0;\n  if (param_1 == 0x11) {\n    pMVar1 = this;\n  }\n  return pMVar1;\n}",
+  "fetched_at": "2026-04-26T18:09:52Z"
+}

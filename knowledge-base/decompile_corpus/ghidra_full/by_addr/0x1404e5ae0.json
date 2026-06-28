@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e5ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TheShipNamesManagerClass * __thiscall\nTheShipNamesManagerClass::scalar_deleting_destructor\n          (TheShipNamesManagerClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: TheShipNamesManagerClass::~TheShipNamesManagerClass */\n  this->vftablePtr = &vftable;\n  FUN_14012ed60(&(this->TheShipNamesManagerClass_data).offset_0x38);\n  FUN_1400465e0(&this->Singleton<class_TheShipNamesManagerClass>);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x68);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:16:22Z"
+}

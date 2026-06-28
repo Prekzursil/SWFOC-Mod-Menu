@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f220",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071f231        arg1[0x1d] = 0\n14071f23c        *arg1 = &SpecialAbilityActionClass::`vftable'{for `ActionClass'}\n14071f241        arg1[0x1e].b = 1\n14071f24b        int64_t rdx = arg1[0x1c]\n14071f256        if (rdx u>= 0x10)\n14071f258        void* rcx = arg1[0x19]\n14071f269        if (rdx + 1 u>= 0x1000)\n14071f26b        void* r8_1 = *(rcx - 8)\n14071f27e        if (rcx - r8_1 - 8 u> 0x1f)\n14071f2ce        _invalid_parameter_noinfo_noreturn()\n14071f2ce        noreturn\n14071f280        rcx = r8_1\n14071f283        j_sub_1407864b8(rcx)\n14071f28b        arg1[0x1b] = 0\n14071f296        arg1[0x1c] = 0xf\n14071f2a1        arg1[0x19].b = 0\n14071f2a8        sub_1405e8f80(arg1)\n14071f2b1        if ((arg2 & 1) != 0)\n14071f2bb        j_sub_1407864b8(arg1)\n14071f2cd        return arg1",
+  "fetched_at": "2026-04-26T17:28:14Z"
+}

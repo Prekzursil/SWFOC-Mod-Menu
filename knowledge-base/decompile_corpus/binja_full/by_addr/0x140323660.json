@@ -1,0 +1,7 @@
+{
+  "addr": "0x140323660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032366d        if (*(arg1 + 0x30) == 0)\n14032366d        return \n140323678        int64_t* rdi_1 = *(arg1 + 0x40)\n14032367f        if (rdi_1 != 0)\n14032369f        int32_t rdx_3 = ((rdi_1[0xf] - rdi_1[0xe]) s>> 5).d\n1403236a3        int32_t r8_3 = ((rdi_1[0xc] - rdi_1[0xb]) s>> 5).d\n1403236a7        int32_t rcx_2 = ((rdi_1[0x12] - rdi_1[0x11]) s>> 5).d\n1403236bd        if (r8_3 + rdx_3 + rcx_2 s> 0 && r8_3 + rdx_3 + rcx_2 s> 0)\n1403236c7        if (rdi_1[3] u>= 0x10)\n1403236c9        *rdi_1\n1403236ea        sub_1402d5a30(&data_140b27e60, rdi_1, 0x40a00000)\n1403236f6        *(arg1 + 0x38) = 0\n1403236f9        __builtin_memset(arg1 + 0x40, 0, 0x1c)\n140323708        *(arg1 + 0x30) = 0\n14032370c        *(arg1 + 0x34) = 0xffffffff\n140323718        return ",
+  "fetched_at": "2026-04-26T17:00:36Z"
+}

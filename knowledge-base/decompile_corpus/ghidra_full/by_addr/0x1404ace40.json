@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ace40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1404ace40(int param_1,uint param_2)\n\n{\n  char *in_RAX;\n  int iVar1;\n  bool bVar2;\n  \n  if (5 < param_2) {\nswitchD_1404ace5a_caseD_0:\n    return (ulonglong)in_RAX & 0xffffffffffffff00;\n  }\n  in_RAX = IMAGE_DOS_HEADER_140000000.e_magic +\n           (&switchD_1404ace5a::switchdataD_1404ace90)[(int)param_2];\n  switch(param_2) {\n  default:\n    goto switchD_1404ace5a_caseD_0;\n  case 1:\n    iVar1 = (&DAT_140875d58)[param_1];\n    break;\n  case 2:\n  case 4:\n    iVar1 = (&DAT_140875d70)[param_1];\n    break;\n  case 3:\n    iVar1 = (&DAT_140875d80)[param_1];\n  }\n  in_RAX = (char *)(longlong)param_1;\n  if (iVar1 == -1) goto switchD_1404ace5a_caseD_0;\n  if (5 < param_2) goto switchD_1404acdfa_caseD_0;\n  in_RAX = (char *)(longlong)(int)param_2;\n  switch(param_2) {\n  default:\n    goto switchD_1404acdfa_caseD_0;\n  case 1:\n    goto switchD_1404acdfa_caseD_1;\n  case 2:\n    in_RAX = (char *)(ulonglong)(iVar1 - 0x12U);\n    if (iVar1 - 0x12U < 3) goto switchD_1404acdfa_caseD_1;\n    goto switchD_1404acdfa_caseD_0;\n  case 3:\n    in_RAX = (char *)(ulonglong)(iVar1 - 0x12U);\n    bVar2 = (iVar1 - 0x12U & 0xfffffffb) == 0;\n    break;\n  case 4:\n    bVar2 = iVar1 == 0x15;\n  }\n  if (bVar2) {\nswitchD_1404acdfa_caseD_1:\n    return CONCAT71((int7)((ulonglong)in_RAX >> 8),1);\n  }\nswitchD_1404acdfa_caseD_0:\n  return (ulonglong)in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:05:28Z"
+}

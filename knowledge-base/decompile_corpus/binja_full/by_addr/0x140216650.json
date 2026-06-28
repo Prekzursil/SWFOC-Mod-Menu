@@ -1,0 +1,7 @@
+{
+  "addr": "0x140216650",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140216664        HMODULE hModule = GetModuleHandleA(\"Kernel32.dll\")\n140216670        if (hModule != 0)\n14021667c        int64_t rax = GetProcAddress(hModule, \"GlobalMemoryStatusEx\")\n14021668f        int64_t rax_1 = GetProcAddress(hModule, \"GlobalMemoryStatus\")\n14021669b        if (rax != 0)\n1402166a2        int32_t var_48 = 0x40\n1402166ae        int64_t var_40\n1402166ae        if (rax(&var_48) != 0)\n1402166c9        return var_40 u>> 0xa\n1402166cd        if (rax_1 != 0)\n1402166d4        void var_88\n1402166d4        rax_1(&var_88)\n1402166ef        int64_t var_80\n1402166ef        return var_80 u>> 0xa\n140216702        return 0",
+  "fetched_at": "2026-04-26T17:28:35Z"
+}

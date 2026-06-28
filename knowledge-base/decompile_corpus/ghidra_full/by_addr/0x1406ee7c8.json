@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ee7c8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAbsorbBlasterAbilityClass::vfunction3_for_RefCountClass\n          (AbsorbBlasterAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((AbsorbBlasterAbilityClass *)&this[-1].AbsorbBlasterAbilityClass_data.offset_0x8,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:46:47Z"
+}

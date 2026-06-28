@@ -1,0 +1,7 @@
+{
+  "addr": "0x140599070",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140599088        int64_t rcx = *(arg1 + 0x130)\n14059908b        int32_t i_1 = 0\n14059909b        if ((*(arg1 + 0x138) - rcx) s>> 3 != 0)\n1405990a6        uint64_t i = 0\n1405990b0        int64_t* rbx_1 = *(rcx + (i << 3))\n1405990b7        if (rbx_1 != 0)\n1405990b9        int64_t rdx_1 = rbx_1[2]\n1405990c0        if (rdx_1 != 0)\n1405990c2        int64_t* rcx_1 = rbx_1[1]\n1405990c9        if (rcx_1 != 0)\n1405990ce        (*(*rcx_1 + 0x30))(rcx_1, rdx_1)\n1405990d1        int64_t* rdx_2 = rbx_1[2]\n1405990d8        if (rdx_2 != 0)\n1405990e0        (*(*rdx_2 + 8))(rdx_2)\n1405990e3        rdx_2 = nullptr\n1405990e6        rbx_1[2] = 0\n1405990ea        rbx_1[1] = 0\n1405990ee        int64_t* rcx_3 = *rbx_1\n1405990f4        if (rcx_3 != 0)\n1405990f9        (*(*rcx_3 + 8))(rcx_3, rdx_2)\n1405990fc        *rbx_1 = 0\n1405990ff        rcx_3 = nullptr\n140599102        rdx_2 = rbx_1[2]\n140599109        if (rdx_2 != 0)\n140599111        (*(*rdx_2 + 8))(rdx_2)\n140599114        rcx_3 = *rbx_1\n14059911a        if (rcx_3 != 0)\n14059911f        (*(*rcx_3 + 8))(rcx_3)\n14059912a        j_sub_1407864b8(rbx_1)\n14059912f        rcx = *(arg1 + 0x130)\n140599132        i_1 += 1\n14059913b        i = zx.q(i_1)\n140599144        do while (i u< (*(arg1 + 0x138) - rcx) s>> 3)\n140599163        return sub_1400e5160(arg1 + 0x130, 0) __tailcall",
+  "fetched_at": "2026-04-26T17:36:39Z"
+}

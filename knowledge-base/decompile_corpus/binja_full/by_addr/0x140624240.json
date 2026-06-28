@@ -1,0 +1,7 @@
+{
+  "addr": "0x140624240",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140624253        *arg1 = &TerrainTextureModificationBehaviorClass::`vftable'{for `BehaviorClass'}\n140624260        arg1[1] = &TerrainTextureModificationBehaviorClass::`vftable'{for `RefCountClass'}\n14062426b        arg1[3] = &TerrainTextureModificationBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062426f        sub_1404c3310(arg1)\n140624277        if ((arg2 & 1) != 0)\n140624281        j_sub_1407864b8(arg1)\n140624293        return arg1",
+  "fetched_at": "2026-04-26T17:23:47Z"
+}

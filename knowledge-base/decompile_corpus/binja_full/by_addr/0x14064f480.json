@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064f480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064f498        *arg1 = &VisiblePerceptualEvaluatorClass<class GameObjectTypePerceptualEvaluatorClass>::`vftable'{for `PerceptualEvaluatorClass'}\n14064f4ac        arg1[3] = &VisiblePerceptualEvaluatorClass<class GameObjectTypePerceptualEvaluatorClass>::`vftable'{for `AIDiagnosticsClass'}\n14064f4c2        sub_14064c540(&arg1[0x14], &arg1[0x14], arg1[0x14]->__offset(0x8).q)\n14064f4d3        j_sub_1407864b8(arg1[0x14])\n14064f4db        sub_14064c9a0(arg1)\n14064f4e4        if ((arg2 & 1) != 0)\n14064f4ee        j_sub_1407864b8(arg1)\n14064f505        return arg1",
+  "fetched_at": "2026-04-26T17:05:58Z"
+}

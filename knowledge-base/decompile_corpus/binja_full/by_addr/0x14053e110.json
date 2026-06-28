@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053e110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053e120        *arg1 = &AffectedByShieldDataPackClass::`vftable'{for `BaseDataPackClass'}\n14053e123        void* rax = arg1[1]\n14053e12a        if (rax != 0)\n14053e12c        int32_t rdx_1 = *(rax + 0x50)\n14053e135        if (rdx_1 s< 0x3fffff)\n14053e142        int64_t* rax_1 = sub_1402a6280(*(data_140b15418 + 0x18), rdx_1)\n14053e147        arg1[1] = 0\n14053e14f        arg1[3].d = 0x3fffff\n14053e15b        return rax_1\n14053e15c        arg1[3].d = 0x3fffff\n14053e163        arg1[1] = 0\n14053e170        return rax",
+  "fetched_at": "2026-04-26T17:33:56Z"
+}

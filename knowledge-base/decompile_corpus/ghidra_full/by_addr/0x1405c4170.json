@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c4170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SquadLeaderBehaviorClass * __thiscall\nSquadLeaderBehaviorClass::vfunction4(SquadLeaderBehaviorClass *this,int param_1)\n\n{\n  SquadLeaderBehaviorClass *pSVar1;\n  \n  pSVar1 = (SquadLeaderBehaviorClass *)0x0;\n  if (param_1 == 0x15) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T18:44:38Z"
+}

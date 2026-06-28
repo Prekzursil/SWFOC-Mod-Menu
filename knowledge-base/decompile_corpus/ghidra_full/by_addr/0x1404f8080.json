@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f8080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* MovementCoordinatorClass member function inherited by LandMovementCoordinatorClass */\n\nvoid __thiscall MovementCoordinatorClass::vfunction6(MovementCoordinatorClass *this)\n\n{\n  int iVar1;\n  char cVar2;\n  undefined8 uVar3;\n  \n  (*this->vftablePtr->_guard_check_icall)();\n  do {\n    iVar1 = *(int *)&(this->SignalListenerClass_data).offset_0x98;\n    if (iVar1 == 0) {\n      uVar3 = (*this->vftablePtr->vfunction12)(this);\n      cVar2 = (char)uVar3;\n    }\n    else {\n      if (iVar1 != 1) {\n        return;\n      }\n      cVar2 = (*this->vftablePtr->vfunction2)(this);\n    }\n  } while (cVar2 == '\\0');\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:12Z"
+}

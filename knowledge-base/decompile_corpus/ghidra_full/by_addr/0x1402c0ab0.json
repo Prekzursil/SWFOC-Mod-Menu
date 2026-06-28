@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c0ab0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402c0ab0(longlong param_1,undefined8 param_2,undefined1 param_3)\n\n{\n  char cVar1;\n  \n  cVar1 = FUN_1402c1270(param_1,param_2,0,0);\n  if (cVar1 != '\\0') {\n    *(undefined1 *)(param_1 + 0xbe) = 1;\n    *(undefined1 *)(param_1 + 0x14c) = param_3;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:28:43Z"
+}

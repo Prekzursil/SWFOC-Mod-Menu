@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021f306        int32_t result_1 = data_140a15378\n14021f310        int64_t* rdx = data_140a15370\n14021f31a        uint64_t result\n14021f31a        if (rdx == 0)\n14021f33d        label_14021f33d:\n14021f346        int32_t rcx_2 = (data_140a1537c * 2) s>> 1\n14021f34b        if (result_1 s>= rcx_2)\n14021f35f        int32_t rdx_3 = rcx_2 s/ 0xa\n14021f368        if (rdx_3 s< 0xa)\n14021f368        rdx_3 = 0xa\n14021f377        sub_140047aa0(&data_140a15368, rdx_3 + rcx_2, 0, 1)\n14021f37c        result_1 = data_140a15378\n14021f383        rdx = data_140a15370\n14021f38a        result = sx.q(result_1)\n14021f38d        rdx[result] = arg2\n14021f391        data_140a15378 += 1\n14021f31c        result = 0\n14021f321        if (result_1 s<= 0)\n14021f321        goto label_14021f33d\n14021f323        int64_t* rcx = rdx\n14021f329        while (*rcx != arg2)\n14021f32b        result = zx.q(result.d + 1)\n14021f32d        rcx = &rcx[1]\n14021f334        if (result.d s>= result_1)\n14021f334        goto label_14021f33d\n14021f33b        if (result.d == 0xffffffff)\n14021f33b        goto label_14021f33d\n14021f39c        return result",
+  "fetched_at": "2026-04-26T17:29:03Z"
+}

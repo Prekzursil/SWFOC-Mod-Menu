@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405761e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1405761e0(undefined4 param_1)\n\n{\n  UnitMovementBlockStatus *pUVar1;\n  \n  pUVar1 = (UnitMovementBlockStatus *)FUN_140769c58(0x60);\n  if (pUVar1 != (UnitMovementBlockStatus *)0x0) {\n    pUVar1 = UnitMovementBlockStatus::UnitMovementBlockStatus(pUVar1);\n    *(undefined4 *)&pUVar1->offset_0x18 = param_1;\n    return;\n  }\n  _DAT_00000020 = param_1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:40:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140719bc4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nRemoteBombAbilityClass::vfunction3_for_RefCountClass(RemoteBombAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((RemoteBombAbilityClass *)&this[-1].RemoteBombAbilityClass_data.offset_0x38,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:21Z"
+}

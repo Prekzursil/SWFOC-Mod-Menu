@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HeroClashInterface * __thiscall\nHeroClashInterface::scalar_deleting_destructor(HeroClashInterface *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: HeroClashInterface::~HeroClashInterface */\n  this->vftablePtr = &vftable;\n  (this->HeroClashInterface_data).offset_0x8 = 0;\n  (this->HeroClashInterface_data).offset_0x0 = 0;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:54Z"
+}

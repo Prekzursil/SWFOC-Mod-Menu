@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407857f8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407857fc        int64_t var_18 = arg1\n140785801        int64_t* var_10 = arg2\n140785809        if (arg2 != 0)\n14078580b        *arg2 = arg1\n140785821        return __crt_strtox::parse_integer<unsigned long,class __crt_strtox::c_string_character_source<char> >(nullptr, &var_18, arg3, 0)",
+  "fetched_at": "2026-04-26T17:31:15Z"
+}

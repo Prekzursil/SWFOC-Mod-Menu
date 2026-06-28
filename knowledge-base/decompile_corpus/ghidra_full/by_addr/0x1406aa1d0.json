@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406aa1d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaSFXCommandsClassClass::vfunction5(void)\n\n{\n  return &DAT_140a448c0;\n}",
+  "fetched_at": "2026-04-26T17:35:16Z"
+}

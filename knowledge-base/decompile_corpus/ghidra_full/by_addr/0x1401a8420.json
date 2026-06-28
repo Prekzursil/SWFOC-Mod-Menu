@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a8420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1401a8420(int *param_1,void *param_2)\n\n{\n  uint uVar1;\n  int iVar2;\n  int iVar3;\n  ulonglong in_RAX;\n  undefined4 extraout_var;\n  uint uVar4;\n  ulonglong uVar5;\n  bool bVar6;\n  \n  uVar1 = param_1[5];\n  uVar5 = 0;\n  if (uVar1 != 0) {\n    iVar2 = *param_1;\n    do {\n      if (iVar2 == 0) {\n        iVar3 = memcmp((void *)((ulonglong)(uint)(param_1[4] * (int)uVar5) +\n                               *(longlong *)(param_1 + 2)),param_2,(ulonglong)(uint)param_1[4]);\n        in_RAX = CONCAT44(extraout_var,iVar3);\n        bVar6 = iVar3 == 0;\n      }\n      else {\n        in_RAX = *(ulonglong *)(param_1 + 2);\n        bVar6 = *(void **)(in_RAX + uVar5 * 8) == param_2;\n      }\n      if (bVar6) {\n        return CONCAT71((int7)(in_RAX >> 8),1);\n      }\n      uVar4 = (int)uVar5 + 1;\n      uVar5 = (ulonglong)uVar4;\n    } while (uVar4 < uVar1);\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:40:13Z"
+}

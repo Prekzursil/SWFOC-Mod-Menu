@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021e3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021e3f7        EnterCriticalSection(&data_140a7e2a0)\n14021e402        void* rax = sub_14021e910(arg2, 1)\n14021e40a        if (rax != 0)\n14021e40f        *(rax + 0x10) += arg3 + 0x1c\n14021e423        return LeaveCriticalSection(&data_140a7e2a0) __tailcall",
+  "fetched_at": "2026-04-26T17:29:02Z"
+}

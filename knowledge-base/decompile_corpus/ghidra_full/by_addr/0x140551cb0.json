@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551cb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall BombDataPackClass::~BombDataPackClass(BombDataPackClass *this)\n\n{\n  this->PooledObjectClass<class_BombDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_BombDataPackClass,20,class_EmptyLockerClass>)0x3fffff;\n  this->vftablePtr = &vftable;\n  (this->BombDataPackClass_data).offset_0x0 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:38:06Z"
+}

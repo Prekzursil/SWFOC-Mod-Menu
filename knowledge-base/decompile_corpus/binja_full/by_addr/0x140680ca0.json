@@ -1,0 +1,7 @@
+{
+  "addr": "0x140680ca0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140680ca8        arg2[3] = 0xf\n140680cb3        *arg2 = 0\n140680cb6        arg2[2] = 0\n140680cc8        sub_140022730(arg2, \"Moving Vs Moving\", 0x10)\n140680cd5        return arg2",
+  "fetched_at": "2026-04-26T17:12:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140014c30        InitializeCriticalSectionAndSpinCount(&data_140a7c7b0, 0xfa0)\n140014c41        return atexit(sub_1407ed410) __tailcall",
+  "fetched_at": "2026-04-26T16:50:11Z"
+}

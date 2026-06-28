@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dafd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404dafe4        *arg1 = &AIPerceptionSystemClass::`vftable'{for `ServicedAISystemClass'}\n1404dafe7        int64_t* rax = arg1[8]\n1404dafeb        void** i = *rax\n1404daff1        if (i != rax)\n1404daff3        int64_t* rcx = i[3]\n1404daffa        if (rcx != 0)\n1404db004        (**rcx)(rcx, 1)\n1404db006        i = *i\n1404db00d        do while (i != arg1[8])\n1404db013        sub_1400db9f0(&arg1[7])\n1404db01f        sub_1404c5ac0(&arg1[0x17])\n1404db028        sub_1404daf00(&arg1[0xf])\n1404db031        sub_14007b260(&arg1[7])\n1404db043        return sub_14064c290(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

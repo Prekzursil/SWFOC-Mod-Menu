@@ -1,0 +1,7 @@
+{
+  "addr": "0x140763438",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140763455        char rsi = 0\n140763457        int32_t arg_8 = 0\n140763466        if (arg1 != 0 && *arg1 == 0)\n14076346b        struct std::messages_base::std::messages<char>::VTable** rax_1 = operator new(0x10)\n140763470        struct std::messages_base::std::messages<char>::VTable** rbx_1 = rax_1\n140763473        arg_8.q = rax_1\n14076347e        void var_78\n14076347e        if (rax_1 == 0)\n1407634be        rbx_1 = nullptr\n140763480        void* rax_2 = *(arg2 + 8)\n140763487        void* rdx\n140763487        if (rax_2 == 0)\n140763498        rdx = &data_1407ff8a8\n140763489        rdx = *(rax_2 + 0x28)\n140763490        if (rdx == 0)\n140763492        rdx = rax_2 + 0x30\n1407634a4        std::_Locinfo::_Locinfo(&var_78, rdx)\n1407634a9        rsi = 1\n1407634ae        rbx_1[1].d = 0\n1407634b9        *rbx_1 = &std::messages<char>::`vftable'{for `std::messages_base'}\n1407634c0        *arg1 = rbx_1\n1407634c7        if ((rsi & 1) != 0)\n1407634ce        std::_Locinfo::~_Locinfo(&var_78)\n1407634f0        return 6",
+  "fetched_at": "2026-04-26T17:30:11Z"
+}

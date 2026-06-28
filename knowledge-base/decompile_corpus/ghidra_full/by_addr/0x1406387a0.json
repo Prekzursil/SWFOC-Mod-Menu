@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406387a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nfloat __thiscall CombatantBehaviorClass::vfunction43(CombatantBehaviorClass *this)\n\n{\n  undefined **ppuVar1;\n  int iVar2;\n  uint uVar3;\n  longlong *plVar4;\n  longlong lVar5;\n  uint uVar6;\n  longlong *plVar7;\n  float fVar8;\n  float fVar9;\n  \n  fVar8 = (float)FUN_140396830(this->offset_0x18);\n  ppuVar1 = this->offset_0x18;\n  if (*(char *)((longlong)ppuVar1 + 0x337) != -1) {\n    plVar7 = (longlong *)0x0;\n    plVar4 = plVar7;\n    if ((ppuVar1 != (undefined **)0x0) &&\n       (plVar4 = (longlong *)(**(code **)(*ppuVar1 + 0x10))(ppuVar1,5), plVar4 != (longlong *)0x0))\n    {\n      (**(code **)*plVar4)(plVar4);\n    }\n    iVar2 = FUN_1404f3ba0(plVar4,plVar4[5]);\n    fVar9 = fVar8;\n    if (iVar2 != 0) {\n      do {\n        lVar5 = FUN_1404f3b80(plVar4,plVar4[5],plVar7);\n        fVar8 = fVar9;\n        if ((lVar5 != 0) && (fVar8 = (float)FUN_140396830(lVar5), fVar8 <= fVar9)) {\n          fVar8 = fVar9;\n        }\n        uVar6 = (int)plVar7 + 1;\n        plVar7 = (longlong *)(ulonglong)uVar6;\n        uVar3 = FUN_1404f3ba0(plVar4,plVar4[5]);\n        fVar9 = fVar8;\n      } while (uVar6 < uVar3);\n    }\n    (**(code **)(*plVar4 + 8))(plVar4);\n  }\n  return fVar8;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405316e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpawnIndigenousUnitsBehaviorClass::scalar_deleting_destructor\n          (SpawnIndigenousUnitsBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  vbase_destructor(this,param_1);\n  puVar1 = param_1[0x24];\n  lpMem = *(LPVOID *)(puVar1 + 0x10);\n  if (lpMem != (LPVOID)0x0) {\n    if ((*(uint *)(puVar1 + 0x1c) & 0x80000000) == 0) {\n      thunk_FUN_1407864b8(lpMem);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    *(uint *)(puVar1 + 0x1c) = *(uint *)(puVar1 + 0x1c) & 0x80000000;\n    *(undefined8 *)(puVar1 + 0x10) = 0;\n    *(undefined4 *)(puVar1 + 0x18) = 0;\n  }\n  *(undefined4 *)(puVar1 + 0x20) = *(undefined4 *)(*(longlong *)(param_1[0x57] + 0x20) + 0x10);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140391060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140391066        struct BaseDataPackClass::TacticalSuperWeaponDataPackClass::VTable** rax = *(arg1 + 0x148)\n140391073        if (rax == 0)\n140391078        rax = operator new(zx.q((&rax[0xb]).d))\n140391080        if (rax != 0)\n140391085        struct BaseDataPackClass::TacticalSuperWeaponDataPackClass::VTable** rax_1 = sub_140562270(rax)\n14039108a        *(arg1 + 0x148) = rax_1\n140391096        return rax_1\n140391097        *(arg1 + 0x148) = rax\n1403910a3        return rax",
+  "fetched_at": "2026-04-26T17:23:36Z"
+}

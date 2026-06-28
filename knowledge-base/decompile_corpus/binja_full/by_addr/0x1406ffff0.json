@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ffff0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_generic_attack",
+  "body": "1406ffff6        struct SpecialAbilityClass::GenericAttackAbilityClass::VTable** result = arg1\n1406ffff9        sub_14048c780(arg1)\n140700005        result[0x2f] = 0x3f800000\n140700010        *result = &GenericAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140700021        *(result + 0x18c) = 1\n14070002b        result[1] = &GenericAttackAbilityClass::`vftable'{for `RefCountClass'}\n140700031        result[0x30] = 0\n140700038        result[0x31].d = 0\n14070003e        result[0x32].d = 0xffffffff\n140700048        *(result + 0x194) = 0x3f800000\n140700053        sub_1404c3ee0(&result[0x34])\n14070005b        result[8].w = 1\n140700061        *(result + 0x3c) = 9\n14070006d        return result",
+  "fetched_at": "2026-04-26T16:44:17Z"
+}

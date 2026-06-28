@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037e3a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037e3b6        struct alRenderable::LineSubClass::VTable** result = arg1\n14037e3b9        sub_14013f590(arg1)\n14037e3c0        *(result + 0x114) = 0\n14037e3ce        result[0x23].d = 0\n14037e3d4        *result = &LineSubClass::`vftable'{for `alRenderable'}\n14037e3e5        *(result + 0x11c) = 2\n14037e3ef        result[2] = &LineSubClass::`vftable'{for `MultiLinkedListMember'}\n14037e3fa        result[4] = &LineSubClass::`vftable'{for `CullObjectClass'}\n14037e3fe        result[0x24].b = 0\n14037e405        sub_1401f92f0(result + 0x124)\n14037e412        result[0x27] = 0\n14037e419        result[0x28] = 0\n14037e420        __builtin_memset(&result[0x12a], 0, 0x18)\n14037e435        result[0x12d].d = arg2\n14037e43b        __builtin_memset(&result[0x12e], 0, 0x18)\n14037e442        *(result + 0x124) = 0\n14037e449        *(result + 0x12c) = 0\n14037e45d        result[0x129] = 0\n14037e469        *(result + 0x98c) = 1\n14037e473        result[0x26].d = 0x3f800000\n14037e487        return result",
+  "fetched_at": "2026-04-26T17:19:33Z"
+}

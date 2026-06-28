@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079e99c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079e9ab        int64_t rbx = sx.q(arg1)\n14079e9b6        HANDLE hFile = _get_osfhandle(rbx.d)\n14079e9bf        int64_t newFilePointer\n14079e9bf        if (hFile != -1)\n14079e9e8        if (SetFilePointerEx(hFile, arg2, &newFilePointer, arg3) != 0)\n14079e9f9        int64_t result = newFilePointer\n14079ea02        if (result != -1)\n14079ea18        uint64_t rdx_3 = (zx.q(rbx.d) & 0x3f) * 9\n14079ea1c        int64_t rcx_5 = (&data_140b3c4d0)[rbx s>> 6]\n14079ea20        *(rcx_5 + (rdx_3 << 3) + 0x38) &= 0xfd\n14079ea34        return result\n14079e9f2        __acrt_errno_map_os_error(GetLastError())\n14079e9c6        *_errno() = 9\n14079e9cc        return -1",
+  "fetched_at": "2026-04-26T17:32:16Z"
+}

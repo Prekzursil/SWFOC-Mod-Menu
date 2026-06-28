@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054fd70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float * FUN_14054fd70(longlong *param_1,float *param_2,uint param_3,float param_4)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  longlong lVar7;\n  longlong lVar8;\n  float *pfVar9;\n  \n  lVar7 = *param_1;\n  lVar8 = (param_1[1] - lVar7) / 0x34;\n  if (lVar8 == 0) {\n    param_2[0] = 0.0;\n    param_2[1] = 0.0;\n    param_2[2] = 0.0;\n    return param_2;\n  }\n  if (lVar8 - 1U <= (ulonglong)param_3) {\n    lVar8 = lVar8 * 0x34;\n    *param_2 = *(float *)(lVar8 + -0x34 + lVar7);\n    param_2[1] = *(float *)(lVar8 + -0x30 + lVar7);\n    param_2[2] = *(float *)(lVar8 + -0x2c + lVar7);\n    return param_2;\n  }\n  lVar8 = (ulonglong)(param_3 + 1) * 0x34;\n  fVar1 = *(float *)(lVar8 + 4 + lVar7);\n  fVar2 = *(float *)(lVar8 + lVar7);\n  pfVar9 = (float *)((ulonglong)param_3 * 0x34 + lVar7);\n  fVar3 = pfVar9[1];\n  fVar4 = *pfVar9;\n  fVar5 = pfVar9[1];\n  fVar6 = *pfVar9;\n  param_2[2] = (*(float *)(lVar8 + 8 + lVar7) - pfVar9[2]) * param_4 + pfVar9[2];\n  param_2[1] = (fVar1 - fVar3) * param_4 + fVar5;\n  *param_2 = (fVar2 - fVar4) * param_4 + fVar6;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T18:37:53Z"
+}

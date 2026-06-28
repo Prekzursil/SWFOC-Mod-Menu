@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025bfe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025bff3        *arg1 = &Scene2dClass::`vftable'\n14025bff9        sub_14025c680(arg1)\n14025bffe        int64_t* rcx = arg1[0x14]\n14025c008        if (rcx != 0)\n14025c00d        (*(*rcx + 8))(rcx)\n14025c010        arg1[0x14] = 0\n14025c022        sub_1401f3210(&arg1[0x11])\n14025c02b        sub_1401f3210(&arg1[0xe])\n14025c034        sub_1401f3210(&arg1[0xb])\n14025c03d        sub_1401f3210(&arg1[8])\n14025c046        sub_1401f3210(&arg1[5])\n14025c04f        sub_1401f3210(&arg1[2])\n14025c058        if ((arg2 & 1) != 0)\n14025c062        j_sub_1407864b8(arg1)\n14025c074        return arg1",
+  "fetched_at": "2026-04-26T17:31:04Z"
+}

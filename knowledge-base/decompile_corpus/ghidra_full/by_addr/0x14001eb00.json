@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001eb00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* Library Function - Multiple Matches With Different Base Names\n    public: void __cdecl std::basic_string<unsigned short,struct std::char_traits<unsigned\n   short>,class std::allocator<unsigned short> >::_Tidy_deallocate(void) __ptr64\n    public: void __cdecl std::basic_string<wchar_t,struct std::char_traits<wchar_t>,class\n   std::allocator<wchar_t> >::_Tidy_deallocate(void) __ptr64\n   \n   Library: Visual Studio 2017 Release */\n\nvoid FID_conflict__Tidy_deallocate(longlong *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  if (7 < (ulonglong)param_1[3]) {\n    lVar2 = *param_1;\n    lVar1 = param_1[3] * 2;\n    lVar3 = lVar2;\n    if (0xfff < lVar1 + 2U) {\n      lVar3 = *(longlong *)(lVar2 + -8);\n      if (0x1f < (lVar2 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar2 - lVar3,lVar1 + 0x29);\n      }\n    }\n    thunk_FUN_1407864b8(lVar3);\n  }\n  param_1[3] = 7;\n  param_1[2] = 0;\n  *(undefined2 *)param_1 = 0;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:36Z"
+}

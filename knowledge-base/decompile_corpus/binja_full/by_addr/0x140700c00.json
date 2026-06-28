@@ -1,0 +1,7 @@
+{
+  "addr": "0x140700c00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140700c07        return \"Grenade_Attack_Ability\"",
+  "fetched_at": "2026-04-26T17:27:01Z"
+}

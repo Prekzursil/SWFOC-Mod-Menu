@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032b960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032b970        char var_108[0x100]\n14032b970        void* r8 = &var_108 - arg1\n14032b98d        char i\n14032b980        i = *arg1\n14032b983        *(r8 + arg1) = i\n14032b987        arg1 = &arg1[1]\n14032b98d        do while (i != 0)\n14032b994        _strupr(&var_108)\n14032b9a9        int128_t var_148\n14032b9a9        strncpy(&var_148, &var_108, 0x1f)\n14032b9b3        char var_129 = 0\n14032b9b8        int64_t rax_1 = -1\n14032b9c3        rax_1 += 1\n14032b9ca        do while (*(&var_148 + rax_1) != 0)\n14032b9e3        int32_t arg_10 = sub_140215a30(&var_148, rax_1.d, 0)\n14032ba08        void*** var_120\n14032ba08        void*** rcx_3 = *sub_140325a40(&data_140b2b5e0, &var_120, &arg_10)\n14032ba0b        *(rcx_3 + 0x14) = var_148\n14032ba14        int128_t var_138\n14032ba14        *(rcx_3 + 0x24) = var_138\n14032ba1c        *(rcx_3 + 0x34) = arg2\n14032ba3b        return sub_140467540(\"Flag %s set to value %d, CRC %u\\r\\n\", &var_108)",
+  "fetched_at": "2026-04-26T17:02:11Z"
+}

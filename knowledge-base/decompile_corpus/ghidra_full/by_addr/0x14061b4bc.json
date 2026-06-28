@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061b4bc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nHackSuperWeaponAbilityClass::vfunction3_for_RefCountClass\n          (HackSuperWeaponAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((HackSuperWeaponAbilityClass *)&this[-1].SpecialAbilityClass_data.offset_0xd0,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:28:57Z"
+}

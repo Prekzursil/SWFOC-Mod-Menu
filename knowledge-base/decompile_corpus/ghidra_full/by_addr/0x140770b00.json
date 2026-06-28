@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770b00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _NLG_Notify\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _NLG_Notify(void)\n\n{\n  FUN_140770b20();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:50Z"
+}

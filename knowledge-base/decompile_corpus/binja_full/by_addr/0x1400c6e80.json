@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400c6e80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400c6e8b        if (data_140a6200c == 1)\n1400c6f84        return \n1400c6e96        char* rax = operator new(0x30)\n1400c6ea2        int64_t var_18 = 0x20\n1400c6eb2        int64_t var_10 = 0x2f\n1400c6ec0        __builtin_strncpy(rax, \"IDD_MOUSE_POINTER_PREVIEW_DIALOG\", 0x21)\n1400c6eef        char* var_28 = rax\n1400c6ef9        int32_t rax_1 = sub_1401c1570(&data_140a78510, &var_28, sub_1400c7000, 0, 1, 0x3f800000, 1)\n1400c6f03        data_140a118ec = rax_1\n1400c6f0d        if (var_10 u>= 0x10)\n1400c6f0f        char* rcx_1 = var_28\n1400c6f17        char* rax_2 = rcx_1\n1400c6f21        if (var_10 + 1 u>= 0x1000)\n1400c6f23        rcx_1 = *(rcx_1 - 8)\n1400c6f36        if (rax_2 - rcx_1 - 8 u> 0x1f)\n1400c6f85        _invalid_parameter_noinfo_noreturn()\n1400c6f85        noreturn\n1400c6f38        j_sub_1407864b8(rcx_1)\n1400c6f3d        rax_1 = data_140a118ec\n1400c6f46        if (rax_1 == 0xffffffff)\n1400c6f48        data_140a6200c = 0\n1400c6f53        return \n1400c6f54        data_140a6200c = 1\n1400c6f5b        data_140a118f0 = 0xffffffff\n1400c6f65        sub_1400c7130()\n1400c6f7b        return sub_140263070(sub_14004fba0(), 0, 0) __tailcall",
+  "fetched_at": "2026-04-26T17:00:52Z"
+}

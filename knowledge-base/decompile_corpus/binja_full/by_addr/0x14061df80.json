@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061df80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061df86        uint64_t result\n14061df86        if (arg2 - 3 u<= 0x15)\n14061df86        switch (arg2)\n14061dfa6        case 3, 4, 0x15, 0x16, 0x17, 0x18\n14061dfa6        result.b = 1\n14061dfa8        return result\n14061dfa9        result.b = 0\n14061dfab        return result",
+  "fetched_at": "2026-04-26T17:23:40Z"
+}

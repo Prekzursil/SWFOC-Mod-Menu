@@ -1,0 +1,7 @@
+{
+  "addr": "0x140262af0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140262af0(char *param_1)\n\n{\n  undefined4 uVar1;\n  DWORD DVar2;\n  \n  if (((*param_1 != '\\0') && (param_1[0x10bb] != '\\0')) && (param_1[0x10bc] != '\\0')) {\n    DVar2 = GetCurrentThreadId();\n    if (DVar2 == DAT_140a155d0) {\n      FUN_1402632a0(param_1,param_1[0x10ba]);\n      if (param_1[0x10ba] == '\\0') {\n        FUN_14013eac0();\n      }\n      else {\n        FUN_14013ea90();\n      }\n    }\n    else {\n      param_1[0x10bd] = '\\x01';\n    }\n    uVar1 = *(undefined4 *)(param_1 + 0x10a8);\n    param_1[0x10a8] = -1;\n    param_1[0x10a9] = -1;\n    param_1[0x10aa] = -1;\n    param_1[0x10ab] = -1;\n    FUN_140263070(param_1,uVar1,0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:08Z"
+}

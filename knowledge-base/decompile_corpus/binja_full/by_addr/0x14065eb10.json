@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065eb10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065eb1d        int64_t var_10 = 0xf\n14065eb2b        int32_t rdx = data_140a43ec4\n14065eb34        void* var_28 = nullptr\n14065eb3e        int64_t var_18 = 0\n14065eb4d        void* rbx\n14065eb4d        if (sub_1405f41e0(arg2, rdx, &var_28) != 0)\n14065eb6d        int64_t zmm0_1\n14065eb6d        if (sub_1404dd530(*(arg1 + 0xa0), &var_28, *(arg1 + 0x98)) == 0)\n14065eb79        zmm0_1 = (zx.o(0)).q\n14065eb6f        zmm0_1 = 0x3ff0000000000000\n14065eb7c        *arg3 = zmm0_1\n14065eb80        rbx.b = 1\n14065eb4f        rbx.b = 0\n14065eb8b        if (var_10 u>= 0x10)\n14065eb8d        void* rcx_2 = var_28\n14065eb95        void* rax_3 = rcx_2\n14065eb9f        if (var_10 + 1 u>= 0x1000)\n14065eba1        rcx_2 = *(rcx_2 - 8)\n14065ebb4        if (rax_3 - rcx_2 - 8 u> 0x1f)\n14065ebc9        _invalid_parameter_noinfo_noreturn()\n14065ebc9        noreturn\n14065ebb6        j_sub_1407864b8(rcx_2)\n14065ebc8        return zx.q(rbx.b)",
+  "fetched_at": "2026-04-26T17:08:55Z"
+}

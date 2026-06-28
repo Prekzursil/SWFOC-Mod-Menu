@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007eb30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007eb43        if (arg2 == 0)\n14007eb43        return \n14007eb49        int64_t rcx = *(arg1 + 0x20)\n14007eb65        if (((rcx - *(arg1 + 0x18)) & 0xffffffffffffffe0) == 0 || *(arg1 + 0x10) != 0)\n14007eb6a        sub_14007e6c0(arg1)\n14007eb6f        *(arg1 + 0x10) = 0\n14007eb73        rcx = *(arg1 + 0x20)\n14007eb77        int64_t rax_3 = *(arg1 + 0x18)\n14007eb82        void* rsi_1 = ((rcx - rax_3) & 0xffffffffffffffe0) + rax_3\n14007eb97        if (isgraph(sx.d(arg2.b)) != 0 || arg2 == 0x20)\n14007ebbb        void* rcx_7 = rsi_1 - 0x20\n14007ebbf        if (*(rsi_1 - 8) u>= 8)\n14007ebc1        rcx_7 = *(rsi_1 - 0x20)\n14007ebda        void arg_18\n14007ebda        sub_14007f7a0(rsi_1 - 0x20, &arg_18, rcx_7 + (*(rsi_1 - 0x10) << 1), arg2)\n14007eb9d        if (arg2 == 0xa)\n14007ebb1        return sub_14007e6c0(arg1) __tailcall\n14007ebee        return ",
+  "fetched_at": "2026-04-26T16:57:14Z"
+}

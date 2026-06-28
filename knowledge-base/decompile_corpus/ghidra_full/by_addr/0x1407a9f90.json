@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a9f90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall alLaserBeam::vfunction7(alLaserBeam *this)\n\n{\n  return &this[1].offset_0x40;\n}",
+  "fetched_at": "2026-04-26T18:55:01Z"
+}

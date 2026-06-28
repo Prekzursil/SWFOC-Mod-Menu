@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f6888        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1405f6895        arg1[1] = 0\n1405f6899        arg1[2] = &RefCountClass::`vftable'{for `IRefCountClass'}\n1405f689d        arg1[3].d = 0\n1405f68a4        sub_1405f6520(&arg1[4])\n1405f68b5        *arg1 = &PlanBehaviorClass::`vftable'{for `SignalListenerClass'}\n1405f68bf        arg1[2] = &PlanBehaviorClass::`vftable'{for `RefCountClass'}\n1405f68ca        arg1[4] = &PlanBehaviorClass::`vftable'{for `AIDiagnosticsClass'}\n1405f68d1        __builtin_memset(&arg1[9], 0, 0x39)\n1405f68f4        arg1[0x11] = 0\n1405f68fb        arg1[0x12] = 0\n1405f6902        arg1[0x13].b = 1\n1405f6909        arg1[0x14] = 0\n1405f6910        arg1[0x15].b = 0\n1405f6921        return arg1",
+  "fetched_at": "2026-04-26T17:22:34Z"
+}

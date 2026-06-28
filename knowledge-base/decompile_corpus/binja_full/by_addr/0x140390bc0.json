@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390bc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140390bc6        struct BaseDataPackClass::PlanetaryDataPackClass::VTable** result = *(arg1 + 0xb8)\n140390bd3        if (result == 0)\n140390bd9        void* rcx = *(arg1 + 0x298)\n140390bed        struct BaseDataPackClass::PlanetaryDataPackClass::VTable** result_1 = nullptr\n140390bf4        int32_t arg_8 = 0\n140390bf8        sub_1403734d0(rcx, &arg_8, nullptr)\n140390c02        struct BaseDataPackClass::PlanetaryDataPackClass::VTable** rax = operator new(0x358)\n140390c0d        if (rax != 0)\n140390c22        int32_t rax_1 = sub_140372780(*(arg1 + 0x298), nullptr)\n140390c32        int32_t rax_2 = sub_140372760(*(arg1 + 0x298), nullptr)\n140390c42        int32_t rax_3 = sub_140372740(*(arg1 + 0x298), nullptr)\n140390c76        result_1 = sub_1404b5700(rax, sub_1403733c0(*(arg1 + 0x298), nullptr), arg_8, rax_3, rax_2, rax_1)\n140390c83        result = result_1\n140390c86        *(arg1 + 0xb8) = result_1\n140390c97        return result",
+  "fetched_at": "2026-04-26T17:21:56Z"
+}

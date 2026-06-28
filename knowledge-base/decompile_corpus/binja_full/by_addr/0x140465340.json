@@ -1,0 +1,7 @@
+{
+  "addr": "0x140465340",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140465342        if (arg2 != 0)\n140465342        return \n14046534c        void** rcx = *arg3\n140465354        if (rcx[3] u>= 0x10)\n140465356        rcx = *rcx\n140465359        int64_t rax\n140465359        double zmm0_1\n140465359        rax, zmm0_1 = j_common_atof_l<wchar_t>(rcx)\n140465365        *(arg1 + 0x368) = fconvert.s(zmm0_1)\n140465372        return ",
+  "fetched_at": "2026-04-26T17:27:57Z"
+}

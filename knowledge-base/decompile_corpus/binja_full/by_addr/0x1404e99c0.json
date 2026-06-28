@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e99c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e99d2        *arg1 = &TheAIPlayerTypeManagerClass::`vftable'\n1404e99d8        int64_t* rax = arg1[2]\n1404e99e3        void** i = *rax\n1404e99e9        if (i != rax)\n1404e99f0        int64_t* rdi_1 = i[6]\n1404e99f7        if (rdi_1 != 0)\n1404e99fc        sub_14060f160(rdi_1)\n1404e9a09        j_sub_1407864b8(rdi_1)\n1404e9a0e        i = *i\n1404e9a15        do while (i != arg1[2])\n1404e9a20        sub_140145610(&arg1[1])\n1404e9a29        sub_1401450b0(&arg1[1])\n1404e9a3c        if ((arg2 & 1) != 0)\n1404e9a46        j_sub_1407864b8(arg1)\n1404e9a53        return arg1",
+  "fetched_at": "2026-04-26T17:31:30Z"
+}

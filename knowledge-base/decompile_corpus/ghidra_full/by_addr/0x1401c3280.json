@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c3280",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401c3280(longlong param_1,undefined8 param_2,int param_3)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  char *_Str1;\n  char *pcVar4;\n  undefined1 local_18 [16];\n  \n  uVar2 = FUN_14011f9c0(param_1 + 0xb8);\n  lVar3 = FUN_14011f570(param_1 + 0xb8,local_18,param_2,uVar2);\n  lVar3 = *(longlong *)(lVar3 + 8);\n  if (lVar3 == 0) {\n    lVar3 = *(longlong *)(param_1 + 0xc0);\n  }\n  if (((lVar3 == *(longlong *)(param_1 + 0xc0)) ||\n      (pcVar4 = (char *)((longlong)param_3 * 0x20 + *(longlong *)(lVar3 + 0x38)),\n      *(longlong *)(pcVar4 + 0x10) == 0)) || (pcVar4 == (char *)0x0)) {\n    pcVar4 = (char *)(param_1 + 0xf8 + (longlong)param_3 * 0x20);\n  }\n  _Str1 = pcVar4;\n  if (0xf < *(ulonglong *)(pcVar4 + 0x18)) {\n    _Str1 = *(char **)pcVar4;\n  }\n  iVar1 = _stricmp(_Str1,\"none\");\n  if (iVar1 == 0) {\n    uVar2 = 0;\n  }\n  else {\n    if (0xf < *(ulonglong *)(pcVar4 + 0x18)) {\n      pcVar4 = *(char **)pcVar4;\n    }\n    uVar2 = FUN_14025e990(pcVar4,0,0);\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T17:47:05Z"
+}

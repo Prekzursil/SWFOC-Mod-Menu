@@ -1,0 +1,7 @@
+{
+  "addr": "0x140350c00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ModelComponentClass::vfunction15(ModelComponentClass *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x000140350c03. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->deleting_destructor)(this);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140630e10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall InvulnerableBehaviorClass::vfunction9(void)\n\n{\n  return \"InvulnerableBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:33:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078587c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcstoul\n   \n   Library: Visual Studio 2019 Release */\n\nulong __cdecl wcstoul(wchar_t *_Str,wchar_t **_EndPtr,int _Radix)\n\n{\n  ulong uVar1;\n  wchar_t *local_18;\n  wchar_t **local_10;\n  \n  if (_EndPtr != (wchar_t **)0x0) {\n    *_EndPtr = _Str;\n  }\n  local_18 = _Str;\n  local_10 = _EndPtr;\n  uVar1 = __crt_strtox::\n          parse_integer<unsigned_long,class___crt_strtox::c_string_character_source<wchar_t>_>\n                    (0,&local_18,_Radix,0);\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:51:28Z"
+}

@@ -1,0 +1,50 @@
+{
+  "generated": "2026-04-26",
+  "binary_sha256": "07daeeaec9d1e751383b1db3f5847b6c66f68785440a6c52c87b85f723d018a4",
+  "total_functions_in_binary": 22828,
+  "total_decompiled_in_full_corpus": 600,
+  "coverage_pct": 2.63,
+  "plus_trainer_corpus": 255,
+  "plus_trainer_overlap_note": "trainer_corpus has its own 255-function copy at decompile_corpus/trainer_corpus_2026-04-26.json",
+  "batches_done": 6,
+  "batches_remaining": 223,
+  "continuation_runbook": "tools/continue_full_decompile.md",
+  "done_ranges": [
+    {
+      "batch_file": "full_b00.json",
+      "first": "0x140001000",
+      "last": "0x140012af0",
+      "count": 100
+    },
+    {
+      "batch_file": "full_b01.json",
+      "first": "0x140012b00",
+      "last": "0x1400138c0",
+      "count": 100
+    },
+    {
+      "batch_file": "full_b02.json",
+      "first": "0x1400138d0",
+      "last": "0x140014860",
+      "count": 100
+    },
+    {
+      "batch_file": "full_b03.json",
+      "first": "0x140014a60",
+      "last": "0x140017a10",
+      "count": 100
+    },
+    {
+      "batch_file": "full_b04.json",
+      "first": "0x140017a20",
+      "last": "0x140019310",
+      "count": 100
+    },
+    {
+      "batch_file": "full_b06.json",
+      "first": "0x140019350",
+      "last": "0x14001a760",
+      "count": 100
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fd320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass\n   TaskForceClass member function inherited by SpaceTaskForceClass\n   TaskForceClass member function inherited by LandTaskForceClass */\n\nlonglong * __thiscall TaskForceClass::vfunction35(TaskForceClass *this)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  undefined8 *puVar3;\n  longlong *plVar4;\n  longlong *plVar5;\n  longlong *local_res20;\n  \n  plVar4 = (longlong *)FUN_140769c58(0x18);\n  if (plVar4 != (longlong *)0x0) {\n    lVar1 = this->offset_0x78;\n    lVar2 = this->offset_0x70;\n    *(undefined4 *)(plVar4 + 1) = 0;\n    *plVar4 = (longlong)&LuaValue<bool,5>::vftable;\n    *(bool *)(plVar4 + 2) = lVar1 - lVar2 >> 3 != 0;\n    plVar5 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n             ::\n             ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                       ();\n    local_res20 = plVar4;\n    (**(code **)*plVar4)(plVar4);\n    puVar3 = (undefined8 *)plVar5[3];\n    if (puVar3 == (undefined8 *)plVar5[4]) {\n      FUN_140144900(plVar5 + 2,puVar3,&local_res20);\n    }\n    else {\n      *puVar3 = plVar4;\n      (**(code **)*plVar4)(plVar4);\n      plVar5[3] = plVar5[3] + 8;\n    }\n    (**(code **)(*plVar4 + 8))(plVar4);\n    return plVar5;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:24:31Z"
+}

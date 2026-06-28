@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405759a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall GameObjectWrapper::vfunction3_for_SignalListenerClass(GameObjectWrapper *this)\n\n{\n  return *(undefined1 *)&this->offset_0x40;\n}",
+  "fetched_at": "2026-04-26T18:40:22Z"
+}

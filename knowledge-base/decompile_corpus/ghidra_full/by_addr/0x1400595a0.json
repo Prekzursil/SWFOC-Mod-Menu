@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400595a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400595a0(void)\n\n{\n  if (DAT_140a61a90 != '\\0') {\n    FUN_1402d6f20(&DAT_140b27e60);\n    FUN_1402d2790(&DAT_140b27dc0);\n    DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n    ::\n    DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>_Constructor_or_Destructor\n              (0x140b2b300,'\\x01');\n    DAT_140a79801 = 1;\n    FUN_1401c1d20(&DAT_140a78510,DAT_140a10b98,1);\n    DAT_140a10b98 = 0xffffffff;\n    DAT_140a10b9c = 0xffffffff;\n    DAT_140a61a90 = '\\0';\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:10Z"
+}

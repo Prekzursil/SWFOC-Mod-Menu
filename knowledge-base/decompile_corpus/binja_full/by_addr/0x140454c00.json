@@ -1,0 +1,7 @@
+{
+  "addr": "0x140454c00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140454c0a        int64_t rdx = arg1[0x6c]\n140454c11        int32_t rdi = 0\n140454c20        int64_t result = (arg1[0x6d] - rdx) s>> 5\n140454c27        if (result != 0)\n140454c32        uint64_t rcx = 0\n140454c44        void** rcx_2 = (rcx << 5) + rdx\n140454c4c        if (rcx_2[3] u>= 0x10)\n140454c4e        rcx_2 = *rcx_2\n140454c51        int32_t rax_2 = sub_140327d00(rcx_2)\n140454c5b        if (rax_2 != 0xfa0a1f01)\n140454c5d        int64_t rcx_3 = sx.q(*(arg1 + 0x37c))\n140454c67        if (rcx_3.d u<= 6)\n140454c73        switch (rcx_3)\n140454c7b        case 0, 1\n140454c7b        if (rax_2 s> arg1[0x6f].d)\n140454cad        sub_140455db0(arg1, nullptr, 0)\n140454c85        case 2\n140454c85        if (rax_2 s< arg1[0x6f].d)\n140454cad        sub_140455db0(arg1, nullptr, 0)\n140454c8f        case 3\n140454c8f        if (rax_2 == arg1[0x6f].d)\n140454cad        sub_140455db0(arg1, nullptr, 0)\n140454c99        case 5\n140454c99        if (rax_2 s>= arg1[0x6f].d)\n140454cad        sub_140455db0(arg1, nullptr, 0)\n140454ca3        case 6\n140454ca3        if (rax_2 s<= arg1[0x6f].d)\n140454cad        sub_140455db0(arg1, nullptr, 0)\n140454cb2        rdx = arg1[0x6c]\n140454cb9        rdi += 1\n140454cc5        rcx = zx.q(rdi)\n140454cc7        result = (arg1[0x6d] - rdx) s>> 5\n140454cce        do while (rcx u< result)\n140454ce3        return result",
+  "fetched_at": "2026-04-26T17:27:44Z"
+}

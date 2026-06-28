@@ -1,0 +1,7 @@
+{
+  "addr": "0x140530aa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140530ab0        *arg1 = &LogWindowItem::`vftable'{for `DebugTreeItem'}\n140530ab3        int64_t rdx = arg1[0x13]\n140530abe        if (rdx u>= 0x10)\n140530ac0        void* rcx = arg1[0x10]\n140530ad1        if (rdx + 1 u>= 0x1000)\n140530ad3        void* r8_1 = *(rcx - 8)\n140530ae6        if (rcx - r8_1 - 8 u> 0x1f)\n140530b23        _invalid_parameter_noinfo_noreturn()\n140530b23        noreturn\n140530ae8        rcx = r8_1\n140530aeb        j_sub_1407864b8(rcx)\n140530af4        arg1[0x12] = 0\n140530aff        arg1[0x13] = 0xf\n140530b0a        arg1[0x10].b = 0\n140530b11        sub_140066600(&arg1[0xd])\n140530b1e        return sub_1405f5eb0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

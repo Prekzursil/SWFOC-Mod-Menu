@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cf70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14078cf70(void)\n\n{\n  _free_base(DAT_140b3c4b8);\n  DAT_140b3c4b8 = 0;\n  _free_base(DAT_140b3c4c0);\n  DAT_140b3c4c0 = 0;\n  _free_base(DAT_140b3cbe0);\n  DAT_140b3cbe0 = 0;\n  _free_base(DAT_140b3cbe8);\n  DAT_140b3cbe8 = 0;\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:52:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407692d8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _Getdateorder\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl _Getdateorder(void)\n\n{\n  int iVar1;\n  wchar_t **ppwVar2;\n  uint local_res8 [8];\n  \n  local_res8[0] = 0;\n  ppwVar2 = ___lc_locale_name_func();\n  GetLocaleInfoEx(ppwVar2[5],0x22,(LPWSTR)local_res8,2);\n  local_res8[0] = local_res8[0] & 0xffff;\n  if (local_res8[0] == 0x30) {\n    iVar1 = 2;\n  }\n  else if (local_res8[0] == 0x31) {\n    iVar1 = 1;\n  }\n  else if (local_res8[0] == 0x32) {\n    iVar1 = 3;\n  }\n  else {\n    iVar1 = 0;\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:09:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e4510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ServicedAISystemClass::vfunction3(ServicedAISystemClass *this)\n\n{\n  int iVar1;\n  float fVar2;\n  float fVar3;\n  \n  iVar1 = DAT_140b0a320;\n  fVar2 = (float)(*this->vftablePtr->vfunction2)();\n  fVar3 = fVar2 * (float)DAT_140b0a340;\n  if ((double)(fVar2 * (float)DAT_140b0a340) < DAT_140854f30) {\n    fVar3 = DAT_1407ffaf8;\n  }\n  (this->ServicedAISystemClass_data).offset_0x8 = (int)(longlong)fVar3 + iVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140578470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_140578470(GetEvent *param_1,undefined8 param_2)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  longlong *plVar3;\n  \n  lVar1 = (param_1->RefCountClass_data).offset_0x58;\n  if (lVar1 != 0) {\n    if ((*(char *)(lVar1 + 0x348) != -1) &&\n       (lVar1 = FUN_1404ec820(*(undefined8 *)(lVar1 + 0x110)), lVar1 == 0)) {\n      return (longlong *)0x0;\n    }\n    if ((-1 < *(int *)(lVar1 + 0x324)) &&\n       (*(int *)(lVar1 + 0x324) < *(int *)(*(longlong *)(lVar1 + 0x298) + 0xc48))) {\n      uVar2 = FUN_140373670();\n      plVar3 = (longlong *)FUN_1406051b0(uVar2,param_2);\n      plVar3 = GetEvent::~GetEvent(param_1,plVar3);\n      return plVar3;\n    }\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:40:31Z"
+}

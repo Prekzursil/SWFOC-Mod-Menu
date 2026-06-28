@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007bdf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nlonglong FUN_14007bdf0(longlong param_1,ulonglong param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  if ((param_2 & 2) != 0) {\n    lVar2 = *(longlong *)(param_1 + -8);\n    lVar1 = lVar2 * 0x108 + param_1;\n    for (; lVar2 != 0; lVar2 = lVar2 + -1) {\n      FID_conflict__Tidy_deallocate(lVar1 + -0x30);\n      FID_conflict__Tidy_deallocate(lVar1 + -0x70);\n      FID_conflict__Tidy_deallocate(lVar1 + -0x90);\n      FID_conflict__Tidy_deallocate(lVar1 + -200);\n      FID_conflict__Tidy_deallocate(lVar1 + -0xe8);\n      FID_conflict__Tidy_deallocate(lVar1 + -0x108);\n      lVar1 = lVar1 + -0x108;\n    }\n    if ((param_2 & 1) != 0) {\n      thunk_FUN_1407864b8(param_1 + -8,*(longlong *)(param_1 + -8) * 0x108 + 8);\n    }\n    return param_1 + -8;\n  }\n  FID_conflict__Tidy_deallocate(param_1 + 0xd8);\n  FID_conflict__Tidy_deallocate(param_1 + 0x98);\n  FID_conflict__Tidy_deallocate(param_1 + 0x78);\n  FID_conflict__Tidy_deallocate(param_1 + 0x40);\n  FID_conflict__Tidy_deallocate(param_1 + 0x20);\n  FID_conflict__Tidy_deallocate(param_1);\n  if ((param_2 & 1) != 0) {\n    thunk_FUN_1407864b8(param_1,0x108);\n  }\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:58Z"
+}

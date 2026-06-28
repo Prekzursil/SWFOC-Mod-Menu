@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f8e00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f8e0c        int64_t result = sub_14048f2c0(arg1)\n1406f8e15        if (*(arg1 + 0x3c) != 7)\n1406f8e1c        void* r8_1 = arg1 + 0x18\n1406f8e20        if (*(arg1 + 0x30) u>= 0x10)\n1406f8e22        r8_1 = *r8_1\n1406f8e31        char var_108[0x100]\n1406f8e31        sscanf_s(&var_108, \"Error: (%s) The only currently supported Activation_Style is Hero_Detected.\", r8_1)\n1406f8e3b        result = sub_1402149d0(&var_108)\n1406f8e40        *(arg1 + 0x3c) = 7\n1406f8e4f        return result",
+  "fetched_at": "2026-04-26T17:26:43Z"
+}

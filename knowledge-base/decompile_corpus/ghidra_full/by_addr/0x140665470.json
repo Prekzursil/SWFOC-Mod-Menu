@@ -1,0 +1,7 @@
+{
+  "addr": "0x140665470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nPlanetAITargetLocationClass * __thiscall\nPlanetAITargetLocationClass::PlanetAITargetLocationClass\n          (PlanetAITargetLocationClass *this,undefined **param_1)\n\n{\n  this->offset_0x8 = param_1;\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->offset_0x18 = (undefined **)0x0;\n  *(undefined8 *)&this->field_0x28 = 0;\n  *(undefined8 *)&this->field_0x30 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:20Z"
+}

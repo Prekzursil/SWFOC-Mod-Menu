@@ -1,0 +1,7 @@
+{
+  "addr": "0x140012fc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140012fc0(void)\n\n{\n  undefined8 uVar1;\n  \n  DAT_140a118c0 = (char *)FUN_140769c58(0x20);\n  uVar1 = s_Full_Story_Campaign_Underworld_1408157a8._8_8_;\n  _DAT_140a118d0 = 0x1e;\n  DAT_140a118d8 = 0x1f;\n  *(undefined8 *)DAT_140a118c0 = s_Full_Story_Campaign_Underworld_1408157a8._0_8_;\n  *(undefined8 *)(DAT_140a118c0 + 8) = uVar1;\n  *(undefined8 *)(DAT_140a118c0 + 0x10) = s_Full_Story_Campaign_Underworld_1408157a8._16_8_;\n  *(undefined4 *)(DAT_140a118c0 + 0x18) = s_Full_Story_Campaign_Underworld_1408157a8._24_4_;\n  *(undefined2 *)(DAT_140a118c0 + 0x1c) = s_Full_Story_Campaign_Underworld_1408157a8._28_2_;\n  DAT_140a118c0[0x1e] = '\\0';\n  atexit(FUN_1407e9480);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:49:47Z"
+}

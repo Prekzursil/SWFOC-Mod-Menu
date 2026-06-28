@@ -1,0 +1,7 @@
+{
+  "addr": "0x140490610",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140490620        *arg1 = &DynamicVectorClass<class PacketClass* __ptr64>::`vftable'\n140490625        arg1[1] = 0\n140490629        arg1[2] = 0\n14049062d        arg1[4] = 0\n140490631        arg1[6] = 0\n140490635        *(arg1 + 0x44) = 0\n14049063d        arg1[7] = 0xf\n14049064c        int64_t rdx = sx.q(data_140a16fb0)\n140490653        uint64_t rax = 0xc * rdx\n140490656        if (mulu.dp.q(0xc, rdx) u>> 0x40 != zx.o(0))\n140490656        rax = -1\n140490662        arg1[3] = j_operator new(rax)\n14049066e        return arg1",
+  "fetched_at": "2026-04-26T17:29:02Z"
+}

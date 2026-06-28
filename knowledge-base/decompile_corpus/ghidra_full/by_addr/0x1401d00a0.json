@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d00a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetClass member function inherited by GUIGadgetListboxClass\n   GUIGadgetClass member function inherited by GUIGadgetTrackbarSliderClass\n   GUIGadgetClass member function inherited by GUIGadgetFrameClass\n   GUIGadgetClass member function inherited by GUIGadgetEditboxClass\n   GUIGadgetClass member function inherited by GUIGadgetComboboxClass\n   GUIGadgetClass member function inherited by GUIGadgetCustomImageClass\n   GUIGadgetClass member function inherited by GUIGadgetVScrollbarClass\n   GUIGadgetClass member function inherited by GUIGadgetTextClass\n   GUIGadgetClass member function inherited by GUIGadgetPushbuttonClass\n   GUIGadgetClass member function inherited by GUIGadgetCheckboxClass\n   GUIGadgetClass member function inherited by GUIGadgetRadiobuttonClass\n   GUIGadgetClass member function inherited by GUIGadgetProgressbarClass\n   GUIGadgetClass member function inherited by GUIGadgetIMEEditboxClass\n   GUIGadgetClass member function inherited by GUIGadgetIMELocaleIndicatorClass */\n\nundefined1 __thiscall GUIGadgetClass::vfunction14(GUIGadgetClass *this)\n\n{\n  return *(undefined1 *)((longlong)&(this->GUIGadgetClass_data).offset_0x70 + 1);\n}",
+  "fetched_at": "2026-04-26T17:48:59Z"
+}

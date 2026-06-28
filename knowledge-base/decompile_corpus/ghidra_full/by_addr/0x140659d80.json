@@ -1,0 +1,7 @@
+{
+  "addr": "0x140659d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nVisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::\n~VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>\n          (VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this)\n\n{\n  this->vftablePtr = &vftable_for_SignalGeneratorClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  FUN_14064c540(&(this->VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_data).\n                 offset_0x18,\n                &(this->VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_data).\n                 offset_0x18,\n                *(undefined8 *)\n                 ((this->VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_data)\n                  .offset_0x18 + 8));\n  thunk_FUN_1407864b8((this->\n                      VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_data).\n                      offset_0x18,0x80);\n  PerceptualEvaluatorClass::~PerceptualEvaluatorClass((PerceptualEvaluatorClass *)this);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140693db0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall\nGalacticExecutionPathFinderClass::vfunction4(GalacticExecutionPathFinderClass *this,int param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  double dVar3;\n  \n  lVar1 = *(longlong *)((this->AIExecutionPathFinderClass_data).offset_0x18 + 0x360);\n  if (lVar1 == 0) {\n    return (ulonglong)DAT_1408b6c8c;\n  }\n  lVar1 = FUN_1404b06d0(lVar1,0);\n  plVar2 = (longlong *)(**(code **)(**(longlong **)(lVar1 + 0x38) + 0x40))();\n  dVar3 = PerceptionParameterBindingsClass::~PerceptionParameterBindingsClass\n                    (*(PerceptionParameterBindingsClass **)\n                      ((this->AIExecutionPathFinderClass_data).offset_0x18 + 0x360),\n                     *(longlong **)(*plVar2 + (longlong)param_1 * 8),0,'\\0');\n  return (longlong)dVar3;\n}",
+  "fetched_at": "2026-04-26T17:19:35Z"
+}

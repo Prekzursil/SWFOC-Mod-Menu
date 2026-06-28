@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790848",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_initialize_lowio\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nbool __acrt_initialize_lowio(void)\n\n{\n  int iVar1;\n  \n  __acrt_lock(7);\n  iVar1 = __acrt_lowio_ensure_fh_exists(0);\n  if (iVar1 == 0) {\n    initialize_inherited_file_handles_nolock();\n    initialize_stdio_handles_nolock();\n  }\n  __acrt_unlock(7);\n  return iVar1 == 0;\n}",
+  "fetched_at": "2026-04-26T18:52:38Z"
+}

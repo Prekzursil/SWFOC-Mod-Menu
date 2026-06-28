@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f9700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f970b        *arg2 = 0x3f800000\n1401f9711        arg2[1] = 0x3f800000\n1401f9718        arg2[2] = 0x3f800000\n1401f971f        arg2[3] = 0x3f800000\n1401f972b        float zmm3 = *arg3 + *arg1\n1401f9732        int32_t zmm2\n1401f9732        if (0f <= zmm3)\n1401f973c        zmm2 = _mm_min_ss(0x3f800000, zmm3)\n1401f9734        zmm2 = (zx.o(0)).d\n1401f9740        *arg2 = zmm2\n1401f974a        zmm3 = arg3[1] f+ arg1[1]\n1401f9752        if (0f <= zmm3)\n1401f975c        zmm2 = _mm_min_ss(0x3f800000, zmm3)\n1401f9754        zmm2 = (zx.o(0)).d\n1401f9760        arg2[1] = zmm2\n1401f976b        zmm3 = arg3[2] f+ arg1[2]\n1401f9773        if (0f <= zmm3)\n1401f977d        zmm2 = _mm_min_ss(0x3f800000, zmm3)\n1401f9775        zmm2 = (zx.o(0)).d\n1401f9781        arg2[2] = zmm2\n1401f978f        zmm3 = arg3[3] f+ arg1[3]\n1401f9797        if (0f <= zmm3)\n1401f97a3        arg2[3] = _mm_min_ss(0x3f800000, zmm3)\n1401f97a8        return arg2\n1401f9799        arg2[3] = 0\n1401f979e        return arg2",
+  "fetched_at": "2026-04-26T17:27:29Z"
+}

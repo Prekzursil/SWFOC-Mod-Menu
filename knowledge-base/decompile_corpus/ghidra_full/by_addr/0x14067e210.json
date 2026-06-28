@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067e210",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nMovingVsMovingCollisionClass * __thiscall\nMovingVsMovingCollisionClass::scalar_deleting_destructor\n          (MovingVsMovingCollisionClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       MovingVsMovingCollisionClass::~MovingVsMovingCollisionClass */\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  CollisionClass::~CollisionClass((CollisionClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xc0);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:50Z"
+}

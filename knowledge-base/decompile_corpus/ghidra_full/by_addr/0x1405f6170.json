@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIDiagsNode * __thiscall AIDiagsNode::AIDiagsNode(AIDiagsNode *this)\n\n{\n  DebugTreeItem::DebugTreeItem((DebugTreeItem *)this);\n  (this->RefCountClass_data).offset_0x50 = (longlong *)0x0;\n  this->vftablePtr = &vftable;\n  *(undefined2 *)&(this->RefCountClass_data).offset_0x58 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:23:20Z"
+}

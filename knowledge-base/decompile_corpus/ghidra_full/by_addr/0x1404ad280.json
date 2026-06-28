@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad280",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DebugEventClass::vfunction5(DebugEventClass *this)\n\n{\n  DebugEventClass_data *pDVar1;\n  \n  if (DAT_140b31698 != (code *)0x0) {\n    pDVar1 = &this->DebugEventClass_data;\n    if (0xf < (ulonglong)(this->DebugEventClass_data).offset_0x18) {\n      pDVar1 = (DebugEventClass_data *)pDVar1->offset_0x0;\n    }\n                    /* WARNING: Could not recover jumptable at 0x0001404ad29a. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*DAT_140b31698)(pDVar1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:05:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d0180(longlong param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  char *pcVar3;\n  undefined4 uVar4;\n  undefined1 local_88 [128];\n  \n  lVar2 = FUN_1407b9d60(param_1,1);\n  if (lVar2 == 0) {\n    FUN_1407cdf80(param_1,1,\"coroutine expected\");\n  }\n  if (param_1 == lVar2) {\n    uVar4 = 7;\n    pcVar3 = \"running\";\n  }\n  else {\n    iVar1 = FUN_1407bb5c0(lVar2,0,local_88);\n    if (iVar1 == 0) {\n      iVar1 = FUN_1407b8ef0(lVar2);\n      if (iVar1 == 0) {\n        uVar4 = 4;\n        pcVar3 = \"dead\";\n        goto LAB_1407d0201;\n      }\n    }\n    uVar4 = 9;\n    pcVar3 = \"suspended\";\n  }\nLAB_1407d0201:\n  FUN_1407b94a0(param_1,pcVar3,uVar4);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:58:00Z"
+}

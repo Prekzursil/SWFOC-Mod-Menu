@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405628b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405628b7        arg1[4] = 0xf\n1405628bf        *arg1 = &MarkerDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405628c4        arg1[1] = 0\n1405628c8        arg1[3] = 0\n1405628cf        return arg1",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

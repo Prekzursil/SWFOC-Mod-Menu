@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d5ec",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d601        if (arg1 != 0)\n14078d608        int64_t r11\n14078d608        int64_t rax_1 = wcsnlen(arg1, 0x55, r11)\n14078d614        if (rax_1 u< 0x55)\n14078d61e        int16_t* result = _malloc_base((rax_1 << 1) + 2)\n14078d629        if (result != 0)\n14078d63f        if (wcsncpy_s(result, rax_1 + 1, arg1, rax_1 + 1) == 0)\n14078d641        return result\n14078d658        int64_t var_18 = 0\n14078d668        _invoke_watson()\n14078d668        noreturn\n14078d646        return nullptr",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

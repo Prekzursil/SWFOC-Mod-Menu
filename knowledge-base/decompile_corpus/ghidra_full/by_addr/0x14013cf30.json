@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013cf30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_1401784f0(int *param_1,int *param_2)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  \n  lVar2 = FUN_1401984a0(0);\n  plVar1 = DAT_140a6e720;\n  if (lVar2 == 0) {\n    if (DAT_140a6e658 == *DAT_140a6e720) {\n      if (param_1 != (int *)0x0) {\n        *param_1 = DAT_140a6d430;\n      }\n      if (param_2 != (int *)0x0) {\n        *param_2 = DAT_140a6d434;\n        return;\n      }\n    }\n    else if (DAT_140a6d420 == '\\0') {\n      if (param_1 != (int *)0x0) {\n        *param_1 = DAT_140a6d3f8;\n      }\n      if (param_2 != (int *)0x0) {\n        *param_2 = DAT_140a6d3fc;\n      }\n    }\n    else {\n      if (param_1 != (int *)0x0) {\n        *param_1 = (int)DAT_140a6e720[5] - (int)DAT_140a6e720[4];\n      }\n      if (param_2 != (int *)0x0) {\n        *param_2 = *(int *)((longlong)plVar1 + 0x2c) - *(int *)((longlong)plVar1 + 0x24);\n        return;\n      }\n    }\n  }\n  else {\n    lVar2 = FUN_1401984a0(0);\n    if (param_1 != (int *)0x0) {\n      *param_1 = *(int *)(lVar2 + 0x50);\n    }\n    if (param_2 != (int *)0x0) {\n      *param_2 = *(int *)(lVar2 + 0x54);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:26Z"
+}

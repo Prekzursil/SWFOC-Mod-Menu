@@ -1,0 +1,7 @@
+{
+  "addr": "0x140344670",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140344670(longlong param_1,int param_2)\n\n{\n  char cVar1;\n  int iVar2;\n  \n  if (*(char *)(param_1 + 0x20) != '\\x01') {\n    *(int *)(param_1 + 0x58) = param_2;\n    return;\n  }\n  if (*(int *)(param_1 + 0x24) < 1) goto LAB_1403446d6;\n  iVar2 = (*(int *)(param_1 + 0x58) - param_2) + *(int *)(param_1 + 0x24);\n  *(int *)(param_1 + 0x24) = iVar2;\n  if (0 < iVar2) goto LAB_1403446d6;\n  if (*(char *)(param_1 + 0x79) == '\\0') {\n    *(undefined4 *)(param_1 + 0x24) = 0;\n    *(int *)(param_1 + 0x58) = param_2;\n    return;\n  }\n  if (DAT_140b30720 == (code *)0x0) {\nLAB_1403446b7:\n    if (*(char *)(param_1 + 0x7a) == '\\0') {\n      if (DAT_140b30718 != (code *)0x0) {\n        (*DAT_140b30718)();\n      }\n      *(undefined1 *)(param_1 + 0x7a) = 1;\n    }\n  }\n  else {\n    cVar1 = (*DAT_140b30720)();\n    if (cVar1 == '\\0') goto LAB_1403446b7;\n  }\n  *(undefined4 *)(param_1 + 0x24) = 1;\nLAB_1403446d6:\n  *(int *)(param_1 + 0x58) = param_2;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:11Z"
+}

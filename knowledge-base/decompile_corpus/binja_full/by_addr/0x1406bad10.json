@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bad10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bad24        *arg1 = &AIPlanningSystemClass::`vftable'{for `ServicedAISystemClass'}\n1406bad2d        sub_14007b260(&arg1[9])\n1406bad35        sub_14064c290(arg1)\n1406bad3d        if ((arg2 & 1) != 0)\n1406bad47        j_sub_1407864b8(arg1)\n1406bad59        return arg1",
+  "fetched_at": "2026-04-26T17:24:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f41d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f41f4        arg1[0x2f] = 0\n1406f41fb        *arg1 = &CombatBonusAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f4207        arg1[0x30] = 0\n1406f420e        arg1[1] = &CombatBonusAbilityClass::`vftable'{for `RefCountClass'}\n1406f4215        __builtin_memset(&arg1[0x31], 0, 0x18)\n1406f421c        char* rax = &arg1[0x34]\n1406f422d        arg1[0x36] = 0\n1406f4236        if (arg1[0x37] u>= 0x10)\n1406f4238        rax = arg1[0x34]\n1406f423b        *rax = 0\n1406f423e        arg1[0x38] = 0\n1406f4245        int64_t rdx = arg1[0x37]\n1406f424d        if (rdx u>= 0x10)\n1406f424f        void* rcx = arg1[0x34]\n1406f425c        if (rdx + 1 u>= 0x1000)\n1406f425e        void* r8_1 = *(rcx - 8)\n1406f4271        if (rcx - r8_1 - 8 u> 0x1f)\n1406f42bd        _invalid_parameter_noinfo_noreturn()\n1406f42bd        noreturn\n1406f4273        rcx = r8_1\n1406f4276        j_sub_1407864b8(rcx)\n1406f427e        arg1[0x36] = 0\n1406f4282        arg1[0x37] = 0xf\n1406f428a        arg1[0x34].b = 0\n1406f428d        sub_14048c8d0(arg1)\n1406f4296        if ((arg2 & 1) != 0)\n1406f42a0        j_sub_1407864b8(arg1)\n1406f42bc        return arg1",
+  "fetched_at": "2026-04-26T17:26:32Z"
+}

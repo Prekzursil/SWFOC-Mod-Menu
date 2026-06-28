@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ab580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alLaserKite * __thiscall\nalLaserKite::scalar_deleting_destructor(alLaserKite *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: alLaserKite::~alLaserKite */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  plVar1 = *(longlong **)&(this->alLaserKite_data).offset_0x2c;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    *(undefined8 *)&(this->alLaserKite_data).offset_0x2c = 0;\n  }\n  FUN_1400e5160(&DAT_140b3cc90,0);\n  plVar1 = *(longlong **)&(this->alLaserKite_data).offset_0x2c;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  alRenderable::~alRenderable((alRenderable *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x178);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:55:09Z"
+}

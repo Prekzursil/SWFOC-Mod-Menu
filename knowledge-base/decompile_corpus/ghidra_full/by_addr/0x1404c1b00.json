@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1b00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FrameInfoEventClass * __thiscall FrameInfoEventClass::FrameInfoEventClass(FrameInfoEventClass *this)\n\n{\n  EventClass::EventClass((EventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:09:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e6940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e6947        data_1409cf1b8 = &SingletonInstance<class MousePointerClass>::`vftable'{for `SingletonManager'}\n1407e694e        return &SingletonInstance<class MousePointerClass>::`vftable'{for `SingletonManager'}",
+  "fetched_at": "2026-04-26T17:34:36Z"
+}

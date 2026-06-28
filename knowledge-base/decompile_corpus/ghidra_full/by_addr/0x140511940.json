@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall InvasionBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a2bf60;\n}",
+  "fetched_at": "2026-04-26T18:22:17Z"
+}

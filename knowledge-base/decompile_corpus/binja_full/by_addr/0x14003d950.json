@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003d950",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14003d95d        if (*(arg1 + 0x28) s<= 0)\n14003d95d        return \n14003d96f        int32_t i = 0\n14003d976        int64_t* rdi_1 = nullptr\n14003d980        int64_t rax = *(arg1 + 0x20)\n14003d984        void* rdx_1 = *(rdi_1 + rax)\n14003d98b        if (rdx_1 != 0)\n14003d98d        void* rcx = data_140a619f0\n14003d997        if (rcx != 0)\n14003d999        sub_14025c490(rcx, rdx_1)\n14003d99e        rax = *(arg1 + 0x20)\n14003d9a2        int64_t* rcx_1 = *(rdi_1 + rax)\n14003d9a9        if (rcx_1 != 0)\n14003d9b3        (**rcx_1)(rcx_1, 1)\n14003d9b5        rax = *(arg1 + 0x20)\n14003d9b9        *(rdi_1 + rax) = 0\n14003d9bd        i += 1\n14003d9bf        rdi_1 = &rdi_1[1]\n14003d9c6        do while (i s< *(arg1 + 0x28))\n14003d9c8        int64_t lpMem = *(arg1 + 0x20)\n14003d9d4        if (lpMem == 0)\n14003d9d4        return \n14003d9dd        if ((*(arg1 + 0x2c) & 0x80000000) == 0)\n14003d9f8        j_sub_1407864b8(lpMem)\n14003d9ed        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14003d9fd        *(arg1 + 0x2c) &= 0x80000000\n14003da04        *(arg1 + 0x20) = 0\n14003da08        *(arg1 + 0x28) = 0\n14003da1a        return ",
+  "fetched_at": "2026-04-26T16:53:20Z"
+}

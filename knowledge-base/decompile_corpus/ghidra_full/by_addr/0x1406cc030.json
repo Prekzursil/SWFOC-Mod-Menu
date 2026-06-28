@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall CompanyCombatantClass::vfunction40(CompanyCombatantClass *this)\n\n{\n  char cVar1;\n  ulonglong in_RAX;\n  longlong *plVar2;\n  undefined8 uVar3;\n  \n  plVar2 = *(longlong **)&this->field_0x40;\n  if (plVar2 != (longlong *)0x0) {\n    plVar2 = (longlong *)(**(code **)(*plVar2 + 0x10))(plVar2,0x13);\n    in_RAX = 0;\n    if (plVar2 != (longlong *)0x0) {\n      (**(code **)*plVar2)(plVar2);\n      cVar1 = (**(code **)(*plVar2 + 0x138))(plVar2);\n      if (cVar1 != '\\0') {\n        uVar3 = (**(code **)(*plVar2 + 8))();\n        return CONCAT71((int7)((ulonglong)uVar3 >> 8),1);\n      }\n      in_RAX = (**(code **)(*plVar2 + 8))(plVar2);\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:41:01Z"
+}

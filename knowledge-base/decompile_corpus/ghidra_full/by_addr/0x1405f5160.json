@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5160",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalAIManagerClass * FUN_1405f5160(int param_1,longlong param_2)\n\n{\n  TacticalAIManagerClass *pTVar1;\n  undefined8 uVar2;\n  \n  if ((param_1 != -1) && (param_2 != 0)) {\n    pTVar1 = (TacticalAIManagerClass *)FUN_140769c58(0x70);\n    if (pTVar1 == (TacticalAIManagerClass *)0x0) {\n      pTVar1 = (TacticalAIManagerClass *)0x0;\n    }\n    else {\n      pTVar1 = TacticalAIManagerClass::TacticalAIManagerClass(pTVar1);\n    }\n    uVar2 = (*pTVar1->vftablePtr->vfunction11)(pTVar1,param_1,param_2);\n    if ((char)uVar2 != '\\0') {\n      return pTVar1;\n    }\n  }\n  return (TacticalAIManagerClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:23:02Z"
+}

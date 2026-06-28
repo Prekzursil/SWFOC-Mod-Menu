@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8d80",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_error",
+  "body": "1407b8d84        sub_1407babe0(arg1)\n1407b8d84        noreturn",
+  "fetched_at": "2026-04-26T16:44:24Z"
+}

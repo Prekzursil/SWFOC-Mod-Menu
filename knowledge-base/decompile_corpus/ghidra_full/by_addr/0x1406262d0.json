@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406262d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSimpleSpaceLocomotorBehaviorClass::vfunction61\n          (SimpleSpaceLocomotorBehaviorClass *this,int param_1,undefined8 param_2,\n          undefined4 *param_3,undefined4 *param_4,undefined4 *param_5,undefined1 *param_6)\n\n{\n  undefined *puVar1;\n  undefined **ppuVar2;\n  \n  ppuVar2 = this->offset_0x18;\n  puVar1 = ppuVar2[0x15];\n  if (puVar1 != (undefined *)0x0) {\n    *param_5 = *param_3;\n    param_5[1] = param_3[1];\n    param_5[2] = param_3[2];\n    ppuVar2 = (undefined **)(ulonglong)(DAT_140b0a320 + 5U);\n    if (param_1 <= (int)(DAT_140b0a320 + 5U)) {\n      *param_4 = *(undefined4 *)(puVar1 + 0x2c);\n      param_4[1] = *(undefined4 *)(puVar1 + 0x30);\n      param_4[2] = *(undefined4 *)(puVar1 + 0x34);\n      *param_6 = 1;\n      return CONCAT71((int7)((ulonglong)param_6 >> 8),1);\n    }\n  }\n  return (ulonglong)ppuVar2 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:31:07Z"
+}

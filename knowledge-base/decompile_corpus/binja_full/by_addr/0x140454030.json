@@ -1,0 +1,7 @@
+{
+  "addr": "0x140454030",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140454033        if (arg2 == 0)\n140454033        return \n14045403a        uint64_t rdx = zx.q(*arg2)\n14045403f        int32_t rax = *(arg1 + 0x364)\n140454047        char const* const rax_1\n140454047        char const* const rcx\n140454047        if (rdx.d s>= rax)\n140454049        rax_1 = \"STORY TECH LEVEL %d reached\\r\\n\"\n140454050        rcx = \"STORY ERA %d reached\\r\\n\"\n14045408b        label_14045408b:\n14045408b        if (arg1[7].d != 9)\n14045408b        rcx = rax_1\n14045408f        sub_140467540(rcx, rdx)\n14045409c        sub_140455db0(arg1, nullptr, 0)\n14045405c        if (rax == 0xffffffff)\n14045405e        rax = arg1[0x6c].d\n140454067        if (rax == 0xffffffff)\n140454069        arg1[0x6c].d = rdx.d\n140454074        return \n140454077        if (rax != rdx.d)\n140454079        rax_1 = \"STORY next TECH LEVEL %d reached\\r\\n\"\n140454080        rcx = \"STORY next ERA %d reached\\r\\n\"\n140454080        goto label_14045408b\n1404540a6        return ",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

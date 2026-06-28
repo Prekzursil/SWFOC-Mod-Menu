@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a1d00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a1d08        int64_t i_1 = arg3\n1401a1d0b        int64_t* result = arg2\n1401a1d14        if (arg3 != 0)\n1401a1d1f        void* rbx_1 = &arg2[6]\n1401a1dc3        int64_t i\n1401a1d44        *result = 0\n1401a1d49        *(rbx_1 - 0x20) = 0\n1401a1d4d        *(rbx_1 - 0x18) = 0xf\n1401a1d55        *(rbx_1 - 0x10) = 0\n1401a1d59        *(rbx_1 - 8) = 0\n1401a1d5d        *rbx_1 = 0\n1401a1d60        *(rbx_1 + 4) = 0x3f800000\n1401a1d67        *(rbx_1 + 8) = 0x3f800000\n1401a1d6e        *(rbx_1 + 0xc) = 0x3f800000\n1401a1d75        *(rbx_1 + 0x10) = 0xffff\n1401a1d7a        *(rbx_1 + 0x14) = 0\n1401a1d7e        *(rbx_1 + 0x1c) = 0\n1401a1d82        *(rbx_1 + 0x20) = 0x3f800000\n1401a1d89        *(rbx_1 + 0x24) = 0x3f800000\n1401a1d90        *(rbx_1 + 0x28) = 0x3f800000\n1401a1d97        *(rbx_1 + 0x2c) = 0xffff\n1401a1d9c        *(rbx_1 + 0x36) = 0xffff\n1401a1da1        sub_14020b740(rbx_1 + 0x38, 0)\n1401a1dac        sub_14020b740(rbx_1 + 0x48, 0)\n1401a1db1        result = &result[0x11]\n1401a1db8        rbx_1 += 0x88\n1401a1dbf        i = i_1\n1401a1dbf        i_1 -= 1\n1401a1dc3        do while (i != 1)\n1401a1de1        sub_1401a1460(result, result)\n1401a1df0        return result",
+  "fetched_at": "2026-04-26T17:24:57Z"
+}

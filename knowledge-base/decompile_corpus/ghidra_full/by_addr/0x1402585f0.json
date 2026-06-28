@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402585f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nLuaScriptWrapper::vfunction10_for_LuaUserVar(LuaScriptWrapper *this,longlong *param_1)\n\n{\n  ulonglong in_RAX;\n  undefined *puVar1;\n  longlong *plVar2;\n  bool bVar3;\n  \n  if (param_1 != (longlong *)0x0) {\n    for (puVar1 = (undefined *)(**(code **)(*param_1 + 0x20))(param_1); in_RAX = 0,\n        puVar1 != (undefined *)0x0; puVar1 = *(undefined **)(puVar1 + 8)) {\n      if (puVar1 == &DAT_140a15740) {\n        (**(code **)*param_1)(param_1);\n        plVar2 = param_1;\n        goto LAB_140258635;\n      }\n    }\n  }\n  plVar2 = (longlong *)0x0;\n  if (param_1 != (longlong *)0x0) {\nLAB_140258635:\n    for (puVar1 = (undefined *)(**(code **)(*param_1 + 0x20))(param_1); in_RAX = 0,\n        puVar1 != (undefined *)0x0; puVar1 = *(undefined **)(puVar1 + 8)) {\n      if (puVar1 == &DAT_140a15918) {\n        (**(code **)*param_1)(param_1);\n        bVar3 = param_1[7] == *(longlong *)&this->field_0x38;\n        goto LAB_140258669;\n      }\n    }\n  }\n  param_1 = (longlong *)0x0;\n  if (plVar2 == (longlong *)0x0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  bVar3 = plVar2 == *(longlong **)&this->field_0x38;\nLAB_140258669:\n  if (param_1 != (longlong *)0x0) {\n    (**(code **)(*param_1 + 8))(param_1);\n  }\n  if (plVar2 != (longlong *)0x0) {\n    (**(code **)(*plVar2 + 8))(plVar2);\n  }\n  return (ulonglong)bVar3;\n}",
+  "fetched_at": "2026-04-26T18:13:20Z"
+}

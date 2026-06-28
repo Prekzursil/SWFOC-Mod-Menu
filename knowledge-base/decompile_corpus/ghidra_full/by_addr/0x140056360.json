@@ -1,0 +1,7 @@
+{
+  "addr": "0x140056360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong DynamicVectorClass<struct_SaveLoadManagerClass::SaveGameStruct>::\n          DynamicVectorClass<struct_SaveLoadManagerClass::SaveGameStruct>_Constructor_or_Destructor\n                    (longlong param_1)\n\n{\n  wchar_t *pwVar1;\n  wchar_t *pwVar2;\n  longlong lVar3;\n  undefined8 *puVar4;\n  undefined8 *puVar5;\n  longlong lVar6;\n  \n  FUN_140053c10();\n  pwVar1 = (wchar_t *)(longlong)*(int *)(param_1 + 0x10);\n  pwVar2 = pwVar1;\n  if (0 < *(int *)(param_1 + 0x10)) {\n    lVar6 = 0;\n    puVar4 = (undefined8 *)(*(longlong *)(param_1 + 8) + 8);\n    do {\n      puVar5 = puVar4;\n      if (7 < (ulonglong)puVar4[3]) {\n        puVar5 = (undefined8 *)*puVar4;\n      }\n      if (puVar4[2] == 10) {\n        lVar3 = 10;\n        pwVar2 = L\"[AutoSave]\";\n        while (*(wchar_t *)((longlong)(puVar5 + -0x281004f1) + (longlong)pwVar2) == *pwVar2) {\n          pwVar2 = pwVar2 + 1;\n          lVar3 = lVar3 + -1;\n          if (lVar3 == 0) {\n            return CONCAT71((int7)((ulonglong)pwVar2 >> 8),1);\n          }\n        }\n      }\n      lVar6 = lVar6 + 1;\n      puVar4 = puVar4 + 0xe;\n    } while (lVar6 < (longlong)pwVar1);\n  }\n  return (ulonglong)pwVar2 & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:57Z"
+}

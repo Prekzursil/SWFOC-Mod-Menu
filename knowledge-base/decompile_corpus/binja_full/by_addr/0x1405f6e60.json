@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6e60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f6e89        void* rcx = *(*(arg1 + 8) + 0x60)\n1405f6e93        void* var_28 = nullptr\n1405f6e98        __builtin_strncpy(&var_28, \"Plan \", 6)\n1405f6ea3        void* r9 = rcx + 0x40\n1405f6eab        int64_t var_10 = 0xf\n1405f6eb0        int64_t var_18 = 5\n1405f6ebf        if (*(rcx + 0x58) u>= 0x10)\n1405f6ec1        r9 = *(rcx + 0x40)\n1405f6ec5        void* rsi = *(rcx + 0x50)\n1405f6ed2        int64_t* rax_2\n1405f6ed2        if (rsi u> 0xa)\n1405f6f18        rax_2 = sub_14004f860(&var_28, rsi, 0, r9, rsi)\n1405f6ee2        void* var_18_1 = 5 + rsi\n1405f6ef3        memcpy(&var_28:5, r9, rsi)\n1405f6ef8        *(&var_28:5 + rsi) = 0\n1405f6efc        rax_2 = &var_28\n1405f6f22        *arg2 = 0\n1405f6f25        arg2[2] = 0\n1405f6f29        arg2[3] = 0\n1405f6f30        *arg2 = *rax_2\n1405f6f37        *(arg2 + 0x10) = *(rax_2 + 0x10)\n1405f6f3b        rax_2[2] = 0\n1405f6f3f        rax_2[3] = 0xf\n1405f6f48        *rax_2 = 0\n1405f6f59        if (var_10 u>= 0x10)\n1405f6f5b        void* rcx_3 = var_28\n1405f6f63        void* rax_3 = rcx_3\n1405f6f6d        if (var_10 + 1 u>= 0x1000)\n1405f6f6f        rcx_3 = *(rcx_3 - 8)\n1405f6f82        if (rax_3 - rcx_3 - 8 u> 0x1f)\n1405f6f92        _invalid_parameter_noinfo_noreturn()\n1405f6f92        noreturn\n1405f6f84        j_sub_1407864b8(rcx_3)\n1405f6f91        return arg2",
+  "fetched_at": "2026-04-26T17:22:35Z"
+}

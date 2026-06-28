@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406331a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EarthquakeTargetBehaviorClass * __thiscall\nEarthquakeTargetBehaviorClass::vfunction4(EarthquakeTargetBehaviorClass *this,int param_1)\n\n{\n  EarthquakeTargetBehaviorClass *pEVar1;\n  \n  pEVar1 = (EarthquakeTargetBehaviorClass *)0x0;\n  if (param_1 == 0x31) {\n    pEVar1 = this;\n  }\n  return pEVar1;\n}",
+  "fetched_at": "2026-04-26T17:34:21Z"
+}

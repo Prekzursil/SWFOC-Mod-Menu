@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404db240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIPerceptionSystemDiagnosticsNodeClass * __thiscall\nAIPerceptionSystemDiagnosticsNodeClass::scalar_deleting_destructor\n          (AIPerceptionSystemDiagnosticsNodeClass *this,uint param_1)\n\n{\n  undefined8 *puVar1;\n  \n                    /* inlined destructor:\n                       AIPerceptionSystemDiagnosticsNodeClass::~AIPerceptionSystemDiagnosticsNodeClass\n                        */\n  this->vftablePtr = &vftable;\n  puVar1 = *(undefined8 **)&(this->AIDiagnosticsNodeClass_data).field_0x8;\n  if (puVar1 != (undefined8 *)0x0) {\n    (**(code **)*puVar1)(puVar1,1);\n  }\n                    /* inlined destructor: AIDiagnosticsNodeClass::~AIDiagnosticsNodeClass */\n  this->vftablePtr =\n       (AIPerceptionSystemDiagnosticsNodeClass_vftable *)&AIDiagnosticsNodeClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:14:56Z"
+}

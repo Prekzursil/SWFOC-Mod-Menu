@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045def0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14045df0f        int64_t rdx = *(arg1 + 0x360)\n14045df16        int32_t i_1 = 0\n14045df29        if ((*(arg1 + 0x368) - rdx) s>> 5 != 0)\n14045df34        uint64_t i = 0\n14045df49        int64_t* rdi_1 = (i << 5) + rdx\n14045df4d        int64_t* rdx_1 = arg2\n14045df50        if (arg2[3] u>= 0x10)\n14045df52        rdx_1 = *arg2\n14045df5a        int64_t* rcx_1 = rdi_1\n14045df5d        if (rdi_1[3] u>= 0x10)\n14045df5f        rcx_1 = *rdi_1\n14045df62        int64_t r8 = rdi_1[2]\n14045df6a        if (r8 == arg2[2] && memcmp(rcx_1, rdx_1, r8) == 0)\n14045df78        if (rdi_1 != arg3)\n14045df7f        int64_t* rdx_2 = arg3\n14045df82        if (arg3[3] u>= 0x10)\n14045df84        rdx_2 = *arg3\n14045df8e        sub_140022730(rdi_1, rdx_2, arg3[2])\n14045df9b        if (arg3[3] u>= 0x10)\n14045df9d        *arg3\n14045dfa8        if (arg2[3] u>= 0x10)\n14045dfaa        *arg2\n14045dfb2        void* rdx_3 = arg1 + 0x18\n14045dfb6        if (*(arg1 + 0x30) u>= 0x10)\n14045dfb8        rdx_3 = *rdx_3\n14045dfc2        sub_140467540(\"EVENT %s, replacing %s with %s\\r\\n\", rdx_3)\n14045dfc7        rdx = *(arg1 + 0x360)\n14045dfce        i_1 += 1\n14045dfdb        i = zx.q(i_1)\n14045dfe5        do while (i u< (*(arg1 + 0x368) - rdx) s>> 5)\n14045e00e        return sub_14045db20(arg1, arg2, arg3) __tailcall",
+  "fetched_at": "2026-04-26T17:27:50Z"
+}

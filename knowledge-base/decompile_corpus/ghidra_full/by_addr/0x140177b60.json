@@ -1,0 +1,7 @@
+{
+  "addr": "0x140177b60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140177b60(undefined4 param_1,undefined4 param_2,undefined4 param_3)\n\n{\n  _DAT_140a72754 = _DAT_140a72754 + 1;\n                    /* WARNING: Could not recover jumptable at 0x000140177b7c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*DAT_140a6d480 + 0x218))(DAT_140a6d480,param_1,param_2,param_3);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:40Z"
+}

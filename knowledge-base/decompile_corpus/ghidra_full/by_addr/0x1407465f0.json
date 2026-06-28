@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407465f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1407465f0(undefined8 param_1,undefined8 param_2,int param_3,ulong *param_4)\n\n{\n  ulong uVar1;\n  ulong *puVar2;\n  float fVar3;\n  float fVar4;\n  \n  puVar2 = __doserrno();\n  uVar1 = *puVar2;\n  *puVar2 = 0;\n  fVar3 = (float)FUN_140787408(param_1,param_2);\n  *param_4 = *puVar2;\n  *puVar2 = uVar1;\n  if (param_3 != 0) {\n    fVar4 = (float)FUN_1407829d0(DAT_140805898);\n    fVar3 = fVar3 * fVar4;\n  }\n  return fVar3;\n}",
+  "fetched_at": "2026-04-26T18:04:56Z"
+}

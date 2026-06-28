@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f536e        struct AIDiagnosticsClass::VTable** result = operator new(0x88)\n1405f5376        if (result == 0)\n1405f538d        return result\n1405f5383        return sub_1406bac00(result, arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:22:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14016dfd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14016dfd0(longlong param_1,longlong param_2,ulonglong param_3,undefined8 *param_4)\n\n{\n  float *pfVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong lVar4;\n  float fVar5;\n  \n  lVar2 = (longlong)(param_3 - 1) >> 1;\n  lVar3 = param_2;\n  while (lVar3 < lVar2) {\n    fVar5 = *(float *)(param_1 + 0xc + lVar3 * 0x10);\n    pfVar1 = (float *)(param_1 + 0x14 + lVar3 * 0x10);\n    lVar4 = lVar3 * 2 + 1;\n    if (fVar5 < *pfVar1 || fVar5 == *pfVar1) {\n      lVar4 = lVar3 * 2 + 2;\n    }\n    *(undefined8 *)(param_1 + lVar3 * 8) = *(undefined8 *)(param_1 + lVar4 * 8);\n    lVar3 = lVar4;\n  }\n  if ((lVar3 == lVar2) && ((param_3 & 1) == 0)) {\n    *(undefined8 *)(param_1 + lVar3 * 8) = *(undefined8 *)(param_1 + -8 + param_3 * 8);\n    lVar3 = param_3 - 1;\n  }\n  if (param_2 < lVar3) {\n    do {\n      lVar2 = lVar3 + -1 >> 1;\n      fVar5 = (float)((ulonglong)*param_4 >> 0x20);\n      pfVar1 = (float *)(param_1 + 4 + lVar2 * 8);\n      if (fVar5 < *pfVar1 || fVar5 == *pfVar1) {\n        *(undefined8 *)(param_1 + lVar3 * 8) = *param_4;\n        return;\n      }\n      *(undefined8 *)(param_1 + lVar3 * 8) = *(undefined8 *)(param_1 + lVar2 * 8);\n      lVar3 = lVar2;\n    } while (param_2 < lVar2);\n    *(undefined8 *)(param_1 + lVar2 * 8) = *param_4;\n    return;\n  }\n  *(undefined8 *)(param_1 + lVar3 * 8) = *param_4;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:25:25Z"
+}

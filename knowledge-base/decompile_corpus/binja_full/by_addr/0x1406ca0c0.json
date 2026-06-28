@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ca0c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ca0c9        *arg2 = 0\n1406ca0d0        arg2[3] = 0xf\n1406ca0db        arg2[2] = 0xc\n1406ca0f0        memcpy(arg2, \"Proposed Set\", 0xc)\n1406ca0f8        *(arg2 + 0xc) = 0\n1406ca101        return arg2",
+  "fetched_at": "2026-04-26T17:25:22Z"
+}

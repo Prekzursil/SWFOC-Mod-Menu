@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037a5c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037a5d1        int32_t rdi = -1\n14037a5d9        *arg2 = 0xffffffff\n14037a5db        *arg3 = 0xffffffff\n14037a5de        int32_t rax = *(arg1 + 0x28)\n14037a5e3        if (rax == 0)\n14037a5ee        return 0\n14037a5f4        int32_t rbx = -1\n14037a600        void* result = nullptr\n14037a603        int32_t i = 0\n14037a608        if (rax s> 0)\n14037a618        int64_t* r12_1 = nullptr\n14037a624        void* result_1 = *(r12_1 + *(arg1 + 0x20))\n14037a628        void* rax_3 = *(result_1 + 0x298)\n14037a62f        int64_t rdx = *(rax_3 + 0x1648)\n14037a639        if (rdx != 0)\n14037a63b        int32_t rsi_1 = *(rax_3 + 0x1660)\n14037a648        int32_t rax_4 = sub_1402c8480(&data_140b15800, rdx)\n14037a64f        if (rax_4 s>= 0)\n14037a658        if (rdi == 0xffffffff || rax_4 s> rdi)\n14037a665        rdi = rax_4\n14037a667        result = result_1\n14037a66a        rbx = rsi_1\n14037a661        if (rbx == 0xffffffff || rsi_1 s> rbx)\n14037a667        result = result_1\n14037a66a        rbx = rsi_1\n14037a66c        i += 1\n14037a66f        r12_1 = &r12_1[1]\n14037a677        do while (i s< *(arg1 + 0x28))\n14037a68b        if (result != 0)\n14037a692        *arg2 = rdi\n14037a699        *arg3 = rbx\n14037a6b4        return result",
+  "fetched_at": "2026-04-26T17:18:17Z"
+}

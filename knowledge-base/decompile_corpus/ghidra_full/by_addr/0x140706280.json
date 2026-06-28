@@ -1,0 +1,7 @@
+{
+  "addr": "0x140706280",
+  "tool": "ghidra",
+  "fact_id": "rva_ability_lucky_shot",
+  "body": "\nLuckyShotAttackAbilityClass * __thiscall\nLuckyShotAttackAbilityClass::LuckyShotAttackAbilityClass(LuckyShotAttackAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 9;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:18Z"
+}

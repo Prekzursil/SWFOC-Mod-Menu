@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f2fe0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void DynamicVectorClass<struct_PassRecordStruct>::\n     DynamicVectorClass<struct_PassRecordStruct>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a2aa20 = (undefined *)&vftable;\n  FUN_14048a2d0(&PTR_vftable_140a2aa20);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:36Z"
+}

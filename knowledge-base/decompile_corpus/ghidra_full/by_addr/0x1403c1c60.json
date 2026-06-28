@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c1c60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nBehaviorClass * FUN_1403c1c60(void)\n\n{\n  BehaviorClass *this;\n  float fVar1;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x58);\n  if (this != (BehaviorClass *)0x0) {\n                    /* inlined constructor: SelectBehaviorClass::SelectBehaviorClass */\n    BehaviorClass::BehaviorClass(this);\n    fVar1 = DAT_1407ffaf8 / _DAT_140867894;\n    this->vftablePtr = (BehaviorClass_vftable0 *)&SelectBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable1 *)&SelectBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable2 *)&SelectBehaviorClass::vftable;\n    *(undefined8 *)&this->field_0x44 = 0;\n    *(undefined4 *)&this->field_0x4c = 0;\n    this->field_0x40 = 0;\n    *(undefined4 *)&this->offset_0x40 = 0x3d99999a;\n    *(float *)((longlong)&this->offset_0x40 + 4) = fVar1;\n    return this;\n  }\n  return (BehaviorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:36:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028b010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14028b010(longlong param_1)\n\n{\n  int iVar1;\n  \n  if ((*(int *)(param_1 + 0x50) != 0) && (*(longlong *)(param_1 + 0x38) != 0)) {\n    if (((*(int *)(param_1 + 0x18) - 1U & 0xfffffffc) != 0) || (*(int *)(param_1 + 0x18) == 3)) {\n      iVar1 = (**(code **)(**(longlong **)\n                             (*(longlong *)(param_1 + 0x48) + -8 +\n                             (longlong)*(int *)(param_1 + 0x50) * 8) + 0xe0))();\n      if (iVar1 == 0) {\n        return 1;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:23:47Z"
+}

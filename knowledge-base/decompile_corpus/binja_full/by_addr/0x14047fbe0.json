@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fbe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047fbf8        if (arg2 != 0)\n14047fc00        (**arg2)(arg2)\n14047fc02        LPARAM lParam = arg2[6]\n14047fc09        if (lParam != 0)\n14047fc17        SendMessageA(*(arg1 + 0x38), 0x1101, 0, lParam)\n14047fc1d        arg2[6] = 0\n14047fc28        sub_1405f6080(arg2)\n14047fc2d        void* rbp = arg2[2]\n14047fc34        if (rbp != 0)\n14047fc3a        int64_t* rax_2 = *(rbp + 0x18)\n14047fc43        void* rsi_1 = *(rbp + 0x20)\n14047fc4a        if (rax_2 != rsi_1)\n14047fc5f        void* rbx_1\n14047fc50        rbx_1 = &rax_2[1]\n14047fc57        if (*rax_2 == arg2)\n14047fc66        if (rbx_1 != rsi_1)\n14047fc70        int64_t* rdx = *(rbx_1 - 8)\n14047fc74        int64_t* rcx_3 = *rbx_1\n14047fc7a        if (rdx != rcx_3)\n14047fc7f        if (rdx != 0)\n14047fc87        (*(*rdx + 8))(rdx)\n14047fc8a        rcx_3 = *rbx_1\n14047fc8d        *(rbx_1 - 8) = rcx_3\n14047fc94        if (rcx_3 != 0)\n14047fc99        (**rcx_3)()\n14047fc9b        rbx_1 += 8\n14047fca2        do while (rbx_1 != rsi_1)\n14047fca4        rsi_1 = *(rbp + 0x20)\n14047fca8        int64_t* rcx_5 = *(rsi_1 - 8)\n14047fcaf        if (rcx_5 != 0)\n14047fcb4        (*(*rcx_5 + 8))(rcx_5)\n14047fcb7        *(rbp + 0x20) -= 8\n14047fcaf        break\n14047fc59        rax_2 = rbx_1\n14047fc5f        do while (rbx_1 != rsi_1)\n14047fcc6        sub_140267f10(arg2, nullptr)\n14047fcd1        (*(*arg2 + 0x48))(arg2)\n14047fce9        jump(*(*arg2 + 8))",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

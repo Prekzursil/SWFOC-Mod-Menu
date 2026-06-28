@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407695f8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407695f8        int16_t arg_8[0x8]\n1407695f8        arg_8[0] = arg1\n140769604        wchar16 arg_18 = arg1\n140769611        if (arg1 != 0xffff)\n140769622        if (*(arg2 + 0x18) != 0 || arg1 u>= 0x100)\n140769656        int32_t rax_2 = __crtLCMapStringW(*(arg2 + 0x18), 0x200, &arg_8, 1, &arg_18, 1)\n14076965b        arg1 = arg_18\n140769662        if (rax_2 == 0)\n140769662        arg1 = arg_8[0]\n14076962b        if (arg1 - 0x61 u<= 0x19)\n14076962d        arg1 -= 0x20\n14076966f        return zx.q(arg1)",
+  "fetched_at": "2026-04-26T17:30:16Z"
+}

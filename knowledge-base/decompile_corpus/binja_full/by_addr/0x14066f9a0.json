@@ -1,0 +1,7 @@
+{
+  "addr": "0x14066f9a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14066f9b4        void* rcx = arg1[0x15]\n14066f9c0        if (rcx == 0)\n14066f9c0        goto label_14066fa13\n14066f9d7        if (((arg1[0x17] - rcx) & 0xfffffffffffffff8) u< 0x1000)\n14066f9d7        goto label_14066f9f5\n14066f9d9        void* r8_1 = *(rcx - 8)\n14066f9ec        if (rcx - r8_1 - 8 u<= 0x1f)\n14066f9f2        rcx = r8_1\n14066f9f5        label_14066f9f5:\n14066f9f5        j_sub_1407864b8(rcx)\n14066f9fa        __builtin_memset(&arg1[0x15], 0, 0x18)\n14066fa13        label_14066fa13:\n14066fa13        sub_140249cc0(&arg1[0xa])\n14066fa18        int64_t rdx_4 = arg1[8]\n14066fa20        if (rdx_4 u< 0x10)\n14066fa20        goto label_14066fa53\n14066fa22        void* rcx_3 = arg1[5]\n14066fa30        if (rdx_4 + 1 u< 0x1000)\n14066fa30        goto label_14066fa4a\n14066fa32        void* r8_2 = *(rcx_3 - 8)\n14066fa45        if (rcx_3 - r8_2 - 8 u<= 0x1f)\n14066fa47        rcx_3 = r8_2\n14066fa4a        label_14066fa4a:\n14066fa4a        j_sub_1407864b8(rcx_3)\n14066fa53        label_14066fa53:\n14066fa53        arg1[7] = 0\n14066fa57        arg1[8] = 0xf\n14066fa5f        arg1[5].b = 0\n14066fa63        sub_1400466c0(&arg1[2])\n14066fa6f        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n14066fa76        if ((arg2 & 1) != 0)\n14066fa80        j_sub_1407864b8(arg1)\n14066fa97        return arg1\n14066fa98        _invalid_parameter_noinfo_noreturn()\n14066fa98        noreturn",
+  "fetched_at": "2026-04-26T17:10:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RadarMapDataPackClass * __thiscall\nRadarMapDataPackClass::RadarMapDataPackClass(RadarMapDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  (this->RadarMapDataPackClass_data).offset_0x0 = 0;\n  (this->RadarMapDataPackClass_data).offset_0x8 = 0;\n  *(undefined1 *)&this->PooledObjectClass<class_RadarMapDataPackClass,20,class_EmptyLockerClass> = 0\n  ;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:29:25Z"
+}

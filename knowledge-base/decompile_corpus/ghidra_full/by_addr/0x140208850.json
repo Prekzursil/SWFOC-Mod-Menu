@@ -1,0 +1,7 @@
+{
+  "addr": "0x140208850",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140208850(void)\n\n{\n  uint uVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  if (DAT_140a7c498 != '\\0') {\n    FUN_140207c10(&DAT_140a7c4e0);\n    FUN_140205870(DAT_140a7c490);\n    FUN_1402092c0(&DAT_140a14b80);\n    while ((0 < DAT_140a14b78 && (thunk_FUN_1407864b8(*DAT_140a14b70,8), 0 < DAT_140a14b78))) {\n      uVar1 = DAT_140a14b78 - 1;\n      if (uVar1 != 0) {\n        if ((DAT_140a14b7c & 0x80000000) == 0) {\n          if (0 < (int)uVar1) {\n            uVar3 = (ulonglong)uVar1;\n            lVar2 = 0;\n            do {\n              *(undefined8 *)(lVar2 + (longlong)DAT_140a14b70) =\n                   *(undefined8 *)(lVar2 + 8 + (longlong)DAT_140a14b70);\n              uVar3 = uVar3 - 1;\n              lVar2 = lVar2 + 8;\n            } while (uVar3 != 0);\n          }\n        }\n        else {\n          FUN_14076bd80(DAT_140a14b70,DAT_140a14b70 + 1);\n        }\n      }\n      DAT_140a14b78 = DAT_140a14b78 + -1;\n    }\n    FUN_1402231b0(&DAT_140a153a0);\n    DAT_140a7c498 = '\\0';\n  }\n  if (DAT_140a7c490 != (undefined8 *)0x0) {\n    (**(code **)*DAT_140a7c490)(DAT_140a7c490,1);\n    DAT_140a7c490 = (undefined8 *)0x0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:34Z"
+}

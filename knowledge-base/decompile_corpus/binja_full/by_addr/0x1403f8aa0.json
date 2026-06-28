@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f8aa0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_buildpad_check_slots",
+  "body": "1403f8aad        return zx.q(*(*(arg2 + 0xb8) + 0x130))",
+  "fetched_at": "2026-04-26T16:43:32Z"
+}

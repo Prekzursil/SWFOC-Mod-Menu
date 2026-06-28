@@ -1,0 +1,7 @@
+{
+  "addr": "0x140370e60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140370e69        int64_t* rcx = data_140b15418\n140370e73        int32_t rax\n140370e73        if (rcx != 0)\n140370e80        rax = (*(*rcx + 0xe0))(rcx)\n140370e75        rax = data_140b153fc\n140370e88        if (rax != 0)\n140370e8a        int32_t rdx_1 = *(arg1 + 0x960)\n140370e92        void* rax_2\n140370e92        if (rdx_1 s<= 0)\n140370edd        rdx_1 = *(arg1 + 0x980)\n140370ee5        if (rdx_1 s> 0)\n140370ee7        rax_2 = *(arg1 + 0x978)\n140370eee        goto label_140370e9f\n140370e94        rax_2 = *(arg1 + 0x958)\n140370e9f        label_140370e9f:\n140370ea3        if (*(*(rax_2 + 8) + 0x67) != 0)\n140370ea5        uint128_t zmm1 = zx.o(*(arg1 + 0x1e44))\n140370eb1        float temp0[0x4] = _mm_cvtepi32_ps(zx.o(rdx_1))\n140370eb7        zmm1.d = _mm_cvtepi32_ps(zmm1).d f/ temp0[0]\n140370ebb        float result[0x4] = zx.o(0)\n140370ec1        if (not(0f f> zmm1.d))\n140370ecb        result = _mm_min_ss(0x3f800000, zmm1.d)\n140370ecf        result[0] = result[0] f* *(arg1 + 0xdf0)\n140370edc        return result\n140370efd        return *(arg1 + 0xdf0)",
+  "fetched_at": "2026-04-26T17:15:24Z"
+}

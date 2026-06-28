@@ -1,0 +1,7 @@
+{
+  "addr": "0x14040a120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_SpecialWeaponFireEventClass,25>::vfunction2(void)\n\n{\n  return 0x19;\n}",
+  "fetched_at": "2026-04-26T17:44:56Z"
+}

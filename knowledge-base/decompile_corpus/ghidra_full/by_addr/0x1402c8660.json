@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c8660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float __thiscall LinearInterpolator::vfunction3(LinearInterpolator *this,float param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  float *pfVar4;\n  ulonglong uVar5;\n  float *pfVar6;\n  \n  if ((this->LinearInterpolator_data).offset_0x0 == '\\0') {\n    lVar1 = (this->LinearInterpolator_data).offset_0x10;\n    lVar2 = (this->LinearInterpolator_data).offset_0x8;\n    FUN_1402c3c10(lVar2,lVar1,lVar1 - lVar2 >> 3,0);\n    (this->LinearInterpolator_data).offset_0x0 = 1;\n  }\n  pfVar4 = (float *)(this->LinearInterpolator_data).offset_0x8;\n  uVar3 = (this->LinearInterpolator_data).offset_0x10 - (longlong)pfVar4 >> 3;\n  if (((uVar3 < 2) || (param_1 < *pfVar4)) ||\n     (pfVar4[uVar3 * 2 + -2] <= param_1 && param_1 != pfVar4[uVar3 * 2 + -2])) {\n    return 0.0;\n  }\n  uVar3 = (this->LinearInterpolator_data).offset_0x10 - (longlong)pfVar4 >> 3;\n  pfVar6 = pfVar4;\n  if (0 < (longlong)uVar3) {\n    do {\n      uVar5 = uVar3 >> 1;\n      if (pfVar6[uVar5 * 2] < param_1) {\n        pfVar6 = pfVar6 + uVar5 * 2 + 2;\n        uVar5 = uVar3 + (-1 - uVar5);\n      }\n      uVar3 = uVar5;\n    } while (0 < (longlong)uVar5);\n    pfVar4 = (float *)(this->LinearInterpolator_data).offset_0x8;\n  }\n  if (pfVar6 != pfVar4) {\n    return ((*pfVar6 - param_1) / (*pfVar6 - pfVar6[-2])) * pfVar6[-1] +\n           ((param_1 - pfVar6[-2]) / (*pfVar6 - pfVar6[-2])) * pfVar6[1];\n  }\n  return pfVar6[1];\n}",
+  "fetched_at": "2026-04-26T18:29:46Z"
+}

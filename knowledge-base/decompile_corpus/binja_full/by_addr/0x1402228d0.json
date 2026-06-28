@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402228d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402228da        int64_t lpMem = arg1[0x11]\n1402228e8        *arg1 = &RAMFileClass::`vftable'{for `FileClass'}\n1402228f1        if (lpMem != 0)\n140222901        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14022290a        arg1[0x11] = 0\n14022291f        return sub_1402132f0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:29:13Z"
+}

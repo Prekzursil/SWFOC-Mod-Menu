@@ -1,0 +1,7 @@
+{
+  "addr": "0x140201910",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140201914        int64_t r9 = arg1[2]\n14020191b        if (arg2 u<= r9)\n14020191d        arg1[2] = arg2\n140201926        if (arg1[3] u>= 0x10)\n140201928        arg1 = *arg1\n14020192b        *(arg1 + arg2) = 0\n140201933        return \n140201934        int64_t r10 = arg1[3]\n140201946        void* rdi_1 = arg2 - r9\n14020194c        if (rdi_1 u> r10 - r9)\n140201994        sub_140057b80(arg1, rdi_1, 0, rdi_1, arg3)\n1402019a2        return \n140201953        arg1[2] = arg2\n14020195b        if (r10 u>= 0x10)\n14020195d        arg1 = *arg1\n140201960        void* rbx = arg1 + r9\n14020196e        memset(rbx, arg3, rdi_1)\n140201973        *(rbx + rdi_1) = 0\n140201985        return ",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140615c50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140615c64        *arg1 = &NeutralizeHeroAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140615c70        arg1[0x30].b = 0\n140615c77        arg1[1] = &NeutralizeHeroAbilityClass::`vftable'{for `RefCountClass'}\n140615c82        arg1[0x32] = arg1[0x31]\n140615c90        arg1[0x37] = arg1[0x36]\n140615c9e        arg1[0x3c] = arg1[0x3b]\n140615ca7        __builtin_memset(&arg1[0x3e], 0, 0x1a)\n140615cc3        arg1[0x35].b = 0\n140615cca        arg1[0x3a].b = 0\n140615cd8        sub_1402c7170(&arg1[0x39])\n140615ce4        sub_1402c7170(&arg1[0x34])\n140615cf0        sub_1402c7170(&arg1[0x2f])\n140615cf8        sub_14048c8d0(arg1)\n140615d00        if ((arg2 & 1) != 0)\n140615d0a        j_sub_1407864b8(arg1)\n140615d1c        return arg1",
+  "fetched_at": "2026-04-26T17:23:25Z"
+}

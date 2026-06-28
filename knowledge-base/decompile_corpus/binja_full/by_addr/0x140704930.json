@@ -1,0 +1,7 @@
+{
+  "addr": "0x140704930",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140704943        *arg1 = &IonCannonShotAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140704950        arg1[1] = &IonCannonShotAttackAbilityClass::`vftable'{for `RefCountClass'}\n140704954        sub_14048c8d0(arg1)\n14070495c        if ((arg2 & 1) != 0)\n140704966        j_sub_1407864b8(arg1)\n140704978        return arg1",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

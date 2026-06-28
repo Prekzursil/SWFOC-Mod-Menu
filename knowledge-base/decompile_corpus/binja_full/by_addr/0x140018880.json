@@ -1,0 +1,7 @@
+{
+  "addr": "0x140018880",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001888b        sub_1405960f0(&data_140b30670)\n14001889e        data_140b30670 = &EventFactoryClass<class ChatEventClass, 16>::`vftable'{for `BaseEventFactoryClass'}\n1400188a9        return atexit(&data_1407f16f0) __tailcall",
+  "fetched_at": "2026-04-26T16:50:46Z"
+}

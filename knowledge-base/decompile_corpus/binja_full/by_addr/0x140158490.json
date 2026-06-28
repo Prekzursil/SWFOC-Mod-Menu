@@ -1,0 +1,7 @@
+{
+  "addr": "0x140158490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140158494        return OBJImpl::`scalar deleting destructor'(arg1 - 0x10, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:22:27Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018a110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018a11f        int64_t* rcx = data_140a6fec0\n14018a12b        if (rcx != 0)\n14018a130        (*(*rcx + 8))(rcx)\n14018a133        data_140a6fec0 = 0\n14018a13a        int64_t* rcx_1 = data_140a6feb8\n14018a144        if (rcx_1 != 0)\n14018a149        (*(*rcx_1 + 8))(rcx_1)\n14018a14c        data_140a6feb8 = 0\n14018a153        int64_t* rcx_2 = data_140a6feb0\n14018a15d        if (rcx_2 != 0)\n14018a162        (*(*rcx_2 + 8))(rcx_2)\n14018a165        data_140a6feb0 = 0\n14018a16c        void* i = data_140a12a30\n14018a17d        while (i != &data_140a12a28)\n14018a190        void* rax_4 = *(i + 0x18)\n14018a197        int64_t* rbx_1 = rax_4 - 0x10\n14018a19b        if (rax_4 == 0)\n14018a19b        rbx_1 = nullptr\n14018a1a2        if (rbx_1 != 0)\n14018a1a4        i = *(i + 8)\n14018a1bb        if (sub_14020abe0(&data_140a12a20, &rbx_1[2]) != 0)\n14018a1c3        (*(*rbx_1 + 8))(rbx_1)\n14018a1d0        int64_t* rcx_4 = data_140a6fed0\n14018a1da        (*(*rcx_4 + 0x10))(rcx_4)\n14018a1dd        int64_t* rcx_5 = data_140a6fed8\n14018a1e4        data_140a6fed0 = 0\n14018a1ee        int64_t result = (*(*rcx_5 + 0x10))(rcx_5)\n14018a1f6        data_140a6fed8 = 0\n14018a1fd        data_140a6fec8 = 0\n14018a20e        return result",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

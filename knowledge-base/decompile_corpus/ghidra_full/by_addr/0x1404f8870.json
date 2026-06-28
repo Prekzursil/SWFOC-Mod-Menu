@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f8870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandObstacleBehaviorClass * __thiscall\nLandObstacleBehaviorClass::vfunction4(LandObstacleBehaviorClass *this,int param_1)\n\n{\n  LandObstacleBehaviorClass *pLVar1;\n  \n  pLVar1 = (LandObstacleBehaviorClass *)0x0;\n  if (param_1 == 0x14) {\n    pLVar1 = this;\n  }\n  return pLVar1;\n}",
+  "fetched_at": "2026-04-26T18:19:24Z"
+}

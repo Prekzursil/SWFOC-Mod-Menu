@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bb3a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bb3c0        int32_t rsi = 1\n1407bb3c5        if (*arg2 != 0x3e)\n1407bb400        int64_t rax_1 = sx.q(*(arg3 + 0x70))\n1407bb406        if (rax_1.d == 0)\n1407bb436        *(arg3 + 0x28) = 0xffffffff\n1407bb43e        *(arg3 + 0x10) = &data_1407ff8a8\n1407bb449        *(arg3 + 8) = &data_1407ff8a8\n1407bb458        *(arg3 + 0x30) = 0xffffffff\n1407bb460        *(arg3 + 0x18) = \"tail\"\n1407bb464        *(arg3 + 0x20) = \"=(tail call)\"\n1407bb46e        sub_1407c3190(arg3 + 0x34, \"=(tail call)\", 0x3c)\n1407bb475        *(arg3 + 0x2c) = 0\n1407bb47c        *arg1[2] = 0\n1407bb410        int64_t* rcx_3 = rax_1 * 0x30 + arg1[0x10]\n1407bb42b        rsi = sub_1407ba6b0(arg1, arg2, arg3, *rcx_3 - 0x10, rcx_3)\n1407bb3c7        void* rsi_1 = arg1[2]\n1407bb3cf        if (*(rsi_1 - 0x10) != 6)\n1407bb3d8        sub_1407bad30(arg1, \"value for `lua_getinfo' is not a function\", arg3)\n1407bb3d8        noreturn\n1407bb3f2        int32_t rax = sub_1407ba6b0(arg1, &arg2[1], arg3, rsi_1 - 0x10, nullptr)\n1407bb3f7        arg1[2] -= 0x10\n1407bb3fc        rsi = rax\n1407bb48e        if (strchr(arg2, 0x66) != 0)\n1407bb490        int64_t rcx_7 = arg1[2]\n1407bb49f        if (arg1[0xc] - rcx_7 s<= 0x10)\n1407bb4a9        sub_1407bbbc0(arg1, 1)\n1407bb4ae        rcx_7 = arg1[2]\n1407bb4b6        arg1[2] = rcx_7 + 0x10\n1407bb4d0        return zx.q(rsi)",
+  "fetched_at": "2026-04-26T17:33:17Z"
+}

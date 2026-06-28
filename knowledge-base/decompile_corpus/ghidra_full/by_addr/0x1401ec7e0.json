@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ec7e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nGUIGadgetVScrollbarClass::vfunction17(GUIGadgetVScrollbarClass *this,float *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  \n  fVar1 = *(float *)&(this->GUIGadgetVScrollbarClass_data).offset_0x2a0;\n  if (fVar1 <= *param_1) {\n    fVar2 = *(float *)((longlong)&(this->GUIGadgetVScrollbarClass_data).offset_0x2a0 + 4);\n    if (((fVar2 <= param_1[1]) &&\n        (*param_1 <= fVar1 + *(float *)&(this->GUIGadgetVScrollbarClass_data).offset_0x2a8)) &&\n       (param_1[1] <=\n        fVar2 + *(float *)((longlong)&(this->GUIGadgetVScrollbarClass_data).offset_0x2a8 + 4))) {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:52:19Z"
+}

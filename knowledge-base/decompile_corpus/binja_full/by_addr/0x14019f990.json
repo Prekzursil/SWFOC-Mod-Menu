@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019f990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019f992        arg1[5] = 0xf\n14019f9a1        arg1[1].d = 0\n14019f9a4        *arg1 = &alQuantizedAnim::`vftable'{for `alAnim'}\n14019f9aa        arg1[2] = 0\n14019f9ae        arg1[4] = 0\n14019f9b2        __builtin_memset(&arg1[7], 0, 0x60)\n14019f9eb        return arg1",
+  "fetched_at": "2026-04-26T17:24:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026fe90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026fe92        *(arg1 + 4) = 0\n14026fe98        *(arg1 + 0x58) = 0\n14026fea3        *(arg1 + 0x50) = &DynamicVectorClass<struct WindowsFontClass::tFontCharacterStruct>::`vftable'\n14026feaa        *(arg1 + 0x60) = 0\n14026feae        __builtin_memset(arg1 + 8, 0, 0x20)\n14026febe        *(arg1 + 0x38) = 0\n14026fec1        *(arg1 + 0x40) = 0\n14026fec5        *(arg1 + 0x48) = 0\n14026fec8        *(arg1 + 0x68) = 0\n14026fecc        *(arg1 + 0x78) = 0\n14026fed0        *(arg1 + 0x80) = 0xf\n14026fedb        *(arg1 + 0x88) = 0\n14026fee1        *(arg1 + 0x8c) = 0\n14026fee8        *(arg1 + 0x90) = 0\n14026feee        return arg1",
+  "fetched_at": "2026-04-26T17:31:45Z"
+}

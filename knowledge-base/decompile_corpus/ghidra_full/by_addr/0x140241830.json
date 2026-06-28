@@ -1,0 +1,7 @@
+{
+  "addr": "0x140241830",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_140241830(uint *param_1)\n\n{\n  uint uVar1;\n  ulonglong uVar2;\n  uint uVar3;\n  ulonglong uVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  \n  uVar1 = param_1[1];\n  uVar4 = (ulonglong)*param_1;\n  fVar5 = 0.0;\n  fVar7 = (float)uVar4;\n  if (uVar1 != 0) {\n    uVar3 = uVar1;\n    do {\n      uVar2 = (ulonglong)uVar3;\n      uVar3 = uVar3 / *param_1;\n      fVar6 = (float)(uVar2 % uVar4) / fVar7;\n      fVar7 = fVar7 * (float)uVar4;\n      fVar5 = fVar5 + fVar6;\n    } while (uVar3 != 0);\n  }\n  param_1[1] = uVar1 + 1;\n  return fVar5;\n}",
+  "fetched_at": "2026-04-26T18:09:45Z"
+}

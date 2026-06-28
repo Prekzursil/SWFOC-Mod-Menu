@@ -1,0 +1,7 @@
+{
+  "addr": "0x140542280",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall\nLuaFindObjectType::vfunction11(LuaFindObjectType *this,undefined8 param_1,longlong param_2)\n\n{\n  undefined *puVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  \n  if (*(longlong *)(param_2 + 0x18) - (longlong)*(longlong **)(param_2 + 0x10) >> 3 == 0) {\n    FUN_140248190(param_1,\"LuaFindObjectType -- Expected type name for parameter 1\");\n    return (longlong *)0x0;\n  }\n  plVar4 = (longlong *)**(longlong **)(param_2 + 0x10);\n  if (plVar4 != (longlong *)0x0) {\n    for (puVar1 = (undefined *)(**(code **)(*plVar4 + 0x20))(plVar4); puVar1 != (undefined *)0x0;\n        puVar1 = *(undefined **)(puVar1 + 8)) {\n      if (puVar1 == &DAT_140a157d0) {\n        (**(code **)*plVar4)(plVar4);\n        lVar2 = FUN_140407c00(&DAT_140b2f020,plVar4 + 2);\n        if (lVar2 != 0) {\n          plVar3 = (longlong *)FUN_1406051b0(lVar2,param_1);\n          plVar3 = GetEvent::~GetEvent((GetEvent *)this,plVar3);\n          goto LAB_140542309;\n        }\n        plVar3 = (longlong *)0x0;\n        goto LAB_14054230e;\n      }\n    }\n  }\n  plVar4 = (longlong *)0x0;\n  FUN_140248190(param_1,\"LuaFindObjectType -- Expected type name for parameter 1\");\n  plVar3 = plVar4;\nLAB_140542309:\n  if (plVar4 != (longlong *)0x0) {\nLAB_14054230e:\n    (**(code **)(*plVar4 + 8))(plVar4);\n  }\n  return plVar3;\n}",
+  "fetched_at": "2026-04-26T18:35:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076891c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140768937        void arg_8\n140768937        void* r14 = &arg_8\n14076893e        char* rdi = arg1\n140768941        uint32_t rcx = zx.d(*arg1)\n140768944        if (arg2 != 0)\n140768944        r14 = arg2\n140768956        while (isspace(rcx) != 0)\n140768950        rdi = &rdi[1]\n140768953        rcx = zx.d(*rdi)\n14076895f        int64_t rbx\n14076895f        rbx.b = *rdi\n140768966        if (((rbx - 0x2b).b & 0xfd) == 0)\n14076896c        rdi = &rdi[1]\n140768968        rbx.b = 0x2b\n14076897b        int32_t rax_3 = _Stoulx(rdi, r14, arg3, arg4)\n140768980        int32_t rcx_2 = rax_3\n140768982        int32_t rsi_1 = 0x7fffffff\n14076898a        if (rdi == *r14)\n14076898c        *r14 = arg1\n1407689ae        if (rcx_2 != 0 || (rbx.b == 0x2b && rcx_2 u> 0x7fffffff) || (rbx.b == 0x2d && rcx_2 u> 0x80000000))\n140768998        goto label_1407689b5\n140768998        goto label_1407689db\n1407689ae        if ((arg1 != *r14 || rcx_2 == 0) && (rbx.b != 0x2b || rcx_2 u<= 0x7fffffff) && (rbx.b != 0x2d || rcx_2 u<= 0x80000000))\n1407689db        label_1407689db:\n1407689db        if (rbx.b == 0x2d)\n1407689db        rcx_2 = neg.d(rax_3)\n1407689de        return zx.q(rcx_2)\n1407689b5        label_1407689b5:\n1407689b5        *_errno() = 0x22\n1407689be        if (arg4 != 0)\n1407689c0        *arg4 = 1\n1407689cf        if (rbx.b == 0x2d)\n1407689cf        rsi_1 = -0x80000000\n1407689d2        return zx.q(rsi_1)",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ec24",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ec2b        if (arg1 u<= 1)\n14078ec42        int32_t temp0_1 = data_140b3c4a0\n14078ec42        data_140b3c4a0 = arg1\n14078ec48        return zx.q(temp0_1)\n14078ec32        *_errno() = 0x16\n14078ec38        _invalid_parameter_noinfo()\n14078ec3d        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:31:38Z"
+}

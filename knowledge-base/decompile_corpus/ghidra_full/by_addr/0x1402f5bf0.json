@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f5bf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1402f5bf0(longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  undefined8 *puVar2;\n  undefined8 *puVar3;\n  uint uVar4;\n  ulonglong uVar5;\n  undefined8 *puVar6;\n  undefined8 *puVar7;\n  \n  if (param_2 != 0) {\n    uVar5 = 0xffffffffffffffff;\n    do {\n      uVar5 = uVar5 + 1;\n    } while (*(char *)(param_2 + uVar5) != '\\0');\n    uVar4 = FUN_140215a30(param_2,uVar5 & 0xffffffff,0);\n    puVar2 = *(undefined8 **)(param_1 + 0x640);\n    cVar1 = *(char *)((longlong)puVar2[1] + 0x19);\n    puVar3 = puVar2;\n    puVar6 = (undefined8 *)puVar2[1];\n    while (cVar1 == '\\0') {\n      if (*(uint *)(puVar6 + 4) < uVar4) {\n        puVar7 = (undefined8 *)puVar6[2];\n        puVar6 = puVar3;\n      }\n      else {\n        puVar7 = (undefined8 *)*puVar6;\n      }\n      puVar3 = puVar6;\n      puVar6 = puVar7;\n      cVar1 = *(char *)((longlong)puVar7 + 0x19);\n    }\n    if (((*(char *)((longlong)puVar3 + 0x19) == '\\0') && (*(uint *)(puVar3 + 4) <= uVar4)) &&\n       (puVar3 != puVar2)) {\n      return puVar3[5];\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:26:08Z"
+}

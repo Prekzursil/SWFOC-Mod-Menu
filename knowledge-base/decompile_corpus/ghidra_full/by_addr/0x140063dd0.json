@@ -1,0 +1,7 @@
+{
+  "addr": "0x140063dd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_140063dd0(int param_1)\n\n{\n  char cVar1;\n  undefined8 uVar2;\n  short sVar3;\n  int iVar4;\n  short sVar5;\n  float local_res18;\n  float fStackX_1c;\n  undefined8 local_res20;\n  \n  sVar5 = (short)((uint)param_1 >> 0x10);\n  iVar4 = (int)sVar5;\n  local_res18 = (float)iVar4;\n  sVar5 = sVar5 / 0x78;\n  fStackX_1c = (float)iVar4;\n  iVar4 = (iVar4 >> 0x1f & 1U) + 9;\n  sVar3 = -sVar5;\n  if (-1 < param_1) {\n    sVar3 = sVar5;\n  }\n  cVar1 = FUN_1401c3c40(&DAT_140a78510);\n  if (cVar1 == '\\x01') {\n    local_res20 = 0;\n    cVar1 = FUN_1401c3660(&DAT_140a78510,iVar4,param_1,&local_res20,0);\n    if (cVar1 == '\\x01') {\n      return 1;\n    }\n  }\n  cVar1 = FUN_14044b3f0(&DAT_140a28c10,0xc,&local_res18);\n  if ((cVar1 == '\\0') && (cVar1 = FUN_1402cc3e0(&DAT_140b27a10,0xc,&local_res18), cVar1 == '\\0')) {\n    local_res20 = CONCAT44(fStackX_1c,local_res18);\n    uVar2 = FUN_140030fc0(&DAT_140a60df0,iVar4,&local_res20,0,(int)sVar3);\n    return uVar2;\n  }\n  return 1;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:40Z"
+}

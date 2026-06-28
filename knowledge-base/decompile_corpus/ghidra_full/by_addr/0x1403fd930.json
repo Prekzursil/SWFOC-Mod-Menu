@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403fd930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall PlanetaryBehaviorClass::vfunction22(PlanetaryBehaviorClass *this,longlong param_1)\n\n{\n  undefined *puVar1;\n  char cVar2;\n  longlong lVar3;\n  \n  lVar3 = FUN_140294a40(&DAT_140a16fd0);\n  if (param_1 == lVar3) {\n    puVar1 = this->offset_0x18[0x17];\n    *(undefined4 *)(puVar1 + 0x1a8) = 0;\n    *(undefined4 *)(puVar1 + 0x98) = 0;\n    *(undefined4 *)(puVar1 + 0x9c) = 0xffffffff;\n    (*this->vftablePtr->deleting_destructor)(this,param_1);\n    FUN_1403fd560(this);\n  }\n  cVar2 = FUN_1402814d0(param_1);\n  if (cVar2 != '\\0') {\n    FUN_1403fd080(this,param_1);\n  }\n  if (this->offset_0x18[0x17] != (undefined *)0x0) {\n    *(undefined8 *)(this->offset_0x18[0x17] + 0x1a0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140603130",
+  "tool": "ghidra",
+  "fact_id": "rva_lua_give_money",
+  "body": "\nundefined8 FUN_140603130(longlong param_1,undefined8 param_2,longlong param_3)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  char *pcVar3;\n  \n  if ((param_3 == 0) ||\n     ((*(longlong *)(param_3 + 0x18) - (longlong)*(longlong **)(param_3 + 0x10) &\n      0xfffffffffffffff8U) == 0)) {\n    pcVar3 = \"PlayerWrapper::Lua_Give_Money -- Missing required parameter.\";\n  }\n  else {\n    plVar1 = (longlong *)**(longlong **)(param_3 + 0x10);\n    if (plVar1 != (longlong *)0x0) {\n      for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n          puVar2 = *(undefined **)(puVar2 + 8)) {\n        if (puVar2 == &DAT_140a157c0) {\n          (**(code **)*plVar1)(plVar1);\n          FUN_14027f370(*(undefined8 *)(param_1 + 0x28),(float)(double)plVar1[2],1);\n          (**(code **)(*plVar1 + 8))(plVar1);\n          return 0;\n        }\n      }\n    }\n    pcVar3 = \"PlayerWrapper::Lua_Give_Money -- Parameter 1 must be a number.\";\n  }\n  FUN_140248190(param_2,pcVar3);\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:00Z"
+}

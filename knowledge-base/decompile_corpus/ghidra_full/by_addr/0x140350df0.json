@@ -1,0 +1,7 @@
+{
+  "addr": "0x140350df0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* IconComponentClass member function inherited by ButtonComponentClass\n   IconComponentClass member function inherited by TextButtonComponentClass */\n\nvoid __thiscall IconComponentClass::vfunction36(IconComponentClass *this)\n\n{\n  byte *pbVar1;\n  undefined8 *puVar2;\n  float fVar3;\n  \n  puVar2 = (undefined8 *)(this->BaseComponentClass_data).offset_0x78;\n  if (puVar2 == (undefined8 *)0x0) {\n    fVar3 = 0.0;\n  }\n  else {\n    fVar3 = *(float *)(puVar2 + 0x75);\n  }\n  *(float *)((longlong)&(this->IconComponentClass_data).offset_0x178 + 4) = fVar3;\n  if (fVar3 != 0.0) {\n    pbVar1 = &(this->IconComponentClass_data).offset_0x1a8;\n    *pbVar1 = *pbVar1 | 0x10;\n    *(undefined4 *)&(this->IconComponentClass_data).offset_0x178 = 0;\n    return;\n  }\n  if ((puVar2 == (undefined8 *)0x0) || (puVar2[2] == 0)) {\n    puVar2 = (undefined8 *)0x0;\n  }\n  else if (0xf < (ulonglong)puVar2[3]) {\n    FUN_140025760(\"Warning!  Tried to activate scale up on component %s which doesn\\'t have duration specified\\n\"\n                  ,*puVar2);\n    return;\n  }\n  FUN_140025760(\"Warning!  Tried to activate scale up on component %s which doesn\\'t have duration specified\\n\"\n                ,puVar2);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:57Z"
+}

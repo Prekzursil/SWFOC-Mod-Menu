@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b7f10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b7f19        int32_t zmm0 = sub_1404b7e20(arg1, arg2)\n1404b7f1e        float zmm1 = *(arg1 + 0x318)\n1404b7f42        return (*(arg1 + 0x31c) - zmm1) f* zmm0 + zmm1",
+  "fetched_at": "2026-04-26T17:30:00Z"
+}

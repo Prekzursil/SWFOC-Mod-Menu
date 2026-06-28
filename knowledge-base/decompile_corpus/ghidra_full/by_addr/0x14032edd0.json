@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032edd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14032edd0(undefined8 param_1,char *param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  char local_108 [256];\n  \n  if (param_2 != (char *)0x0) {\n    lVar2 = -(longlong)param_2;\n    do {\n      cVar1 = *param_2;\n      param_2[(longlong)(local_108 + lVar2)] = cVar1;\n      param_2 = param_2 + 1;\n    } while (cVar1 != '\\0');\n    FUN_140327b10(\"TUTORIAL - Generic string based trigger - %s\\r\\n\");\n    FUN_14032e5f0(param_1,0x21,0,local_108,0);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:27Z"
+}

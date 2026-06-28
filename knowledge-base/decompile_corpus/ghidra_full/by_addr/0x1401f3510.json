@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f3510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401f3510(undefined8 param_1,longlong param_2,undefined4 param_3,undefined4 *param_4)\n\n{\n  int iVar1;\n  DrawPrimitiveClass *pDVar2;\n  int iVar3;\n  undefined4 uVar4;\n  longlong lVar5;\n  \n  lVar5 = param_2;\n  FUN_14025e960();\n  uVar4 = (undefined4)lVar5;\n  FUN_14025e930();\n  pDVar2 = (DrawPrimitiveClass *)FUN_140769c58(0x40);\n  if (pDVar2 == (DrawPrimitiveClass *)0x0) {\n    pDVar2 = (DrawPrimitiveClass *)0x0;\n  }\n  else {\n    pDVar2 = DrawPrimitiveClass::DrawPrimitiveClass(pDVar2);\n  }\n  (*pDVar2->vftablePtr->vfunction3)(pDVar2,uVar4,param_3);\n  (*pDVar2->vftablePtr->vfunction5)(pDVar2,uVar4,param_3);\n  (*pDVar2->vftablePtr->vfunction6)(pDVar2,param_4);\n  iVar1 = *(int *)(param_2 + 0x10);\n  iVar3 = *(int *)(param_2 + 0x14) * 2 >> 1;\n  if (iVar3 <= iVar1) {\n    iVar1 = iVar3 / 10;\n    if (iVar3 / 10 < 10) {\n      iVar1 = 10;\n    }\n    FUN_1401399c0(param_2,iVar1 + iVar3,0,1);\n    iVar1 = *(int *)(param_2 + 0x10);\n  }\n  *(DrawPrimitiveClass **)(*(longlong *)(param_2 + 8) + (longlong)iVar1 * 8) = pDVar2;\n  *(int *)(param_2 + 0x10) = *(int *)(param_2 + 0x10) + 1;\n  FUN_14025c190(DAT_140a619f0,pDVar2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:24Z"
+}

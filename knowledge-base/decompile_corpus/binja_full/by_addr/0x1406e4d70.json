@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e4d70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e4d84        *arg1 = &SpaceTaskForceClass::`vftable'{for `TaskForceClass'}\n1406e4d90        arg1[5] = &SpaceTaskForceClass::`vftable'{for `SignalListenerClass'}\n1406e4d9b        arg1[7] = &SpaceTaskForceClass::`vftable'{for `AIDiagnosticsClass'}\n1406e4d9f        void* rcx = arg1[0x24]\n1406e4da9        if (rcx != 0)\n1406e4dc0        if (((arg1[0x26] - rcx) & 0xfffffffffffffffc) u>= 0x1000)\n1406e4dc2        void* r8_1 = *(rcx - 8)\n1406e4dd5        if (rcx - r8_1 - 8 u> 0x1f)\n1406e4e1f        _invalid_parameter_noinfo_noreturn()\n1406e4e1f        noreturn\n1406e4dd7        rcx = r8_1\n1406e4dda        j_sub_1407864b8(rcx)\n1406e4de1        __builtin_memset(&arg1[0x24], 0, 0x18)\n1406e4df9        sub_1405f9440(arg1)\n1406e4e02        if ((arg2 & 1) != 0)\n1406e4e0c        j_sub_1407864b8(arg1)\n1406e4e1e        return arg1",
+  "fetched_at": "2026-04-26T17:26:05Z"
+}

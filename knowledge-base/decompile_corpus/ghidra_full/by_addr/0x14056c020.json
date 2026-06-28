@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056c020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EnergyPoolBehaviorClass * __thiscall\nEnergyPoolBehaviorClass::vfunction4(EnergyPoolBehaviorClass *this,int param_1)\n\n{\n  EnergyPoolBehaviorClass *pEVar1;\n  \n  pEVar1 = (EnergyPoolBehaviorClass *)0x0;\n  if (param_1 == 0xf) {\n    pEVar1 = this;\n  }\n  return pEVar1;\n}",
+  "fetched_at": "2026-04-26T18:40:03Z"
+}

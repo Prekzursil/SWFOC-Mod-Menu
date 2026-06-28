@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cf800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402cf806        *(arg1 + 0x10) = *(arg1 + 0x6c)\n1402cf80c        *(arg1 + 0x14) = *(arg1 + 0x70)\n1402cf811        int32_t zmm0\n1402cf811        if (arg2.b != 0)\n1402cf816        *(arg1 + 0x18) = *(arg1 + 0x7c)\n1402cf81f        *(arg1 + 0x1c) = *(arg1 + 0x80)\n1402cf828        *(arg1 + 0x20) = *(arg1 + 0x84)\n1402cf82b        zmm0 = *(arg1 + 0x20)\n1402cf830        *(arg1 + 0x58) = zmm0\n1402cf835        *(arg1 + 0x5c) = zmm0\n1402cf83a        *(arg1 + 0x60) = 0\n1402cf83e        zmm0 = *(arg1 + 0x74)\n1402cf843        int32_t zmm1 = *(arg1 + 0x78)\n1402cf848        *(arg1 + 0x30) = zmm0\n1402cf84d        *(arg1 + 0x34) = zmm0\n1402cf852        *(arg1 + 0x44) = zmm1\n1402cf857        *(arg1 + 0x48) = zmm1\n1402cf85c        *(arg1 + 0x38) = 0\n1402cf860        *(arg1 + 0x4c) = 0\n1402cf864        *(arg1 + 0xf8) = 0x3f800000\n1402cf86e        *(arg1 + 0xfc) = 0x3f800000\n1402cf879        return sub_1402d0df0(arg1, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:22:23Z"
+}

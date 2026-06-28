@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b53d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall alD3dEffectStateManager::vfunction12(undefined8 param_1,undefined4 param_2)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = (longlong *)FUN_1401771a0();\n  (**(code **)(*plVar1 + 0x278))(plVar1,param_2);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:44:31Z"
+}

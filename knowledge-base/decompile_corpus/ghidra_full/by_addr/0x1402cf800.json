@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cf800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402cf800(longlong param_1,char param_2)\n\n{\n  *(undefined4 *)(param_1 + 0x10) = *(undefined4 *)(param_1 + 0x6c);\n  *(undefined4 *)(param_1 + 0x14) = *(undefined4 *)(param_1 + 0x70);\n  if (param_2 != '\\0') {\n    *(undefined4 *)(param_1 + 0x18) = *(undefined4 *)(param_1 + 0x7c);\n    *(undefined4 *)(param_1 + 0x1c) = *(undefined4 *)(param_1 + 0x80);\n    *(undefined4 *)(param_1 + 0x20) = *(undefined4 *)(param_1 + 0x84);\n    *(undefined4 *)(param_1 + 0x58) = *(undefined4 *)(param_1 + 0x20);\n    *(undefined4 *)(param_1 + 0x5c) = *(undefined4 *)(param_1 + 0x20);\n    *(undefined4 *)(param_1 + 0x60) = 0;\n  }\n  *(undefined4 *)(param_1 + 0x30) = *(undefined4 *)(param_1 + 0x74);\n  *(undefined4 *)(param_1 + 0x34) = *(undefined4 *)(param_1 + 0x74);\n  *(undefined4 *)(param_1 + 0x44) = *(undefined4 *)(param_1 + 0x78);\n  *(undefined4 *)(param_1 + 0x48) = *(undefined4 *)(param_1 + 0x78);\n  *(undefined4 *)(param_1 + 0x38) = 0;\n  *(undefined4 *)(param_1 + 0x4c) = 0;\n  *(undefined4 *)(param_1 + 0xf8) = 0x3f800000;\n  *(undefined8 *)(param_1 + 0xfc) = 0x3f800000;\n  FUN_1402d0df0();\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:24Z"
+}

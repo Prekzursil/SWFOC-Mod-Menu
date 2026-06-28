@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0220",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d023e        int32_t rax\n1407d023e        int64_t r8\n1407d023e        rax, r8 = sub_1407b8bc0(arg2, arg3)\n1407d0245        if (rax == 0)\n1407d0251        sub_1407ce300(arg1, \"too many arguments to resume\", r8)\n1407d0251        noreturn\n1407d025f        sub_1407b9ed0(arg1, arg2, arg3)\n1407d0273        if (sub_1407b9920(arg2, arg3) != 0)\n1407d02c2        sub_1407b9ed0(arg2, arg1, 1)\n1407d02db        return 0xffffffff\n1407d0275        int32_t rax_2 = sub_1407b8ef0(arg2)\n1407d0281        int32_t rax_3\n1407d0281        int64_t r8_2\n1407d0281        rax_3, r8_2 = sub_1407b8bc0(arg1, rax_2)\n1407d0288        if (rax_3 != 0)\n1407d02a2        sub_1407b9ed0(arg2, arg1, rax_2)\n1407d02b8        return zx.q(rax_2)\n1407d0294        sub_1407ce300(arg1, \"too many results to resume\", r8_2)\n1407d0294        noreturn",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

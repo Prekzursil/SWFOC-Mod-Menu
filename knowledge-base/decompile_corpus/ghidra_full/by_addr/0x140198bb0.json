@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198bb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall alD3dDepthBuffer::vfunction3(alD3dDepthBuffer *this)\n\n{\n  int iVar1;\n  \n  iVar1 = FUN_140198c00(&this[-1].offset_0x70);\n  return iVar1 == 0;\n}",
+  "fetched_at": "2026-04-26T17:36:28Z"
+}

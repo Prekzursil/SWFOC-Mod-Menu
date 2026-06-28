@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dcbf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402dcc03        *arg1 = &DynamicVectorClass<class CorruptionChoiceProperties>::`vftable'\n1402dcc09        sub_1402e7560(arg1)\n1402dcc11        if ((arg2 & 1) != 0)\n1402dcc1b        j_sub_1407864b8(arg1)\n1402dcc2d        return arg1",
+  "fetched_at": "2026-04-26T17:22:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e6770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e677a        uint64_t result = zx.q(arg1[0x24].d)\n1401e6789        if (result.d == 0xffffffff)\n1401e679c        label_1401e679c:\n1401e679c        result = __acrt_uninitialize_tmpfile(*(arg2 + 0x10))\n1401e67a9        if (result.b != 0 || *(arg2 + 0x10) == 0x20)\n1401e67b2        if (*(arg1 + 0x12c) == 0)\n1401e67e3        label_1401e67e3:\n1401e67e3        result = sub_1401e6880(arg1, (*(arg2 + 0x10)).b)\n1401e67ea        if (result.b == 1)\n1401e67f2        (*(*arg1 + 0xd8))(arg1)\n1401e67fb        sub_1401e70e0(arg1)\n1401e6806        return (*(*arg1 + 0xc8))(arg1)\n1401e67b8        int32_t rax_1 = sx.d(*(arg2 + 0x10)) - 0x22\n1401e67be        if (rax_1 u> 0x5a)\n1401e67be        goto label_1401e67e3\n1401e67c9        result = zx.q(lookup_table_1401e6820[sx.q(rax_1)])\n1401e67db        switch (result)\n1401e67db        case 1\n1401e67db        goto label_1401e67e3\n1401e6796        if (result.d s>= 1 && arg1[0x20].d s< result.d)\n1401e6796        goto label_1401e679c\n1401e6816        return result",
+  "fetched_at": "2026-04-26T17:26:58Z"
+}

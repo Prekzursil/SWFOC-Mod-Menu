@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d0740",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405d0754        void* rax = sub_14041b450(arg1, 0)\n1405d0761        void* result = sub_14041b450(arg2, 0)\n1405d0778        int128_t zmm6\n1405d0778        zmm6.d = (*(rax + 0x78)).d f- data_140b39628\n1405d0780        float zmm5 = data_140b3963c\n1405d0794        zmm6.d = zmm6.d f* data_140b39638\n1405d07a9        zmm6.d = zmm6.d f+ zmm5 * (*(rax + 0x7c) f- data_140b3962c)\n1405d07d2        result.b = zmm6.d f> (*(result + 0x78) f- data_140b39628) f* data_140b39638 + zmm5 * (*(result + 0x7c) f- data_140b3962c)\n1405d07da        return result",
+  "fetched_at": "2026-04-26T17:37:58Z"
+}

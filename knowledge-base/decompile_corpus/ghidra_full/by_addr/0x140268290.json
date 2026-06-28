@@ -1,0 +1,7 @@
+{
+  "addr": "0x140268290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FillRectClass::~FillRectClass(FillRectClass *this)\n\n{\n  this->vftablePtr = &vftable;\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (FillRectClass_vftable1 *)&RefCountClass::vftable;\n  DrawPrimitiveClass::~DrawPrimitiveClass((DrawPrimitiveClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:14Z"
+}

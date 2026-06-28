@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404270c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404270cb        struct ScheduledEventClass::StopMovementEventClass::VTable** result = operator new(0x48)\n1404270d6        if (result == 0)\n1404270ff        return result\n1404270db        sub_140512c50(result)\n1404270e7        result[4].d = 0x1d\n1404270ee        *result = &StopMovementEventClass::`vftable'{for `ScheduledEventClass'}\n1404270f9        return result",
+  "fetched_at": "2026-04-26T17:26:28Z"
+}

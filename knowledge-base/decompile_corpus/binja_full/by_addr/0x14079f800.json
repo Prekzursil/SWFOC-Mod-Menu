@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079f800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079f82a        __vcrt_unlock(0xb)\n14079f830        int32_t rbx = 0\n14079f835        int32_t rax_2\n14079f835        if (arg1 != 0)\n14079f84a        *arg1 = 0\n14079f850        if (arg2 == 0)\n14079f85f        if (arg3 != 0)\n14079f868        rax_2 = 0\n14079f861        rax_2 = 1\n14079f85a        if (arg3 != 0 || (arg2 == 0 && arg3 == 0))\n14079f861        rax_2 = 1\n14079f868        rax_2 = 0\n14079f86c        if (arg1 == 0 || rax_2 == 0)\n14079f83c        rbx = 0x16\n14079f841        *_errno() = 0x16\n14079f843        _invalid_parameter_noinfo()\n14079f871        if (arg2 != 0)\n14079f873        *arg2 = 0\n14079f879        int64_t rax_3 = common_getenv_nolock<wchar_t>(arg4)\n14079f884        if (rax_3 != 0)\n14079f886        int64_t rax_4 = -1\n14079f88a        rax_4 += 1\n14079f892        do while (*(rax_3 + (rax_4 << 1)) != 0)\n14079f897        *arg1 = rax_4 + 1\n14079f89d        if (arg3 != 0)\n14079f8a2        if (rax_4 + 1 u<= arg3)\n14079f8b8        if (wcscpy_s(arg2, arg3, rax_3) != 0)\n14079f8e1        int64_t var_18 = 0\n14079f8f0        _invoke_watson()\n14079f8f0        noreturn\n14079f8a4        rbx = 0x22\n14079f8bf        __vcrt_lock(0xb)\n14079f8e0        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:32:18Z"
+}

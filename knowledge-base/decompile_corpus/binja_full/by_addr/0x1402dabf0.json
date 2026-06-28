@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dabf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402dabfa        int64_t* rbx = *arg1\n1402dac03        if (rbx == 0)\n1402dac03        return \n1402dac0a        int64_t rsi_1 = arg1[1]\n1402dac11        if (rbx != rsi_1)\n1402dac16        LCRec::`default constructor closure'(rbx)\n1402dac1b        rbx = &rbx[2]\n1402dac22        do while (rbx != rsi_1)\n1402dac24        rbx = *arg1\n1402dac3e        if (((arg1[2] - rbx) & 0xfffffffffffffff0) u>= 0x1000)\n1402dac40        int64_t* rax_1 = rbx[-1]\n1402dac53        if (rbx - rax_1 - 8 u> 0x1f)\n1402dac78        _invalid_parameter_noinfo_noreturn()\n1402dac78        noreturn\n1402dac55        rbx = rax_1\n1402dac5b        j_sub_1407864b8(rbx)\n1402dac62        __builtin_memset(arg1, 0, 0x18)\n1402dac77        return ",
+  "fetched_at": "2026-04-26T17:22:37Z"
+}

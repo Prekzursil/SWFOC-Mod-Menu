@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ee3f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetTextClass::vfunction21(GUIGadgetTextClass *this,ulonglong param_1)\n\n{\n  FUN_1401c3140(&DAT_140a78510,*(undefined4 *)(this->GUIGadgetClass_data).offset_0x78,\n                &(this->GUIGadgetClass_data).offset_0x8,(this->GUIGadgetClass_data).offset_0x28);\n                    /* WARNING: Could not recover jumptable at 0x0001401ee438. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->deleting_destructor)(this,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:38Z"
+}

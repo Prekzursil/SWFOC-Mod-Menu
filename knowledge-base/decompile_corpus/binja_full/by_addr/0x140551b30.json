@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140551b37        arg1[1].d = 0\n140551b3e        *arg1 = &AmbientSFXDataPackClass::`vftable'{for `BaseDataPackClass'}\n140551b44        return arg1",
+  "fetched_at": "2026-04-26T17:34:17Z"
+}

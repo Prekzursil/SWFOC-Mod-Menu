@@ -1,0 +1,7 @@
+{
+  "addr": "0x140705440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140705446        struct SpecialAbilityClass::PersonalFlameThrowerAbilityClass::VTable** result = arg1\n140705449        sub_14048c780(arg1)\n140705455        result[0x30] = 7\n140705460        *result = &PersonalFlameThrowerAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070546a        result[1] = &PersonalFlameThrowerAbilityClass::`vftable'{for `RefCountClass'}\n140705470        result[0x33] = 0\n140705477        result[0x35] = 0\n14070547e        result[0x36] = 0xf\n140705489        result[0x2f] = 0\n140705493        result[8].w = 1\n140705499        *(result + 0x3c) = 9\n1407054a0        result[0x31].d = 0x3f800000\n1407054aa        *(result + 0x18c) = 0x40000000\n1407054b4        result[0x32].d = 0x3e4ccccd\n1407054be        *(result + 0x194) = 0x3f800000\n1407054cd        return result",
+  "fetched_at": "2026-04-26T17:27:15Z"
+}

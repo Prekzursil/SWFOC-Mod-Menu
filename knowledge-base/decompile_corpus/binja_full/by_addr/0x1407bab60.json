@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bab60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bab7d        int32_t* rsi = arg3\n1407bab92        void var_18\n1407bab92        if (sub_1407c8360(arg2, &var_18) == 0)\n1407bab92        rsi = arg2\n1407bab99        sub_1407bb2e0(arg1, rsi, \"perform arithmetic on\")\n1407bab99        noreturn",
+  "fetched_at": "2026-04-26T17:33:16Z"
+}

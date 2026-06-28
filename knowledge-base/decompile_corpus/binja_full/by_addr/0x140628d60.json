@@ -1,0 +1,7 @@
+{
+  "addr": "0x140628d60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140628d73        *arg1 = &WallBehaviorClass::`vftable'{for `BehaviorClass'}\n140628d80        arg1[1] = &WallBehaviorClass::`vftable'{for `RefCountClass'}\n140628d8b        arg1[3] = &WallBehaviorClass::`vftable'{for `SignalListenerClass'}\n140628d8f        sub_1404c3310(arg1)\n140628d97        if ((arg2 & 1) != 0)\n140628da1        j_sub_1407864b8(arg1)\n140628db3        return arg1",
+  "fetched_at": "2026-04-26T17:23:56Z"
+}

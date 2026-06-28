@@ -1,0 +1,7 @@
+{
+  "addr": "0x140039420",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14003943d        if (data_140b2a012 == 1 || data_140b29fc4 != 0)\n14003943d        return \n140039443        int32_t* rax = sub_14020e290()\n140039462        if (rax.b != 0 || *(arg1 + 0xee) == rax.b || *(arg1 + 0xef) != rax.b)\n140039462        return \n140039468        int64_t* rcx = data_140b15418\n140039472        if (rcx == 0)\n140039472        return \n14003947b        rax = (*(*rcx + 0xf0))(rcx)\n140039483        if (rax.b != 1)\n140039483        return \n140039490        *(arg1 + 0xef) = rax.b\n14003949b        void* rcx_1 = *(sub_140294a40(&data_140a16fd0) + 0x68)\n1400394a2        if (rcx_1 == 0)\n1400394a2        return \n1400394b7        float var_28[0x4]\n1400394b7        sub_1401f9320(&var_28, sub_14033e340(rcx_1, 0))\n1400394c3        if (data_140b15b21 != 0)\n1400394d1        float var_18[0x4]\n1400394d1        sub_1401f9320(&var_18, &data_140b15b24)\n1400394e0        var_28 = var_18\n1400394eb        float zmm1[0x4] = var_28\n1400394f8        data_140a61780 = zmm1[0]\n140039504        data_140a61784 = _mm_shuffle_ps(zmm1, zmm1, 0x55)[0]\n140039514        data_140a617c8 = zmm1\n14003951b        float temp0_2[0x4] = _mm_shuffle_ps(zmm1, zmm1, 0xaa)\n14003951f        data_140a6178c = 0x3e4ccccd\n140039527        data_140a61788 = temp0_2[0]\n140039539        return ",
+  "fetched_at": "2026-04-26T16:53:09Z"
+}

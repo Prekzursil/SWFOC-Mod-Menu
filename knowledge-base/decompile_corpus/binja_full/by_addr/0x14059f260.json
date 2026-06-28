@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059f260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14059f266        void* rax = *arg1\n14059f271        int32_t rbx = 0\n14059f278        int32_t result_1 = arg1[2].d\n14059f27e        if (rax != 0)\n14059f285        int32_t rbp_1 = 0\n14059f28c        int32_t r14_1 = sx.d(*(rax + 0x28))\n14059f294        if (r14_1 s> 0)\n14059f2b3        result_1 |= sub_140397350(*(**arg1 + (sx.q(rbp_1.b) << 3)))\n14059f2b5        rbp_1 += 1\n14059f2ba        do while (rbp_1 s< r14_1)\n14059f2c6        int64_t* rax_3 = arg1[1]\n14059f2cd        if (rax_3 != 0)\n14059f2cf        int32_t rdx_2 = sx.d(rax_3[5].b)\n14059f2d5        if (rdx_2 s> 0)\n14059f2e0        int64_t rax_4 = sx.q(rbx.b)\n14059f2e4        rbx += 1\n14059f2f1        result_1 |= *(*(*(*rax_3 + (rax_4 << 3)) + 0x298) + 0x1694)\n14059f2f9        do while (rbx s< rdx_2)\n14059f302        int32_t result = result_1 & 0xfffffffe\n14059f305        if (result == 0)\n14059f305        result = result_1\n14059f310        if (result != *(arg1 + 0x14))\n14059f312        *(arg1 + 0x14) = result\n14059f315        data_140a2bed8 = 1\n14059f321        return result",
+  "fetched_at": "2026-04-26T17:36:47Z"
+}

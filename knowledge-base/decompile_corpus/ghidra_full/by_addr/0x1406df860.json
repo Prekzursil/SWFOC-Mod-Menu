@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406df860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nRootLookupPerceptualEvaluatorClass::vfunction8_for_SignalGeneratorClass\n          (RootLookupPerceptualEvaluatorClass *this,undefined8 param_1)\n\n{\n  byte bVar1;\n  char cVar2;\n  int iVar3;\n  undefined7 extraout_var;\n  \n  iVar3 = FUN_1402205a0(param_1);\n  if (iVar3 != 0x10000) {\n    bVar1 = PerceptualEvaluatorClass::vfunction8_for_SignalGeneratorClass\n                      ((PerceptualEvaluatorClass *)this,param_1);\n    return CONCAT71(extraout_var,bVar1) & 0xffffffffffffff01;\n  }\n  bVar1 = 1;\n  cVar2 = FUN_140220610(param_1);\n  while (cVar2 != '\\0') {\n    iVar3 = FUN_140220710(param_1);\n    if (iVar3 == 0) {\n      FUN_140220800(param_1,&this[1].SignalGeneratorClass_data,0);\n    }\n    else {\n      bVar1 = 0;\n    }\n    FUN_1402206a0(param_1);\n    cVar2 = FUN_140220610(param_1);\n  }\n  FUN_1401ff040(&LAB_1406df330,this);\n  return (ulonglong)bVar1;\n}",
+  "fetched_at": "2026-04-26T17:44:55Z"
+}

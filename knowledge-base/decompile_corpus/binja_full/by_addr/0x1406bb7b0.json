@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bb7b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bb7ba        struct GenericMultiLinkedList::ReferenceListClass<class PlanBehaviorClass>::VTable** rbx = *(arg1 + 0x38)\n1406bb7c4        if (rbx == 0)\n1406bb83b        *(arg1 + 0x38) = 0\n1406bb843        *(arg1 + 0x40) = 0\n1406bb84c        return \n1406bb7d0        *rbx = &ReferenceListClass<class PlanBehaviorClass>::`vftable'{for `GenericMultiLinkedList'}\n1406bb7db        if (sub_14053bd80(rbx) != 0)\n1406bb808        int64_t i\n1406bb7e8        int64_t* arg_8\n1406bb7e8        void* rax_1 = sub_14020ac80(rbx, &arg_8)\n1406bb7f0        if (rax_1 != 0)\n1406bb7fa        (*(*(rax_1 + 0x10) + 8))(rax_1 + 0x10)\n1406bb800        i = sub_14053bd80(rbx)\n1406bb808        do while (i != 0)\n1406bb80d        sub_14020a960(rbx)\n1406bb81a        j_sub_1407864b8(rbx)\n1406bb81f        *(arg1 + 0x38) = 0\n1406bb827        *(arg1 + 0x40) = 0\n1406bb835        return ",
+  "fetched_at": "2026-04-26T17:24:54Z"
+}

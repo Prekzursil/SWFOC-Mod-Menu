@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053da00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053da0b        struct BehaviorClass::HideWhenFoggedBehaviorClass::VTable** result = operator new(0x60)\n14053da16        if (result == 0)\n14053da92        return result\n14053da1b        sub_1404c32d0(result)\n14053da37        *result = &HideWhenFoggedBehaviorClass::`vftable'{for `BehaviorClass'}\n14053da45        result[8].d = 0x3f800000\n14053da4c        result[1] = &HideWhenFoggedBehaviorClass::`vftable'{for `RefCountClass'}\n14053da59        *(result + 0x44) = 0x3f800000\n14053da61        result[3] = &HideWhenFoggedBehaviorClass::`vftable'{for `SignalListenerClass'}\n14053da67        *(result + 0x4c) = 0x3e800000\n14053da6e        *(result + 0x54) = 0x100\n14053da74        *(result + 0x56) = 0\n14053da77        result[0xb] = 0\n14053da7a        result[0xa].d = 1f / 0.25f\n14053da7f        sub_1404ad380(&result[0xb], 0)\n14053da8c        return result",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

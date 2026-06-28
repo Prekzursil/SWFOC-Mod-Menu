@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d1ed8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpaceShipPerceptualEvaluatorClass::vfunction1(SpaceShipPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  vfunction1((SpaceShipPerceptualEvaluatorClass *)&this[-1].SignalListenerClass_data.offset_0xd0,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:09Z"
+}

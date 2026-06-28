@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015caa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015caa4        int64_t r9 = sx.q(arg2)\n14015caaa        int64_t rdx = *(arg1 + 0x98)\n14015cab9        int128_t* r8 = (r9 + 1) * 0x2c\n14015cabd        int32_t* rax_1 = r9 * 0x2c\n14015cacd        float zmm4 = *(rax_1 + rdx + 4) f- *(r8 + rdx + 4)\n14015cad4        int128_t zmm5\n14015cad4        zmm5.d = (*(r8 + rdx)).d f- *(rax_1 + rdx)\n14015cae3        int128_t zmm6\n14015cae3        zmm6.d = zmm5.d f* zmm5.d\n14015cae7        zmm6.d = zmm6.d f+ zmm4 * zmm4\n14015caeb        float result = (zx.o(0)).d\n14015caf1        if (not(zmm6.d f<= 0f))\n14015cb03        float arg_10 = zmm6.d\n14015cb0d        zmm6.d = zmm6.d f* 0.5f\n14015cb32        float zmm2 = (1.5f - zmm6.d * (0x5f375a86 - (arg_10 s>> 1)) * (0x5f375a86 - (arg_10 s>> 1))) * (0x5f375a86 - (arg_10 s>> 1))\n14015cb3d        result = zmm2 f* zmm6.d * zmm2\n14015cb45        float zmm3 = (1.5f - result) * zmm2\n14015cb49        zmm4 = zmm4 * zmm3\n14015cb4d        zmm5.d = zmm5.d f* zmm3\n14015cb59        zmm5.d = zmm5.d f+ 1f\n14015cb6d        zmm5.d = zmm5.d f* 127.5f\n14015cb97        *(*(arg1 + 0xb0) + (r9 << 2)) = (zx.d((int.q((zmm4 + 1f) * 127.5f)).b) << 8 | zx.d((int.q(zmm5.d)).b)) << 8 | 0x7f\n14015cb9f        return result",
+  "fetched_at": "2026-04-26T17:22:31Z"
+}

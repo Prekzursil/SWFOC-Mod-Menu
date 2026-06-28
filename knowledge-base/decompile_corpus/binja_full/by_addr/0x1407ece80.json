@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ece80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ece8c        TEB* gsbase\n1407ece8c        void* ThreadLocalStoragePointer = gsbase->ThreadLocalStoragePointer\n1407ece9a        int64_t* rbx = 0x88 + *(ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))\n1407ece9e        int64_t rdx = rbx[3]\n1407ecea6        if (rdx u>= 0x10)\n1407ecea8        void* rcx_1 = *rbx\n1407eceb5        if (rdx + 1 u>= 0x1000)\n1407eceb7        void* r8_1 = *(rcx_1 - 8)\n1407ececa        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1407eceed        _invalid_parameter_noinfo_noreturn()\n1407eceed        noreturn\n1407ececc        rcx_1 = r8_1\n1407ececf        ThreadLocalStoragePointer = j_sub_1407864b8(rcx_1)\n1407eced4        rbx[2] = 0\n1407ecedc        rbx[3] = 0xf\n1407ecee4        *rbx = 0\n1407eceec        return ThreadLocalStoragePointer",
+  "fetched_at": "2026-04-26T17:36:11Z"
+}

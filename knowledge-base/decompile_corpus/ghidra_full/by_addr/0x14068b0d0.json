@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b0d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b0d0(void)\n\n{\n  SuperLaserAbilityClass *this;\n  \n  this = (SuperLaserAbilityClass *)FUN_140769c58(0x1e0);\n  if (this != (SuperLaserAbilityClass *)0x0) {\n    SuperLaserAbilityClass::SuperLaserAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:38Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402149d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402149d0(undefined8 param_1)\n\n{\n  FUN_140214a70(\"_warn_message_popup.txt\",param_1);\n  FUN_140214a70(\"_warn_message_popup.txt\",&DAT_140819c5c);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:23Z"
+}

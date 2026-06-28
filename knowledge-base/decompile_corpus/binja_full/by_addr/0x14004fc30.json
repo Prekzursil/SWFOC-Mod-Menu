@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004fc30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14004fc34        int64_t result = data_140a10960\n14004fc3e        if (result != 0)\n14004fcba        return result\n14004fc45        struct TheAIDataManagerClass::VTable** rax = operator new(0x88)\n14004fc4d        if (rax == 0)\n14004fc60        data_140a10960 = 0\n14004fc57        data_140a10960 = sub_1404747e0(rax)\n14004fc6b        int32_t* rdx_1 = data_140a7bc10\n14004fc79        bool cond:0_1 = rdx_1 == data_140a7bc18\n14004fc80        void** arg_8 = &data_140a10958\n14004fc85        if (cond:0_1)\n14004fcaa        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n14004fcaf        return data_140a10960\n14004fc87        *rdx_1 = &data_140a10958\n14004fc8a        data_140a7bc10 += 8\n14004fc9d        return data_140a10960",
+  "fetched_at": "2026-04-26T16:54:40Z"
+}

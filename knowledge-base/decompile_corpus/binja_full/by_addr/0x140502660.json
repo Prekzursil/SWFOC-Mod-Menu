@@ -1,0 +1,7 @@
+{
+  "addr": "0x140502660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140502664        int64_t rcx = data_140a2bdf8\n14050266e        if (rcx == 0)\n14050266e        return \n14050267a        if ((data_140a2be04 & 0x80000000) == 0)\n140502696        j_sub_1407864b8(rcx)\n14050268e        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a2bdf8)\n14050269d        data_140a2be04 &= 0x80000000\n1405026a7        data_140a2bdf8 = 0\n1405026ae        data_140a2be00 = 0\n1405026b8        return ",
+  "fetched_at": "2026-04-26T17:31:57Z"
+}

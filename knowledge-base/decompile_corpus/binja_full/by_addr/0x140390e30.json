@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390e30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140390e36        struct BaseDataPackClass::SpawnIndigenousUnitsDataPackClass::VTable** rax = *(arg1 + 0x120)\n140390e43        if (rax == 0)\n140390e48        rax = operator new(zx.q((&rax[8]).d))\n140390e50        if (rax != 0)\n140390e55        struct BaseDataPackClass::SpawnIndigenousUnitsDataPackClass::VTable** rax_1 = sub_14055c0d0(rax)\n140390e5a        *(arg1 + 0x120) = rax_1\n140390e66        return rax_1\n140390e67        *(arg1 + 0x120) = rax\n140390e73        return rax",
+  "fetched_at": "2026-04-26T17:22:01Z"
+}

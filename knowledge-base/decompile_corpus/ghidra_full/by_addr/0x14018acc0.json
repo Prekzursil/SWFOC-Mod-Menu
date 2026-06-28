@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018acc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14018acc0(char *param_1,char *param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  int iVar3;\n  longlong lVar4;\n  char *pcVar5;\n  longlong lVar6;\n  char acStack_119 [260];\n  undefined1 local_15;\n  \n  strncpy(acStack_119 + 1,param_2,0x103);\n  local_15 = 0;\n  lVar6 = -1;\n  do {\n    lVar4 = lVar6 + 1;\n    lVar2 = lVar6 + 2;\n    lVar6 = lVar4;\n  } while (acStack_119[lVar2] != '\\0');\n  iVar3 = (int)lVar4 + -1;\n  lVar6 = (longlong)iVar3;\n  if (-1 < iVar3) {\n    do {\n      cVar1 = acStack_119[lVar6 + 1];\n      if (cVar1 == '.') {\n        acStack_119[lVar6 + 1] = '\\0';\n      }\n      else if ((cVar1 == '/') || (cVar1 == '\\\\')) break;\n      lVar6 = lVar6 + -1;\n    } while (-1 < lVar6);\n  }\n  pcVar5 = acStack_119;\n  do {\n    pcVar5 = pcVar5 + 1;\n    cVar1 = *pcVar5;\n    pcVar5[(longlong)param_1 - (longlong)(acStack_119 + 1)] = cVar1;\n  } while (cVar1 != '\\0');\n  _strupr(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:50Z"
+}

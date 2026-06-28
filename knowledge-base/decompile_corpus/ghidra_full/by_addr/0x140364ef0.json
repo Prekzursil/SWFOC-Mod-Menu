@@ -1,0 +1,7 @@
+{
+  "addr": "0x140364ef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GameModeClass member function inherited by GalacticModeClass\n   GameModeClass member function inherited by SpaceModeClass */\n\nvoid __thiscall GameModeClass::vfunction57(void)\n\n{\n  FUN_1401f9440();\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:29Z"
+}

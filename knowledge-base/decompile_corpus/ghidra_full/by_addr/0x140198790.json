@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dRenderTarget * __thiscall\nalD3dRenderTarget::scalar_deleting_destructor(alD3dRenderTarget *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: alD3dRenderTarget::~alD3dRenderTarget */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  if (*(longlong **)&this->field_0x40 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x40 + 0x10))();\n    *(undefined8 *)&this->field_0x40 = 0;\n  }\n  if (*(longlong **)&this->field_0x38 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x38 + 8))();\n    *(undefined8 *)&this->field_0x38 = 0;\n  }\n  alD3dResource::~alD3dResource((alD3dResource *)&this->vftablePtr);\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (alD3dRenderTarget_vftable0 *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x68);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

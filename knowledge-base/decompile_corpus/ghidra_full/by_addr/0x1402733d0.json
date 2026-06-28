@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402733d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall RtsSceneClass::vfunction5(void)\n\n{\n  return &DAT_140a16d20;\n}",
+  "fetched_at": "2026-04-26T18:20:17Z"
+}

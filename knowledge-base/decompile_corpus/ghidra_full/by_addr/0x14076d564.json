@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d564",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _IsExceptionObjectToBeDestroyed\n   \n   Library: Visual Studio 2019 Release */\n\nundefined4 _IsExceptionObjectToBeDestroyed(longlong param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n  lVar1 = FUN_14076d8ec();\n  plVar2 = *(longlong **)(lVar1 + 0x58);\n  while( true ) {\n    if (plVar2 == (longlong *)0x0) {\n      return 1;\n    }\n    if (*plVar2 == param_1) break;\n    plVar2 = (longlong *)plVar2[1];\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:11:03Z"
+}

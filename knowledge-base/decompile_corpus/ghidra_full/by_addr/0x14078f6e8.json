@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f6e8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wctomb_s\n   \n   Library: Visual Studio 2019 Release */\n\nerrno_t __cdecl wctomb_s(int *_SizeConverted,char *_MbCh,rsize_t _SizeInBytes,wchar_t _WCh)\n\n{\n  errno_t eVar1;\n  \n  eVar1 = _wctomb_s_l(_SizeConverted,_MbCh,_SizeInBytes,_WCh,(_locale_t)0x0);\n  return eVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e370",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TreeCullClass * __thiscall TreeCullClass::TreeCullClass(TreeCullClass *this)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  TreeCullClass *local_res8;\n  \n  this->vftablePtr = &vftable;\n  lVar2 = 0;\n  (this->TreeCullClass_data).offset_0x0 = 0;\n  lVar1 = FUN_140769c58(0xf0);\n  if (lVar1 != 0) {\n    FUN_14076c430(lVar1,0,0xf0);\n    lVar2 = FUN_1402115c0(lVar1);\n  }\n  (this->TreeCullClass_data).offset_0x8 = lVar2;\n  *(undefined2 *)(lVar2 + 0x48) = 0;\n  (this->TreeCullClass_data).offset_0x10 = 0;\n  (this->TreeCullClass_data).offset_0x1c = 0;\n  (this->TreeCullClass_data).offset_0x28 = 0;\n  (this->TreeCullClass_data).offset_0x18 = 0;\n  (this->TreeCullClass_data).offset_0x20 = 0x43fa0000;\n  if (DAT_140a7c688 == DAT_140a7c690) {\n    local_res8 = this;\n    FUN_14001ded0(&DAT_140a7c680,DAT_140a7c688,&local_res8);\n    return this;\n  }\n  *DAT_140a7c688 = this;\n  DAT_140a7c688 = DAT_140a7c688 + 1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:13Z"
+}

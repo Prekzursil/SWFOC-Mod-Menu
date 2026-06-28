@@ -1,0 +1,7 @@
+{
+  "addr": "0x140711278",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nVehicleThiefAbilityClass::vfunction3_for_RefCountClass(VehicleThiefAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((VehicleThiefAbilityClass *)&this[-1].VehicleThiefAbilityClass_data.offset_0x8,param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140496460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404964e2        int64_t r8_15 = ((((((((((((((zx.q(arg3[2].b) ^ 0xcbf29ce484222325) * 0x100000001b3) ^ zx.q(*(arg3 + 0x11))) * 0x100000001b3) ^ zx.q(*(arg3 + 0x12))) * 0x100000001b3) ^ zx.q(*(arg3 + 0x13))) * 0x100000001b3) ^ zx.q(*(arg3 + 0x14))) * 0x100000001b3) ^ zx.q(*(arg3 + 0x15))) * 0x100000001b3) ^ zx.q(*(arg3 + 0x16))) * 0x100000001b3) ^ zx.q(*(arg3 + 0x17))\n1404964f0        int64_t* rdx_3 = ((*(arg1 + 0x30) & (r8_15 * 0x100000001b3)) << 4) + *(arg1 + 0x18)\n1404964f4        int64_t rax_7 = *rdx_3\n1404964fb        if (rdx_3[1] != arg3)\n14049651c        if (rax_7 == arg3)\n140496521        *rdx_3 = *arg3\n140496500        if (rax_7 != arg3)\n140496513        rdx_3[1] = arg3[1]\n140496502        int64_t rax_8 = *(arg1 + 8)\n140496506        *rdx_3 = rax_8\n140496509        rdx_3[1] = rax_8\n140496524        void* rdi = *arg3\n14049652b        *(arg1 + 0x10) -= 1\n140496533        *arg3[1] = rdi\n14049653a        *(rdi + 8) = arg3[1]\n14049653e        sub_14027ec50(&arg3[2])\n14049654b        j_sub_1407864b8(arg3)\n140496558        *arg2 = rdi\n140496565        return arg2",
+  "fetched_at": "2026-04-26T17:29:11Z"
+}

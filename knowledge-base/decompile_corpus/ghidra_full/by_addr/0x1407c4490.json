@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c4490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407c4490(undefined8 *param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  longlong local_res10;\n  \n  FUN_1407c3980(param_1,&local_res10,8);\n  if (local_res10 == 0) {\n    return 0;\n  }\n  uVar2 = FUN_1407c3890(*param_1,param_1[2],local_res10);\n  iVar1 = FUN_1407c38e0(param_1[1],uVar2,(longlong)(int)local_res10);\n  if (iVar1 != 0) {\n    FUN_1407bad30(*param_1,\"unexpected end of file in %s\",param_1[5]);\n  }\n  uVar2 = FUN_1407bf8f0(*param_1,uVar2,local_res10 + -1);\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:57:01Z"
+}

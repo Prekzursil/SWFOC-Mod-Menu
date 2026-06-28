@@ -1,0 +1,7 @@
+{
+  "addr": "0x140255880",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025588f        int64_t* rbx = *(arg3 + 0x10)\n1402558a0        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1402558a8        if (r8_2 != 1)\n1402558b4        sub_140248190(arg2, \"GlobalValue::Get -- Invalid number of parameters %d should be 1\", r8_2)\n1402558ca        return 0\n1402558cb        int64_t* rbx_1 = *rbx\n1402558d1        void* rax_3\n1402558d1        if (rbx_1 != 0)\n1402558d9        rax_3, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1402558df        if (rbx_1 == 0 || rax_3 == 0)\n140255900        label_140255900:\n140255900        sub_140248190(arg2, \"GlobalValue::Get -- Invalid parameter 1, should be a string.\", r8_2)\n1402558eb        while (true)\n1402558eb        if (rax_3 == &data_140a157d0)\n14025593f        void var_18\n14025593f        void* rdx_2 = sub_14011f570(&data_140b0a060, &var_18, &rbx_1[2], sub_14011f9c0(&data_140b0a060, &rbx_1[2]))[1]\n14025594f        if (rdx_2 != 0 && rdx_2 != data_140b0a068)\n140255967        return sub_140256d40(arg1, *(rdx_2 + 0x30)) __tailcall\n14025594f        break\n1402558ed        rax_3 = *(rax_3 + 8)\n1402558f4        if (rax_3 == 0)\n1402558f4        goto label_140255900\n140255916        return 0",
+  "fetched_at": "2026-04-26T17:30:46Z"
+}

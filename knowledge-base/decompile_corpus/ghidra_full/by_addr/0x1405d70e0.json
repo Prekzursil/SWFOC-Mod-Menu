@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d70e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalUnderConstructionBehaviorClass * __thiscall\nTacticalUnderConstructionBehaviorClass::vfunction4\n          (TacticalUnderConstructionBehaviorClass *this,int param_1)\n\n{\n  TacticalUnderConstructionBehaviorClass *pTVar1;\n  \n  pTVar1 = (TacticalUnderConstructionBehaviorClass *)0x0;\n  if (param_1 == 0x2a) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T18:45:35Z"
+}

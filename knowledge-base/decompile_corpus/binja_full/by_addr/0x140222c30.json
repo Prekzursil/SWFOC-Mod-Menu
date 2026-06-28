@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140222c4c        int32_t result = (*(*arg2 + 0x48))(arg2)\n140222c4f        int32_t result_2 = result\n140222c53        if (result != 0)\n140222c60        int32_t rcx_2\n140222c60        if (*(arg1 + 0x9c) != 0)\n140222cbc        rcx_2 = *(arg1 + 0x90)\n140222c6a        if (*(arg1 + 0x88) == 0)\n140222c6c        int16_t temp0_1\n140222c6c        int32_t temp1_1\n140222c6c        temp0_1:temp1_1 = sx.q(result)\n140222c7c        int32_t rax_5 = (((temp1_1 + zx.d(temp0_1)) s>> 0x10) + 1) << 0x10\n140222c7f        *(arg1 + 0x98) = rax_5\n140222ca1        *(arg1 + 0x88) = HeapAlloc(GetProcessHeap(), HEAP_NONE, sx.q(rax_5))\n140222ca8        rcx_2 = 0\n140222caa        *(arg1 + 0x9c) = 1\n140222cb1        *(arg1 + 0x90) = 0\n140222cb7        *(arg1 + 8) = 0\n140222cc2        int32_t rdx_2 = *(arg1 + 0x98)\n140222cce        if (result_2 s> rdx_2 - rcx_2)\n140222cd8        sub_140222d30(arg1, result_2 + rcx_2 - rdx_2)\n140222cdd        rcx_2 = *(arg1 + 0x90)\n140222cf6        (*(*arg2 + 0x28))(arg2, sx.q(rcx_2) + *(arg1 + 0x88), zx.q(result_2))\n140222cf9        result = *(arg1 + 0x94)\n140222d05        int32_t result_1 = *(arg1 + 0x90) + result_2\n140222d09        if (result s<= result_1)\n140222d09        result = result_1\n140222d0c        *(arg1 + 0x94) = result\n140222d22        return result",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

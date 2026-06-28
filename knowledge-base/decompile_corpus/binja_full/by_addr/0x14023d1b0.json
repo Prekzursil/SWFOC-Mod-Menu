@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023d1b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023d1cc        if (arg2 != 0)\n14023d1d9        EnterCriticalSection(arg1 + 0xe0)\n14023d1ef        *(arg2 + 0x90) = timeGetTime() - data_140a7bec0\n14023d1f9        (**(arg2 + 0x60))(arg2 + 0x60)\n14023d1ff        void* rbp_1 = **(arg1 + 0x30)\n14023d210        if (*(arg1 + 0x38) == 0xaaaaaaaaaaaaaaa)\n14023d282        std::_Xruntime_error(\"list too long\")\n14023d282        noreturn\n14023d21c        void** rax_4 = operator new(0x18)\n14023d228        rax_4[2] = arg2\n14023d22c        int64_t rdx = *(arg2 + 0x60)\n14023d230        (*rdx)(arg2 + 0x60, rdx)\n14023d232        *(arg1 + 0x38) += 1\n14023d23a        void** rdx_1 = *(rbp_1 + 8)\n14023d23e        *rax_4 = rbp_1\n14023d241        rax_4[1] = rdx_1\n14023d245        *(rbp_1 + 8) = rax_4\n14023d249        *rdx_1 = rax_4\n14023d250        (*(*(arg2 + 0x60) + 8))(arg2 + 0x60)\n14023d25a        LeaveCriticalSection(arg1 + 0xe0)\n14023d26a        int64_t result\n14023d26a        result.b = 1\n14023d27a        return result",
+  "fetched_at": "2026-04-26T17:30:06Z"
+}

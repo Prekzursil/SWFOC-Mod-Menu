@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026a310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026a330        int32_t* result = GetCurrentThreadId()\n14026a345        if (result.d != data_140a155d0 || data_140a62740 == 0)\n14026a34b        int32_t zmm1 = *arg2\n14026a357        result = arg5\n14026a35c        *(arg1 + 0x47c) = arg2[1]\n14026a364        *(arg1 + 0x478) = zmm1\n14026a36c        *(arg1 + 0x480) = 0\n14026a372        zmm1 = *arg3\n14026a37b        *(arg1 + 0x488) = arg3[1]\n14026a383        *(arg1 + 0x484) = zmm1\n14026a38b        *(arg1 + 0x48c) = 0\n14026a391        zmm1 = *arg4\n14026a39a        *(arg1 + 0x494) = arg4[1]\n14026a3a2        *(arg1 + 0x490) = zmm1\n14026a3aa        *(arg1 + 0x498) = 0\n14026a3b0        zmm1 = *result\n14026a3b9        *(arg1 + 0x4a0) = result[1]\n14026a3c1        *(arg1 + 0x49c) = zmm1\n14026a3d1        *(arg1 + 0x4a4) = 0\n14026a40b        float zmm2 = arg2[1] f+ arg3[1] f+ arg4[1] f+ result[1]\n14026a414        float zmm3 = (*arg2 f+ *arg3 f+ *arg4 f+ *result) * 0.25f\n14026a418        *(arg1 + 0x4b0) = (arg2[2] f+ arg3[2] f+ arg4[2] f+ result[2]) * 0.25f\n14026a42c        *(arg1 + 0x4a8) = zmm3\n14026a434        *(arg1 + 0x4ac) = zmm2 * 0.25f\n14026a443        if (not(1f f== *(arg1 + 0xa0)))\n14026a448        return sub_14026b350(arg1)\n14026a461        return result",
+  "fetched_at": "2026-04-26T17:31:38Z"
+}

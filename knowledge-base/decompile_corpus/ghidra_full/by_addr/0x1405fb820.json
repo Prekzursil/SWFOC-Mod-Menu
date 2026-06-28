@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fb820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass\n   TaskForceClass member function inherited by SpaceTaskForceClass\n   TaskForceClass member function inherited by LandTaskForceClass */\n\nundefined8 * __thiscall TaskForceClass::vfunction2(TaskForceClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x28);\n  if (puVar1 != (undefined8 *)0x0) {\n    *puVar1 = &AITaskForceDiagnosticsNodeClass::vftable;\n    puVar1[1] = &this[-1].offset_0x58;\n    puVar1[2] = 0;\n    puVar1[3] = 0;\n    puVar1[4] = 0;\n    FUN_1405fb880(puVar1);\n    return puVar1;\n  }\n  return (undefined8 *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:24:11Z"
+}

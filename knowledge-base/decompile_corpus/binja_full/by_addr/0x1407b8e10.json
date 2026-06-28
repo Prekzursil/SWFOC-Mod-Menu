@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8e10",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_getmetatable",
+  "body": "1407b8e19        void* rax_2\n1407b8e19        if (arg2 s<= 0)\n1407b8e3a        rax_2 = sub_1407b9f20(arg1, arg2)\n1407b8e3f        label_1407b8e3f:\n1407b8e42        if (rax_2 != 0)\n1407b8e44        int32_t rcx = *rax_2\n1407b8e4e        if (rcx == 5 || rcx == 7)\n1407b8e54        int64_t rcx_1 = *(*(rax_2 + 8) + 0x10)\n1407b8e68        if (rcx_1 != 0 && rcx_1 != *(*(arg1 + 0x20) + 0x98))\n1407b8e6a        int32_t* rax_6 = *(arg1 + 0x10)\n1407b8e6e        *rax_6 = 5\n1407b8e74        *(rax_6 + 8) = rcx_1\n1407b8e7d        *(arg1 + 0x10) += 0x10\n1407b8e86        return 1\n1407b8e2a        rax_2 = *(arg1 + 0x18) - 0x10 + (sx.q(arg2) << 4)\n1407b8e31        if (rax_2 u< *(arg1 + 0x10))\n1407b8e31        goto label_1407b8e3f\n1407b8e39        return 0",
+  "fetched_at": "2026-04-26T16:44:25Z"
+}

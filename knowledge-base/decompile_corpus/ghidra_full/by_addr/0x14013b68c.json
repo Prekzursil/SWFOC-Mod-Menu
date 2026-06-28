@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b68c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alBlob::vfunction1(alBlob *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alBlob *)&this[-1].alBlob_data.offset_0x80,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:45Z"
+}

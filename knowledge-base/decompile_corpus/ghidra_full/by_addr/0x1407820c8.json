@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407820c8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Different Base Names\n    _itow\n    _ltow\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nwchar_t * __cdecl FID_conflict__ltow(long _Value,wchar_t *_Dest,int _Radix)\n\n{\n  bool bVar1;\n  \n  bVar1 = false;\n  if ((_Radix == 10) && (bVar1 = false, _Value < 0)) {\n    bVar1 = true;\n  }\n  common_xtox<unsigned_long,wchar_t>(_Value,_Dest,0xffffffffffffffff,_Radix,bVar1);\n  return _Dest;\n}",
+  "fetched_at": "2026-04-26T18:51:10Z"
+}

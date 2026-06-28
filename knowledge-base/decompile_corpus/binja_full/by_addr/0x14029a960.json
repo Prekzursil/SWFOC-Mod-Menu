@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029a960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14029a96a        int64_t lpMem = arg1[1]\n14029a96e        struct DynamicVectorClass<struct GameObjectManagerClass::CreationParamsStruct>::VTable* const result = &DynamicVectorClass<struct GameObjectManagerClass::CreationParamsStruct>::`vftable'\n14029a975        *arg1 = &DynamicVectorClass<struct GameObjectManagerClass::CreationParamsStruct>::`vftable'\n14029a97e        if (lpMem != 0)\n14029a987        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n14029a9a2        j_sub_1407864b8(lpMem)\n14029a997        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14029a9a7        result = nullptr\n14029a9a9        *(arg1 + 0x14) &= 0x80000000\n14029a9b0        arg1[1] = 0\n14029a9b4        arg1[2].d = 0\n14029a9c1        return result",
+  "fetched_at": "2026-04-26T17:32:43Z"
+}

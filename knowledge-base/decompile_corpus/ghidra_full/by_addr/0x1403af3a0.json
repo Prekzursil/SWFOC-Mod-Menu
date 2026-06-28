@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403af3a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nMoveObjectToObjectEventClass::vfunction6(MoveObjectToObjectEventClass *this,longlong param_1)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  \n  if (param_1 == 0) {\n    return 0;\n  }\n  bVar1 = ScheduledEventClass::vfunction6((ScheduledEventClass *)this,param_1);\n  bVar2 = FUN_1402046f0(param_1,*(undefined4 *)&this[1].vftablePtr,0x20);\n  bVar3 = FUN_1402046f0(param_1,*(undefined4 *)((longlong)&this[1].vftablePtr + 4),0x20);\n  return bVar3 & bVar1 & bVar2;\n}",
+  "fetched_at": "2026-04-26T17:33:58Z"
+}

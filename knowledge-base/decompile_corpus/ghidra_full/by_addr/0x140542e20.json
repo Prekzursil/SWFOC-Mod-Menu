@@ -1,0 +1,7 @@
+{
+  "addr": "0x140542e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nLuaLetterBoxIn::vfunction11(LuaLetterBoxIn *this,undefined8 param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  longlong *plVar3;\n  \n  if (*(longlong *)(param_2 + 0x18) - (longlong)*(longlong **)(param_2 + 0x10) >> 3 == 0) {\n    FUN_140248190(param_1,\"LuaLetterBoxIn -- Expected float parameter 1\");\n    return 0;\n  }\n  plVar1 = (longlong *)**(longlong **)(param_2 + 0x10);\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)*plVar1)(plVar1);\n    for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n        puVar2 = *(undefined **)(puVar2 + 8)) {\n      if (puVar2 == &DAT_140a157c0) {\n        (**(code **)*plVar1)(plVar1);\n        plVar3 = plVar1;\n        goto LAB_140542e9d;\n      }\n    }\n  }\n  plVar3 = (longlong *)0x0;\n  if (plVar1 != (longlong *)0x0) {\nLAB_140542e9d:\n    (**(code **)(*plVar1 + 8))(plVar1);\n  }\n  if (plVar3 == (longlong *)0x0) {\n    FUN_140248190(param_1,\"LuaLetterBoxIn -- Invalid parameter 1, expected a float\");\n    FUN_14044b550(&DAT_140a28c10,DAT_1408007c0);\n    return 0;\n  }\n  FUN_14044b550(&DAT_140a28c10,(float)(double)plVar3[2]);\n  (**(code **)(*plVar3 + 8))(plVar3);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:17Z"
+}

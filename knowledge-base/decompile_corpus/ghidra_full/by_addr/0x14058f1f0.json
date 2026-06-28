@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f1f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall BombBehaviorClass::vfunction9(void)\n\n{\n  return \"BombBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:42:01Z"
+}

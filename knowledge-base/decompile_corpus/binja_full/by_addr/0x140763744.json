@@ -1,0 +1,7 @@
+{
+  "addr": "0x140763744",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076375b        char rsi = 0\n14076375d        int32_t arg_8 = 0\n14076376c        if (arg1 != 0 && *arg1 == 0)\n140763775        struct std::_Mpunct<char>::std::moneypunct<char, 0>::VTable** rax_1 = operator new(0x78)\n14076377a        struct std::_Mpunct<char>::std::moneypunct<char, 0>::VTable** rbx_1 = rax_1\n14076377d        struct std::_Mpunct<char>::std::moneypunct<char, 0>::VTable** arg_18 = rax_1\n140763788        void var_88\n140763788        if (rax_1 == 0)\n1407637ed        rbx_1 = nullptr\n14076378a        void* rax_2 = *(arg2 + 8)\n140763791        void* rdx\n140763791        if (rax_2 == 0)\n1407637a2        rdx = &data_1407ff8a8\n140763793        rdx = *(rax_2 + 0x28)\n14076379a        if (rdx == 0)\n14076379c        rdx = rax_2 + 0x30\n1407637ae        int32_t* rax_3 = std::_Locinfo::_Locinfo(&var_88, rdx)\n1407637b4        rsi = 1\n1407637b9        arg_8 = 1\n1407637c0        rbx_1[1].d = 0\n1407637cb        *rbx_1 = &std::_Mpunct<char>::`vftable'{for `std::money_base'}\n1407637ce        *(rbx_1 + 0x44) = 0\n1407637db        std::_Mpunct<char>::_Init(rbx_1, rax_3, 1)\n1407637e8        *rbx_1 = &std::moneypunct<char, 0>::`vftable'{for `std::_Mpunct<char>'}\n1407637ef        *arg1 = rbx_1\n1407637f6        if ((rsi & 1) != 0)\n1407637fd        std::_Locinfo::~_Locinfo(&var_88)\n140763819        return 3",
+  "fetched_at": "2026-04-26T17:30:11Z"
+}

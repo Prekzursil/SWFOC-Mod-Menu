@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012d2c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012d2cf        int64_t rdi = sx.q(arg2)\n14012d2da        if (arg2 s>= 0 && rdi.d s< sub_140145fa0(arg1[0x1d]))\n14012d2f6        (*(*arg1 + 0x78))(arg1)\n14012d308        int32_t* rcx_4 = rdi * 0x30 + *(arg1[0x1d] + 0x28)\n14012d30e        *arg3 = *rcx_4\n14012d313        arg3[1] = rcx_4[1]\n14012d319        arg3[2] = rcx_4[2]\n14012d31f        arg3[3] = rcx_4[3]\n14012d325        arg3[4] = rcx_4[4]\n14012d32b        arg3[5] = rcx_4[5]\n14012d331        arg3[6] = rcx_4[6]\n14012d337        arg3[7] = rcx_4[7]\n14012d33d        arg3[8] = rcx_4[8]\n14012d343        arg3[9] = rcx_4[9]\n14012d349        arg3[0xa] = rcx_4[0xa]\n14012d34f        arg3[0xb] = rcx_4[0xb]\n14012d352        int32_t result\n14012d352        result.b = 1\n14012d363        return result\n14012d36b        *(arg3 + 8) = 0\n14012d36f        arg3[4] = 0\n14012d372        *(arg3 + 0x1c) = 0\n14012d376        arg3[9] = 0\n14012d379        *arg3 = 0x3f800000\n14012d380        *(arg3 + 0x14) = 0x3f800000\n14012d388        *(arg3 + 0x28) = 0x3f800000\n14012d39a        return 0",
+  "fetched_at": "2026-04-26T17:08:20Z"
+}

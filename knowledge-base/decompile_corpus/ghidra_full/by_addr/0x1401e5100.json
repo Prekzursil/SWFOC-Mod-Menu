@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e5100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetEditboxClass::vfunction27(GUIGadgetEditboxClass *this)\n\n{\n  undefined1 *puVar1;\n  undefined1 local_18 [12];\n  undefined4 local_c;\n  \n  (this->GUIGadgetEditboxClass_data).offset_0x84 = 0xf;\n  (this->GUIGadgetEditboxClass_data).offset_0x80 = 0;\n  FUN_1401f92f0(local_18);\n  puVar1 = &(this->GUIGadgetEditboxClass_data).field_0x1a8;\n  local_c = 0;\n  (**(code **)(*(longlong *)puVar1 + 0x28))(puVar1,local_18);\n  FUN_1401f9440(local_18);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:15Z"
+}

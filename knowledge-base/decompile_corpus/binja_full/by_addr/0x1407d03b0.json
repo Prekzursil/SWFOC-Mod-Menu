@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d03b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d03c4        int512_t zmm0\n1407d03c4        int512_t zmm1\n1407d03c4        zmm0, zmm1 = sub_1407b9540(arg1, \"LUA_PATH\")\n1407d03d1        sub_1407b8e90(arg1, 0xffffd8ef, zmm0, zmm1)\n1407d03de        int64_t rax = sub_1407b9cc0(arg1, 0xffffffff)\n1407d03ee        sub_1407b9ab0(arg1, 0xfffffffe)\n1407d03f6        if (rax != 0)\n1407d0405        return rax\n1407d040d        char const* const rax_2 = j_common_getenv<char>(\"LUA_PATH\")\n1407d0415        if (rax_2 != 0)\n1407d0428        return rax_2\n1407d0417        return \"?;?.lua\"",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

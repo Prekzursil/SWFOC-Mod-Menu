@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a1f00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a1f0a        int64_t* r11 = arg4\n1401a1f16        if (arg2 != arg3)\n1401a1f24        int64_t* r10_2 = arg4 - arg2\n1401a1f27        int64_t* rax_1 = arg2 + 0x20\n1401a1f30        int64_t r8 = rax_1[-2]\n1401a1f34        int64_t rdx = rax_1[-3]\n1401a1f38        int64_t rcx = rax_1[-4]\n1401a1f44        __builtin_memset(&rax_1[-4], 0, 0x20)\n1401a1f48        *(r10_2 + rax_1 - 0x18) = rdx\n1401a1f4d        *r11 = rcx\n1401a1f50        r11 = &r11[9]\n1401a1f54        *(r10_2 + rax_1 - 0x10) = r8\n1401a1f59        int64_t r8_1 = rax_1[1]\n1401a1f5d        int64_t rdx_1 = *rax_1\n1401a1f60        int64_t rcx_1 = rax_1[-1]\n1401a1f68        __builtin_memset(rax_1, 0, 0x28)\n1401a1f6f        *(r10_2 + rax_1) = rdx_1\n1401a1f73        *(r10_2 + rax_1 - 8) = rcx_1\n1401a1f78        *(r10_2 + rax_1 + 8) = r8_1\n1401a1f81        int64_t r9 = rax_1[4]\n1401a1f85        int64_t r8_2 = rax_1[3]\n1401a1f95        *(r10_2 + rax_1 + 0x10) = rax_1[2]\n1401a1f9a        *(r10_2 + rax_1 + 0x18) = r8_2\n1401a1f9f        *(r10_2 + rax_1 + 0x20) = r9\n1401a1fa4        rax_1 = &rax_1[9]\n1401a1faf        do while (&rax_1[-4] != arg3)\n1401a1fcd        return sub_1401a1500(r11, r11) __tailcall",
+  "fetched_at": "2026-04-26T17:24:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404737c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404737ca        int64_t* result = *(arg1 + 0x28)\n1404737d1        int64_t* i = *result\n1404737d7        if (i != result)\n1404737f0        void* rdi_1 = i[5]\n1404737fb        sub_1404c4ec0(rdi_1 + 0x208)\n140473807        sub_1404c4ec0(rdi_1 + 0x218)\n140473813        sub_1404c4ec0(rdi_1 + 0x438)\n140473820        if (*(rdi_1 + 0x420) u> 0)\n140473835        *(rdi_1 + 0x430) = sub_140407c00(&data_140b2f020, rdi_1 + 0x410)\n14047383c        result = i[2]\n140473844        if (*(result + 0x19) == 0)\n140473868        int64_t* rcx_3 = *result\n14047386b        i = result\n140473872        if (*(rcx_3 + 0x19) == 0)\n140473880        result = *rcx_3\n140473883        i = rcx_3\n140473886        rcx_3 = result\n14047388d        do while (*(result + 0x19) == 0)\n140473846        result = i[1]\n14047384e        if (*(result + 0x19) == 0)\n140473854        while (i == result[2])\n140473856        i = result\n140473859        result = result[1]\n140473861        if (*(result + 0x19) != 0)\n140473861        break\n140473863        i = result\n140473893        do while (i != *(arg1 + 0x28))\n1404738a8        return result",
+  "fetched_at": "2026-04-26T17:28:10Z"
+}

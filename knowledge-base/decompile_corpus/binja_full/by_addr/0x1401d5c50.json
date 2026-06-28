@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d5c50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d5c5a        int64_t rax = *(arg1 + 0xf8)\n1401d5c71        float temp0[0x4] = __minss_xmmss_memss((*(arg1 + 0x9c))[0], 0x3f800000)\n1401d5c7e        float zmm7[0x4] = *(arg1 + 0xb8)\n1401d5c8d        (*(rax + 0x80))(arg1 + 0xf8)\n1401d5c93        int64_t rax_1 = *(arg1 + 0xf8)\n1401d5ca1        zmm7[0] = zmm7[0] - arg2\n1401d5ca8        zmm7[0] = zmm7[0] * temp0[0]\n1401d5cac        float zmm6[0x4] = *(arg1 + 0xb8)\n1401d5cb4        float temp0_1[0x4] = _mm_max_ss(zmm7[0], 0)\n1401d5cb8        (*(rax_1 + 0x80))(arg1 + 0xf8)\n1401d5cbe        zmm6[0] = zmm6[0] - 0f\n1401d5cc9        int64_t rax_2 = *(arg1 + 0x218)\n1401d5ccc        float temp0_2[0x4] = _mm_min_ss(zmm6[0], temp0_1[0])\n1401d5cd0        (*(rax_2 + 0x70))(arg1 + 0x218)\n1401d5cf3        return 0f f+ *(arg1 + 0xb0) + temp0_2[0]",
+  "fetched_at": "2026-04-26T17:26:46Z"
+}

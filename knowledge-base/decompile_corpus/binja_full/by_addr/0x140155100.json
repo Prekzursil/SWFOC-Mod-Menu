@@ -1,0 +1,7 @@
+{
+  "addr": "0x140155100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015511a        *arg2 = 0\n14015511f        *arg3 = 0\n140155125        *arg4 = 0\n14015512b        *(arg1 + 0x18c) = 0\n140155132        *(arg1 + 0x194) = 0\n14015513c        int64_t result = sub_14022fe40(arg1 + 0x20)\n140155143        if (result.d s> 0)\n140155149        char rcx_1 = data_140a12554\n14015515b        if (rcx_1 == 0 && (*(arg1 + 0xfc) & 1) != 0)\n140155162        *arg2 += (result * 3).d * 2\n140155164        rcx_1 = data_140a12554\n14015516e        if (result.d s>= 3)\n140155185        if (rcx_1 != 0 || (*(arg1 + 0xfc) & 4) != 0)\n14015518d        *arg3 += *(arg1 + 0x178)\n140155196        *arg4 += *(arg1 + 0x17c)\n1401551a8        if (((rcx_1 == 0 && (*(arg1 + 0xfc) & 4) == 0) || data_140a12554 == 0) && (*(arg1 + 0xfc) & 2) != 0)\n1401551c2        int64_t rax_2\n1401551c2        int64_t rdx\n1401551c2        rdx:rax_2 = muls.dp.q(0x4924924924924925, *(arg1 + 0xb8) - *(arg1 + 0xb0))\n1401551c5        int64_t rdx_1 = rdx s>> 3\n1401551dd        *arg2 += ((zx.q(((rdx_1 + (rdx_1 u>> 0x3f)) * 3).d) << 1) + -fffffffffffffffe).d\n1401551e1        *(arg1 + 0x18c) = *arg2\n1401551ea        *(arg1 + 0x190) = *arg3\n1401551f0        result = zx.q(*arg4)\n1401551f2        *(arg1 + 0x194) = result.d\n140155170        result = zx.q(*arg2)\n140155172        *(arg1 + 0x18c) = result.d\n14015520d        return result",
+  "fetched_at": "2026-04-26T17:22:24Z"
+}

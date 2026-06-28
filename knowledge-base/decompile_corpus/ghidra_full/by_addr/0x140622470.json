@@ -1,0 +1,7 @@
+{
+  "addr": "0x140622470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall ExplosionBehaviorClass::vfunction7(void)\n\n{\n  return 0x650000;\n}",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eb730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1406eb730(longlong param_1,undefined8 param_2,longlong param_3)\n\n{\n  char cVar1;\n  longlong lVar2;\n  longlong lVar3;\n  undefined1 local_18 [16];\n  \n  if (*(longlong *)(param_3 + 0x18) - (longlong)*(undefined8 **)(param_3 + 0x10) >> 3 != 1) {\n    FUN_140248190(param_2,\n                  \"LandTaskForceClass::Fire_Orbital_Bombardment -- invalid number of parameters.  Expected 1, got %d.\"\n                 );\n    return 0;\n  }\n  cVar1 = FUN_1404990b0(**(undefined8 **)(param_3 + 0x10),local_18,0);\n  if (cVar1 == '\\0') {\n    FUN_140248190(param_2,\n                  \"LandTaskForceClass::Fire_Orbital_Bombardment -- could not extract a position from parameter 1.\"\n                 );\n    return 0;\n  }\n  lVar2 = FUN_1405f6fb0(*(undefined8 *)(param_1 + 0xf0));\n  lVar2 = FUN_1405f55e0(*(undefined8 *)(lVar2 + 0x28));\n  lVar2 = *(longlong *)(lVar2 + 0x40);\n  if (lVar2 != 0) {\n    lVar3 = FUN_1405f7020(*(undefined8 *)(param_1 + 0xf0));\n    FUN_140528140(lVar2,*(undefined4 *)(lVar3 + 0x4c),local_18);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:46:32Z"
+}

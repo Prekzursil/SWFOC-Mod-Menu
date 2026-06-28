@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e7150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPlanDefinitionManagerClass::vfunction4(PlanDefinitionManagerClass *this,longlong *param_1)\n\n{\n  if (param_1 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x0001404e7163. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*param_1 + 0x10))(param_1,1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078b938",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078b938        char* result = nullptr\n14078b93c        if (*arg1 != 0)\n14078b941        while (result != arg2)\n14078b943        result = &result[1]\n14078b94a        if (*(result + arg1) == 0)\n14078b94a        break\n14078b94c        return result",
+  "fetched_at": "2026-04-26T17:31:24Z"
+}

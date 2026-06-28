@@ -1,0 +1,7 @@
+{
+  "addr": "0x140353f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* BaseComponentClass member function inherited by ShellComponentClass\n   BaseComponentClass member function inherited by TextComponentClass\n   BaseComponentClass member function inherited by ModelComponentClass\n   BaseComponentClass member function inherited by SelectComponentClass */\n\nvoid __thiscall BaseComponentClass::vfunction2(BaseComponentClass *this,undefined8 param_1)\n\n{\n  (this->BaseComponentClass_data).offset_0x80 = param_1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:31Z"
+}

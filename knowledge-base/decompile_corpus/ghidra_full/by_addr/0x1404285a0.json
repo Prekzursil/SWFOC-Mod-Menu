@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404285a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "WaypointLineSubClass * __thiscall\nWaypointLineSubClass::WaypointLineSubClass(WaypointLineSubClass *this)\n\n{\n  undefined4 uVar1;\n  \n  alRenderable::alRenderable((alRenderable *)this);\n  uVar1 = DAT_1407ffaf8;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->WaypointLineSubClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  (this->WaypointLineSubClass_data).offset_0x8 = 0;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  (this->WaypointLineSubClass_data).offset_0x10 = 0;\n  (this->WaypointLineSubClass_data).offset_0x18 = 0x3f800000;\n  (this->WaypointLineSubClass_data).offset_0x20 = 0;\n  (this->WaypointLineSubClass_data).offset_0x28 = 0;\n  (this->WaypointLineSubClass_data).offset_0x2c = 0x3f800000;\n  (this->WaypointLineSubClass_data).offset_0x34 = 0;\n  (this->WaypointLineSubClass_data).offset_0x3c = 0;\n  (this->WaypointLineSubClass_data).offset_0x40 = 0x3f800000;\n  FUN_1401f9340(&(this->WaypointLineSubClass_data).field_0x48,0,0,0,uVar1);\n  (this->WaypointLineSubClass_data).offset_0x58 = 0;\n  (this->WaypointLineSubClass_data).offset_0x60 = 1;\n  (this->WaypointLineSubClass_data).offset_0x68 = 0;\n  (this->WaypointLineSubClass_data).offset_0x70 = 0;\n  (this->WaypointLineSubClass_data).offset_0x78 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:48:14Z"
+}

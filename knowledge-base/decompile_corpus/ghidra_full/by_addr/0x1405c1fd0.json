@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c1fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1405c1fd0(longlong param_1,longlong param_2)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  lVar2 = 6;\n  lVar3 = param_1;\n  do {\n    FUN_1405c20b0(lVar3);\n    lVar3 = lVar3 + 0x90;\n    lVar2 = lVar2 + -1;\n  } while (lVar2 != 0);\n  uVar1 = 0;\n  *(undefined8 *)(param_1 + 0x378) = 0xf;\n  *(undefined8 *)(param_1 + 0x360) = 0;\n  *(undefined8 *)(param_1 + 0x370) = 0;\n  *(undefined8 *)(param_1 + 0x388) = 0;\n  *(undefined8 *)(param_1 + 0x398) = 0;\n  *(undefined8 *)(param_1 + 0x3a0) = 0xf;\n  if (param_2 != 0) {\n    FUN_1405c2a10(param_1,param_2);\n  }\n  *(undefined8 *)(param_1 + 0x3b0) = 0;\n  *(undefined4 *)(param_1 + 0x3a8) = 2;\n  lVar3 = FUN_140769c58(0x20);\n  if (lVar3 != 0) {\n    uVar1 = FUN_140046350(lVar3,0);\n  }\n  *(undefined8 *)(param_1 + 0x3b0) = uVar1;\n  *(undefined4 *)(param_1 + 0x3c0) = 0;\n  *(undefined8 *)(param_1 + 0x3b8) = 0;\n  *(undefined1 *)(param_1 + 0x3c4) = 0;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:44:29Z"
+}

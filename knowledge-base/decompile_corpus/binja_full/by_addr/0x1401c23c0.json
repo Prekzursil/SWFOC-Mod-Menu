@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c23c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c23ce        int16_t* result = arg4\n1401c23d1        arg4[2] = 0\n1401c23da        if (arg4[3] u>= 8)\n1401c23dc        result = *arg4\n1401c23df        *result = 0\n1401c23e9        if (*(arg1 + 0x98) != 0)\n1401c23eb        int16_t** rdx = *(arg1 + 0x90)\n1401c23f2        result = *rdx\n1401c23f8        if (result != rdx)\n1401c2400        int32_t* rcx\n1401c2400        while (true)\n1401c2400        rcx = *(result + 0x10)\n1401c2410        if (rcx[0x38].b == 0 && *rcx == arg2)\n1401c2410        break\n1401c2412        result = *result\n1401c2418        if (result == rdx)\n1401c241f        return result\n1401c2423        if (rcx != 0)\n1401c2428        result = sub_1401e1ef0(rcx, arg3)\n1401c2430        if (result != 0)\n1401c2432        int64_t rdx_2 = *result\n1401c2438        result = (*(rdx_2 + 0xb0))(result, rdx_2)\n1401c2441        if (arg4 != result)\n1401c2448        int32_t* result_1 = result\n1401c244b        if (*(result + 0x18) u>= 8)\n1401c244d        result_1 = *result\n1401c245c        return sub_1400228a0(arg4, result_1, *(result + 0x10)) __tailcall\n1401c2466        return result",
+  "fetched_at": "2026-04-26T17:26:13Z"
+}

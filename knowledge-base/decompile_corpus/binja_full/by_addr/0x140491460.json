@@ -1,0 +1,7 @@
+{
+  "addr": "0x140491460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140491467        *(arg1 + 0x1c) = 0x3fffff\n14049146f        *arg1 = &SpecialWeaponDataPackClass::`vftable'{for `BaseDataPackClass'}\n140491474        __builtin_memset(&arg1[1], 0, 0x14)\n14049147f        arg1[5].b = 0\n140491482        arg1[9].b = 0\n140491485        *(arg1 + 0x24) = 0\n14049148c        return sub_140046490(&arg1[6]) __tailcall",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

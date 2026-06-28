@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038d230",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14038d248        if (arg2 != 0)\n14038d273        struct IRootClass::RootClass::VTable** result\n14038d273        uint64_t zmm2_1[0x2]\n14038d273        result, zmm2_1 = sub_14029f810(*(arg1 + 0x2b8), arg2, *(arg1 + 0x58), arg1 + 0x78, arg1 + 0x84, 0, 0)\n14038d27e        if (result != 0)\n14038d289        int32_t rdi = -1\n14038d291        if (arg3 != 0)\n14038d293        void* rcx_1 = *(arg1 + 0x2a0)\n14038d29d        if (rcx_1 != 0 && sub_1402648b0(rcx_1) != 0)\n14038d2c0        rdi = sub_14012d2a0(sub_1402648b0(*(arg1 + 0x2a0)), arg3)\n14038d2c2        int32_t r8_1 = 0\n14038d2c5        int64_t var_18 = 0\n14038d2d1        int32_t var_10 = 0\n14038d2e1        if (rdi != 0xffffffff)\n14038d2e1        r8_1 = rdi\n14038d2e8        sub_14038d320(result, arg1, r8_1, &var_18, zmm2_1)\n14038d304        return result\n14038d316        return 0",
+  "fetched_at": "2026-04-26T17:21:06Z"
+}

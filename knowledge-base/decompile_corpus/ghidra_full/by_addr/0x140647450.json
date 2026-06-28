@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nBeaconBehaviorClass * __thiscall\nBeaconBehaviorClass::vfunction4(BeaconBehaviorClass *this,int param_1)\n\n{\n  BeaconBehaviorClass *pBVar1;\n  \n  pBVar1 = (BeaconBehaviorClass *)0x0;\n  if (param_1 == 0x4d) {\n    pBVar1 = this;\n  }\n  return pBVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:13Z"
+}

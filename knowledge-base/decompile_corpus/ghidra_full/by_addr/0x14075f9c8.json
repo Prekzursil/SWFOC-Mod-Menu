@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f9c8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall std::messages<wchar_t>::vfunction4(void)\n\n{\n  return 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T18:08:13Z"
+}

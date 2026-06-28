@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798e34",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798e50        void* result_1 = _calloc_base(0x40, 0x48)\n140798e55        void* result = nullptr\n140798e5d        if (result_1 != 0)\n140798e69        if (result_1 != result_1 + 0x1200)\n140798e6b        int64_t* rdi_1 = result_1 + 0x30\n140798e7b        __acrt_InitializeCriticalSectionEx(&rdi_1[-6], 0xfa0, 0)\n140798e80        rdi_1[-1] = -1\n140798e85        void* rcx_2 = rdi_1 + 0xe\n140798e89        *(rdi_1 + 0xd) &= 0xf8\n140798e8d        int32_t i = 0\n140798e8f        *rdi_1 = 0\n140798e92        rdi_1[1].d = 0xa0a0000\n140798e99        *(rdi_1 + 0xc) = 0xa\n140798e9d        *rcx_2 = 0\n140798ea0        i += 1\n140798ea2        rcx_2 += 1\n140798ea8        do while (i u< 5)\n140798eaa        rdi_1 = &rdi_1[9]\n140798eb5        do while (&rdi_1[-6] != result_1 + 0x1200)\n140798eb7        result = result_1\n140798ebc        _free_base(0)\n140798ed8        return result",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

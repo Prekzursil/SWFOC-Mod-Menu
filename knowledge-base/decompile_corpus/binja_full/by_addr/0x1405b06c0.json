@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b06c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b06c6        struct SpecialAbilityClass::TacticalBribeAbilityClass::VTable** result = arg1\n1405b06c9        sub_14048c780(arg1)\n1405b06d5        result[0x2f] = 0\n1405b06e0        *result = &TacticalBribeAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1405b06f1        result[1] = &TacticalBribeAbilityClass::`vftable'{for `RefCountClass'}\n1405b06f5        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x30])\n1405b0701        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x32])\n1405b070d        result[0x34].d = 0\n1405b0717        sub_1404c3ee0(&result[0x35])\n1405b0723        sub_1404c3ee0(&result[0x37])\n1405b0730        return result",
+  "fetched_at": "2026-04-26T17:37:15Z"
+}

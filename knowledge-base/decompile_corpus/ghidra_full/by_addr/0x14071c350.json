@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BuzzDroidsAbilityClass * __thiscall\nBuzzDroidsAbilityClass::BuzzDroidsAbilityClass(BuzzDroidsAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->BuzzDroidsAbilityClass_data).offset_0x0 = 0;\n  (this->BuzzDroidsAbilityClass_data).offset_0x8 = 0;\n  (this->BuzzDroidsAbilityClass_data).offset_0x10 = 0;\n  (this->BuzzDroidsAbilityClass_data).offset_0x18 = 0;\n  FUN_1404c3df0(&(this->BuzzDroidsAbilityClass_data).field_0x20);\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &(this->BuzzDroidsAbilityClass_data).field_0x30);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:57:57Z"
+}

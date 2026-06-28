@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078e988",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14078e988(wchar_t *param_1,undefined8 *param_2)\n\n{\n  errno_t eVar1;\n  ulonglong in_RAX;\n  undefined4 extraout_var;\n  \n  if (((*(int *)(param_2 + 2) == 0) && (in_RAX = param_2[1] - 2, in_RAX < 2)) &&\n     (in_RAX = string_is_alpha(*param_2), (char)in_RAX != '\\0')) {\n    eVar1 = wcsncpy_s(param_1,0x40,(wchar_t *)*param_2,param_2[1]);\n    if (eVar1 == 0) {\n      eVar1 = wcsncpy_s(param_1 + 0x90,0x55,(wchar_t *)*param_2,param_2[1]);\n      if (eVar1 == 0) {\n        return CONCAT71((int7)(CONCAT44(extraout_var,eVar1) >> 8),1);\n      }\n    }\n                    /* WARNING: Subroutine does not return */\n    _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:52:22Z"
+}

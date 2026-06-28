@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786074",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl common_end_thread(unsigned int)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl common_end_thread(uint param_1)\n\n{\n  longlong lVar1;\n  \n  lVar1 = __acrt_getptd_noexit();\n  if ((lVar1 != 0) && (lVar1 = *(longlong *)(lVar1 + 0x3c0), lVar1 != 0)) {\n    if (*(char *)(lVar1 + 0x20) != '\\0') {\n      __acrt_RoUninitialize();\n    }\n    if ((longlong)*(HANDLE *)(lVar1 + 0x10) - 1U < 0xfffffffffffffffe) {\n      CloseHandle(*(HANDLE *)(lVar1 + 0x10));\n    }\n    if ((undefined1 *)((longlong)&(*(HMODULE *)(lVar1 + 0x18))[-1].unused + 3U) <\n        (undefined1 *)0xfffffffffffffffe) {\n                    /* WARNING: Subroutine does not return */\n      FreeLibraryAndExitThread(*(HMODULE *)(lVar1 + 0x18),param_1);\n    }\n  }\n                    /* WARNING: Subroutine does not return */\n  ExitThread(param_1);\n}",
+  "fetched_at": "2026-04-26T18:51:33Z"
+}

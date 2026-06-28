@@ -1,0 +1,7 @@
+{
+  "addr": "0x140720560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140720573        int64_t* rcx = *arg1\n140720579        int64_t* arg_8 = rcx\n140720584        if (rcx != 0)\n140720589        (**rcx)()\n14072058b        int64_t* rcx_1 = *arg2\n14072058e        int64_t* arg_10 = rcx_1\n140720596        if (rcx_1 != 0)\n14072059b        (**rcx_1)()\n1407205ab        if (arg4(&arg_10, &arg_8) != 0)\n1407205b3        sub_140175cd0(arg2, arg1, arg5)\n1407205b8        int64_t* rcx_4 = *arg2\n1407205bb        arg_8 = rcx_4\n1407205c3        if (rcx_4 != 0)\n1407205c8        (**rcx_4)()\n1407205ca        int64_t* rcx_5 = *arg3\n1407205cd        arg_10 = rcx_5\n1407205d5        if (rcx_5 != 0)\n1407205da        (**rcx_5)()\n1407205e6        char result = arg4(&arg_10, &arg_8)\n1407205ea        if (result != 0)\n1407205f2        sub_140175cd0(arg3, arg2, arg5)\n1407205f7        int64_t* rcx_8 = *arg1\n1407205fa        arg_8 = rcx_8\n140720602        if (rcx_8 != 0)\n140720607        (**rcx_8)()\n140720609        int64_t* rcx_9 = *arg2\n14072060c        arg_10 = rcx_9\n140720614        if (rcx_9 != 0)\n140720619        (**rcx_9)()\n140720625        result = arg4(&arg_10, &arg_8)\n140720629        if (result != 0)\n140720631        return sub_140175cd0(arg2, arg1, arg5)\n140720643        return result",
+  "fetched_at": "2026-04-26T17:28:17Z"
+}

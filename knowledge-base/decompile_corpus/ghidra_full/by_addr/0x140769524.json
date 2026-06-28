@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769524",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _Getwctype\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nshort __cdecl _Getwctype(wchar_t param_1,_Ctypevec *param_2)\n\n{\n  BOOL BVar1;\n  wchar_t local_res8 [8];\n  ushort local_res18 [8];\n  \n  local_res8[0] = param_1;\n  BVar1 = GetStringTypeW(1,local_res8,1,local_res18);\n  return -(ushort)(BVar1 != 0) & local_res18[0];\n}",
+  "fetched_at": "2026-04-26T18:09:42Z"
+}

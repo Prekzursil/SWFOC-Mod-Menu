@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057d870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057d874        void* rcx = *(arg1 + 0x60)\n14057d87e        if (rcx == 0)\n14057d88a        sub_140248620(arg2, \"GameObjectWrapper::Mark_Parent_Mode_Object_For_Death -- this object is dead!\", arg3)\n14057d895        return 0\n14057d896        int32_t rdx = *(rcx + 0x54)\n14057d89f        if (rdx != 0x3fffff)\n14057d8b2        sub_1402b2cc0(*(rcx + 0x2b8), rdx, *(rcx + 0x298), rcx)\n14057d8bd        return 0",
+  "fetched_at": "2026-04-26T17:35:17Z"
+}

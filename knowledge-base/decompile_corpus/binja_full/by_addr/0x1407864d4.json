@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407864d4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407864da        uint64_t rbx = 0\n1407864f3        int32_t result\n1407864f3        while (true)\n1407864fa        if (__acrt_InitializeCriticalSectionEx(&data_140b3c0d0 + rbx * 0x28, 0xfa0, 0) == 0)\n14078650f        sub_140786538()\n140786514        result.b = 0\n140786514        break\n1407864fc        data_140b3c300 += 1\n140786502        rbx = zx.q(rbx.d + 1)\n140786507        if (rbx.d u>= 0xe)\n140786509        result.b = 1\n14078650b        break\n14078651b        return result",
+  "fetched_at": "2026-04-26T17:31:18Z"
+}

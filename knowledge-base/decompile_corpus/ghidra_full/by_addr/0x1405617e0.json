@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405617e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalUnderConstructionDataPackClass * __thiscall\nTacticalUnderConstructionDataPackClass::TacticalUnderConstructionDataPackClass\n          (TacticalUnderConstructionDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_TacticalUnderConstructionDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_TacticalUnderConstructionDataPackClass,20,class_EmptyLockerClass>)\n       0x0;\n  (this->TacticalUnderConstructionDataPackClass_data).offset_0x0 = 0;\n  (this->TacticalUnderConstructionDataPackClass_data).offset_0x8 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:58Z"
+}

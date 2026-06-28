@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f23e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f23f3        *arg1 = &CableAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f2400        arg1[1] = &CableAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406f2404        int64_t rdx = arg1[0x37]\n1406f240f        if (rdx u>= 0x10)\n1406f2411        void* rcx = arg1[0x34]\n1406f2422        if (rdx + 1 u>= 0x1000)\n1406f2424        void* r8_1 = *(rcx - 8)\n1406f2437        if (rcx - r8_1 - 8 u> 0x1f)\n1406f2487        _invalid_parameter_noinfo_noreturn()\n1406f2487        noreturn\n1406f2439        rcx = r8_1\n1406f243c        j_sub_1407864b8(rcx)\n1406f2444        arg1[0x36] = 0\n1406f244f        arg1[0x37] = 0xf\n1406f245a        arg1[0x34].b = 0\n1406f2461        sub_14048c8d0(arg1)\n1406f246a        if ((arg2 & 1) != 0)\n1406f2474        j_sub_1407864b8(arg1)\n1406f2486        return arg1",
+  "fetched_at": "2026-04-26T17:26:26Z"
+}

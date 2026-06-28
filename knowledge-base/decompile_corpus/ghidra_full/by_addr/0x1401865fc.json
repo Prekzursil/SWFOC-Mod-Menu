@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401865fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTexture::vfunction1(alD3dTexture *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alD3dTexture *)&this[-1].offset_0x80,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001fb30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall SwitchSidesCommand::vfunction4(void)\n\n{\n  char cVar1;\n  \n  if ((DAT_140b1574e != '\\0') && (DAT_140b15418 != 0)) {\n    cVar1 = FUN_14028af60(&DAT_140b153e0);\n    if (cVar1 == '\\0') {\n      FUN_140297e80(&DAT_140a16fd0);\n      FUN_1402b59b0(*(undefined8 *)(DAT_140b15418 + 0x18));\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:46Z"
+}

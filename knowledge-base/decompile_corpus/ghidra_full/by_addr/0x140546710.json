@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall GUIComponentStopFlashClass::vfunction5(void)\n\n{\n  return &DAT_140a44880;\n}",
+  "fetched_at": "2026-04-26T18:36:55Z"
+}

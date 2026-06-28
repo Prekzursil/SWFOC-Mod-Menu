@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051fd50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14051fd61        int64_t rax\n14051fd61        int64_t rdx_1\n14051fd61        rdx_1:rax = muls.dp.q(0x6666666666666667, arg1[1] - *arg1)\n14051fd64        int64_t rdx_2 = rdx_1 s>> 4\n14051fd72        return (rdx_2 u>> 0x3f) + rdx_2",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

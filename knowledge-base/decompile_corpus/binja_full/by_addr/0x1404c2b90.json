@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2b90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2b99        struct RootClass::BehaviorClass::VTable** result = operator new(0x48)\n1404c2ba1        if (result == 0)\n1404c2bb3        return result\n1404c2baa        return sub_140647380(result) __tailcall",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

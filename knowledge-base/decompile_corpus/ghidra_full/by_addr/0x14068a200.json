@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a200(void)\n\n{\n  BuzzDroidsAbilityClass *this;\n  \n  this = (BuzzDroidsAbilityClass *)FUN_140769c58(0x1b8);\n  if (this != (BuzzDroidsAbilityClass *)0x0) {\n    BuzzDroidsAbilityClass::BuzzDroidsAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:37Z"
+}

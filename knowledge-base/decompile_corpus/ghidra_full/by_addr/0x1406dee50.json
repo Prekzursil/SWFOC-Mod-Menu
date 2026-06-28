@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406dee50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HintPerceptualEvaluatorClass * FUN_1406dee50(void)\n\n{\n  HintPerceptualEvaluatorClass *pHVar1;\n  \n  pHVar1 = (HintPerceptualEvaluatorClass *)FUN_140769c58(0xe8);\n  if ((pHVar1 != (HintPerceptualEvaluatorClass *)0x0) &&\n     (pHVar1 = HintPerceptualEvaluatorClass::~HintPerceptualEvaluatorClass(pHVar1),\n     pHVar1 != (HintPerceptualEvaluatorClass *)0x0)) {\n    return pHVar1;\n  }\n  return (HintPerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:44:44Z"
+}

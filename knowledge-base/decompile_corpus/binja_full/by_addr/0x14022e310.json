@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022e310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022e31d        arg1[2] = arg2\n14022e321        *arg1 = &ThreadClass::`vftable'\n14022e32e        arg1[1].b = 0\n14022e332        *(arg1 + 9) = 0\n14022e336        arg1[3] = -1\n14022e33e        arg1[4].d = 0\n14022e348        if (arg1 == &data_140a155b0)\n14022e34a        uint32_t rax_1 = GetCurrentThreadId()\n14022e350        int64_t rcx = arg1[2]\n14022e354        arg1[4].d = rax_1\n14022e357        uint32_t var_10_1 = rax_1\n14022e369        int32_t rax_3 = data_140a155a8\n14022e36f        int32_t rcx_2 = (data_140a155ac * 2) s>> 1\n14022e373        if (rax_3 s>= rcx_2)\n14022e387        int32_t rdx_2 = rcx_2 s/ 0xa\n14022e390        if (rdx_2 s< 0xa)\n14022e390        rdx_2 = 0xa\n14022e39f        sub_14022eb30(&data_140a15598, rdx_2 + rcx_2, 0, 1)\n14022e3a4        rax_3 = data_140a155a8\n14022e3bc        *(data_140a155a0 + sx.q(rax_3) * 0x10) = rcx.o\n14022e3c0        data_140a155a8 += 1\n14022e3ce        return arg1",
+  "fetched_at": "2026-04-26T17:29:36Z"
+}

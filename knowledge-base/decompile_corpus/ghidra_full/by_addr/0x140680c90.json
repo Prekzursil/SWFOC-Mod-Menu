@@ -1,0 +1,7 @@
+{
+  "addr": "0x140680c90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nlonglong __thiscall\nMovingVsMovingCollisionDiagnosticsNodeClass::vfunction7\n          (MovingVsMovingCollisionDiagnosticsNodeClass *this)\n\n{\n  return (this->AIDiagnosticsNodeClass_data).offset_0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:04Z"
+}

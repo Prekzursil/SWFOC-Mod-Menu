@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079fd78",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14079fd78(void)\n\n{\n  char cVar1;\n  \n  cVar1 = __acrt_initialize_multibyte();\n  return cVar1 == '\\0';\n}",
+  "fetched_at": "2026-04-26T18:54:13Z"
+}

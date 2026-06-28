@@ -1,0 +1,7 @@
+{
+  "addr": "0x140664440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined * __thiscall PlanetReachabilityClass::vfunction5(void)\n\n{\n  return &DAT_140a44378;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:15Z"
+}

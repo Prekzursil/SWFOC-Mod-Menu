@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012c6c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall alHModel::vfunction14_for_RefCountClass(alHModel *this,undefined8 param_1)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  \n  uVar2 = 0;\n  if ((longlong)(this->alHModel_data).offset_0x30 - (this->alHModel_data).offset_0x28 >> 4 != 0) {\n    do {\n      plVar1 = *(longlong **)((this->alHModel_data).offset_0x28 + 8 + uVar2 * 0x10);\n      (**(code **)(*plVar1 + 0x68))(plVar1,param_1);\n      uVar2 = (ulonglong)((int)uVar2 + 1);\n    } while (uVar2 < (ulonglong)\n                     ((longlong)(this->alHModel_data).offset_0x30 -\n                      (this->alHModel_data).offset_0x28 >> 4));\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:00Z"
+}

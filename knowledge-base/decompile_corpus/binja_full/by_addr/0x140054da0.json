@@ -1,0 +1,7 @@
+{
+  "addr": "0x140054da0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140054db4        int64_t* rbp = arg2\n140054db7        if (arg2[3] u>= 8)\n140054db9        rbp = *arg2\n140054dc1        if (arg2[2] u< 0x14)\n140054dc1        return \n140054dd8        sub_140058950(arg3 + 0x140, 0)\n140054ddd        int32_t rcx_1 = arg2[2].d\n140054de3        if (rcx_1 - 0x14 s< 0)\n140054de3        return \n140054e00        uint64_t i_1 = zx.q(rcx_1 u/ 0x14)\n140054ea7        uint64_t i\n140054e03        uint128_t* rsi_1 = *(arg3 + 0x148)\n140054e07        int64_t rdx_2 = *(arg3 + 0x140)\n140054e10        int64_t rcx_6 = (rsi_1 - rdx_2) s>> 4\n140054e1b        if (rcx_6 + 1 u< rcx_6)\n140054e24        *(arg3 + 0x148) = ((rcx_6 + 1) << 4) + rdx_2\n140054e2a        if (rcx_6 + 1 u> rcx_6)\n140054e3a        if (rcx_6 + 1 u<= (*(arg3 + 0x150) - rdx_2) s>> 4)\n140054e51        if (rcx_6 + 1 != rcx_6)\n140054e5f        memset(rsi_1, 0, 1 << 4)\n140054e68        rsi_1 = &rsi_1[1]\n140054e6b        *(arg3 + 0x148) = rsi_1\n140054e47        sub_140057ec0(arg3 + 0x140, rcx_6 + 1)\n140054e6f        int64_t r8_2 = *(arg3 + 0x148)\n140054e85        int64_t var_20_1 = r8_2 - 4\n140054e8e        int64_t var_28_1 = r8_2 - 8\n140054e9a        sub_140058a10(rbp, u\"%8X%8X%2X%2X\", r8_2 - 0x10)\n140054e9f        rbp = &rbp[5]\n140054ea3        i = i_1\n140054ea3        i_1 -= 1\n140054ea7        do while (i != 1)\n140054ec4        return ",
+  "fetched_at": "2026-04-26T16:54:53Z"
+}

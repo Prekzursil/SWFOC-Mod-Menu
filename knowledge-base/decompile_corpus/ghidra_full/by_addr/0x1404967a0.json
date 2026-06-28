@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404967a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1404967a0(undefined8 *param_1,undefined4 param_2)\n\n{\n  *param_1 = 0;\n  param_1[1] = 0;\n  param_1[2] = 0;\n  param_1[3] = 0;\n  param_1[4] = 0;\n  param_1[5] = 0;\n  *(undefined4 *)(param_1 + 6) = param_2;\n  FUN_140496730(param_1 + 7);\n  FUN_140496730(param_1 + 0xf);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:03:37Z"
+}

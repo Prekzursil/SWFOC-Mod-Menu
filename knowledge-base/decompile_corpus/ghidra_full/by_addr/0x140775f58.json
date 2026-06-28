@@ -1,0 +1,7 @@
+{
+  "addr": "0x140775f58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _wtol\n   \n   Library: Visual Studio 2019 Release */\n\nlong __cdecl _wtol(wchar_t *_Str)\n\n{\n  ulong uVar1;\n  wchar_t *local_18;\n  undefined8 local_10;\n  \n  local_10 = 0;\n  local_18 = _Str;\n  uVar1 = __crt_strtox::\n          parse_integer<unsigned_long,class___crt_strtox::c_string_character_source<wchar_t>_>\n                    (0,&local_18,10,1);\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:50:23Z"
+}

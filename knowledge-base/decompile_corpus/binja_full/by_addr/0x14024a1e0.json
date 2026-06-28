@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a1e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024a1ef        void* rdi = arg1[2]\n14024a1fa        *arg1 = &LuaUserVar::`vftable'{for `LuaVar'}\n14024a205        if (rdi != 0)\n14024a20a        sub_140249cc0(rdi)\n14024a217        j_sub_1407864b8(rdi)\n14024a223        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n14024a22a        if ((arg2 & 1) != 0)\n14024a234        j_sub_1407864b8(arg1)\n14024a24b        return arg1",
+  "fetched_at": "2026-04-26T17:30:26Z"
+}

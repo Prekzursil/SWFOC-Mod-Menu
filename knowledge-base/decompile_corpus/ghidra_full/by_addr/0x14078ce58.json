@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ce58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _register_onexit_function\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _register_onexit_function(undefined8 param_1,undefined8 param_2)\n\n{\n  undefined8 local_res8;\n  undefined8 local_res10;\n  __crt_seh_guarded_call<int> local_res18 [8];\n  undefined4 local_res20 [2];\n  undefined4 local_28 [2];\n  undefined8 *local_20;\n  undefined8 *local_18;\n  \n  local_20 = &local_res8;\n  local_18 = &local_res10;\n  local_res20[0] = 2;\n  local_28[0] = 2;\n  local_res8 = param_1;\n  local_res10 = param_2;\n  __crt_seh_guarded_call<int>::\n  operator()<class_<lambda_638799b9deba96c50f710eeac98168cd>,class_<lambda_22ebabd17bc4fa466a2aca6d8deb888d>&___ptr64,class_<lambda_a6f7d7db0129f75315ebf26d50c089f1>_>\n            (local_res18,(<lambda_638799b9deba96c50f710eeac98168cd> *)local_28,\n             (<lambda_22ebabd17bc4fa466a2aca6d8deb888d> *)&local_20,\n             (<lambda_a6f7d7db0129f75315ebf26d50c089f1> *)local_res20);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:08Z"
+}

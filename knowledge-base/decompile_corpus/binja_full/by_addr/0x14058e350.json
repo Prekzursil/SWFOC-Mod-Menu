@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058e350",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058e357        return \"AvoidDangerBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:36:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140644f40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nBehaviorClass * FUN_140644f40(void)\n\n{\n  BehaviorClass *this;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x60);\n  if (this != (BehaviorClass *)0x0) {\n                    /* inlined constructor: SurfaceFXBehaviorClass::SurfaceFXBehaviorClass */\n    BehaviorClass::BehaviorClass(this);\n    this->vftablePtr = (BehaviorClass_vftable0 *)&SurfaceFXBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable1 *)&SurfaceFXBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable2 *)&SurfaceFXBehaviorClass::vftable;\n    *(undefined8 *)&this->field_0x40 = 0;\n    *(undefined8 *)&this->field_0x48 = 0;\n    this->offset_0x40 = 0;\n    *(undefined1 *)&this->offset_0x48 = 0;\n    return this;\n  }\n  return (BehaviorClass *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:41Z"
+}

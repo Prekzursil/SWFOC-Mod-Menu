@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023b7b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_14023b7b0(void)\n\n{\n  _DAT_140b09430 = 0;\n  DAT_140b093a0 = 0;\n  uRam0000000140b093a8 = 0;\n  _DAT_140b093b0 = 0;\n  DAT_140b093b8 = 0;\n  DAT_140b093c0 = 0;\n  DAT_140b093c8 = 0;\n  DAT_140b093d0 = 0;\n  DAT_140b093d8 = 0;\n  _DAT_140b093e0 = 0;\n  uRam0000000140b093e8 = 0;\n  _DAT_140b093f0 = 0;\n  uRam0000000140b093f8 = 0;\n  _DAT_140b09400 = 0;\n  uRam0000000140b09408 = 0;\n  _DAT_140b09410 = 0;\n  uRam0000000140b09418 = 0;\n  _DAT_140b09420 = 0;\n  DAT_140b09428 = 0;\n  if (DAT_140b09398 != (HMODULE)0x0) {\n    FreeLibrary(DAT_140b09398);\n    DAT_140b09398 = (HMODULE)0x0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:23Z"
+}

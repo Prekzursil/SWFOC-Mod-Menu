@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407926f8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407926fe        if (arg1 u> 0xc435)\n140792726        if (arg1 == 0xd698)\n140792748        arg2 &= MB_ERR_INVALID_CHARS\n14079272e        if (arg1 u> 0xdea9)\n14079273e        if (arg1 u<= 0xdeb3 || arg1 == 0xfde8)\n14079271c        arg2 = 0\n140792746        if (arg1 == 0xfde9)\n140792748        arg2 &= MB_ERR_INVALID_CHARS\n140792709        if (arg1 - 0xc42c u> 9)\n14079271a        if (arg1 == 0x2a)\n14079271c        arg2 = 0\n14079271a        if (test_bit(0x2a7, arg1 - 0xc42c) || arg1 == 0x2a)\n14079271c        arg2 = 0\n14079274b        return MultiByteToWideChar(arg1, arg2, arg3, arg4) __tailcall",
+  "fetched_at": "2026-04-26T17:31:49Z"
+}

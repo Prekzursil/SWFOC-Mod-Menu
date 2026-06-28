@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ae590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BoxCollisionBodyClass * __thiscall\nBoxCollisionBodyClass::BoxCollisionBodyClass\n          (BoxCollisionBodyClass *this,undefined4 *param_1,undefined8 param_2)\n\n{\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x68 = 0;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x70 = *param_1;\n  *(undefined4 *)((longlong)&(this->RefCountClass_data).offset_0x70 + 4) = param_1[1];\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x78 = param_1[2];\n  *(undefined4 *)((longlong)&(this->RefCountClass_data).offset_0x78 + 4) = param_1[3];\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x80 = param_1[4];\n  *(undefined4 *)((longlong)&(this->RefCountClass_data).offset_0x80 + 4) = param_1[5];\n  FUN_1407ae9c0(this,param_2,1);\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x68 = 1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:55:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a67a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a67aa        int64_t r9 = 0\n1407a67ad        int64_t rdi = sx.q(arg2)\n1407a67b5        int32_t r10 = 0\n1407a67ec        void var_28\n1407a67ec        void* result\n1407a67be        int64_t i = 1\n1407a67ec        while (i s<= 0xf)\n1407a67d0        void var_26\n1407a67d0        result = arg3 - &var_26 + (i << 1)\n1407a67dc        r10 = (r10 + zx.d(*(&var_28 + result))) * 2\n1407a67df        *(&var_28 + (i << 1)) = r10.w\n1407a67e5        i += 1\n1407a67f0        if (rdi.d s>= 0)\n1407a67f2        uint64_t rdx_1 = zx.q(*(arg1 + (r9 << 2) + 2))\n1407a67fa        if (rdx_1.d != 0)\n1407a6801        uint32_t rcx = zx.d(*(&var_28 + (rdx_1 << 1)))\n1407a680d        *(&var_28 + (rdx_1 << 1)) = rcx.w + 1\n1407a6811        result = bi_reverse(rcx, rdx_1.d)\n1407a6816        *(arg1 + (r9 << 2)) = result.w\n1407a681b        r9 += 1\n1407a6821        do while (r9 s<= rdi)\n1407a682d        return result",
+  "fetched_at": "2026-04-26T17:32:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406dee50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406dee59        struct SignalGeneratorClass::VTable** rax = operator new(0xe8)\n1406dee61        if (rax != 0)\n1406dee66        struct PerceptualEvaluatorClass::HintPerceptualEvaluatorClass::VTable** result = sub_1406de5f0(rax)\n1406dee6e        if (result != 0)\n1406dee76        return result\n1406dee70        return nullptr",
+  "fetched_at": "2026-04-26T17:25:51Z"
+}

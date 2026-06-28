@@ -1,0 +1,7 @@
+{
+  "addr": "0x140725340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_140725340(undefined8 param_1,undefined4 *param_2,int param_3)\n\n{\n  undefined8 *puVar1;\n  undefined8 *puVar2;\n  \n  if (param_3 != -1) {\n    puVar1 = (undefined8 *)FUN_140769c58();\n    puVar2 = (undefined8 *)0x0;\n    if (puVar1 != (undefined8 *)0x0) {\n                    /* inlined constructor:\n                       TacticalRegionAITargetLocationClass::TacticalRegionAITargetLocationClass */\n      *(undefined4 *)(puVar1 + 1) = 0;\n      *puVar1 = &TacticalRegionAITargetLocationClass::vftable;\n      puVar1[2] = param_1;\n      *(undefined4 *)(puVar1 + 3) = 0xffffffff;\n      puVar1[5] = 0;\n      puVar1[6] = 0;\n      puVar2 = puVar1;\n    }\n    *(undefined4 *)((longlong)puVar2 + 0x1c) = *param_2;\n    *(undefined4 *)(puVar2 + 4) = param_2[1];\n    *(undefined4 *)((longlong)puVar2 + 0x24) = param_2[2];\n    *(int *)(puVar2 + 3) = param_3;\n    return puVar2;\n  }\n  return (undefined8 *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:00:07Z"
+}

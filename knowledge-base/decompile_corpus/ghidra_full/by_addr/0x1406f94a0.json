@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f94a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EnableRadarAbilityClass * __thiscall\nEnableRadarAbilityClass::EnableRadarAbilityClass(EnableRadarAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->EnableRadarAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 5;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:49:22Z"
+}

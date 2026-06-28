@@ -1,0 +1,7 @@
+{
+  "addr": "0x140201410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020141c        char result = toupper(sx.d(*arg1))\n140201421        *arg1 = result\n140201428        return result",
+  "fetched_at": "2026-04-26T17:27:42Z"
+}

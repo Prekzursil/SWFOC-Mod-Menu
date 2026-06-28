@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402479a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402479a0(longlong param_1)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  undefined1 local_18 [16];\n  \n  if (*(int *)(param_1 + 300) != DAT_140a7bed0) {\n    FUN_140244000();\n    *(int *)(param_1 + 300) = DAT_140a7bed0;\n    uVar1 = FUN_14011f9c0(&DAT_140b09d80,param_1 + 0x68);\n    lVar2 = FUN_14011f570(&DAT_140b09d80,local_18,param_1 + 0x68,uVar1);\n    lVar2 = *(longlong *)(lVar2 + 8);\n    if (((lVar2 != 0) && (lVar2 != DAT_140b09d88)) &&\n       (plVar3 = (longlong *)**(longlong **)(lVar2 + 0x30), plVar3 != *(longlong **)(lVar2 + 0x30)))\n    {\n      do {\n        if (*(char *)(plVar3[2] + 0x123) == '\\0') {\n          *(undefined1 *)(plVar3[2] + 0x124) = 0;\n          FUN_1402488e0();\n          plVar4 = (longlong *)*plVar3;\n          *(longlong **)plVar3[1] = plVar4;\n          *(longlong *)(*plVar3 + 8) = plVar3[1];\n          *(longlong *)(lVar2 + 0x38) = *(longlong *)(lVar2 + 0x38) + -1;\n          if ((longlong *)plVar3[2] != (longlong *)0x0) {\n            (**(code **)(*(longlong *)plVar3[2] + 8))();\n          }\n          thunk_FUN_1407864b8(plVar3,0x18);\n        }\n        else {\n          plVar4 = (longlong *)*plVar3;\n        }\n        plVar3 = plVar4;\n      } while (plVar4 != *(longlong **)(lVar2 + 0x30));\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:45Z"
+}

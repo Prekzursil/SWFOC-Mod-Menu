@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f120",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013f135        if (arg1 != 0)\n14013f13e        int32_t result = _stricmp(arg1, \"FIXEDFUNCTION\")\n14013f145        if (result == 0)\n14013f151        return result\n14013f163        if (_stricmp(arg1, \"DX8\") == 0)\n14013f174        return 1\n14013f186        if (_stricmp(arg1, \"DX8ATI\") == 0)\n14013f197        return 2\n14013f1a2        _stricmp(arg1, \"DX9\")\n14013f1b3        return 3",
+  "fetched_at": "2026-04-26T17:18:05Z"
+}

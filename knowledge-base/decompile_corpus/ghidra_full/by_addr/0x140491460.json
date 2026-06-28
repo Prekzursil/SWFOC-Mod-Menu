@@ -1,0 +1,7 @@
+{
+  "addr": "0x140491460",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpecialWeaponDataPackClass::~SpecialWeaponDataPackClass(SpecialWeaponDataPackClass *this)\n\n{\n  (this->SpecialWeaponDataPackClass_data).offset_0xc = 0x3fffff;\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_SpecialWeaponDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_SpecialWeaponDataPackClass,20,class_EmptyLockerClass>)0x0;\n  (this->SpecialWeaponDataPackClass_data).offset_0x0 = 0;\n  (this->SpecialWeaponDataPackClass_data).offset_0x8 = 0;\n  (this->SpecialWeaponDataPackClass_data).offset_0x18 = 0;\n  (this->SpecialWeaponDataPackClass_data).offset_0x38 = 0;\n  (this->SpecialWeaponDataPackClass_data).offset_0x14 = 0;\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &(this->SpecialWeaponDataPackClass_data).offset_0x20);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:45Z"
+}

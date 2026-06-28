@@ -1,0 +1,7 @@
+{
+  "addr": "0x140072170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140072170(undefined8 param_1)\n\n{\n  CCallResult<class_SteamPeerLobbyClass,struct_SteamUGCQueryCompleted_t> *this;\n  undefined **local_res10 [3];\n  \n  if (DAT_1409cf058 == (CCallResult<class_SteamPeerLobbyClass,struct_SteamUGCQueryCompleted_t> *)0x0\n     ) {\n    this = (CCallResult<class_SteamPeerLobbyClass,struct_SteamUGCQueryCompleted_t> *)\n           FUN_140769c58(0x350);\n    if (this == (CCallResult<class_SteamPeerLobbyClass,struct_SteamUGCQueryCompleted_t> *)0x0) {\n      DAT_1409cf058 = (CCallResult<class_SteamPeerLobbyClass,struct_SteamUGCQueryCompleted_t> *)0x0;\n    }\n    else {\n      DAT_1409cf058 =\n           CCallResult<class_SteamPeerLobbyClass,struct_SteamUGCQueryCompleted_t>::\n           CCallResult<class_SteamPeerLobbyClass,struct_SteamUGCQueryCompleted_t>(this);\n    }\n    local_res10[0] = &PTR_vftable_1409cf050;\n    if (DAT_140a7bc10 == DAT_140a7bc18) {\n      FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res10);\n    }\n    else {\n      *DAT_140a7bc10 = &PTR_vftable_1409cf050;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n    }\n  }\n  FUN_140071f80(DAT_1409cf058,DAT_140b153f8,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:31Z"
+}

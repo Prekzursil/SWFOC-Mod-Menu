@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592650",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14059266b        *arg1 = &StealthAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14059267a        arg1[1] = &StealthAbilityClass::`vftable'{for `RefCountClass'}\n14059268d        sub_1401f9470(&arg1[0x2f], 0, 0, 0, 0xff)\n140592699        arg1[0x31].d = 0\n1405926ab        sub_14048c8d0(arg1)\n1405926b4        if ((arg2 & 1) != 0)\n1405926be        j_sub_1407864b8(arg1)\n1405926d5        return arg1",
+  "fetched_at": "2026-04-26T17:36:22Z"
+}

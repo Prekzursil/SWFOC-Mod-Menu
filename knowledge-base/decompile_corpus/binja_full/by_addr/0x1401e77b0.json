@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e77b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e77c8        struct GUIGadgetClass::GUIGadgetComboboxClass::VTable** result = arg1\n1401e77cb        sub_1401e3c30(arg1)\n1401e77d0        int64_t* rdi = &result[0x13]\n1401e77e1        *result = &GUIGadgetComboboxClass::`vftable'{for `GUIGadgetClass'}\n1401e77eb        *rdi = 0\n1401e77ee        rdi[2] = 0\n1401e77f2        rdi[3] = 7\n1401e77fa        sub_1401f92f0(&result[0x17])\n1401e7806        sub_1401f92f0(&result[0x19])\n1401e7812        sub_140260490(&result[0x1e])\n1401e781e        sub_140260490(&result[0x30])\n1401e782a        sub_140260490(&result[0x42])\n1401e7836        __builtin_memset(&result[0x54], 0, 0x30)\n1401e7860        sub_14025b330(&result[0x5a])\n1401e7865        __builtin_memset(result + 0x39c, 0, 0x18)\n1401e787a        result[0x1c] = 0\n1401e7881        rdi[2] = 0\n1401e788a        if (rdi[3] u>= 8)\n1401e788c        rdi = *rdi\n1401e788f        *rdi = 0\n1401e78a0        result[0x1b].d = 0xffffffff\n1401e78a6        result[0x1d].b = 0\n1401e78ad        *(result + 0x399) = 0\n1401e78bb        sub_14025c490(data_140a619f0, &result[0x42])\n1401e78ce        sub_14025c490(data_140a619f0, &result[0x1e])\n1401e78e1        sub_14025c490(data_140a619f0, &result[0x30])\n1401e78e9        result[0x73].b = 0\n1401e78f0        sub_1401e3ed0(result)\n1401e7910        return result",
+  "fetched_at": "2026-04-26T17:27:00Z"
+}

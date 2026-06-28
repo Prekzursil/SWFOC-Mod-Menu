@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076806c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076809c        int64_t* rbx = *(*(arg5 + 0x40) + 8)\n1407680a0        int64_t* var_20 = rbx\n140768152        (*(*rbx + 8))(rbx)\n1407680ba        void var_28\n1407680ba        int64_t* rax_3 = std::use_facet<class std::collate<uint16_t> >(&var_28)\n1407680c5        if (rbx != 0)\n1407680c7        void* rdx = *rbx\n140768152        int64_t* rax_8 = (*(rdx + 0x10))(rbx, rdx)\n1407680dd        if (rax_8 != 0)\n140768152        (**rax_8)(rax_8, 1, rax_8)\n1407680f3        arg5.d = 0\n140768121        int32_t rax_6 = std::time_get<char,class std::istreambuf_iterator<char,struct std::char_traits<char> > >::_Getint(arg1, arg3, arg4, 0, 0x270f, &arg5, rax_3)\n14076812e        *arg6 |= rax_6\n140768132        if ((rax_6.b & 2) == 0)\n14076813c        int32_t rax_7 = arg5.d\n140768146        if (rax_7 s< 0x45)\n140768148        rax_7 += 0x64\n140768150        if (rax_7 s>= 0x64)\n140768152        rax_7 -= 0x76c\n140768157        *(arg7 + 0x14) = rax_7\n14076815d        *arg2 = *arg3\n14076817d        return arg2",
+  "fetched_at": "2026-04-26T17:30:14Z"
+}

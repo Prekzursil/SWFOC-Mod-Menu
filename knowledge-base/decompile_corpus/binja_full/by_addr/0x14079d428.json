@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d428",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d431        int32_t rcx_1 = arg1 & 0x3f\n14079d46f        int32_t rdx_7 = (rcx_1 u>> 1 & 1) << 5 | (rcx_1 u>> 2 & 1) << 3 | (rcx_1 u>> 3 & 1) << 2 | ((rcx_1 u>> 4 & 1) * 2) | (rcx_1 & 1) << 4\n14079d471        int32_t rdx_8 = rdx_7 | rcx_1 u>> 5\n14079d47a        return zx.q(rdx_8 << 0x18) | zx.q(rdx_8)",
+  "fetched_at": "2026-04-26T17:32:14Z"
+}

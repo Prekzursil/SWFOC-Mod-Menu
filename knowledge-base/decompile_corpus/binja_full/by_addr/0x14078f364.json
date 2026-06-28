@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f364",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078f36a        uint64_t dwBytes = arg1\n14078f371        if (arg1 u<= -0x20)\n14078f37b        if (arg1 == 0)\n14078f37b        dwBytes = 1\n14078f394        int32_t i\n14078f3a2        int64_t result = HeapAlloc(data_140b3cc00, HEAP_NONE, dwBytes)\n14078f3ab        if (result != 0)\n14078f3c1        return result\n14078f388        if (sub_14078ec1c() == 0)\n14078f388        break\n14078f38d        i = _callnewh(dwBytes)\n14078f394        do while (i != 0)\n14078f3b4        *_errno() = 0xc\n14078f3ba        return 0",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

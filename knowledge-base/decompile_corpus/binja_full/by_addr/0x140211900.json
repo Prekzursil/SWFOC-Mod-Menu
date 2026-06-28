@@ -1,0 +1,7 @@
+{
+  "addr": "0x140211900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140211910        *arg1 = &DynamicVectorClass<class MappedKeyClass>::`vftable'\n140211915        arg1[1] = 0\n140211919        arg1[2] = 0\n14021191d        sub_140211940(arg1)\n14021192a        return arg1",
+  "fetched_at": "2026-04-26T17:28:22Z"
+}

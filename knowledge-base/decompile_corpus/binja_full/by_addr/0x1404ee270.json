@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ee276        struct BaseDataPackClass::HintDataPackClass::VTable* const result = &HintDataPackClass::`vftable'{for `BaseDataPackClass'}\n1404ee280        *arg1 = &HintDataPackClass::`vftable'{for `BaseDataPackClass'}\n1404ee283        int64_t rdx = arg1[4]\n1404ee28b        if (rdx u>= 0x10)\n1404ee28d        void* rcx = arg1[1]\n1404ee29b        if (rdx + 1 u>= 0x1000)\n1404ee29d        void* r8_1 = *(rcx - 8)\n1404ee2b0        if (rcx - r8_1 - 8 u> 0x1f)\n1404ee2d4        _invalid_parameter_noinfo_noreturn()\n1404ee2d4        noreturn\n1404ee2b2        rcx = r8_1\n1404ee2b5        result = j_sub_1407864b8(rcx)\n1404ee2ba        arg1[3] = 0\n1404ee2c2        arg1[4] = 0xf\n1404ee2ca        arg1[1].b = 0\n1404ee2d3        return result",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

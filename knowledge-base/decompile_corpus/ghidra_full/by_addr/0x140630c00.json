@@ -1,0 +1,7 @@
+{
+  "addr": "0x140630c00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SelfDestructBehaviorClass::vfunction9(void)\n\n{\n  return \"SelfDestructBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:33:23Z"
+}

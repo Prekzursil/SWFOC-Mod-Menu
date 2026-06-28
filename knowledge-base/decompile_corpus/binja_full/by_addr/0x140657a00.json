@@ -1,0 +1,7 @@
+{
+  "addr": "0x140657a00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140657a18        int64_t rbp\n140657a18        rbp.b = 1\n140657a22        if (sub_1402204a0(arg2) != 0)\n140657a28        int64_t rsi\n140657a28        int64_t arg_8 = rsi\n140657ad2        char i\n140657a3b        if (sub_1402205a0(arg2) == 0xf)\n140657a48        arg3[1] = *arg3\n140657a4c        rsi.b = 1\n140657a56        if (sub_140220610(arg2) != 0)\n140657abb        char j\n140657a5b        int32_t rax_4 = sub_140220710(arg2)\n140657a63        if (rax_4 == 3)\n140657a79        int32_t arg_20\n140657a79        rsi.b &= sub_140220730(arg2, &arg_20, rax_4 + 1, nullptr)\n140657a7c        if (rsi.b != 0)\n140657a7e        int32_t* rdx_1 = arg3[1]\n140657a86        if (rdx_1 == arg3[2])\n140657aa4        std::vector<uint64_t const& __ptr64,uint64_t,class std::allocator<uint64_t> >::_Emplace_reallocate<uint64_t const& __ptr64>(arg3, rdx_1, &arg_20)\n140657a92        *rdx_1 = arg_20\n140657a96        arg3[1] = &rdx_1[1]\n140657aac        sub_1402206a0(arg2)\n140657ab4        j = sub_140220610(arg2)\n140657abb        do while (j != 0)\n140657abd        rbp.b &= rsi.b\n140657a3d        rbp.b = 0\n140657ac3        sub_140220520(arg2)\n140657acb        i = sub_1402204a0(arg2)\n140657ad2        do while (i != 0)\n140657af0        return zx.q(rbp.b)",
+  "fetched_at": "2026-04-26T17:06:55Z"
+}

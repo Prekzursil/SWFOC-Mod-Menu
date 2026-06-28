@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b5780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall alShaderInstance::vfunction7_for_RefCountClass(void)\n\n{\n  return \"UnNamed\";\n}",
+  "fetched_at": "2026-04-26T17:44:51Z"
+}

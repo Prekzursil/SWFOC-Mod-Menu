@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f8dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402f8dda        int32_t r8 = 0\n1402f8de6        uint64_t rdx\n1402f8de6        void* rbx_2\n1402f8de6        if (arg2 != 0)\n1402f8e48        void* r10_1 = arg1 + 0x2290\n1402f8e54        while (true)\n1402f8e54        if (*r10_1 != 0)\n1402f8e60        rbx_2 = sx.q(r8) * 0x68 + arg1\n1402f8e63        int64_t rax = rbx_2 + 0x22b0\n1402f8e6a        int64_t r9_2 = arg2 - rax\n1402f8e81        uint32_t i\n1402f8e81        uint32_t rdx_1\n1402f8e70        rdx_1 = zx.d(*rax)\n1402f8e73        i = zx.d(*(rax + r9_2))\n1402f8e7a        if (rdx_1 != i)\n1402f8e7a        break\n1402f8e7c        rax += 1\n1402f8e81        do while (i != 0)\n1402f8e85        if (rdx_1 - i == 0)\n1402f8e85        break\n1402f8e87        r8 += 1\n1402f8e8a        r10_1 += 0x68\n1402f8e92        if (r8 s>= 0xa)\n1402f8e9e        return \n1402f8de8        rdx = 0\n1402f8deb        char* rax_1 = arg1 + 0x22b0\n1402f8dfb        while (rax_1[-0x20] == 0 || *rax_1 != 0)\n1402f8dfd        r8 += 1\n1402f8e00        rdx += 1\n1402f8e03        rax_1 = &rax_1[0x68]\n1402f8e0b        if (rdx s>= 0xa)\n1402f8e17        return \n1402f8e1f        rbx_2 = sx.q(r8) * 0x68 + arg1\n1402f8e29        if (rbx_2 == -0x2288)\n1402f8e29        return \n1402f8e2e        rdx.b = 1\n1402f8e30        sub_140264c80(*(rbx_2 + 0x2288), rdx.b)\n1402f8e35        *(rbx_2 + 0x2290) = 0\n1402f8e39        *(rbx_2 + 0x22b0) = 0\n1402f8e47        return ",
+  "fetched_at": "2026-04-26T17:23:04Z"
+}

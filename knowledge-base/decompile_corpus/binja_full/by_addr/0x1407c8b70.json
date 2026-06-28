@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c8b70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c8b76        arg1[0x16] += 1\n1407c8b83        if (arg1[0x16] s> 0xc8)\n1407c8b8c        sub_1407be9e0(arg1)\n1407c8b8c        noreturn\n1407c8c0a        int32_t i\n1407c8ba0        int32_t rcx = arg1[4]\n1407c8ba9        if (rcx == 0x104)\n1407c8ba9        break\n1407c8bae        if (rcx == 0x105)\n1407c8bae        break\n1407c8bb3        if (rcx == 0x106)\n1407c8bb3        break\n1407c8bb8        if (rcx == 0x114)\n1407c8bb8        break\n1407c8bbd        if (rcx == 0x11f)\n1407c8bbd        break\n1407c8bc2        i, arg2, arg3 = sub_1407cac20(arg1, arg2, arg3)\n1407c8bcd        if (arg1[4] == 0x3b)\n1407c8bcf        bool cond:1_1 = arg1[8] == 0x11f\n1407c8bd9        arg1[2] = arg1[1]\n1407c8bdc        if (cond:1_1)\n1407c8bf6        int32_t rax_1\n1407c8bf6        rax_1, arg2, arg3 = sub_1407be0c0(arg1, &arg1[6])\n1407c8bfb        arg1[4] = rax_1\n1407c8bde        int128_t zmm0_1 = *(arg1 + 0x20)\n1407c8be2        arg1[8] = 0x11f\n1407c8be9        *(arg1 + 0x10) = zmm0_1\n1407c8bfe        void* rcx_8 = *(arg1 + 0x30)\n1407c8c05        *(rcx_8 + 0x3c) = *(rcx_8 + 0x4c)\n1407c8c0a        do while (i == 0)\n1407c8c0c        arg1[0x16] -= 1\n1407c8c19        return ",
+  "fetched_at": "2026-04-26T17:33:47Z"
+}

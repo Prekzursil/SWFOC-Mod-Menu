@@ -1,0 +1,3257 @@
+{
+  "format": "json",
+  "functions": [
+    {
+      "addr": "0x140019350",
+      "name": "sub_140019350",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019350 (.text @ 0x140019350):\n140019350  lea rcx, sub_1407F27B0\n140019357  jmp atexit",
+      "code": "int sub_140019350()\n{\n  return atexit((void (__cdecl *)())sub_1407F27B0);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fecc8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019357",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f27b0",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019360",
+      "name": "sub_140019360",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019360 (.text @ 0x140019360):\n140019360  lea rcx, sub_1407F2810\n140019367  jmp atexit",
+      "code": "int sub_140019360()\n{\n  return atexit((void (__cdecl *)())sub_1407F2810);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fecc0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019367",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f2810",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019370",
+      "name": "sub_140019370",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019370 (.text @ 0x140019370):\n140019370  lea rcx, sub_1407F2870\n140019377  jmp atexit",
+      "code": "int sub_140019370()\n{\n  return atexit((void (__cdecl *)())sub_1407F2870);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fecd0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019377",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f2870",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019380",
+      "name": "sub_140019380",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019380 (.text @ 0x140019380):\n140019380  lea rcx, sub_1407F28D0\n140019387  jmp atexit",
+      "code": "int sub_140019380()\n{\n  return atexit((void (__cdecl *)())sub_1407F28D0);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fecd8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019387",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f28d0",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019390",
+      "name": "sub_140019390",
+      "prototype": "int()",
+      "size": "0x47",
+      "comments": {
+        "0x140019394": {
+          "regular": "Size"
+        },
+        "0x14001939e": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019390 (.text @ 0x140019390):\n140019390  sub rsp, 28h\n140019394  mov ecx, 30h\n140019399  call ??2@YAPEAX_K@Z\n14001939e  lea rcx, sub_1407F2940\n1400193a5  mov [rax], rax\n1400193a8  mov [rax+8], rax\n1400193ac  mov [rax+10h], rax\n1400193b0  mov word ptr [rax+18h], 101h\n1400193b6  mov cs:qword_140A2A838, rax\n1400193bd  mov cs:dword_140A2A814, 0\n1400193c7  mov cs:byte_140A2A810, 0\n1400193ce  add rsp, 28h\n1400193d2  jmp atexit",
+      "code": "int sub_140019390()\n{\n  _QWORD *v0; // rax\n\n  v0 = operator new(0x30u); /*0x140019399*/\n  *v0 = v0; /*0x1400193a5*/\n  v0[1] = v0; /*0x1400193a8*/\n  v0[2] = v0; /*0x1400193ac*/\n  *((_WORD *)v0 + 12) = 257; /*0x1400193b0*/\n  qword_140A2A838 = v0; /*0x1400193b6*/\n  dword_140A2A814 = 0; /*0x1400193bd*/\n  byte_140A2A810 = 0; /*0x1400193c7*/\n  return atexit(sub_1407F2940); /*0x1400193ce*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fece0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45cfc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019394",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400193e0",
+      "name": "sub_1400193E0",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_1400193E0 (.text @ 0x1400193e0):\n1400193e0  lea rcx, sub_1407F2A30\n1400193e7  jmp atexit",
+      "code": "int sub_1400193E0()\n{\n  return atexit((void (__cdecl *)())sub_1407F2A30);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fecf0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400193e7",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f2a30",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400193f0",
+      "name": "sub_1400193F0",
+      "prototype": "int()",
+      "size": "0x36",
+      "comments": {
+        "0x1400193f4": {
+          "regular": "Size"
+        },
+        "0x1400193fe": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400193F0 (.text @ 0x1400193f0):\n1400193f0  sub rsp, 28h\n1400193f4  mov ecx, 48h\n1400193f9  call ??2@YAPEAX_K@Z\n1400193fe  lea rcx, sub_1407F2AA0\n140019405  mov [rax], rax\n140019408  mov [rax+8], rax\n14001940c  mov [rax+10h], rax\n140019410  mov word ptr [rax+18h], 101h\n140019416  mov cs:qword_140B31240, rax\n14001941d  add rsp, 28h\n140019421  jmp atexit",
+      "code": "int sub_1400193F0()\n{\n  _QWORD *v0; // rax\n\n  v0 = operator new(0x48u); /*0x1400193f9*/\n  *v0 = v0; /*0x140019405*/\n  v0[1] = v0; /*0x140019408*/\n  v0[2] = v0; /*0x14001940c*/\n  *((_WORD *)v0 + 12) = 257; /*0x140019410*/\n  qword_140B31240 = v0; /*0x140019416*/\n  return atexit(sub_1407F2AA0); /*0x14001941d*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fece8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d08",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400193f4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019430",
+      "name": "sub_140019430",
+      "prototype": "int()",
+      "size": "0x76",
+      "comments": {
+        "0x14001944c": {
+          "regular": "Size"
+        },
+        "0x14001946c": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019430 (.text @ 0x140019430):\n140019430  sub rsp, 28h\n140019434  lea rcx, unk_140A2A8E0\n14001943b  call sub_1401F92F0\n140019440  lea rcx, unk_140A2A8F0\n140019447  call sub_1401F92F0\n14001944c  mov ecx, 30h\n140019451  mov cs:qword_140A2A928, 0\n14001945c  mov cs:qword_140A2A930, 0\n140019467  call ??2@YAPEAX_K@Z\n14001946c  lea rcx, sub_1407F2B20\n140019473  mov [rax], rax\n140019476  mov [rax+8], rax\n14001947a  mov [rax+10h], rax\n14001947e  mov word ptr [rax+18h], 101h\n140019484  mov cs:qword_140A2A928, rax\n14001948b  mov cs:qword_140A2A870, 0\n140019496  mov cs:byte_140A2A878, 0\n14001949d  add rsp, 28h\n1400194a1  jmp atexit",
+      "code": "int sub_140019430()\n{\n  _QWORD *v0; // rax\n\n  sub_1401F92F0(&unk_140A2A8E0); /*0x14001943b*/\n  sub_1401F92F0(&unk_140A2A8F0); /*0x140019447*/\n  qword_140A2A928 = nullptr; /*0x140019451*/\n  qword_140A2A930 = 0; /*0x14001945c*/\n  v0 = operator new(0x30u); /*0x140019467*/\n  *v0 = v0; /*0x140019473*/\n  v0[1] = v0; /*0x140019476*/\n  v0[2] = v0; /*0x14001947a*/\n  *((_WORD *)v0 + 12) = 257; /*0x14001947e*/\n  qword_140A2A928 = v0; /*0x140019484*/\n  qword_140A2A870 = 0; /*0x14001948b*/\n  byte_140A2A878 = 0; /*0x140019496*/\n  return atexit(sub_1407F2B20); /*0x14001949d*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fecf8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d14",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019434",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400194b0",
+      "name": "sub_1400194B0",
+      "prototype": "int()",
+      "size": "0x82",
+      "comments": {
+        "0x1400194bc": {
+          "regular": "Size"
+        },
+        "0x140019522": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400194B0 (.text @ 0x1400194b0):\n1400194b0  sub rsp, 28h\n1400194b4  xor eax, eax\n1400194b6  mov cs:byte_140B31280, al\n1400194bc  lea ecx, [rax+20h]\n1400194bf  call ??2@YAPEAX_K@Z\n1400194c4  xorps xmm0, xmm0\n1400194c7  lea rcx, qword_140B31298\n1400194ce  mov r8, rax\n1400194d1  mov edx, 10h\n1400194d6  mov [rax], rax\n1400194d9  mov [rax+8], rax\n1400194dd  movdqa cs:xmmword_140B312A0, xmm0\n1400194e5  movss xmm0, cs:dword_1407FFAF8\n1400194ed  movss cs:dword_140B31284, xmm0\n1400194f5  mov cs:qword_140B31288, rax\n1400194fc  mov cs:qword_140B31298, 0\n140019507  mov cs:qword_140B312B0, 7\n140019512  mov cs:qword_140B312B8, 8\n14001951d  call sub_140048250\n140019522  lea rcx, sub_1407F2BC0\n140019529  add rsp, 28h\n14001952d  jmp atexit",
+      "code": "int sub_1400194B0()\n{\n  _QWORD *v0; // rax\n\n  byte_140B31280 = 0; /*0x1400194b6*/\n  v0 = operator new(0x20u); /*0x1400194bf*/\n  *v0 = v0; /*0x1400194d6*/\n  v0[1] = v0; /*0x1400194d9*/\n  xmmword_140B312A0 = 0; /*0x1400194dd*/\n  dword_140B31284 = 1065353216; /*0x1400194ed*/\n  qword_140B31288 = (__int64)v0; /*0x1400194f5*/\n  qword_140B31298 = 0; /*0x1400194fc*/\n  qword_140B312B0 = 7; /*0x140019507*/\n  qword_140B312B8 = 8; /*0x140019512*/\n  sub_140048250(&qword_140B31298, 16, v0); /*0x14001951d*/\n  return atexit(sub_1407F2BC0); /*0x140019529*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed08",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d20",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400194b4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019540",
+      "name": "sub_140019540",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019540 (.text @ 0x140019540):\n140019540  lea rcx, sub_1407F2C30\n140019547  jmp atexit",
+      "code": "int sub_140019540()\n{\n  return atexit((void (__cdecl *)())sub_1407F2C30);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed00",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019547",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f2c30",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019550",
+      "name": "sub_140019550",
+      "prototype": "int()",
+      "size": "0x82",
+      "comments": {
+        "0x14001955c": {
+          "regular": "Size"
+        },
+        "0x1400195c2": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019550 (.text @ 0x140019550):\n140019550  sub rsp, 28h\n140019554  xor eax, eax\n140019556  mov cs:byte_140B312F0, al\n14001955c  lea ecx, [rax+20h]\n14001955f  call ??2@YAPEAX_K@Z\n140019564  xorps xmm0, xmm0\n140019567  lea rcx, qword_140B31308\n14001956e  mov r8, rax\n140019571  mov edx, 10h\n140019576  mov [rax], rax\n140019579  mov [rax+8], rax\n14001957d  movdqa cs:xmmword_140B31310, xmm0\n140019585  movss xmm0, cs:dword_1407FFAF8\n14001958d  movss cs:dword_140B312F4, xmm0\n140019595  mov cs:qword_140B312F8, rax\n14001959c  mov cs:qword_140B31308, 0\n1400195a7  mov cs:qword_140B31320, 7\n1400195b2  mov cs:qword_140B31328, 8\n1400195bd  call sub_140048250\n1400195c2  lea rcx, sub_1407F2D10\n1400195c9  add rsp, 28h\n1400195cd  jmp atexit",
+      "code": "int sub_140019550()\n{\n  _QWORD *v0; // rax\n\n  byte_140B312F0 = 0; /*0x140019556*/\n  v0 = operator new(0x20u); /*0x14001955f*/\n  *v0 = v0; /*0x140019576*/\n  v0[1] = v0; /*0x140019579*/\n  xmmword_140B31310 = 0; /*0x14001957d*/\n  dword_140B312F4 = 1065353216; /*0x14001958d*/\n  qword_140B312F8 = (__int64)v0; /*0x140019595*/\n  qword_140B31308 = 0; /*0x14001959c*/\n  qword_140B31320 = 7; /*0x1400195a7*/\n  qword_140B31328 = 8; /*0x1400195b2*/\n  sub_140048250(&qword_140B31308, 16, v0); /*0x1400195bd*/\n  return atexit(sub_1407F2D10); /*0x1400195c9*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed18",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d2c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019554",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400195e0",
+      "name": "sub_1400195E0",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_1400195E0 (.text @ 0x1400195e0):\n1400195e0  lea rcx, sub_1407F2D80\n1400195e7  jmp atexit",
+      "code": "int sub_1400195E0()\n{\n  return atexit((void (__cdecl *)())sub_1407F2D80);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed10",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400195e7",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f2d80",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400195f0",
+      "name": "sub_1400195F0",
+      "prototype": "int()",
+      "size": "0x41",
+      "comments": {
+        "0x1400195f4": {
+          "regular": "Size"
+        },
+        "0x1400195fe": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400195F0 (.text @ 0x1400195f0):\n1400195f0  sub rsp, 28h\n1400195f4  mov ecx, 30h\n1400195f9  call ??2@YAPEAX_K@Z\n1400195fe  lea rcx, sub_1407F2DF0\n140019605  mov [rax], rax\n140019608  mov [rax+8], rax\n14001960c  mov [rax+10h], rax\n140019610  mov word ptr [rax+18h], 101h\n140019616  mov cs:qword_140A2A9B0, rax\n14001961d  mov cs:qword_140A2A988, 0\n140019628  add rsp, 28h\n14001962c  jmp atexit",
+      "code": "int sub_1400195F0()\n{\n  _QWORD *v0; // rax\n\n  v0 = operator new(0x30u); /*0x1400195f9*/\n  *v0 = v0; /*0x140019605*/\n  v0[1] = v0; /*0x140019608*/\n  v0[2] = v0; /*0x14001960c*/\n  *((_WORD *)v0 + 12) = 257; /*0x140019610*/\n  qword_140A2A9B0 = v0; /*0x140019616*/\n  qword_140A2A988 = 0; /*0x14001961d*/\n  return atexit(sub_1407F2DF0); /*0x140019628*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed20",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d38",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400195f4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019640",
+      "name": "sub_140019640",
+      "prototype": "int()",
+      "size": "0xc9",
+      "comments": {
+        "0x14001964a": {
+          "regular": "Size"
+        },
+        "0x1400196c7": {
+          "regular": "Block"
+        },
+        "0x1400196e1": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019640 (.text @ 0x140019640):\n140019640  mov [rsp+arg_0], rbx\n140019645  push rdi\n140019646  sub rsp, 20h\n14001964a  mov ecx, 30h\n14001964f  call ??2@YAPEAX_K@Z\n140019654  mov [rax], rax\n140019657  mov [rax+8], rax\n14001965b  mov [rax+10h], rax\n14001965f  mov word ptr [rax+18h], 101h\n140019665  cmp cs:qword_140A2A9E0, 10h\n14001966d  mov cs:qword_140A2A9F0, rax\n140019674  lea rax, qword_140A2A9C8\n14001967b  cmovnb rax, cs:qword_140A2A9C8\n140019683  mov cs:byte_140A2A9C0, 0\n14001968a  mov cs:qword_140A2A9D8, 0\n140019695  mov byte ptr [rax], 0\n140019698  mov rdi, cs:qword_140A2A9F0\n14001969f  mov rbx, [rdi+8]\n1400196a3  cmp byte ptr [rbx+19h], 0\n1400196a7  jnz loc_1400196DD\n1400196a9  nop dword ptr [rax+00000000h]\n1400196b0  mov r8, [rbx+10h]\n1400196b4  lea rdx, qword_140A2A9F0\n1400196bb  lea rcx, qword_140A2A9F0\n1400196c2  call sub_14006C2E0\n1400196c7  mov rcx, rbx\n1400196ca  mov edx, 30h\n1400196cf  mov rbx, [rbx]\n1400196d2  call j_j_free\n1400196d7  cmp byte ptr [rbx+19h], 0\n1400196db  jz loc_1400196B0\n1400196dd  mov [rdi+8], rdi\n1400196e1  lea rcx, sub_1407F2EB0\n1400196e8  mov [rdi], rdi\n1400196eb  mov [rdi+10h], rdi\n1400196ef  mov cs:qword_140A2A9F8, 0\n1400196fa  mov rbx, [rsp+28h+arg_0]\n1400196ff  add rsp, 20h\n140019703  pop rdi\n140019704  jmp atexit",
+      "code": "int sub_140019640()\n{\n  _QWORD *v0; // rax\n  __int64 *v1; // rax\n  _QWORD *v2; // rdi\n  _QWORD *v3; // rbx\n  void *v4; // rcx\n\n  v0 = operator new(0x30u); /*0x14001964f*/\n  *v0 = v0; /*0x140019654*/\n  v0[1] = v0; /*0x140019657*/\n  v0[2] = v0; /*0x14001965b*/\n  *((_WORD *)v0 + 12) = 257; /*0x14001965f*/\n  qword_140A2A9F0 = v0; /*0x14001966d*/\n  v1 = &qword_140A2A9C8; /*0x140019674*/\n  if ( (unsigned __int64)qword_140A2A9E0 >= 0x10 ) /*0x14001967b*/\n    v1 = (__int64 *)qword_140A2A9C8; /*0x14001967b*/\n  byte_140A2A9C0 = 0; /*0x140019683*/\n  qword_140A2A9D8 = 0; /*0x14001968a*/\n  *(_BYTE *)v1 = 0; /*0x140019695*/\n  v2 = qword_140A2A9F0; /*0x140019698*/\n  v3 = *((_QWORD **)qword_140A2A9F0 + 1); /*0x14001969f*/\n  while ( !*((_BYTE *)v3 + 25) ) /*0x1400196a3*/\n  {\n    sub_14006C2E0(&qword_140A2A9F0, &qword_140A2A9F0, v3[2]); /*0x1400196c2*/\n    v4 = v3; /*0x1400196c7*/\n    v3 = (_QWORD *)*v3; /*0x1400196cf*/\n    j_j_free(v4); /*0x1400196d2*/\n  }\n  v2[1] = v2; /*0x1400196dd*/\n  *v2 = v2; /*0x1400196e8*/\n  v2[2] = v2; /*0x1400196eb*/\n  qword_140A2A9F8 = 0; /*0x1400196ef*/\n  return atexit(sub_1407F2EB0); /*0x1400196fa*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed28",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d44",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019645",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019710",
+      "name": "sub_140019710",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019710 (.text @ 0x140019710):\n140019710  lea rcx, sub_1407F2FE0\n140019717  jmp atexit",
+      "code": "int sub_140019710()\n{\n  return atexit((void (__cdecl *)())sub_1407F2FE0);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed30",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019717",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f2fe0",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019720",
+      "name": "sub_140019720",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019720 (.text @ 0x140019720):\n140019720  lea rcx, sub_1407F3000\n140019727  jmp atexit",
+      "code": "int sub_140019720()\n{\n  return atexit((void (__cdecl *)())sub_1407F3000);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed38",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019727",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3000",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019730",
+      "name": "sub_140019730",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x140019740": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019730 (.text @ 0x140019730):\n140019730  sub rsp, 28h\n140019734  lea rcx, byte_140B31330\n14001973b  call sub_14048B300\n140019740  lea rcx, sub_1407F3070\n140019747  add rsp, 28h\n14001974b  jmp atexit",
+      "code": "int sub_140019730()\n{\n  sub_14048B300(&byte_140B31330); /*0x14001973b*/\n  return atexit(sub_1407F3070); /*0x140019747*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed40",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d50",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019734",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019750",
+      "name": "sub_140019750",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {
+        "0x140019750": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019750 (.text @ 0x140019750):\n140019750  lea rcx, sub_1407F3180\n140019757  jmp atexit",
+      "code": "int sub_140019750()\n{\n  return atexit(sub_1407F3180);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed48",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d50",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019757",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3180",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019760",
+      "name": "sub_140019760",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019777": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019760 (.text @ 0x140019760):\n140019760  sub rsp, 28h\n140019764  lea rcx, qword_140B313E0\n14001976b  call sub_1405960F0\n140019770  lea rax, ??_7?$EventFactoryClass@VSaveGameEventClass@@$0CE@@@6B@\n140019777  lea rcx, sub_1407F3190\n14001977e  mov cs:qword_140B313E0, rax\n140019785  add rsp, 28h\n140019789  jmp atexit",
+      "code": "int sub_140019760()\n{\n  sub_1405960F0(&qword_140B313E0); /*0x14001976b*/\n  qword_140B313E0 = (__int64)&EventFactoryClass<SaveGameEventClass,36>::`vftable'; /*0x14001977e*/\n  return atexit(sub_1407F3190); /*0x140019785*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed50",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d5c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019764",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019790",
+      "name": "sub_140019790",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x1400197a7": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019790 (.text @ 0x140019790):\n140019790  sub rsp, 28h\n140019794  lea rcx, qword_140B313F8\n14001979b  call sub_1405960F0\n1400197a0  lea rax, ??_7?$EventFactoryClass@VInvadeEventClass@@$08@@6B@\n1400197a7  lea rcx, sub_1407F31A0\n1400197ae  mov cs:qword_140B313F8, rax\n1400197b5  add rsp, 28h\n1400197b9  jmp atexit",
+      "code": "int sub_140019790()\n{\n  sub_1405960F0(&qword_140B313F8); /*0x14001979b*/\n  qword_140B313F8 = (__int64)&EventFactoryClass<InvadeEventClass,9>::`vftable'; /*0x1400197ae*/\n  return atexit(sub_1407F31A0); /*0x1400197b5*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed58",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d68",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019794",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400197c0",
+      "name": "sub_1400197C0",
+      "prototype": "int()",
+      "size": "0x3d",
+      "comments": {
+        "0x1400197de": {
+          "regular": "Size"
+        },
+        "0x1400197e6": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400197C0 (.text @ 0x1400197c0):\n1400197c0  sub rsp, 28h\n1400197c4  movsxd rcx, cs:dword_140A16FB0\n1400197cb  mov eax, 0Ch\n1400197d0  mul , rcx\n1400197d3  mov rcx, 0FFFFFFFFFFFFFFFFh\n1400197da  cmovo rax, rcx\n1400197de  mov rcx, rax\n1400197e1  call j_??2@YAPEAX_K@Z\n1400197e6  lea rcx, sub_1407F31B0\n1400197ed  mov cs:qword_140A2AAB8, rax\n1400197f4  add rsp, 28h\n1400197f8  jmp atexit",
+      "code": "int sub_1400197C0()\n{\n  qword_140A2AAB8 = operator new(saturated_mul(dword_140A16FB0, 0xCu)); /*0x1400197ed*/\n  return atexit(sub_1407F31B0); /*0x1400197f4*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed60",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d74",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400197c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019800",
+      "name": "sub_140019800",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019817": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019800 (.text @ 0x140019800):\n140019800  sub rsp, 28h\n140019804  lea rcx, qword_140B31428\n14001980b  call sub_1405960F0\n140019810  lea rax, ??_7?$EventFactoryClass@VDistributeMoneyEventClass@@$0CK@@@6B@\n140019817  lea rcx, sub_1407F3240\n14001981e  mov cs:qword_140B31428, rax\n140019825  add rsp, 28h\n140019829  jmp atexit",
+      "code": "int sub_140019800()\n{\n  sub_1405960F0(&qword_140B31428); /*0x14001980b*/\n  qword_140B31428 = (__int64)&EventFactoryClass<DistributeMoneyEventClass,42>::`vftable'; /*0x14001981e*/\n  return atexit(sub_1407F3240); /*0x140019825*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed68",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d80",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019804",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019830",
+      "name": "sub_140019830",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019830 (.text @ 0x140019830):\n140019830  lea rcx, sub_1407F3250\n140019837  jmp atexit",
+      "code": "int sub_140019830()\n{\n  return atexit((void (__cdecl *)())sub_1407F3250);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed78",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019837",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3250",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019840",
+      "name": "sub_140019840",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019857": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019840 (.text @ 0x140019840):\n140019840  sub rsp, 28h\n140019844  lea rcx, qword_140B31430\n14001984b  call sub_1405960F0\n140019850  lea rax, ??_7?$EventFactoryClass@VQuitGameEventClass@@$0P@@@6B@\n140019857  lea rcx, sub_1407F32C0\n14001985e  mov cs:qword_140B31430, rax\n140019865  add rsp, 28h\n140019869  jmp atexit",
+      "code": "int sub_140019840()\n{\n  sub_1405960F0(&qword_140B31430); /*0x14001984b*/\n  qword_140B31430 = (__int64)&EventFactoryClass<QuitGameEventClass,15>::`vftable'; /*0x14001985e*/\n  return atexit(sub_1407F32C0); /*0x140019865*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed70",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d8c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019844",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019870",
+      "name": "sub_140019870",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019887": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019870 (.text @ 0x140019870):\n140019870  sub rsp, 28h\n140019874  lea rcx, qword_140B316A0\n14001987b  call sub_1405960F0\n140019880  lea rax, ??_7?$EventFactoryClass@VDebugEventClass@@$0L@@@6B@\n140019887  lea rcx, sub_1407F32D0\n14001988e  mov cs:qword_140B316A0, rax\n140019895  add rsp, 28h\n140019899  jmp atexit",
+      "code": "int sub_140019870()\n{\n  sub_1405960F0(&qword_140B316A0); /*0x14001987b*/\n  qword_140B316A0 = (__int64)&EventFactoryClass<DebugEventClass,11>::`vftable'; /*0x14001988e*/\n  return atexit(sub_1407F32D0); /*0x140019895*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed80",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45d98",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019874",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400198a0",
+      "name": "sub_1400198A0",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x1400198b7": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400198A0 (.text @ 0x1400198a0):\n1400198a0  sub rsp, 28h\n1400198a4  lea rcx, qword_140B316A8\n1400198ab  call sub_1405960F0\n1400198b0  lea rax, ??_7?$EventFactoryClass@VWithdrawlEventClass@@$0DB@@@6B@\n1400198b7  lea rcx, sub_1407F32E0\n1400198be  mov cs:qword_140B316A8, rax\n1400198c5  add rsp, 28h\n1400198c9  jmp atexit",
+      "code": "int sub_1400198A0()\n{\n  sub_1405960F0(&qword_140B316A8); /*0x1400198ab*/\n  qword_140B316A8 = (__int64)&EventFactoryClass<WithdrawlEventClass,49>::`vftable'; /*0x1400198be*/\n  return atexit(sub_1407F32E0); /*0x1400198c5*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed88",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45da4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400198a4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400198d0",
+      "name": "sub_1400198D0",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x1400198e7": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400198D0 (.text @ 0x1400198d0):\n1400198d0  sub rsp, 28h\n1400198d4  lea rcx, qword_140B316B0\n1400198db  call sub_1405960F0\n1400198e0  lea rax, ??_7?$EventFactoryClass@VResumeGameEventClass@@$0DD@@@6B@\n1400198e7  lea rcx, sub_1407F32F0\n1400198ee  mov cs:qword_140B316B0, rax\n1400198f5  add rsp, 28h\n1400198f9  jmp atexit",
+      "code": "int sub_1400198D0()\n{\n  sub_1405960F0(&qword_140B316B0); /*0x1400198db*/\n  qword_140B316B0 = (__int64)&EventFactoryClass<ResumeGameEventClass,51>::`vftable'; /*0x1400198ee*/\n  return atexit(sub_1407F32F0); /*0x1400198f5*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed90",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45db0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400198d4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019900",
+      "name": "sub_140019900",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019917": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019900 (.text @ 0x140019900):\n140019900  sub rsp, 28h\n140019904  lea rcx, qword_140B31720\n14001990b  call sub_1405960F0\n140019910  lea rax, ??_7?$EventFactoryClass@VSetAbilityAutofireEventClass@@$0DK@@@6B@\n140019917  lea rcx, sub_1407F3370\n14001991e  mov cs:qword_140B31720, rax\n140019925  add rsp, 28h\n140019929  jmp atexit",
+      "code": "int sub_140019900()\n{\n  sub_1405960F0(&qword_140B31720); /*0x14001990b*/\n  qword_140B31720 = (__int64)&EventFactoryClass<SetAbilityAutofireEventClass,58>::`vftable'; /*0x14001991e*/\n  return atexit(sub_1407F3370); /*0x140019925*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fed98",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45dbc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019904",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019930",
+      "name": "sub_140019930",
+      "prototype": "int()",
+      "size": "0x28",
+      "comments": {
+        "0x140019948": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019930 (.text @ 0x140019930):\n140019930  sub rsp, 28h\n140019934  mov edx, 4\n140019939  lea rcx, unk_140B31748\n140019940  mov r8d, edx\n140019943  call sub_140207410\n140019948  lea rcx, sub_1407F3380\n14001994f  add rsp, 28h\n140019953  jmp atexit",
+      "code": "int sub_140019930()\n{\n  sub_140207410(&unk_140B31748, 4, 4); /*0x140019943*/\n  return atexit(sub_1407F3380); /*0x14001994f*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedb0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45dc8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019934",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019960",
+      "name": "sub_140019960",
+      "prototype": "int()",
+      "size": "0x29",
+      "comments": {
+        "0x140019979": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019960 (.text @ 0x140019960):\n140019960  sub rsp, 28h\n140019964  mov edx, 3\n140019969  lea rcx, unk_140B31738\n140019970  lea r8d, [rdx+1]\n140019974  call sub_140207410\n140019979  lea rcx, sub_1407F3390\n140019980  add rsp, 28h\n140019984  jmp atexit",
+      "code": "int sub_140019960()\n{\n  sub_140207410(&unk_140B31738, 3, 4); /*0x140019974*/\n  return atexit(sub_1407F3390); /*0x140019980*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feda8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45dd4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019964",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019990",
+      "name": "sub_140019990",
+      "prototype": "int()",
+      "size": "0x29",
+      "comments": {
+        "0x1400199a9": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019990 (.text @ 0x140019990):\n140019990  sub rsp, 28h\n140019994  mov edx, 9\n140019999  lea rcx, unk_140B31798\n1400199a0  lea r8d, [rdx-5]\n1400199a4  call sub_140207410\n1400199a9  lea rcx, sub_1407F33A0\n1400199b0  add rsp, 28h\n1400199b4  jmp atexit",
+      "code": "int sub_140019990()\n{\n  sub_140207410(&unk_140B31798, 9, 4); /*0x1400199a4*/\n  return atexit(sub_1407F33A0); /*0x1400199b0*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedd8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45de0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019994",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400199c0",
+      "name": "sub_1400199C0",
+      "prototype": "int()",
+      "size": "0x29",
+      "comments": {
+        "0x1400199d9": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400199C0 (.text @ 0x1400199c0):\n1400199c0  sub rsp, 28h\n1400199c4  mov edx, 8\n1400199c9  lea rcx, unk_140B31788\n1400199d0  lea r8d, [rdx-4]\n1400199d4  call sub_140207410\n1400199d9  lea rcx, sub_1407F33B0\n1400199e0  add rsp, 28h\n1400199e4  jmp atexit",
+      "code": "int sub_1400199C0()\n{\n  sub_140207410(&unk_140B31788, 8, 4); /*0x1400199d4*/\n  return atexit(sub_1407F33B0); /*0x1400199e0*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedd0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45dec",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400199c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x1400199f0",
+      "name": "sub_1400199F0",
+      "prototype": "int()",
+      "size": "0x29",
+      "comments": {
+        "0x140019a09": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_1400199F0 (.text @ 0x1400199f0):\n1400199f0  sub rsp, 28h\n1400199f4  mov edx, 2\n1400199f9  lea rcx, unk_140B31728\n140019a00  lea r8d, [rdx+2]\n140019a04  call sub_140207410\n140019a09  lea rcx, sub_1407F33C0\n140019a10  add rsp, 28h\n140019a14  jmp atexit",
+      "code": "int sub_1400199F0()\n{\n  sub_140207410(&unk_140B31728, 2, 4); /*0x140019a04*/\n  return atexit(sub_1407F33C0); /*0x140019a10*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feda0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45df8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x1400199f4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019a20",
+      "name": "sub_140019A20",
+      "prototype": "int()",
+      "size": "0x29",
+      "comments": {
+        "0x140019a39": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019A20 (.text @ 0x140019a20):\n140019a20  sub rsp, 28h\n140019a24  mov edx, 6\n140019a29  lea rcx, unk_140B31768\n140019a30  lea r8d, [rdx-2]\n140019a34  call sub_140207410\n140019a39  lea rcx, sub_1407F33D0\n140019a40  add rsp, 28h\n140019a44  jmp atexit",
+      "code": "int sub_140019A20()\n{\n  sub_140207410(&unk_140B31768, 6, 4); /*0x140019a34*/\n  return atexit(sub_1407F33D0); /*0x140019a40*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedc0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e04",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019a24",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019a50",
+      "name": "sub_140019A50",
+      "prototype": "int()",
+      "size": "0x29",
+      "comments": {
+        "0x140019a69": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019A50 (.text @ 0x140019a50):\n140019a50  sub rsp, 28h\n140019a54  mov edx, 7\n140019a59  lea rcx, unk_140B31778\n140019a60  lea r8d, [rdx-3]\n140019a64  call sub_140207410\n140019a69  lea rcx, sub_1407F33E0\n140019a70  add rsp, 28h\n140019a74  jmp atexit",
+      "code": "int sub_140019A50()\n{\n  sub_140207410(&unk_140B31778, 7, 4); /*0x140019a64*/\n  return atexit(sub_1407F33E0); /*0x140019a70*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedc8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e10",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019a54",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019a80",
+      "name": "sub_140019A80",
+      "prototype": "int()",
+      "size": "0x29",
+      "comments": {
+        "0x140019a99": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019A80 (.text @ 0x140019a80):\n140019a80  sub rsp, 28h\n140019a84  mov edx, 5\n140019a89  lea rcx, unk_140B31758\n140019a90  lea r8d, [rdx-1]\n140019a94  call sub_140207410\n140019a99  lea rcx, sub_1407F33F0\n140019aa0  add rsp, 28h\n140019aa4  jmp atexit",
+      "code": "int sub_140019A80()\n{\n  sub_140207410(&unk_140B31758, 5, 4); /*0x140019a94*/\n  return atexit(sub_1407F33F0); /*0x140019aa0*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedb8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e1c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019a84",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019ab0",
+      "name": "sub_140019AB0",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019ac7": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019AB0 (.text @ 0x140019ab0):\n140019ab0  sub rsp, 28h\n140019ab4  lea rcx, qword_140B317A8\n140019abb  call sub_1405960F0\n140019ac0  lea rax, ??_7?$EventFactoryClass@VSpecialAbilityEventClass@@$0N@@@6B@\n140019ac7  lea rcx, sub_1407F3400\n140019ace  mov cs:qword_140B317A8, rax\n140019ad5  add rsp, 28h\n140019ad9  jmp atexit",
+      "code": "int sub_140019AB0()\n{\n  sub_1405960F0(&qword_140B317A8); /*0x140019abb*/\n  qword_140B317A8 = (__int64)&EventFactoryClass<SpecialAbilityEventClass,13>::`vftable'; /*0x140019ace*/\n  return atexit(sub_1407F3400); /*0x140019ad5*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fede0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e28",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019ab4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019ae0",
+      "name": "sub_140019AE0",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019AE0 (.text @ 0x140019ae0):\n140019ae0  lea rcx, sub_1407F3410\n140019ae7  jmp atexit",
+      "code": "int sub_140019AE0()\n{\n  return atexit((void (__cdecl *)())sub_1407F3410);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fede8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019ae7",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3410",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019af0",
+      "name": "sub_140019AF0",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019b07": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019AF0 (.text @ 0x140019af0):\n140019af0  sub rsp, 28h\n140019af4  lea rcx, qword_140B318C0\n140019afb  call sub_1405960F0\n140019b00  lea rax, ??_7?$EventFactoryClass@VFrameInfoEventClass@@$0A@@@6B@\n140019b07  lea rcx, sub_1407F34B0\n140019b0e  mov cs:qword_140B318C0, rax\n140019b15  add rsp, 28h\n140019b19  jmp atexit",
+      "code": "int sub_140019AF0()\n{\n  sub_1405960F0(&qword_140B318C0); /*0x140019afb*/\n  qword_140B318C0 = (__int64)&EventFactoryClass<FrameInfoEventClass,0>::`vftable'; /*0x140019b0e*/\n  return atexit(sub_1407F34B0); /*0x140019b15*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedf0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e34",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019af4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019b20",
+      "name": "sub_140019B20",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019b37": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019B20 (.text @ 0x140019b20):\n140019b20  sub rsp, 28h\n140019b24  lea rcx, qword_140B318D0\n140019b2b  call sub_1405960F0\n140019b30  lea rax, ??_7?$EventFactoryClass@VFrameSyncEventClass@@$0BB@@@6B@\n140019b37  lea rcx, sub_1407F34C0\n140019b3e  mov cs:qword_140B318D0, rax\n140019b45  add rsp, 28h\n140019b49  jmp atexit",
+      "code": "int sub_140019B20()\n{\n  sub_1405960F0(&qword_140B318D0); /*0x140019b2b*/\n  qword_140B318D0 = (__int64)&EventFactoryClass<FrameSyncEventClass,17>::`vftable'; /*0x140019b3e*/\n  return atexit(sub_1407F34C0); /*0x140019b45*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fedf8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e40",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019b24",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019b50",
+      "name": "sub_140019B50",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019b67": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019B50 (.text @ 0x140019b50):\n140019b50  sub rsp, 28h\n140019b54  lea rcx, qword_140B318E0\n140019b5b  call sub_1405960F0\n140019b60  lea rax, ??_7?$EventFactoryClass@VPerformanceMetricsEventClass@@$0BC@@@6B@\n140019b67  lea rcx, sub_1407F34D0\n140019b6e  mov cs:qword_140B318E0, rax\n140019b75  add rsp, 28h\n140019b79  jmp atexit",
+      "code": "int sub_140019B50()\n{\n  sub_1405960F0(&qword_140B318E0); /*0x140019b5b*/\n  qword_140B318E0 = (__int64)&EventFactoryClass<PerformanceMetricsEventClass,18>::`vftable'; /*0x140019b6e*/\n  return atexit(sub_1407F34D0); /*0x140019b75*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee00",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e4c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019b54",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019b80",
+      "name": "sub_140019B80",
+      "prototype": "int()",
+      "size": "0x81",
+      "comments": {
+        "0x140019bb2": {
+          "regular": "dwFlags"
+        },
+        "0x140019bb4": {
+          "regular": "dwBytes"
+        },
+        "0x140019bba": {
+          "regular": "hHeap"
+        },
+        "0x140019bf1": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019B80 (.text @ 0x140019b80):\n140019b80  sub rsp, 28h\n140019b84  cmp cs:byte_140B318EF, 0\n140019b8b  jnz loc_140019BF1\n140019b8d  mov cs:qword_140A2BB80, 0\n140019b98  mov cs:dword_140A2BB88, 0\n140019ba2  mov cs:dword_140A2BB8C, 80000000h\n140019bac  call cs:GetProcessHeap\n140019bb2  xor edx, edx\n140019bb4  mov r8d, 3E80h\n140019bba  mov rcx, rax\n140019bbd  call cs:HeapAlloc\n140019bc3  mov cs:qword_140A2BB80, rax\n140019bca  mov eax, cs:dword_140A2BB8C\n140019bd0  and eax, 800007D0h\n140019bd5  mov cs:dword_140A2BB88, 0\n140019bdf  or eax, 7D0h\n140019be4  mov cs:byte_140B318EF, 1\n140019beb  mov cs:dword_140A2BB8C, eax\n140019bf1  lea rcx, sub_1407F34E0\n140019bf8  add rsp, 28h\n140019bfc  jmp atexit",
+      "code": "int sub_140019B80()\n{\n  HANDLE ProcessHeap; // rax\n\n  if ( !byte_140B318EF ) /*0x140019b8b*/\n  {\n    qword_140A2BB80 = nullptr; /*0x140019b8d*/\n    dword_140A2BB88 = 0; /*0x140019b98*/\n    dword_140A2BB8C = 0x80000000; /*0x140019ba2*/\n    ProcessHeap = GetProcessHeap(); /*0x140019bac*/\n    qword_140A2BB80 = HeapAlloc(ProcessHeap, 0, 0x3E80u); /*0x140019bc3*/\n    dword_140A2BB88 = 0; /*0x140019bd5*/\n    byte_140B318EF = 1; /*0x140019be4*/\n    dword_140A2BB8C = dword_140A2BB8C & 0x80000000 | 0x7D0; /*0x140019beb*/\n  }\n  return atexit(sub_1407F34E0); /*0x140019bf8*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee20",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e58",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019b84",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019c10",
+      "name": "sub_140019C10",
+      "prototype": "int()",
+      "size": "0x81",
+      "comments": {
+        "0x140019c42": {
+          "regular": "dwFlags"
+        },
+        "0x140019c44": {
+          "regular": "dwBytes"
+        },
+        "0x140019c4a": {
+          "regular": "hHeap"
+        },
+        "0x140019c81": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019C10 (.text @ 0x140019c10):\n140019c10  sub rsp, 28h\n140019c14  cmp cs:byte_140B318EE, 0\n140019c1b  jnz loc_140019C81\n140019c1d  mov cs:qword_140A2BB68, 0\n140019c28  mov cs:dword_140A2BB70, 0\n140019c32  mov cs:dword_140A2BB74, 80000000h\n140019c3c  call cs:GetProcessHeap\n140019c42  xor edx, edx\n140019c44  mov r8d, 8340h\n140019c4a  mov rcx, rax\n140019c4d  call cs:HeapAlloc\n140019c53  mov cs:qword_140A2BB68, rax\n140019c5a  mov eax, cs:dword_140A2BB74\n140019c60  and eax, 80001068h\n140019c65  mov cs:dword_140A2BB70, 0\n140019c6f  or eax, 1068h\n140019c74  mov cs:byte_140B318EE, 1\n140019c7b  mov cs:dword_140A2BB74, eax\n140019c81  lea rcx, sub_1407F3550\n140019c88  add rsp, 28h\n140019c8c  jmp atexit",
+      "code": "int sub_140019C10()\n{\n  HANDLE ProcessHeap; // rax\n\n  if ( !byte_140B318EE ) /*0x140019c1b*/\n  {\n    qword_140A2BB68 = nullptr; /*0x140019c1d*/\n    dword_140A2BB70 = 0; /*0x140019c28*/\n    dword_140A2BB74 = 0x80000000; /*0x140019c32*/\n    ProcessHeap = GetProcessHeap(); /*0x140019c3c*/\n    qword_140A2BB68 = HeapAlloc(ProcessHeap, 0, 0x8340u); /*0x140019c53*/\n    dword_140A2BB70 = 0; /*0x140019c65*/\n    byte_140B318EE = 1; /*0x140019c74*/\n    dword_140A2BB74 = dword_140A2BB74 & 0x80000000 | 0x1068; /*0x140019c7b*/\n  }\n  return atexit(sub_1407F3550); /*0x140019c88*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee18",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e64",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019c14",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019ca0",
+      "name": "sub_140019CA0",
+      "prototype": "int()",
+      "size": "0x81",
+      "comments": {
+        "0x140019cd2": {
+          "regular": "dwFlags"
+        },
+        "0x140019cd4": {
+          "regular": "dwBytes"
+        },
+        "0x140019cda": {
+          "regular": "hHeap"
+        },
+        "0x140019d11": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019CA0 (.text @ 0x140019ca0):\n140019ca0  sub rsp, 28h\n140019ca4  cmp cs:byte_140B318EC, 0\n140019cab  jnz loc_140019D11\n140019cad  mov cs:qword_140A2BB38, 0\n140019cb8  mov cs:dword_140A2BB40, 0\n140019cc2  mov cs:dword_140A2BB44, 80000000h\n140019ccc  call cs:GetProcessHeap\n140019cd2  xor edx, edx\n140019cd4  mov r8d, 15F900h\n140019cda  mov rcx, rax\n140019cdd  call cs:HeapAlloc\n140019ce3  mov cs:qword_140A2BB38, rax\n140019cea  mov eax, cs:dword_140A2BB44\n140019cf0  and eax, 8002BF20h\n140019cf5  mov cs:dword_140A2BB40, 0\n140019cff  or eax, 2BF20h\n140019d04  mov cs:byte_140B318EC, 1\n140019d0b  mov cs:dword_140A2BB44, eax\n140019d11  lea rcx, sub_1407F35C0\n140019d18  add rsp, 28h\n140019d1c  jmp atexit",
+      "code": "int sub_140019CA0()\n{\n  HANDLE ProcessHeap; // rax\n\n  if ( !byte_140B318EC ) /*0x140019cab*/\n  {\n    qword_140A2BB38 = nullptr; /*0x140019cad*/\n    dword_140A2BB40 = 0; /*0x140019cb8*/\n    dword_140A2BB44 = 0x80000000; /*0x140019cc2*/\n    ProcessHeap = GetProcessHeap(); /*0x140019ccc*/\n    qword_140A2BB38 = HeapAlloc(ProcessHeap, 0, 0x15F900u); /*0x140019ce3*/\n    dword_140A2BB40 = 0; /*0x140019cf5*/\n    byte_140B318EC = 1; /*0x140019d04*/\n    dword_140A2BB44 = dword_140A2BB44 & 0x80000000 | 0x2BF20; /*0x140019d0b*/\n  }\n  return atexit(sub_1407F35C0); /*0x140019d18*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee08",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e70",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019ca4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019d30",
+      "name": "sub_140019D30",
+      "prototype": "int()",
+      "size": "0x81",
+      "comments": {
+        "0x140019d62": {
+          "regular": "dwFlags"
+        },
+        "0x140019d64": {
+          "regular": "dwBytes"
+        },
+        "0x140019d6a": {
+          "regular": "hHeap"
+        },
+        "0x140019da1": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019D30 (.text @ 0x140019d30):\n140019d30  sub rsp, 28h\n140019d34  cmp cs:byte_140B318ED, 0\n140019d3b  jnz loc_140019DA1\n140019d3d  mov cs:qword_140A2BB50, 0\n140019d48  mov cs:dword_140A2BB58, 0\n140019d52  mov cs:dword_140A2BB5C, 80000000h\n140019d5c  call cs:GetProcessHeap\n140019d62  xor edx, edx\n140019d64  mov r8d, 0CB20h\n140019d6a  mov rcx, rax\n140019d6d  call cs:HeapAlloc\n140019d73  mov cs:qword_140A2BB50, rax\n140019d7a  mov eax, cs:dword_140A2BB5C\n140019d80  and eax, 80001964h\n140019d85  mov cs:dword_140A2BB58, 0\n140019d8f  or eax, 1964h\n140019d94  mov cs:byte_140B318ED, 1\n140019d9b  mov cs:dword_140A2BB5C, eax\n140019da1  lea rcx, sub_1407F3630\n140019da8  add rsp, 28h\n140019dac  jmp atexit",
+      "code": "int sub_140019D30()\n{\n  HANDLE ProcessHeap; // rax\n\n  if ( !byte_140B318ED ) /*0x140019d3b*/\n  {\n    qword_140A2BB50 = nullptr; /*0x140019d3d*/\n    dword_140A2BB58 = 0; /*0x140019d48*/\n    dword_140A2BB5C = 0x80000000; /*0x140019d52*/\n    ProcessHeap = GetProcessHeap(); /*0x140019d5c*/\n    qword_140A2BB50 = HeapAlloc(ProcessHeap, 0, 0xCB20u); /*0x140019d73*/\n    dword_140A2BB58 = 0; /*0x140019d85*/\n    byte_140B318ED = 1; /*0x140019d94*/\n    dword_140A2BB5C = dword_140A2BB5C & 0x80000000 | 0x1964; /*0x140019d9b*/\n  }\n  return atexit(sub_1407F3630); /*0x140019da8*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee10",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e7c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019d34",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019dc0",
+      "name": "sub_140019DC0",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019DC0 (.text @ 0x140019dc0):\n140019dc0  lea rcx, sub_1407F36A0\n140019dc7  jmp atexit",
+      "code": "int sub_140019DC0()\n{\n  return atexit((void (__cdecl *)())sub_1407F36A0);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee28",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019dc7",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f36a0",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019dd0",
+      "name": "sub_140019DD0",
+      "prototype": "int()",
+      "size": "0x2e",
+      "comments": {
+        "0x140019de7": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019DD0 (.text @ 0x140019dd0):\n140019dd0  sub rsp, 28h\n140019dd4  lea rcx, qword_140B318F8\n140019ddb  call sub_1405960F0\n140019de0  lea rax, ??_7?$EventFactoryClass@VTauntEventClass@@$0DC@@@6B@\n140019de7  lea rcx, sub_1407F3710\n140019dee  mov cs:qword_140B318F8, rax\n140019df5  add rsp, 28h\n140019df9  jmp atexit",
+      "code": "int sub_140019DD0()\n{\n  sub_1405960F0(&qword_140B318F8); /*0x140019ddb*/\n  qword_140B318F8 = (__int64)&EventFactoryClass<TauntEventClass,50>::`vftable'; /*0x140019dee*/\n  return atexit(sub_1407F3710); /*0x140019df5*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee30",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e88",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019dd4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019e00",
+      "name": "sub_140019E00",
+      "prototype": "int()",
+      "size": "0x82",
+      "comments": {
+        "0x140019e0c": {
+          "regular": "Size"
+        },
+        "0x140019e72": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019E00 (.text @ 0x140019e00):\n140019e00  sub rsp, 28h\n140019e04  xor eax, eax\n140019e06  mov cs:byte_140B31950, al\n140019e0c  lea ecx, [rax+70h]\n140019e0f  call ??2@YAPEAX_K@Z\n140019e14  xorps xmm0, xmm0\n140019e17  lea rcx, qword_140B31968\n140019e1e  mov r8, rax\n140019e21  mov edx, 10h\n140019e26  mov [rax], rax\n140019e29  mov [rax+8], rax\n140019e2d  movdqa cs:xmmword_140B31970, xmm0\n140019e35  movss xmm0, cs:dword_1407FFAF8\n140019e3d  movss cs:dword_140B31954, xmm0\n140019e45  mov cs:qword_140B31958, rax\n140019e4c  mov cs:qword_140B31968, 0\n140019e57  mov cs:qword_140B31980, 7\n140019e62  mov cs:qword_140B31988, 8\n140019e6d  call sub_140048250\n140019e72  lea rcx, sub_1407F3720\n140019e79  add rsp, 28h\n140019e7d  jmp atexit",
+      "code": "int sub_140019E00()\n{\n  _QWORD *v0; // rax\n\n  byte_140B31950 = 0; /*0x140019e06*/\n  v0 = operator new(0x70u); /*0x140019e0f*/\n  *v0 = v0; /*0x140019e26*/\n  v0[1] = v0; /*0x140019e29*/\n  xmmword_140B31970 = 0; /*0x140019e2d*/\n  dword_140B31954 = 1065353216; /*0x140019e3d*/\n  qword_140B31958 = v0; /*0x140019e45*/\n  qword_140B31968 = 0; /*0x140019e4c*/\n  qword_140B31980 = 7; /*0x140019e57*/\n  qword_140B31988 = 8; /*0x140019e62*/\n  sub_140048250(&qword_140B31968, 16, v0); /*0x140019e6d*/\n  return atexit(sub_1407F3720); /*0x140019e79*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee40",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45e94",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019e04",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019e90",
+      "name": "sub_140019E90",
+      "prototype": "int()",
+      "size": "0x82",
+      "comments": {
+        "0x140019e9c": {
+          "regular": "Size"
+        },
+        "0x140019f02": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019E90 (.text @ 0x140019e90):\n140019e90  sub rsp, 28h\n140019e94  xor eax, eax\n140019e96  mov cs:byte_140B31910, al\n140019e9c  lea ecx, [rax+20h]\n140019e9f  call ??2@YAPEAX_K@Z\n140019ea4  xorps xmm0, xmm0\n140019ea7  lea rcx, qword_140B31928\n140019eae  mov r8, rax\n140019eb1  mov edx, 10h\n140019eb6  mov [rax], rax\n140019eb9  mov [rax+8], rax\n140019ebd  movdqa cs:xmmword_140B31930, xmm0\n140019ec5  movss xmm0, cs:dword_1407FFAF8\n140019ecd  movss cs:dword_140B31914, xmm0\n140019ed5  mov cs:qword_140B31918, rax\n140019edc  mov cs:qword_140B31928, 0\n140019ee7  mov cs:qword_140B31940, 7\n140019ef2  mov cs:qword_140B31948, 8\n140019efd  call sub_140048250\n140019f02  lea rcx, sub_1407F37B0\n140019f09  add rsp, 28h\n140019f0d  jmp atexit",
+      "code": "int sub_140019E90()\n{\n  _QWORD *v0; // rax\n\n  byte_140B31910 = 0; /*0x140019e96*/\n  v0 = operator new(0x20u); /*0x140019e9f*/\n  *v0 = v0; /*0x140019eb6*/\n  v0[1] = v0; /*0x140019eb9*/\n  xmmword_140B31930 = 0; /*0x140019ebd*/\n  dword_140B31914 = 1065353216; /*0x140019ecd*/\n  qword_140B31918 = (__int64)v0; /*0x140019ed5*/\n  qword_140B31928 = 0; /*0x140019edc*/\n  qword_140B31940 = 7; /*0x140019ee7*/\n  qword_140B31948 = 8; /*0x140019ef2*/\n  sub_140048250(&qword_140B31928, 16, v0); /*0x140019efd*/\n  return atexit(sub_1407F37B0); /*0x140019f09*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee38",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ea0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019e94",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f20",
+      "name": "sub_140019F20",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F20 (.text @ 0x140019f20):\n140019f20  lea rcx, sub_1407F3980\n140019f27  jmp atexit",
+      "code": "int sub_140019F20()\n{\n  return atexit((void (__cdecl *)())sub_1407F3980);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee60",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f27",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3980",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f30",
+      "name": "sub_140019F30",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F30 (.text @ 0x140019f30):\n140019f30  lea rcx, sub_1407F3A20\n140019f37  jmp atexit",
+      "code": "int sub_140019F30()\n{\n  return atexit((void (__cdecl *)())sub_1407F3A20);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee50",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f37",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3a20",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f40",
+      "name": "sub_140019F40",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F40 (.text @ 0x140019f40):\n140019f40  lea rcx, sub_1407F3A90\n140019f47  jmp atexit",
+      "code": "int sub_140019F40()\n{\n  return atexit((void (__cdecl *)())sub_1407F3A90);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee48",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f47",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3a90",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f50",
+      "name": "sub_140019F50",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F50 (.text @ 0x140019f50):\n140019f50  lea rcx, sub_1407F3B00\n140019f57  jmp atexit",
+      "code": "int sub_140019F50()\n{\n  return atexit((void (__cdecl *)())sub_1407F3B00);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee58",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f57",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3b00",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f60",
+      "name": "sub_140019F60",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F60 (.text @ 0x140019f60):\n140019f60  lea rcx, sub_1407F3F50\n140019f67  jmp atexit",
+      "code": "int sub_140019F60()\n{\n  return atexit((void (__cdecl *)())sub_1407F3F50);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee68",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f67",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f3f50",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f70",
+      "name": "sub_140019F70",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F70 (.text @ 0x140019f70):\n140019f70  lea rcx, sub_1407F4010\n140019f77  jmp atexit",
+      "code": "int sub_140019F70()\n{\n  return atexit((void (__cdecl *)())sub_1407F4010);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee70",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f77",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f4010",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f80",
+      "name": "sub_140019F80",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F80 (.text @ 0x140019f80):\n140019f80  lea rcx, sub_1407F4080\n140019f87  jmp atexit",
+      "code": "int sub_140019F80()\n{\n  return atexit((void (__cdecl *)())sub_1407F4080);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee78",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f87",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f4080",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019f90",
+      "name": "sub_140019F90",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_140019F90 (.text @ 0x140019f90):\n140019f90  lea rcx, sub_1407F4300\n140019f97  jmp atexit",
+      "code": "int sub_140019F90()\n{\n  return atexit((void (__cdecl *)())sub_1407F4300);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee80",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019f97",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f4300",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019fa0",
+      "name": "sub_140019FA0",
+      "prototype": "int()",
+      "size": "0x2f",
+      "comments": {
+        "0x140019fa4": {
+          "regular": "Size"
+        },
+        "0x140019fae": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019FA0 (.text @ 0x140019fa0):\n140019fa0  sub rsp, 28h\n140019fa4  mov ecx, 1E8480h\n140019fa9  call j_??2@YAPEAX_K@Z\n140019fae  lea rcx, sub_1407F4310\n140019fb5  mov cs:qword_140B31D00, rax\n140019fbc  mov cs:dword_140B31D08, 3D090h\n140019fc6  add rsp, 28h\n140019fca  jmp atexit",
+      "code": "int sub_140019FA0()\n{\n  qword_140B31D00 = operator new(0x1E8480u); /*0x140019fb5*/\n  dword_140B31D08 = 250000; /*0x140019fbc*/\n  return atexit(sub_1407F4310); /*0x140019fc6*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee98",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45eac",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019fa4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x140019fd0",
+      "name": "sub_140019FD0",
+      "prototype": "int()",
+      "size": "0x2f",
+      "comments": {
+        "0x140019fd4": {
+          "regular": "Size"
+        },
+        "0x140019fde": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_140019FD0 (.text @ 0x140019fd0):\n140019fd0  sub rsp, 28h\n140019fd4  mov ecx, 0F4240h\n140019fd9  call j_??2@YAPEAX_K@Z\n140019fde  lea rcx, sub_1407F4330\n140019fe5  mov cs:qword_140B31D18, rax\n140019fec  mov cs:dword_140B31D20, 3D090h\n140019ff6  add rsp, 28h\n140019ffa  jmp atexit",
+      "code": "int sub_140019FD0()\n{\n  qword_140B31D18 = operator new(0xF4240u); /*0x140019fe5*/\n  dword_140B31D20 = 250000; /*0x140019fec*/\n  return atexit(sub_1407F4330); /*0x140019ff6*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feea0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45eb8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x140019fd4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a000",
+      "name": "sub_14001A000",
+      "prototype": "int()",
+      "size": "0x6b",
+      "comments": {
+        "0x14001a004": {
+          "regular": "Size"
+        },
+        "0x14001a051": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A000 (.text @ 0x14001a000):\n14001a000  sub rsp, 28h\n14001a004  mov ecx, 155CC8h\n14001a009  call j_??2@YAPEAX_K@Z\n14001a00e  xor ecx, ecx\n14001a010  test rax, rax\n14001a013  jz loc_14001A04A\n14001a015  lea r8, [rax+8]\n14001a019  mov qword ptr [rax], 0C350h\n14001a020  mov rax, r8\n14001a023  mov edx, 0C350h\n14001a028  nop dword ptr [rax+rax+00000000h]\n14001a030  mov [rax], rcx\n14001a033  mov [rax+8], rcx\n14001a037  lea rax, [rax+1Ch]\n14001a03b  sub rdx, 1\n14001a03f  jnz loc_14001A030\n14001a041  mov cs:qword_140B31CD0, r8\n14001a048  jmp loc_14001A051\n14001a04a  mov cs:qword_140B31CD0, rcx\n14001a051  lea rcx, sub_1407F4350\n14001a058  mov cs:dword_140B31CD8, 0C350h\n14001a062  add rsp, 28h\n14001a066  jmp atexit",
+      "code": "int sub_14001A000()\n{\n  _QWORD *v0; // rax\n  __int64 v1; // r8\n  _QWORD *v2; // rax\n  __int64 v3; // rdx\n\n  v0 = operator new(0x155CC8u); /*0x14001a009*/\n  if ( v0 ) /*0x14001a013*/\n  {\n    v1 = (__int64)(v0 + 1); /*0x14001a015*/\n    *v0 = 50000; /*0x14001a019*/\n    v2 = v0 + 1; /*0x14001a020*/\n    v3 = 50000; /*0x14001a023*/\n    do /*0x14001a03f*/\n    {\n      *v2 = 0; /*0x14001a030*/\n      v2[1] = 0; /*0x14001a033*/\n      v2 = (_QWORD *)((char *)v2 + 28); /*0x14001a037*/\n      --v3; /*0x14001a03b*/\n    }\n    while ( v3 ); /*0x14001a03f*/\n    qword_140B31CD0 = v1; /*0x14001a041*/\n  }\n  else\n  {\n    qword_140B31CD0 = 0; /*0x14001a04a*/\n  }\n  dword_140B31CD8 = 50000; /*0x14001a058*/\n  return atexit(sub_1407F4350); /*0x14001a062*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee88",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ec4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a004",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a070",
+      "name": "sub_14001A070",
+      "prototype": "int()",
+      "size": "0x66",
+      "comments": {
+        "0x14001a074": {
+          "regular": "Size"
+        },
+        "0x14001a0bc": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A070 (.text @ 0x14001a070):\n14001a070  sub rsp, 28h\n14001a074  mov ecx, 124F80h\n14001a079  call j_??2@YAPEAX_K@Z\n14001a07e  xor r8d, r8d\n14001a081  test rax, rax\n14001a084  jz loc_14001A0B5\n14001a086  mov edx, 0C350h\n14001a08b  lea rcx, [rax+10h]\n14001a08f  nop\n14001a090  mov dword ptr [rcx-10h], 1\n14001a097  mov [rcx-8], r8\n14001a09b  mov [rcx], r8d\n14001a09e  mov [rcx+4], r8b\n14001a0a2  lea rcx, [rcx+18h]\n14001a0a6  sub rdx, 1\n14001a0aa  jnz loc_14001A090\n14001a0ac  mov cs:qword_140B31CE8, rax\n14001a0b3  jmp loc_14001A0BC\n14001a0b5  mov cs:qword_140B31CE8, r8\n14001a0bc  lea rcx, sub_1407F4370\n14001a0c3  mov cs:dword_140B31CF0, 0C350h\n14001a0cd  add rsp, 28h\n14001a0d1  jmp atexit",
+      "code": "int sub_14001A070()\n{\n  char *v0; // rax\n  __int64 v1; // rdx\n  char *v2; // rcx\n\n  v0 = (char *)operator new(0x124F80u); /*0x14001a079*/\n  if ( v0 ) /*0x14001a084*/\n  {\n    v1 = 50000; /*0x14001a086*/\n    v2 = v0 + 16; /*0x14001a08b*/\n    do /*0x14001a0aa*/\n    {\n      *((_DWORD *)v2 - 4) = 1; /*0x14001a090*/\n      *((_QWORD *)v2 - 1) = 0; /*0x14001a097*/\n      *(_DWORD *)v2 = 0; /*0x14001a09b*/\n      v2[4] = 0; /*0x14001a09e*/\n      v2 += 24; /*0x14001a0a2*/\n      --v1; /*0x14001a0a6*/\n    }\n    while ( v1 ); /*0x14001a0aa*/\n    qword_140B31CE8 = v0; /*0x14001a0ac*/\n  }\n  else\n  {\n    qword_140B31CE8 = nullptr; /*0x14001a0b5*/\n  }\n  dword_140B31CF0 = 50000; /*0x14001a0c3*/\n  return atexit(sub_1407F4370); /*0x14001a0cd*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fee90",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ed0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a074",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a0e0",
+      "name": "sub_14001A0E0",
+      "prototype": "int()",
+      "size": "0x82",
+      "comments": {
+        "0x14001a0ec": {
+          "regular": "Size"
+        },
+        "0x14001a152": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A0E0 (.text @ 0x14001a0e0):\n14001a0e0  sub rsp, 28h\n14001a0e4  xor eax, eax\n14001a0e6  mov cs:byte_140B36B50, al\n14001a0ec  lea ecx, [rax+18h]\n14001a0ef  call ??2@YAPEAX_K@Z\n14001a0f4  xorps xmm0, xmm0\n14001a0f7  lea rcx, qword_140B36B68\n14001a0fe  mov r8, rax\n14001a101  mov edx, 10h\n14001a106  mov [rax], rax\n14001a109  mov [rax+8], rax\n14001a10d  movdqa cs:xmmword_140B36B70, xmm0\n14001a115  movss xmm0, cs:dword_1407FFAF8\n14001a11d  movss cs:dword_140B36B54, xmm0\n14001a125  mov cs:qword_140B36B58, rax\n14001a12c  mov cs:qword_140B36B68, 0\n14001a137  mov cs:qword_140B36B80, 7\n14001a142  mov cs:qword_140B36B88, 8\n14001a14d  call sub_140048250\n14001a152  lea rcx, sub_1407F4390\n14001a159  add rsp, 28h\n14001a15d  jmp atexit",
+      "code": "int sub_14001A0E0()\n{\n  _QWORD *v0; // rax\n\n  byte_140B36B50 = 0; /*0x14001a0e6*/\n  v0 = operator new(0x18u); /*0x14001a0ef*/\n  *v0 = v0; /*0x14001a106*/\n  v0[1] = v0; /*0x14001a109*/\n  xmmword_140B36B70 = 0; /*0x14001a10d*/\n  dword_140B36B54 = 1065353216; /*0x14001a11d*/\n  qword_140B36B58 = (__int64)v0; /*0x14001a125*/\n  qword_140B36B68 = 0; /*0x14001a12c*/\n  qword_140B36B80 = 7; /*0x14001a137*/\n  qword_140B36B88 = 8; /*0x14001a142*/\n  sub_140048250(&qword_140B36B68, 16, v0); /*0x14001a14d*/\n  return atexit(sub_1407F4390); /*0x14001a159*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feea8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45edc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a0e4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a170",
+      "name": "sub_14001A170",
+      "prototype": null,
+      "size": "0x11",
+      "comments": {},
+      "asm": "sub_14001A170 (.text @ 0x14001a170):\n14001a170  lea rdx, aGroundConflict\n14001a177  mov ecx, 8\n14001a17c  jmp sub_140689200",
+      "code": "__int64 sub_14001A170()\n{\n  return sub_140689200(8, \"Ground_Conflict_Begin\");\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feeb0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a177",
+            "type": "code"
+          },
+          {
+            "addr": "0x14087bb78",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a190",
+      "name": "sub_14001A190",
+      "prototype": null,
+      "size": "0x11",
+      "comments": {},
+      "asm": "sub_14001A190 (.text @ 0x14001a190):\n14001a190  lea rdx, aGroundConflict_0\n14001a197  mov ecx, 9\n14001a19c  jmp sub_140689200",
+      "code": "__int64 sub_14001A190()\n{\n  return sub_140689200(9, \"Ground_Conflict_End\");\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feeb8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a197",
+            "type": "code"
+          },
+          {
+            "addr": "0x14087bb90",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a1b0",
+      "name": "sub_14001A1B0",
+      "prototype": "int()",
+      "size": "0xc7",
+      "comments": {
+        "0x14001a1ca": {
+          "regular": "Size"
+        },
+        "0x14001a1e4": {
+          "regular": "Size"
+        },
+        "0x14001a266": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A1B0 (.text @ 0x14001a1b0):\n14001a1b0  push rbx\n14001a1b2  sub rsp, 30h\n14001a1b6  mov rbx, cs:qword_140B09E08\n14001a1bd  mov [rsp+38h+arg_0], 80Ah\n14001a1c5  test rbx, rbx\n14001a1c8  jnz loc_14001A246\n14001a1ca  lea ecx, [rbx+40h]\n14001a1cd  mov [rsp+38h+arg_8], rdi\n14001a1d2  call ??2@YAPEAX_K@Z\n14001a1d7  xor edi, edi\n14001a1d9  mov rbx, rax\n14001a1dc  test rax, rax\n14001a1df  jz loc_14001A237\n14001a1e1  mov [rbx+4], edi\n14001a1e4  lea ecx, [rdi+20h]\n14001a1e7  xor eax, eax\n14001a1e9  mov [rbx], al\n14001a1eb  mov [rbx+8], rdi\n14001a1ef  mov [rbx+10h], rdi\n14001a1f3  call ??2@YAPEAX_K@Z\n14001a1f8  lea rcx, [rbx+18h]\n14001a1fc  lea edx, [rdi+10h]\n14001a1ff  mov [rax], rax\n14001a202  mov [rax+8], rax\n14001a206  mov [rbx+8], rax\n14001a20a  mov r8, [rbx+8]\n14001a20e  mov [rcx], rdi\n14001a211  mov [rcx+8], rdi\n14001a215  mov [rcx+10h], rdi\n14001a219  mov qword ptr [rbx+30h], 7\n14001a221  mov qword ptr [rbx+38h], 8\n14001a229  mov dword ptr [rbx+4], 3F800000h\n14001a230  call sub_140048250\n14001a235  jmp loc_14001A23A\n14001a237  mov rbx, rdi\n14001a23a  mov rdi, [rsp+38h+arg_8]\n14001a23f  mov cs:qword_140B09E08, rbx\n14001a246  lea r8, [rsp+38h+arg_0]\n14001a24b  mov rcx, rbx\n14001a24e  lea rdx, [rsp+38h+var_18]\n14001a253  call sub_140253FE0\n14001a258  mov rcx, [rax]\n14001a25b  lea rax, sub_1405118D0\n14001a262  mov [rcx+18h], rax\n14001a266  lea rcx, sub_1407F43A0\n14001a26d  add rsp, 30h\n14001a271  pop rbx\n14001a272  jmp atexit",
+      "code": "int sub_14001A1B0()\n{\n  _QWORD *v0; // rbx\n  _BYTE *v1; // rax\n  _QWORD *v2; // rax\n  __int64 v3; // r8\n  _BYTE v5[24]; // [rsp+20h] [rbp-18h] BYREF\n  int v6; // [rsp+40h] [rbp+8h] BYREF\n\n  v0 = qword_140B09E08; /*0x14001a1b6*/\n  v6 = 2058; /*0x14001a1bd*/\n  if ( !qword_140B09E08 ) /*0x14001a1c8*/\n  {\n    v1 = operator new(0x40u); /*0x14001a1d2*/\n    v0 = v1; /*0x14001a1d9*/\n    if ( v1 ) /*0x14001a1df*/\n    {\n      *((_DWORD *)v1 + 1) = 0; /*0x14001a1e1*/\n      *v1 = 0; /*0x14001a1e9*/\n      *((_QWORD *)v1 + 1) = 0; /*0x14001a1eb*/\n      *((_QWORD *)v1 + 2) = 0; /*0x14001a1ef*/\n      v2 = operator new(0x20u); /*0x14001a1f3*/\n      *v2 = v2; /*0x14001a1ff*/\n      v2[1] = v2; /*0x14001a202*/\n      v0[1] = v2; /*0x14001a206*/\n      v3 = v0[1]; /*0x14001a20a*/\n      v0[3] = 0; /*0x14001a20e*/\n      v0[4] = 0; /*0x14001a211*/\n      v0[5] = 0; /*0x14001a215*/\n      v0[6] = 7; /*0x14001a219*/\n      v0[7] = 8; /*0x14001a221*/\n      *((_DWORD *)v0 + 1) = 1065353216; /*0x14001a229*/\n      sub_140048250(v0 + 3, 16, v3); /*0x14001a230*/\n    }\n    else\n    {\n      v0 = nullptr; /*0x14001a237*/\n    }\n    qword_140B09E08 = v0; /*0x14001a23f*/\n  }\n  *(_QWORD *)(*(_QWORD *)sub_140253FE0(v0, v5, &v6) + 24LL) = sub_1405118D0; /*0x14001a262*/\n  return atexit(sub_1407F43A0); /*0x14001a26d*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feec0",
+            "type": "data"
+          },
+          {
+            "addr": "0x14099a688",
+            "type": "data"
+          },
+          {
+            "addr": "0x14099a698",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ee8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a1b2",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a280",
+      "name": "sub_14001A280",
+      "prototype": "int()",
+      "size": "0xc7",
+      "comments": {
+        "0x14001a29a": {
+          "regular": "Size"
+        },
+        "0x14001a2b4": {
+          "regular": "Size"
+        },
+        "0x14001a336": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A280 (.text @ 0x14001a280):\n14001a280  push rbx\n14001a282  sub rsp, 30h\n14001a286  mov rbx, cs:qword_140B09E08\n14001a28d  mov [rsp+38h+arg_0], 807h\n14001a295  test rbx, rbx\n14001a298  jnz loc_14001A316\n14001a29a  lea ecx, [rbx+40h]\n14001a29d  mov [rsp+38h+arg_8], rdi\n14001a2a2  call ??2@YAPEAX_K@Z\n14001a2a7  xor edi, edi\n14001a2a9  mov rbx, rax\n14001a2ac  test rax, rax\n14001a2af  jz loc_14001A307\n14001a2b1  mov [rbx+4], edi\n14001a2b4  lea ecx, [rdi+20h]\n14001a2b7  xor eax, eax\n14001a2b9  mov [rbx], al\n14001a2bb  mov [rbx+8], rdi\n14001a2bf  mov [rbx+10h], rdi\n14001a2c3  call ??2@YAPEAX_K@Z\n14001a2c8  lea rcx, [rbx+18h]\n14001a2cc  lea edx, [rdi+10h]\n14001a2cf  mov [rax], rax\n14001a2d2  mov [rax+8], rax\n14001a2d6  mov [rbx+8], rax\n14001a2da  mov r8, [rbx+8]\n14001a2de  mov [rcx], rdi\n14001a2e1  mov [rcx+8], rdi\n14001a2e5  mov [rcx+10h], rdi\n14001a2e9  mov qword ptr [rbx+30h], 7\n14001a2f1  mov qword ptr [rbx+38h], 8\n14001a2f9  mov dword ptr [rbx+4], 3F800000h\n14001a300  call sub_140048250\n14001a305  jmp loc_14001A30A\n14001a307  mov rbx, rdi\n14001a30a  mov rdi, [rsp+38h+arg_8]\n14001a30f  mov cs:qword_140B09E08, rbx\n14001a316  lea r8, [rsp+38h+arg_0]\n14001a31b  mov rcx, rbx\n14001a31e  lea rdx, [rsp+38h+var_18]\n14001a323  call sub_140253FE0\n14001a328  mov rcx, [rax]\n14001a32b  lea rax, sub_140512010\n14001a332  mov [rcx+18h], rax\n14001a336  lea rcx, sub_1407F43E0\n14001a33d  add rsp, 30h\n14001a341  pop rbx\n14001a342  jmp atexit",
+      "code": "int sub_14001A280()\n{\n  _QWORD *v0; // rbx\n  _BYTE *v1; // rax\n  _QWORD *v2; // rax\n  __int64 v3; // r8\n  _BYTE v5[24]; // [rsp+20h] [rbp-18h] BYREF\n  int v6; // [rsp+40h] [rbp+8h] BYREF\n\n  v0 = qword_140B09E08; /*0x14001a286*/\n  v6 = 2055; /*0x14001a28d*/\n  if ( !qword_140B09E08 ) /*0x14001a298*/\n  {\n    v1 = operator new(0x40u); /*0x14001a2a2*/\n    v0 = v1; /*0x14001a2a9*/\n    if ( v1 ) /*0x14001a2af*/\n    {\n      *((_DWORD *)v1 + 1) = 0; /*0x14001a2b1*/\n      *v1 = 0; /*0x14001a2b9*/\n      *((_QWORD *)v1 + 1) = 0; /*0x14001a2bb*/\n      *((_QWORD *)v1 + 2) = 0; /*0x14001a2bf*/\n      v2 = operator new(0x20u); /*0x14001a2c3*/\n      *v2 = v2; /*0x14001a2cf*/\n      v2[1] = v2; /*0x14001a2d2*/\n      v0[1] = v2; /*0x14001a2d6*/\n      v3 = v0[1]; /*0x14001a2da*/\n      v0[3] = 0; /*0x14001a2de*/\n      v0[4] = 0; /*0x14001a2e1*/\n      v0[5] = 0; /*0x14001a2e5*/\n      v0[6] = 7; /*0x14001a2e9*/\n      v0[7] = 8; /*0x14001a2f1*/\n      *((_DWORD *)v0 + 1) = 1065353216; /*0x14001a2f9*/\n      sub_140048250(v0 + 3, 16, v3); /*0x14001a300*/\n    }\n    else\n    {\n      v0 = nullptr; /*0x14001a307*/\n    }\n    qword_140B09E08 = v0; /*0x14001a30f*/\n  }\n  *(_QWORD *)(*(_QWORD *)sub_140253FE0(v0, v5, &v6) + 24LL) = sub_140512010; /*0x14001a332*/\n  return atexit(sub_1407F43E0); /*0x14001a33d*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feec8",
+            "type": "data"
+          },
+          {
+            "addr": "0x14099a748",
+            "type": "data"
+          },
+          {
+            "addr": "0x14099a758",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f0c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a282",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a350",
+      "name": "sub_14001A350",
+      "prototype": "int()",
+      "size": "0xc",
+      "comments": {},
+      "asm": "sub_14001A350 (.text @ 0x14001a350):\n14001a350  lea rcx, sub_1407F4420\n14001a357  jmp atexit",
+      "code": "int sub_14001A350()\n{\n  return atexit((void (__cdecl *)())sub_1407F4420);\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feed0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a357",
+            "type": "code"
+          },
+          {
+            "addr": "0x1407f4420",
+            "type": "data"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a360",
+      "name": "sub_14001A360",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a370": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A360 (.text @ 0x14001a360):\n14001a360  sub rsp, 28h\n14001a364  lea rcx, qword_140B38100\n14001a36b  call sub_140689AD0\n14001a370  lea rcx, sub_1407F4460\n14001a377  add rsp, 28h\n14001a37b  jmp atexit",
+      "code": "int sub_14001A360()\n{\n  sub_140689AD0(&qword_140B38100); /*0x14001a36b*/\n  return atexit(sub_1407F4460); /*0x14001a377*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fefc0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f30",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a364",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a380",
+      "name": "sub_14001A380",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a390": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A380 (.text @ 0x14001a380):\n14001a380  sub rsp, 28h\n14001a384  lea rcx, qword_140B36BD0\n14001a38b  call sub_1403AF4C0\n14001a390  lea rcx, sub_1407F4490\n14001a397  add rsp, 28h\n14001a39b  jmp atexit",
+      "code": "int sub_14001A380()\n{\n  sub_1403AF4C0(&qword_140B36BD0); /*0x14001a38b*/\n  return atexit(sub_1407F4490); /*0x14001a397*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feed8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f30",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f3c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a384",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a3a0",
+      "name": "sub_14001A3A0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a3b0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A3A0 (.text @ 0x14001a3a0):\n14001a3a0  sub rsp, 28h\n14001a3a4  lea rcx, qword_140B37FA0\n14001a3ab  call sub_140524560\n14001a3b0  lea rcx, sub_1407F44C0\n14001a3b7  add rsp, 28h\n14001a3bb  jmp atexit",
+      "code": "int sub_14001A3A0()\n{\n  sub_140524560(&qword_140B37FA0); /*0x14001a3ab*/\n  return atexit(sub_1407F44C0); /*0x14001a3b7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fefa0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f3c",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f48",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a3a4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a3c0",
+      "name": "sub_14001A3C0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a3d0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A3C0 (.text @ 0x14001a3c0):\n14001a3c0  sub rsp, 28h\n14001a3c4  lea rcx, qword_140B37B30\n14001a3cb  call sub_14044D1D0\n14001a3d0  lea rcx, sub_1407F44F0\n14001a3d7  add rsp, 28h\n14001a3db  jmp atexit",
+      "code": "int sub_14001A3C0()\n{\n  sub_14044D1D0(&qword_140B37B30); /*0x14001a3cb*/\n  return atexit(sub_1407F44F0); /*0x14001a3d7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef68",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f48",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f54",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a3c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a3e0",
+      "name": "sub_14001A3E0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a3f0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A3E0 (.text @ 0x14001a3e0):\n14001a3e0  sub rsp, 28h\n14001a3e4  lea rcx, qword_140B37F50\n14001a3eb  call sub_1406899C0\n14001a3f0  lea rcx, sub_1407F4520\n14001a3f7  add rsp, 28h\n14001a3fb  jmp atexit",
+      "code": "int sub_14001A3E0()\n{\n  sub_1406899C0(&qword_140B37F50); /*0x14001a3eb*/\n  return atexit(sub_1407F4520); /*0x14001a3f7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef98",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f54",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f60",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a3e4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a400",
+      "name": "sub_14001A400",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a410": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A400 (.text @ 0x14001a400):\n14001a400  sub rsp, 28h\n14001a404  lea rcx, qword_140B38050\n14001a40b  call sub_140436060\n14001a410  lea rcx, sub_1407F4550\n14001a417  add rsp, 28h\n14001a41b  jmp atexit",
+      "code": "int sub_14001A400()\n{\n  sub_140436060(&qword_140B38050); /*0x14001a40b*/\n  return atexit(sub_1407F4550); /*0x14001a417*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fefb0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f60",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f6c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a404",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a420",
+      "name": "sub_14001A420",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a430": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A420 (.text @ 0x14001a420):\n14001a420  sub rsp, 28h\n14001a424  lea rcx, qword_140B36E60\n14001a42b  call sub_1404AD0F0\n14001a430  lea rcx, sub_1407F4580\n14001a437  add rsp, 28h\n14001a43b  jmp atexit",
+      "code": "int sub_14001A420()\n{\n  sub_1404AD0F0(&qword_140B36E60); /*0x14001a42b*/\n  return atexit(sub_1407F4580); /*0x14001a437*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feee0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f6c",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f78",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a424",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a440",
+      "name": "sub_14001A440",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a450": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A440 (.text @ 0x14001a440):\n14001a440  sub rsp, 28h\n14001a444  lea rcx, qword_140B38780\n14001a44b  call sub_140498CA0\n14001a450  lea rcx, sub_1407F4610\n14001a457  add rsp, 28h\n14001a45b  jmp atexit",
+      "code": "int sub_14001A440()\n{\n  sub_140498CA0(&qword_140B38780); /*0x14001a44b*/\n  return atexit(sub_1407F4610); /*0x14001a457*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feff8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f78",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f84",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a444",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a460",
+      "name": "sub_14001A460",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a470": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A460 (.text @ 0x14001a460):\n14001a460  sub rsp, 28h\n14001a464  lea rcx, qword_140B37E40\n14001a46b  call sub_1403B0010\n14001a470  lea rcx, sub_1407F4640\n14001a477  add rsp, 28h\n14001a47b  jmp atexit",
+      "code": "int sub_14001A460()\n{\n  sub_1403B0010(&qword_140B37E40); /*0x14001a46b*/\n  return atexit(sub_1407F4640); /*0x14001a477*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef80",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f84",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f90",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a464",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a480",
+      "name": "sub_14001A480",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a490": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A480 (.text @ 0x14001a480):\n14001a480  sub rsp, 28h\n14001a484  lea rcx, qword_140B37BF0\n14001a48b  call sub_140409B40\n14001a490  lea rcx, sub_1407F4670\n14001a497  add rsp, 28h\n14001a49b  jmp atexit",
+      "code": "int sub_14001A480()\n{\n  sub_140409B40(&qword_140B37BF0); /*0x14001a48b*/\n  return atexit(sub_1407F4670); /*0x14001a497*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef78",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f90",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f9c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a484",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a4a0",
+      "name": "sub_14001A4A0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a4b0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A4A0 (.text @ 0x14001a4a0):\n14001a4a0  sub rsp, 28h\n14001a4a4  lea rcx, qword_140B36ED0\n14001a4ab  call sub_1405AF020\n14001a4b0  lea rcx, sub_1407F46A0\n14001a4b7  add rsp, 28h\n14001a4bb  jmp atexit",
+      "code": "int sub_14001A4A0()\n{\n  sub_1405AF020(&qword_140B36ED0); /*0x14001a4ab*/\n  return atexit(sub_1407F46A0); /*0x14001a4b7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feee8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45f9c",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fa8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a4a4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a4c0",
+      "name": "sub_14001A4C0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a4d0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A4C0 (.text @ 0x14001a4c0):\n14001a4c0  sub rsp, 28h\n14001a4c4  lea rcx, qword_140B36E28\n14001a4cb  call sub_1404C1B00\n14001a4d0  lea rcx, sub_1407F46D0\n14001a4d7  add rsp, 28h\n14001a4db  jmp atexit",
+      "code": "int sub_14001A4C0()\n{\n  sub_1404C1B00(&qword_140B36E28); /*0x14001a4cb*/\n  return atexit(sub_1407F46D0); /*0x14001a4d7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feef0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fa8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fb4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a4c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a4e0",
+      "name": "sub_14001A4E0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a4f0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A4E0 (.text @ 0x14001a4e0):\n14001a4e0  sub rsp, 28h\n14001a4e4  lea rcx, qword_140B387D0\n14001a4eb  call sub_140532690\n14001a4f0  lea rcx, sub_1407F46E0\n14001a4f7  add rsp, 28h\n14001a4fb  jmp atexit",
+      "code": "int sub_14001A4E0()\n{\n  sub_140532690((__int64)&qword_140B387D0); /*0x14001a4eb*/\n  return atexit(sub_1407F46E0); /*0x14001a4f7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407ff000",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fb4",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fc0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a4e4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a500",
+      "name": "sub_14001A500",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a510": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A500 (.text @ 0x14001a500):\n14001a500  sub rsp, 28h\n14001a504  lea rcx, qword_140B38260\n14001a50b  call sub_14044D530\n14001a510  lea rcx, sub_1407F4710\n14001a517  add rsp, 28h\n14001a51b  jmp atexit",
+      "code": "int sub_14001A500()\n{\n  sub_14044D530(&qword_140B38260); /*0x14001a50b*/\n  return atexit(sub_1407F4710); /*0x14001a517*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fefe0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fc0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fcc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a504",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a520",
+      "name": "sub_14001A520",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a530": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A520 (.text @ 0x14001a520):\n14001a520  sub rsp, 28h\n14001a524  lea rcx, qword_140B38BC0\n14001a52b  call sub_140440AD0\n14001a530  lea rcx, sub_1407F4740\n14001a537  add rsp, 28h\n14001a53b  jmp atexit",
+      "code": "int sub_14001A520()\n{\n  sub_140440AD0(&qword_140B38BC0); /*0x14001a52b*/\n  return atexit(sub_1407F4740); /*0x14001a537*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407ff030",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fcc",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fd8",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a524",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a540",
+      "name": "sub_14001A540",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a550": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A540 (.text @ 0x14001a540):\n14001a540  sub rsp, 28h\n14001a544  lea rcx, qword_140B36F40\n14001a54b  call sub_14048FCE0\n14001a550  lea rcx, sub_1407F4770\n14001a557  add rsp, 28h\n14001a55b  jmp atexit",
+      "code": "int sub_14001A540()\n{\n  sub_14048FCE0(&qword_140B36F40); /*0x14001a54b*/\n  return atexit(sub_1407F4770); /*0x14001a557*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407feef8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fd8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fe4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a544",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a560",
+      "name": "sub_14001A560",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a570": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A560 (.text @ 0x14001a560):\n14001a560  sub rsp, 28h\n14001a564  lea rcx, qword_140B37190\n14001a56b  call sub_140689670\n14001a570  lea rcx, sub_1407F47A0\n14001a577  add rsp, 28h\n14001a57b  jmp atexit",
+      "code": "int sub_14001A560()\n{\n  sub_140689670(&qword_140B37190); /*0x14001a56b*/\n  return atexit(sub_1407F47A0); /*0x14001a577*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef00",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45fe4",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ff0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a564",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a580",
+      "name": "sub_14001A580",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a590": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A580 (.text @ 0x14001a580):\n14001a580  sub rsp, 28h\n14001a584  lea rcx, qword_140B371E0\n14001a58b  call sub_1403AF290\n14001a590  lea rcx, sub_1407F47D0\n14001a597  add rsp, 28h\n14001a59b  jmp atexit",
+      "code": "int sub_14001A580()\n{\n  sub_1403AF290(&qword_140B371E0); /*0x14001a58b*/\n  return atexit(sub_1407F47D0); /*0x14001a597*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef08",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ff0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ffc",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a584",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a5a0",
+      "name": "sub_14001A5A0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a5b0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A5A0 (.text @ 0x14001a5a0):\n14001a5a0  sub rsp, 28h\n14001a5a4  lea rcx, qword_140B37230\n14001a5ab  call sub_1403C41C0\n14001a5b0  lea rcx, sub_1407F4800\n14001a5b7  add rsp, 28h\n14001a5bb  jmp atexit",
+      "code": "int sub_14001A5A0()\n{\n  sub_1403C41C0(&qword_140B37230); /*0x14001a5ab*/\n  return atexit(sub_1407F4800); /*0x14001a5b7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef10",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b45ffc",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46008",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a5a4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a5c0",
+      "name": "sub_14001A5C0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a5d0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A5C0 (.text @ 0x14001a5c0):\n14001a5c0  sub rsp, 28h\n14001a5c4  lea rcx, qword_140B372A0\n14001a5cb  call sub_1403AEE50\n14001a5d0  lea rcx, sub_1407F4880\n14001a5d7  add rsp, 28h\n14001a5db  jmp atexit",
+      "code": "int sub_14001A5C0()\n{\n  sub_1403AEE50(&qword_140B372A0); /*0x14001a5cb*/\n  return atexit(sub_1407F4880); /*0x14001a5d7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef18",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46008",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46014",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a5c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a5e0",
+      "name": "sub_14001A5E0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a5f0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A5E0 (.text @ 0x14001a5e0):\n14001a5e0  sub rsp, 28h\n14001a5e4  lea rcx, qword_140B374F0\n14001a5eb  call sub_1403ACEE0\n14001a5f0  lea rcx, sub_1407F48B0\n14001a5f7  add rsp, 28h\n14001a5fb  jmp atexit",
+      "code": "int sub_14001A5E0()\n{\n  sub_1403ACEE0(&qword_140B374F0); /*0x14001a5eb*/\n  return atexit(sub_1407F48B0); /*0x14001a5f7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef20",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46014",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46020",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a5e4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a600",
+      "name": "sub_14001A600",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a610": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A600 (.text @ 0x14001a600):\n14001a600  sub rsp, 28h\n14001a604  lea rcx, qword_140B38820\n14001a60b  call sub_1403ADD90\n14001a610  lea rcx, sub_1407F48E0\n14001a617  add rsp, 28h\n14001a61b  jmp atexit",
+      "code": "int sub_14001A600()\n{\n  sub_1403ADD90(&qword_140B38820); /*0x14001a60b*/\n  return atexit(sub_1407F48E0); /*0x14001a617*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407ff008",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46020",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b4602c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a604",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a620",
+      "name": "sub_14001A620",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a630": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A620 (.text @ 0x14001a620):\n14001a620  sub rsp, 28h\n14001a624  lea rcx, qword_140B37A70\n14001a62b  call sub_1403AE4A0\n14001a630  lea rcx, sub_1407F4910\n14001a637  add rsp, 28h\n14001a63b  jmp atexit",
+      "code": "int sub_14001A620()\n{\n  sub_1403AE4A0(&qword_140B37A70); /*0x14001a62b*/\n  return atexit(sub_1407F4910); /*0x14001a637*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef58",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b4602c",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46038",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a624",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a640",
+      "name": "sub_14001A640",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a650": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A640 (.text @ 0x14001a640):\n14001a640  sub rsp, 28h\n14001a644  lea rcx, qword_140B37B80\n14001a64b  call sub_1403AE950\n14001a650  lea rcx, sub_1407F4940\n14001a657  add rsp, 28h\n14001a65b  jmp atexit",
+      "code": "int sub_14001A640()\n{\n  sub_1403AE950(&qword_140B37B80); /*0x14001a64b*/\n  return atexit(sub_1407F4940); /*0x14001a657*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef70",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46038",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46044",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a644",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a660",
+      "name": "sub_14001A660",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a670": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A660 (.text @ 0x14001a660):\n14001a660  sub rsp, 28h\n14001a664  lea rcx, qword_140B38A80\n14001a66b  call sub_1404362C0\n14001a670  lea rcx, sub_1407F4970\n14001a677  add rsp, 28h\n14001a67b  jmp atexit",
+      "code": "int sub_14001A660()\n{\n  sub_1404362C0(&qword_140B38A80); /*0x14001a66b*/\n  return atexit(sub_1407F4970); /*0x14001a677*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407ff010",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46044",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46050",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a664",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a680",
+      "name": "sub_14001A680",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a690": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A680 (.text @ 0x14001a680):\n14001a680  sub rsp, 28h\n14001a684  lea rcx, qword_140B37550\n14001a68b  call sub_140523F50\n14001a690  lea rcx, sub_1407F49A0\n14001a697  add rsp, 28h\n14001a69b  jmp atexit",
+      "code": "int sub_14001A680()\n{\n  sub_140523F50((__int64)&qword_140B37550); /*0x14001a68b*/\n  return atexit(sub_1407F49A0); /*0x14001a697*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef28",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46050",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b4605c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a684",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a6a0",
+      "name": "sub_14001A6A0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a6b0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A6A0 (.text @ 0x14001a6a0):\n14001a6a0  sub rsp, 28h\n14001a6a4  lea rcx, qword_140B37AE0\n14001a6ab  call sub_1404993F0\n14001a6b0  lea rcx, sub_1407F49D0\n14001a6b7  add rsp, 28h\n14001a6bb  jmp atexit",
+      "code": "int sub_14001A6A0()\n{\n  sub_1404993F0(&qword_140B37AE0); /*0x14001a6ab*/\n  return atexit(sub_1407F49D0); /*0x14001a6b7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef60",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b4605c",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46068",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a6a4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a6c0",
+      "name": "sub_14001A6C0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a6d0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A6C0 (.text @ 0x14001a6c0):\n14001a6c0  sub rsp, 28h\n14001a6c4  lea rcx, qword_140B37660\n14001a6cb  call sub_140403AB0\n14001a6d0  lea rcx, sub_1407F4A00\n14001a6d7  add rsp, 28h\n14001a6db  jmp atexit",
+      "code": "int sub_14001A6C0()\n{\n  sub_140403AB0(&qword_140B37660); /*0x14001a6cb*/\n  return atexit(sub_1407F4A00); /*0x14001a6d7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef40",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46068",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46074",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a6c4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a6e0",
+      "name": "sub_14001A6E0",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a6f0": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A6E0 (.text @ 0x14001a6e0):\n14001a6e0  sub rsp, 28h\n14001a6e4  lea rcx, qword_140B38B70\n14001a6eb  call sub_1404ADFD0\n14001a6f0  lea rcx, sub_1407F4A30\n14001a6f7  add rsp, 28h\n14001a6fb  jmp atexit",
+      "code": "int sub_14001A6E0()\n{\n  sub_1404ADFD0(&qword_140B38B70); /*0x14001a6eb*/\n  return atexit(sub_1407F4A30); /*0x14001a6f7*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407ff028",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46074",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46080",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a6e4",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a700",
+      "name": "sub_14001A700",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a710": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A700 (.text @ 0x14001a700):\n14001a700  sub rsp, 28h\n14001a704  lea rcx, qword_140B37E90\n14001a70b  call sub_140532570\n14001a710  lea rcx, sub_1407F4A60\n14001a717  add rsp, 28h\n14001a71b  jmp atexit",
+      "code": "int sub_14001A700()\n{\n  sub_140532570(&qword_140B37E90); /*0x14001a70b*/\n  return atexit(sub_1407F4A60); /*0x14001a717*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef88",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46080",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b4608c",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a704",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a720",
+      "name": "sub_14001A720",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a730": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A720 (.text @ 0x14001a720):\n14001a720  sub rsp, 28h\n14001a724  lea rcx, qword_140B38150\n14001a72b  call sub_14048FA80\n14001a730  lea rcx, sub_1407F4A90\n14001a737  add rsp, 28h\n14001a73b  jmp atexit",
+      "code": "int sub_14001A720()\n{\n  sub_14048FA80(&qword_140B38150); /*0x14001a72b*/\n  return atexit(sub_1407F4A90); /*0x14001a737*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fefc8",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b4608c",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46098",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a724",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a740",
+      "name": "sub_14001A740",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a750": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A740 (.text @ 0x14001a740):\n14001a740  sub rsp, 28h\n14001a744  lea rcx, qword_140B381C0\n14001a74b  call sub_140437F40\n14001a750  lea rcx, sub_1407F4AC0\n14001a757  add rsp, 28h\n14001a75b  jmp atexit",
+      "code": "int sub_14001A740()\n{\n  sub_140437F40(&qword_140B381C0); /*0x14001a74b*/\n  return atexit(sub_1407F4AC0); /*0x14001a757*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fefd0",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b46098",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b460a4",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a744",
+            "type": "code"
+          }
+        ]
+      }
+    },
+    {
+      "addr": "0x14001a760",
+      "name": "sub_14001A760",
+      "prototype": "int()",
+      "size": "0x20",
+      "comments": {
+        "0x14001a770": {
+          "regular": "void (__cdecl *)()"
+        }
+      },
+      "asm": "sub_14001A760 (.text @ 0x14001a760):\n14001a760  sub rsp, 28h\n14001a764  lea rcx, qword_140B376C0\n14001a76b  call sub_1403AC9D0\n14001a770  lea rcx, sub_1407F4AF0\n14001a777  add rsp, 28h\n14001a77b  jmp atexit",
+      "code": "int sub_14001A760()\n{\n  sub_1403AC9D0((__int64)&qword_140B376C0); /*0x14001a76b*/\n  return atexit(sub_1407F4AF0); /*0x14001a777*/\n}",
+      "xrefs": {
+        "to": [
+          {
+            "addr": "0x1407fef48",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b460a4",
+            "type": "data"
+          },
+          {
+            "addr": "0x140b460b0",
+            "type": "data"
+          }
+        ],
+        "from": [
+          {
+            "addr": "0x14001a764",
+            "type": "code"
+          }
+        ]
+      }
+    }
+  ]
+}

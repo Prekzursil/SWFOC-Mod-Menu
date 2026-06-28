@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050b970",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14050b970(longlong param_1,int param_2)\n\n{\n  char cVar1;\n  uint uVar2;\n  longlong lVar3;\n  int local_res10 [6];\n  \n  local_res10[0] = param_2;\n  uVar2 = BitwiseOr<enum_tVisibilityLevelType>::\n          BitwiseOr<enum_tVisibilityLevelType>_Constructor_or_Destructor(param_1,local_res10);\n  if (((((param_1 != 0) && (*(longlong *)(param_1 + 0xb8) != 0)) &&\n       (*(int *)(*(longlong *)(param_1 + 0xb8) + 0x2f4) != -1)) &&\n      ((lVar3 = FUN_140294bc0(&DAT_140a16fd0,local_res10[0]), lVar3 != 0 &&\n       (*(longlong *)(lVar3 + 0x68) != 0)))) &&\n     (*(char *)(*(longlong *)(lVar3 + 0x68) + 0x10b) == '\\x01')) {\n    return 1;\n  }\n  if (*(char *)(*(longlong *)(param_1 + 0x298) + 0xbc) != '\\0') {\n    lVar3 = FUN_140294bc0(&DAT_140a16fd0,local_res10[0]);\n    if (lVar3 == 0) {\n      return 0;\n    }\n    if (*(longlong *)(param_1 + 0xb8) == 0) {\n      return 0;\n    }\n    if ((*(int *)(*(longlong *)(param_1 + 0xb8) + 0x124) != -1) &&\n       (cVar1 = FUN_1402823c0(lVar3), cVar1 == '\\0')) {\n      return 0;\n    }\n  }\n  if ((uVar2 >> 8 & 1) == 0) {\n    return 0;\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:21:31Z"
+}

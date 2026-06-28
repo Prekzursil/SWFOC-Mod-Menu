@@ -1,0 +1,7 @@
+{
+  "addr": "0x140479750",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140479760        if (*(arg1 + 0x10) == 0)\n140479764        return 0\n14047976d        if (arg2 != 0 || arg3 != 0)\n140479773        int64_t* r8 = *(arg1 + 8)\n140479777        int64_t* i = *r8\n14047977d        while (i != r8)\n14047977f        void* result = i[5]\n1404797a2        if (result != 0 && (arg2 == 0 || *(result + 0xc9) != 0) && (arg3 == 0 || *(result + 0xc8) != 0))\n1404797f4        return result\n1404797a4        int64_t* i_1 = i[2]\n1404797ac        if (*(i_1 + 0x19) == 0)\n1404797d0        int64_t* i_3 = *i_1\n1404797d3        i = i_1\n1404797da        if (*(i_3 + 0x19) == 0)\n1404797ed        int64_t* i_4\n1404797e0        i_4 = *i_3\n1404797e3        i = i_3\n1404797e6        i_3 = i_4\n1404797ed        do while (*(i_4 + 0x19) == 0)\n1404797ae        int64_t* i_2 = i[1]\n1404797b6        if (*(i_2 + 0x19) == 0)\n1404797bc        while (i == i_2[2])\n1404797be        i = i_2\n1404797c1        i_2 = i_2[1]\n1404797c9        if (*(i_2 + 0x19) != 0)\n1404797c9        break\n1404797cb        i = i_2\n140479800        return *(**(arg1 + 8) + 0x28)",
+  "fetched_at": "2026-04-26T17:28:18Z"
+}

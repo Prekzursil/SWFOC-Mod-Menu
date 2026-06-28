@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037be10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037be23        if (arg2 == 0)\n14037be33        return arg2 - 1\n14037be47        void* rax_2 = sub_140294bc0(&data_140a16fd0, *(*(arg1 + 0x10) + 0x58))\n14037be52        char arg_10\n14037be52        void* rdi\n14037be52        if (rax_2 != 0)\n14037be58        bool cond:0_1 = *(arg2 + 0x30) u< 0x10\n14037be5d        int64_t* rdx_1 = arg2 + 0x18\n14037be61        arg_10 = 0\n14037be66        if (not(cond:0_1))\n14037be68        rdx_1 = *rdx_1\n14037be6d        int64_t var_10_1 = 0xf\n14037be76        void* var_28 = nullptr\n14037be7b        void* r8_1 = -ffffffffffffffff\n14037be82        int64_t var_18_1 = 0\n14037be87        r8_1 += 1\n14037be8e        do while (*(rdx_1 + r8_1) != 0)\n14037be95        sub_140022730(&var_28, rdx_1, r8_1)\n14037bebe        rdi.b = sub_140281950(rax_2, *(*(arg1 + 0x10) + 0x298), &var_28, &arg_10) == 1\n14037bec6        if (var_10_1 u>= 0x10)\n14037bec8        void* rcx_2 = var_28\n14037bed0        void* rax_4 = rcx_2\n14037beda        if (var_10_1 + 1 u>= 0x1000)\n14037bedc        rcx_2 = *(rcx_2 - 8)\n14037beef        if (rax_4 - rcx_2 - 8 u> 0x1f)\n14037bf2f        _invalid_parameter_noinfo_noreturn()\n14037bf2f        noreturn\n14037bef1        j_sub_1407864b8(rcx_2)\n14037bef9        if (rax_2 == 0 || rdi.b == 0)\n14037bf18        if (*(arg2 + 0x40) == 1)\n14037bf2e        return 1\n14037bf00        if (arg_10 != 1)\n14037bf2e        return 1\n14037bf13        return 0",
+  "fetched_at": "2026-04-26T17:19:02Z"
+}

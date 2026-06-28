@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall CombatantBehaviorClass::vfunction45(CombatantBehaviorClass *this)\n\n{\n  undefined **ppuVar1;\n  char cVar2;\n  int iVar3;\n  uint uVar4;\n  ulonglong uVar5;\n  longlong *plVar6;\n  longlong lVar7;\n  undefined8 uVar8;\n  uint uVar9;\n  longlong *plVar10;\n  \n  uVar5 = FUN_1403a44f0(this->offset_0x18);\n  if ((char)uVar5 != '\\0') {\n    return CONCAT71((int7)(uVar5 >> 8),1);\n  }\n  ppuVar1 = this->offset_0x18;\n  if (*(char *)((longlong)ppuVar1 + 0x337) != -1) {\n    plVar10 = (longlong *)0x0;\n    plVar6 = plVar10;\n    if ((ppuVar1 != (undefined **)0x0) &&\n       (plVar6 = (longlong *)(**(code **)(*ppuVar1 + 0x10))(ppuVar1,5), plVar6 != (longlong *)0x0))\n    {\n      (**(code **)*plVar6)(plVar6);\n    }\n    iVar3 = FUN_1404f3ba0(plVar6,plVar6[5]);\n    if (iVar3 != 0) {\n      do {\n        lVar7 = FUN_1404f3b80(plVar6,plVar6[5],plVar10);\n        if ((lVar7 != 0) && (cVar2 = FUN_1403a44f0(lVar7), cVar2 != '\\0')) {\n          uVar8 = (**(code **)(*plVar6 + 8))(plVar6);\n          return CONCAT71((int7)((ulonglong)uVar8 >> 8),1);\n        }\n        uVar9 = (int)plVar10 + 1;\n        plVar10 = (longlong *)(ulonglong)uVar9;\n        uVar4 = FUN_1404f3ba0(plVar6,plVar6[5]);\n      } while (uVar9 < uVar4);\n    }\n    uVar5 = (**(code **)(*plVar6 + 8))(plVar6);\n  }\n  return uVar5 & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:27Z"
+}

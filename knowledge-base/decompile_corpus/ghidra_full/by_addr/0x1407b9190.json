@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9190",
+  "tool": "ghidra",
+  "fact_id": "api_lua_newthread",
+  "body": "\nvoid FUN_1407b9190(longlong param_1)\n\n{\n  undefined4 *puVar1;\n  undefined8 uVar2;\n  \n  if (*(uint *)(*(longlong *)(param_1 + 0x20) + 0x70) <=\n      *(uint *)(*(longlong *)(param_1 + 0x20) + 0x74)) {\n    FUN_1407bc850();\n  }\n  uVar2 = FUN_1407b8730(param_1);\n  puVar1 = *(undefined4 **)(param_1 + 0x10);\n  *puVar1 = 8;\n  *(undefined8 *)(puVar1 + 2) = uVar2;\n  *(longlong *)(param_1 + 0x10) = *(longlong *)(param_1 + 0x10) + 0x10;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bd000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall BudgetBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a44980;\n}",
+  "fetched_at": "2026-04-26T17:38:22Z"
+}

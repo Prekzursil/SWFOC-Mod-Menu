@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f544",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078f544(wchar_t *param_1,char *param_2,size_t param_3)\n\n{\n  _mbtowc_l(param_1,param_2,param_3,(_locale_t)0x0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:31Z"
+}

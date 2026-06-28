@@ -1,0 +1,7 @@
+{
+  "addr": "0x140453f80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventAccumulateClass::vfunction4(StoryEventAccumulateClass *this,int *param_1)\n\n{\n  int iVar1;\n  \n  if (param_1 != (int *)0x0) {\n    iVar1 = *param_1;\n    switch(this[1].SignalGeneratorClass_data.offset_0x4) {\n    case 0:\n    case 1:\n      if (*(int *)&this[1].SignalGeneratorClass_data < iVar1) {\n        FUN_140455db0(this,0,0);\n        return;\n      }\n      break;\n    case 2:\n      if (iVar1 < *(int *)&this[1].SignalGeneratorClass_data) {\n        FUN_140455db0(this,0,0);\n        return;\n      }\n      break;\n    case 3:\n      if (iVar1 == *(int *)&this[1].SignalGeneratorClass_data) {\n        FUN_140455db0(this,0,0);\n        return;\n      }\n      break;\n    case 5:\n      if (*(int *)&this[1].SignalGeneratorClass_data <= iVar1) {\n        FUN_140455db0(this,0,0);\n        return;\n      }\n      break;\n    case 6:\n      if (iVar1 <= *(int *)&this[1].SignalGeneratorClass_data) {\n        FUN_140455db0(this,0,0);\n        return;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:34Z"
+}

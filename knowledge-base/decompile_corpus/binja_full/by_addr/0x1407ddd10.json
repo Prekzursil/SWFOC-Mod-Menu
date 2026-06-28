@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddd10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ddd1a        int64_t rbx = sx.q(arg1)\n1407ddd1d        void* rax = __acrt_getptd_noexit()\n1407ddd28        if (rax != 0)\n1407ddd3c        int64_t rax_2 = *(rax + 0x78)\n1407ddd43        if (rax_2 == 0)\n1407ddd54        *(rax + 0x78) = _calloc_base(0x86, zx.q((rax_2 + 1).d))\n1407ddd58        _free_base(0)\n1407ddd64        if (rax_2 != 0 || *(rax + 0x78) != 0)\n1407ddd83        int64_t r8_1\n1407ddd83        if (rbx u> 0x8d || (0x2b u< rbx && rbx u< 0x64))\n1407dddb3        r8_1 = (&data_1408ff330)[0x2b]\n1407ddd90        if (rbx u<= 0x2b)\n1407dddb3        r8_1 = (&data_1408ff330)[rbx]\n1407ddda0        r8_1 = (&data_1408ff1e0)[rbx - 0x64]\n1407dddcb        if (strncpy_s(*(rax + 0x78), 0x86, r8_1, 0x85) == 0)\n1407dddcd        return *(rax + 0x78)\n1407dddd6        int64_t var_18 = 0\n1407ddde6        _invoke_watson()\n1407ddde6        noreturn\n1407ddd2a        return \"Visual C++ CRT: Not enough memory to complete call to strerror.\"",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

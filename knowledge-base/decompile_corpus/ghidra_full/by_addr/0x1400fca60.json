@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400fca60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400fca60(void)\n\n{\n  undefined8 *puVar1;\n  LPVOID pvVar2;\n  HANDLE hHeap;\n  int iVar3;\n  int iVar4;\n  longlong lVar5;\n  \n  iVar4 = 0;\n  pvVar2 = DAT_140a12168;\n  if (0 < DAT_140a12170) {\n    lVar5 = 0;\n    iVar3 = DAT_140a12170;\n    do {\n      puVar1 = *(undefined8 **)(lVar5 + (longlong)pvVar2);\n      if (puVar1 != (undefined8 *)0x0) {\n        (**(code **)*puVar1)(puVar1,1);\n        pvVar2 = DAT_140a12168;\n        iVar3 = DAT_140a12170;\n      }\n      iVar4 = iVar4 + 1;\n      lVar5 = lVar5 + 8;\n    } while (iVar4 < iVar3);\n  }\n  if (pvVar2 != (LPVOID)0x0) {\n    if ((DAT_140a12174 & 0x80000000) == 0) {\n      thunk_FUN_1407864b8(pvVar2);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,DAT_140a12168);\n    }\n    DAT_140a12174 = DAT_140a12174 & 0x80000000;\n    DAT_140a12168 = (LPVOID)0x0;\n    DAT_140a12170 = 0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:35Z"
+}

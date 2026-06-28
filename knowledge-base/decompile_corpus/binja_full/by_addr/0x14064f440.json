@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064f440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064f447        *arg1 = &GameObjectTypePerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n14064f451        arg1[3] = &GameObjectTypePerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n14064f455        return sub_14064c9a0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:05:56Z"
+}

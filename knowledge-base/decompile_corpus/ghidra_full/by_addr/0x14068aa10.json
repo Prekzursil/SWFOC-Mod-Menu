@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068aa10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068aa10(void)\n\n{\n  LuckyShotAttackAbilityClass *this;\n  \n  this = (LuckyShotAttackAbilityClass *)FUN_140769c58(0x188);\n  if (this != (LuckyShotAttackAbilityClass *)0x0) {\n    LuckyShotAttackAbilityClass::LuckyShotAttackAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:11Z"
+}

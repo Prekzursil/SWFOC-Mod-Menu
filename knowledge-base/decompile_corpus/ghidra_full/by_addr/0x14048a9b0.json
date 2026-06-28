@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048a9b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall alExtraRenderPass::vfunction5(alExtraRenderPass *this)\n\n{\n  return this->field_0x34;\n}",
+  "fetched_at": "2026-04-26T18:01:21Z"
+}

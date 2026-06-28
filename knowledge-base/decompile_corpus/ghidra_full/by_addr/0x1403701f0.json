@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403701f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GameObjectTypeClass * __thiscall\nGameObjectTypeClass::scalar_deleting_destructor(GameObjectTypeClass *this,uint param_1)\n\n{\n  ~GameObjectTypeClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x2950);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:15:16Z"
+}

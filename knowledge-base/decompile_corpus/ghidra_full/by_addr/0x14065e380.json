@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065e380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined1 __thiscall\nFoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::vfunction11\n          (FoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this,\n          undefined8 param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  char cVar1;\n  undefined1 uVar2;\n  undefined4 uVar3;\n  \n  uVar3 = 0xffffffff;\n  cVar1 = FUN_14065a780();\n  if (cVar1 == '\\0') {\n    uVar2 = FUN_14064d990(this,param_1,param_2,param_3,uVar3);\n  }\n  else {\n    uVar2 = 1;\n  }\n  return uVar2;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:03Z"
+}

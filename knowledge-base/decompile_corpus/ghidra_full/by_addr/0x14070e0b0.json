@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070e0b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nSabotagePoliticalControlAbilityClass::vfunction6_for_IXMLLoadableClass\n          (SabotagePoliticalControlAbilityClass *this,undefined8 param_1,undefined8 param_2)\n\n{\n  char cVar1;\n  \n  cVar1 = FUN_14048e070();\n  if (cVar1 != '\\0') {\n    cVar1 = FUN_14048df20(this,param_1,param_2);\n    if (cVar1 != '\\0') {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:54:41Z"
+}

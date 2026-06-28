@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e0ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalLightningBolt::vfunction15_for_RefCountClass(alLightningBolt *this,longlong *param_1)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x0001407e0ef2. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*param_1 + 0xe0))(param_1,this,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:23Z"
+}

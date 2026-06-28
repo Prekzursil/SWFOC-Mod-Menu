@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d2c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013d2c3        if (arg1 != 0)\n14013d2c3        return std::operator!=<void __cdecl ()>(arg1) __tailcall\n14013d2c9        int64_t result\n14013d2c9        result.b = 0\n14013d2cb        return result",
+  "fetched_at": "2026-04-26T17:15:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014aa20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alLightSource::clone_for_RefCountClass(alLightSource *this)\n\n{\n  alLightSource *this_00;\n  \n  this_00 = (alLightSource *)FUN_140769c58(0x140);\n  if (this_00 != (alLightSource *)0x0) {\n    alLightSource(this_00,(longlong)this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:00Z"
+}

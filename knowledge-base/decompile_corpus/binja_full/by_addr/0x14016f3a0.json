@@ -1,0 +1,7 @@
+{
+  "addr": "0x14016f3a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14016f3a6        int32_t r9 = *arg3\n14016f3ac        *arg1 = r9\n14016f3b3        arg1[1] = arg3[1]\n14016f3ba        arg1[2] = arg3[2]\n14016f3c1        arg1[3] = arg3[3]\n14016f3c8        arg1[4] = arg3[4]\n14016f3cf        arg1[5] = arg3[5]\n14016f3d6        arg1[6] = arg3[6]\n14016f3dd        arg1[7] = arg3[7]\n14016f3e4        arg1[8] = arg3[8]\n14016f3eb        arg1[0xe] = arg3[0xe]\n14016f3f2        arg1[0xf] = arg3[0xf]\n14016f3f9        arg1[0x10] = arg3[0x10]\n14016f401        arg1[9].b = arg3[9].b\n14016f408        arg1[0xc] = arg3[0xc]\n14016f40f        arg1[0xa] = arg3[0xa]\n14016f417        arg1[0xb].b = arg3[0xb].b\n14016f41e        arg1[0xd] = arg3[0xd]\n14016f421        *arg2 = r9\n14016f427        arg2[1] = arg1[1]\n14016f42d        arg2[2] = arg1[2]\n14016f433        arg2[3] = arg1[3]\n14016f439        arg2[4] = arg1[4]\n14016f43f        arg2[5] = arg1[5]\n14016f445        arg2[6] = arg1[6]\n14016f44b        arg2[7] = arg1[7]\n14016f451        arg2[8] = arg1[8]\n14016f458        arg2[9].b = arg1[9].b\n14016f45e        arg2[0xa] = arg1[0xa]\n14016f465        arg2[0xb].b = arg1[0xb].b\n14016f46b        arg2[0xc] = arg1[0xc]\n14016f471        arg2[0xd] = arg1[0xd]\n14016f477        arg2[0xe] = arg1[0xe]\n14016f47d        arg2[0xf] = arg1[0xf]\n14016f483        arg2[0x10] = arg1[0x10]\n14016f48d        arg2[0x11].b = arg1[0x11].b\n14016f49d        return arg2",
+  "fetched_at": "2026-04-26T17:22:53Z"
+}

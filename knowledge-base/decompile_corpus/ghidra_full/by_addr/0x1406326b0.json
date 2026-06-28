@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406326b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpaceObstacleBehaviorClass::vfunction16(SpaceObstacleBehaviorClass *this,undefined8 param_1)\n\n{\n  longlong lVar1;\n  \n  lVar1 = (**(code **)(*DAT_140b15418 + 0x238))();\n  if (lVar1 != 0) {\n    FUN_140539470(lVar1,param_1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:04Z"
+}

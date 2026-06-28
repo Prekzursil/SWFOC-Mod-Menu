@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077f7e4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077f7f4        int32_t result_1 = 0\n14077f7f8        int32_t* rcx = &result_1\n14077f808        char* rdx = *arg4\n14077f80f        uint64_t result\n14077f80f        if (arg3 != -1)\n14077f84e        if (wctomb_s(rcx, rdx, *arg5, arg6).d != 0x22)\n14077f857        result = sx.q(result_1)\n14077f85e        if (result.d s> 0)\n14077f860        *arg4 = &(*arg4)[result]\n14077f863        *arg5 -= result\n14077f866        result.b = 1\n14077f850        *arg2 = 0\n14077f853        result.b = 0\n14077f817        result = wctomb_s(rcx, rdx, 5, arg6)\n14077f81e        if (result.d == 0)\n14077f82c        int64_t result_2 = sx.q(result_1)\n14077f831        result = arg5\n14077f836        *arg4 = &(*arg4)[result_2]\n14077f839        *result -= result_2\n14077f828        if (result.d == 0x16 || result.d == 0x22)\n14077f878        int64_t var_18 = 0\n14077f888        _invoke_watson()\n14077f888        noreturn\n14077f866        result.b = 1\n14077f877        return result",
+  "fetched_at": "2026-04-26T17:31:03Z"
+}

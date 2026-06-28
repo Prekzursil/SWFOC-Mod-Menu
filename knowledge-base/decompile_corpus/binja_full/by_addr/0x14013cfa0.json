@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013cfa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013cff7        int32_t rcx_1 = zx.d((int.d(arg1[2] * 255f)).b) | ((int.d(arg1[3] * 255f) << 8 | zx.d((int.d(*arg1 * 255f)).b)) << 8 | zx.d((int.d(arg1[1] * 255f)).b)) << 8\n14013cffa        return sub_140178470(rcx_1) __tailcall",
+  "fetched_at": "2026-04-26T17:15:27Z"
+}

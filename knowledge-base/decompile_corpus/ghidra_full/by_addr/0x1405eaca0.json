@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405eaca0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall MoveActionClass::vfunction13(MoveActionClass *this)\n\n{\n  _guard_check_icall();\n  if ((int)(this->MoveActionClass_data).offset_0xc < 0) {\n    (this->MoveActionClass_data).offset_0xc = 0xffff;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:46:27Z"
+}

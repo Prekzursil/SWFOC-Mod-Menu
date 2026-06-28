@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f4b50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid __thiscall RefCountClass::~RefCountClass(void)\n\n{\n  DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64>\n            ((DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64> *)&DAT_140b379e0);\n  FUN_1404b3e40(&DAT_140b37978);\n  _DAT_140b37968 = 0;\n  _DAT_140b37970 = 0;\n  DAT_140b37974 = 0;\n  FUN_1404bdf30(&DAT_140b37958);\n  DynamicVectorClass<int>::~DynamicVectorClass<int>((DynamicVectorClass<int> *)&DAT_140b37940);\n  _DAT_140b37910 = &vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:04:03Z"
+}

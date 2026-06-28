@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a01b8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a01be        int32_t r8 = arg3 & 0xfff7ffff\n1407a01d3        if ((arg2 & r8 & 0xfcf0fce0) == 0)\n1407a0203        if (arg1 == 0)\n1407a020e        _control87(arg2, r8)\n1407a020a        *arg1 = _control87(arg2, r8)\n1407a0213        return 0\n1407a01d8        if (arg1 != 0)\n1407a01e3        *arg1 = _control87(0, 0)\n1407a01ef        *_errno() = 0x16\n1407a01f1        _invalid_parameter_noinfo()\n1407a01f6        return 0x16",
+  "fetched_at": "2026-04-26T17:32:19Z"
+}

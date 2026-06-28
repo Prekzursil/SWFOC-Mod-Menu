@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404913a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404913a0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)\n\n{\n  AutoResolveClass *this;\n  AutoResolveClass *pAVar1;\n  \n  this = (AutoResolveClass *)FUN_140769c58(0x2f8);\n  pAVar1 = (AutoResolveClass *)0x0;\n  if (this != (AutoResolveClass *)0x0) {\n    pAVar1 = AutoResolveClass::AutoResolveClass(this);\n  }\n  DAT_140b31410 = param_1;\n  DAT_140b31418 = param_2;\n  DAT_140b31408 = param_4;\n  DAT_140b31400 = pAVar1;\n  DAT_140b31420 = param_3;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140544a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140544a1f        int64_t* rbx = *(arg3 + 0x10)\n140544a2a        uint64_t rdi\n140544a2a        rdi.b = 1\n140544a37        if ((*(arg3 + 0x18) - rbx) s>> 3 != 0)\n140544a39        int64_t* rbx_1 = *rbx\n140544a3f        void* i\n140544a3f        if (rbx_1 != 0)\n140544a47        i, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n140544a4d        if (rbx_1 == 0 || i == 0)\n140544a6e        label_140544a6e:\n140544a6e        sub_140248190(arg2, \"LuaStartCinematicCamera -- invalid type for parameter 1.  Expected bool.\", arg3)\n140544a84        return 0\n140544a59        while (i != &data_140a157b0)\n140544a5b        i = *(i + 8)\n140544a62        if (i == 0)\n140544a62        goto label_140544a6e\n140544a8b        (**rbx_1)(rbx_1)\n140544a93        rbx_1[2].b\n140544a97        (*(*rbx_1 + 8))(rbx_1)\n140544aa5        sub_14044cd80()\n140544abb        return 0",
+  "fetched_at": "2026-04-26T17:34:00Z"
+}

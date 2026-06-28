@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013def0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013df1a        struct alMesh::alD3dMesh::VTable** rax = operator new(0x110)\n14013df22        if (rax != 0)\n14013df27        struct alMesh::alD3dMesh::VTable** result = sub_140186730(rax)\n14013df32        if (result != 0)\n14013df5e        if (std::_Sort_unchecked<struct GSISymbolEntry* __ptr64,class <lambda_e19a14271c24f61a19fa61e1244ecbc2> >(result, arg1, arg2, arg3, arg4, arg5, arg6) != 0)\n14013df60        return result\n14013df70        (*result)->vFunc_2(result, 1)\n14013df73        return nullptr",
+  "fetched_at": "2026-04-26T17:16:20Z"
+}

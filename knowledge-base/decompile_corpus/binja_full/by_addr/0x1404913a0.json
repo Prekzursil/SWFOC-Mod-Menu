@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404913a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404913c5        struct IAutoResolveClass::AutoResolveClass::VTable** result = operator new(0x2f8)\n1404913cd        if (result != 0)\n1404913d2        result = sub_140490de0(result)\n1404913d7        data_140b31410 = arg1\n1404913e3        data_140b31418 = arg2\n1404913ef        data_140b31408 = arg4\n1404913fb        data_140b31400 = result\n140491402        data_140b31420 = arg3\n14049140e        return result",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

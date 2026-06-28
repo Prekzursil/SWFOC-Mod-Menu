@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048e240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14048e240(longlong param_1,longlong param_2,int param_3)\n\n{\n  ulonglong uVar1;\n  \n  if (param_3 == *(int *)(param_1 + 0x3c)) {\n    return 1;\n  }\n  if ((((param_2 != 0) &&\n       (uVar1 = BitwiseAnd<bool>::BitwiseAnd<bool>_Constructor_or_Destructor(param_1,param_2),\n       (char)uVar1 != '\\0')) && (param_3 == 9)) && (*(int *)(param_1 + 0x3c) == 0xb)) {\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:01:56Z"
+}

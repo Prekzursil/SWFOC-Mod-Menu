@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d7dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalStructurePerceptualEvaluatorClass * FUN_1406d7dc0(undefined **param_1)\n\n{\n  TacticalStructurePerceptualEvaluatorClass *this;\n  \n  if (param_1 == (undefined **)0x0) {\n    return (TacticalStructurePerceptualEvaluatorClass *)0x0;\n  }\n  this = (TacticalStructurePerceptualEvaluatorClass *)FUN_140769c58(0xb8);\n  if (this == (TacticalStructurePerceptualEvaluatorClass *)0x0) {\n    this = (TacticalStructurePerceptualEvaluatorClass *)0x0;\n  }\n  else {\n                    /* inlined constructor:\n                       LandStructurePerceptualEvaluatorClass::LandStructurePerceptualEvaluatorClass\n                        */\n    TacticalStructurePerceptualEvaluatorClass::TacticalStructurePerceptualEvaluatorClass\n              (this,param_1);\n    this->vftablePtr =\n         (TacticalStructurePerceptualEvaluatorClass_vftable0 *)\n         &LandStructurePerceptualEvaluatorClass::vftable;\n    this->vftablePtr =\n         (TacticalStructurePerceptualEvaluatorClass_vftable1 *)\n         &LandStructurePerceptualEvaluatorClass::vftable;\n    this->vftablePtr =\n         (TacticalStructurePerceptualEvaluatorClass_vftable2 *)\n         &LandStructurePerceptualEvaluatorClass::vftable;\n  }\n  (*this->vftablePtr->vfunction9)(this);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:43:30Z"
+}

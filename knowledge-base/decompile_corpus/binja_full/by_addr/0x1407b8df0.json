@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8df0",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_getgccount",
+  "body": "1407b8dfa        return zx.q(*(*(arg1 + 0x20) + 0x74) u>> 0xa)",
+  "fetched_at": "2026-04-26T16:44:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405ab540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nLandTeamContainerLocomotorBehaviorClass::vfunction92(LandTeamContainerLocomotorBehaviorClass *this)\n\n{\n  ulonglong uVar1;\n  float fVar2;\n  uint uVar3;\n  longlong lVar4;\n  longlong lVar5;\n  uint uVar6;\n  ulonglong uVar7;\n  undefined8 uVar8;\n  \n  lVar4 = (**(code **)(*this->offset_0x18 + 0x10))(this->offset_0x18,0x16);\n  if ((lVar4 == 0) || (uVar3 = FUN_140405300(lVar4), fVar2 = DAT_14080080c, uVar3 == 0)) {\n    return 0;\n  }\n  uVar6 = 0;\n  uVar1 = (ulonglong)(uint)DAT_14080080c;\n  if (uVar3 != 0) {\n    do {\n      lVar5 = FUN_1404052d0(lVar4,uVar6);\n      if (lVar5 != 0) {\n        uVar7 = FUN_140373080(*(undefined8 *)(lVar5 + 0x298),this->offset_0x18);\n        if (((float)uVar1 == fVar2) || ((float)uVar7 < (float)uVar1)) {\n          uVar1 = uVar7;\n        }\n      }\n      uVar6 = uVar6 + 1;\n    } while (uVar6 < uVar3);\n    if (0.0 < (float)uVar1) {\n      return uVar1;\n    }\n  }\n  uVar8 = FUN_140370f00(this->offset_0x18[0x53],this->offset_0x18);\n  return uVar8;\n}",
+  "fetched_at": "2026-04-26T18:43:19Z"
+}

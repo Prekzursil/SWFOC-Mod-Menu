@@ -1,0 +1,7 @@
+{
+  "addr": "0x140771f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140771f4d        char r9 = ***(*arg2 + 0xf8)\n140771f51        char i = *arg1\n140771f56        if (i != 0)\n140771f58        char i_2 = i\n140771f60        i = i_2\n140771f66        if (i_2 == r9)\n140771f66        break\n140771f68        i = arg1[1]\n140771f6c        arg1 = &arg1[1]\n140771f6f        i_2 = i\n140771f74        do while (i != 0)\n140771f76        void* rcx = &arg1[1]\n140771f7b        if (i != 0)\n140771f7d        char rax_1 = *rcx\n140771f82        if (rax_1 != 0)\n140771f88        while (((rax_1 - 0x45) & 0xdf) != 0)\n140771f8a        rax_1 = *(rcx + 1)\n140771f8e        rcx += 1\n140771f93        if (rax_1 == 0)\n140771f93        break\n140771f95        char i_1 = *(rcx - 1)\n140771f99        void* r8_1 = rcx\n140771f9c        void* rcx_1 = rcx - 1\n140771fa1        while (i_1 == 0x30)\n140771fa3        i_1 = *(rcx_1 - 1)\n140771fa7        rcx_1 -= 1\n140771fb1        void* rdx_1 = rcx_1 - 1\n140771fb5        if (i_1 != r9)\n140771fb5        rdx_1 = rcx_1\n140771fc0        i = *r8_1\n140771fc4        rdx_1 += 1\n140771fc8        *rdx_1 = i\n140771fca        r8_1 += 1\n140771fd0        do while (i != 0)\n140771fd2        return i",
+  "fetched_at": "2026-04-26T17:30:44Z"
+}

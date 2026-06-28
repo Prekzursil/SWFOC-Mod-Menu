@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140640047        return \"DemolitionBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:02:57Z"
+}

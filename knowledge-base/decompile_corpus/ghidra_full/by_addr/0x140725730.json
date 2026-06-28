@@ -1,0 +1,7 @@
+{
+  "addr": "0x140725730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nTacticalRegionAITargetLocationClass::vfunction5\n          (TacticalRegionAITargetLocationClass *this,ulonglong param_1)\n\n{\n  ulonglong in_RAX;\n  \n  if ((param_1 & 0x10) != 0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  return (ulonglong)((byte)(param_1 >> 9) & 1);\n}",
+  "fetched_at": "2026-04-26T18:00:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014ad00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014ad0e        uint64_t zmm6[0x2] = 0x3f800000\n14014ad24        uint64_t zmm8[0x2] = arg3\n14014ad28        *(arg1 + 0x10c) = zmm8[0].d\n14014ad31        zmm8[0].d = zmm8[0].d f* 0.5f\n14014ad3a        *(arg1 + 0x108) = arg4[0].d\n14014ad57        uint64_t zmm0[0x2]\n14014ad57        if ((zmm8[0].d & 0x7f800000) u<= 0x1d000000)\n14014ad64        zmm0 = 0x3f800000\n14014ad5d        zmm0, arg2, arg3, zmm6 = cosf(zmm8, arg2, arg3)\n14014ad67        arg4[0].d = arg4[0].d f* 0.5f\n14014ad6f        *(arg1 + 0x110) = zmm0[0].d\n14014ad8b        uint64_t zmm7[0x2]\n14014ad8b        if ((arg4[0].d & 0x7f800000) u<= 0x1d000000)\n14014ad9a        zmm7 = zmm6\n14014ad90        zmm0, arg2, arg3, zmm6 = cosf(arg4, arg2, arg3)\n14014ad95        zmm7 = zmm0\n14014ada8        int32_t result = zmm8[0].d & 0x7f800000\n14014adb2        if (result u<= 0x1d000000)\n14014adbf        zmm0 = zmm6\n14014adb8        zmm0, result, zmm6 = cosf(zmm8, arg2, arg3)\n14014adc8        zmm7[0].d = zmm7[0].d f- zmm0[0].d\n14014adcc        zmm6[0].d = zmm6[0].d f/ zmm7[0].d\n14014add5        *(arg1 + 0x114) = zmm6[0].d\n14014ade7        return result",
+  "fetched_at": "2026-04-26T17:21:07Z"
+}

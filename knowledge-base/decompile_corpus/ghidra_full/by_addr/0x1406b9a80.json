@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b9a80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpacePerceptionSystemClass * __thiscall\nSpacePerceptionSystemClass::scalar_deleting_destructor\n          (SpacePerceptionSystemClass *this,uint param_1)\n\n{\n  undefined **ppuVar1;\n  undefined **ppuVar2;\n  \n                    /* inlined destructor: SpacePerceptionSystemClass::~SpacePerceptionSystemClass\n                        */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  ppuVar1 = (this->SignalListenerClass_data).offset_0x8;\n  ppuVar2 = (this->SignalListenerClass_data).offset_0x0;\n  if (ppuVar2 != ppuVar1) {\n    do {\n      if ((longlong *)*ppuVar2 != (longlong *)0x0) {\n        (**(code **)(*(longlong *)*ppuVar2 + 8))();\n      }\n      ppuVar2 = ppuVar2 + 1;\n    } while (ppuVar2 != ppuVar1);\n    ppuVar2 = (this->SignalListenerClass_data).offset_0x0;\n  }\n  (this->SignalListenerClass_data).offset_0x8 = ppuVar2;\n  AIPerceptionSystemClass::vfunction8((AIPerceptionSystemClass *)this);\n  FUN_1400466c0(&this->SignalListenerClass_data);\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (SpacePerceptionSystemClass_vftable1 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  AIPerceptionSystemClass::~AIPerceptionSystemClass((AIPerceptionSystemClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xf8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:37:41Z"
+}

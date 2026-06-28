@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050ba40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14050ba45        int32_t arg_10 = arg2\n14050ba56        int32_t rax = sub_14050c550(arg1, &arg_10)\n14050ba60        void* result\n14050ba60        if (arg1 != 0)\n14050ba62        void* rcx = *(arg1 + 0xb8)\n14050ba75        if (rcx != 0 && *(rcx + 0x2f4) != 0xffffffff)\n14050ba82        void* rax_1 = sub_140294bc0(&data_140a16fd0, arg_10)\n14050ba8a        if (rax_1 != 0)\n14050ba8c        result = *(rax_1 + 0x68)\n14050ba9c        if (result != 0 && *(result + 0x10b) == 1)\n14050bb03        result.b = 1\n14050bb0a        return result\n14050baac        if (*(*(arg1 + 0x298) + 0xbc) == 0)\n14050bae6        label_14050bae6:\n14050baef        if (rax.b s< 0 || test_bit(rax, 8))\n14050bb03        result.b = 1\n14050bb0a        return result\n14050bab9        result = sub_140294bc0(&data_140a16fd0, arg_10)\n14050bac1        if (result != 0)\n14050bac3        void* rcx_1 = *(arg1 + 0xb8)\n14050bacd        if (rcx_1 != 0)\n14050bacf        int32_t rdx_3 = *(rcx_1 + 0x124)\n14050bad8        if (rdx_3 == 0xffffffff)\n14050bad8        goto label_14050bae6\n14050bae4        if (sub_1402823c0(result, rdx_3).b != 0)\n14050bae4        goto label_14050bae6\n14050baf1        result.b = 0\n14050bafd        return result",
+  "fetched_at": "2026-04-26T17:32:07Z"
+}

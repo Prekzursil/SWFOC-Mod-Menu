@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0b28",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    unsigned __int64 __cdecl __crt_mbstring::__c16rtomb_utf8(char * __ptr64,char16_t,struct\n   _Mbstatet * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\n__uint64 __cdecl __crt_mbstring::__c16rtomb_utf8(char *param_1,wchar16 param_2,_Mbstatet *param_3)\n\n{\n  ulong *puVar1;\n  __uint64 _Var2;\n  _Mbstatet *p_Var3;\n  undefined8 local_res18 [2];\n  \n  p_Var3 = (_Mbstatet *)&DAT_140b3cc20;\n  if (param_3 != (_Mbstatet *)0x0) {\n    p_Var3 = param_3;\n  }\n  if (*(int *)p_Var3 == 0) {\n    if (0x3ff < (ushort)(param_2 + L'␀')) {\n      if ((ushort)(param_2 + L'⠀') < 0x400) {\n        *(uint *)p_Var3 = ((ushort)param_2 & 0x3f27ff) * 0x400 + 0x10000;\n        return 0;\n      }\n      _Var2 = __c32rtomb_utf8(param_1,(uint)(ushort)param_2,p_Var3);\n      return _Var2;\n    }\n  }\n  else if ((ushort)(param_2 + L'␀') < 0x400) {\n    local_res18[0] = 0;\n    _Var2 = __c32rtomb_utf8(param_1,((ushort)param_2 & 0xffff23ff) + *(int *)p_Var3,\n                            (_Mbstatet *)local_res18);\n    *(undefined8 *)p_Var3 = 0;\n    return _Var2;\n  }\n  *(undefined8 *)p_Var3 = 0;\n  puVar1 = __doserrno();\n  *puVar1 = 0x2a;\n  return 0xffffffffffffffff;\n}",
+  "fetched_at": "2026-04-26T18:54:19Z"
+}

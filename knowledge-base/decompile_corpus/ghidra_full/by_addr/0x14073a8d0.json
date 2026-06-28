@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073a8d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall SpaceAmbushBlockStatus::vfunction20(SpaceAmbushBlockStatus *this)\n\n{\n  undefined8 *puVar1;\n  int iVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  longlong *local_res8;\n  \n  if (this->field_0x45 == '\\0') {\n    iVar2 = 0;\n    if (DAT_140b15418 != 0) {\n      iVar2 = *(int *)(DAT_140b15418 + 0x10);\n    }\n    if (0x96 < iVar2 - *(int *)&this->field_0x40) {\n      FUN_14073b180(this,0);\n    }\n  }\n  plVar3 = (longlong *)FUN_140769c58(0x18);\n  if (plVar3 != (longlong *)0x0) {\n    *(undefined4 *)(plVar3 + 1) = 0;\n    *plVar3 = (longlong)&LuaValue<bool,5>::vftable;\n    *(undefined1 *)(plVar3 + 2) = this->field_0x45;\n    plVar4 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n             ::\n             ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                       ();\n    local_res8 = plVar3;\n    (**(code **)*plVar3)(plVar3);\n    puVar1 = (undefined8 *)plVar4[3];\n    if (puVar1 == (undefined8 *)plVar4[4]) {\n      FUN_140144900(plVar4 + 2,puVar1,&local_res8);\n    }\n    else {\n      *puVar1 = plVar3;\n      (**(code **)*plVar3)(plVar3);\n      plVar4[3] = plVar4[3] + 8;\n    }\n    (**(code **)(*plVar3 + 8))(plVar3);\n    return plVar4;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:02:59Z"
+}

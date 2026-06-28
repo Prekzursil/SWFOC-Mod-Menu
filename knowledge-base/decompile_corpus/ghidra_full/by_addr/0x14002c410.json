@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002c410",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nDynamicVectorClass<struct_InternetPlayerStruct>::~DynamicVectorClass<struct_InternetPlayerStruct>\n          (DynamicVectorClass<struct_InternetPlayerStruct> *this)\n\n{\n  uint *puVar1;\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = (this->DynamicVectorClass<struct_InternetPlayerStruct>_data).offset_0x0;\n  this->vftablePtr = &vftable;\n  if (lpMem != (LPVOID)0x0) {\n    if (((this->DynamicVectorClass<struct_InternetPlayerStruct>_data).offset_0xc & 0x80000000) == 0)\n    {\n      FUN_14001f270(lpMem,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    puVar1 = &(this->DynamicVectorClass<struct_InternetPlayerStruct>_data).offset_0xc;\n    *puVar1 = *puVar1 & 0x80000000;\n    (this->DynamicVectorClass<struct_InternetPlayerStruct>_data).offset_0x0 = (LPVOID)0x0;\n    (this->DynamicVectorClass<struct_InternetPlayerStruct>_data).offset_0x8 = 0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402586d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402586db        struct LuaVar::LuaValue<bool, 5>::VTable** rax = operator new(0x18)\n1402586e6        if (rax == 0)\n140258767        return rax\n1402586e8        rax[1].d = 0\n1402586fb        *rax = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n140258703        rax[2].b = 0\n140258707        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** rax_1 = sub_14024a250()\n14025870c        struct LuaVar::LuaValue<bool, 5>::VTable* rdx = *rax\n140258715        struct LuaVar::LuaValue<bool, 5>::VTable** arg_20 = rax\n14025871a        rdx->vFunc_0(rax)\n14025871c        int64_t* rdx_1 = rax_1[3]\n140258724        if (rdx_1 == rax_1[4])\n140258741        sub_140144900(&rax_1[2], rdx_1, &arg_20)\n140258726        *rdx_1 = rax\n14025872f        (*rax)->vFunc_0(rax)\n140258731        rax_1[3] = &rax_1[3]->vFunc_1\n14025874c        (*rax)->vFunc_1(rax)\n140258761        return rax_1",
+  "fetched_at": "2026-04-26T17:30:54Z"
+}

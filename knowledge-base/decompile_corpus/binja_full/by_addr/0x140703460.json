@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140703467        return \"Hero_Protection_Ability\"",
+  "fetched_at": "2026-04-26T17:27:08Z"
+}

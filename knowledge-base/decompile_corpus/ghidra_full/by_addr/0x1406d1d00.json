@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d1d00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nTacticalLocationPerceptualEvaluatorClass * FUN_1406d1d00(void)\n\n{\n  TacticalLocationPerceptualEvaluatorClass *this;\n  \n  this = (TacticalLocationPerceptualEvaluatorClass *)FUN_140769c58(0x108);\n  if (this != (TacticalLocationPerceptualEvaluatorClass *)0x0) {\n                    /* inlined constructor:\n                       SpaceLocationPerceptualEvaluatorClass::SpaceLocationPerceptualEvaluatorClass\n                        */\n    TacticalLocationPerceptualEvaluatorClass::TacticalLocationPerceptualEvaluatorClass(this);\n    this->vftablePtr =\n         (TacticalLocationPerceptualEvaluatorClass_vftable0 *)\n         &SpaceLocationPerceptualEvaluatorClass::vftable;\n    this->vftablePtr =\n         (TacticalLocationPerceptualEvaluatorClass_vftable1 *)\n         &SpaceLocationPerceptualEvaluatorClass::vftable;\n    this->vftablePtr =\n         (TacticalLocationPerceptualEvaluatorClass_vftable2 *)\n         &SpaceLocationPerceptualEvaluatorClass::vftable;\n    (*this->vftablePtr->vfunction9)(this);\n    return this;\n  }\n  (**(code **)(_DAT_00000000 + 0x40))(0);\n  return (TacticalLocationPerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:42:06Z"
+}

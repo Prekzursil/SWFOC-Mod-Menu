@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c29c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c29c9        struct BehaviorClass::DestroyAfterSpecialWeaponFiredDummyBehaviorClass::VTable** result = operator new(0x40)\n1404c29d3        if (result == 0)\n1404c2a19        return 0\n1404c29d5        result[2].d = 0\n1404c29d8        __builtin_memset(&result[4], 0, 0x14)\n1404c29e3        *(result + 0x3c) = 0\n1404c29ed        *result = &DestroyAfterSpecialWeaponFiredDummyBehaviorClass::`vftable'{for `BehaviorClass'}\n1404c29f7        result[1] = &DestroyAfterSpecialWeaponFiredDummyBehaviorClass::`vftable'{for `RefCountClass'}\n1404c2a02        result[3] = &DestroyAfterSpecialWeaponFiredDummyBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404c2a06        *(result + 0x34) = 1\n1404c2a11        return result",
+  "fetched_at": "2026-04-26T17:30:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407423ac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407423ac        arg1[2] = 0\n1407423b8        arg1[1] = \"bad cast\"\n1407423c3        *arg1 = &std::bad_cast::`vftable'{for `std::exception'}\n1407423c9        return arg1",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

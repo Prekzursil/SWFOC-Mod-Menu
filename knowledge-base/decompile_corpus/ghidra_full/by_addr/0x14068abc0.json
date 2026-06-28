@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068abc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068abc0(void)\n\n{\n  PoliticalControlBonusAbilityClass *this;\n  \n  this = (PoliticalControlBonusAbilityClass *)FUN_140769c58(0x180);\n  if (this != (PoliticalControlBonusAbilityClass *)0x0) {\n    PoliticalControlBonusAbilityClass::PoliticalControlBonusAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:17Z"
+}

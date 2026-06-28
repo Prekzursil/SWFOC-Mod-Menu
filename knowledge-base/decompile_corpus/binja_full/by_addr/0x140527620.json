@@ -1,0 +1,7 @@
+{
+  "addr": "0x140527620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140527630        void* rax = sub_14028a890(&data_140b153e0)\n140527638        uint64_t result\n140527638        if (rax != 0)\n14052763a        result = *(rax + 0xb8)\n14052764d        if (rax == 0 || result == 0 || *(result + 0x2c8) != 1)\n14052765d        if (sub_14028afb0(&data_140b153e0).b == 0)\n140527689        result.b = 1\n140527690        return result\n14052766d        struct CalculationOp<bool>::BitwiseAnd<bool>::VTable* const arg_10 = &BitwiseAnd<bool>::`vftable'{for `CalculationOp<bool>'}\n140527687        if (sub_1402800d0(arg1 + 0x1e0, &arg_10).b != 0 && *(arg1 + 0x2f0) != 0)\n140527689        result.b = 1\n140527690        return result\n140527691        result.b = 0\n140527698        return result",
+  "fetched_at": "2026-04-26T17:33:11Z"
+}

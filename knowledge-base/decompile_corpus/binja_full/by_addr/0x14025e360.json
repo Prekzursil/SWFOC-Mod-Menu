@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025e360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025e36c        int32_t rbx_2 = (zx.d(arg1) ^ 1) << 0x1f\n14025e36f        j_sub_140176550()\n14025e374        data_140a6d418 = rbx_2\n14025e37a        data_140a6d3d0 = rbx_2\n14025e382        return &data_140a6d390",
+  "fetched_at": "2026-04-26T17:31:09Z"
+}

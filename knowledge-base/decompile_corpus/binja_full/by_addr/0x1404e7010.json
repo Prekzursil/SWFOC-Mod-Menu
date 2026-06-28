@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e7010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e7024        *arg1 = &DatabaseObjectManagerClass<class PlanDefinitionClass>::`vftable'{for `DatabaseUIntConversionClass'}\n1404e7027        int64_t* rax = arg1[2]\n1404e702b        void** i = *rax\n1404e7031        if (i != rax)\n1404e7033        int64_t rdx_1 = i[6]\n1404e703a        if (rdx_1 != 0)\n1404e7042        (*arg1)->vFunc_3(arg1, rdx_1)\n1404e7042        noreturn\n1404e7045        i = *i\n1404e704c        do while (i != arg1[2])\n1404e7052        sub_140145610(&arg1[1])\n1404e705b        sub_1401450b0(&arg1[1])\n1404e706d        return sub_14023af60(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:26Z"
+}

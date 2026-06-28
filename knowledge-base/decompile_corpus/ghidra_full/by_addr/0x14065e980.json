@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065e980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_14065e980(longlong param_1,undefined8 param_2,double *param_3)\n\n{\n  longlong *plVar1;\n  undefined8 uVar2;\n  undefined1 local_38 [12];\n  int local_2c;\n  \n  plVar1 = *(longlong **)(param_1 + 0x98);\n  if (plVar1 == (longlong *)0x0) {\n    return 0;\n  }\n  plVar1 = (longlong *)(**(code **)(*plVar1 + 0x10))(plVar1,3);\n  uVar2 = (**(code **)(*plVar1 + 0x98))(plVar1);\n  FUN_140084e60(local_38,uVar2);\n  *param_3 = (double)local_2c;\n  FUN_1404ad8e0(local_38);\n  return 1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:24Z"
+}

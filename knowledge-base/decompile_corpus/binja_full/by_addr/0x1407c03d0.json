@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c03d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c03e1        int32_t rcx = *(arg1 + 0x34)\n1407c03e9        if (rcx == 0)\n1407c03eb        *(arg1 + 0x34) = 0x10\n1407c0436        arg1[5] = sub_1407bf7e0(arg1, 0, 0, 0x80)\n1407c040e        if (arg1[6].d + 1 s> rcx)\n1407c0436        arg1[5] = sub_1407bf6f0(arg1, arg1[5], arg1 + 0x34, 8, 0x7ffffffd, \"Table size overflow\")\n1407c043a        int64_t rcx_3 = sx.q(arg1[6].d)\n1407c0441        arg1[6].d = (rcx_3 + 1).d\n1407c0448        *(arg1[5] + (rcx_3 << 3)) = arg2\n1407c0459        return zx.q(arg1[6].d)",
+  "fetched_at": "2026-04-26T17:33:33Z"
+}

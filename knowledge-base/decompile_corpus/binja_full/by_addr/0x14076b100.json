@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076b103        int64_t r9\n14076b103        int64_t arg_20 = r9\n14076b107        int64_t r8\n14076b107        int64_t arg_18 = r8\n14076b10b        int64_t rdx\n14076b10b        int64_t arg_10 = rdx\n14076b10f        int32_t* arg_8 = arg1\n14076b11b        int32_t var_38 = 0\n14076b11f        int32_t* var_20 = arg1\n14076b123        int64_t var_18 = r8\n14076b127        void* rax = __vcrt_getptd()\n14076b150        (*(rax + 0x10))(zx.q(*arg1), &var_20)\n14076b13d        int32_t var_38_1 = 0\n14076b150        return 0",
+  "fetched_at": "2026-04-26T17:30:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769c58",
+  "tool": "binary_ninja",
+  "fact_id": "rva_operator_new",
+  "body": "140769c5e        uint64_t rbx = arg1\n140769c72        while (true)\n140769c72        int64_t result = j_sub_14078f364(arg1)\n140769c7a        if (result != 0)\n140769c81        return result\n140769c6d        if (_callnewh(rbx) == 0)\n140769c6d        break\n140769c6f        arg1 = rbx\n140769c86        if (rbx == -1)\n140769c8e        stdext::threads::_Throw_lock_error()\n140769c8e        noreturn\n140769c88        __scrt_throw_std_bad_alloc()\n140769c88        noreturn",
+  "fetched_at": "2026-04-26T16:44:22Z"
+}

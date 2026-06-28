@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8e00",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_getgcthreshold",
+  "body": "1407b8e0a        return zx.q(*(*(arg1 + 0x20) + 0x70) u>> 0xa)",
+  "fetched_at": "2026-04-26T16:44:24Z"
+}

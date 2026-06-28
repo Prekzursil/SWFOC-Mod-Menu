@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407405e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_1407405e0(undefined8 param_1,undefined8 param_2,undefined4 param_3,longlong *param_4)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  byte bVar5;\n  byte bVar6;\n  int iVar7;\n  longlong lVar8;\n  longlong lVar9;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10 [2];\n  \n  bVar1 = FUN_14021fe20(param_2,param_3);\n  lVar9 = *param_4;\n  bVar1 = bVar1 & 1;\n  iVar7 = 0;\n  if (0 < (int)(param_4[1] - lVar9 >> 3)) {\n    lVar8 = 0;\n    do {\n      local_18 = 0x5d5e0b6b;\n      local_14 = 0x5d5e0b6b;\n      local_10[0] = 0x5d5e0b6b;\n      lVar9 = *(longlong *)(lVar8 + lVar9);\n      if (lVar9 != 0) {\n        local_18 = *(undefined4 *)(lVar9 + 0x30);\n        local_14 = *(undefined4 *)(lVar9 + 0x34);\n        local_10[0] = *(undefined4 *)(lVar9 + 0x38);\n      }\n      bVar2 = FUN_14021ffa0(param_2,0xe);\n      bVar3 = FUN_1402200b0(param_2,&local_18,4);\n      bVar4 = FUN_1402200b0(param_2,&local_14,4);\n      bVar5 = FUN_1402200b0(param_2,local_10,4);\n      bVar6 = FUN_140220030(param_2);\n      lVar9 = *param_4;\n      bVar1 = bVar1 & bVar2 & bVar3 & bVar4 & bVar5 & bVar6;\n      iVar7 = iVar7 + 1;\n      lVar8 = lVar8 + 8;\n    } while (iVar7 < (int)(param_4[1] - lVar9 >> 3));\n  }\n  bVar2 = FUN_14021feb0(param_2);\n  return bVar2 & bVar1;\n}",
+  "fetched_at": "2026-04-26T18:03:48Z"
+}

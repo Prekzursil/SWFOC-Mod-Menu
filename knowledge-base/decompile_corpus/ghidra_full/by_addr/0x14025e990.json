@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025e990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TextureClass * FUN_14025e990(longlong param_1,undefined1 param_2,undefined1 param_3)\n\n{\n  longlong lVar1;\n  undefined **ppuVar2;\n  TextureClass *pTVar3;\n  \n  lVar1 = -1;\n  do {\n    lVar1 = lVar1 + 1;\n  } while (*(char *)(param_1 + lVar1) != '\\0');\n  if (lVar1 != 0) {\n    ppuVar2 = (undefined **)FUN_1401427f0(DAT_140a62700,param_1,param_2,param_3,0);\n    if (ppuVar2 != (undefined **)0x0) {\n      pTVar3 = (TextureClass *)FUN_140769c58(0x20);\n      if (pTVar3 == (TextureClass *)0x0) {\n        return (TextureClass *)0x0;\n      }\n      pTVar3 = TextureClass::TextureClass(pTVar3,ppuVar2);\n      return pTVar3;\n    }\n    FUN_140025760(\"Error: PGRender::Get_Texture can\\'t Load_Texture() \\'%s\\' (allow_default = %d)\\n\"\n                  ,param_1,param_2);\n  }\n  return (TextureClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:15:00Z"
+}

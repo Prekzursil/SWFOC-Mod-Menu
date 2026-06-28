@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403eea40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403eea45        int64_t* arg_8 = arg1\n1403eea5f        int64_t rbx = 0x3fffffffffffffff\n1403eea6c        if (arg2 u> 0x3fffffffffffffff)\n1403eeb06        sub_140022630()\n1403eeb06        noreturn\n1403eea79        int64_t r14_2 = (arg1[1] - *arg1) s>> 2\n1403eea84        int64_t rcx_2 = (arg1[2] - *arg1) s>> 2\n1403eea8b        uint64_t rdx_1 = rcx_2 u>> 1\n1403eea97        if (rcx_2 u<= 0x3fffffffffffffff - rdx_1)\n1403eea99        rbx = rdx_1 + rcx_2\n1403eeaa0        if (rbx u< arg2)\n1403eeaa0        rbx = arg2\n1403eeaa4        int64_t arg_10 = rbx\n1403eeaaf        int32_t* rax_1 = sub_140048c40(arg1, rbx)\n1403eeab7        int32_t* arg_20 = rax_1\n1403eeacc        sub_1403f2d10(arg1, &rax_1[r14_2], arg2 - r14_2, arg3)\n1403eead5        int32_t* rdx_4 = *arg1\n1403eeade        memcpy(rax_1, rdx_4, arg1[1] - rdx_4)\n1403eeb01        return sub_140048380(arg1, rax_1, arg2, rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:25:19Z"
+}

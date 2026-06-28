@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140347c2a        void* i\n140347c10        i = &data_140a174e8\n140347c2a        while (i s< &data_140a28450)\n140347c20        *i = 0\n140347c23        i += 0x48\n140347c2c        return i",
+  "fetched_at": "2026-04-26T17:07:23Z"
+}

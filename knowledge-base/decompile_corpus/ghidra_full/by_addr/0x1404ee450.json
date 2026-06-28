@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LightEffectDataPackClass::~LightEffectDataPackClass(LightEffectDataPackClass *this)\n\n{\n  longlong *plVar1;\n  \n  this->vftablePtr = &vftable;\n  plVar1 = (this->LightEffectDataPackClass_data).offset_0x28;\n  if (plVar1 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x0001404ee466. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*plVar1 + 8))();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072aa50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ContrastInstantiationMarshallerClass * __thiscall\nContrastInstantiationMarshallerClass::ContrastInstantiationMarshallerClass\n          (ContrastInstantiationMarshallerClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  DAT_140b3ae98 = this;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:00:51Z"
+}

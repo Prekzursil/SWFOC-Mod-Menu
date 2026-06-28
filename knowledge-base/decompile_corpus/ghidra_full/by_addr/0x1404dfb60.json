@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dfb60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AITargetPerceptionNodeClass::vfunction2(AITargetPerceptionNodeClass *this)\n\n{\n  vfunction1 *pvVar1;\n  AITargetPerceptionNodeClass_vftable0 *pAVar2;\n  ulonglong uVar3;\n  AITargetPerceptionNodeClass_vftable0 *pAVar4;\n  \n  pAVar4 = this[1].vftablePtr;\n  uVar3 = 0;\n  pAVar2 = (AITargetPerceptionNodeClass_vftable0 *)this->offset_0x18;\n  if ((longlong)pAVar4 - (longlong)pAVar2 >> 3 != 0) {\n    do {\n      pvVar1 = (&pAVar2->vfunction1)[uVar3];\n      if (pvVar1 != (vfunction1 *)0x0) {\n        (**(code **)(*(longlong *)pvVar1 + 8))(pvVar1,1);\n      }\n      pAVar4 = this[1].vftablePtr;\n      uVar3 = (ulonglong)((int)uVar3 + 1);\n      pAVar2 = (AITargetPerceptionNodeClass_vftable0 *)this->offset_0x18;\n    } while (uVar3 < (ulonglong)((longlong)pAVar4 - (longlong)pAVar2 >> 3));\n  }\n  if ((longlong)pAVar4 - (longlong)pAVar2 >> 3 != 0) {\n    this[1].vftablePtr = pAVar2;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:35Z"
+}

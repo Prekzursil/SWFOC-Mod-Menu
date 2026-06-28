@@ -1,0 +1,7 @@
+{
+  "addr": "0x140543570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LuaResumeHyperspaceIn::vfunction11(void)\n\n{\n  int iVar1;\n  \n  iVar1 = (**(code **)(*DAT_140b15418 + 0xe0))();\n  if (iVar1 == 2) {\n    DAT_140b27d5f = 0;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:22Z"
+}

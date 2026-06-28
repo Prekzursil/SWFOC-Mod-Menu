@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061e570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WalkLocomotorBehaviorClass::vfunction42(WalkLocomotorBehaviorClass *this)\n\n{\n  float fVar1;\n  int iVar2;\n  undefined *puVar3;\n  undefined8 uVar4;\n  longlong lVar5;\n  int in_EDX;\n  float fVar6;\n  \n  uVar4 = (*this->vftablePtr->vfunction47)(this,in_EDX);\n  if (((char)uVar4 != '\\0') && (puVar3 = this->offset_0x18[0x15], puVar3 != (undefined *)0x0)) {\n    iVar2 = *(int *)(puVar3 + 0x48);\n    if ((iVar2 != 0x18) && (((iVar2 != 0x19 && (iVar2 != 0x1a)) && (puVar3[0x2b3] == '\\0')))) {\n      LocomotorCommonClass::vfunction42((LocomotorCommonClass *)this);\n      return;\n    }\n    lVar5 = FUN_1405569b0(puVar3);\n    fVar6 = 0.0;\n    fVar1 = *(float *)(this->offset_0x18[0x53] + 0x23b0);\n    if (lVar5 != 0) {\n      fVar6 = (float)FUN_1405c5530(lVar5);\n    }\n    if (fVar6 < fVar1) {\n      puVar3[0x2b3] = 1;\n      LocomotorCommonClass::vfunction42((LocomotorCommonClass *)this);\n      return;\n    }\n    (*this->vftablePtr->vfunction36)(this,'\\0');\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:38Z"
+}

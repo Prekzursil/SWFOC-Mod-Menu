@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053dc20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HideWhenFoggedBehaviorClass * __thiscall\nHideWhenFoggedBehaviorClass::vfunction4(HideWhenFoggedBehaviorClass *this,int param_1)\n\n{\n  HideWhenFoggedBehaviorClass *pHVar1;\n  \n  pHVar1 = (HideWhenFoggedBehaviorClass *)0x0;\n  if (param_1 == 0x19) {\n    pHVar1 = this;\n  }\n  return pHVar1;\n}",
+  "fetched_at": "2026-04-26T18:34:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140499340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140499340(void)\n\n{\n  FUN_140248c60();\n  FUN_14060ea30();\n  FUN_1405812c0();\n  FUN_140606690();\n  FUN_1406049d0();\n  DAT_140b09d38 = 0;\n  DAT_140b09d40 = 0;\n  DAT_140b09d48 = 0;\n  DAT_140b09d50 = 0;\n  DAT_140b09d58 = 0;\n  FUN_140248be0();\n  FUN_140602360();\n  FUN_140605b20();\n  FUN_14057ad00();\n  FUN_14060e640();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:05Z"
+}

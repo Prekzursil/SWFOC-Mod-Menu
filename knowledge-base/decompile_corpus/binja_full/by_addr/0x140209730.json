@@ -1,0 +1,7 @@
+{
+  "addr": "0x140209730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020973f        void* rdi = *(arg1 + 0x20)\n14020974b        if (rdi != 0)\n140209750        sub_14023c5a0(rdi)\n14020975d        j_sub_1407864b8(rdi)\n140209762        *(arg1 + 0x20) = 0\n140209766        void* rcx_2 = *(arg1 + 0x28)\n14020976d        if (rcx_2 != 0)\n140209779        sub_1402067f0(rcx_2, sub_14020a180, arg1)\n140209782        if (*(arg1 + 0x30) != 0)\n140209784        int64_t* rcx_3 = *(arg1 + 0x28)\n14020978b        if (rcx_3 != 0)\n140209795        (**rcx_3)(rcx_3, 1)\n140209797        *(arg1 + 0x28) = 0\n14020979b        int64_t rcx_4 = *(arg1 + 8)\n1402097a2        if (rcx_4 != 0)\n1402097a4        j_sub_1407864b8(rcx_4)\n1402097a9        *(arg1 + 8) = 0\n1402097ad        int64_t rcx_5 = *(arg1 + 0x10)\n1402097b4        if (rcx_5 != 0)\n1402097b6        j_sub_1407864b8(rcx_5)\n1402097bb        *(arg1 + 0x10) = 0\n1402097c3        DeleteCriticalSection(arg1 + 0x68)\n1402097dc        return sub_140207250(arg1 + 0x48) __tailcall",
+  "fetched_at": "2026-04-26T17:28:04Z"
+}

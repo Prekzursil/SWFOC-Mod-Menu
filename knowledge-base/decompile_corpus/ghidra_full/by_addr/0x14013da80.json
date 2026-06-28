@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013da80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid thunk_FUN_140196db0(undefined4 *param_1)\n\n{\n  _DAT_140a12b70 = *param_1;\n  _DAT_140a12b74 = param_1[1];\n  _DAT_140a12b78 = param_1[2];\n  _DAT_140a12b7c = param_1[3];\n  _DAT_140a701ec = param_1[3];\n  _DAT_140a701e0 = *param_1;\n  _DAT_140a701e4 = param_1[1];\n  _DAT_140a701e8 = param_1[2];\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:15Z"
+}

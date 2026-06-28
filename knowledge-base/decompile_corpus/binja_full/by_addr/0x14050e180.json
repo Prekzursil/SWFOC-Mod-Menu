@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050e180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14050e19a        int64_t rbp = sx.q(arg4)\n14050e1a6        sub_14050fcd0(arg1)\n14050e1b5        int32_t rax_1 = sub_140477b70(sub_14004fde0(), arg3)\n14050e1e9        int32_t rdi_1 = int.d((data_140b36ba0 + *arg2) f/ data_140b36b98)\n14050e1ed        int32_t rbx_1 = int.d((data_140b36ba4 + arg2[1]) f/ data_140b36b9c)\n14050e1f1        sub_14050fcd0(arg1)\n14050e1f9        int32_t rcx_7\n14050e1f9        if (rbp.d == 0xffffffff)\n14050e251        rcx_7 = -1\n14050e1fe        sub_14050fcd0(arg1)\n14050e203        int32_t rdx_1 = arg1[0x14].d\n14050e217        if (rdi_1 s< rdx_1 || rdi_1 s>= arg1[0x15].d + rdx_1)\n14050e251        rcx_7 = -1\n14050e219        int32_t rcx_5 = *(arg1 + 0xa4)\n14050e22b        if (rbx_1 s< rcx_5 || rbx_1 s>= rcx_5 + *(arg1 + 0xac))\n14050e251        rcx_7 = -1\n14050e233        int32_t rax_2 = arg1[0xd].d\n14050e23f        uint64_t rbx_5 = zx.q((rbx_1 - *(arg1 + 0xa4)) * rax_2 - rdx_1 + rdi_1)\n14050e243        if (rbx_5.d u>= rax_2 * *(arg1 + 0x6c))\n14050e251        rcx_7 = -1\n14050e24c        rcx_7 = *(*(*arg1 + (rbp << 3)) + (rbx_5 << 2))\n14050e271        int32_t result\n14050e271        result.b = (rcx_7 & rax_1) == rcx_7\n14050e27a        return result",
+  "fetched_at": "2026-04-26T17:32:09Z"
+}

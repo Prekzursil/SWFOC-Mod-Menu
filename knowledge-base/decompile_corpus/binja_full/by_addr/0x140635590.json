@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140635593        if (arg2 != 0)\n140635593        return _guard_check_icall(arg1) __tailcall\n140635599        return ",
+  "fetched_at": "2026-04-26T17:24:23Z"
+}

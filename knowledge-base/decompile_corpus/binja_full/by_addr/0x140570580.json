@@ -1,0 +1,7 @@
+{
+  "addr": "0x140570580",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140570595        int64_t* rcx = data_140b15418\n1405705a2        int32_t rax\n1405705a2        if (rcx != 0)\n1405705af        rax = (*(*rcx + 0xe0))(rcx)\n1405705a4        rax = data_140b153fc\n1405705c0        if (rax == 0)\n1405705d1        return sub_140570670(arg1, arg2, arg3) __tailcall\n1405705dd        if (sub_140570a50(arg1, arg2, arg3) == 0)\n14057066a        return 0\n1405705e4        int64_t* rax_4 = operator new(0x48)\n1405705e9        int64_t* rbx_1 = rax_4\n1405705ef        if (rax_4 == 0)\n14057061f        rbx_1 = nullptr\n1405705f4        sub_1407d8d80(rax_4)\n140570600        rbx_1[7] = 0\n140570608        *rbx_1 = &AbilityBlockStatus::`vftable'{for `BlockingStatus'}\n140570612        rbx_1[6] = &AbilityBlockStatus::`vftable'{for `SignalListenerClass'}\n140570616        rbx_1[8].d = 0\n140570624        rbx_1[4].d = 0x825\n14057062e        j_sub_1407d9080(rbx_1, arg1)\n14057063a        sub_1406ae570(rbx_1, *(arg1 + 0x60))\n140570654        return sub_140256d40(arg1, rbx_1) __tailcall",
+  "fetched_at": "2026-04-26T17:34:57Z"
+}

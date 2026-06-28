@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0950",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d0950(undefined8 param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  undefined4 uVar3;\n  int iVar4;\n  double dVar5;\n  \n  iVar1 = FUN_1407b8ef0();\n  FUN_1407ce2c0(param_1,1,5);\n  iVar2 = FUN_1407ce440(param_1,1);\n  iVar2 = iVar2 + 1;\n  if (iVar1 == 2) {\n    uVar3 = 2;\n    iVar1 = iVar2;\n    iVar4 = iVar2;\n  }\n  else {\n    dVar5 = (double)FUN_1407ce220(param_1,2);\n    iVar4 = (int)dVar5;\n    uVar3 = 3;\n    iVar1 = iVar4;\n    if (iVar4 <= iVar2) {\n      iVar1 = iVar2;\n    }\n  }\n  FUN_1407ceb90(param_1,1,iVar1);\n  while (iVar2 = iVar1 + -1, iVar4 <= iVar2) {\n    FUN_1407b9770(param_1,1,iVar2);\n    FUN_1407b9820(param_1,1,iVar1);\n    iVar1 = iVar2;\n  }\n  FUN_1407b9600(param_1,uVar3);\n  FUN_1407b9820(param_1,1,iVar4);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:58:04Z"
+}

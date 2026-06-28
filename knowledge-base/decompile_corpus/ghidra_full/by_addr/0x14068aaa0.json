@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068aaa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068aaa0(void)\n\n{\n  LinearInterpolator *this;\n  \n  this = (LinearInterpolator *)FUN_140769c58(0x210);\n  if (this != (LinearInterpolator *)0x0) {\n    LinearInterpolator::LinearInterpolator(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:13Z"
+}

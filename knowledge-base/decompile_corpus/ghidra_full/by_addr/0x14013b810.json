@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alRenderable member function inherited by alBlob\n   alRenderable member function inherited by alSplineRenderer\n   alRenderable member function inherited by al3DCable\n   alRenderable member function inherited by LightningEffectClass */\n\nundefined * __thiscall alRenderable::vfunction5_for_RefCountClass(void)\n\n{\n  return &DAT_140a626d0;\n}",
+  "fetched_at": "2026-04-26T17:14:51Z"
+}

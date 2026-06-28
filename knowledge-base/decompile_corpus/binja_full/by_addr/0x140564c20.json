@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140564c3f        *arg1 = &DynamicTransformDataPackClass::`vftable'{for `BaseDataPackClass'}\n140564c44        arg1[5] = 0\n140564c48        arg1[6] = 0\n140564c4c        arg1[0xb].b = 0\n140564c52        arg1[1].d = arg2\n140564c57        *(arg1 + 0xc) = arg2\n140564c5c        arg1[2].d = arg2\n140564c61        *(arg1 + 0x14) = arg2\n140564c66        arg1[3].d = arg2\n140564c6b        *(arg1 + 0x1c) = arg2\n140564c70        arg1[4].d = arg2\n140564c75        *(arg1 + 0x24) = arg2\n140564c7a        arg1[7].d = 0x3f800000\n140564c81        *(arg1 + 0x3c) = 0x3f800000\n140564c88        arg1[8].d = 0x3f800000\n140564c8f        *(arg1 + 0x44) = 0x3f800000\n140564c97        *(arg1 + 0x4c) = 0x3f800000\n140564c9e        arg1[0xa] = 0x3f800000\n140564ca6        return arg1",
+  "fetched_at": "2026-04-26T17:34:30Z"
+}

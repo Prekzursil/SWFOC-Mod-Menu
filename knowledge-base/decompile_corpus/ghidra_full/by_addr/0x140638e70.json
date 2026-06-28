@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638e70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nCombatantBehaviorClass::vfunction37\n          (CombatantBehaviorClass *this,undefined4 param_2,undefined4 param_3,longlong *param_4)\n\n{\n  undefined8 uVar1;\n  undefined **ppuVar2;\n  \n  ppuVar2 = this->offset_0x18;\n  if (ppuVar2 != (undefined **)0x0) {\n    uVar1 = 0;\n    if (param_4 != (longlong *)0x0) {\n      uVar1 = (**(code **)(*param_4 + 0x170))(param_4);\n      ppuVar2 = this->offset_0x18;\n    }\n    FUN_1403a9e30(ppuVar2,param_2,param_3,uVar1,0,0,0,0,0,0xffffffff,0,0,0,0);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:37Z"
+}

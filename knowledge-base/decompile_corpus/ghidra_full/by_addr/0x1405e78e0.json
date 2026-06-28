@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e78e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DatabaseObjectManagerClass<class_LuaScriptClass> * __thiscall\nDatabaseObjectManagerClass<class_LuaScriptClass>::scalar_deleting_destructor\n          (DatabaseObjectManagerClass<class_LuaScriptClass> *this,uint param_1)\n\n{\n  ~DatabaseObjectManagerClass<class_LuaScriptClass>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:46:13Z"
+}

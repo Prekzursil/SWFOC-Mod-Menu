@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c62a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1405c62a0(longlong param_1,longlong param_2)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  \n  uVar2 = DAT_140803514;\n  uVar1 = DAT_1407ffaf8;\n  if (*(int *)(*(longlong *)(param_2 + 0x298) + 0x169c) == 5) {\n    *(undefined4 *)(param_1 + 0x3c) = DAT_1408007dc;\n    *(undefined4 *)(param_1 + 0x40) = uVar1;\n    return;\n  }\n  *(float *)(param_1 + 0x3c) = (float)(DAT_14086b828 * _DAT_1408a6180);\n  *(undefined4 *)(param_1 + 0x40) = uVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077da00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    enum SLD_STATUS __cdecl __crt_strtox::convert_hexadecimal_string_to_floating_type_common(struct\n   __crt_strtox::floating_point_string const & __ptr64,class __crt_strtox::floating_point_value\n   const & __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nSLD_STATUS __cdecl\n__crt_strtox::convert_hexadecimal_string_to_floating_type_common\n          (floating_point_string *param_1,floating_point_value *param_2)\n\n{\n  floating_point_string fVar1;\n  SLD_STATUS SVar2;\n  __uint64 _Var3;\n  floating_point_string *pfVar4;\n  bool bVar5;\n  int iVar6;\n  floating_point_string *pfVar7;\n  \n  _Var3 = 0;\n  pfVar4 = param_1 + 8;\n  pfVar7 = param_1 + (ulonglong)*(uint *)(param_1 + 4) + 8;\n  iVar6 = (-(uint)(param_2[8] != (floating_point_value)0x0) & 0x1d) + 0x17 + *(int *)param_1;\n  if (pfVar4 != pfVar7) {\n    do {\n      if ((-(ulonglong)(param_2[8] != (floating_point_value)0x0) & 0x1fffffff000000) + 0xffffff <\n          _Var3) break;\n      fVar1 = *pfVar4;\n      iVar6 = iVar6 + -4;\n      pfVar4 = pfVar4 + 1;\n      _Var3 = _Var3 * 0x10 + (ulonglong)(byte)fVar1;\n    } while (pfVar4 != pfVar7);\n  }\n  bVar5 = true;\n  while ((pfVar4 != pfVar7 && (bVar5 != false))) {\n    fVar1 = *pfVar4;\n    pfVar4 = pfVar4 + 1;\n    bVar5 = fVar1 == (floating_point_string)0x0;\n  }\n  SVar2 = assemble_floating_point_value(_Var3,iVar6,(bool)param_1[0x308],bVar5,param_2);\n  return SVar2;\n}",
+  "fetched_at": "2026-04-26T18:50:43Z"
+}

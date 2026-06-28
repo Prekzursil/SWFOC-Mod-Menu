@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724ce0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float * __thiscall\nTacticalUnitAITargetLocationClass::vfunction15\n          (TacticalUnitAITargetLocationClass *this,float *param_1)\n\n{\n  float fVar1;\n  undefined8 uVar2;\n  undefined8 uVar3;\n  float fVar4;\n  float fVar5;\n  \n  uVar2 = *(undefined8 *)&this->field_0x28;\n  uVar3 = FUN_1403973b0(uVar2);\n  fVar4 = (float)FUN_1403749d0(uVar3,uVar2);\n  fVar1 = *(float *)(*(longlong *)&this->field_0x28 + 0x78);\n  param_1[1] = *(float *)(*(longlong *)&this->field_0x28 + 0x7c) - fVar4;\n  fVar5 = fVar4 * DAT_1408007d4;\n  param_1[2] = fVar4 * DAT_1408007d4;\n  *param_1 = fVar1 - fVar4;\n  param_1[3] = fVar5;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:00:02Z"
+}

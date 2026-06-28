@@ -1,0 +1,7 @@
+{
+  "addr": "0x140233f20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140233f2f        int32_t* rdi = arg2\n140233f32        double zmm6[0x2] = arg3\n140233f3a        zmm6[0].d = zmm6[0].d f* 0.5f\n140233f42        double zmm7[0x2] = arg3\n140233f5c        double zmm0[0x2]\n140233f5c        if ((zmm6[0].d & 0x7f800000) u> 0x1d000000)\n140233f61        arg2, zmm0, arg3 = sinf(zmm6, arg2, arg3)\n140233f66        zmm6 = zmm0\n140233f69        zmm7[0].d = zmm7[0].d f* 0.5f\n140233f7b        int32_t result = zmm7[0].d & 0x7f800000\n140233f85        if (result u<= 0x1d000000)\n140233f94        arg3 = 0x3f800000\n140233f8a        zmm0, result, zmm6 = cosf(zmm7, arg2, arg3)\n140233f8f        arg3 = zmm0\n140233fa4        float zmm1 = zmm6[0].d f* rdi[2]\n140233fac        zmm6[0].d = zmm6[0].d f* *rdi\n140233fb0        zmm6[0].d = zmm6[0].d f* rdi[1]\n140233fb5        *arg1 = zmm6[0].d\n140233fbe        arg1[1] = zmm6[0].d\n140233fc3        arg1[2] = zmm1\n140233fc8        arg1[3] = arg3[0].d\n140233fd7        return result",
+  "fetched_at": "2026-04-26T17:29:49Z"
+}

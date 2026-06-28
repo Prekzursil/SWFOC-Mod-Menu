@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070b040",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_reduce_production_time",
+  "body": "14070b046        struct SpecialAbilityClass::ReduceProductionTimeAbilityClass::VTable** result = arg1\n14070b049        sub_14048c780(arg1)\n14070b055        result[8].w = 1\n14070b05b        *result = &ReduceProductionTimeAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070b065        result[1] = &ReduceProductionTimeAbilityClass::`vftable'{for `RefCountClass'}\n14070b06b        result[0x2f] = 0\n14070b072        result[0x30].b = 0\n14070b07b        *(result + 0x3c) = 3\n14070b087        return result",
+  "fetched_at": "2026-04-26T16:44:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f3100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f3112        sub_1401e4040(arg1)\n1401f312a        *arg1 = &GUIGadgetIMEEditboxClass::`vftable'{for `GUIGadgetEditboxClass'}\n1401f312d        sub_1401d2180(&arg1[0x53], 1)\n1401f3139        sub_14026ed80(&arg1[0x5b])\n1401f3145        sub_14026ed80(&arg1[0x63])\n1401f3151        sub_14026ed80(&arg1[0x6b])\n1401f315d        sub_14026ed80(&arg1[0x73])\n1401f316b        arg1[0x7b] = &DynamicVectorClass<class DrawPrimitiveClass* __ptr64>::`vftable'\n1401f3179        arg1[0x7c] = 0\n1401f3187        arg1[0x7d] = 0\n1401f318e        arg1[0x7e] = &DynamicVectorClass<class DrawTextClass* __ptr64>::`vftable'\n1401f3195        arg1[0x7f] = 0\n1401f319c        arg1[0x80] = 0\n1401f31a3        arg1[0x81] = &DynamicVectorClass<class DrawTextClass* __ptr64>::`vftable'\n1401f31aa        arg1[0x82] = 0\n1401f31b1        arg1[0x83] = 0\n1401f31b8        arg1[0x59].b = 1\n1401f31bf        *(arg1 + 0x292) = 0\n1401f31c6        sub_1401d2340(&arg1[0x53])\n1401f31ce        *(arg1 + 0x2c4) = 0\n1401f31d9        sub_1401f67f0(arg1, 0, 0)\n1401f31e6        *(arg1 + 0x2cc) = 0\n1401f31ed        arg1[0x52].w = 0\n1401f31f9        arg1[0x58].w = 0x100\n1401f3207        return arg1",
+  "fetched_at": "2026-04-26T17:27:20Z"
+}

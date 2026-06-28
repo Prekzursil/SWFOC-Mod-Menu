@@ -1,0 +1,7 @@
+{
+  "addr": "0x140690420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceFreeStoreClass * __thiscall\nSpaceFreeStoreClass::SpaceFreeStoreClass(SpaceFreeStoreClass *this,undefined8 param_1)\n\n{\n  LuaMemberFunctionWrapper<class_AIFreeStoreClass>::LuaMemberFunctionWrapper<class_AIFreeStoreClass>\n            ((LuaMemberFunctionWrapper<class_AIFreeStoreClass> *)this,param_1,0);\n  this->vftablePtr = &vftable_for_LuaUserVar;\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:17:23Z"
+}

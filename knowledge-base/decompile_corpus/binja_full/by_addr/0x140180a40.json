@@ -1,0 +1,7 @@
+{
+  "addr": "0x140180a40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140180a55        int64_t rbp = sx.q(arg7)\n140180a86        sub_140182ac0(zx.q(rbp.d), zx.q(arg8), zx.q(arg9), zx.q(arg10))\n140180a8b        char rax = sub_140196a60()\n140180a96        sub_140196a40(0)\n140180aa5        sub_140177a30(0x89, 1)\n140180aaa        int32_t* rbx = data_140a6fe78\n140180ab3        sub_140177db0(zx.q(*rbx))\n140180ace        sub_140177df0(0, **(*(rbx + 8) + (sx.q(arg1) << 3)), 0, 0x24)\n140180ad3        int64_t rax_1 = sx.q(arg3)\n140180adb        if (rax_1.d != 0xffffffff)\n140180af1        sub_140177e50(**(*data_140a6fe68 + (rax_1 << 3)))\n140180b2f        sub_140177ee0((&data_140a129e0)[rbp], arg2, 0, arg5, arg4, arg6)\n140180afb        if (rbp.d != 4)\n140180b46        sub_140177e90(zx.q((&data_140a129e0)[rbp]), zx.q(arg2), zx.q(arg6))\n140180b04        sub_140177e50(data_140a6fe88)\n140180b2f        sub_140177ee0((&data_140a129e0)[rbp], arg2, 0, arg5, 0, arg6 * 2)\n140180b5c        sub_140183260(zx.q(rbp.d), arg8)\n140180b76        return sub_140196a40(rax) __tailcall",
+  "fetched_at": "2026-04-26T17:23:52Z"
+}

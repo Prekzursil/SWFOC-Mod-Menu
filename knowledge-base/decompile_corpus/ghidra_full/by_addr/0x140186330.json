@@ -1,0 +1,7 @@
+{
+  "addr": "0x140186330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140186330(longlong param_1,longlong param_2,undefined4 param_3,char param_4)\n\n{\n  longlong lVar1;\n  DWORD DVar2;\n  undefined4 *puVar3;\n  ulonglong uVar4;\n  _FILETIME _Var5;\n  LPVOID pvVar6;\n  FileClass local_98;\n  \n  FileClass::FileClass(&local_98,param_2);\n  puVar3 = (undefined4 *)FUN_140769c58(0x18);\n  if (puVar3 != (undefined4 *)0x0) {\n    *(undefined8 *)(puVar3 + 2) = 0;\n  }\n  *(undefined4 **)(param_1 + 0x70) = puVar3;\n  *puVar3 = param_3;\n  *(char *)(param_1 + 0x68) = param_4;\n  if (param_4 == '\\0') {\n    **(undefined4 **)(param_1 + 0x70) = 0;\n  }\n  uVar4 = (*(local_98.vftablePtr)->vfunction2)(&local_98,0,0);\n  if ((char)uVar4 != '\\0') {\n    _Var5 = (*(local_98.vftablePtr)->vfunction13)(&local_98);\n    *(_FILETIME *)(param_1 + 0x40) = _Var5;\n    DVar2 = (*(local_98.vftablePtr)->vfunction10)(&local_98);\n    lVar1 = *(longlong *)(param_1 + 0x70);\n    pvVar6 = (LPVOID)thunk_FUN_140769c58(DVar2);\n    *(LPVOID *)(lVar1 + 8) = pvVar6;\n    *(DWORD *)(lVar1 + 0x10) = DVar2;\n    (*(local_98.vftablePtr)->vfunction6)(&local_98,pvVar6,DVar2);\n    (*(local_98.vftablePtr)->vfunction5)(&local_98);\n  }\n  FileClass::~FileClass(&local_98);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:01Z"
+}

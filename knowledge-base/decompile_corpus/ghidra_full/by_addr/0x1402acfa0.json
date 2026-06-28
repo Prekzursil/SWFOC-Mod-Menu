@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402acfa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall VisibilitySignalDataClass::vfunction1(void)\n\n{\n  return &DAT_140a2bee0;\n}",
+  "fetched_at": "2026-04-26T18:27:19Z"
+}

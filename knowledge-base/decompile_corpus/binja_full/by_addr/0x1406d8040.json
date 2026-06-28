@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d8040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d8049        void* rcx = *(arg1 + 0x98)\n1406d8053        if (rcx == 0)\n1406d8053        return \n1406d8059        int64_t* rax_1 = data_140b310a8\n1406d8065        void* rcx_1 = *(rcx + 0x298)\n1406d806c        int32_t arg_8 = 0xffffffff\n1406d8079        int64_t rbx_1 = *rax_1\n1406d807c        void* var_28\n1406d807c        int64_t* rax_2 = sub_140373120(rcx_1, &var_28)\n1406d8090        (*(rbx_1 + 0x20))(data_140b310a8, rax_2, &arg_8)\n1406d80a1        int64_t var_10\n1406d80a1        if (var_10 u>= 0x10)\n1406d80a3        void* rcx_3 = var_28\n1406d80ab        void* rax_3 = rcx_3\n1406d80b5        if (var_10 + 1 u>= 0x1000)\n1406d80b7        rcx_3 = *(rcx_3 - 8)\n1406d80ca        if (rax_3 - rcx_3 - 8 u> 0x1f)\n1406d80f6        _invalid_parameter_noinfo_noreturn()\n1406d80f6        noreturn\n1406d80cc        j_sub_1407864b8(rcx_3)\n1406d80d5        int64_t* rax = sub_1404dd450(arg_8)\n1406d80dd        if (rax != 0)\n1406d80eb        sub_14064cbd0(arg1, data_140a43c74, rax)\n1406d80f5        return ",
+  "fetched_at": "2026-04-26T17:25:42Z"
+}

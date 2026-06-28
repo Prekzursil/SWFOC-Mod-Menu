@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405645a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405645b3        *arg1 = &BuzzDroidsDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405645b9        arg1[1] = 0\n1405645bd        arg1[2].d = 0\n1405645c4        sub_1404c3ee0(&arg1[3])\n1405645cc        __builtin_memset(&arg1[5], 0, 0x14)\n1405645e1        return arg1",
+  "fetched_at": "2026-04-26T17:34:29Z"
+}

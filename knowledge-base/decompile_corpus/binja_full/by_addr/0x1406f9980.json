@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f9980",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_energy_weapon",
+  "body": "1406f9986        struct SpecialAbilityClass::EnergyWeaponAttackAbilityClass::VTable** result = arg1\n1406f9989        sub_14048c780(arg1)\n1406f999d        *result = &EnergyWeaponAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f99b4        result[1] = &EnergyWeaponAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406f99ba        sub_1401f93e0(result + 0x184, 0, 0, 0, 0xff)\n1406f99c1        result[0x37] = 0xf\n1406f99cc        *(result + 0x194) = 0\n1406f99d3        result[0x34] = 0\n1406f99da        result[0x36] = 0\n1406f99e1        *(result + 0x17c) = 0\n1406f99e8        result[0x2f].d = 0\n1406f99f1        result[8].w = 1\n1406f99f7        *(result + 0x3c) = 9\n1406f9a03        return result",
+  "fetched_at": "2026-04-26T16:44:17Z"
+}

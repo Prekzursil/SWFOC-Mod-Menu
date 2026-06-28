@@ -1,0 +1,7 @@
+{
+  "addr": "0x14066faa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nTeamDef * __thiscall\nTaskForceDefinitionClass::TeamDef::scalar_deleting_destructor(TeamDef *this,uint param_1)\n\n{\n  undefined **ppuVar1;\n  undefined **ppuVar2;\n  ulonglong uVar3;\n  \n  ppuVar1 = (this->RefCountClass_data).offset_0x18;\n  if (ppuVar1 != (undefined **)0x0) {\n    uVar3 = *(longlong *)&(this->RefCountClass_data).field_0x28 - (longlong)ppuVar1 &\n            0xfffffffffffffff8;\n    ppuVar2 = ppuVar1;\n    if (0xfff < uVar3) {\n      ppuVar2 = (undefined **)ppuVar1[-1];\n      if (0x1f < ((longlong)ppuVar1 - (longlong)ppuVar2) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc((longlong)ppuVar1 - (longlong)ppuVar2,uVar3 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(ppuVar2);\n    (this->RefCountClass_data).offset_0x18 = (undefined **)0x0;\n    *(undefined8 *)&(this->RefCountClass_data).field_0x20 = 0;\n    *(undefined8 *)&(this->RefCountClass_data).field_0x28 = 0;\n  }\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (TeamDef_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x40);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:42Z"
+}

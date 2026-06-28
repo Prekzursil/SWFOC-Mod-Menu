@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770ab4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770aba        uint64_t rbx = zx.q(data_140b3bff8)\n140770ae1        while (rbx.d != 0)\n140770ac9        rbx = zx.q(rbx.d - 1)\n140770ad3        DeleteCriticalSection(&data_140b3bfd0 + rbx * 0x28)\n140770ad9        data_140b3bff8 -= 1\n140770ae3        int64_t result\n140770ae3        result.b = 1\n140770aea        return result",
+  "fetched_at": "2026-04-26T17:30:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140706b60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MaximumFirepowerAttackAbilityClass * __thiscall\nMaximumFirepowerAttackAbilityClass::scalar_deleting_destructor\n          (MaximumFirepowerAttackAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       MaximumFirepowerAttackAbilityClass::~MaximumFirepowerAttackAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x180);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:45Z"
+}

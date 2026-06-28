@@ -1,0 +1,7 @@
+{
+  "addr": "0x140093ef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140093efb        if (data_140a61e08 == 0)\n140093efb        return \n140093f11        sub_1401c1d20(&data_140a78510, data_140a111c8, 1)\n140093f18        data_140a111c8 = 0xffffffff\n140093f22        bool cond:0_1 = data_140a11208 u>= 0x10\n140093f2a        int64_t* rax_1 = &data_140a111f0\n140093f31        data_140a11200 = 0\n140093f38        if (cond:0_1)\n140093f38        rax_1 = data_140a111f0\n140093f40        *rax_1 = 0\n140093f42        int64_t* rax_2 = &data_140a11210\n140093f49        bool cond:1_1 = data_140a11228 u>= 0x10\n140093f51        data_140a11220 = 0\n140093f58        if (cond:1_1)\n140093f58        rax_2 = data_140a11210\n140093f60        *rax_2 = 0\n140093f62        int64_t* rax = &data_140a111d0\n140093f69        bool cond:2_1 = data_140a111e8 u>= 0x10\n140093f71        data_140a111e0 = 0\n140093f78        if (cond:2_1)\n140093f78        rax = data_140a111d0\n140093f80        *rax = 0\n140093f82        bool cond:3_1 = data_140a61e09 == 0\n140093f88        data_140a61e08 = 0\n140093f8e        if (cond:3_1)\n140093faf        return sub_1400c58e0() __tailcall\n140093f97        if (data_140a111cc == 1)\n140093f9d        return sub_1400b1240() __tailcall\n140093fa9        if (data_140b303d0 == 0)\n140093faf        return sub_1400c58e0() __tailcall\n140093fb8        return ",
+  "fetched_at": "2026-04-26T16:58:17Z"
+}

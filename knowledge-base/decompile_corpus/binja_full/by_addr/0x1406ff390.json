@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff390",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ff3a4        int64_t result = sub_14048f2c0(arg1)\n1406ff3c4        char var_118[0x100]\n1406ff3c4        if (0f f> arg1[0x2f].d || not(arg1[0x2f].d f<= 1f))\n1406ff3cb        void* r8_1 = &arg1[3]\n1406ff3cf        if (arg1[6] u>= 0x10)\n1406ff3d1        r8_1 = *r8_1\n1406ff3e0        sscanf_s(&var_118, \"Error: (%s) Evade_Detection_Chance is out of the allowable 0-1 range.\", r8_1)\n1406ff3ea        int32_t zmm6_1\n1406ff3ea        result, zmm6_1 = sub_1402149d0(&var_118)\n1406ff3ef        int32_t zmm0_1 = arg1[0x2f].d\n1406ff3fa        if (not(zmm6_1 f> zmm0_1))\n1406ff404        zmm6_1 = _mm_min_ss(0x3f800000, zmm0_1)\n1406ff408        arg1[0x2f].d = zmm6_1\n1406ff414        if (*(arg1 + 0x3c) != 3)\n1406ff42e        sscanf_s(&var_118, \"Error: The only activation style supported for %s is Galactic_Automatic.\", (*(*arg1 + 0x10))(arg1))\n1406ff438        result = sub_1402149d0(&var_118)\n1406ff43d        *(arg1 + 0x3c) = 3\n1406ff444        *(arg1 + 0x41) = 0\n1406ff458        return result",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

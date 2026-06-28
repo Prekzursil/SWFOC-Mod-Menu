@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc0b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall CompanyCombatantClass::vfunction30(CompanyCombatantClass *this)\n\n{\n  return *(undefined8 *)(*(longlong *)&this->field_0x48 + 0x48);\n}",
+  "fetched_at": "2026-04-26T17:41:04Z"
+}

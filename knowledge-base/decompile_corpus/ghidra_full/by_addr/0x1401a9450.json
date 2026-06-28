@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a9450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1401a9450(undefined8 *param_1,undefined4 *param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  undefined8 *puVar3;\n  undefined4 local_res18 [2];\n  undefined1 local_res20 [8];\n  undefined8 local_68;\n  undefined8 uStack_60;\n  undefined8 local_58;\n  undefined8 uStack_50;\n  undefined8 local_48;\n  undefined8 uStack_40;\n  undefined8 local_38;\n  undefined8 uStack_30;\n  undefined4 local_28;\n  \n  puVar3 = &local_68;\n  local_68 = _DAT_14081c090;\n  uStack_60 = _UNK_14081c098;\n  lVar2 = 0x11;\n  local_58 = _DAT_14081c0a0;\n  uStack_50 = _UNK_14081c0a8;\n  local_48 = _DAT_14081c0b0;\n  uStack_40 = _UNK_14081c0b8;\n  local_38 = _DAT_14081c0c0;\n  uStack_30 = _UNK_14081c0c8;\n  local_28 = 0x10;\n  do {\n    local_res18[0] = *(undefined4 *)puVar3;\n    iVar1 = (**(code **)(*(longlong *)*param_1 + 0x58))\n                      ((longlong *)*param_1,*param_2,param_2[1],param_2[3],\n                       *(undefined1 *)(param_2 + 4),local_res18[0],local_res20);\n    if (-1 < iVar1) {\n      FUN_1401a82e0(*(undefined8 *)(param_2 + 8),local_res18);\n      FUN_1401a82e0(*(undefined8 *)(param_2 + 10),local_res20);\n    }\n    puVar3 = (undefined8 *)((longlong)puVar3 + 4);\n    lVar2 = lVar2 + -1;\n  } while (lVar2 != 0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:22Z"
+}

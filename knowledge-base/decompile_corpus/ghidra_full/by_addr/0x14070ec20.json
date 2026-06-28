@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070ec20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStarbaseUpgradeAbilityClass::vfunction5_for_IXMLLoadableClass\n          (StarbaseUpgradeAbilityClass *this,\n          DynamicVectorClass<class_GameObjectClass*___ptr64> *param_1)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  \n  lVar1 = *(longlong *)\n           &param_1[10].DynamicVectorClass<class_GameObjectClass*___ptr64>_data.offset_0x8;\n  if ((lVar1 != 0) && (*(char *)(lVar1 + 0x230) != '\\x01')) {\n    uVar2 = DynamicVectorClass<class_PlayerClass*___ptr64>::\n            ~DynamicVectorClass<class_PlayerClass*___ptr64>\n                      ((DynamicVectorClass<class_PlayerClass*___ptr64> *)this,param_1);\n    *(char *)(lVar1 + 0x230) = (char)uVar2;\n    ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n    ~DynamicVectorClass<class_GameObjectClass*___ptr64>(param_1,'\\x01');\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021e770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_14021e770(void)\n\n{\n  int iVar1;\n  int *piVar2;\n  ulonglong uVar3;\n  \n  uVar3 = (ulonglong)DAT_140a15358;\n  iVar1 = 0;\n  if (0 < (int)DAT_140a15358) {\n    piVar2 = (int *)(DAT_140a15350 + 0x14);\n    do {\n      iVar1 = iVar1 + *piVar2;\n      piVar2 = piVar2 + 10;\n      uVar3 = uVar3 - 1;\n    } while (uVar3 != 0);\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:02:37Z"
+}

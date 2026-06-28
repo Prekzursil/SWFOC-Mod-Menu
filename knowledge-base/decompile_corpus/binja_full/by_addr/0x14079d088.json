@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d088",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d08f        if (arg1 != 0xfffffffe)\n14079d0a8        if (arg1 s>= 0 && arg1 u< data_140b3c8d0)\n14079d0aa        int64_t rcx = sx.q(arg1)\n14079d0cb        return zx.q(*((&data_140b3c4d0)[rcx s>> 6] + (zx.q(rcx.d) & 0x3f) * 0x48 + 0x38)) & 0x40\n14079d0d5        *_errno() = 9\n14079d0db        _invalid_parameter_noinfo()\n14079d096        *_errno() = 9\n14079d0e0        return 0",
+  "fetched_at": "2026-04-26T17:32:11Z"
+}

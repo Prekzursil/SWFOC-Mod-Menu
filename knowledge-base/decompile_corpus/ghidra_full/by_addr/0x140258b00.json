@@ -1,0 +1,7 @@
+{
+  "addr": "0x140258b00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nLuaScriptWrapper::vfunction15_for_LuaUserVar\n          (LuaScriptWrapper *this,undefined8 param_1,undefined8 param_2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  LuaScriptWrapper_vftable_for_SignalListenerClass **local_res8;\n  \n  local_res8 = &this->vftablePtr;\n  if (this == (LuaScriptWrapper *)0x0) {\n    local_res8 = (LuaScriptWrapper_vftable_for_SignalListenerClass **)0x0;\n  }\n  bVar1 = FUN_14021ffa0(param_2,1);\n  bVar2 = FUN_1402200b0(param_2,&local_res8,8);\n  bVar3 = FUN_140220030(param_2);\n  bVar3 = bVar1 & 1 & bVar2 & bVar3;\n  FUN_1401fec80(local_res8);\n  if (*(longlong *)&this->field_0x38 != 0) {\n    bVar1 = FUN_14021ffa0(param_2,0);\n    bVar2 = FUN_1402200b0(param_2,&this->field_0x38,8);\n    bVar4 = FUN_140220030(param_2);\n    return bVar4 & bVar2 & 1 & bVar3 & bVar1;\n  }\n  return bVar3;\n}",
+  "fetched_at": "2026-04-26T18:13:26Z"
+}

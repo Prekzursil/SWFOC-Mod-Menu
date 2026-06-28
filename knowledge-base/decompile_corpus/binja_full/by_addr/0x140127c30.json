@@ -1,0 +1,7 @@
+{
+  "addr": "0x140127c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140127c3e        void* rax = operator new(0x20)\n140127c4a        int64_t var_28 = 0x17\n140127c58        int64_t var_20 = 0x1f\n140127c61        __builtin_strncpy(rax, \"IDC_DETAIL_LEVEL_SLIDER\", 0x18)\n140127c8d        int32_t rdx = data_140a12318\n140127c93        void* var_38 = rax\n140127c98        int128_t zmm0 = sub_1401c8fc0(&data_140a78510, rdx, &var_38)\n140127ca9        if (var_20 u>= 0x10)\n140127cab        void* rcx_1 = var_38\n140127cb3        void* rax_1 = rcx_1\n140127cbd        if (var_20 + 1 u>= 0x1000)\n140127cbf        rcx_1 = *(rcx_1 - 8)\n140127cd2        if (rax_1 - rcx_1 - 8 u> 0x1f)\n140127cf7        _invalid_parameter_noinfo_noreturn()\n140127cf7        noreturn\n140127cd4        j_sub_1407864b8(rcx_1)\n140127cd9        int128_t zmm6\n140127cd9        zmm6.d = zmm0.d f* 3f\n140127ce1        zmm6.d = zmm6.d f+ 0.5f\n140127cf6        return zx.q(int.d(zmm6.d))",
+  "fetched_at": "2026-04-26T17:07:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524a40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalSellBehaviorClass * __thiscall\nTacticalSellBehaviorClass::vfunction4(TacticalSellBehaviorClass *this,int param_1)\n\n{\n  TacticalSellBehaviorClass *pTVar1;\n  \n  pTVar1 = (TacticalSellBehaviorClass *)0x0;\n  if (param_1 == 0x2b) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T18:26:58Z"
+}

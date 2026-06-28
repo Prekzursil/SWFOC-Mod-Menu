@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407842fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _aligned_malloc\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid * __cdecl _aligned_malloc(size_t _Size,size_t _Alignment)\n\n{\n  size_t sVar1;\n  ulonglong uVar2;\n  ulong *puVar3;\n  longlong lVar4;\n  void *pvVar5;\n  \n  pvVar5 = (void *)0x0;\n  if ((_Alignment == 0) || ((_Alignment & _Alignment - 1) != 0)) {\n    puVar3 = __doserrno();\n    *puVar3 = 0x16;\n    FUN_1407711ac();\n  }\n  else {\n    sVar1 = 8;\n    if (8 < _Alignment) {\n      sVar1 = _Alignment;\n    }\n    uVar2 = _Size + 8 + (sVar1 - 1);\n    if (uVar2 < _Size) {\n      puVar3 = __doserrno();\n      *puVar3 = 0xc;\n    }\n    else {\n      lVar4 = _malloc_base(uVar2);\n      if (lVar4 != 0) {\n        pvVar5 = (void *)(sVar1 + 7 + lVar4 & ~(sVar1 - 1));\n        *(longlong *)((longlong)pvVar5 + -8) = lVar4;\n      }\n    }\n  }\n  return pvVar5;\n}",
+  "fetched_at": "2026-04-26T18:51:19Z"
+}

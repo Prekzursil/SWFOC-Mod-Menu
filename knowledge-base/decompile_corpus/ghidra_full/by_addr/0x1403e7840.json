@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403e7840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403e7840(longlong param_1,float param_2,char param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  longlong *plVar4;\n  float fVar5;\n  undefined8 local_58;\n  undefined4 local_50;\n  float local_4c;\n  undefined4 local_48;\n  undefined8 local_44;\n  float local_3c;\n  undefined8 local_38;\n  undefined4 local_30;\n  float local_2c;\n  \n  if ((((*(int *)(param_1 + 0x211c) == 1) && (*(int *)(DAT_140b2eea0 + 0x44) == 3)) &&\n      (*(char *)(param_1 + 0x10c0) != '\\0')) &&\n     (((*(int *)(param_1 + 0x10cc) != -1 && (*(longlong *)(param_1 + 0x2150) != 0)) &&\n      ((param_2 != 0.0 || (param_3 != '\\0')))))) {\n    local_58 = 0x3f800000;\n    local_50 = 0;\n    local_48 = 0;\n    fVar5 = param_2 * DAT_140b15dfc + *(float *)(param_1 + 0x10c8);\n    local_44 = 0x3f800000;\n    local_38 = 0;\n    local_30 = 0x3f800000;\n    *(float *)(param_1 + 0x10c8) = fVar5;\n    fVar1 = *(float *)(param_1 + 0x10d4);\n    fVar2 = *(float *)(param_1 + 0x10d0);\n    fVar3 = *(float *)(param_1 + 0x10d8);\n    local_4c = fVar1 * 0.0 + fVar2 + fVar3 * 0.0 + 0.0;\n    local_3c = fVar2 * 0.0 + fVar1 + fVar3 * 0.0 + 0.0;\n    local_2c = fVar2 * 0.0 + fVar1 * 0.0 + fVar3 + 0.0;\n    FUN_1400480f0(&local_58,fVar5);\n    plVar4 = *(longlong **)(param_1 + 0x1040 + (longlong)*(int *)(param_1 + 0x10c4) * 8);\n    (**(code **)(*plVar4 + 0x28))(plVar4,&local_58);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:39:50Z"
+}

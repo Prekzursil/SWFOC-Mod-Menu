@@ -1,0 +1,7 @@
+{
+  "addr": "0x14041ce90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14041ce90        int64_t r10_1 = *(arg1 + 0x100)\n14041ce9a        void* result_1 = *(arg1 + 0xf8)\n14041cec7        void* result\n14041cec7        if (((r10_1 - result_1) s/ 0x68).d == 0)\n14041cf1e        label_14041cf1e:\n14041cf20        if (((*(arg1 + 0x18) - *(arg1 + 0x10)) s>> 3).d != 0)\n14041cf25        result.b = 0\n14041cf27        return result\n14041cecc        void* result_2 = &data_140a28950\n14041ced6        int64_t rax_1\n14041ced6        int64_t rdx_5\n14041ced6        rdx_5:rax_1 = muls.dp.q(0x4ec4ec4ec4ec4ec5, r10_1 - result_1)\n14041ced9        int64_t rdx_6 = rdx_5 s>> 5\n14041cee4        int64_t rdx_7 = (r10_1 - result_1) s/ 0x68\n14041cee7        result = &data_140a28950\n14041ceea        if (rdx_6 != neg.q(rdx_6 u>> 0x3f))\n14041ceea        result = result_1\n14041cef2        if (*(result + 0x24) != 0)\n14041cef7        result = &data_140a28950\n14041cefa        if (rdx_7 != 0)\n14041cefa        result = result_1\n14041cf02        if (*(result + 0x24) != 3)\n14041cf02        goto label_14041cf1e\n14041cf07        if (rdx_7 != 0)\n14041cf07        result_2 = result_1\n14041cf10        if (*(result_2 + 0x28) != 0)\n14041cf10        goto label_14041cf1e\n14041cf22        result.b = 1\n14041cf24        return result",
+  "fetched_at": "2026-04-26T17:26:16Z"
+}

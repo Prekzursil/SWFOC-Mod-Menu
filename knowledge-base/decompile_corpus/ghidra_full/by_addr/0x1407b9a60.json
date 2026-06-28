@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9a60",
+  "tool": "ghidra",
+  "fact_id": "api_lua_settable",
+  "body": "\nvoid FUN_1407b9a60(longlong param_1,int param_2)\n\n{\n  longlong lVar1;\n  \n  if (param_2 < 1) {\n    lVar1 = FUN_1407b9f20();\n  }\n  else {\n    lVar1 = *(longlong *)(param_1 + 0x18) + -0x10 + (longlong)param_2 * 0x10;\n  }\n  FUN_1407c8140(param_1,lVar1,*(longlong *)(param_1 + 0x10) + -0x20,\n                *(longlong *)(param_1 + 0x10) + -0x10);\n  *(longlong *)(param_1 + 0x10) = *(longlong *)(param_1 + 0x10) + -0x20;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:33Z"
+}

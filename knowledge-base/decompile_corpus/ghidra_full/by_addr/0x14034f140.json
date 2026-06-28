@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034f140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined1 __thiscall SelectComponentClass::vfunction14(SelectComponentClass *this)\n\n{\n  byte bVar1;\n  longlong lVar2;\n  undefined1 in_AL;\n  \n  if ((((this->BaseComponentClass_data).offset_0xb8 & 2) == 0) &&\n     (lVar2 = (this->BaseComponentClass_data).offset_0x80, lVar2 != 0)) {\n    bVar1 = *(byte *)(lVar2 + 0xc0);\n    while( true ) {\n      if ((bVar1 & 2) != 0) {\n        return 1;\n      }\n      lVar2 = *(longlong *)(lVar2 + 0x88);\n      if (lVar2 == 0) break;\n      bVar1 = *(byte *)(lVar2 + 0xc0);\n    }\n    return 0;\n  }\n  return in_AL;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:41Z"
+}

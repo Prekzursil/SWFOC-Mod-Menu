@@ -1,0 +1,7 @@
+{
+  "addr": "0x140714830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140714844        *arg1 = &ForceCloakAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140714850        arg1[1] = &ForceCloakAbilityClass::`vftable'{for `RefCountClass'}\n140714863        sub_14048c8d0(arg1)\n14071486b        if ((arg2 & 1) != 0)\n140714875        j_sub_1407864b8(arg1)\n140714887        return arg1",
+  "fetched_at": "2026-04-26T17:27:51Z"
+}

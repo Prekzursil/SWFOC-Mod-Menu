@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402fdcd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall thunk_FUN_1402fb150(void *this)\n\n{\n  FUN_1402fb150(this,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:26:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407054e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407054f3        *arg1 = &PersonalFlameThrowerAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140705500        arg1[1] = &PersonalFlameThrowerAbilityClass::`vftable'{for `RefCountClass'}\n140705504        int64_t rdx = arg1[0x36]\n14070550f        if (rdx u>= 0x10)\n140705511        void* rcx = arg1[0x33]\n140705522        if (rdx + 1 u>= 0x1000)\n140705524        void* r8_1 = *(rcx - 8)\n140705537        if (rcx - r8_1 - 8 u> 0x1f)\n140705587        _invalid_parameter_noinfo_noreturn()\n140705587        noreturn\n140705539        rcx = r8_1\n14070553c        j_sub_1407864b8(rcx)\n140705544        arg1[0x35] = 0\n14070554f        arg1[0x36] = 0xf\n14070555a        arg1[0x33].b = 0\n140705561        sub_14048c8d0(arg1)\n14070556a        if ((arg2 & 1) != 0)\n140705574        j_sub_1407864b8(arg1)\n140705586        return arg1",
+  "fetched_at": "2026-04-26T17:27:15Z"
+}

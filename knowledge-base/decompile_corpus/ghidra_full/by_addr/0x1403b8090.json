@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b8090",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_1403b8090(undefined8 param_1,int param_2,int param_3)\n\n{\n  uint uVar1;\n  uint uVar2;\n  uint uVar3;\n  \n  uVar1 = *(uint *)((longlong)(param_2 + param_3 * DAT_140b36b90) * 0x1c + 0x14 + DAT_140b36ba8);\n  uVar3 = -(uint)((uVar1 & 1) != 0) & 0xff00ff00;\n  if ((uVar1 & 2) != 0) {\n    uVar2 = uVar3 | 0xffff00ff;\n    if ((uVar1 & 0x20) == 0) {\n      uVar2 = uVar3 | 0xffff0000;\n    }\n    return uVar2;\n  }\n  if ((uVar1 & 4) != 0) {\n    return uVar3 | 0xffff00ff;\n  }\n  if ((uVar1 & 8) != 0) {\n    return 0xff00ffff;\n  }\n  if ((uVar1 & 0x10) != 0) {\n    uVar2 = 0xff00ffff;\n    if ((uVar1 & 0x20) == 0) {\n      uVar2 = uVar3 | 0xffff;\n    }\n    return uVar2;\n  }\n  if ((char)uVar1 < '\\0') {\n    uVar2 = uVar3 | 0xff0080ff;\n    if ((uVar1 & 0x20) == 0) {\n      uVar2 = uVar3 | 0xff008000;\n    }\n    return uVar2;\n  }\n  if ((uVar1 >> 8 & 1) != 0) {\n    uVar3 = 0xffffffff;\n  }\n  uVar2 = uVar3 | 0xff0000ff;\n  if ((uVar1 & 0x20) == 0) {\n    uVar2 = uVar3;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T17:35:04Z"
+}

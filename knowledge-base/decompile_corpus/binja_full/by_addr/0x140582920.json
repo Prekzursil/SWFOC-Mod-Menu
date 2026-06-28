@@ -1,0 +1,7 @@
+{
+  "addr": "0x140582920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058294a        uint8_t* r10 = arg6\n14058295a        *arg5 = arg3\n14058295d        *arg8 = r10\n140582960        int16_t* rax = *arg5\n140582966        if (rax != arg4)\n140582973        while (r10 != arg7)\n140582979        uint32_t r9 = zx.d(*rax)\n140582984        uint64_t rax_1\n140582984        uint8_t r11_1\n140582984        if (r9 u< 0x80)\n140582986        r11_1 = r9.b\n14058298a        rax_1 = 0\n140582999        if (r9 u>= 0x800)\n1405829ae        rax_1 = 2\n1405829b3        r11_1 = (r9 u>> 0xc).b | 0xe0\n14058299f        rax_1 = 1\n1405829a4        r11_1 = (r9 u>> 6).b | 0xc0\n1405829ba        if (*arg2 == 0)\n1405829bc        *arg2 = 1\n1405829bf        r10 = *arg8\n1405829ce        if (arg7 - r10 s< zx.q((rax_1 + 1).d))\n1405829ce        break\n1405829d0        *arg5 += 2\n1405829d7        **arg8 = r11_1\n1405829da        *arg8 += 1\n1405829dd        r10 = *arg8\n1405829e2        if (rax_1.d != 0)\n1405829e8        int32_t r8_3 = (rax_1 * 3).d * 2\n1405829f0        r8_3 -= 6\n1405829fa        rax_1 = zx.q(rax_1.d - 1)\n140582a04        *r10 = ((r9 u>> r8_3.b).b & 0x3f) | 0x80\n140582a0a        r10 = *arg8 + 1\n140582a0d        *arg8 = r10\n140582a12        do while (rax_1.d s> 0)\n140582a14        rax = *arg5\n140582a1a        if (rax == arg4)\n140582a1a        break\n140582a2d        int32_t r14\n140582a2d        r14.b = arg3 == *arg5\n140582a44        return zx.q(r14)",
+  "fetched_at": "2026-04-26T17:35:43Z"
+}

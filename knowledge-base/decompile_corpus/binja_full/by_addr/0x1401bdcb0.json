@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bdcb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401bdcb9        enum WIN32_ERROR dwMessageId = GetLastError()\n1401bdce9        HLOCAL arg_8\n1401bdce9        FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, nullptr, dwMessageId, 0x400, &arg_8, 0, nullptr)\n1401bdd06        void var_108\n1401bdd06        wsprintfA(&var_108, \"failed with error %d: %s\", zx.q(dwMessageId), arg_8)\n1401bdd1d        MessageBoxA(nullptr, &var_108, \"Error\", MB_OK)\n1401bdd39        return LocalFree(arg_8)",
+  "fetched_at": "2026-04-26T17:26:01Z"
+}

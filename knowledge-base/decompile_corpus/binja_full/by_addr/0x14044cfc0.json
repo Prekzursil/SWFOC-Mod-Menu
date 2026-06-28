@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044cfc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044cfc9        void* rcx = *(arg1 + 0x28)\n14044cfd0        if (rcx != 0)\n14044cfd2        void* rdx_1 = *(arg1 + 0x38)\n14044cfd9        if (rdx_1 != 0)\n14044cfdb        sub_14025c490(rcx, rdx_1)\n14044cfe0        int64_t* rcx_1 = *(arg1 + 0x38)\n14044cfe7        if (rcx_1 != 0)\n14044cff1        (**rcx_1)(rcx_1, 1)\n14044cff3        void* rdx_2 = *(arg1 + 0x40)\n14044cffa        if (rdx_2 != 0)\n14044d000        sub_14025c490(*(arg1 + 0x28), rdx_2)\n14044d005        int64_t* rcx_3 = *(arg1 + 0x40)\n14044d00c        if (rcx_3 != 0)\n14044d016        (**rcx_3)(rcx_3, 1)\n14044d018        void* rdx_3 = *(arg1 + 0x48)\n14044d01f        if (rdx_3 != 0)\n14044d025        sub_14025c490(*(arg1 + 0x28), rdx_3)\n14044d02a        int64_t* rcx_5 = *(arg1 + 0x48)\n14044d031        if (rcx_5 != 0)\n14044d03b        (**rcx_5)(rcx_5, 1)\n14044d03f        *arg1 = 0x100\n14044d044        *(arg1 + 4) = 0\n14044d048        arg1[1].b = 0\n14044d04b        arg1[0x10] = 0\n14044d04f        *(arg1 + 0x14) = 0\n14044d053        arg1[0x11].b = 0\n14044d067        __builtin_memset(&arg1[0x38], 0, 0x14)\n14044d076        arg1[8].b = 0\n14044d079        __builtin_memset(&arg1[0x14], 0, 0x42)\n14044d08d        *(arg1 + 0xc) = 0\n14044d094        *(arg1 + 0x6c) = 0xffffffff\n14044d0a0        return 0",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

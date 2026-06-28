@@ -1,0 +1,7 @@
+{
+  "addr": "0x140195810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall alDrawPrimitive::vfunction5_for_RefCountClass(alDrawPrimitive *this)\n\n{\n  return *(undefined4 *)&this->offset_0x18;\n}",
+  "fetched_at": "2026-04-26T17:35:20Z"
+}

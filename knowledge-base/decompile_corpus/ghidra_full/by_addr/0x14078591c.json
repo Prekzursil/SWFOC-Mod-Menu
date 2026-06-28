@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078591c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcsncpy\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nwchar_t * __cdecl wcsncpy(wchar_t *_Dest,wchar_t *_Source,size_t _Count)\n\n{\n  wchar_t wVar1;\n  wchar_t *pwVar2;\n  longlong lVar3;\n  \n  if (_Count != 0) {\n    pwVar2 = _Dest;\n    do {\n      wVar1 = *(wchar_t *)(((longlong)_Source - (longlong)_Dest) + (longlong)pwVar2);\n      *pwVar2 = wVar1;\n      pwVar2 = pwVar2 + 1;\n      if (wVar1 == L'\\0') break;\n      _Count = _Count - 1;\n    } while (_Count != 0);\n    if ((_Count != 0) && (lVar3 = _Count - 1, lVar3 != 0)) {\n      for (; lVar3 != 0; lVar3 = lVar3 + -1) {\n        *pwVar2 = L'\\0';\n        pwVar2 = pwVar2 + 1;\n      }\n    }\n  }\n  return _Dest;\n}",
+  "fetched_at": "2026-04-26T18:51:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140707ac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140707ad8        *arg1 = &PlanetIncomeBonusAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140707ae4        arg1[0x2f] = 0\n140707aeb        arg1[1] = &PlanetIncomeBonusAbilityClass::`vftable'{for `RefCountClass'}\n140707af2        arg1[0x30].d = 0\n140707af8        int64_t rdx = arg1[0x34]\n140707b03        if (rdx u>= 0x10)\n140707b05        void* rcx = arg1[0x31]\n140707b16        if (rdx + 1 u>= 0x1000)\n140707b18        void* r8_1 = *(rcx - 8)\n140707b2b        if (rcx - r8_1 - 8 u> 0x1f)\n140707b7c        _invalid_parameter_noinfo_noreturn()\n140707b7c        noreturn\n140707b2d        rcx = r8_1\n140707b30        j_sub_1407864b8(rcx)\n140707b38        arg1[0x33] = 0\n140707b3f        arg1[0x34] = 0xf\n140707b4a        arg1[0x31].b = 0\n140707b51        sub_14048c8d0(arg1)\n140707b5a        if ((arg2 & 1) != 0)\n140707b64        j_sub_1407864b8(arg1)\n140707b7b        return arg1",
+  "fetched_at": "2026-04-26T17:27:20Z"
+}

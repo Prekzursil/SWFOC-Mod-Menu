@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bb2d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403bb2f1        float var_58\n1403bb2f1        int32_t* var_78 = &var_58\n1403bb301        float var_68\n1403bb301        sub_140261a70(*(arg1 + 0x90), arg2, arg3, &var_68)\n1403bb324        float zmm3 = var_58\n1403bb32e        void* rcx_1 = *(arg1 + 0x338)\n1403bb335        int32_t var_50\n1403bb335        int128_t zmm1\n1403bb335        zmm1.d = var_50.d f* 10000f\n1403bb339        int16_t var_38 = 1\n1403bb343        int32_t var_30 = 0\n1403bb34a        float var_60\n1403bb34a        float zmm4 = var_60 f+ zmm1.d\n1403bb352        int64_t var_1c = 0\n1403bb364        int32_t var_64\n1403bb364        float var_54\n1403bb364        zmm1.d = var_64.d f+ var_54 * 10000f\n1403bb36c        float var_40 = zmm4\n1403bb371        int32_t var_44 = zmm1.d\n1403bb376        zmm1 = data_140800840\n1403bb37d        float var_48 = var_68 + zmm3 * 10000f\n1403bb38e        int32_t var_34 = 0x3f800000\n1403bb393        int64_t result = sub_140135840(rcx_1, &var_68, &var_48, &var_38)\n1403bb3ae        *arg4 = zmm1:0xc.d\n1403bb3b7        arg4[2] = var_1c:4.d\n1403bb3bc        arg4[1] = var_1c.d\n1403bb3c9        return result",
+  "fetched_at": "2026-04-26T17:24:30Z"
+}

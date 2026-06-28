@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018a530",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018a53f        void* i = data_140a12a30\n14018a554        while (i != &data_140a12a28)\n14018a570        void* rax_1 = *(i + 0x18)\n14018a577        int64_t* rbx_1 = rax_1 - 0x10\n14018a57b        if (rax_1 == 0)\n14018a57b        rbx_1 = nullptr\n14018a582        if (rbx_1 != 0)\n14018a58a        (**rbx_1)(rbx_1)\n14018a593        i = *(i + 8)\n14018a597        if (rbx_1 != data_140a6fec0)\n14018a59d        int32_t* rdi_1 = &rbx_1[0x31]\n14018a5a9        int32_t* rdx_1 = rdi_1\n14018a5ac        if (*(rdi_1 + 0x18) u>= 0x10)\n14018a5ae        rdx_1 = *rdi_1\n14018a5b6        void var_a8\n14018a5b6        sub_1402130d0(&var_a8, rdx_1)\n14018a5cc        if (sub_140213840(&var_a8, 0, 0) != 0)\n14018a5d3        int64_t rax_4 = sub_140213e40(&var_a8)\n14018a5e0        sub_1402138d0(&var_a8)\n14018a5f1        if (arg1 != 0 || rax_4 != rbx_1[0x35])\n14018a5f8        int32_t* rdx_2 = rdi_1\n14018a5fb        if (*(rdi_1 + 0x18) u>= 0x10)\n14018a5fd        rdx_2 = *rdi_1\n14018a611        if (*(rdi_1 + 0x18) u>= 0x10)\n14018a613        rdi_1 = *rdi_1\n14018a62b        sub_1401ae720(rbx_1, (*(*rbx_1 + 0x30))(rbx_1, rdx_2), rdi_1, rax_4)\n14018a630        int64_t* rcx_8 = rbx_1[0xd]\n14018a63e        (*(*rcx_8 + 0x238))(rcx_8, data_140a6fed0)\n14018a649        sub_1402132f0(&var_a8)\n14018a651        if (rbx_1 != 0)\n14018a659        (*(*rbx_1 + 8))(rbx_1)\n14018a691        return sub_14018b090() __tailcall",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

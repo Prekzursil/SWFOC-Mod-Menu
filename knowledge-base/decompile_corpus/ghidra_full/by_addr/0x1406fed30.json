@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fed30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall\nForceWhirlwindAbilityClass::vfunction27_for_IXMLLoadableClass(ForceWhirlwindAbilityClass *this)\n\n{\n  return *(undefined4 *)&(this->ForceWhirlwindAbilityClass_data).offset_0x28;\n}",
+  "fetched_at": "2026-04-26T17:50:36Z"
+}

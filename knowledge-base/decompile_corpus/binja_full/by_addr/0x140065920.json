@@ -1,0 +1,7 @@
+{
+  "addr": "0x140065920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006592f        if (arg2 != 0x110)\n140065937        LPARAM entry_lParam\n140065937        if (arg2 == 0x201)\n140065944        SendMessageA(arg1, 0xa1, 2, entry_lParam)\n140065951        return 0\n140065952        HWND hWnd = GetParent(arg1)\n14006595b        if (hWnd == 0)\n14006595d        hWnd = GetDesktopWindow()\n14006596b        RECT var_18\n14006596b        GetWindowRect(hWnd, &var_18)\n140065979        RECT var_28\n140065979        GetWindowRect(arg1, &var_28)\n140065989        RECT var_38\n140065989        CopyRect(&var_38, &var_18)\n1400659a2        OffsetRect(&var_28, neg.d(var_28.left), neg.d(var_28.top))\n1400659bb        OffsetRect(&var_38, neg.d(var_38.left), neg.d(var_38.top))\n1400659d4        OffsetRect(&var_38, neg.d(var_28.right), neg.d(var_28.bottom))\n1400659e0        int32_t temp0\n1400659e0        int32_t temp1\n1400659e0        temp0:temp1 = sx.q(var_38.bottom)\n140065a04        int32_t temp2\n140065a04        int32_t temp3\n140065a04        temp2:temp3 = sx.q(var_38.right)\n140065a12        SetWindowPos(arg1, nullptr, ((temp3 - temp2) s>> 1) + var_18.left, ((temp1 - temp0) s>> 1) + var_18.top, 0, 0, SWP_NOSIZE)\n140065a22        return 1",
+  "fetched_at": "2026-04-26T16:55:42Z"
+}

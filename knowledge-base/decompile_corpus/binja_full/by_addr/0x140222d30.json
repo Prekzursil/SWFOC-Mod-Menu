@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222d30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140222d3f        int16_t temp0\n140222d3f        int32_t temp1\n140222d3f        temp0:temp1 = sx.q(arg2)\n140222d4f        *(arg1 + 0x98) += ((temp1 + zx.d(temp0)) & 0xffff0000) + 0x10000\n140222d71        int64_t result = HeapReAlloc(GetProcessHeap(), HEAP_NONE, *(arg1 + 0x88), sx.q(*(arg1 + 0x98)))\n140222d7c        *(arg1 + 0x88) = result\n140222d88        return result",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

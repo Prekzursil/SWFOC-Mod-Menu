@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063eb40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063eb53        *arg1 = &TelekinesisTargetBehaviorClass::`vftable'{for `BehaviorClass'}\n14063eb60        arg1[1] = &TelekinesisTargetBehaviorClass::`vftable'{for `RefCountClass'}\n14063eb6b        arg1[3] = &TelekinesisTargetBehaviorClass::`vftable'{for `SignalListenerClass'}\n14063eb6f        sub_1404c3310(arg1)\n14063eb77        if ((arg2 & 1) != 0)\n14063eb81        j_sub_1407864b8(arg1)\n14063eb93        return arg1",
+  "fetched_at": "2026-04-26T17:02:30Z"
+}

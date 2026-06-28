@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014ba20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alLightSource::vfunction1_for_CullObjectClass(alLightSource *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor((alLightSource *)&this[-1].alLightSource_data.offset_0x58,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:17Z"
+}

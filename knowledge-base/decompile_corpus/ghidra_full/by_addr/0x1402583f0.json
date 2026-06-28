@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402583f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall LuaScriptWrapper::vfunction3_for_SignalListenerClass(LuaScriptWrapper *this)\n\n{\n  return *(undefined1 *)&this->offset_0x18;\n}",
+  "fetched_at": "2026-04-26T18:13:16Z"
+}

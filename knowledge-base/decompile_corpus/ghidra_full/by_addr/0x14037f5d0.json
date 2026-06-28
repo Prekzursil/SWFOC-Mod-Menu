@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037f5d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LineSubClass::vfunction11_for_RefCountClass(LineSubClass *this,float *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  \n  fVar2 = DAT_1408007c0;\n  fVar5 = *(float *)&(this->LineSubClass_data).field_0x4 +\n          *(float *)&(this->LineSubClass_data).field_0x10;\n  *param_1 = fVar5;\n  fVar3 = *(float *)&(this->LineSubClass_data).field_0x14 +\n          *(float *)&(this->LineSubClass_data).field_0x8;\n  param_1[1] = fVar3;\n  fVar4 = *(float *)&(this->LineSubClass_data).field_0x18;\n  fVar1 = *(float *)&(this->LineSubClass_data).field_0xc;\n  *param_1 = fVar5 * fVar2;\n  param_1[1] = fVar3 * fVar2;\n  param_1[2] = (fVar4 + fVar1) * fVar2;\n  param_1[3] = *(float *)&(this->LineSubClass_data).field_0x10 -\n               *(float *)&(this->LineSubClass_data).field_0x4;\n  fVar4 = *(float *)&(this->LineSubClass_data).field_0x14 -\n          *(float *)&(this->LineSubClass_data).field_0x8;\n  param_1[4] = fVar4;\n  param_1[5] = *(float *)&(this->LineSubClass_data).field_0x18 -\n               *(float *)&(this->LineSubClass_data).field_0xc;\n  param_1[3] = ABS(param_1[3]);\n  param_1[4] = ABS(fVar4);\n  param_1[5] = ABS(param_1[5]);\n  param_1[3] = param_1[3] * fVar2;\n  param_1[4] = param_1[4] * fVar2;\n  param_1[5] = param_1[5] * fVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:42Z"
+}

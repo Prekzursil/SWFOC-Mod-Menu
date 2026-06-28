@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033fab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033fac3        *arg1 = &RetreatCoordinatorClass::`vftable'{for `RootClass'}\n14033fad0        arg1[1] = &RetreatCoordinatorClass::`vftable'{for `RefCountClass'}\n14033fad4        sub_1403409f0(arg1)\n14033fadd        sub_140046490(&arg1[9])\n14033fae6        sub_140046490(&arg1[6])\n14033faf2        arg1[1] = &RefCountClass::`vftable'{for `IRefCountClass'}\n14033faf9        if ((arg2 & 1) != 0)\n14033fb03        j_sub_1407864b8(arg1)\n14033fb15        return arg1",
+  "fetched_at": "2026-04-26T17:05:00Z"
+}

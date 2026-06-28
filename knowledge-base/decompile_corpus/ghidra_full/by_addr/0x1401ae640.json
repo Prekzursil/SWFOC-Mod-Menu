@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ae640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall alD3dEffect::vfunction2(alD3dEffect *this)\n\n{\n  int iVar1;\n  longlong lVar2;\n  uint uVar3;\n  ulonglong uVar5;\n  ulonglong uVar6;\n  ulonglong uVar4;\n  \n  iVar1 = *(int *)&(this->alD3dEffect_data).offset_0x98;\n  uVar4 = 0;\n  uVar5 = uVar4;\n  uVar6 = uVar4;\n  if (0 < iVar1) {\n    do {\n      if ((-1 < (longlong)uVar5) && ((int)uVar4 < iVar1)) {\n        lVar2 = (this->alD3dEffect_data).offset_0x90;\n        if (*(longlong **)(uVar6 + lVar2) != (longlong *)0x0) {\n          (**(code **)(**(longlong **)(uVar6 + lVar2) + 8))();\n          *(undefined8 *)(uVar6 + lVar2) = 0;\n          lVar2 = (this->alD3dEffect_data).offset_0x90;\n        }\n        (**(code **)(**(longlong **)&this->field_0x38 + 0x1a0))\n                  (*(longlong **)&this->field_0x38,*(undefined8 *)(uVar6 + 0x28 + lVar2),0);\n      }\n      iVar1 = *(int *)&(this->alD3dEffect_data).offset_0x98;\n      uVar3 = (int)uVar4 + 1;\n      uVar4 = (ulonglong)uVar3;\n      uVar5 = uVar5 + 1;\n      uVar6 = uVar6 + 0x38;\n    } while ((int)uVar3 < iVar1);\n  }\n  if (*(longlong **)&this->field_0x38 == (longlong *)0x0) {\n    return true;\n  }\n  iVar1 = (**(code **)(**(longlong **)&this->field_0x38 + 0x228))();\n  return iVar1 == 0;\n}",
+  "fetched_at": "2026-04-26T17:42:20Z"
+}

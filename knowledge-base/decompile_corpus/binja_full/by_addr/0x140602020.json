@@ -1,0 +1,7 @@
+{
+  "addr": "0x140602020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14060202d        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x38)\n140602035        if (rax == 0)\n140602048        rax[4].d = arg1\n140602050        return rax\n14060203a        struct LuaUserVar::PlayerWrapper::VTable** rax_1 = sub_140600d00(rax)\n14060203f        rax_1[4].d = arg1\n140602047        return rax_1",
+  "fetched_at": "2026-04-26T17:22:50Z"
+}

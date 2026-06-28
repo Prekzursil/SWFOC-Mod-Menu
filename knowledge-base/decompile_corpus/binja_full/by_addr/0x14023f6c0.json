@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023f6c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023f6cf        void** result = arg1 + 0x90\n14023f6d6        *(arg1 + 0x88) = 0xffffffff\n14023f6e5        result[2] = 0\n14023f6ee        if (result[3] u>= 0x10)\n14023f6f0        result = *result\n14023f6f3        *result = nullptr\n14023f6f6        __builtin_memset(arg1 + 0xc8, 0, 0x20)\n14023f712        int64_t lpMem = *(arg1 + 0xf0)\n14023f71c        if (lpMem != 0)\n14023f728        if ((*(arg1 + 0xfc) & 0x80000000) == 0)\n14023f743        result = j_sub_1407864b8(lpMem)\n14023f738        result = HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14023f748        *(arg1 + 0xfc) &= 0x80000000\n14023f752        *(arg1 + 0xf0) = 0\n14023f759        *(arg1 + 0xf8) = 0\n14023f75f        int64_t lpMem_1 = *(arg1 + 0x108)\n14023f769        if (lpMem_1 != 0)\n14023f775        if ((*(arg1 + 0x114) & 0x80000000) == 0)\n14023f790        result = j_sub_1407864b8(lpMem_1)\n14023f785        result = HeapFree(GetProcessHeap(), HEAP_NONE, lpMem_1)\n14023f795        *(arg1 + 0x114) &= 0x80000000\n14023f79f        *(arg1 + 0x108) = 0\n14023f7a6        *(arg1 + 0x110) = 0\n14023f7bb        return result",
+  "fetched_at": "2026-04-26T17:30:10Z"
+}

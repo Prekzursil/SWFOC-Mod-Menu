@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406de5f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406de5fa        struct PerceptualEvaluatorClass::HintPerceptualEvaluatorClass::VTable** result = arg1\n1406de5fd        sub_14064c900(arg1)\n1406de60b        *result = &HintPerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n1406de615        result[3] = &HintPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n1406de61b        result[0x11] = 0\n1406de622        result[0x13] = 0\n1406de62c        result[0x14] = 0xf\n1406de637        result[0x15].b = 0\n1406de63d        __builtin_memset(result + 0xac, 0, 0x14)\n1406de651        int64_t* rax = operator new(0x20)\n1406de660        *rax = rax\n1406de663        rax[1] = rax\n1406de667        result[0x16] = rax\n1406de66e        int64_t r8 = result[0x16]\n1406de675        __builtin_memset(&result[0x18], 0, 0x18)\n1406de680        result[0x1b] = 7\n1406de68b        result[0x1c] = 8\n1406de696        *(result + 0xac) = 0x3f800000\n1406de6a0        sub_140048250(&result[0x18], 0x10, r8)\n1406de6b2        return result",
+  "fetched_at": "2026-04-26T17:25:50Z"
+}

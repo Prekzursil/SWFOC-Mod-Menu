@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d8c70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d8c77        arg1[1].d = 0\n1407d8c7e        *arg1 = &ParameterClass::`vftable'{for `RefCountClass'}\n1407d8c84        arg1[2] = arg2\n1407d8c88        arg1[3] = arg3\n1407d8c8c        return arg1",
+  "fetched_at": "2026-04-26T17:34:04Z"
+}

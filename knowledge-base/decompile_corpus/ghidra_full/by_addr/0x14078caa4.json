@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078caa4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: int __cdecl __crt_seh_guarded_call<int>::operator()<class\n   <lambda_638799b9deba96c50f710eeac98168cd>,class <lambda_22ebabd17bc4fa466a2aca6d8deb888d> &\n   __ptr64,class <lambda_a6f7d7db0129f75315ebf26d50c089f1> >(class\n   <lambda_638799b9deba96c50f710eeac98168cd> && __ptr64,class\n   <lambda_22ebabd17bc4fa466a2aca6d8deb888d> & __ptr64,class\n   <lambda_a6f7d7db0129f75315ebf26d50c089f1> && __ptr64) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __thiscall\n__crt_seh_guarded_call<int>::\noperator()<class_<lambda_638799b9deba96c50f710eeac98168cd>,class_<lambda_22ebabd17bc4fa466a2aca6d8deb888d>&___ptr64,class_<lambda_a6f7d7db0129f75315ebf26d50c089f1>_>\n          (__crt_seh_guarded_call<int> *this,<lambda_638799b9deba96c50f710eeac98168cd> *param_1,\n          <lambda_22ebabd17bc4fa466a2aca6d8deb888d> *param_2,\n          <lambda_a6f7d7db0129f75315ebf26d50c089f1> *param_3)\n\n{\n  int iVar1;\n  \n  __acrt_lock(*(undefined4 *)param_1);\n  iVar1 = <lambda_22ebabd17bc4fa466a2aca6d8deb888d>::operator()(param_2);\n  __acrt_unlock(*(undefined4 *)param_3);\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:06Z"
+}

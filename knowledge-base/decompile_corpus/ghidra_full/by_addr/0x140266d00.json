@@ -1,0 +1,7 @@
+{
+  "addr": "0x140266d00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* SceneClass member function inherited by SimpleSceneClass\n   SceneClass member function inherited by RtsSceneClass */\n\nundefined ** __thiscall SceneClass::vfunction10(SceneClass *this)\n\n{\n  return (this->RefCountClass_data).offset_0x8;\n}",
+  "fetched_at": "2026-04-26T18:17:20Z"
+}

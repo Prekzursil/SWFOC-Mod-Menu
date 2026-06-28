@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nulonglong FUN_14020a180(undefined8 param_1,longlong param_2)\n\n{\n  DWORD DVar1;\n  int iVar2;\n  ulonglong in_RAX;\n  \n  if (param_2 != 0) {\n    in_RAX = FUN_14020a290(param_2,param_1);\n    if ((char)in_RAX != '\\0') {\n      DVar1 = timeGetTime();\n      iVar2 = DVar1 - _DAT_140a7bec0;\n      *(int *)(param_2 + 0x3c) = iVar2;\n      return CONCAT71((uint7)(uint3)((uint)iVar2 >> 8),1);\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:58:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012f150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* alRenderable member function inherited by alBlob\n   alRenderable member function inherited by alEmitter\n   alRenderable member function inherited by alLightSource\n   alRenderable member function inherited by alParticles\n   alRenderable member function inherited by alParticleGroup\n   alRenderable member function inherited by alScene\n   alRenderable member function inherited by alSimpleScene\n   alRenderable member function inherited by LineSubClass\n   alRenderable member function inherited by WaypointLineSubClass\n   alRenderable member function inherited by alLaserBeam\n   alRenderable member function inherited by alLaserKite\n   alRenderable member function inherited by alSplineRenderer\n   alRenderable member function inherited by al3DCable\n   alRenderable member function inherited by LightningEffectClass\n   alRenderable member function inherited by alRenderablePlane\n   alRenderable member function inherited by alLightningBolt */\n\nvoid __thiscall alRenderable::vfunction18_for_RefCountClass(alRenderable *this,char param_1)\n\n{\n  this->field_0x31 = this->field_0x31 & 0xbf;\n  this->field_0x31 = this->field_0x31 | param_1 << 6;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:28Z"
+}

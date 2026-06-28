@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c0d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404c0d90(longlong param_1,undefined8 *param_2)\n\n{\n  int iVar1;\n  int *piVar2;\n  \n  piVar2 = (int *)*param_2;\n  if (piVar2 != (int *)param_2[1]) {\n    do {\n      iVar1 = *piVar2;\n      piVar2 = piVar2 + 1;\n      *(undefined2 *)(*(longlong *)(param_1 + 8) + (longlong)iVar1 * 2) = 0;\n    } while (piVar2 != (int *)param_2[1]);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:03Z"
+}

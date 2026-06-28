@@ -1,0 +1,7 @@
+{
+  "addr": "0x140372bb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140372bbe        int64_t* rax = arg1\n140372bc1        if (arg1[3] u>= 0x10)\n140372bc3        rax = *arg1\n140372bcd        char* r8 = &data_140b2c260 - rax\n140372bdd        char i\n140372bd0        i = *rax\n140372bd3        *(r8 + rax) = i\n140372bd7        rax += 1\n140372bdd        do while (i != 0)\n140372be6        _strupr(&data_140b2c260)\n140372bfd        return sub_140215a30(&data_140b2c260, arg1[2].d, 0) __tailcall",
+  "fetched_at": "2026-04-26T17:16:14Z"
+}

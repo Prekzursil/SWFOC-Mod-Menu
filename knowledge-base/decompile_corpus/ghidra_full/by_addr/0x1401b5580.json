@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b5580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alShaderInstance * __thiscall alShaderInstance::alShaderInstance(alShaderInstance *this)\n\n{\n  this->offset_0x18 = (undefined **)0x3;\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->offset_0x10 = 0;\n  *(undefined8 *)&this->field_0x28 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:44:40Z"
+}

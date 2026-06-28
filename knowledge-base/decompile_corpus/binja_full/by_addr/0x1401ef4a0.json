@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ef4a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ef4af        int64_t* rbx = *(arg1 + 0x310)\n1401ef4bc        if (rbx == 0)\n1401ef512        sub_1402606b0(arg1 + 0xa0, *(arg1 + 0x250), *(arg1 + 0x254), *(arg1 + 0x258), *(arg1 + 0x25c))\n1401ef53c        sub_1402606b0(arg1 + 0x130, *(arg1 + 0x290), *(arg1 + 0x294), *(arg1 + 0x298), *(arg1 + 0x29c))\n1401ef566        sub_1402606b0(arg1 + 0x1c0, *(arg1 + 0x2d0), *(arg1 + 0x2d4), *(arg1 + 0x2d8), *(arg1 + 0x2dc))\n1401ef4be        int64_t* rcx = *(arg1 + 0x1a8)\n1401ef4c8        if (rcx != rbx)\n1401ef4d1        if (rcx != 0)\n1401ef4d6        (*(*rcx + 8))(rcx)\n1401ef4d9        *(arg1 + 0x1a8) = rbx\n1401ef4e9        (**rbx)(rbx)\n1401ef57f        (*(*(arg1 + 0x330) + 0xc0))(arg1 + 0x330, arg1 + 0x3f8)\n1401ef592        (*(*(arg1 + 0x330) + 0xc8))(arg1 + 0x330, arg1 + 0x408)\n1401ef59e        int512_t zmm2\n1401ef59e        zmm2.o = *(arg1 + 0x41c)\n1401ef5a6        int512_t zmm1\n1401ef5a6        zmm1.o = *(arg1 + 0x418)\n1401ef5ae        int64_t result = (*(*(arg1 + 0x330) + 0x10))(arg1 + 0x330, zmm1, zmm2)\n1401ef5bb        *(arg1 + 0x78) = 1\n1401ef5c4        return result",
+  "fetched_at": "2026-04-26T17:27:15Z"
+}

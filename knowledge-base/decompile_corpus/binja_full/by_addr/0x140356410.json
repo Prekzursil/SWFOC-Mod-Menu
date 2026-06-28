@@ -1,0 +1,7 @@
+{
+  "addr": "0x140356410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140356410        int64_t r10_1 = sx.q(*arg2)\n140356416        int64_t rax = *arg1\n140356419        int64_t r8 = r10_1 * 3\n14035641d        int32_t* rdx = *(rax + (r8 << 3) + 8)\n140356422        int64_t* rcx = rax + (r8 << 3)\n14035642a        if (rdx == rcx[2])\n1403564d1        return sub_1403553b0(rcx, rdx, arg2) __tailcall\n140356430        *rdx = r10_1.d\n140356437        rdx[1] = arg2[1]\n14035643e        rdx[2] = arg2[2]\n140356445        rdx[3] = arg2[3]\n14035644c        rdx[4] = arg2[4]\n140356453        rdx[5] = arg2[5]\n14035645a        rdx[6] = arg2[6]\n140356461        rdx[7] = arg2[7]\n140356468        rdx[8] = arg2[8]\n14035646f        rdx[9] = arg2[9]\n140356476        rdx[0xa] = arg2[0xa]\n14035647d        rdx[0xb] = arg2[0xb]\n140356484        rdx[0xc] = arg2[0xc]\n14035648b        rdx[0xd] = arg2[0xd]\n140356492        rdx[0xe] = arg2[0xe]\n14035649a        rdx[0xf].b = arg2[0xf].b\n1403564a2        *(rdx + 0x3d) = *(arg2 + 0x3d)\n1403564a5        int32_t rax_17 = arg2[0x10]\n1403564a9        rcx[1] += 0x54\n1403564ae        rdx[0x10] = rax_17\n1403564b5        rdx[0x11] = arg2[0x11]\n1403564bc        rdx[0x12] = arg2[0x12]\n1403564c3        rdx[0x13] = arg2[0x13]\n1403564c6        int32_t result = arg2[0x14]\n1403564ca        rdx[0x14] = result\n1403564cd        return result",
+  "fetched_at": "2026-04-26T17:11:18Z"
+}

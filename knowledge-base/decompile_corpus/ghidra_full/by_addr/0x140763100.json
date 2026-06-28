@@ -1,0 +1,7 @@
+{
+  "addr": "0x140763100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "_Mpunct<char> * __thiscall\nstd::moneypunct<char,0>::scalar_deleting_destructor(moneypunct<char,0> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: std::_Mpunct<char>::~_Mpunct<char> */\n  this->vftablePtr = (moneypunct<char,0>_vftable *)&_Mpunct<char>::vftable;\n  FUN_1407864b8(this[1].vftablePtr);\n  FUN_1407864b8(this[2].vftablePtr);\n  FUN_1407864b8(this[2]._Crt_new_delete);\n  FUN_1407864b8(this[3].vftablePtr);\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr = (moneypunct<char,0>_vftable *)&_Facet_base::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x78);\n  }\n  return (_Mpunct<char> *)this;\n}",
+  "fetched_at": "2026-04-26T18:09:01Z"
+}

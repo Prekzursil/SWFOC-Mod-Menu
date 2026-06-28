@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a82a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a82b0        if ((arg1[0x74].b & 2) != 0)\n1403a82b0        return \n1403a82c4        int32_t rax_1 = sub_140374b50(arg1[0x53], 0)\n1403a82d0        void* rax_2 = sub_140397d90(arg1, rax_1)\n1403a82d8        int64_t var_18\n1403a82d8        int512_t entry_zmm2\n1403a82d8        int128_t zmm6\n1403a82d8        if (rax_2 != 0)\n1403a82da        char r8_1 = *(rax_2 + 0x1c)\n1403a82e2        if (r8_1 != 0)\n1403a82e4        int32_t rax_3 = arg1[0xb].d\n1403a82fd        var_18 = 0\n1403a8306        int32_t var_10_1 = 0\n1403a830e        entry_zmm2, zmm6 = sub_14038a350(arg1, rax_1, r8_1, &var_18, entry_zmm2, zmm6, rax_3, 0x3fffff)\n1403a831f        int32_t rax_4 = sub_140374b50(arg1[0x53], 1)\n1403a832b        uint64_t rax = sub_140397d90(arg1, rax_4)\n1403a8333        if (rax == 0)\n1403a8333        return \n1403a8335        char r8_2 = *(rax + 0x1c)\n1403a833d        if (r8_2 == 0)\n1403a833d        return \n1403a833f        int32_t rax_5 = arg1[0xb].d\n1403a8358        var_18 = 0\n1403a8361        int32_t var_10_2 = 0\n1403a8369        sub_14038a350(arg1, rax_4, r8_2, &var_18, entry_zmm2, zmm6, rax_5, 0x3fffff)\n1403a8378        return ",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

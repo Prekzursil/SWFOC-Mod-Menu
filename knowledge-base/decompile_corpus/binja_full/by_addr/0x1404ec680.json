@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ec680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ec68f        *(arg1 + 0x1c) = 0x80000000\n1404ec698        arg1[2] = 0\n1404ec69f        arg1[3].d = 0\n1404ec6a5        *arg1 = &TeamDataPackClass::`vftable'{for `BaseDataPackClass'}\n1404ec6b6        arg1[1] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n1404ec6be        arg1[4] = 0\n1404ec6c9        arg1[0xe] = &DynamicVectorClass<class Vector3>::`vftable'\n1404ec6cd        arg1[5].d = 0\n1404ec6d7        __builtin_memset(&arg1[0xf], 0, 0x14)\n1404ec6e2        arg1[6] = 0\n1404ec6e6        arg1[7].d = 0xffffffff\n1404ec6ed        *(arg1 + 0x3c) = 0\n1404ec6f1        *(arg1 + 0x44) = 0\n1404ec6f5        arg1[9].d = 9\n1404ec6fc        __builtin_memset(&arg1[0xa], 0, 0x1c)\n1404ec712        *(arg1 + 0xa4) = 0\n1404ec719        arg1[0x12].d = (0f + 0f) f* 0.5f\n1404ec728        *(arg1 + 0xac) = 0\n1404ec72f        *(arg1 + 0x8c) = (0f + 0f) f* 0.5f\n1404ec73e        *(arg1 + 0xb4) = 0\n1404ec745        *(arg1 + 0xbc) = 1\n1404ec74e        arg1[0x18].d = 0\n1404ec762        *(arg1 + 0x94) = (0f + 0f) f* 0.5f\n1404ec76e        arg1[0x13].d = (0f - 0f) & 0x7fffffff\n1404ec789        int32_t zmm0 = arg1[0x13].d\n1404ec795        *(arg1 + 0x9c) = (0f - 0f) & 0x7fffffff\n1404ec7b5        arg1[0x13].d = zmm0 f* 0.5f\n1404ec7bd        arg1[0x14].d = (0f - 0f) & 0x7fffffff\n1404ec7d6        arg1[0x14].d = arg1[0x14].d f* 0.5f\n1404ec7de        *(arg1 + 0x9c) = *(arg1 + 0x9c) f* 0.5f\n1404ec7e6        return arg1",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

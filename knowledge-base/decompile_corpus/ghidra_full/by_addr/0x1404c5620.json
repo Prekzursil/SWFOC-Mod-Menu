@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c5620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404c5620(void)\n\n{\n  char *pcVar1;\n  undefined8 uVar2;\n  int iVar3;\n  char *_Str1;\n  longlong lVar4;\n  longlong lVar5;\n  \n  lVar4 = (longlong)DAT_140a2bb70;\n  if (0 < lVar4) {\n    lVar5 = 0;\n    do {\n      pcVar1 = *(char **)(DAT_140a2bb68 + lVar5 * 8);\n      if (*(longlong *)(pcVar1 + 0x10) != 0) {\n        _Str1 = pcVar1;\n        if (0xf < *(ulonglong *)(pcVar1 + 0x18)) {\n          _Str1 = *(char **)pcVar1;\n        }\n        iVar3 = _stricmp(_Str1,\"None\");\n        if (iVar3 == 0) {\n          pcVar1[0x20] = '\\0';\n          pcVar1[0x21] = '\\0';\n          pcVar1[0x22] = '\\0';\n          pcVar1[0x23] = '\\0';\n          pcVar1[0x24] = '\\0';\n          pcVar1[0x25] = '\\0';\n          pcVar1[0x26] = '\\0';\n          pcVar1[0x27] = '\\0';\n        }\n        else {\n          uVar2 = FUN_1402d1e50(&DAT_140b27dc0,pcVar1);\n          *(undefined8 *)(pcVar1 + 0x20) = uVar2;\n        }\n      }\n      lVar5 = lVar5 + 1;\n    } while (lVar5 < lVar4);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:12:14Z"
+}

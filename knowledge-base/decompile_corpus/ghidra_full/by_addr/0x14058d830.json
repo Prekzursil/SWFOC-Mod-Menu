@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058d830",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DeathBehaviorClass::vfunction16(DeathBehaviorClass *this)\n\n{\n  FUN_14058cf90(this,this->offset_0x18,2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:41:53Z"
+}

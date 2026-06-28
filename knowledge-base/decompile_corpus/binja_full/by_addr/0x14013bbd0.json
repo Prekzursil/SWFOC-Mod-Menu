@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013bbd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013bbed        char rax\n14013bbed        int64_t r8\n14013bbed        rax, r8 = sub_14021fe20(arg2, 0x900, arg3, arg4)\n14013bc10        char rdi = rax & 1 & sub_14021fe20(arg2, 0, r8, arg4)\n14013bc13        sub_140220140(arg2, arg1 + 0xd8, nullptr)\n14013bc1b        char rax_2\n14013bc1b        int64_t r8_1\n14013bc1b        rax_2, r8_1 = sub_14021feb0(arg2)\n14013bc3d        rdi = rdi & rax_2 & sub_14021fe20(arg2, 1, r8_1, arg4)\n14013bc44        sub_1402200b0(arg2, arg1 + 0x2dc, 4, nullptr)\n14013bc4c        char rax_4\n14013bc4c        int64_t r8_2\n14013bc4c        rax_4, r8_2 = sub_14021feb0(arg2)\n14013bc5c        char rax_5\n14013bc5c        int64_t r8_3\n14013bc5c        rax_5, r8_3 = sub_14021fe20(arg2, 0x800, r8_2, arg4)\n14013bc6e        int512_t zmm1 = sub_140171e00(*(arg1 + 0xd0), arg2, r8_3, arg4)\n14013bc76        char rax_6\n14013bc76        int64_t r8_4\n14013bc76        rax_6, r8_4 = sub_14021feb0(arg2)\n14013bc98        rdi = rdi & rax_4 & rax_5 & rax_6 & sub_14021fe20(arg2, 2, r8_4, zmm1)\n14013bc9f        sub_1402200b0(arg2, arg1 + 0x2ed, 1, nullptr)\n14013bcaf        rdi &= sub_14021feb0(arg2)\n14013bcc9        return sub_14021feb0(arg2) & rdi",
+  "fetched_at": "2026-04-26T17:14:55Z"
+}

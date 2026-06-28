@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f4ef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid __thiscall LogWindowItem::~LogWindowItem(void)\n\n{\n  longlong lVar1;\n  \n  _DAT_140b39148 = 0;\n  _DAT_140b39088 = 0;\n  _DAT_140b39140 = &vftable;\n  if (0xf < DAT_140b391d8) {\n    if (0xfff < DAT_140b391d8 + 1) {\n      lVar1 = *(longlong *)(CONCAT71(DAT_140b391c0._1_7_,(undefined1)DAT_140b391c0) + -8);\n      if (0x1f < (CONCAT71(DAT_140b391c0._1_7_,(undefined1)DAT_140b391c0) - lVar1) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1,DAT_140b391d8 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  _DAT_140b391d0 = _DAT_140802a40;\n  DAT_140b391d8 = _UNK_140802a48;\n  DAT_140b391c0._0_1_ = 0;\n  FUN_140066600(&DAT_140b391a8);\n  DebugTreeItem::~DebugTreeItem((DebugTreeItem *)&DAT_140b39140);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:04:07Z"
+}

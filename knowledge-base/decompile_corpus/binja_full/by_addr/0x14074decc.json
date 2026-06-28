@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074decc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074dee7        char rbp = 0\n14074dee9        int32_t arg_8 = 0\n14074defc        if (arg1 != 0 && *arg1 == 0)\n14074df05        struct std::locale::facet::std::time_put<uint16_t>::VTable** rax_1 = operator new(0x18)\n14074df0a        struct std::locale::facet::std::time_put<uint16_t>::VTable** rdi_1 = rax_1\n14074df0d        arg_8.q = rax_1\n14074df18        void var_88\n14074df18        if (rax_1 == 0)\n14074df8a        rdi_1 = nullptr\n14074df1a        void* rax_2 = *(arg2 + 8)\n14074df21        void* rdx\n14074df21        if (rax_2 == 0)\n14074df32        rdx = &data_1407ff8a8\n14074df23        rdx = *(rax_2 + 0x28)\n14074df2a        if (rdx == 0)\n14074df2c        rdx = rax_2 + 0x30\n14074df3e        std::_Locinfo::_Locinfo(&var_88, rdx)\n14074df43        rbp = 1\n14074df48        rdi_1[1].d = 0\n14074df53        *rdi_1 = &std::time_put<uint16_t>::`vftable'{for `std::locale::facet'}\n14074df5a        rdi_1[2] = 0\n14074df63        uint128_t* rbx_1 = _W_Gettnames()\n14074df71        if (&rdi_1[2] != &arg_8)\n14074df76        free(rdi_1[2])\n14074df7b        rdi_1[2] = rbx_1\n14074df7e        rbx_1 = nullptr\n14074df83        free(rbx_1)\n14074df8c        *arg1 = rdi_1\n14074df93        if ((rbp & 1) != 0)\n14074df9a        std::_Locinfo::~_Locinfo(&var_88)\n14074dfbb        return 5",
+  "fetched_at": "2026-04-26T17:29:47Z"
+}

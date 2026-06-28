@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a86c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a876        int16_t* rdx = *arg1\n14079a879        int64_t r8 = -1\n14079a882        int64_t rcx = -1\n14079a885        rcx += 1\n14079a88c        do while (rdx[rcx] != 0)\n14079a894        int32_t rax\n14079a894        rax.b = rcx == 3\n14079a897        arg1[3].d = rax\n14079a89e        r8 += 1\n14079a8a6        do while (*(arg1[1] + (r8 << 1)) != 0)\n14079a8ae        int32_t rax_2\n14079a8ae        rax_2.b = r8 == 3\n14079a8b1        *(arg1 + 0x1c) = rax_2\n14079a8b8        int32_t rcx_1\n14079a8b8        if (rcx != 3)\n14079a8c1        int32_t r9_1 = 0\n14079a8c7        if (rdx != 0)\n14079a8d2        while (true)\n14079a8d2        int16_t r8_1 = *rdx\n14079a8d6        rdx = &rdx[1]\n14079a8ed        if (r8_1 - 0x41 u> 0x19 && r8_1 - 0x61 u> 0x19)\n14079a8ed        break\n14079a8ef        r9_1 += 1\n14079a8f4        rcx_1 = r9_1\n14079a8c9        rcx_1 = 0\n14079a8ba        rcx_1 = 2\n14079a8fa        *(arg1 + 0x14) = rcx_1\n14079a90b        __acrt_EnumSystemLocalesEx(sub_14079a9d4, 3, 0, 0)\n14079a910        int32_t rcx_2 = arg1[2].d\n14079a922        bool result = test_bit(rcx_2, 8)\n14079a92b        if ((result & (rcx_2.b & 7) != 0 & test_bit(rcx_2, 9)) == 0)\n14079a92d        arg1[2].d = 0\n14079a93a        return result",
+  "fetched_at": "2026-04-26T17:32:08Z"
+}

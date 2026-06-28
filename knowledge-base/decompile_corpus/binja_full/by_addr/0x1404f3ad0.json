@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f3ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f3adf        void* rsi = arg2[0x19]\n1404f3aec        uint64_t result = *(rsi + 0x10)\n1404f3af3        if (result != 0)\n1404f3af5        int64_t rcx = sx.q(*(rsi + 0x18))\n1404f3af9        int32_t rdx = 0\n1404f3afd        if (rcx.d s> 0)\n1404f3b02        int64_t rcx_1 = 0\n1404f3b07        while (*result != arg3)\n1404f3b09        rdx += 1\n1404f3b0b        rcx_1 += 1\n1404f3b0e        result += 8\n1404f3b15        if (rcx_1 s>= rcx)\n1404f3b26        return result\n1404f3b2a        if (rdx != 0xffffffff)\n1404f3b30        int512_t zmm1_1\n1404f3b30        int512_t zmm2_1\n1404f3b30        result, zmm1_1, zmm2_1 = sub_1400475e0(rsi + 8, rdx)\n1404f3b37        if (result.b != 0)\n1404f3b3e        sub_1403a8f80(arg3, 0)\n1404f3b50        int128_t zmm6\n1404f3b50        if (*(rsi + 0x18) == 0 && (arg2[0x74].b & 2) == 0)\n1404f3b57        return sub_140391310(arg2, 1, zmm2_1, zmm1_1, zmm6)\n1404f3b6b        return result",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

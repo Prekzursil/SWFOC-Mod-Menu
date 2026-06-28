@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079e8ac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079e8b6        int32_t arg_8 = arg1\n14079e8cd        int64_t rbx = sx.q(arg1)\n14079e8d3        if (rbx.d != 0xfffffffe)\n14079e8f7        if (arg1 s>= 0 && rbx.d u< data_140b3c8d0)\n14079e8ff        int64_t rsi_2 = rbx s>> 6\n14079e90d        uint64_t r12_1 = (zx.q(rbx.d) & 0x3f) * 9\n14079e91c        if ((*((&data_140b3c4d0)[rsi_2] + (r12_1 << 3) + 0x38) & 1) != 0)\n14079e920        __acrt_lowio_unlock_fh(rbx.d)\n14079e925        int64_t result = -1\n14079e934        if ((*((&data_140b3c4d0)[rsi_2] + (r12_1 << 3) + 0x38) & 1) != 0)\n14079e958        result = common_lseek_nolock<int64_t>(rbx.d, arg2, arg3)\n14079e93b        *_errno() = 9\n14079e946        *__doserrno() = 0\n14079e95d        sub_1407990bc(rbx.d)\n14079e962        return result\n14079e96c        *__doserrno() = 0\n14079e974        *_errno() = 9\n14079e97a        _invalid_parameter_noinfo()\n14079e8da        *__doserrno() = 0\n14079e8e2        *_errno() = 9\n14079e97f        return -1",
+  "fetched_at": "2026-04-26T17:32:16Z"
+}

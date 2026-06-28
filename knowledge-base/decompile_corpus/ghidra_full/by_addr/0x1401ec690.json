@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ec690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401ec690(longlong param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  undefined8 uVar4;\n  undefined4 uVar5;\n  \n  uVar4 = (**(code **)(*(longlong *)(param_1 + 200) + 0x78))(param_1 + 200);\n  fVar1 = (float)(**(code **)(*(longlong *)(param_1 + 0x158) + 0x78))();\n  fVar3 = *(float *)(param_1 + 0x33c);\n  fVar2 = (float)(**(code **)(*(longlong *)(param_1 + 200) + 0x88))(param_1 + 200);\n  fVar1 = (((float)uVar4 - fVar1) - fVar3) / (*(float *)(param_1 + 0x344) - fVar2);\n  fVar3 = 0.0;\n  uVar5 = 0;\n  if (0.0 < fVar1) {\n    fVar3 = DAT_1407ffaf8;\n    uVar5 = 0;\n    if (fVar1 < DAT_1407ffaf8) {\n      fVar3 = fVar1;\n      uVar5 = (int)((ulonglong)uVar4 >> 0x20);\n    }\n  }\n  return CONCAT44(uVar5,fVar3);\n}",
+  "fetched_at": "2026-04-26T17:52:17Z"
+}

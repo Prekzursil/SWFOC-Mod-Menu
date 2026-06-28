@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1e50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c1e50        int64_t result = data_140b318c8\n1404c1e5a        if (result == 0)\n1404c1e5f        return result\n1404c1e5c        return result() __tailcall",
+  "fetched_at": "2026-04-26T17:30:11Z"
+}

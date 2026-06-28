@@ -1,0 +1,7 @@
+{
+  "addr": "0x140729190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14072919f        int64_t rcx = sx.q(arg2)\n1407291a2        void* rdx = *(*(arg3 + 0xd0) + (rcx << 3))\n1407291d1        if (*(arg3 + 0x198) == 0 && *(rcx * 0xb8 + data_140b3a558 + 4) == 0xffffffff && *(rdx + 0x89c) s> *(*(*(arg3 + 0x28) + 0x28) + 0x84))\n1407291db        return 9.99999984e+17f\n1407291fa        return float.s(zx.q(*(rdx + 0x89c))) / 5f * 2f",
+  "fetched_at": "2026-04-26T17:28:34Z"
+}

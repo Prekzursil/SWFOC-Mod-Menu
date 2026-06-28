@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc4c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406cc4ca        struct SpecialAbilityClass::InfectionAbilityClass::VTable** result = arg1\n1406cc4cd        sub_14048c780(arg1)\n1406cc4d4        result[0x30].d = 0xffffffff\n1406cc4e5        result[0x2f] = 0\n1406cc4ec        *result = &InfectionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406cc4fd        *(result + 0x184) = 0\n1406cc503        result[1] = &InfectionAbilityClass::`vftable'{for `RefCountClass'}\n1406cc507        result[0x31] = 0\n1406cc50e        result[0x33] = 0\n1406cc515        result[0x34] = 0xf\n1406cc520        result[0x35].d = 0\n1406cc526        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x36])\n1406cc532        __builtin_memset(&result[0x38], 0, 0x14)\n1406cc546        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x3b])\n1406cc558        return result",
+  "fetched_at": "2026-04-26T17:25:27Z"
+}

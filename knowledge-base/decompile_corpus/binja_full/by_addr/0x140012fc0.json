@@ -1,0 +1,7 @@
+{
+  "addr": "0x140012fc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140012fc9        int64_t rax = operator new(0x20)\n140012fd5        data_140a118d0 = 0x1e\n140012fe0        data_140a118d8 = 0x1f\n140012feb        __builtin_strncpy(rax, \"Full_Story_Campaign_Underworld\", 0x1f)\n14001301a        data_140a118c0 = rax\n140013025        return atexit(sub_1407e9480) __tailcall",
+  "fetched_at": "2026-04-26T16:49:47Z"
+}

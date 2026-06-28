@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401419f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140141a03        *arg1 = &alAssetManager::`vftable'\n140141a09        arg1[2] = 0\n140141a14        arg1[1] = &DynamicVectorClass<class alRenderable* __ptr64>::`vftable'\n140141a1f        arg1[3] = 0\n140141a23        arg1[4] = &DynamicVectorClass<class alAnim* __ptr64>::`vftable'\n140141a2e        arg1[5] = 0\n140141a32        arg1[6] = 0\n140141a36        arg1[7] = &DynamicVectorClass<class alEmitter* __ptr64>::`vftable'\n140141a3c        __builtin_memset(&arg1[8], 0, 0x11)\n140141a47        __builtin_memset(arg1 + 0x54, 0, 0x14)\n140141a55        int64_t* rax = operator new(0x38)\n140141a61        *rax = rax\n140141a64        rax[1] = rax\n140141a68        arg1[0xb] = rax\n140141a6c        int64_t r8 = arg1[0xb]\n140141a70        __builtin_memset(&arg1[0xd], 0, 0x18)\n140141a7b        arg1[0x10] = 7\n140141a86        arg1[0x11] = 8\n140141a91        *(arg1 + 0x54) = 0x3f800000\n140141a98        sub_140048250(&arg1[0xd], 0x10, r8)\n140141aa4        arg1[0x12] = 0\n140141aab        arg1[0x36] = &DynamicVectorClass<class std::string>::`vftable'\n140141ab9        arg1[0x13] = 0\n140141ac2        arg1[0x14] = 0\n140141acf        *(arg1 + 0x1ac) = 1\n140141ad6        arg1[0x37] = 0\n140141add        arg1[0x38] = 0\n140141ae4        data_140a62700 = arg1\n140141aeb        memset(&arg1[0x15], 0, 0x104)\n140141afd        return arg1",
+  "fetched_at": "2026-04-26T17:19:30Z"
+}

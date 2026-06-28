@@ -1,0 +1,7 @@
+{
+  "addr": "0x140173000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140173000(longlong param_1,int param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  DWORD DVar3;\n  uint uVar4;\n  ulonglong uVar5;\n  ulonglong uVar6;\n  undefined1 local_res18;\n  \n  DVar3 = GetCurrentThreadId();\n  if (((DVar3 != DAT_140a155d0) || (DAT_140a62740 == '\\0')) && (-1 < *(int *)(param_1 + 0xe8))) {\n    lVar1 = *(longlong *)(param_1 + 0xd0);\n    uVar4 = 0;\n    uVar6 = *(longlong *)(param_1 + 0xd8) - lVar1 >> 3;\n    if (uVar6 != 0) {\n      uVar5 = 0;\n      while (lVar2 = *(longlong *)(lVar1 + uVar5 * 8),\n            *(int *)(*(longlong *)(lVar2 + 0x118) + 0x410) != param_2) {\n        uVar4 = uVar4 + 1;\n        uVar5 = (ulonglong)uVar4;\n        if (uVar6 <= uVar5) {\n          return;\n        }\n      }\n      FUN_140161520(lVar2,*(undefined4 *)\n                           (*(longlong *)\n                             (*(longlong *)(lVar1 + (longlong)*(int *)(param_1 + 0xe8) * 8) + 0x118)\n                           + 0x410));\n      FUN_140161520(*(undefined8 *)\n                     (*(longlong *)(param_1 + 0xd0) + (longlong)*(int *)(param_1 + 0xe8) * 8),\n                    param_2);\n      FUN_140175b20(*(longlong *)(param_1 + 0xd0),*(longlong *)(param_1 + 0xd8),\n                    *(longlong *)(param_1 + 0xd8) - *(longlong *)(param_1 + 0xd0) >> 3,local_res18);\n      FUN_140172bd0(param_1,param_2);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:26:27Z"
+}

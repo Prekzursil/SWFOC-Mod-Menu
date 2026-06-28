@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070b088",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nReduceProductionTimeAbilityClass::vfunction3_for_RefCountClass\n          (ReduceProductionTimeAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((ReduceProductionTimeAbilityClass *)\n             &this[-1].ReduceProductionTimeAbilityClass_data.offset_0x8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b59c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407b59c0(longlong param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  int iVar3;\n  int iVar4;\n  float fVar5;\n  \n  lVar2 = *(longlong *)(param_1 + 0x70) - *(longlong *)(param_1 + 0x68);\n  lVar1 = lVar2 >> 0x3f;\n  if (lVar2 / 0x28 + lVar1 != lVar1) {\n    *(longlong *)(param_1 + 0x70) = *(longlong *)(param_1 + 0x68);\n  }\n  lVar1 = *(longlong *)(param_1 + 0x40) - *(longlong *)(param_1 + 0x38);\n  lVar1 = lVar1 + SUB168(SEXT816(-0x7777777777777777) * SEXT816(lVar1),8);\n  iVar3 = (int)(lVar1 >> 5) - (int)(lVar1 >> 0x3f);\n  if (2 < iVar3) {\n    FUN_1407b71a0(param_1);\n    FUN_1407b50a0(param_1,0);\n    iVar4 = 1;\n    fVar5 = 0.0;\n    *(undefined4 *)(*(longlong *)(param_1 + 0x38) + 0x34) = 0;\n    if (1 < iVar3 + -1) {\n      lVar1 = 0x3c;\n      iVar4 = 1;\n      do {\n        FUN_1407b5620(param_1,iVar4);\n        iVar4 = iVar4 + 1;\n        fVar5 = fVar5 + *(float *)(*(longlong *)(param_1 + 0x38) + 0x38 + lVar1);\n        *(float *)(*(longlong *)(param_1 + 0x38) + 0x34 + lVar1) =\n             fVar5 / *(float *)(param_1 + 0x2c);\n        lVar1 = lVar1 + 0x3c;\n      } while (iVar4 < iVar3 + -1);\n    }\n    FUN_1407b50a0(param_1,iVar3 + -2);\n    *(undefined4 *)((longlong)iVar4 * 0x3c + 0x34 + *(longlong *)(param_1 + 0x38)) = 0x3f800000;\n    FUN_1407b75a0(param_1);\n    FUN_1407b6ae0(param_1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:51Z"
+}

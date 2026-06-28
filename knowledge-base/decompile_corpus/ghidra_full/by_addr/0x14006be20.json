@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006be20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_14006be20(undefined8 param_1,ulonglong *param_2)\n\n{\n  ulonglong uVar1;\n  int iVar2;\n  uint uVar3;\n  \n  uVar1 = *param_2;\n  uVar3 = (uint)(uVar1 >> 0x20);\n  if (((((uVar1 & 0xf0000000000000) != 0) && ((uVar3 & 0xf00000) < 0xb00000)) &&\n      (((int)uVar3 >> 0x18) - 1U < 4)) &&\n     ((iVar2 = (int)uVar1, (uVar3 & 0xf00000) != 0x100000 ||\n      ((iVar2 != 0 && ((uVar3 & 0xfffff) < 5)))))) {\n    if ((uVar3 & 0xf00000) == 0x700000) {\n      if (iVar2 != 0) {\n        if ((uVar1 >> 0x20 & 0xfffff) == 0) {\n          return uVar1;\n        }\n        return 0;\n      }\n    }\n    else {\n      if ((uVar3 & 0xf00000) != 0x300000) {\n        return uVar1;\n      }\n      if (iVar2 != 0) {\n        return uVar1;\n      }\n    }\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:02Z"
+}

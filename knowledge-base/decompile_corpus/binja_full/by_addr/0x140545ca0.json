@@ -1,0 +1,7 @@
+{
+  "addr": "0x140545ca0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140545caa        int64_t* rbx = *(arg3 + 0x10)\n140545cc0        if ((*(arg3 + 0x18) - rbx) s>> 3 u< 1)\n140545ccc        sub_140248190(arg2, \"LuaTransitionToTacticalCamera -- Expected float parameter 1\", arg3)\n140545cdd        return 0\n140545cde        int64_t* rbx_1 = *rbx\n140545ce9        void* i\n140545ce9        if (rbx_1 != 0)\n140545cf1        (**rbx_1)(rbx_1)\n140545cf9        i, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n140545cff        int64_t* rdi\n140545cff        if (rbx_1 == 0 || i == 0)\n140545d16        label_140545d16:\n140545d16        rdi = nullptr\n140545d1b        if (rbx_1 != 0)\n140545d23        arg3 = (*(*rbx_1 + 8))(rbx_1)\n140545d0b        while (i != &data_140a157c0)\n140545d0d        i = *(i + 8)\n140545d14        if (i == 0)\n140545d14        goto label_140545d16\n140545d66        (**rbx_1)(rbx_1)\n140545d68        rdi = rbx_1\n140545d23        arg3 = (*(*rbx_1 + 8))(rbx_1)\n140545d29        if (rdi != 0)\n140545d79        _mm_cvtpd_ps(zx.o(rdi[2]))\n140545d7d        sub_14044d110()\n140545d88        (*(*rdi + 8))(rdi)\n140545d9c        return 0\n140545d35        sub_140248190(arg2, \"LuaTransitionToTacticalCamera -- Invalid parameter 1, expected a float\", arg3)\n140545d3a        int512_t zmm1_1\n140545d3a        zmm1_1.o = 0x3f800000\n140545d49        sub_14044d110()\n140545d5f        return 0",
+  "fetched_at": "2026-04-26T17:34:01Z"
+}

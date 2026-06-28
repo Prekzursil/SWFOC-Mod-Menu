@@ -1,0 +1,7 @@
+{
+  "addr": "0x140276930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RtsSceneClass::vfunction9(RtsSceneClass *this,undefined **param_1)\n\n{\n  undefined **ppuVar1;\n  longlong *plVar2;\n  undefined *puVar3;\n  \n  ppuVar1 = (this->RefCountClass_data).offset_0x8;\n  if (ppuVar1 != param_1) {\n    if (ppuVar1 != (undefined **)0x0) {\n      (**(code **)(*ppuVar1 + 8))();\n    }\n    (this->RefCountClass_data).offset_0x8 = param_1;\n    if (param_1 != (undefined **)0x0) {\n      (**(code **)*param_1)(param_1);\n      plVar2 = (longlong *)(this->RefCountClass_data).offset_0x78;\n      puVar3 = param_1[8];\n      goto LAB_140276986;\n    }\n  }\n  plVar2 = (longlong *)(this->RefCountClass_data).offset_0x78;\n  if (param_1 == (undefined **)0x0) {\n    puVar3 = (undefined *)0x0;\n  }\n  else {\n    puVar3 = param_1[8];\n  }\nLAB_140276986:\n                    /* WARNING: Could not recover jumptable at 0x000140276993. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*plVar2 + 0x90))(plVar2,puVar3);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:29Z"
+}

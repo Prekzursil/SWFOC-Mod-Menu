@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e84c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e84c6        int64_t* rbx = data_140a61e98\n1407e84d0        if (rbx == 0)\n1407e84d0        return \n1407e84db        int64_t rdi_1 = data_140a61ea0\n1407e84e5        if (rbx != rdi_1)\n1407e84f3        sub_14001eb00(rbx)\n1407e84f8        rbx = &rbx[6]\n1407e84ff        do while (rbx != rdi_1)\n1407e8501        rbx = data_140a61e98\n1407e8521        int64_t rax_1\n1407e8521        int64_t rdx_1\n1407e8521        rdx_1:rax_1 = muls.dp.q(0x2aaaaaaaaaaaaaab, data_140a61ea8 - rbx)\n1407e8524        int64_t rdx_2 = rdx_1 s>> 3\n1407e8541        if ((rdx_2 + (rdx_2 u>> 0x3f)) * 0x30 u>= 0x1000)\n1407e8543        int64_t* rax_4 = rbx[-1]\n1407e8556        if (rbx - rax_4 - 8 u> 0x1f)\n1407e857f        _invalid_parameter_noinfo_noreturn()\n1407e857f        noreturn\n1407e8558        rbx = rax_4\n1407e855e        j_sub_1407864b8(rbx)\n1407e8566        __builtin_memset(&data_140a61e98, 0, 0x18)\n1407e857e        return ",
+  "fetched_at": "2026-04-26T17:35:03Z"
+}

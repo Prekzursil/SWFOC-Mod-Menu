@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2ae9        struct BehaviorClass::ReinforcementPointBehaviorClass::VTable** result = operator new(0x40)\n1404c2af3        if (result == 0)\n1404c2b39        return 0\n1404c2af5        result[2].d = 0\n1404c2af8        __builtin_memset(&result[4], 0, 0x14)\n1404c2b03        *(result + 0x3c) = 0\n1404c2b0d        *result = &ReinforcementPointBehaviorClass::`vftable'{for `BehaviorClass'}\n1404c2b17        result[1] = &ReinforcementPointBehaviorClass::`vftable'{for `RefCountClass'}\n1404c2b22        result[3] = &ReinforcementPointBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404c2b26        *(result + 0x34) = 1\n1404c2b31        return result",
+  "fetched_at": "2026-04-26T17:30:22Z"
+}

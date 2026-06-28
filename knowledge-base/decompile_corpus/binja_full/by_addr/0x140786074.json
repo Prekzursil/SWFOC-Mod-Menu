@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786074",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140786080        void* rax = __acrt_getptd_noexit()\n140786088        if (rax != 0)\n14078608a        void* rbx_1 = *(rax + 0x3c0)\n140786094        if (rbx_1 != 0)\n14078609a        if (*(rbx_1 + 0x20) != 0)\n14078609c        __acrt_RoUninitialize()\n1407860a1        HANDLE hObject = *(rbx_1 + 0x10)\n1407860ad        if (hObject - 1 u<= -3)\n1407860af        CloseHandle(hObject)\n1407860b5        HMODULE hLibModule = *(rbx_1 + 0x18)\n1407860c1        if (hLibModule - 1 u<= -3)\n1407860c5        FreeLibraryAndExitThread(hLibModule, arg1)\n1407860c5        noreturn\n1407860ce        ExitThread(arg1)\n1407860ce        noreturn",
+  "fetched_at": "2026-04-26T17:31:17Z"
+}

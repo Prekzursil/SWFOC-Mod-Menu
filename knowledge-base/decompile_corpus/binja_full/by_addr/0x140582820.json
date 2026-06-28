@@ -1,0 +1,7 @@
+{
+  "addr": "0x140582820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058283c        int64_t* rsi = arg5\n14058284f        char* rcx = arg6\n14058285f        *rsi = arg3\n140582862        *arg8 = rcx\n140582865        int16_t* rdx = *rsi\n14058286b        if (rdx != arg4)\n140582873        while (rcx != arg7)\n140582875        wchar16 rdx_1 = *rdx\n140582889        if (arg7 - rcx s< 5)\n14058289f        int64_t rbx_1 = *arg2\n1405828a7        int32_t rax_5 = _Wcrtomb(&arg5, rdx_1, arg2, arg1 + 0x10)\n1405828ae        if (rax_5 s< 0)\n14058290d        return 2\n1405828b0        int32_t* rcx_2 = *arg8\n1405828b3        void* rbp_1 = sx.q(rax_5)\n1405828bf        if (arg7 - rcx_2 s< rbp_1)\n140582905        *arg2 = rbx_1\n140582908        rdx = *rsi\n14058290b        break\n1405828c9        memcpy(rcx_2, &arg5, rbp_1)\n1405828ce        *rsi += 2\n1405828d2        *arg8 += rbp_1\n14058288b        int32_t rax_3 = _Wcrtomb(rcx, rdx_1, arg2, arg1 + 0x10)\n140582892        if (rax_3 s< 0)\n14058290d        return 2\n140582894        *rsi += 2\n14058289a        *arg8 += sx.q(rax_3)\n1405828d5        rdx = *rsi\n1405828d8        rcx = *arg8\n1405828de        if (rdx == arg4)\n1405828de        break\n1405828e5        int64_t result\n1405828e5        result.b = rdx != arg4\n140582904        return result",
+  "fetched_at": "2026-04-26T17:35:42Z"
+}

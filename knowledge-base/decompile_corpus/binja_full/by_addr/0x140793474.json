@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793474",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079348f        int64_t rax = try_get_function(0, \"AreFileApisANSI\", &data_1408d81c8, &data_1408d81cc)\n140793497        if (rax == 0)\n1407934ad        return 1\n14079349d        return rax() __tailcall",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

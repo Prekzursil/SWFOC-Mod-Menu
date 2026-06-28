@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033fa70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033fa78        int64_t result\n14033fa78        if (not(*arg3 f> *arg2))\n14033fa7a        float zmm0 = *arg2\n14033fa7e        float temp0_1 = *arg3\n14033fa7e        zmm0 - temp0_1\n14033fa84        if (is_unordered.d(zmm0, temp0_1) || not(zmm0 == temp0_1))\n14033fa86        result.b = 1\n14033fa88        return result\n14033fa89        result.b = 0\n14033fa8b        return result",
+  "fetched_at": "2026-04-26T17:04:57Z"
+}

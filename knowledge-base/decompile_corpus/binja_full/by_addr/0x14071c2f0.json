@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071c2fc        int64_t result = sub_14048f2c0(arg1)\n14071c30b        if (not(0f f< *(arg1 + 0x178)))\n14071c312        void* r8_1 = arg1 + 0x18\n14071c316        if (*(arg1 + 0x30) u>= 0x10)\n14071c318        r8_1 = *r8_1\n14071c327        char var_108[0x100]\n14071c327        sscanf_s(&var_108, \"Error: (%s) Charge_Up_Seconds cannot be less than or equal to zero.\", r8_1)\n14071c331        result = sub_1402149d0(&var_108)\n14071c336        *(arg1 + 0x178) = 0x3f800000\n14071c348        return result",
+  "fetched_at": "2026-04-26T17:28:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077f668",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077f677        int64_t r8 = *arg1\n14077f67d        uint64_t rsi = zx.q(arg2)\n14077f683        if (r8 == 0)\n14077f68e        int64_t rax_1 = _calloc_base(0x2000, zx.q((r8 + 1).d))\n14077f699        _free_base(*arg1)\n14077f6a0        *arg1 = rax_1\n14077f6a3        _free_base(0)\n14077f6a8        r8 = *arg1\n14077f6b3        uint64_t rdx_2 = rsi u>> 3\n14077f6be        int32_t result = rsi.d & 7\n14077f6c9        *(rdx_2 + r8) |= (1 << (result u% 0x20)).b\n14077f6d2        return result",
+  "fetched_at": "2026-04-26T17:31:03Z"
+}

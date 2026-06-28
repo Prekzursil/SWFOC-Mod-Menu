@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d4700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401d4700(undefined8 param_1)\n\n{\n  DAT_140a7a0c0 = (*(code *)PTR_vfunction19_140a136a8)();\n  (*(code *)PTR_vfunction19_140a136b0)(param_1,DAT_140a7a0c0);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:49:52Z"
+}

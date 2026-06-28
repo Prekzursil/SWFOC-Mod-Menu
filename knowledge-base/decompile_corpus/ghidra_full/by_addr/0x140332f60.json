@@ -1,0 +1,7 @@
+{
+  "addr": "0x140332f60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nDynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct>::\n~DynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct>\n          (DynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct> *this)\n\n{\n  uint *puVar1;\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = (this->DynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct>_data).\n          offset_0x0;\n  this->vftablePtr = &vftable;\n  if (lpMem != (LPVOID)0x0) {\n    if (((this->DynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct>_data).offset_0xc\n        & 0x80000000) == 0) {\n      thunk_FUN_1407864b8(lpMem);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    puVar1 = &(this->DynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct>_data).\n              offset_0xc;\n    *puVar1 = *puVar1 & 0x80000000;\n    (this->DynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct>_data).offset_0x0 =\n         (LPVOID)0x0;\n    (this->DynamicVectorClass<struct_BroadcasterClass::PacketIdentifierStruct>_data).offset_0x8 = 0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:01Z"
+}

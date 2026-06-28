@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404540b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404540b3        if (arg2 == 0)\n1404540b3        return \n1404540cd        int32_t rbx_1 = 0\n1404540de        int64_t r15_1 = arg1[0x6c]\n1404540e8        int64_t rbp_3 = (arg1[0x6d] - r15_1) s>> 5\n1404540ef        if (rbp_3 == 0)\n1404540ef        return \n1404540fa        uint64_t rax = 0\n1404540fc        void* rdi_1 = *(arg2 + 0x298)\n140454108        int64_t r12_1 = *(rdi_1 + 0x110)\n140454114        void* rdx = rdi_1 + 0xf8\n14045411b        char** rax_2 = (rax << 5) + r15_1\n140454122        if (r12_1 u>= 0x10)\n140454124        rdx = *(rdi_1 + 0xf8)\n140454130        char* rcx = rax_2\n140454133        if (rax_2[3] u>= 0x10)\n140454135        rcx = *rax_2\n140454138        int64_t r8 = rax_2[2]\n140454143        if (r8 == *(rdi_1 + 0x108) && memcmp(rcx, rdx, r8) == 0 && arg3 == arg1[0x6f])\n14045416a        sub_140455db0(arg1, nullptr, 0)\n14045416a        break\n140454157        rbx_1 += 1\n140454159        rax = zx.q(rbx_1)\n14045415e        do while (rax u< rbp_3)\n14045418f        return ",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

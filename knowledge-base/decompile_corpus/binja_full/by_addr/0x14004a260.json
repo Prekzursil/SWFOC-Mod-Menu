@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004a260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14004a285        uint128_t zmm6 = _mm_cvtepi32_ps(zx.o(sub_14025e960()))\n14004a288        uint64_t result = sub_14025e930()\n14004a29d        float zmm1 = *arg3 f/ zmm6.d\n14004a2a1        float zmm2 = arg3[1] f/ _mm_cvtepi32_ps(zx.o(result.d)).d\n14004a2a7        int32_t rdx\n14004a2a7        if (arg2 == 0)\n14004a2a9        result = sx.q(*(arg1 + 0x40))\n14004a2ad        rdx = 0\n14004a2b1        if (arg2 != 0 || result.d s<= 0)\n14004a304        label_14004a304:\n14004a304        result.b = 0\n14004a2b3        int64_t r9_1 = *(arg1 + 0x38)\n14004a2b7        uint64_t result_1 = result\n14004a2ba        int64_t rcx = 0\n14004a2bc        result = r9_1 + 0x20\n14004a2ca        while (true)\n14004a2ca        if (*(result - 8) != 0 && not(zmm1 f<= *result))\n14004a2d1        uint128_t zmm0\n14004a2d1        zmm0.d = (*(result + 8)).d f+ *result\n14004a2de        if (not(zmm0.d f<= zmm1) && not(zmm2 f<= *(result + 4)))\n14004a2e5        zmm0.d = (*(result + 0xc)).d f+ *(result + 4)\n14004a2f4        if (not(zmm0.d f<= zmm2) && *(result + 0x10) != 0)\n14004a31e        int64_t rax_2 = sx.q(rdx) << 6\n14004a327        (*(rax_2 + r9_1 + 0x30))(*(rax_2 + r9_1 + 0x38))\n14004a32c        result.b = 1\n14004a32e        break\n14004a2f6        rdx += 1\n14004a2f8        rcx += 1\n14004a2fb        result += 0x40\n14004a302        if (rcx s>= result_1)\n14004a302        goto label_14004a304\n14004a31a        return result",
+  "fetched_at": "2026-04-26T16:54:13Z"
+}

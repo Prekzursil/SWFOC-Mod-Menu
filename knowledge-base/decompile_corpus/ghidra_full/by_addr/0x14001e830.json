@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001e830",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* Library Function - Single Match\n    public: __cdecl std::exception::exception(class std::exception const & __ptr64) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nexception * __thiscall std::exception::exception(exception *this,exception *param_1)\n\n{\n  this->vftablePtr = &vftable;\n  (this->exception_data).offset_0x0 = 0;\n  (this->exception_data).offset_0x8 = 0;\n  __std_exception_copy(param_1 + 8);\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:33Z"
+}

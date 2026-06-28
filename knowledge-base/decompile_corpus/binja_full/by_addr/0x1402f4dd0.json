@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f4dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402f4ddc        int64_t rax = -1\n1402f4de3        rax += 1\n1402f4dea        do while (arg2[rax] != 0)\n1402f4e00        int32_t arg_8 = sub_140215a30(arg2, rax.d, 0)\n1402f4e16        return *sub_1402dc560(arg1 + 0x640, &arg_8)",
+  "fetched_at": "2026-04-26T17:22:58Z"
+}

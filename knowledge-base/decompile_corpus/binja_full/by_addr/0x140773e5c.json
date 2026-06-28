@@ -1,0 +1,7 @@
+{
+  "addr": "0x140773e5c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140773e6b        *(arg1 + 0x54) = 1\n140773e73        arg1[4] += 8\n140773e8a        int16_t rsi = *(arg1[4] - 8)\n140773e8e        int32_t result = __crt_stdio_output::is_wide_character_specifier<wchar_t>((*arg1).d, *(arg1 + 0x42), *(arg1 + 0x3c))\n140773e93        int16_t* rcx_1 = arg1[0x8c]\n140773e9c        if (result.b != 0)\n140773ed0        if (rcx_1 == 0)\n140773ed0        rcx_1 = &arg1[0xb]\n140773ed4        *rcx_1 = rsi\n140773e9e        int128_t* r9_1 = arg1[1]\n140773ea7        char arg_8 = rsi.b\n140773eaf        char arg_9 = result.b\n140773eb3        if (rcx_1 == 0)\n140773eb3        rcx_1 = &arg1[0xb]\n140773ec5        if (_mbtowc_l(rcx_1, &arg_8, sx.q(*(*r9_1 + 8)), r9_1) s< 0)\n140773ec7        arg1[8].b = 1\n140773ed7        void* rcx_2 = arg1[0x8c]\n140773ede        result.b = 1\n140773ee8        arg1[0xa].d = 1\n140773eef        if (rcx_2 == 0)\n140773eef        rcx_2 = &arg1[0xb]\n140773ef3        arg1[9] = rcx_2\n140773f01        return result",
+  "fetched_at": "2026-04-26T17:30:48Z"
+}

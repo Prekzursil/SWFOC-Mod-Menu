@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e1880",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_galactic_perception_ctor",
+  "body": "1404e1886        struct AIPerceptionSystemClass::GalacticPerceptionSystemClass::VTable** result = arg1\n1404e1889        sub_1404dad80(arg1, arg2)\n1404e1895        *result = &GalacticPerceptionSystemClass::`vftable'{for `AIPerceptionSystemClass'}\n1404e189a        __builtin_memset(&result[0x1a], 0, 0x18)\n1404e18b7        return result",
+  "fetched_at": "2026-04-26T16:43:46Z"
+}

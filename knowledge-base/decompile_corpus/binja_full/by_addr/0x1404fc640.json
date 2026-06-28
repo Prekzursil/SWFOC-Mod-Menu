@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404fc640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404fc650        uint64_t result = sub_1404fc6e0(arg1)\n1404fc658        if (arg1 != arg2)\n1404fc65d        sub_14001f910(arg1)\n1404fc66c        *(arg1 + 0x14) ^= (*(arg2 + 0x14) ^ *(arg1 + 0x14)) & 0x7fffffff\n1404fc679        result = ((zx.q(*(arg1 + 0x14)) ^ zx.q(*(arg2 + 0x14))) & 0x7fffffff) ^ zx.q(*(arg2 + 0x14))\n1404fc67c        *(arg1 + 0x14) = result.d\n1404fc682        int32_t rdx_1 = (result * 2).d s>> 1\n1404fc684        if (rdx_1 != 0)\n1404fc68f        result = sub_140047aa0(arg1, rdx_1, 0, 1)\n1404fc694        int32_t rcx_2 = *(arg2 + 0x10)\n1404fc697        int32_t r8_1 = 0\n1404fc69c        if (rcx_2 s> 0)\n1404fc69e        result = 0\n1404fc6a5        result += 8\n1404fc6ad        r8_1 += 1\n1404fc6b5        *(result + *(arg1 + 8) - 8) = *(result + *(arg2 + 8) - 8)\n1404fc6ba        rcx_2 = *(arg2 + 0x10)\n1404fc6c0        do while (r8_1 s< rcx_2)\n1404fc6c2        *(arg1 + 0x10) = rcx_2\n1404fc6c9        if (*(arg1 + 0x10) != 0)\n1404fc6cb        *(arg1 + 0xc0) = 1\n1404fc6dc        return result",
+  "fetched_at": "2026-04-26T17:31:52Z"
+}

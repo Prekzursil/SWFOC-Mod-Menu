@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a0500",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403a0500(longlong param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  int iVar3;\n  undefined8 *puVar4;\n  undefined8 *puVar5;\n  \n  if ((((param_2 != 0) && (*(char *)(param_2 + 0x335) != -1)) &&\n      (iVar3 = FUN_140294a70(&DAT_140a16fd0), *(int *)(param_1 + 0x58) == iVar3)) &&\n     ((lVar1 = *(longlong *)(param_1 + 0x298), lVar1 != 0 &&\n      (lVar2 = *(longlong *)(param_2 + 0x298), lVar2 != 0)))) {\n    puVar5 = (undefined8 *)(lVar2 + 0xf8);\n    if (0xf < *(ulonglong *)(lVar2 + 0x110)) {\n      puVar5 = (undefined8 *)*puVar5;\n    }\n    puVar4 = (undefined8 *)(lVar1 + 0xf8);\n    if (0xf < *(ulonglong *)(lVar1 + 0x110)) {\n      puVar4 = (undefined8 *)*puVar4;\n    }\n    FUN_140025760(\"%s has terminated a credit siphon effect on %s!\\n\",puVar4,puVar5);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:31:50Z"
+}

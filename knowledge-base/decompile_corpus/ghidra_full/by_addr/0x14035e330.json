@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035e330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_14035e330(longlong *param_1,int param_2)\n\n{\n  char cVar1;\n  \n  cVar1 = (**(code **)(*param_1 + 0x240))();\n  if ((((cVar1 != '\\0') && (DAT_140b15490 == '\\0')) && (param_1[0x33] != 0)) &&\n     ((-1 < param_2 && (param_2 < (int)param_1[0x32])))) {\n    return *(undefined8 *)(param_1[0x33] + (longlong)param_2 * 8);\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:37Z"
+}

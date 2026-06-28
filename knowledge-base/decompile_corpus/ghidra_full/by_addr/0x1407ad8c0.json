@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ad8c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alRenderable * __thiscall alSplineRenderer::vfunction6_for_RefCountClass(alSplineRenderer *this)\n\n{\n  alRenderable_vftable_for_RefCountClass *paVar1;\n  alRenderable *this_00;\n  \n  this_00 = (alRenderable *)FUN_140769c58(0xf0);\n  if (this_00 != (alRenderable *)0x0) {\n    paVar1 = (alRenderable_vftable_for_RefCountClass *)(this->alSplineRenderer_data).offset_0x0;\n    alRenderable::alRenderable(this_00);\n    this_00->vftablePtr = (alRenderable_vftable_for_RefCountClass *)&vftable_for_RefCountClass;\n    this_00->vftablePtr =\n         (alRenderable_vftable_for_MultiLinkedListMember *)&vftable_for_MultiLinkedListMember;\n    this_00->vftablePtr = (alRenderable_vftable_for_CullObjectClass *)&vftable_for_CullObjectClass;\n    this_00[1].vftablePtr = paVar1;\n    if (paVar1 != (alRenderable_vftable_for_RefCountClass *)0x0) {\n      (**(code **)paVar1->vfunction1)(paVar1);\n    }\n    *(undefined4 *)&this_00[1].vftablePtr = 0xffffffff;\n    return this_00;\n  }\n  return (alRenderable *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:55:19Z"
+}

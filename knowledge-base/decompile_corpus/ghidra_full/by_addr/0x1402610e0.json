@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402610e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1402610e0(longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  undefined1 local_48 [24];\n  longlong local_30 [2];\n  undefined8 local_20;\n  ulonglong local_18;\n  \n  local_18 = 0xf;\n  local_30[0] = 0;\n  local_20 = 0;\n  lVar3 = -1;\n  do {\n    lVar3 = lVar3 + 1;\n  } while (*(char *)(param_2 + lVar3) != '\\0');\n  FUN_140022730(local_30);\n  uVar2 = FUN_140200ad0(local_30);\n  lVar3 = FUN_14006ae20(param_1 + 0x18,local_48,uVar2);\n  if (*(char *)(*(longlong *)(lVar3 + 0x10) + 0x19) == '\\0') {\n    cVar1 = FUN_14006aee0(param_1 + 0x18,uVar2,*(longlong *)(lVar3 + 0x10) + 0x20);\n    if (cVar1 == '\\0') {\n      uVar2 = 1;\n      goto LAB_140261166;\n    }\n  }\n  uVar2 = 0;\nLAB_140261166:\n  if (0xf < local_18) {\n    if (0xfff < local_18 + 1) {\n      if (0x1f < (local_30[0] - *(longlong *)(local_30[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_30[0] + -8),local_18 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:15:39Z"
+}

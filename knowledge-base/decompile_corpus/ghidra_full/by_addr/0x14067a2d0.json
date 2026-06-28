@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067a2d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nuint FUN_14067a2d0(int *param_1)\n\n{\n  char cVar1;\n  uint uVar2;\n  longlong lVar3;\n  int *piVar4;\n  uint uVar5;\n  int local_res10;\n  int local_res14;\n  \n  if (*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) + 0xd4\n              ) < DAT_140b3a1b8) {\n    _Init_thread_header(&DAT_140b3a1b8);\n    if (DAT_140b3a1b8 == -1) {\n      atexit((_func_5014 *)&DAT_1407f7fc0);\n      _Init_thread_footer(&DAT_140b3a1b8);\n    }\n  }\n  uVar5 = 0;\n  piVar4 = &DAT_140a443e0;\n  uVar2 = 1;\n  lVar3 = 8;\n  do {\n    local_res10 = *piVar4 + *param_1;\n    local_res14 = piVar4[1] + param_1[1];\n    if ((((local_res10 < DAT_140b3a190) || (DAT_140b3a190 + DAT_140b3a198 <= local_res10)) ||\n        (local_res14 < DAT_140b3a194)) || (DAT_140b3a194 + DAT_140b3a19c <= local_res14)) {\nLAB_14067a36e:\n      uVar5 = uVar5 | uVar2;\n    }\n    else {\n      cVar1 = FUN_14067cd80(&local_res10);\n      if (cVar1 == '\\0') goto LAB_14067a36e;\n    }\n    uVar2 = uVar2 << 1 | (uint)((int)uVar2 < 0);\n    piVar4 = piVar4 + 2;\n    lVar3 = lVar3 + -1;\n    if (lVar3 == 0) {\n      return uVar5;\n    }\n  } while( true );\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140680ca0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 * __thiscall\nMovingVsMovingCollisionDiagnosticsNodeClass::vfunction6\n          (MovingVsMovingCollisionDiagnosticsNodeClass *this,undefined8 *param_1)\n\n{\n  param_1[3] = 0xf;\n  *param_1 = 0;\n  param_1[2] = 0;\n  FUN_140022730(param_1,\"Moving Vs Moving\",0x10);\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:04Z"
+}

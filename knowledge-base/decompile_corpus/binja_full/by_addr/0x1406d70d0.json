@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d70d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d70e8        if (arg2 == 0 || arg1 == 0)\n1406d7168        return 0\n1406d70f4        struct TacticalUnitPerceptualEvaluatorClass::LandUnitPerceptualEvaluatorClass::VTable** result_1 = operator new(0xb8)\n1406d70f9        struct TacticalUnitPerceptualEvaluatorClass::LandUnitPerceptualEvaluatorClass::VTable** result = result_1\n1406d70ff        if (result_1 == 0)\n1406d7131        result = nullptr\n1406d7107        sub_1407320d0(result_1, arg1)\n1406d7113        *result = &LandUnitPerceptualEvaluatorClass::`vftable'{for `TacticalUnitPerceptualEvaluatorClass'}\n1406d711d        result[3] = &LandUnitPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n1406d7128        result[0x11] = &LandUnitPerceptualEvaluatorClass::`vftable'{for `SignalListenerClass'}\n1406d7139        (*result)->vFunc_8(result)\n1406d7145        (*result)->vFunc_9(result, arg2)\n1406d715b        return result",
+  "fetched_at": "2026-04-26T17:25:40Z"
+}

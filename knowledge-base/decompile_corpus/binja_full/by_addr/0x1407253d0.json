@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407253d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407253ed        if (arg3 == 0xffffffff)\n140725401        return 0\n140725411        struct AITargetLocationClass::TacticalRegionAITargetLocationClass::VTable** result_1 = operator new(0x38)\n140725416        struct ReachabilityClass::ZoneReachabilityClass::VTable** rdi = nullptr\n140725418        struct AITargetLocationClass::TacticalRegionAITargetLocationClass::VTable** result = result_1\n14072541e        if (result_1 == 0)\n14072543e        result = nullptr\n140725420        result_1[1].d = 0\n140725423        result_1[2] = arg1\n14072542e        *result = &TacticalRegionAITargetLocationClass::`vftable'{for `AITargetLocationClass'}\n140725431        result[3].d = 0xffffffff\n140725438        result[6] = 0\n140725441        result[5] = arg2\n14072544d        *(result + 0x1c) = *(arg2 + 0x30)\n140725453        result[4].d = *(arg2 + 0x34)\n140725459        *(result + 0x24) = *(arg2 + 0x38)\n14072545c        result[3].d = arg3\n14072545f        struct ReachabilityClass::ZoneReachabilityClass::VTable** rax_4 = operator new(0x308)\n140725467        if (rax_4 != 0)\n140725474        rdi = sub_14073f1d0(rax_4, result)\n140725484        result[6] = rdi\n140725498        return result",
+  "fetched_at": "2026-04-26T17:28:28Z"
+}

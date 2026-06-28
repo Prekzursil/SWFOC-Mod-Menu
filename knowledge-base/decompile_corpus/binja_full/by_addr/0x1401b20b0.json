@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b20b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b20c6        arg1[3] = 0\n1401b20ca        *arg1 = &alD3dTransitionEffectAlphaFade::`vftable'{for `alD3dTransitionEffect'}\n1401b20d4        arg1[2] = &alD3dTransitionEffectAlphaFade::`vftable'{for `MultiLinkedListMember'}\n1401b20d8        arg1[1].d = 0\n1401b20db        arg1[4] = 0\n1401b20df        arg1[5] = 0\n1401b20e3        arg1[6].d = 0xffffffff\n1401b20ea        *(arg1 + 0x34) = 0x3f800000\n1401b20f9        struct alShaderInstance::alD3dEffectInstance::VTable** rax = sub_14013e0f0(data_140a13428)\n1401b20fe        int64_t* rcx_1 = arg1[5]\n1401b2108        if (rcx_1 != rax)\n1401b210d        if (rcx_1 != 0)\n1401b210f        int64_t rdx_1 = *rcx_1\n1401b2112        (*(rdx_1 + 8))(rcx_1, rdx_1)\n1401b2115        arg1[5] = rax\n1401b2119        rcx_1 = rax\n1401b211f        if (rax != 0)\n1401b2124        (*rax)->__offset(0x0).q(rcx_1)\n1401b2126        rcx_1 = arg1[5]\n1401b213a        arg1[6].d = (*(*rcx_1 + 0x88))(rcx_1, data_140a13430)\n1401b214a        return arg1",
+  "fetched_at": "2026-04-26T17:25:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140199320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140199332        int64_t* rcx = *(arg1 + 0x78)\n140199339        if (rcx != 0)\n14019933e        (*(*rcx + 0x10))(rcx)\n140199341        void* rbx = *(arg1 + 0x70)\n140199345        *(arg1 + 0x78) = 0\n140199361        int32_t rax_3 = D3DXCreateCubeTextureFromFileInMemory(sub_1401771a0(), *(rbx + 8), zx.q(*(rbx + 0x10)), arg1 + 0x78)\n14019936a        if (rax_3 s< 0)\n140199376        OutputDebugStringA(sub_140001000(rax_3))\n140199383        OutputDebugStringA(&data_140819c5c)\n14019938c        sub_1401865b0(arg1)\n1401993a2        return zx.q(rax_3)",
+  "fetched_at": "2026-04-26T17:24:39Z"
+}

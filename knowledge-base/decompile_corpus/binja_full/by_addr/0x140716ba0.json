@@ -1,0 +1,7 @@
+{
+  "addr": "0x140716ba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140716ba6        struct SpecialAbilityClass::ForceConfuseAbilityClass::VTable** result = arg1\n140716ba9        sub_14048c780(arg1)\n140716bb5        *result = &ForceConfuseAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140716bc6        result[1] = &ForceConfuseAbilityClass::`vftable'{for `RefCountClass'}\n140716bcc        __builtin_memset(&result[0x2f], 0, 0x14)\n140716be0        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x32])\n140716be8        result[8].w = 1\n140716bee        *(result + 0x3c) = 9\n140716bfa        return result",
+  "fetched_at": "2026-04-26T17:27:55Z"
+}

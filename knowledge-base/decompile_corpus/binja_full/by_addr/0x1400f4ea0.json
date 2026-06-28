@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400f4ea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400f4ebf        *arg1 = 0\n1400f4ec5        arg1[2] = 0\n1400f4ec9        int128_t* rbp = arg2\n1400f4ecc        arg1[3] = 0\n1400f4ed5        int64_t r14 = arg2[2]\n1400f4ed9        if (arg2[3] u>= 8)\n1400f4edb        rbp = *arg2\n1400f4ee2        int64_t rsi\n1400f4ee2        if (r14 u>= 8)\n1400f4eff        rsi = r14 | 7\n1400f4f06        if (rsi u> 0x7ffffffffffffffe)\n1400f4f06        rsi = 0x7ffffffffffffffe\n1400f4f0e        int32_t* rax_1 = sub_1400226c0(arg1, rsi + 1)\n1400f4f1b        *arg1 = rax_1\n1400f4f24        memcpy(rax_1, rbp, (r14 << 1) + 2)\n1400f4ee8        rsi = 7\n1400f4eed        *arg1 = *rbp\n1400f4f29        arg1[2] = r14\n1400f4f31        arg1[3] = rsi\n1400f4f3d        arg1[4] = arg2[4]\n1400f4f44        arg1[5].d = arg2[5].d\n1400f4f47        sub_1401f9320(arg1 + 0x2c, arg2 + 0x2c)\n1400f4f54        sub_1401f9320(arg1 + 0x3c, arg2 + 0x3c)\n1400f4f67        *(arg1 + 0x4c) = *(arg2 + 0x4c)\n1400f4f6e        *(arg1 + 0x4d) = *(arg2 + 0x4d)\n1400f4f74        arg1[0xa].d = arg2[0xa].d\n1400f4f7f        *(arg1 + 0x54) = *(arg2 + 0x54)\n1400f4f90        return arg1",
+  "fetched_at": "2026-04-26T17:04:03Z"
+}

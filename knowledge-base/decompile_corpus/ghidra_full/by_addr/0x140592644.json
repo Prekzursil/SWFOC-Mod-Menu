@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592644",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStealthAbilityClass::vfunction3_for_RefCountClass(StealthAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((StealthAbilityClass *)&this[-1].StealthAbilityClass_data.offset_0x10,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:42:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402682ac",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FillRectClass::vfunction3(FillRectClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((FillRectClass *)&this[-1].RefCountClass_data.offset_0x50,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:15Z"
+}

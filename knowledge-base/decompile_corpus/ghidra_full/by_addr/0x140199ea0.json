@@ -1,0 +1,7 @@
+{
+  "addr": "0x140199ea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alScene member function inherited by alSimpleScene */\n\nvoid __thiscall alScene::vfunction8_for_RefCountClass(alScene *this,float param_1)\n\n{\n  longlong *plVar1;\n  float fVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  float fVar5;\n  \n  fVar2 = DAT_14081bd5c;\n  if (DAT_1407ffaf8 <= param_1) {\n    param_1 = DAT_1407ffaf8;\n  }\n  fVar5 = param_1 + *(float *)&this[2].offset_0x10;\n  *(float *)&this[2].offset_0x10 = fVar5;\n  if (fVar2 < fVar5) {\n    *(float *)&this[2].offset_0x10 = fVar5 - fVar2;\n  }\n  if (this[2].offset_0x70 != 0) {\n    FUN_1401322d0(this[2].offset_0x70,param_1);\n  }\n  plVar4 = this[1].offset_0x50;\n  if (plVar4 != &this[1].offset_0x48) {\n    do {\n      plVar1 = plVar4 + 3;\n      plVar4 = (longlong *)plVar4[1];\n      plVar3 = (longlong *)(*plVar1 + -0x10);\n      if (*plVar1 == 0) {\n        plVar3 = (longlong *)0x0;\n      }\n      (**(code **)(*plVar3 + 0x38))(plVar3,param_1);\n    } while (plVar4 != &this[1].offset_0x48);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:56Z"
+}

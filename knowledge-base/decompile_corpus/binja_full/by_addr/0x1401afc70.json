@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401afc70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401afc8e        if (arg2 s< 0 || arg2 s>= *(arg1 + 0x160))\n1401afc8e        return \n1401afc99        int64_t* rsi_1 = *(arg1 + 0x158)\n1401afca8        int64_t r14_1 = sx.q(arg2) * 0x38\n1401afcac        int64_t* rcx = rsi_1[sx.q(arg2) * 7]\n1401afcb3        int64_t* rcx_4\n1401afcb3        if (rcx == arg3)\n1401afcd6        if (arg3 != 0)\n1401afcd6        goto label_1401afcd8\n1401afd03        rcx_4 = *(arg1 + 0x68)\n1401afd19        (*(*rcx_4 + 0x1a0))(rcx_4, *(*(arg1 + 0x158) + r14_1 + 0x28), 0)\n1401afd19        return \n1401afcb8        if (rcx != 0)\n1401afcbd        (*(*rcx + 8))(rcx)\n1401afcc0        rsi_1[sx.q(arg2) * 7] = arg3\n1401afcc7        if (arg3 == 0)\n1401afd03        rcx_4 = *(arg1 + 0x68)\n1401afd19        (*(*rcx_4 + 0x1a0))(rcx_4, *(*(arg1 + 0x158) + r14_1 + 0x28), 0)\n1401afd19        return \n1401afccf        (**arg3)(arg3)\n1401afcd8        label_1401afcd8:\n1401afcd8        int64_t* rsi_2 = *(arg1 + 0x158)\n1401afcdf        int64_t* rbx_2 = *(arg1 + 0x68)\n1401afce3        int64_t* rcx_2 = rsi_2[sx.q(arg2) * 7]\n1401afce7        int64_t rdi_2 = *rbx_2\n1401afced        int64_t rax_5 = (*(*rcx_2 + 0x38))(rcx_2)\n1401afcfb        (*(rdi_2 + 0x1a0))(rbx_2, rsi_2[sx.q(arg2) * 7 + 5], rax_5)\n1401afd33        return ",
+  "fetched_at": "2026-04-26T17:25:34Z"
+}

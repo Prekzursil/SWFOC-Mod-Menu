@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028a6f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14028a6f4        int64_t result = data_140a16de0\n14028a6fe        if (result != 0)\n14028a778        return result\n14028a703        struct TheShipNamesManagerClass::VTable** rax = operator new(zx.q((result + 0x68).d))\n14028a70b        if (rax == 0)\n14028a71e        data_140a16de0 = 0\n14028a715        data_140a16de0 = sub_1404e59a0(rax)\n14028a729        int32_t* rdx_1 = data_140a7bc10\n14028a737        bool cond:0_1 = rdx_1 == data_140a7bc18\n14028a73e        void** arg_8 = &data_140a16dd8\n14028a743        if (cond:0_1)\n14028a768        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n14028a76d        return data_140a16de0\n14028a745        *rdx_1 = &data_140a16dd8\n14028a748        data_140a7bc10 += 8\n14028a75b        return data_140a16de0",
+  "fetched_at": "2026-04-26T17:32:24Z"
+}

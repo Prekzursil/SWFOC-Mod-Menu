@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006c4c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006c4da        arg1[6] = &CCallbackImpl<9>::`vftable'{for `CCallbackBase'}\n14006c4e1        if ((arg1[7].b & 1) != 0)\n14006c4e3        SteamAPI_UnregisterCallback()\n14006c4e9        bool cond:0 = (arg1[3].b & 1) == 0\n14006c4f8        arg1[2] = &CCallbackImpl<8>::`vftable'{for `CCallbackBase'}\n14006c4fb        if (not(cond:0))\n14006c4fd        SteamAPI_UnregisterCallback()\n14006c50a        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n14006c511        if ((arg2 & 1) != 0)\n14006c51b        j_sub_1407864b8(arg1)\n14006c52d        return arg1",
+  "fetched_at": "2026-04-26T16:56:05Z"
+}

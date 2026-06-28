@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636a70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nBehaviorClass * FUN_140636a70(void)\n\n{\n  BehaviorClass *this;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x40);\n  if (this != (BehaviorClass *)0x0) {\n                    /* inlined constructor: InfectionBehaviorClass::InfectionBehaviorClass */\n    BehaviorClass::BehaviorClass(this);\n    this->vftablePtr = (BehaviorClass_vftable0 *)&InfectionBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable1 *)&InfectionBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable2 *)&InfectionBehaviorClass::vftable;\n    return this;\n  }\n  return (BehaviorClass *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140771a0c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140771a11        void* rax = *(arg1 + 0x460)\n140771a1b        void* rcx = arg1 + 0x58\n140771a22        uint32_t r11 = arg2\n140771a28        uint64_t rax_1\n140771a28        if (rax != 0)\n140771a31        rcx = rax\n140771a3b        rax_1 = *(arg1 + 0x458) u>> 2\n140771a2a        rax_1 = 0x100\n140771a43        void* result_1 = rcx + ((rax_1 - 1) << 1)\n140771a47        *(arg1 + 0x48) = result_1\n140771a4b        void* result = result_1\n140771a4e        while (true)\n140771a4e        int32_t rcx_1 = *(arg1 + 0x38)\n140771a59        if (rcx_1 s<= 0 && r11 == 0)\n140771aa5        *(arg1 + 0x50) = ((result_1 - result) s>> 1).d\n140771aa9        *(arg1 + 0x48) += 2\n140771aae        return result\n140771a60        *(arg1 + 0x38) = rcx_1 - 1\n140771a69        int16_t rdx = (modu.dp.d(0:r11, arg3)).w + 0x30\n140771a6d        r11 = divu.dp.d(0:r11, arg3)\n140771a74        if (rdx u> 0x39)\n140771a76        uint32_t rax_6\n140771a76        rax_6.b = arg4\n140771a79        rax_6.b ^= 1\n140771a7b        rax_6.b <<= 5\n140771a7e        rax_6.b += 7\n140771a80        rax_6.b += rdx.b\n140771a82        rdx = sx.w(rax_6.b)\n140771a8c        **(arg1 + 0x48) = sx.w(rdx.b)\n140771a8f        *(arg1 + 0x48) -= 2\n140771a94        result = *(arg1 + 0x48)",
+  "fetched_at": "2026-04-26T17:30:42Z"
+}

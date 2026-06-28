@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d9c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404d9c24        int64_t* rcx = *(arg1 + 0x320)\n1404d9c2b        int64_t var_18 = 0\n1404d9c34        int32_t var_10 = 0\n1404d9c3f        int64_t* rax_1 = (*(*rcx + 0x78))(rcx)\n1404d9c58        float rdi\n1404d9c58        CDebugSStringEnum::Get(data_140b2c210, data_140b2c218, rax_1, &var_18, rdi)\n1404d9c64        int32_t result = sub_14013d2a0(data_140b2c210)\n1404d9c69        data_140a284c0 = result\n1404d9c73        return result",
+  "fetched_at": "2026-04-26T17:31:09Z"
+}

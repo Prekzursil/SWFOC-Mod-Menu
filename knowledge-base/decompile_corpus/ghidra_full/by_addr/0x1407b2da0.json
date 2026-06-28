@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b2da0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlaneCollisionBodyClass * __thiscall\nPlaneCollisionBodyClass::scalar_deleting_destructor(PlaneCollisionBodyClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (PlaneCollisionBodyClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x88);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:55:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073d820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14073d842        char rax = sub_14021fe20(arg3, 0, arg3, arg4)\n14073d853        char rax_1\n14073d853        int512_t zmm1\n14073d853        rax_1, zmm1 = sub_1407d9020(arg1, arg2, arg3, arg4)\n14073d85e        char rax_2\n14073d85e        int64_t r8_1\n14073d85e        rax_2, r8_1 = sub_14021feb0(arg3)\n14073d875        char rsi = rax & rax_1 & rax_2 & sub_14021fe20(arg3, 1, r8_1, zmm1)\n14073d87b        void* rax_4 = arg1 + 0x30\n14073d87f        if (arg1 == 0)\n14073d87f        rax_4 = nullptr\n14073d886        void* arg_8 = rax_4\n14073d8ad        rsi = rsi & sub_14021ffa0(arg3, 2) & sub_1402200b0(arg3, &arg_8, 8, nullptr)\n14073d8b0        char rax_7 = sub_140220030(arg3)\n14073d8bd        sub_1401fec80(arg_8)\n14073d919        rsi = rsi & rax_7 & sub_14021ffa0(arg3, 3) & sub_1402200b0(arg3, arg1 + 0x40, 4, nullptr) & sub_140220030(arg3) & sub_14021ffa0(arg3, 4) & sub_1402200b0(arg3, arg1 + 0x44, 4, nullptr)\n14073d955        rsi = rsi & sub_140220030(arg3) & sub_14021ffa0(arg3, 5) & sub_1402200b0(arg3, arg1 + 0x48, 4, nullptr) & sub_140220030(arg3)\n14073d974        return sub_14021feb0(arg3) & rsi",
+  "fetched_at": "2026-04-26T17:29:12Z"
+}

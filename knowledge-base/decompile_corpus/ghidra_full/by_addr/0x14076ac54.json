@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ac54",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14076ac54(void)\n\n{\n  longlong *plVar1;\n  \n  for (plVar1 = &DAT_140941228; plVar1 < &DAT_140941228; plVar1 = plVar1 + 1) {\n    if (*plVar1 != 0) {\n      (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:21Z"
+}

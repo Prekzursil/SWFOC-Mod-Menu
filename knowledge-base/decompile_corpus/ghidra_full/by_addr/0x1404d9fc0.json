@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d9fc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_1404d9fc0(longlong param_1,longlong *param_2,ulonglong *param_3,ulonglong param_4)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  char cVar3;\n  longlong *plVar4;\n  undefined8 *puVar5;\n  \n  puVar5 = (undefined8 *)\n           ((*(ulonglong *)(param_1 + 0x30) & param_4) * 0x10 + *(longlong *)(param_1 + 0x18));\n  plVar4 = (longlong *)puVar5[1];\n  if (plVar4 == *(longlong **)(param_1 + 8)) {\n    *param_2 = (longlong)*(longlong **)(param_1 + 8);\n    param_2[1] = 0;\n    return param_2;\n  }\n  plVar1 = (longlong *)*puVar5;\n  uVar2 = *param_3;\n  while( true ) {\n    if ((ulonglong)plVar4[2] <= uVar2) {\n      if (uVar2 != plVar4[2]) {\n        *param_2 = *plVar4;\n        goto LAB_1404da077;\n      }\n      cVar3 = FUN_14006aee0(param_1 + 1,param_3 + 1,plVar4 + 3);\n      if (cVar3 == '\\0') {\n        cVar3 = FUN_14006aee0(param_1 + 1,plVar4 + 3,param_3 + 1);\n        *param_2 = *plVar4;\n        if (cVar3 == '\\0') {\n          param_2[1] = (longlong)plVar4;\n          return param_2;\n        }\n        goto LAB_1404da077;\n      }\n    }\n    if (plVar4 == plVar1) break;\n    plVar4 = (longlong *)plVar4[1];\n  }\n  *param_2 = (longlong)plVar4;\nLAB_1404da077:\n  param_2[1] = 0;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T18:14:42Z"
+}

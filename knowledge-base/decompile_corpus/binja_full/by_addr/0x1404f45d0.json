@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f45d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f45d6        void* rbx = *(arg2 + 0xc8)\n1404f45e2        int32_t i\n1404f45dd        i = *(rbx + 0x18)\n1404f45e2        while (i != 0)\n1404f45f7        sub_1400475e0(rbx + 8, i - 1)\n1404f45fc        i = *(rbx + 0x18)\n1404f460d        return i",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandGoalSystemClass::vfunction8(LandGoalSystemClass *this)\n\n{\n  undefined8 uVar1;\n  int iVar2;\n  longlong *plVar3;\n  longlong lVar4;\n  \n  uVar1 = FUN_1405f55e0((this->ServicedAISystemClass_data).offset_0x0);\n  plVar3 = (longlong *)FUN_14028aa00(&DAT_140b153e0,uVar1);\n  if (plVar3 != (longlong *)0x0) {\n    iVar2 = (**(code **)(*plVar3 + 0xe0))(plVar3);\n    if (iVar2 == 0) {\n      lVar4 = FUN_1404b06d0(*(undefined8 *)((this->ServicedAISystemClass_data).offset_0x0 + 0x28),0)\n      ;\n      if ((lVar4 != 0) && (*(longlong *)(lVar4 + 0x40) != 0)) {\n        FUN_140614a70(*(longlong *)(lVar4 + 0x40) + 400);\n      }\n    }\n  }\n  AIGoalSystemClass::vfunction8((AIGoalSystemClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:25Z"
+}

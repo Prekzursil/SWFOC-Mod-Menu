@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053b9b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053b9b4        void* r8 = *(arg1 + 0x10)\n14053b9bb        int32_t* rax = *(r8 + 0x10)\n14053b9c6        if (rax == r8 + 8)\n14053b9e2        label_14053b9e2:\n14053b9e2        int64_t r10_1 = data_140b39338\n14053b9e9        int32_t rdx_1 = 0\n14053b9eb        int64_t r8_1 = data_140b39330\n14053b9f8        rax = (r10_1 - r8_1) s>> 3\n14053b9ff        if (rax != 0)\n14053ba01        uint64_t rcx_1 = 0\n14053ba07        while (*(r8_1 + (rcx_1 << 3)) != arg2)\n14053ba09        rdx_1 += 1\n14053ba11        rcx_1 = zx.q(rdx_1)\n14053ba13        int64_t rax_5 = (r10_1 - r8_1) s>> 3\n14053ba1a        if (rcx_1 u>= rax_5)\n14053ba20        return rax_5\n14053ba34        int32_t* rcx_4 = r8_1 + (zx.q(rdx_1) << 3)\n14053ba42        rax = memcpy(rcx_4, &rcx_4[2], r10_1 - &rcx_4[2])\n14053ba47        data_140b39338 -= 8\n14053b9d0        while (true)\n14053b9d0        void* rdx = *(rax + 0x18)\n14053b9d7        if (rdx == arg2)\n14053ba24        if (rdx != 0)\n14053ba2d        return sub_14020abe0(r8, rdx) __tailcall\n14053ba24        break\n14053b9d9        rax = *(rax + 8)\n14053b9e0        if (rax == r8 + 8)\n14053b9e0        goto label_14053b9e2\n14053ba53        return rax",
+  "fetched_at": "2026-04-26T17:33:54Z"
+}

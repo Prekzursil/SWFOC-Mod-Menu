@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407fc0d4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl std::_Fac_tidy_reg_t::~_Fac_tidy_reg_t(void) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall std::_Fac_tidy_reg_t::~_Fac_tidy_reg_t(_Fac_tidy_reg_t *this)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  \n  while (puVar1 = DAT_140b3b608, DAT_140b3b608 != (undefined8 *)0x0) {\n    DAT_140b3b608 = (undefined8 *)*DAT_140b3b608;\n    lVar2 = (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    if (lVar2 != 0) {\n      (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(lVar2,1);\n    }\n    thunk_FUN_1407864b8(puVar1,0x10);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:05:36Z"
+}

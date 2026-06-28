@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f62f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1402f62f0(undefined8 param_1,longlong param_2,ulonglong *param_3,undefined1 param_4)\n\n{\n  char cVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  ulonglong uVar4;\n  \n  uVar2 = 0;\n  if (param_2 != 0) {\n    uVar2 = FUN_1403973b0(param_2);\n  }\n  *param_3 = uVar2;\n  if (*(char *)(param_2 + 0x3a7) == '\\0') {\n    uVar2 = FUN_140374b50(uVar2,param_4);\n    uVar4 = uVar2 & 0xffffffff;\n    if ((int)uVar2 != 0) {\n      lVar3 = *(longlong *)(param_2 + 0xf0);\n      if ((((lVar3 != 0) && (cVar1 = FUN_1403986b0(param_2,uVar4), cVar1 != '\\0')) &&\n          (((cVar1 = FUN_140380bb0(lVar3), cVar1 != '\\0' &&\n            (cVar1 = FUN_14043fa50(&DAT_140b2f2e0,uVar2 & 0xffffffff), cVar1 != '\\0')) ||\n           ((cVar1 = FUN_140380b10(lVar3), cVar1 != '\\0' &&\n            (cVar1 = FUN_14043fa30(&DAT_140b2f2e0,uVar4), cVar1 != '\\0')))))) ||\n         (((int)uVar2 == 1 &&\n          ((lVar3 != 0 &&\n           ((cVar1 = FUN_140380ad0(lVar3), cVar1 != '\\0' ||\n            (cVar1 = FUN_140380b70(lVar3), cVar1 != '\\0')))))))) {\n        uVar4 = 0;\n      }\n      cVar1 = FUN_14039bbd0(param_2,uVar4);\n      uVar2 = 0;\n      if (((cVar1 != '\\0') && (uVar2 = uVar4, (int)uVar4 == 0x41)) &&\n         (lVar3 = FUN_140294a40(&DAT_140a16fd0), *(int *)(lVar3 + 0x44c) < 1)) {\n        uVar2 = 0;\n      }\n    }\n  }\n  else {\n    uVar2 = 0x4c;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T17:26:13Z"
+}

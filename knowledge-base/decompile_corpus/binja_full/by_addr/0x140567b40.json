@@ -1,0 +1,7 @@
+{
+  "addr": "0x140567b40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140567b54        if (arg2 == 0)\n140567b56        int64_t result\n140567b56        result.b = 0\n140567b5f        return result\n140567b64        int64_t r8 = *arg1\n140567b72        void* rax_1 = (*(r8 + 0x150))(arg4, zx.q(*(arg1[5] + 0x324)), r8)\n140567b8c        int64_t var_38\n140567b8c        if (rax_1 == 0 || *(rax_1 + 0x1fe8) != 3)\n140567c0e        int64_t rax_4 = *arg1\n140567c11        int64_t rdx_4 = arg1[5] + 0x78\n140567c20        var_38 = 0\n140567c2c        int32_t var_30_1 = 0\n140567c46        return (*(rax_4 + 0x158))(arg1, rdx_4, arg2, arg3, &var_38)\n140567b8e        void* rcx = arg1[5]\n140567b9c        var_38.d = *(rcx + 0x78)\n140567ba7        var_38:4.d = *(rcx + 0x7c)\n140567bb8        int32_t var_30 = *(rcx + 0x80)\n140567bbe        int32_t arg_20 = 0\n140567bc9        int32_t arg_10[0x4]\n140567bc9        arg_10[0] = 0\n140567c04        void var_28\n140567c04        return sub_14054a6f0(rax_1, &var_38, sub_140398440(arg2, &var_28), &arg_20, &arg_10)",
+  "fetched_at": "2026-04-26T17:34:32Z"
+}

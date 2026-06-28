@@ -1,0 +1,7 @@
+{
+  "addr": "0x140621840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall IndigenousUnitBehaviorClass::vfunction6(IndigenousUnitBehaviorClass *this)\n\n{\n  undefined8 uVar1;\n  \n  if ((this->offset_0x18 == (undefined **)0x0) ||\n     (uVar1 = 1, (*(byte *)((longlong)this->offset_0x18 + 0x3a1) & 2) == 0)) {\n    uVar1 = 0x1e;\n  }\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T17:30:02Z"
+}

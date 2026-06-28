@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402862b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1402862b0(longlong param_1,longlong param_2)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  ulonglong uVar3;\n  ulonglong uVar4;\n  \n  if (*(longlong *)(param_1 + 0x360) == 0) {\n    plVar2 = *(longlong **)(param_1 + 0x2c8);\n    if (plVar2 != (longlong *)0x0) {\n      uVar4 = 0;\n      uVar3 = uVar4;\n      if (0 < *(int *)(param_1 + 0x2d0)) {\n        while (*plVar2 != param_2) {\n          uVar4 = uVar4 + 1;\n          plVar2 = plVar2 + 1;\n          uVar3 = (ulonglong)((int)uVar3 + 1);\n          if ((longlong)*(int *)(param_1 + 0x2d0) <= (longlong)uVar4) {\n            return (ulonglong)plVar2 & 0xffffffffffffff00;\n          }\n        }\n        if ((int)uVar3 != -1) {\n          uVar3 = FUN_1400475e0(param_1 + 0x2c0);\n          return uVar3;\n        }\n      }\n    }\n  }\n  else {\n    iVar1 = *(int *)(param_1 + 0x2d0);\n    uVar3 = 0;\n    plVar2 = (longlong *)(longlong)iVar1;\n    if (0 < iVar1) {\n      plVar2 = *(longlong **)(param_1 + 0x2c8);\n      uVar4 = uVar3;\n      do {\n        if (*plVar2 == param_2) {\n          (*(longlong **)(param_1 + 0x2c8))[(int)uVar4] = 0;\n          return CONCAT71((int7)(int3)(uVar4 >> 8),1);\n        }\n        uVar4 = (ulonglong)((int)uVar4 + 1);\n        uVar3 = uVar3 + 1;\n        plVar2 = plVar2 + 1;\n      } while ((longlong)uVar3 < (longlong)iVar1);\n    }\n  }\n  return (ulonglong)plVar2 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:22:57Z"
+}

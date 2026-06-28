@@ -1,0 +1,7 @@
+{
+  "addr": "0x140700330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall GenericAttackAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Generic_Attack_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:51:12Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140258ce0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLuaScriptWrapper::vfunction12_for_LuaUserVar(LuaScriptWrapper *this,undefined8 param_1)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  \n  lVar1 = *(longlong *)&this->field_0x38;\n  if (lVar1 == 0) {\n    FUN_140200cd0(param_1,\"%s: (NULL)\",\"No-RTTI-In-Release\",&this->field_0x38);\n    return;\n  }\n  puVar2 = (undefined8 *)(lVar1 + 0x68);\n  if (0xf < *(ulonglong *)(lVar1 + 0x80)) {\n    puVar2 = (undefined8 *)*puVar2;\n  }\n  FUN_140200cd0(param_1,\"%s:%p, Name: %s\",\"No-RTTI-In-Release\",&this->field_0x38,puVar2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:13:29Z"
+}

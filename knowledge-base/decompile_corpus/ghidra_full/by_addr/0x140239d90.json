@@ -1,0 +1,7 @@
+{
+  "addr": "0x140239d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140239d90(longlong *param_1,longlong param_2,undefined8 param_3)\n\n{\n  char cVar1;\n  char cVar2;\n  longlong lVar3;\n  char *pcVar4;\n  longlong lVar5;\n  ulonglong uVar6;\n  undefined8 *puVar7;\n  ulonglong uVar8;\n  \n  if ((param_1[1] != 0) && (lVar3 = *param_1, lVar3 != 0)) {\n    uVar6 = 0;\n    if (0 < *(int *)(lVar3 + 0x30)) {\n      puVar7 = *(undefined8 **)(lVar3 + 0x28);\n      uVar8 = uVar6;\n      do {\n        pcVar4 = (char *)*puVar7;\n        lVar5 = param_2 - (longlong)pcVar4;\n        do {\n          cVar1 = *pcVar4;\n          cVar2 = pcVar4[lVar5];\n          if (cVar1 != cVar2) break;\n          pcVar4 = pcVar4 + 1;\n        } while (cVar2 != '\\0');\n        if (cVar1 == cVar2) {\n          lVar3 = (*(undefined8 **)(lVar3 + 0x28))[(longlong)(int)uVar8 * 2 + 1];\n          if (lVar3 != 0) {\n            lVar5 = -1;\n            do {\n              lVar5 = lVar5 + 1;\n            } while (*(char *)(lVar3 + lVar5) != '\\0');\n            FUN_140022730(param_3);\n            return 1;\n          }\n          FUN_140201910(param_3,0,0);\n          return 1;\n        }\n        uVar8 = (ulonglong)((int)uVar8 + 1);\n        uVar6 = uVar6 + 1;\n        puVar7 = puVar7 + 2;\n      } while ((longlong)uVar6 < (longlong)*(int *)(lVar3 + 0x30));\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:08:04Z"
+}

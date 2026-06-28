@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402329f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1402329f0(float *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  \n  fVar1 = param_1[0xb];\n  fVar2 = param_1[10];\n  fVar3 = param_1[0xf];\n  fVar4 = param_1[0xe];\n  fVar5 = param_1[9];\n  return (((((((fVar2 * fVar3 - fVar1 * fVar4) * param_1[5] + 0.0) -\n             (param_1[9] * fVar3 - param_1[0xd] * fVar1) * param_1[6]) +\n            (param_1[9] * fVar4 - param_1[0xd] * fVar2) * param_1[7]) * *param_1 + 0.0) -\n          ((((fVar2 * fVar3 - fVar1 * fVar4) * param_1[4] + 0.0) -\n           (param_1[8] * fVar3 - param_1[0xc] * fVar1) * param_1[6]) +\n          (param_1[8] * fVar4 - param_1[0xc] * fVar2) * param_1[7]) * param_1[1]) +\n         ((((fVar5 * fVar3 - fVar1 * param_1[0xd]) * param_1[4] + 0.0) -\n          (param_1[8] * fVar3 - param_1[0xc] * fVar1) * param_1[5]) +\n         (param_1[8] * param_1[0xd] - param_1[0xc] * fVar5) * param_1[7]) * param_1[2]) -\n         ((((fVar5 * fVar4 - fVar2 * param_1[0xd]) * param_1[4] + 0.0) -\n          (param_1[8] * fVar4 - param_1[0xc] * fVar2) * param_1[5]) +\n         (param_1[8] * param_1[0xd] - param_1[0xc] * fVar5) * param_1[6]) * param_1[3];\n}",
+  "fetched_at": "2026-04-26T18:07:10Z"
+}

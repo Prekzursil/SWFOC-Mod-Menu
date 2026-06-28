@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074671c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140746725        char* rdx = *(arg1 + 0x20)\n14074672b        *arg2 = 0\n14074672e        arg2[2] = 0\n140746732        arg2[3] = 0xf\n14074673a        *arg2 = 0\n14074673f        SimpleString::operator=(arg2, rdx)\n14074674c        return arg2",
+  "fetched_at": "2026-04-26T17:29:29Z"
+}

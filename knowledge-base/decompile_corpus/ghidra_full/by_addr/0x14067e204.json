@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067e204",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nMovingVsMovingCollisionClass::vfunction1_for_AIDiagnosticsClass\n          (MovingVsMovingCollisionClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((MovingVsMovingCollisionClass *)&this[-1].offset_0xc8,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:49Z"
+}

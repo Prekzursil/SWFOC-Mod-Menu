@@ -1,0 +1,7 @@
+{
+  "addr": "0x140163510",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140163522        if (*(*(arg1 + 0x118) + 0x1107) == 0)\n14016362e        *arg2 = *(arg1 + 0x1c4)\n140163636        arg2[1] = *(arg1 + 0x1c8)\n14016363f        arg2[2] = *(arg1 + 0x1cc)\n140163648        arg2[3] = *(arg1 + 0x1d0)\n14016364b        int32_t rax_11 = *(arg1 + 0x1d4)\n140163651        arg2[4] = rax_11\n14016365c        arg2[5] = *(arg1 + 0x1d8)\n140163665        return rax_11\n140163528        float zmm3 = *(arg1 + 0x1e8)\n140163530        float zmm4 = *(arg1 + 0x1dc)\n14016353b        float zmm5 = *(arg1 + 0x1e0)\n140163550        int128_t zmm6 = *(arg1 + 0x1ec)\n140163560        int128_t zmm7 = *(arg1 + 0x1e4)\n140163568        float zmm1 = zmm6.d - zmm5\n140163572        zmm6.d = zmm6.d f+ zmm5\n140163576        int128_t zmm8 = *(arg1 + 0x1f0)\n14016358d        float zmm2 = zmm8.d f- zmm7.d\n14016359f        zmm8.d = zmm8.d f+ zmm7.d\n1401635d2        float rax_6 = zmm2 & 0x7fffffff\n1401635da        zmm6.d = zmm6.d f* 0.5f\n1401635de        arg2[3] = ((zmm3 - zmm4) & 0x7fffffff) * 0.5f\n1401635e9        zmm8.d = zmm8.d f* 0.5f\n1401635ee        arg2[1] = zmm6.d\n1401635f7        arg2[2] = zmm8.d\n140163605        *arg2 = (zmm4 + zmm3) * 0.5f\n140163609        arg2[4] = (zmm1 & 0x7fffffff) * 0.5f\n14016360e        arg2[5] = rax_6 * 0.5f\n140163627        return rax_6",
+  "fetched_at": "2026-04-26T17:22:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8cd0",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_cpcall",
+  "body": "1407b8cd7        void* rdx_1 = *(arg1 + 0x10)\n1407b8cdf        if (*(rdx_1 - 0x10) == 6)\n1407b8ce1        void* rdx_2 = *(rdx_1 - 8)\n1407b8cef        if (*(rdx_2 + 0xa) == 0 && *(rdx_2 + 0xb) == 0)\n1407b8cfb        sub_1407c27a0(arg1, *(rdx_2 + 0x18))\n1407b8d09        return 1\n1407b8d10        return 0",
+  "fetched_at": "2026-04-26T16:44:23Z"
+}

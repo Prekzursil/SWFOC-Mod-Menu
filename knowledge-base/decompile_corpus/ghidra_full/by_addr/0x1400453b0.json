@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400453b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400453b0(undefined8 param_1,longlong *param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  GarrisonEventClass *pGVar3;\n  \n  if (param_2 != (longlong *)0x0) {\n    cVar1 = FUN_1404432d0(param_2);\n    if (cVar1 != '\\0') {\n      lVar2 = (**(code **)(*param_2 + 0x10))(param_2,0x4f);\n      if (lVar2 == 0) {\n        lVar2 = (**(code **)(*param_2 + 0x10))(param_2,0x56);\n        if (lVar2 == 0) goto LAB_140045404;\n      }\n      cVar1 = FUN_140444520(lVar2);\n      if (cVar1 != '\\0') {\nLAB_140045404:\n        pGVar3 = (GarrisonEventClass *)FUN_140769c58(0x50);\n        if (pGVar3 == (GarrisonEventClass *)0x0) {\n          pGVar3 = (GarrisonEventClass *)0x0;\n        }\n        else {\n          pGVar3 = GarrisonEventClass::GarrisonEventClass(pGVar3);\n        }\n        FUN_1403b01e0(pGVar3,(int)param_2[10],0x3fffff);\n        OutgoingEventQueueClass::vfunction2\n                  ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pGVar3);\n        return;\n      }\n    }\n    FUN_1402d5290(&DAT_140b27e60,DAT_140b301c8,0,0,0);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:38Z"
+}

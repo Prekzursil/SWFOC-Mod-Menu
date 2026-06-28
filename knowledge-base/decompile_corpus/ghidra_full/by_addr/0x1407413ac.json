@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407413ac",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407413ac(void)\n\n{\n  _Lockit local_res8 [32];\n  \n  std::_Lockit::_Lockit(local_res8,0);\n  _Deletegloballocale(&DAT_140b3b618);\n  DAT_140b3b618 = 0;\n  std::_Lockit::~_Lockit(local_res8);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:18Z"
+}

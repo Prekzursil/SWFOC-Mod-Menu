@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ab1c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076ab29        uint64_t __security_cookie_1 = __security_cookie\n14076ab3d        if (__security_cookie_1 == 0x2b992ddfa232)\n14076ab3f        FILETIME systemTimeAsFileTime\n14076ab3f        __builtin_memset(&systemTimeAsFileTime, 0, 8)\n14076ab48        GetSystemTimeAsFileTime(&systemTimeAsFileTime)\n14076ab4e        int64_t rax\n14076ab4e        rax.d = systemTimeAsFileTime.dwLowDateTime\n14076ab4e        rax:4.d = systemTimeAsFileTime.dwHighDateTime\n14076ab52        int64_t arg_8 = rax\n14076ab5c        uint64_t rax_2 = zx.q(GetCurrentThreadId())\n14076ab5e        arg_8 ^= rax_2\n14076ab68        uint64_t rax_4 = zx.q(GetCurrentProcessId())\n14076ab6e        arg_8 ^= rax_4\n14076ab72        int64_t performanceCount\n14076ab72        QueryPerformanceCounter(&performanceCount)\n14076ab98        __security_cookie_1 = (zx.q(performanceCount.d) << 0x20 ^ performanceCount ^ arg_8 ^ &arg_8) & 0xffffffffffff\n14076aba8        if (__security_cookie_1 == 0x2b992ddfa232)\n14076aba8        __security_cookie_1 = 0x2b992ddfa233\n14076abac        __security_cookie = __security_cookie_1\n14076abb8        uint64_t result = not.q(__security_cookie_1)\n14076abbb        data_140a44b90 = result\n14076abc7        return result",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

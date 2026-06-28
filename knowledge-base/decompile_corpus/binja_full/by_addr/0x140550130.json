@@ -1,0 +1,7 @@
+{
+  "addr": "0x140550130",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140550136        int64_t r10 = *arg1\n14055013c        uint64_t r11 = zx.q(arg3)\n140550149        int32_t* r8 = arg1[1]\n140550167        if (r11 u< (r8 - r10) s/ 0x34)\n14055016d        r8 = r11 * 0x34 + r10\n140550179        int32_t zmm1 = arg2[1]\n140550183        int32_t var_48 = *arg2\n14055018e        int32_t var_40 = arg2[2]\n140550197        int32_t var_44 = zmm1\n1405501a0        int32_t var_18 = 0\n1405501ab        int32_t var_1c = 0x3fffff\n1405501b3        int128_t var_3c\n1405501b3        __builtin_memset(&var_3c, 0, 0x20)\n1405501c2        void arg_8\n1405501c2        return sub_14054e1e0(arg1, &arg_8, r8, &var_48)",
+  "fetched_at": "2026-04-26T17:34:16Z"
+}

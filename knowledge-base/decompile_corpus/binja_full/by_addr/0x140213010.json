@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021301a        arg1[7] = 0xf\n14021302b        *arg1 = &FileClass::`vftable'\n14021302e        arg1[4] = 0\n140213032        void* rax = &arg1[4]\n140213036        __builtin_memset(&arg1[0xa], 0, 0x14)\n14021303d        __builtin_memset(&arg1[0xd], 0, 0x1c)\n14021304f        *(rax + 0x10) = 0\n140213057        arg1[9].b = 0\n14021305e        arg1[2] = -1\n140213066        arg1[8] = -1\n14021306e        arg1[1].d = 0xffffffff\n140213075        arg1[3].b = 0\n14021307e        if (*(rax + 0x18) u>= 0x10)\n140213080        rax = *rax\n140213083        *rax = 0\n140213089        int64_t rcx = arg1[0xd]\n140213090        if (rcx != 0)\n140213092        j_sub_1407864b8(rcx)\n140213097        arg1[0xd] = 0\n14021309b        int64_t rcx_1 = arg1[0xe]\n1402130a2        if (rcx_1 != 0)\n1402130a4        j_sub_1407864b8(rcx_1)\n1402130a9        __builtin_memset(&arg1[0xe], 0, 0x14)\n1402130c4        return arg1",
+  "fetched_at": "2026-04-26T17:28:25Z"
+}

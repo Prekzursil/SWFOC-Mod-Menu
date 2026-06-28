@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403df840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403df840(undefined8 param_1,longlong param_2,undefined4 param_3)\n\n{\n  SetMarkerIDEventClass *pSVar1;\n  \n  if (param_2 != 0) {\n    pSVar1 = (SetMarkerIDEventClass *)FUN_140769c58(0x50);\n    if (pSVar1 == (SetMarkerIDEventClass *)0x0) {\n      pSVar1 = (SetMarkerIDEventClass *)0x0;\n    }\n    else {\n      pSVar1 = SetMarkerIDEventClass::SetMarkerIDEventClass(pSVar1);\n    }\n    FUN_1405b06b0(pSVar1,*(undefined4 *)(param_2 + 0x50),param_3);\n    OutgoingEventQueueClass::vfunction2\n              ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pSVar1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:39:15Z"
+}

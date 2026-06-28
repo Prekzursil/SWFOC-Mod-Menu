@@ -1,0 +1,7 @@
+{
+  "addr": "0x140397b60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140397b6c        *arg2 = *(arg1 + 0x78)\n140397b71        arg2[1] = *(arg1 + 0x7c)\n140397b74        uint64_t result = zx.q(*(arg1 + 0x80))\n140397b7a        arg2[2] = result.d\n140397b7d        void* rcx = *(arg1 + 0x2a0)\n140397b87        if (rcx != 0)\n140397b8e        result = sub_1402648b0(rcx)\n140397b93        uint64_t result_1 = result\n140397b99        if (result != 0)\n140397ba5        result = sub_14012d2a0(result, \"HP_trac_bone\")\n140397bac        if (result.d s>= 0)\n140397bb8        void var_38\n140397bb8        result = sub_14012d2c0(result_1, result.d, &var_38)\n140397bbf        if (result.b != 0)\n140397bcd        int32_t var_2c\n140397bcd        *arg2 = var_2c\n140397bd7        int32_t var_c\n140397bd7        arg2[2] = var_c\n140397bdc        int32_t var_1c\n140397bdc        arg2[1] = var_1c\n140397beb        return result",
+  "fetched_at": "2026-04-26T17:23:47Z"
+}

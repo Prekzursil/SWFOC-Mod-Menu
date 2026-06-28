@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406907d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSpaceFreeStoreClass::vfunction21_for_LuaUserVar(SpaceFreeStoreClass *this,longlong param_1)\n\n{\n  bool bVar1;\n  uint7 extraout_var;\n  undefined8 uVar2;\n  SpaceFreeStoreClass_vftable_for_SignalListenerClass **ppSVar3;\n  SpaceFreeStoreClass_vftable_for_SignalListenerClass **ppSVar4;\n  \n  bVar1 = AIFreeStoreClass::vfunction21_for_LuaUserVar((AIFreeStoreClass *)this,param_1);\n  if (bVar1) {\n    ppSVar4 = &this->vftablePtr;\n    if (this == (SpaceFreeStoreClass *)0x0) {\n      ppSVar4 = (SpaceFreeStoreClass_vftable_for_SignalListenerClass **)0x0;\n    }\n    ppSVar3 = (SpaceFreeStoreClass_vftable_for_SignalListenerClass **)(param_1 + 0x38);\n    if (param_1 == 0) {\n      ppSVar3 = (SpaceFreeStoreClass_vftable_for_SignalListenerClass **)0x0;\n    }\n    uVar2 = FUN_140058570();\n    uVar2 = FUN_140220eb0(uVar2,ppSVar3,ppSVar4,0x16);\n    return CONCAT71((int7)((ulonglong)uVar2 >> 8),1);\n  }\n  return (ulonglong)extraout_var << 8;\n}",
+  "fetched_at": "2026-04-26T17:18:18Z"
+}

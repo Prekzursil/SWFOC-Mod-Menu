@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032ed60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032ed73        sub_140327b10(\"STORY EVENT - Load next tutorial\\r\\n\", arg2)\n14032ed78        int64_t rax = 0\n14032ed92        char var_108[0x100]\n14032ed92        char i\n14032ed81        i = (*\"Continue_Tutorial\")[rax]\n14032ed86        var_108[rax] = i\n14032ed8b        rax += 1\n14032ed92        do while (i != 0)\n14032ed9b        sub_140327b10(\"TUTORIAL - Generic string based trigger - %s\\r\\n\", \"Continue_Tutorial\")\n14032edc5        return sub_14032e5f0(arg1, 0x21, 0, &var_108, 0)",
+  "fetched_at": "2026-04-26T17:02:26Z"
+}

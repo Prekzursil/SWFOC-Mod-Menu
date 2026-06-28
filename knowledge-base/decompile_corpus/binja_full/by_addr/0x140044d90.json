@@ -1,0 +1,7 @@
+{
+  "addr": "0x140044d90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140044d94        uint64_t result = zx.q(arg2 - 1)\n140044dca        if (result.d u<= 0x21 && arg2 - 0x13 u<= 9 && (*(arg1 + 0x928) != 0 || *(arg1 + 0x929) != 0 || *(arg1 + 0x92a) != 0) && *(arg1 + 0x940) s>= 1)\n140044dd9        int32_t rdx = *(arg1 + 0x948)\n140044ddf        result = zx.q(rdx - 1)\n140044de5        if (result.d u<= 0x4b)\n140044de7        result = *(arg1 + 0x938)\n140044df3        void* rbx_1 = *result\n140044df9        if (rbx_1 != 0)\n140044dfe        result = sub_140397d90(rbx_1, rdx)\n140044e06        if (result != 0)\n140044dab        int64_t* rdx_3\n140044dab        switch (arg2)\n140044e28        case 0x13, 0x15, 0x17, 0x19, 0x1b\n140044e28        rdx_3 = *(result + 0x170)\n140044e1f        case 0x14, 0x16, 0x18, 0x1a, 0x1c\n140044e1f        rdx_3 = data_140b301c8\n140044e32        if (rdx_3 != 0)\n140044e46        return sub_1402d5320(&data_140b27e60, rdx_3, rbx_1, zx.o(0), arg3, 0)\n140044e59        return result",
+  "fetched_at": "2026-04-26T16:53:36Z"
+}

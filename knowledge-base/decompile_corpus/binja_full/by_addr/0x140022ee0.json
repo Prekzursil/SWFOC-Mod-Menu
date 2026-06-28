@@ -1,0 +1,7 @@
+{
+  "addr": "0x140022ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140022eef        int32_t result = timeGetTime() - data_140a7bec0\n140022ef5        *(arg1 + 8) = result\n140022efd        return result",
+  "fetched_at": "2026-04-26T16:51:59Z"
+}

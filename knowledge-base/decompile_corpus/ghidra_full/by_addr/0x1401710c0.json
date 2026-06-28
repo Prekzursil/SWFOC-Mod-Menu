@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401710c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alParticleGroup::~alParticleGroup(alParticleGroup *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  FUN_140172a60(this,1);\n  (this->alParticleGroup_data).offset_0x18 = 0xffffffff;\n  FUN_1400466c0(&this->alParticleGroup_data);\n  alRenderable::~alRenderable((alRenderable *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:26:07Z"
+}

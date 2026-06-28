@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d9d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_140196f40(longlong *param_1)\n\n{\n  if (DAT_140a70380 != param_1) {\n    if (DAT_140a70380 != (longlong *)0x0) {\n      (**(code **)(*DAT_140a70380 + 8))();\n    }\n    DAT_140a70380 = param_1;\n    if (param_1 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x000140196f77. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (**(code **)*param_1)(param_1);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:11Z"
+}

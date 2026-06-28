@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c82c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c82d4        int64_t rdi = *(arg1 + 0x10)\n1407c82d8        void* rbx = arg1 + 0x18\n1407c82dc        int64_t rsi = *(arg2 + 0x10)\n1407c82e0        void* rbp = arg2 + 0x18\n1407c82f1        int32_t i\n1407c82ea        i = strcoll(rbx, rbp)\n1407c82f1        while (i == 0)\n1407c8300        int64_t rax = -1\n1407c8307        rax += 1\n1407c830e        do while (*(rbx + rax) != 0)\n1407c8313        if (rax == rsi)\n1407c8346        int32_t rcx_2\n1407c8346        rcx_2.b = rax != rdi\n1407c8349        return rcx_2\n1407c8318        if (rax == rdi)\n1407c833a        return -1\n1407c831d        rbx += rax + 1\n1407c8320        rbp += rax + 1\n1407c8329        rdi -= rax + 1\n1407c832c        rsi -= rax + 1\n1407c832f        i = strcoll(rbx, rbp)\n1407c835f        return i",
+  "fetched_at": "2026-04-26T17:33:46Z"
+}

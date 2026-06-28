@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140227116        arg1[1].d = 0\n140227124        *arg1 = &WinsockAsyncSocketImpl::`vftable'{for `PGNetAsyncSocketImpl'}\n14022712a        arg1[2] = -1\n140227135        *(arg1 + 0x18) = *arg2\n14022713e        arg1[5] = arg2[1].q\n140227143        sub_140227410(arg1)\n140227150        return arg1",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

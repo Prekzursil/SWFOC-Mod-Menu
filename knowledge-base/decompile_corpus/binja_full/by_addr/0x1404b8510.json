@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b8510",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b8527        struct CalculationOp<bool>::BitwiseAnd<bool>::VTable* const arg_8 = &BitwiseAnd<bool>::`vftable'{for `CalculationOp<bool>'}\n1404b8535        return sub_1402800d0(arg1 + 0x250, &arg_8)",
+  "fetched_at": "2026-04-26T17:30:01Z"
+}

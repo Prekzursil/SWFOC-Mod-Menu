@@ -1,0 +1,7 @@
+{
+  "addr": "0x140680ec0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined4 __thiscall\nMovingVsMovingCollisionClass::vfunction6_for_SignalListenerClass(MovingVsMovingCollisionClass *this)\n\n{\n  uint uVar1;\n  \n  uVar1 = *(int *)&this->offset_0x68 - 8;\n  return CONCAT31((int3)(uVar1 >> 8),uVar1 < 2);\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:40Z"
+}

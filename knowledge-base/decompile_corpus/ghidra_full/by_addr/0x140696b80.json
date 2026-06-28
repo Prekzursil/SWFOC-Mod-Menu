@@ -1,0 +1,7 @@
+{
+  "addr": "0x140696b80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ProductionBlockStatus::vfunction17(ProductionBlockStatus *this)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  ProductionBlockStatus_vftable1 **ppPVar3;\n  ProductionBlockStatus_vftable1 **ppPVar4;\n  ProductionBlockStatus_vftable1 **ppPVar5;\n  \n  ppPVar3 = (ProductionBlockStatus_vftable1 **)0x0;\n  ppPVar4 = &this->vftablePtr;\n  if (this == (ProductionBlockStatus *)0x0) {\n    ppPVar4 = ppPVar3;\n  }\n  lVar1 = FUN_1405791e0(this->offset_0x48);\n  ppPVar5 = (ProductionBlockStatus_vftable1 **)(lVar1 + 0x38);\n  if (lVar1 == 0) {\n    ppPVar5 = ppPVar3;\n  }\n  uVar2 = FUN_140058570();\n  FUN_140220e90(uVar2,ppPVar5,ppPVar4,2);\n  lVar1 = FUN_1405791e0(this->offset_0x48);\n  if (lVar1 != 0) {\n    ppPVar3 = (ProductionBlockStatus_vftable1 **)(lVar1 + 0x38);\n  }\n  uVar2 = FUN_140058570();\n  FUN_140220e90(uVar2,ppPVar3,&this->vftablePtr,4);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:20:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793938",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_GetUserDefaultLocaleName\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_GetUserDefaultLocaleName(undefined8 param_1,undefined4 param_2)\n\n{\n  LCID LVar1;\n  void *pvVar2;\n  \n  pvVar2 = try_get_function(0xf,\"GetUserDefaultLocaleName\",(module_id *)&DAT_1408d8280,\n                            (module_id *)\"GetUserDefaultLocaleName\");\n  if (pvVar2 == (void *)0x0) {\n    LVar1 = GetUserDefaultLCID();\n    __acrt_LCIDToLocaleName(LVar1,param_1,param_2,0);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(param_1,param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:04Z"
+}

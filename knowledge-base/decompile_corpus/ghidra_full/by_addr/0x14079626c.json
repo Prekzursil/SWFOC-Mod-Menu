@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079626c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _realloc_base\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nLPVOID _realloc_base(LPVOID param_1,ulonglong param_2)\n\n{\n  int iVar1;\n  LPVOID pvVar2;\n  ulong *puVar3;\n  \n  if (param_1 == (LPVOID)0x0) {\n    pvVar2 = (LPVOID)_malloc_base(param_2);\n  }\n  else {\n    if (param_2 == 0) {\n      _free_base();\n    }\n    else {\n      if (param_2 < 0xffffffffffffffe1) {\n        do {\n          pvVar2 = HeapReAlloc(DAT_140b3cc00,0,param_1,param_2);\n          if (pvVar2 != (LPVOID)0x0) {\n            return pvVar2;\n          }\n          iVar1 = FUN_14078ec1c();\n        } while ((iVar1 != 0) && (iVar1 = _callnewh(param_2), iVar1 != 0));\n      }\n      puVar3 = __doserrno();\n      *puVar3 = 0xc;\n    }\n    pvVar2 = (LPVOID)0x0;\n  }\n  return pvVar2;\n}",
+  "fetched_at": "2026-04-26T18:53:20Z"
+}

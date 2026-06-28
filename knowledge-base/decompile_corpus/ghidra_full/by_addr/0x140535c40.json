@@ -1,0 +1,7 @@
+{
+  "addr": "0x140535c40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandRetreatCoordinatorClass::vfunction11(LandRetreatCoordinatorClass *this)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  longlong lVar3;\n  \n  iVar2 = 0;\n  if (0 < *(int *)&(this->RefCountClass_data).field_0x30) {\n    lVar3 = 0;\n    do {\n      plVar1 = *(longlong **)(lVar3 + *(longlong *)&(this->RefCountClass_data).field_0x28);\n      if ((plVar1 != (longlong *)0x0) &&\n         (plVar1 = (longlong *)(**(code **)(*plVar1 + 0x10))(plVar1,1), plVar1 != (longlong *)0x0))\n      {\n        (**(code **)(*plVar1 + 0x140))(plVar1,0);\n      }\n      iVar2 = iVar2 + 1;\n      lVar3 = lVar3 + 8;\n    } while (iVar2 < *(int *)&(this->RefCountClass_data).field_0x30);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:30:00Z"
+}

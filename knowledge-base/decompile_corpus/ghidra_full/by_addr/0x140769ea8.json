@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ea8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _onexit\n   \n   Library: Visual Studio 2019 Release */\n\n_onexit_t __cdecl _onexit(_onexit_t _Func)\n\n{\n  int iVar1;\n  _onexit_t p_Var2;\n  \n  if (DAT_140b3b928 == -1) {\n    iVar1 = FUN_14078cde4();\n  }\n  else {\n    iVar1 = _register_onexit_function(&DAT_140b3b928);\n  }\n  p_Var2 = (_onexit_t)0x0;\n  if (iVar1 == 0) {\n    p_Var2 = _Func;\n  }\n  return p_Var2;\n}",
+  "fetched_at": "2026-04-26T18:09:53Z"
+}

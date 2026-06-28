@@ -1,0 +1,7 @@
+{
+  "addr": "0x140175f50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall alParticleGroupRenderTask::vfunction2(void)\n\n{\n  return &DAT_140a12660;\n}",
+  "fetched_at": "2026-04-26T17:26:59Z"
+}

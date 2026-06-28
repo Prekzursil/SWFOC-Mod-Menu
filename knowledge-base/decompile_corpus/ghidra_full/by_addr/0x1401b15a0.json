@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b15a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall alD3dEffect::vfunction14(alD3dEffect *this)\n\n{\n  return (this->alD3dEffect_data).offset_0x118;\n}",
+  "fetched_at": "2026-04-26T17:43:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551dd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall CashPointDataPackClass::~CashPointDataPackClass(CashPointDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:38:08Z"
+}

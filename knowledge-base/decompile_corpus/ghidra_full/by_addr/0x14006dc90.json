@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006dc90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14006dc90(longlong param_1)\n\n{\n  bool bVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  \n  if (*(longlong *)(param_1 + 0x160) != 0) {\n    lVar2 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n    (**(code **)(**(longlong **)(lVar2 + 0x20) + 0x78))\n              (*(longlong **)(lVar2 + 0x20),*(undefined8 *)(param_1 + 0x160));\n  }\n  FUN_140077d80(param_1);\n  if (DAT_140a621d0 != '\\0') {\n    FUN_1400eb170();\n  }\n  bVar1 = true;\n  if (((DAT_140a62010 == '\\0') && (DAT_140a61c80 == '\\0')) && (DAT_140a61d38 == '\\0')) {\n    lVar2 = FUN_14007bfb0();\n    if (*(char *)(lVar2 + 0xc) == '\\0') goto LAB_14006dd01;\n  }\n  bVar1 = false;\nLAB_14006dd01:\n  if (DAT_140a60db0 != '\\0') {\n    FUN_140028810();\n  }\n  if (bVar1) {\n    if (DAT_140a62010 != '\\0') {\n      FUN_1400c7c50();\n    }\n    uVar3 = FUN_14007bfb0();\n    FUN_140025b60(uVar3);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:13Z"
+}

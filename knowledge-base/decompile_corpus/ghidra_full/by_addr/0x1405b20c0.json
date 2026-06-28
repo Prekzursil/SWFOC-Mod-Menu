@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b20c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nGalacticSabotageAbilityClass::vfunction6_for_IXMLLoadableClass\n          (GalacticSabotageAbilityClass *this,undefined8 param_1,undefined8 param_2)\n\n{\n  ulonglong uVar1;\n  longlong local_28;\n  longlong local_20;\n  longlong local_18;\n  \n  uVar1 = FUN_14048e070();\n  if ((char)uVar1 == '\\0') {\n    return uVar1;\n  }\n  FUN_1405b1e60(this,&local_28,param_1,param_2);\n  if (local_28 != 0) {\n    uVar1 = local_18 - local_28 & 0xfffffffffffffffc;\n    if (0xfff < uVar1) {\n      if (0x1f < (local_28 - *(longlong *)(local_28 + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28 + -8),uVar1 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return (ulonglong)(local_28 != local_20);\n}",
+  "fetched_at": "2026-04-26T18:43:50Z"
+}

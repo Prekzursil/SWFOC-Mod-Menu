@@ -1,0 +1,7 @@
+{
+  "addr": "0x140709c30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RedirectBlasterAbilityClass * __thiscall\nRedirectBlasterAbilityClass::scalar_deleting_destructor\n          (RedirectBlasterAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: RedirectBlasterAbilityClass::~RedirectBlasterAbilityClass\n                        */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->RedirectBlasterAbilityClass_data).offset_0x0 = 0;\n  (this->RedirectBlasterAbilityClass_data).offset_0x8 = 0;\n  (this->RedirectBlasterAbilityClass_data).offset_0x10 = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,400);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:41Z"
+}

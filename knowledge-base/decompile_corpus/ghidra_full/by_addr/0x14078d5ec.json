@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d5ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "wchar_t * FUN_14078d5ec(wchar_t *param_1)\n\n{\n  errno_t eVar1;\n  ulonglong uVar2;\n  wchar_t *_Dst;\n  \n  if (((param_1 == (wchar_t *)0x0) || (uVar2 = FUN_14078baa0(param_1,0x55), 0x54 < uVar2)) ||\n     (_Dst = (wchar_t *)_malloc_base(uVar2 * 2 + 2), _Dst == (wchar_t *)0x0)) {\n    _Dst = (wchar_t *)0x0;\n  }\n  else {\n    eVar1 = wcsncpy_s(_Dst,uVar2 + 1,param_1,uVar2 + 1);\n    if (eVar1 != 0) {\n                    /* WARNING: Subroutine does not return */\n      _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n    }\n  }\n  return _Dst;\n}",
+  "fetched_at": "2026-04-26T18:52:17Z"
+}

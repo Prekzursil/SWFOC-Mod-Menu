@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407254a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalRegionAITargetLocationClass::vfunction6(TacticalRegionAITargetLocationClass *this)\n\n{\n  FUN_1404dd350((this->RefCountClass_data).offset_0x8,\n                *(undefined4 *)&(this->RefCountClass_data).offset_0x10);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769efc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140769efc(void)\n\n{\n  char cVar1;\n  HMODULE hModule;\n  FARPROC pFVar2;\n  FARPROC pFVar3;\n  \n  InitializeCriticalSectionAndSpinCount((LPCRITICAL_SECTION)&DAT_140b3b968,4000);\n  hModule = GetModuleHandleW(L\"api-ms-win-core-synch-l1-2-0.dll\");\n  if ((hModule != (HMODULE)0x0) ||\n     (hModule = GetModuleHandleW(L\"kernel32.dll\"), hModule != (HMODULE)0x0)) {\n    pFVar2 = GetProcAddress(hModule,\"SleepConditionVariableCS\");\n    pFVar3 = GetProcAddress(hModule,\"WakeAllConditionVariable\");\n    if ((((pFVar2 != (FARPROC)0x0) && (pFVar3 != (FARPROC)0x0)) ||\n        (DAT_140b3b960 = CreateEventW((LPSECURITY_ATTRIBUTES)0x0,1,0,(LPCWSTR)0x0),\n        pFVar2 = DAT_140b3b990, pFVar3 = DAT_140b3b998, DAT_140b3b960 != (HANDLE)0x0)) &&\n       (DAT_140b3b998 = pFVar3, DAT_140b3b990 = pFVar2, cVar1 = FUN_140769d34(0), cVar1 != '\\0')) {\n      atexit(FUN_140769fcc);\n      return 0;\n    }\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_14076a8cc(7);\n}",
+  "fetched_at": "2026-04-26T18:09:55Z"
+}

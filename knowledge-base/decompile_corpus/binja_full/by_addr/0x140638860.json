@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140638874        if (sub_1403a44f0(*(arg1 + 0x28)) != 0)\n14063887d        return 1\n14063887e        int64_t* rcx_1 = *(arg1 + 0x28)\n14063888e        if (*(rcx_1 + 0x337) != 0xff)\n140638890        int32_t rdi_1 = 0\n140638892        int64_t* rbx_1 = nullptr\n140638897        if (rcx_1 != 0)\n14063889f        int64_t* rax_2 = (*(*rcx_1 + 0x10))(rcx_1, 5)\n1406388a2        rbx_1 = rax_2\n1406388a8        if (rax_2 != 0)\n1406388b0        (**rax_2)(rbx_1)\n1406388b2        void* rdx_2 = rbx_1[5]\n1406388c0        if (sub_1404f3ba0(rbx_1, rdx_2) != 0)\n140638900        int32_t rax_7\n1406388da        void* rax_5 = sub_1404f3b80(rbx_1, rbx_1[5], rdi_1)\n1406388e2        if (rax_5 != 0 && sub_1403a44f0(rax_5) != 0)\n14063891e        (*(*rbx_1 + 8))(rbx_1)\n140638926        int64_t result\n140638926        result.b = 1\n14063892d        return result\n1406388f0        rdx_2 = rbx_1[5]\n1406388f7        rdi_1 += 1\n1406388f9        rax_7 = sub_1404f3ba0(rbx_1, rdx_2)\n140638900        do while (rdi_1 u< rax_7)\n140638908        (*(*rbx_1 + 8))(rbx_1, rdx_2)\n140638917        return 0",
+  "fetched_at": "2026-04-26T17:01:27Z"
+}

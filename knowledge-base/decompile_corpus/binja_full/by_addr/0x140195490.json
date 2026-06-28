@@ -1,0 +1,7 @@
+{
+  "addr": "0x140195490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401954a0        *arg1 = &alDrawPrimitive::`vftable'{for `RefCountClass'}\n1401954ae        arg1[2] = &alDrawPrimitive::`vftable'{for `MultiLinkedListMember'}\n1401954b1        sub_14020a820(&arg1[2])\n1401954bd        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1401954c5        return &RefCountClass::`vftable'{for `IRefCountClass'}",
+  "fetched_at": "2026-04-26T17:24:26Z"
+}

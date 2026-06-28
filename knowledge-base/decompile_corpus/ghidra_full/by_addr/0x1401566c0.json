@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401566c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1401566c0(longlong param_1)\n\n{\n  DWORD DVar1;\n  \n  DVar1 = GetCurrentThreadId();\n  if ((DVar1 == DAT_140a155d0) && (DAT_140a62740 != '\\0')) {\n    return 0;\n  }\n  FUN_14022fc30(param_1 + 0x20);\n  *(undefined4 *)(param_1 + 0xec) = 0xffffffff;\n  FUN_1401584e0(param_1 + 0x1b0,0);\n  FUN_140156720(param_1);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:22:52Z"
+}

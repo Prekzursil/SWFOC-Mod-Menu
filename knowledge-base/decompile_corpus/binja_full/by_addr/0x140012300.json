@@ -1,0 +1,7 @@
+{
+  "addr": "0x140012300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140012304        char const (* rdx)[0x1c] = data_140a107f8\n14001230b        void* r8 = -ffffffffffffffff\n140012312        r8 += 1\n14001231a        do while (*(rdx + r8) != 0)\n140012323        sub_140022730(&data_140a10908, rdx, r8)\n140012333        return atexit(sub_1407e6e10) __tailcall",
+  "fetched_at": "2026-04-26T16:49:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140282190",
+  "tool": "ghidra",
+  "fact_id": "rva_auto_upgrade_tech",
+  "body": "\nvoid FUN_140282190(longlong param_1)\n\n{\n  if (*(int *)(param_1 + 0x84) < *(int *)(param_1 + 0x88)) {\n    FUN_140288980(param_1,*(int *)(param_1 + 0x84) + 1,1);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:09Z"
+}

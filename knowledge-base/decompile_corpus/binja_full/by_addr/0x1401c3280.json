@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c3280",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c3297        int64_t rsi = sx.q(arg3)\n1401c32c0        void var_18\n1401c32c0        void* rax_2 = sub_14011f570(arg1 + 0xb8, &var_18, arg2, sub_14011f9c0(arg1 + 0xb8, arg2))[1]\n1401c32c7        if (rax_2 == 0)\n1401c32c9        rax_2 = *(arg1 + 0xc0)\n1401c32d7        void* rbx_3\n1401c32d7        if (rax_2 != *(arg1 + 0xc0))\n1401c32e4        rbx_3 = (rsi << 5) + *(rax_2 + 0x38)\n1401c32f1        if (rax_2 == *(arg1 + 0xc0) || *(rbx_3 + 0x10) u<= 0 || rbx_3 == 0)\n1401c3301        rbx_3 = arg1 + 0xf8 + (rsi << 5)\n1401c3309        void* rcx_2 = rbx_3\n1401c330c        if (*(rbx_3 + 0x18) u>= 0x10)\n1401c330e        rcx_2 = *rbx_3\n1401c331f        if (_stricmp(rcx_2, \"none\") == 0)\n1401c3321        return nullptr\n1401c332a        if (*(rbx_3 + 0x18) u>= 0x10)\n1401c332c        rbx_3 = *rbx_3\n1401c3337        return sub_14025e990(rbx_3, 0, 0)",
+  "fetched_at": "2026-04-26T17:26:17Z"
+}

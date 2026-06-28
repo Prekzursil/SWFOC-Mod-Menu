@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072ea70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14072ea82        int64_t* rbx = *(arg1 + 0xa8)\n14072eaa8        if (rbx != 0 && *(arg1 + 0xf0) == 0)\n14072eac1        float zmm0_1 = sub_1403749d0(sub_1403973b0(rbx), rbx)\n14072eac6        int64_t* rbx_1 = *(arg1 + 0xa8)\n14072eadc        *(arg1 + 0xa0) = zmm0_1 * 2f\n14072eaef        float zmm0_2\n14072eaef        float zmm6_1\n14072eaef        zmm0_2, zmm6_1 = sub_1403749d0(sub_1403973b0(rbx_1), rbx_1)\n14072eaf4        void* rax_3 = *(arg1 + 0xa8)\n14072eb03        zmm0_2 = zmm0_2 * zmm6_1\n14072eb07        float zmm2 = *(arg1 + 0xa0) / zmm6_1\n14072eb0b        *(arg1 + 0xa4) = zmm0_2\n14072eb25        *(arg1 + 0x98) = *(rax_3 + 0x78) - zmm2\n14072eb36        *(arg1 + 0x9c) = *(rax_3 + 0x7c) - zmm0_2 / zmm6_1\n14072eb3e        int32_t rdx_2 = data_140a43c60\n14072eb4c        int64_t arg_8 = -1\n14072eb55        sub_1405f4780(arg2, rdx_2, &arg_8)\n14072eb70        int64_t r8_1 = arg_8\n14072eb75        void* r9_1 = *(*(arg2 + 0x58) + 0x50)\n14072eb79        void* rcx_5 = data_140b31900\n14072eb85        int64_t result\n14072eb85        int32_t zmm0_3\n14072eb85        if (*(arg1 + 0xf0) == 0)\n14072eb9c        zmm0_3, result = sub_1406565e0(rcx_5, arg1 + 0x98, r8_1, r9_1, arg4)\n14072eb8e        zmm0_3, result = sub_140656750(rcx_5, arg1 + 0xb0, r8_1, r9_1, arg4)\n14072eba4        result.b = 1\n14072ebaa        *arg3 = fconvert.d(zmm0_3)\n14072ebb7        return result",
+  "fetched_at": "2026-04-26T17:28:57Z"
+}

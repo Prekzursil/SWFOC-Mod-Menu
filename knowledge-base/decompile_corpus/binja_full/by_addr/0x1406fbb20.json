@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fbb20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fbb23        if (arg2 == 0)\n1406fbb23        return \n1406fbb53        int128_t zmm6 = zx.o(0)\n1406fbb59        int32_t rax\n1406fbb59        if (not(arg1[0x2f].d.d f< 0f))\n1406fbb5b        rax, zmm6 = sub_1406fc3d0(arg1, arg2)\n1406fbb60        void* rsi_1 = *(arg2 + 0x100)\n1406fbb6a        if (rsi_1 == 0)\n1406fbb6a        return \n1406fbb70        void* rcx = *(arg2 + 0xf0)\n1406fbb7a        if (rcx != 0)\n1406fbb7c        rax = sub_140380b10(rcx)\n1406fbb94        if ((rcx != 0 && rax.b != 0) || *(arg2 + 0x3a7) == 1 || arg3 u< *(rsi_1 + 0x25c))\n1406fbb94        return \n1406fbba1        uint128_t zmm0\n1406fbba1        zmm0.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f* *(arg1 + 0x184)\n1406fbba9        zmm0.d = zmm0.d f+ 0.5f\n1406fbbb8        *(rsi_1 + 0x25c) = (int.q(zmm0.d)).d + arg3\n1406fbbd6        if (arg1[0x30].d.d f> zmm6.d || (*(arg1 + 0x17c)).d f> zmm6.d)\n1406fbbfb        (*(*arg1 + 0x100))(arg1, arg2)\n1406fbbdf        if (not(zmm6.d f<= arg1[0x30].d))\n1406fbbea        (*(*arg1 + 0x108))(arg1, arg2)\n1406fbc1a        return ",
+  "fetched_at": "2026-04-26T17:26:49Z"
+}

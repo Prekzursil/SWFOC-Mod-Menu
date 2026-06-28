@@ -1,0 +1,7 @@
+{
+  "addr": "0x140725040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalUnitAITargetLocationClass::vfunction2(TacticalUnitAITargetLocationClass *this)\n\n{\n  undefined **ppuVar1;\n  undefined8 uVar2;\n  \n  ppuVar1 = this->offset_0x8;\n  if (ppuVar1 != (undefined **)0x0) {\n    uVar2 = FUN_140058570();\n    FUN_140220eb0(uVar2,ppuVar1 + 7,this,0x10);\n    *(undefined4 *)((longlong)&this->vftablePtr + 4) = 0xffffffff;\n    if (this->offset_0x8 != (undefined **)0x0) {\n      (**(code **)(*this->offset_0x8 + 8))();\n      this->offset_0x8 = (undefined **)0x0;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:04Z"
+}

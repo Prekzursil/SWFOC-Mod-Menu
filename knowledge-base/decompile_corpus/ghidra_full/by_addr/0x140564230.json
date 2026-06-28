@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564230",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ProximityMineDataPackClass * __thiscall\nProximityMineDataPackClass::ProximityMineDataPackClass(ProximityMineDataPackClass *this)\n\n{\n  this->PooledObjectClass<class_ProximityMineDataPackClass,32,class_EmptyLockerClass> =\n       (PooledObjectClass<class_ProximityMineDataPackClass,32,class_EmptyLockerClass>)0x0;\n  this->vftablePtr = &vftable;\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &this->ProximityMineDataPackClass_data);\n  (this->ProximityMineDataPackClass_data).offset_0x10 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:17Z"
+}

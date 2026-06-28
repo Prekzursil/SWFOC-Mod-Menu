@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407809d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407809dc        void* rax = __acrt_getptd_noexit()\n1407809e4        void* rax_1\n1407809e4        if (rax != 0)\n1407809ef        rax_1 = rax + 0x24\n1407809e6        rax_1 = &data_140a44bc4\n1407809f3        *rax_1 = arg1\n1407809f5        void* rax_2 = __acrt_getptd_noexit()\n1407809fa        void* rbx = &data_140a44bc0\n140780a04        if (rax_2 != 0)\n140780a06        rbx = rax_2 + 0x20\n140780a0c        int32_t result = __acrt_errno_from_os_error(arg1)\n140780a11        *rbx = result\n140780a1d        return result",
+  "fetched_at": "2026-04-26T17:31:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404db090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404db0a9        int32_t i = 0\n1404db0ab        *arg1 = &AIGoalTargetPerceptionNodeClass::`vftable'{for `AIDiagnosticsNodeClass'}\n1404db0b0        void* rcx = arg1[2]\n1404db0c1        if (((arg1[3] - rcx) s>> 3).d s> 0)\n1404db0c8        int64_t* rdi_1 = nullptr\n1404db0d0        int64_t* rcx_1 = *(rdi_1 + rcx)\n1404db0d7        if (rcx_1 != 0)\n1404db0e1        (**rcx_1)(rcx_1, 1)\n1404db0e3        rcx = arg1[2]\n1404db0e7        i += 1\n1404db0ed        rdi_1 = &rdi_1[1]\n1404db0fa        do while (i s< ((arg1[3] - rcx) s>> 3).d)\n1404db109        if (rcx != 0)\n1404db11d        if (((arg1[4] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n1404db11f        void* r8_1 = *(rcx - 8)\n1404db132        if (rcx - r8_1 - 8 u> 0x1f)\n1404db17f        _invalid_parameter_noinfo_noreturn()\n1404db17f        noreturn\n1404db134        rcx = r8_1\n1404db137        j_sub_1407864b8(rcx)\n1404db13c        __builtin_memset(&arg1[2], 0, 0x18)\n1404db15b        *arg1 = &AIDiagnosticsNodeClass::`vftable'\n1404db162        if ((arg2 & 1) != 0)\n1404db16c        j_sub_1407864b8(arg1)\n1404db17e        return arg1",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

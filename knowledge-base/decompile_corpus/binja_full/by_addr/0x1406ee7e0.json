@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ee7e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ee7f3        *arg1 = &AbsorbBlasterAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406ee800        arg1[1] = &AbsorbBlasterAbilityClass::`vftable'{for `RefCountClass'}\n1406ee806        arg1[0x2f] = 0\n1406ee80d        arg1[0x30].d = 0\n1406ee813        sub_14048c8d0(arg1)\n1406ee81b        if ((arg2 & 1) != 0)\n1406ee825        j_sub_1407864b8(arg1)\n1406ee837        return arg1",
+  "fetched_at": "2026-04-26T17:26:17Z"
+}

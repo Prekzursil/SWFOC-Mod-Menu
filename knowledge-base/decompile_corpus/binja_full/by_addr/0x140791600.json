@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140791605        int64_t* arg_8 = arg1\n14079160f        void var_38\n14079160f        void* var_18 = &var_38\n14079161a        if (arg1 == 0)\n140791621        *_errno() = 0x16\n140791627        _invalid_parameter_noinfo()\n14079162c        return 0xffffffff\n14079163a        sub_140784aa4(arg1)\n140791648        if (((*(arg1 + 0x14) u>> 0xc).b & 1) == 0)\n140791656        int64_t r8_1 = sx.q(_fileno(arg1))\n14079166a        void* rcx_5\n14079166a        void* r9_1\n14079166a        if ((r8_1 + 2).d u<= 1)\n14079168e        rcx_5 = &data_140a44f30\n140791695        r9_1 = &data_140a44f30\n140791681        r9_1 = (&data_140b3c4d0)[r8_1 s>> 6] + (zx.q(r8_1.d) & 0x3f) * 0x48\n140791685        rcx_5 = &data_140a44f30\n14079169d        if (*(r9_1 + 0x39) == 0 && (r8_1 + 2).d u> 1)\n1407916ba        rcx_5 = (&data_140b3c4d0)[r8_1 s>> 6] + (zx.q(r8_1.d) & 0x3f) * 0x48\n1407916c2        if (*(r9_1 + 0x39) != 0 || (*(rcx_5 + 0x3d) & 1) != 0)\n1407916c9        *_errno() = 0x16\n1407916cf        _invalid_parameter_noinfo()\n1407916e0        _local_unwind(var_18, &data_1407916e7)\n1407916e7        return 0xffffffff\n1407916f2        int32_t rax_13 = _fgetc_nolock(arg1)\n1407916fc        sub_140784ab0(arg1)\n140791701        return zx.q(rax_13)",
+  "fetched_at": "2026-04-26T17:31:45Z"
+}

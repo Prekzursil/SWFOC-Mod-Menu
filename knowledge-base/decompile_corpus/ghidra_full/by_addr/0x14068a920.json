@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a920(void)\n\n{\n  IncomeStreamModAbilityClass *this;\n  \n  this = (IncomeStreamModAbilityClass *)FUN_140769c58(0x1a0);\n  if (this != (IncomeStreamModAbilityClass *)0x0) {\n    IncomeStreamModAbilityClass::IncomeStreamModAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:08Z"
+}

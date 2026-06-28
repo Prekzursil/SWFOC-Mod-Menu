@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ea9d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ea9d6        void* rbx = data_140a62538\n1407ea9e0        if (rbx == 0)\n1407ea9e0        return \n1407ea9eb        int64_t rdi_1 = data_140a62540\n1407ea9f5        if (rbx != rdi_1)\n1407ea9fa        sub_14010ed20(rbx)\n1407ea9ff        rbx += 0x1a8\n1407eaa09        do while (rbx != rdi_1)\n1407eaa0b        rbx = data_140a62538\n1407eaa2b        int64_t rax_1\n1407eaa2b        int64_t rdx_1\n1407eaa2b        rdx_1:rax_1 = muls.dp.q(0x4d4873ecade304d5, data_140a62548 - rbx)\n1407eaa2e        int64_t rdx_2 = rdx_1 s>> 7\n1407eaa4a        if ((rdx_2 + (rdx_2 u>> 0x3f)) * 0x1a8 u>= 0x1000)\n1407eaa4c        void* rax_4 = *(rbx - 8)\n1407eaa5f        if (rbx - rax_4 - 8 u> 0x1f)\n1407eaa88        _invalid_parameter_noinfo_noreturn()\n1407eaa88        noreturn\n1407eaa61        rbx = rax_4\n1407eaa67        j_sub_1407864b8(rbx)\n1407eaa6f        __builtin_memset(&data_140a62538, 0, 0x18)\n1407eaa87        return ",
+  "fetched_at": "2026-04-26T17:35:17Z"
+}

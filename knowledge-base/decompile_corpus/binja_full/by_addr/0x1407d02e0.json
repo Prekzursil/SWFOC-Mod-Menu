@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d02e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d0301        if (sub_1407b9e00(arg1, 1) == 6)\n1407d030b        return sub_1407b9600(arg1, 1) __tailcall\n1407d0325        int32_t rdi = int.d(sub_1407ce9b0(arg1, 1, 0x3ff0000000000000))\n1407d032b        if (rdi s< 0)\n1407d033c        sub_1407cdf80(arg1, 1)\n1407d033c        noreturn\n1407d034b        void var_88\n1407d034b        int32_t rax_2 = sub_1407bb5c0(arg1, rdi, &var_88)\n1407d0352        if (rax_2 == 0)\n1407d0361        sub_1407cdf80(arg1, rax_2 + 1)\n1407d0361        noreturn\n1407d0375        sub_1407bb3a0(arg1, U\"f\", &var_88)\n1407d0382        int32_t result = sub_1407b9e00(arg1, 0xffffffff)\n1407d0389        if (result != 0)\n1407d03ad        return result\n1407d0398        sub_1407ce300(arg1, \"no function environment for tail call at level %d\", zx.q(rdi))\n1407d0398        noreturn",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

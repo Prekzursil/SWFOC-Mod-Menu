@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407631b4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407631c8        *arg1 = &std::time_get<char>::`vftable'{for `std::time_base'}\n1407631d1        free(arg1[2])\n1407631da        free(arg1[3])\n1407631e3        free(arg1[4])\n1407631ef        *arg1 = &std::_Facet_base::`vftable'\n1407631f5        if ((arg2 & 1) != 0)\n1407631ff        j_sub_1407864b8(arg1)\n140763211        return arg1",
+  "fetched_at": "2026-04-26T17:30:10Z"
+}

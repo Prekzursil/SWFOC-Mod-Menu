@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c3360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c336e        *arg2 = 0xffffffff\n1401c3379        char* rdi = arg4\n1401c337c        arg3[2] = 0\n1401c338b        int64_t* rax = arg3\n1401c338e        if (arg3[3] u>= 0x10)\n1401c3390        rax = *arg3\n1401c3393        *rax = 0\n1401c3395        char* rax_1 = rdi\n1401c3398        arg4[2] = 0\n1401c33a1        if (arg4[3] u>= 0x10)\n1401c33a3        rax_1 = *arg4\n1401c33a6        *rax_1 = 0\n1401c33be        void arg_8\n1401c33be        sub_14026cc00(&arg_8, &data_140b0a158)\n1401c33cb        int64_t* result\n1401c33cb        if (*(arg1 + 0x98) != 0)\n1401c33cd        result = *(arg1 + 0x90)\n1401c33d7        if (*(arg1 + 0x98) == 0 || result == *result)\n1401c3422        label_1401c3422:\n1401c3422        result.b = 0\n1401c33e0        while (true)\n1401c33e8        int32_t* rcx_1 = *(result[1] + 0x10)\n1401c33f3        if (rcx_1[0x38].b == 0)\n1401c340c        if (sub_1401e1f80(rcx_1, &arg_8, arg2, arg3, rdi).b == 1)\n1401c343d        result.b = 1\n1401c343f        break\n1401c3411        if (arg5 != 0)\n1401c3411        goto label_1401c3422\n1401c341a        result = result[1]\n1401c3420        if (result == **(arg1 + 0x90))\n1401c3420        goto label_1401c3422\n1401c343c        return result",
+  "fetched_at": "2026-04-26T17:26:17Z"
+}

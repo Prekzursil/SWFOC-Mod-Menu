@@ -1,0 +1,7 @@
+{
+  "addr": "0x140427410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042742c        if (*(arg2 + 0x10) != 0 && arg1[1] != 0)\n140427437        if (*(arg2 + 0x18) u>= 0x10)\n140427439        arg2 = *arg2\n140427441        char var_108[0x100]\n140427441        char* rcx = &var_108 - arg2\n14042745c        char i\n140427450        i = *arg2\n140427453        *(rcx + arg2) = i\n140427456        arg2 += 1\n14042745c        do while (i != 0)\n140427463        _strupr(&var_108)\n14042746d        int64_t rax_1 = -1\n140427474        rax_1 += 1\n14042747b        do while (var_108[rax_1] != 0)\n140427487        int32_t rax_2 = sub_140215a30(&var_108, rax_1.d, 0)\n14042748c        void** rdx_1 = *arg1\n14042748f        void** r8_1 = rdx_1\n140427492        void** rcx_3 = rdx_1[1]\n14042749a        while (*(rcx_3 + 0x19) == 0)\n1404274a3        if (rcx_3[4].d u>= rax_2)\n1404274ab        rdx_1 = rcx_3\n1404274ae        rcx_3 = *rcx_3\n1404274a5        rcx_3 = rcx_3[2]\n1404274c5        if (*(rdx_1 + 0x19) == 0 && rax_2 u>= rdx_1[4].d && rdx_1 != r8_1)\n1404274c7        void* rax_3 = rdx_1[5]\n1404274ce        if (rax_3 != 0)\n1404274de        return zx.q(*(rax_3 + 0x88))\n1404274e9        return 0",
+  "fetched_at": "2026-04-26T17:26:29Z"
+}

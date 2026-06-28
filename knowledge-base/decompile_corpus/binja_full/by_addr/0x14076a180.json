@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a195        void arg_8\n14076a195        void* r10 = &arg_8 - arg1\n14076a198        if (&arg_8 u< arg1)\n14076a198        r10 = nullptr\n14076a19c        TEB* gsbase\n14076a19c        void* StackLimit = gsbase->NtTib.StackLimit\n14076a1a8        if (r10 u>= StackLimit)\n14076a1a8        return \n14076a1aa        r10.w &= 0xf000\n14076a1b0        StackLimit -= 0x1000\n14076a1b7        *StackLimit = 0\n14076a1be        do while (r10 != StackLimit)\n14076a1cd        return ",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

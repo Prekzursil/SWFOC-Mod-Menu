@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d5d00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d5d15        int64_t rax = *(arg1 + 0xf8)\n1401d5d23        int128_t zmm6\n1401d5d23        if (*(arg1 + 0x30) == 6)\n1401d5d25        (*(rax + 0x70))(arg1 + 0xf8)\n1401d5d35        zmm6.d = arg2.d f- *(arg1 + 0xb0)\n1401d5d3d        (*(*(arg1 + 0x218) + 0x70))(arg1 + 0x218)\n1401d5d46        zmm6.d = zmm6.d f- arg2.d\n1401d5d4a        (*(*(arg1 + 0xf8) + 0x80))(arg1 + 0xf8)\n1401d5d5f        zmm6.d = zmm6.d f/ (*(arg1 + 0xb8) f- arg2.d)\n1401d5d66        if (zmm6.d f> 0f)\n1401d5d89        if (zmm6.d f< 1f)\n1401d5da0        return zmm6\n1401d5d8b        return 0x3f800000\n1401d5d7d        return zx.o(0)\n1401d5da6        (*(rax + 0x78))(arg1 + 0xf8)\n1401d5db6        (*(*(arg1 + 0x2a8) + 0x78))(arg1 + 0x2a8)\n1401d5dbf        zmm6 = *(arg1 + 0xb4)\n1401d5dc7        int128_t zmm7\n1401d5dc7        zmm7.d = arg2.d f- arg2.d\n1401d5dcb        (*(*(arg1 + 0xf8) + 0x88))(arg1 + 0xf8)\n1401d5dd9        zmm7.d = zmm7.d f- zmm6.d\n1401d5de4        zmm7.d = zmm7.d f/ (*(arg1 + 0xbc) f- arg2.d)\n1401d5deb        if (not(zmm7.d f> 0f))\n1401d5ded        return zx.o(0)\n1401d5dfd        if (zmm7.d f< 1f)\n1401d5e19        return zmm7\n1401d5dff        return 0x3f800000",
+  "fetched_at": "2026-04-26T17:26:46Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140596850",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140596852        *(arg1 + 0xfc) = 0xffffffff\n140596863        arg1[1] = 0\n140596867        *arg1 = &SpacePathFinderClass::`vftable'\n140596871        arg1[0x13] = sub_14059d110\n14059687b        __builtin_memset(&arg1[2], 0, 0x14)\n140596886        __builtin_memset(&arg1[5], 0, 0x1c)\n140596895        __builtin_memset(&arg1[9], 0, 0x1c)\n1405968a4        __builtin_memset(&arg1[0xd], 0, 0x30)\n1405968c5        __builtin_memset(&arg1[0x14], 0, 0x14)\n1405968d9        __builtin_memset(&arg1[0x17], 0, 0x44)\n140596917        arg1[0x20].d = 0x3fffff\n140596921        *(arg1 + 0x104) = 0x3fffff\n14059692c        *(arg1 + 0x10c) = 0x3f800000\n140596936        arg1[0x22] = 0x3f800000\n140596941        arg1[0x23].d = 0x3f800000\n14059694b        *(arg1 + 0x11c) = 0x3f800000\n140596955        arg1[0x24].d = 0x1000000\n14059695f        *(arg1 + 0x124) = 1\n140596966        arg1[0x25].d = 0x3f\n140596970        *(arg1 + 0x12c) = 0x1010100\n14059697a        __builtin_memset(&arg1[0x26], 0, 0x4d)\n1405969c5        __builtin_memset(&arg1[0x30], 0, 0x44)\n140596a03        __builtin_memset(&arg1[0x39], 0, 0x38)\n140596a34        return arg1",
+  "fetched_at": "2026-04-26T17:36:32Z"
+}

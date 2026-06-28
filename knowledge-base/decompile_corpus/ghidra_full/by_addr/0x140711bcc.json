@@ -1,0 +1,7 @@
+{
+  "addr": "0x140711bcc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStunAbilityClass::vfunction3_for_RefCountClass(StunAbilityClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor((StunAbilityClass *)&this[-1].StunAbilityClass_data.field_0x18,param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140250040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025004a        void* r8 = data_140b09e40\n140250064        if (r8 == 0 || *(r8 + 0x28) == 0)\n140250064        return \n140250072        int32_t rcx = *(r8 + 0x2c)\n140250084        if (rcx s>= ((*(r8 + 0x18) - *(r8 + 0x10)) s>> 5).d || rcx s< 0)\n140250084        return \n140250097        if (arg1[3] u>= 0x10)\n140250099        *arg1\n1402500a8        int64_t rax = data_140b09e40\n1402500b7        void* rbx_3 = (sx.q(*(rax + 0x2c)) << 5) + *(rax + 0x10)\n1402500bf        if (*(rbx_3 + 0x14) == 0)\n1402500bf        return \n1402500cf        rax = sub_1402093c0(&data_140a14b80, 0)\n1402500da        if (rax == 0)\n1402500da        return \n1402500dc        int64_t rdx_2 = *rax\n1402500e2        (*rdx_2)(rax, rdx_2)\n1402500ee        sub_1402075b0(&data_140b09e48, rax)\n1402500ff        sub_1402046f0(rax, 0x21, 0x20)\n14025010f        sub_1402046f0(rax, arg2, 0x20)\n14025011a        sub_140204e20(rax, arg1)\n140250129        sub_140209ef0(*(rbx_3 + 8), rax, nullptr)\n140250142        return ",
+  "fetched_at": "2026-04-26T17:30:37Z"
+}

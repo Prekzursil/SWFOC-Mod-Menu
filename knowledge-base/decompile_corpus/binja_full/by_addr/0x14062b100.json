@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062b109        void* rcx = *(arg1 + 0x28)\n14062b110        if (rcx == 0)\n14062b141        label_14062b141:\n14062b141        void* rdi_1 = *(arg1 + 0x28)\n14062b148        if (rdi_1 != 0)\n14062b14a        void* rdi_2 = *(rdi_1 + 0x1d8)\n14062b154        if (rdi_2 != 0)\n14062b156        void* rax_3 = *(rdi_2 + 0x18)\n14062b15d        if (rax_3 != 0)\n14062b16d        sub_1402a6280(*(data_140b15418 + 0x18), *(rax_3 + 0x50))\n14062b172        *(rdi_2 + 0x18) = 0\n14062b17d        sub_1404c30b0(arg1)\n14062b11a        if (*(rcx + 0x1d8) != 0)\n14062b129        if (sub_140397d90(rcx, 0xa) == 0)\n14062b137        return sub_1402149d0(\"Object is trying to deactivate LURE behavior but does not have LURE unit ability!\") __tailcall\n14062b129        goto label_14062b141\n14062b18c        return ",
+  "fetched_at": "2026-04-26T17:24:03Z"
+}

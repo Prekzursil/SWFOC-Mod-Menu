@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512e80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140512e80        char r8 = *(arg1 + 0x3e0)\n140512e90        char result = r8 & 0xfd\n140512e92        char result_1 = r8 | 2\n140512e9b        if (arg2 == 0)\n140512e9b        result_1 = result\n140512e9f        *(arg1 + 0x3e0) = result_1\n140512ea6        return result",
+  "fetched_at": "2026-04-26T17:32:19Z"
+}

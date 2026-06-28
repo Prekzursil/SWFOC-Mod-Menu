@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f9460",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall PlanetaryDataPackClass::PlanetFactionChangeClass::vfunction1(void)\n\n{\n  return &DAT_140a2ab90;\n}",
+  "fetched_at": "2026-04-26T17:41:58Z"
+}

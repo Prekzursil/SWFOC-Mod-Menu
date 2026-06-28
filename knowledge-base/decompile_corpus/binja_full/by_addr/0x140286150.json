@@ -1,0 +1,7 @@
+{
+  "addr": "0x140286150",
+  "tool": "binary_ninja",
+  "fact_id": "rva_lock_tech_engine",
+  "body": "14028615a        int64_t* result = *(arg1 + 0x1b0)\n140286161        if (result != 0)\n140286163        int64_t rcx = sx.q(*(arg1 + 0x1b8))\n140286167        int32_t rdx = 0\n14028616b        if (rcx.d s> 0)\n140286170        int64_t rcx_1 = 0\n140286175        if (*result == arg2)\n14028618b        if (rdx != 0xffffffff)\n140286190        return sub_1400475e0(arg1 + 0x1a8, rdx) __tailcall\n14028618b        break\n140286177        rdx += 1\n140286179        rcx_1 += 1\n14028617c        result = &result[1]\n140286183        do while (rcx_1 s< rcx)\n140286185        result.b = 0\n140286187        return result",
+  "fetched_at": "2026-04-26T16:43:11Z"
+}

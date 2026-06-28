@@ -1,0 +1,7 @@
+{
+  "addr": "0x140588630",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140588638        arg2[3] = 0xf\n140588643        *arg2 = 0\n140588646        arg2[2] = 0\n140588658        sub_140022730(arg2, \"Global plan history\", 0x13)\n140588665        return arg2",
+  "fetched_at": "2026-04-26T17:36:08Z"
+}

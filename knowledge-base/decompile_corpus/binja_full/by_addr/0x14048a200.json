@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048a200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048a213        *arg1 = &DynamicVectorClass<struct PassRecordStruct>::`vftable'\n14048a219        sub_14048a2d0(arg1)\n14048a221        if ((arg2 & 1) != 0)\n14048a22b        j_sub_1407864b8(arg1)\n14048a23d        return arg1",
+  "fetched_at": "2026-04-26T17:28:43Z"
+}

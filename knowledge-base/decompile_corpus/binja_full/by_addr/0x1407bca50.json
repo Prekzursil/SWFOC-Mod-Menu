@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bca50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bca6b        int64_t arg_8\n1407bca6b        int64_t* i_2 = &arg_8\n1407bca73        arg_8 = 0\n1407bca78        void* rcx = *(arg1 + 0x20)\n1407bca7c        int64_t result = 0\n1407bca7f        void* i = *(rcx + 0x18)\n1407bca83        void* i_1 = rcx + 0x18\n1407bca8a        if (i != 0)\n1407bca90        char rax_1 = *(i + 9)\n1407bca9a        if ((rax_1 & 0x11) != 0 || (rax_1 & 2) == 0)\n1407bcae0        i_1 = i\n1407bca9c        void* rcx_1 = *(i + 0x10)\n1407bcaa4        void* rax_2\n1407bcaa4        if ((*(rcx_1 + 0xa) & 4) == 0)\n1407bcab6        rax_2 = sub_1407bb680(rcx_1, 2, *(*(arg1 + 0x20) + 0x120))\n1407bcabe        if ((*(rcx_1 + 0xa) & 4) != 0 || rax_2 == 0)\n1407bcadc        *(i + 9) &= 0xfd\n1407bcae0        i_1 = i\n1407bcac8        result += *(i + 0x18) + 0x20\n1407bcace        *i_1 = *i\n1407bcad1        *i = 0\n1407bcad4        *i_2 = i\n1407bcad7        i_2 = i\n1407bcae3        i = *i_1\n1407bcae9        do while (i != 0)\n1407bcaeb        rcx = *(arg1 + 0x20)\n1407bcb00        *i_2 = *(rcx + 0x20)\n1407bcb11        *(*(arg1 + 0x20) + 0x20) = arg_8\n1407bcb1e        return result",
+  "fetched_at": "2026-04-26T17:33:23Z"
+}

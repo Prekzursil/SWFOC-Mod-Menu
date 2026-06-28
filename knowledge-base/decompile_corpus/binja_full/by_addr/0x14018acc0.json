@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018acc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018acd7        char var_118[0x103]\n14018acd7        strncpy(&var_118, arg2, 0x103)\n14018ace1        char var_15 = 0\n14018ace9        int64_t rax = -1\n14018acf0        rax += 1\n14018acf7        do while (var_118[rax] != 0)\n14018acfc        int64_t rcx_1 = sx.q(rax.d - 1)\n14018acff        if (rax.d - 1 s>= 0)\n14018ad1d        int64_t temp1_1\n14018ad01        char rax_2 = var_118[rcx_1]\n14018ad08        if (rax_2 != 0x2e)\n14018ad13        if (rax_2 == 0x2f)\n14018ad13        break\n14018ad17        if (rax_2 == 0x5c)\n14018ad17        break\n14018ad0a        var_118[rcx_1] = 0\n14018ad19        temp1_1 = rcx_1\n14018ad19        rcx_1 -= 1\n14018ad1d        do while (temp1_1 - 1 s>= 0)\n14018ad2a        char (* rax_3)[0x103] = &var_118\n14018ad3c        char i\n14018ad30        i = *rax_3\n14018ad33        *(arg1 - &var_118 + rax_3) = i\n14018ad36        rax_3 = &(*rax_3)[1]\n14018ad3c        do while (i != 0)\n14018ad4e        return _strupr(arg1)",
+  "fetched_at": "2026-04-26T17:24:08Z"
+}
