@@ -10,16 +10,12 @@
 #   - tools/visual-chromatic/package.json (+ its lockfile, npm tooling tree)
 #   - .github/workflows/*.yml         (GitHub Actions, also covered by Dependabot)
 #
-# Incorporated 2026-06-28 (vendored/data, NOT scanned by this gate):
-#   - PetroglyphTools/**/*.csproj      third-party C# tools. These use bare
-#                                       <PackageReference> with NO NuGet lockfile
-#                                       (packages.lock.json), so osv-scanner's
-#                                       `scan source` extracts NOTHING from them.
+# Incorporated 2026-06-28 (data tree, NOT scanned by this gate):
 #   - knowledge-base/**                 RE notes + decompile/data JSON + SQLite;
 #                                       no dependency manifests/lockfiles.
-#   Verified 2026-06-28: `osv-scanner scan source --recursive` over both trees
-#   reports "No package sources found, 0 Extract calls". They add nothing to the
-#   deps gate and therefore need no IgnoredVulns/override entry here.
+#   Verified 2026-06-28: `osv-scanner scan source --recursive` over this tree
+#   reports "No package sources found, 0 Extract calls". It adds nothing to the
+#   deps gate and therefore needs no IgnoredVulns/override entry here.
 #
 # POLICY: an [[IgnoredVulns]] entry is allowed ONLY for a vuln with no
 # non-breaking fix OR one provably unreachable in THIS product, each with a

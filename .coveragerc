@@ -15,12 +15,11 @@ omit =
     tools/ghidra/export_symbols.py
     # The test suite itself.
     tests/python/*
-    # Incorporated vendored/data trees (2026-06-28): PetroglyphTools (third-party
-    # C# modding tools) and knowledge-base (RE notes + decompile/data JSON). They
-    # are already outside `source` (scripts/, tools/) so coverage never measures
-    # them; listed here defensively so any stray .py added under them can never
-    # silently dilute the 100% gate. They contain no first-party Python today.
-    PetroglyphTools/*
+    # Incorporated data tree (2026-06-28): knowledge-base (RE notes + decompile/
+    # data JSON). It is already outside `source` (scripts/, tools/) so coverage
+    # never measures it; listed here defensively so any stray .py added under it
+    # can never silently dilute the 100% gate. It contains no first-party Python
+    # today.
     knowledge-base/*
 
 [report]

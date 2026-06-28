@@ -32,14 +32,11 @@
 *.jpg binary
 *.ico binary
 
-# ── Incorporated third-party tools + RE knowledge base (2026-06-28) ──────────
+# ── Incorporated RE knowledge base (2026-06-28) ─────────────────────────────
 # Large/binary blobs tracked via Git LFS so they stay out of the normal git
-# pack. Text (JSON/Markdown/JSONL) under these trees stays in normal git.
+# pack. Text (JSON/Markdown/JSONL) under this tree stays in normal git.
 knowledge-base/callgraph_index.sqlite filter=lfs diff=lfs merge=lfs -text
 knowledge-base/**/*.sqlite filter=lfs diff=lfs merge=lfs -text
-PetroglyphTools/**/*.dat filter=lfs diff=lfs merge=lfs -text
-PetroglyphTools/**/*.meg filter=lfs diff=lfs merge=lfs -text
-# Keep these vendored/generated trees out of GitHub language statistics and
-# collapse them in diffs (third-party tools / machine-generated RE data).
-PetroglyphTools/** linguist-vendored
+# Keep this machine-generated tree out of GitHub language statistics and
+# collapse it in diffs (machine-generated RE data).
 knowledge-base/** linguist-generated
