@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b154",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: static struct _s_TryBlockMapEntry const * __ptr64 __cdecl\n   __FrameHandler3::CatchTryBlock(struct _s_FuncInfo const * __ptr64,int)\n   \n   Library: Visual Studio 2019 Release */\n\n_s_TryBlockMapEntry * __cdecl __FrameHandler3::CatchTryBlock(_s_FuncInfo *param_1,int param_2)\n\n{\n  longlong lVar1;\n  _s_TryBlockMapEntry *p_Var2;\n  ulonglong uVar3;\n  \n  uVar3 = (ulonglong)param_1->nTryBlocks;\n  do {\n    if ((int)uVar3 == 0) {\n      return (_s_TryBlockMapEntry *)0x0;\n    }\n    uVar3 = (ulonglong)((int)uVar3 - 1);\n    lVar1 = FUN_14076d8ec();\n    p_Var2 = (_s_TryBlockMapEntry *)\n             ((longlong)(int)param_1->dispTryBlockMap + *(longlong *)(lVar1 + 0x60) + uVar3 * 0x14);\n  } while ((param_2 <= *(int *)(p_Var2 + 4)) || (*(int *)(p_Var2 + 8) < param_2));\n  return p_Var2;\n}",
+  "fetched_at": "2026-04-26T18:10:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402a8ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402a8eef        if (arg2 != 0 && arg3 != 0)\n1402a8f04        void* rcx = *(arg1 + 0x1c0) + sx.q(*(arg2 + 0x4c)) * 0x48\n1402a8f15        if (rcx != 0 && *(rcx + 0x30) s>= 1)\n1402a8f1b        void* i = *(rcx + 0x10)\n1402a8f23        float zmm3 = -1f\n1402a8f2e        void* const result = nullptr\n1402a8f34        while (i != rcx + 8)\n1402a8f40        void* rax_3 = *(i + 0x18)\n1402a8f47        void* const result_1 = rax_3 - 0x18\n1402a8f4b        if (rax_3 == 0)\n1402a8f4b        result_1 = nullptr\n1402a8f52        if (result_1 != 0)\n1402a8f69        float zmm2 = *(arg3 + 0x78) f- *(result_1 + 0x78)\n1402a8f6e        float zmm0 = *(arg3 + 0x7c) f- *(result_1 + 0x7c)\n1402a8f73        float zmm1 = *(arg3 + 0x80) f- *(result_1 + 0x80)\n1402a8f8b        zmm2 = zmm2 * zmm2 + zmm0 * zmm0 + zmm1 * zmm1\n1402a8f97        if (result == 0 || not(zmm3 <= zmm2))\n1402a8f99        result = result_1\n1402a8f9c        zmm3 = zmm2\n1402a8f9f        i = *(i + 8)\n1402a8fab        return result\n1402a8fae        return 0",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

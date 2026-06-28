@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fdb00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1405fdb00(longlong *param_1,undefined8 param_2,longlong param_3)\n\n{\n  undefined *puVar1;\n  longlong *plVar2;\n  \n  if (*(longlong *)(param_3 + 0x18) - (longlong)*(longlong **)(param_3 + 0x10) >> 3 != 1) {\n    FUN_140248190(param_2,\"Release_Forces - Invalid number of parameters.  Expected 1, got %d.\");\n    return 0;\n  }\n  plVar2 = (longlong *)**(longlong **)(param_3 + 0x10);\n  if (plVar2 != (longlong *)0x0) {\n    for (puVar1 = (undefined *)(**(code **)(*plVar2 + 0x20))(plVar2); puVar1 != (undefined *)0x0;\n        puVar1 = *(undefined **)(puVar1 + 8)) {\n      if (puVar1 == &DAT_140a157c0) {\n        if (((double)plVar2[2] <= 0.0 && (double)plVar2[2] != 0.0) ||\n           (DAT_140854f30 < (double)plVar2[2])) goto LAB_1405fdb78;\n        goto LAB_1405fdb87;\n      }\n    }\n  }\n  plVar2 = (longlong *)0x0;\nLAB_1405fdb78:\n  FUN_140248190(param_2,\n                \"Release_Forces - Invalid type for parameter 1.  Expected number between 0 and 1.\");\nLAB_1405fdb87:\n  (**(code **)(*param_1 + 0xb0))(param_1,(float)(double)plVar2[2]);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:24:36Z"
+}

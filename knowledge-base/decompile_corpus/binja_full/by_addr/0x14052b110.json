@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052b110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14052b123        *arg1 = &CorruptionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14052b130        arg1[1] = &CorruptionAbilityClass::`vftable'{for `RefCountClass'}\n14052b134        sub_14048c8d0(arg1)\n14052b13c        if ((arg2 & 1) != 0)\n14052b146        j_sub_1407864b8(arg1)\n14052b158        return arg1",
+  "fetched_at": "2026-04-26T17:33:20Z"
+}

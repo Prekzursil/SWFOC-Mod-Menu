@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792ef4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140792f0a        uint64_t result = 2\n140792f13        int128_t zmm6\n140792f13        if (arg4 == 1)\n140793031        int32_t var_58_5 = 2\n140793066        result, zmm6 = _handle_errorf(\"powf\", 0x1d, 0, 0, 8, 0, arg1, arg2)\n140792f1c        if (arg4 == 2)\n140793001        int32_t var_58_4 = 2\n140793066        result, zmm6 = _handle_errorf(\"powf\", 0x1d, 0, 2, 4, 0x22, arg1, arg2)\n140792f2c        if (arg4 u> 2 && arg4 u> 5)\n140792f36        if (arg4 == 6)\n140792fc7        int32_t var_58_3 = 2\n140793066        result, zmm6 = _handle_errorf(\"powf\", 0x1d, 0, 1, 8, 0x21, arg1, arg2)\n140792f40        if (arg4 == 7)\n140792f8e        int32_t var_58_2 = 2\n140793066        result, zmm6 = _handle_errorf(\"powf\", 0x1d, 0, 4, 0x12, 0x22, arg1, arg2)\n140792f46        if (arg4 == 9)\n140792f55        int32_t var_58_1 = 2\n140793066        result, zmm6 = _handle_errorf(\"powf\", 0x1d, 0, 3, 0x11, 0x22, arg1, arg2)\n14079307e        return result",
+  "fetched_at": "2026-04-26T17:31:50Z"
+}

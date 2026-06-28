@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003c100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14003c125        int512_t zmm2 = sub_140036140(arg1)\n14003c12f        struct RefCountClass::EventClass::VTable** rax = operator new(0x50)\n14003c134        int32_t rdi = 0\n14003c139        struct ScheduledEventClass::EscortEventClass::VTable** rbx\n14003c139        if (rax == 0)\n14003c148        rbx = nullptr\n14003c143        rbx = sub_1403b0010(rax)\n14003c14e        if (arg3 != 0)\n14003c154        rdi = *(*(arg3 + 0x20) + 0x20)\n14003c161        sub_1403b01e0(rbx, *(arg2 + 0x50), rdi)\n14003c170        sub_1403b01f0(&data_140b2ed18, rbx)\n14003c179        if (arg4 == 1)\n14003c182        int64_t* rax_3 = sub_140038290(arg1, arg4)\n14003c18a        if (rax_3 != 0)\n14003c193        int64_t* rdx_3 = *(rax_3[0x53] + 0xfd0)\n14003c19d        if (rdx_3 != 0)\n14003c1b1        sub_1402d5320(&data_140b27e60, rdx_3, rax_3, zx.o(0), zmm2, 0)\n14003c1bd        data_140b29fc0 = 0\n14003c1c4        int32_t rax_4 = sub_140294a70(&data_140a16fd0)\n14003c1d6        void* rax_5 = sub_1402ad080(*(data_140b15418 + 0x18), rax_4)\n14003c207        return sub_14032ee40(data_140b15418 + 0xa0, rax_5, arg2) __tailcall",
+  "fetched_at": "2026-04-26T16:53:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140511826        struct BlockingStatus::InvasionBlockStatus::VTable** result = arg1\n140511829        sub_1407d8d80(arg1)\n140511835        result[7] = 0\n14051183d        *result = &InvasionBlockStatus::`vftable'{for `BlockingStatus'}\n140511847        result[6] = &InvasionBlockStatus::`vftable'{for `SignalListenerClass'}\n14051184e        result[8].w = 0\n140511859        return result",
+  "fetched_at": "2026-04-26T17:32:14Z"
+}

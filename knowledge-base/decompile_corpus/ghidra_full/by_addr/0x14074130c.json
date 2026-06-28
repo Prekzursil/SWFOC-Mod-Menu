@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074130c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: static class std::locale::_Locimp * __ptr64 __cdecl\n   std::locale::_Locimp::_New_Locimp(bool)\n   \n   Library: Visual Studio 2019 Release */\n\n_Locimp * __cdecl std::locale::_Locimp::_New_Locimp(bool param_1)\n\n{\n  _Locimp *this;\n  _Locimp *p_Var1;\n  \n  this = (_Locimp *)FUN_140769c58(0x38);\n  p_Var1 = (_Locimp *)0x0;\n  if (this != (_Locimp *)0x0) {\n    p_Var1 = _Locimp(this,param_1);\n  }\n  return (_Locimp *)p_Var1;\n}",
+  "fetched_at": "2026-04-26T18:04:16Z"
+}

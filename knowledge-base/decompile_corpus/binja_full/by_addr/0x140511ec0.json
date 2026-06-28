@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511ec0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140511ec6        struct BlockingStatus::FormationBlockStatus::VTable** result = arg1\n140511ec9        sub_1407d8d80(arg1)\n140511ed7        *result = &FormationBlockStatus::`vftable'{for `BlockingStatus'}\n140511ee1        result[6] = &FormationBlockStatus::`vftable'{for `SignalListenerClass'}\n140511ee8        __builtin_memset(&result[7], 0, 0x28)\n140511f01        return result",
+  "fetched_at": "2026-04-26T17:32:15Z"
+}

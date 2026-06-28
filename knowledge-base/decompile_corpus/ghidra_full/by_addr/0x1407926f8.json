@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407926f8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_MultiByteToWideChar\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_MultiByteToWideChar\n               (UINT param_1,DWORD param_2,LPCSTR param_3,int param_4,LPWSTR param_5,int param_6)\n\n{\n  if (param_1 < 0xc436) {\n    if (((9 < param_1 - 0xc42c) || ((0x2a7U >> (param_1 - 0xc42c & 0x1f) & 1) == 0)) &&\n       (param_1 != 0x2a)) goto LAB_14079274b;\nLAB_14079271c:\n    param_2 = 0;\n  }\n  else {\n    if (param_1 != 0xd698) {\n      if (param_1 < 0xdeaa) goto LAB_14079274b;\n      if ((param_1 < 0xdeb4) || (param_1 == 65000)) goto LAB_14079271c;\n      if (param_1 != 0xfde9) goto LAB_14079274b;\n    }\n    param_2 = param_2 & 8;\n  }\nLAB_14079274b:\n                    /* WARNING: Could not recover jumptable at 0x00014079274b. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  MultiByteToWideChar(param_1,param_2,param_3,param_4,param_5,param_6);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:54Z"
+}

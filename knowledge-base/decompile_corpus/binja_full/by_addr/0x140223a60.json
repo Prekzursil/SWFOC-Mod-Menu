@@ -1,0 +1,7 @@
+{
+  "addr": "0x140223a60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140223a76        if (*(arg1 + 0x50) != 0)\n140223a76        return \n140223a9d        if (CoCreateInstance(&data_140853828, 0, CLSCTX_INPROC_SERVER, &data_140853838, arg1 + 0x50) s< 0)\n140223aa1        *(arg1 + 0x50) = 0\n140223aae        return \n140223aaf        int64_t* rcx = *(arg1 + 0x50)\n140223ac6        if ((*(*rcx + 0x38))(rcx, arg1 + 0x58) s< 0)\n140223ac8        int64_t* rcx_1 = *(arg1 + 0x50)\n140223ace        (*(*rcx_1 + 0x10))(rcx_1)\n140223ad8        *(arg1 + 0x50) = 0\n140223ae5        return \n140223ae6        int64_t* rcx_2 = *(arg1 + 0x58)\n140223afd        if ((*(*rcx_2 + 0x38))(rcx_2, arg1 + 0x60) s>= 0)\n140223b16        if (sub_140224500(arg1) == 0)\n140223b18        int64_t* rcx_5 = *(arg1 + 0x60)\n140223b1e        (*(*rcx_5 + 0x10))(rcx_5)\n140223b21        int64_t* rcx_6 = *(arg1 + 0x58)\n140223b26        *(arg1 + 0x60) = 0\n140223b2c        (*(*rcx_6 + 0x10))(rcx_6)\n140223b2c        goto label_140223b2f\n140223aff        int64_t* rcx_3 = *(arg1 + 0x58)\n140223b05        (*(*rcx_3 + 0x10))(rcx_3)\n140223b2f        label_140223b2f:\n140223b2f        int64_t* rcx_7 = *(arg1 + 0x50)\n140223b32        *(arg1 + 0x58) = 0\n140223b38        (*(*rcx_7 + 0x10))(rcx_7)\n140223b3b        *(arg1 + 0x50) = 0\n140223b52        return ",
+  "fetched_at": "2026-04-26T17:29:16Z"
+}

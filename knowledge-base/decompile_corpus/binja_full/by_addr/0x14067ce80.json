@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067ce80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14067ce80        char r9_1 = (*arg2).b\n14067cea5        if ((r9_1 & 0xd0) != 0x80 && (r9_1 & 0x68) != 0x20 && (r9_1 & 0xb) != 1 && (r9_1 & 0x16) != 4)\n14067cec4        char rdx = 0\n14067cecf        if ((r9_1 & 0xa) != 0xa)\n14067cecf        rdx = (r9_1 & 0x50) != 0x50 & (r9_1 & 0x48) != 0x48\n14067cedf        if (((r9_1 & 0x12) != 0x12 & rdx) != 0)\n14067cee3        return 0\n14067cee6        return 1",
+  "fetched_at": "2026-04-26T17:11:42Z"
+}

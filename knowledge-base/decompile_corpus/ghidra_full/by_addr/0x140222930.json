@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall RAMFileClass::vfunction15(void)\n\n{\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:03:55Z"
+}

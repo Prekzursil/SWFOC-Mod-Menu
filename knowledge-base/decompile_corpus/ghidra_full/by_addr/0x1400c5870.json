@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400c5870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1400c5870(longlong param_1)\n\n{\n  DWORD DVar1;\n  longlong lVar2;\n  \n  if (param_1 != 0) {\n    lVar2 = FUN_1404af360();\n    if ((lVar2 != 0) && (*(longlong *)(lVar2 + 0x600) != 0)) {\n      FUN_1402d5290(&DAT_140b27e60,*(longlong *)(lVar2 + 0x600),0,0,0);\n      DVar1 = timeGetTime();\n      FUN_1402d72c0(&DAT_140b27e60,DVar1 - _DAT_140a7bec0,DAT_140b0a320,3);\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:44Z"
+}

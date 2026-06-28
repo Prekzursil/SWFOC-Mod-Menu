@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403af4c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AttackEventClass * __thiscall AttackEventClass::AttackEventClass(AttackEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 6;\n  this->vftablePtr = &vftable;\n  (this->AttackEventClass_data).offset_0x0 = 0;\n  (this->AttackEventClass_data).offset_0x8 = 0;\n  (this->AttackEventClass_data).offset_0xa = 0;\n  (this->AttackEventClass_data).offset_0x208 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:34:01Z"
+}

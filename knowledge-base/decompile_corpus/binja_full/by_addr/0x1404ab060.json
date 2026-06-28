@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ab060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ab063        if (arg2 == 0 || (*(*arg2 + 0x28))(arg2).d != 0)\n1404ab08c        return \n1404ab0b9        *(sub_1407d64f0(&arg2[2], sub_1407d6520(&arg2[2], \"Frequency\")) + 0x20) = arg3.d\n1404ab0d7        *(sub_1407d64f0(&arg2[2], sub_1407d6520(&arg2[2], \"XAmplitude\")) + 0x20) = arg4.d\n1404ab0fb        *(sub_1407d64f0(&arg2[2], sub_1407d6520(&arg2[2], \"YAmplitude\")) + 0x20) = arg5\n1404ab11f        *(sub_1407d64f0(&arg2[2], sub_1407d6520(&arg2[2], \"EaseIn\")) + 0x20) = arg6\n1404ab13c        *(sub_1407d64f0(&arg2[2], sub_1407d6520(&arg2[2], \"EaseOut\")) + 0x20) = arg7\n1404ab150        return ",
+  "fetched_at": "2026-04-26T17:29:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140216490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LARGE_INTEGER FUN_140216490(void)\n\n{\n  LARGE_INTEGER local_res8 [4];\n  \n  QueryPerformanceCounter(local_res8);\n  return (LARGE_INTEGER)local_res8[0].QuadPart;\n}",
+  "fetched_at": "2026-04-26T18:00:51Z"
+}

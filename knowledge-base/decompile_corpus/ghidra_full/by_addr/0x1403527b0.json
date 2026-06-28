@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403527b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* BaseComponentClass member function inherited by ShellComponentClass\n   BaseComponentClass member function inherited by IconComponentClass\n   BaseComponentClass member function inherited by TextComponentClass\n   BaseComponentClass member function inherited by ModelComponentClass\n   BaseComponentClass member function inherited by BarComponentClass\n   BaseComponentClass member function inherited by SelectComponentClass */\n\nvoid __thiscall BaseComponentClass::vfunction18(BaseComponentClass *this,char param_1)\n\n{\n  byte *pbVar1;\n  \n  pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n  *pbVar1 = *pbVar1 & 0xf7;\n  pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n  *pbVar1 = *pbVar1 | param_1 << 3;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:14Z"
+}

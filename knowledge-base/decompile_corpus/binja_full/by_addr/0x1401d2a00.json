@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2a00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d2a04        HMODULE hLibModule = data_140a7a0a0\n1401d2a0e        if (hLibModule == 0)\n1401d2a0e        return \n1401d2a17        data_140a13608 = sub_1401d2170\n1401d2a25        data_140a13610 = sub_1401d2170\n1401d2a33        data_140a13618 = sub_1401d2170\n1401d2a41        data_140a13620 = sub_1401d2170\n1401d2a4f        data_140a13628 = sub_1401d2170\n1401d2a5d        data_140a13630 = sub_14017d070\n1401d2a6b        data_140a13638 = sub_14017d070\n1401d2a72        FreeLibrary(hLibModule)\n1401d2a78        data_140a7a0a0 = 0\n1401d2a87        return ",
+  "fetched_at": "2026-04-26T17:26:43Z"
+}

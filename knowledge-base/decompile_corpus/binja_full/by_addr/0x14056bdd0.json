@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056bdd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056bddb        struct BehaviorClass::EnergyPoolBehaviorClass::VTable** result = operator new(0x40)\n14056bde6        if (result == 0)\n14056be1e        return result\n14056bdeb        sub_1404c32d0(result)\n14056bdf7        *result = &EnergyPoolBehaviorClass::`vftable'{for `BehaviorClass'}\n14056be01        result[1] = &EnergyPoolBehaviorClass::`vftable'{for `RefCountClass'}\n14056be0c        result[3] = &EnergyPoolBehaviorClass::`vftable'{for `SignalListenerClass'}\n14056be18        return result",
+  "fetched_at": "2026-04-26T17:34:53Z"
+}

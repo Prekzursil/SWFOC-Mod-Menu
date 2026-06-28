@@ -1,0 +1,7 @@
+{
+  "addr": "0x140667b40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall\nGalacticPlayerPerceptualEvaluatorClass::vfunction11\n          (GalacticPlayerPerceptualEvaluatorClass *this,longlong param_1,double *param_2)\n\n{\n  undefined **ppuVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  float extraout_XMM0_Da;\n  \n  ppuVar1 = (this->SignalListenerClass_data).offset_0x0;\n  if (ppuVar1 == (undefined **)0x0) {\n    return 0;\n  }\n  if ((ppuVar1[0x6c] != (undefined *)0x0) && (*(char *)((longlong)ppuVar1 + 0x62) == '\\0')) {\n    lVar2 = FUN_1404b06d0(ppuVar1[0x6c],0);\n    if ((lVar2 != 0) && (*(longlong *)(lVar2 + 0x40) != 0)) {\n      uVar3 = FUN_1406136b0(*(longlong *)(lVar2 + 0x40) + 400);\n      *param_2 = (double)extraout_XMM0_Da;\n      return CONCAT71((int7)((ulonglong)uVar3 >> 8),1);\n    }\n  }\n  uVar3 = PlayerPerceptualEvaluatorClass::vfunction11\n                    ((PlayerPerceptualEvaluatorClass *)this,param_1,param_2);\n  return uVar3;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:48Z"
+}

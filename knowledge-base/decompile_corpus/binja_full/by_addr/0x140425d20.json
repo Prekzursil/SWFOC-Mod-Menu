@@ -1,0 +1,7 @@
+{
+  "addr": "0x140425d20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140425d39        int32_t i_1 = 0\n140425d3b        *arg1 = &MovementCoordinatorSystemClass::`vftable'\n140425d40        void* rcx = arg1[1]\n140425d48        void* r8 = rcx\n140425d55        if ((arg1[2] - rcx) s>> 3 != 0)\n140425d5c        uint64_t i = 0\n140425d64        sub_1404f6c60(*(rcx + (i << 3)))\n140425d6d        int64_t* vFunc_0 = arg1[1][i].vFunc_0\n140425d74        if (vFunc_0 != 0)\n140425d7e        (**vFunc_0)(vFunc_0, 1)\n140425d80        rcx = arg1[1]\n140425d84        i_1 += 1\n140425d8a        r8 = rcx\n140425d90        i = zx.q(i_1)\n140425d99        do while (i u< (arg1[2] - rcx) s>> 3)\n140425da5        arg1[2] = rcx\n140425dac        if (rcx != 0)\n140425dc0        if (((arg1[3] - r8) & 0xfffffffffffffff8) u>= 0x1000)\n140425dc2        void* rcx_2 = *(r8 - 8)\n140425dd5        if (r8 - rcx_2 - 8 u> 0x1f)\n140425e1b        _invalid_parameter_noinfo_noreturn()\n140425e1b        noreturn\n140425dd7        r8 = rcx_2\n140425ddd        j_sub_1407864b8(r8)\n140425de2        __builtin_memset(&arg1[1], 0, 0x18)\n140425dfe        if ((arg2 & 1) != 0)\n140425e08        j_sub_1407864b8(arg1)\n140425e1a        return arg1",
+  "fetched_at": "2026-04-26T17:26:26Z"
+}

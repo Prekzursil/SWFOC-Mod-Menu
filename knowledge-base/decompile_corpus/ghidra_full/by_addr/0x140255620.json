@@ -1,0 +1,7 @@
+{
+  "addr": "0x140255620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nLuaScriptMessage::vfunction11(LuaScriptMessage *this,undefined8 param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  longlong *plVar3;\n  \n  plVar1 = (longlong *)**(longlong **)(param_2 + 0x10);\n  if ((plVar1 != (longlong *)0x0) &&\n     (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1), puVar2 != (undefined *)0x0)) {\n    while (puVar2 != &DAT_140a157d0) {\n      puVar2 = *(undefined **)(puVar2 + 8);\n      if (puVar2 == (undefined *)0x0) {\n        return 0;\n      }\n    }\n    plVar3 = plVar1 + 2;\n    if (0xf < (ulonglong)plVar1[5]) {\n      plVar3 = (longlong *)*plVar3;\n    }\n    FUN_140248420(param_1,plVar3);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:12:37Z"
+}

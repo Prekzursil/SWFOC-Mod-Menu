@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405329b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RadarMapDataPackClass::~RadarMapDataPackClass(RadarMapDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  if ((this->RadarMapDataPackClass_data).offset_0x0 != 0) {\n    FUN_140358630(&DAT_140b2bcb0);\n    (this->RadarMapDataPackClass_data).offset_0x0 = 0;\n    (this->RadarMapDataPackClass_data).offset_0x8 = 0;\n    return;\n  }\n  (this->RadarMapDataPackClass_data).offset_0x0 = 0;\n  (this->RadarMapDataPackClass_data).offset_0x8 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:26Z"
+}

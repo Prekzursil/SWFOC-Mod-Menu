@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fe130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * FUN_1401fe130(int param_1)\n\n{\n  if (param_1 + 1U < 0x1b) {\n    return (&PTR_s_COLOR_BLACK_140a13c08)[(longlong)param_1 * 2];\n  }\n  FUN_140048ec0(&DAT_140a7be40,\"UNKNOWN(%d)\",param_1);\n  return &DAT_140a7be40;\n}",
+  "fetched_at": "2026-04-26T17:54:51Z"
+}

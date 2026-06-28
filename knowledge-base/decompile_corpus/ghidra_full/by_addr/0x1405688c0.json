@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405688c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTeamTargetingBehaviorClass::vfunction46\n          (TeamTargetingBehaviorClass *this,longlong *param_1,longlong param_2)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x0001405688d4. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction47)(this,(float *)(this->offset_0x18 + 0xf),param_1,param_2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f8c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013f8cd        void* rbx = -ffffffffffffffff\n14013f8d4        char* rax = strstr(arg1, data_140a12510)\n14013f8dc        if (rax == 0)\n14013f905        return 0xffffffff\n14013f8ee        bool cond:0_1\n14013f8e5        cond:0_1 = *(data_140a12510 + rbx + 1) != 0\n14013f8ea        rbx += 1\n14013f8ee        do while (cond:0_1)\n14013f8f9        return sub_140775f84(rbx + rax) __tailcall",
+  "fetched_at": "2026-04-26T17:19:07Z"
+}

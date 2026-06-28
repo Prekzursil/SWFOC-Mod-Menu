@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022c2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022c2fd        if (*(arg1 + 8) == 0)\n14022c2fd        return \n14022c2ff        int64_t rcx = *(arg1 + 0x18)\n14022c30c        if (rcx == 0 || *(arg1 + 0x2c) != 1)\n14022c30c        return \n14022c312        if (*(arg1 + 0xc) == 0)\n14022c316        AIL_pause_stream(rcx, 0)\n14022c31c        *(arg1 + 0x2c) = 0\n14022c325        return ",
+  "fetched_at": "2026-04-26T17:29:33Z"
+}

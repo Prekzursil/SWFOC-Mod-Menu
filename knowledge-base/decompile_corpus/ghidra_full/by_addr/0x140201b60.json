@@ -1,0 +1,7 @@
+{
+  "addr": "0x140201b60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140201b60(undefined8 *param_1)\n\n{\n  DWORD DVar1;\n  BOOL BVar2;\n  BOOL BVar3;\n  ulonglong in_RAX;\n  undefined4 extraout_var;\n  ulonglong uVar4;\n  \n  if (param_1[2] != 0) {\n    DVar1 = WaitForSingleObject((HANDLE)param_1[1],0);\n    in_RAX = CONCAT44(extraout_var,DVar1);\n    if ((DVar1 != 0x102) && (DVar1 != 0xffffffff)) {\n      BVar2 = UnmapViewOfFile((LPCVOID)param_1[2]);\n      BVar3 = CloseHandle((HANDLE)*param_1);\n      uVar4 = (ulonglong)(BVar2 != 0);\n      if (BVar3 == 0) {\n        uVar4 = 0;\n      }\n      ReleaseMutex((HANDLE)param_1[1]);\n      BVar2 = CloseHandle((HANDLE)param_1[1]);\n      if (BVar2 == 0) {\n        uVar4 = 0;\n      }\n      *param_1 = 0;\n      param_1[2] = 0;\n      param_1[1] = 0xffffffffffffffff;\n      return uVar4;\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:55:44Z"
+}

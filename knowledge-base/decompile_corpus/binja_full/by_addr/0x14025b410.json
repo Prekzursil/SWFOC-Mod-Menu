@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025b423        if (arg1 == arg2)\n14025b4d0        return arg1\n14025b429        int64_t* rcx = *(arg1 + 0xc0)\n14025b435        struct DrawPrimitiveClass::TextureRectClass::VTable** rsi = nullptr\n14025b43a        if (rcx != 0)\n14025b442        (**rcx)(rcx, 1)\n14025b444        *(arg1 + 0xc0) = 0\n14025b453        sub_14026cf90(arg1 + 0x50, arg2 + 0x50)\n14025b45e        sub_14026ee20(arg1, arg2)\n14025b46a        *(arg1 + 0xa0) = *(arg2 + 0xa0)\n14025b478        *(arg1 + 0xb0) = *(arg2 + 0xb0)\n14025b486        if (*(arg2 + 0xc0) != 0)\n14025b48d        struct DrawPrimitiveClass::VTable** rax_2 = operator new(0x90)\n14025b495        if (rax_2 != 0)\n14025b4a6        rsi = sub_1401caf90(rax_2, *(arg2 + 0xc0))\n14025b4a9        *(arg1 + 0xc0) = rsi\n14025b4c2        return arg1",
+  "fetched_at": "2026-04-26T17:31:02Z"
+}

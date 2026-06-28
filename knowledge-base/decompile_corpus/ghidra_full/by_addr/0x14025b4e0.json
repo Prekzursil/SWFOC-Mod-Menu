@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b4e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DrawTextClass * __thiscall\nDrawTextClass::scalar_deleting_destructor(DrawTextClass *this,uint param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: DrawTextClass::~DrawTextClass */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  plVar1 = (this->DrawTextClass_data).offset_0x68;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)*plVar1)(plVar1,1);\n  }\n  (this->DrawTextClass_data).offset_0x68 = (longlong *)0x0;\n  FUN_1401f9440(&(this->DrawTextClass_data).field_0x58);\n  FUN_1401f9440(&(this->DrawTextClass_data).field_0x48);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (DrawTextClass_vftable1 *)&RefCountClass::vftable;\n  FUN_14026cf20(&this->StringTextureClass);\n  DrawPrimitiveClass::~DrawPrimitiveClass((DrawPrimitiveClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,200);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:14:06Z"
+}

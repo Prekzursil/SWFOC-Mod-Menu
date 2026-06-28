@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403711c0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_get_adjusted_cost_variant",
+  "body": "1403711d3        if (arg2 != 0)\n1403711e0        int64_t rax_2 = (*(*arg2 + 0x10))(arg2, 6)\n1403711e6        if (rax_2 != 0)\n1403711f1        int32_t zmm0 = sub_140400240(rax_2, arg1, arg2)\n1403711fc        if (not(zmm0 f<= 0f))\n14037120a        zmm0 = _mm_max_ss(0x3f800000, zmm0)\n140371217        return sub_14022f9c0(zmm0) __tailcall\n14037122c        return zx.q(*(arg1 + 0x86c))",
+  "fetched_at": "2026-04-26T16:43:16Z"
+}

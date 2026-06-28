@@ -1,0 +1,7 @@
+{
+  "addr": "0x140464150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nStoryEventAccumulateClass::vfunction3(StoryEventAccumulateClass *this,int param_1,longlong *param_2)\n\n{\n  int iVar1;\n  char *_Str;\n  longlong *plVar2;\n  \n  if (param_1 == 0) {\n    _Str = (char *)*param_2;\n    if (0xf < *(ulonglong *)(_Str + 0x18)) {\n      _Str = *(char **)_Str;\n    }\n    iVar1 = FID_conflict_atoi(_Str);\n    *(int *)&this[1].SignalGeneratorClass_data = iVar1;\n    return;\n  }\n  if ((param_1 == 1) && (plVar2 = (longlong *)*param_2, plVar2[2] != 0)) {\n    if (0xf < (ulonglong)plVar2[3]) {\n      plVar2 = (longlong *)*plVar2;\n    }\n    iVar1 = FUN_14045c3f0(plVar2);\n    this[1].SignalGeneratorClass_data.offset_0x4 = iVar1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:59Z"
+}

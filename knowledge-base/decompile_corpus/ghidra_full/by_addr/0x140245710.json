@@ -1,0 +1,7 @@
+{
+  "addr": "0x140245710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaValue<void_(__cdecl*)(void),8>::vfunction5(void)\n\n{\n  return &DAT_140a15820;\n}",
+  "fetched_at": "2026-04-26T18:10:17Z"
+}

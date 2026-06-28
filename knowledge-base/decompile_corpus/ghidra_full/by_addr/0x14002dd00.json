@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002dd00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nSingletonInstance<class_LandPositionFinderClass>::scalar_deleting_destructor\n          (SingletonInstance<class_LandPositionFinderClass> *this)\n\n{\n  if (this[1].vftablePtr != (SingletonInstance<class_LandPositionFinderClass>_vftable *)0x0) {\n    SingletonInstance<class_DatabaseConversionSystemClass>::\n    ~SingletonInstance<class_DatabaseConversionSystemClass>\n              ((SingletonInstance<class_DatabaseConversionSystemClass> *)this);\n    thunk_FUN_1407864b8(this[1].vftablePtr,1);\n    this[1].vftablePtr = (SingletonInstance<class_LandPositionFinderClass>_vftable *)0x0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001e780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nbad_alloc * __thiscall std::bad_alloc::bad_alloc(bad_alloc *this,longlong param_1)\n\n{\n                    /* inlined constructor: std::exception::exception */\n  this->vftablePtr = (bad_alloc_vftable *)&exception::vftable;\n  (this->exception_data).offset_0x0 = 0;\n  (this->exception_data).offset_0x8 = 0;\n  __std_exception_copy(param_1 + 8);\n  this->vftablePtr = &vftable;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e7e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402e7e80(void)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  longlong *plVar3;\n  \n  cVar2 = FUN_14035f790(DAT_140b15418);\n  if (cVar2 != '\\0') {\n    uVar1 = FUN_14035e4c0(DAT_140b15418);\n    FUN_1403c0f60(uVar1);\n  }\n  plVar3 = (longlong *)FUN_140347b50(0x218);\n  if (plVar3 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x0001402e7ec3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*plVar3 + 0x78))(plVar3,1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:25:16Z"
+}

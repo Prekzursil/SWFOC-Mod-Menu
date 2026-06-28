@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215160",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140215167        void* rdx = &data_140a7c6a0 - arg1\n14021517c        char i\n140215170        i = *arg1\n140215173        *(rdx + arg1) = i\n140215176        arg1 = &arg1[1]\n14021517c        do while (i != 0)\n14021517e        data_140a14d00 = 1\n140215185        return i",
+  "fetched_at": "2026-04-26T17:28:28Z"
+}

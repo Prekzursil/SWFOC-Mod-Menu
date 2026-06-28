@@ -1,0 +1,7 @@
+{
+  "addr": "0x140332bf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<class_IPAddressClass> * __thiscall\nDynamicVectorClass<class_IPAddressClass>::scalar_deleting_destructor\n          (DynamicVectorClass<class_IPAddressClass> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<class_IPAddressClass>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:58Z"
+}

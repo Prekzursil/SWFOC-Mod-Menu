@@ -1,0 +1,7 @@
+{
+  "addr": "0x140281540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140281540(longlong *param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  \n  if ((param_2 != (longlong *)0x0) &&\n     (plVar4 = *(longlong **)*param_1, plVar4 != (longlong *)*param_1)) {\n    do {\n      lVar1 = *param_2;\n      if (param_2[1] == 0x3ffffffffffffff) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407408dc(\"list too long\");\n      }\n      plVar3 = (longlong *)FUN_140769c58(0x40);\n      *(char *)(plVar3 + 2) = (char)plVar4[2];\n      *(undefined4 *)((longlong)plVar3 + 0x14) = *(undefined4 *)((longlong)plVar4 + 0x14);\n      *(int *)(plVar3 + 3) = (int)plVar4[3];\n      FUN_1404ad4a0(plVar3 + 4,plVar4 + 4);\n      param_2[1] = param_2[1] + 1;\n      puVar2 = *(undefined8 **)(lVar1 + 8);\n      *plVar3 = lVar1;\n      plVar3[1] = (longlong)puVar2;\n      *(longlong **)(lVar1 + 8) = plVar3;\n      *puVar2 = plVar3;\n      plVar4 = (longlong *)*plVar4;\n    } while (plVar4 != (longlong *)*param_1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:22:22Z"
+}

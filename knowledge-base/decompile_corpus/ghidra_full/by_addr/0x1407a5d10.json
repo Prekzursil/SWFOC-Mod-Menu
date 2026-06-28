@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5d10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    bi_windup\n   \n   Library: Visual Studio 2019 Release */\n\nvoid bi_windup(longlong param_1)\n\n{\n  undefined1 uVar1;\n  \n  if (*(int *)(param_1 + 0x1714) < 9) {\n    if (*(int *)(param_1 + 0x1714) < 1) goto LAB_1407a5d57;\n    uVar1 = *(undefined1 *)(param_1 + 0x1710);\n  }\n  else {\n    *(undefined1 *)((ulonglong)*(uint *)(param_1 + 0x28) + *(longlong *)(param_1 + 0x10)) =\n         *(undefined1 *)(param_1 + 0x1710);\n    *(int *)(param_1 + 0x28) = *(int *)(param_1 + 0x28) + 1;\n    uVar1 = *(undefined1 *)(param_1 + 0x1711);\n  }\n  *(undefined1 *)((ulonglong)*(uint *)(param_1 + 0x28) + *(longlong *)(param_1 + 0x10)) = uVar1;\n  *(int *)(param_1 + 0x28) = *(int *)(param_1 + 0x28) + 1;\nLAB_1407a5d57:\n  *(undefined2 *)(param_1 + 0x1710) = 0;\n  *(undefined4 *)(param_1 + 0x1714) = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:36Z"
+}

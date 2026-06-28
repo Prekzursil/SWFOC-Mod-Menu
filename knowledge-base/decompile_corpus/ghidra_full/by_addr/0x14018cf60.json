@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018cf60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTextureEffectParam::vfunction5(alD3dTextureEffectParam *this,longlong *param_1)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = (longlong *)(this->alD3dEffectParamInterface_data).offset_0x10;\n  if (plVar1 != param_1) {\n    if (plVar1 != (longlong *)0x0) {\n      (**(code **)(*plVar1 + 8))();\n    }\n    (this->alD3dEffectParamInterface_data).offset_0x10 = param_1;\n    if (param_1 != (longlong *)0x0) {\n      (**(code **)*param_1)(param_1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:48Z"
+}

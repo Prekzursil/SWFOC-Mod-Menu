@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c1d20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c1d39        if (*(arg1 + 0x98) == 0)\n1401c1d39        return \n1401c1d3f        int64_t* r9_1 = *(arg1 + 0x90)\n1401c1d4b        void** i = *r9_1\n1401c1d4e        void** i_1 = i\n1401c1d54        if (i == r9_1)\n1401c1d54        return \n1401c1d60        int32_t* rdi_1 = i_1[2]\n1401c1d6f        if (rdi_1[0x38].b == 0 && *rdi_1 == arg2)\n1401c1d7e        if (rdi_1 != 0)\n1401c1d80        void* rcx = i[2]\n1401c1d8b        if (*(rcx + 0xe0) == 0)\n1401c1d92        void* rdx = &rdi_1[2]\n1401c1d96        if (*(rdi_1 + 0x20) u>= 0x10)\n1401c1d98        rdx = *rdx\n1401c1d9b        char* rcx_1 = rcx + 8\n1401c1da4        if (*(rcx_1 + 0x18) u>= 0x10)\n1401c1da6        rcx_1 = *rcx_1\n1401c1db0        if (_stricmp(rcx_1, rdx).d == 0)\n1401c1dc0        void* rcx_2 = i[2]\n1401c1dc7        if (rcx_2 != 0)\n1401c1dc9        *(rcx_2 + 0xe0) = 1\n1401c1dd3        if (arg3 == 0)\n1401c1dd5        *(rcx_2 + 0x138) = 0\n1401c1ddf        sub_1401e3b00(rcx_2)\n1401c1dc7        break\n1401c1db2        i = *i\n1401c1dbc        do while (i != *(arg1 + 0x90))\n1401c1d7e        break\n1401c1d71        i_1 = *i_1\n1401c1d77        do while (i_1 != r9_1)\n1401c1df8        return ",
+  "fetched_at": "2026-04-26T17:26:12Z"
+}

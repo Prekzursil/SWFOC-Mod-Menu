@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076abfc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14076abfc(void)\n\n{\n  return DAT_140a44ba0 == 0;\n}",
+  "fetched_at": "2026-04-26T18:10:19Z"
+}

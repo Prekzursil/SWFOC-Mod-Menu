@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d4090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d40d1        int32_t rbx_1\n1407d40d1        switch (tolower(arg2) - 0x61)\n1407d40db        case 0\n1407d40db        rbx_1 = isalpha(arg1)\n1407d4140        label_1407d4140:\n1407d4147        if (islower(arg2) == 0)\n1407d414b        int32_t rsi_1\n1407d414b        rsi_1.b = rbx_1 == 0\n1407d414f        rbx_1 = rsi_1\n1407d4151        return zx.q(rbx_1)\n1407d40e6        case 2\n1407d40e6        rbx_1 = iscntrl(arg1)\n1407d40e8        goto label_1407d4140\n1407d40f1        case 3\n1407d40f1        rbx_1 = isdigit(arg1)\n1407d40f3        goto label_1407d4140\n1407d40fc        case 0xb\n1407d40fc        rbx_1 = islower(arg1)\n1407d40fe        goto label_1407d4140\n1407d4107        case 0xf\n1407d4107        rbx_1 = ispunct(arg1)\n1407d4109        goto label_1407d4140\n1407d4112        case 0x12\n1407d4112        rbx_1 = isspace(arg1)\n1407d4114        goto label_1407d4140\n1407d411d        case 0x14\n1407d411d        rbx_1 = isupper(arg1)\n1407d411f        goto label_1407d4140\n1407d4128        case 0x16\n1407d4128        rbx_1 = isalnum(arg1)\n1407d412a        goto label_1407d4140\n1407d4133        case 0x17\n1407d4133        rbx_1 = isxdigit(arg1)\n1407d4135        goto label_1407d4140\n1407d413b        case 0x19\n1407d413b        rbx_1.b = arg1 == 0\n1407d413b        goto label_1407d4140\n1407d4159        int32_t rsi_2\n1407d4159        rsi_2.b = arg2 == arg1\n1407d415d        return zx.q(rsi_2)",
+  "fetched_at": "2026-04-26T17:34:00Z"
+}

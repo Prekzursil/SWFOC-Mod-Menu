@@ -1,0 +1,7 @@
+{
+  "addr": "0x140739f90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceAmbushBlockStatus * __thiscall\nSpaceAmbushBlockStatus::SpaceAmbushBlockStatus(SpaceAmbushBlockStatus *this)\n\n{\n  LuaMemberFunctionWrapper<class_BlockingStatus>::LuaMemberFunctionWrapper<class_BlockingStatus>\n            ((LuaMemberFunctionWrapper<class_BlockingStatus> *)this);\n  *(undefined4 *)&this->offset_0x48 = 0xffffffff;\n  *(undefined8 *)&this->field_0x38 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&this->field_0x40 = 0;\n  *(undefined2 *)&this->field_0x44 = 0;\n  this->offset_0x40 = 0;\n  *(undefined4 *)((longlong)&this->offset_0x48 + 4) = 0;\n  *(undefined4 *)&this->offset_0x50 = 0x5d5e0b6b;\n  this->offset_0x58 = 0;\n  this->offset_0x60 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:02:52Z"
+}

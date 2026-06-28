@@ -1,0 +1,7 @@
+{
+  "addr": "0x140712d20",
+  "tool": "ghidra",
+  "fact_id": "rva_ability_berserker",
+  "body": "\nBerserkerAbilityClass * __thiscall\nBerserkerAbilityClass::BerserkerAbilityClass(BerserkerAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->BerserkerAbilityClass_data).offset_0x0 = 0;\n  (this->BerserkerAbilityClass_data).offset_0x8 = 0;\n  (this->BerserkerAbilityClass_data).offset_0x10 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:20Z"
+}

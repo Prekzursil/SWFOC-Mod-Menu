@@ -1,0 +1,7 @@
+{
+  "addr": "0x140391150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140391150(longlong param_1)\n\n{\n  TelekinesisDataPackClass *pTVar1;\n  \n  if (*(longlong *)(param_1 + 0x160) == 0) {\n    pTVar1 = (TelekinesisDataPackClass *)FUN_140769c58(0x58);\n    if (pTVar1 != (TelekinesisDataPackClass *)0x0) {\n      pTVar1 = TelekinesisDataPackClass::TelekinesisDataPackClass(pTVar1);\n      *(TelekinesisDataPackClass **)(param_1 + 0x160) = pTVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x160) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:05Z"
+}

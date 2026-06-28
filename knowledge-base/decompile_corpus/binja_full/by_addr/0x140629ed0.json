@@ -1,0 +1,7 @@
+{
+  "addr": "0x140629ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140629ee3        *arg1 = &SquashBehaviorClass::`vftable'{for `BehaviorClass'}\n140629ef0        arg1[1] = &SquashBehaviorClass::`vftable'{for `RefCountClass'}\n140629efb        arg1[3] = &SquashBehaviorClass::`vftable'{for `SignalListenerClass'}\n140629eff        sub_1404c3310(arg1)\n140629f07        if ((arg2 & 1) != 0)\n140629f11        j_sub_1407864b8(arg1)\n140629f23        return arg1",
+  "fetched_at": "2026-04-26T17:23:59Z"
+}

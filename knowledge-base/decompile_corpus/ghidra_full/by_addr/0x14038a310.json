@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038a310",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GameObjectClass * FUN_14038a310(GameObjectClass *param_1,uint param_2)\n\n{\n  GameObjectClass::~GameObjectClass(param_1);\n  if ((param_2 & 1) != 0) {\n    thunk_FUN_1407864b8(param_1,0x8a0);\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:20:57Z"
+}

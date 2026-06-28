@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b03e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b03ed        int64_t* rcx = arg1[0x38]\n1401b03fb        void* result = arg1[0x39] - rcx\n1401b0404        if ((result & 0xfffffffffffffff8) != 0)\n1401b040a        int64_t* rdx = arg1[0x39]\n1401b042b        sub_1401b0eb0(rcx, rdx, (rdx - rcx) s>> 3, arg3)\n1401b0430        data_140a6fee0 = 1\n1401b0442        int32_t rax_2 = (*(*arg1 + 0x40))(arg1, 0, 0)\n1401b0445        int32_t rsi_1 = 0\n1401b044c        if (rax_2 s> 0)\n1401b0453        int64_t r8_4 = *arg1\n1401b045b        (*(r8_4 + 0x48))(arg1, zx.q(rsi_1), r8_4)\n1401b0466        int32_t i_1 = 0\n1401b0476        if ((arg1[0x39] - arg1[0x38]) s>> 3 != 0)\n1401b0478        uint64_t i = 0\n1401b048a        int64_t* rcx_3 = *(arg1[0x38] + (i << 3))\n1401b0491        (*(*rcx_3 + 0x10))(rcx_3, arg2)\n1401b049b        i_1 += 1\n1401b04a8        i = zx.q(i_1)\n1401b04ad        do while (i u< (arg1[0x39] - arg1[0x38]) s>> 3)\n1401b04b5        (*(*arg1 + 0x50))(arg1)\n1401b04b8        rsi_1 += 1\n1401b04bd        do while (rsi_1 s< rax_2)\n1401b04ca        (*(*arg1 + 0x58))(arg1)\n1401b04d7        data_140a6fee0 = 0\n1401b04de        int64_t rcx_6 = arg1[0x38]\n1401b04ef        result = (arg1[0x39] - rcx_6) s>> 3\n1401b04f6        if (result != 0)\n1401b04f8        arg1[0x39] = rcx_6\n1401b0505        return result",
+  "fetched_at": "2026-04-26T17:25:36Z"
+}

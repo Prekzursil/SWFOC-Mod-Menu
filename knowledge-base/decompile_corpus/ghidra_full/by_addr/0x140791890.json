@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791890",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    fegetround\n   \n   Library: Visual Studio 2019 Release */\n\nvoid fegetround(void)\n\n{\n  undefined4 uVar1;\n  \n  uVar1 = __acrt_fenv_get_control();\n  FUN_14079d328(uVar1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:48Z"
+}

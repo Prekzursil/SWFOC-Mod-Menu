@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401787c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nint FUN_1401787c0(undefined4 param_1)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  int iVar3;\n  \n  iVar3 = 0;\n  DAT_140a6e734 = DAT_140a6e734 + 1;\n  DAT_140a6d421 = DAT_140a6e734 == 0;\n  if ((DAT_140a6e734 == 1) && (DAT_140a6d428 != '\\0')) {\n    FUN_1401a7370(2);\n  }\n  if ((DAT_140a6e734 == 0) && (DAT_140a6d428 != '\\0')) {\n    FUN_1401a7370(1);\n  }\n  uVar2 = param_1;\n  if (DAT_140a6d390 != '\\0') {\n    DAT_140a6d3c4 = param_1;\n    uVar2 = DAT_140a6d40c;\n  }\n  DAT_140a6d40c = uVar2;\n  _DAT_140a6d440 = param_1;\n  if ((DAT_140a6d480 != 0) && (iVar3 = FUN_140179dc0(), iVar3 < 0)) {\n    if (iVar3 != -0x7789fe84) {\n      iVar3 = -0x7dfffff4;\n    }\n    FUN_14017a460(iVar3,1);\n  }\n  iVar1 = DAT_140a6e734;\n  DAT_140a6e734 = DAT_140a6e734 + -1;\n  DAT_140a6d421 = DAT_140a6e734 == 0;\n  if ((DAT_140a6e734 == 0) && (DAT_140a6d428 != '\\0')) {\n    FUN_1401a7370(iVar1);\n  }\n  return iVar3;\n}",
+  "fetched_at": "2026-04-26T17:28:05Z"
+}

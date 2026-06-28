@@ -1,0 +1,2141 @@
+{
+  "generated": "2026-04-26",
+  "inventory_count": 22828,
+  "trainer_relevant_count": 268,
+  "hits": [
+    {
+      "entry": "api_lua_checkstack",
+      "rva": "0x7B8BC0",
+      "full_addr": "0x1407b8bc0",
+      "claim": "lua_checkstack Lua 5.0.2 C API entry -- Ghidra shows (top-base>>4)+extra > 0x800",
+      "inv_name": "sub_1407B8BC0",
+      "inv_size": "0x7f"
+    },
+    {
+      "entry": "api_lua_close",
+      "rva": "0x7B8890",
+      "full_addr": "0x1407b8890",
+      "claim": "lua_close Lua 5.0.2 C API entry. Corrected RVA from previously ESTIMATED 0x7B8A7",
+      "inv_name": "sub_1407B8890",
+      "inv_size": "0x77"
+    },
+    {
+      "entry": "api_lua_concat",
+      "rva": "0x7B8C40",
+      "full_addr": "0x1407b8c40",
+      "claim": "lua_concat Lua 5.0.2 C API entry -- Ghidra: if n>1 calls concat, if n==0 pushes ",
+      "inv_name": "sub_1407B8C40",
+      "inv_size": "0x8e"
+    },
+    {
+      "entry": "api_lua_cpcall",
+      "rva": "0x7B8CD0",
+      "full_addr": "0x1407b8cd0",
+      "claim": "lua_cpcall Lua 5.0.2 C API entry -- Ghidra: checks top-1 is function, calls luaD",
+      "inv_name": "sub_1407B8CD0",
+      "inv_size": "0x41"
+    },
+    {
+      "entry": "api_lua_equal",
+      "rva": "0x7B9060",
+      "full_addr": "0x1407b9060",
+      "claim": "lua_equal Lua 5.0.2 C API entry -- Ghidra: calls luaV_equalobj.",
+      "inv_name": "sub_1407B9060",
+      "inv_size": "0x87"
+    },
+    {
+      "entry": "api_lua_error",
+      "rva": "0x7B8D80",
+      "full_addr": "0x1407b8d80",
+      "claim": "lua_error Lua 5.0.2 C API entry -- Ghidra: calls luaG_errormsg.",
+      "inv_name": "?post_pgo_initialization@@YAHXZ_0",
+      "inv_size": "0x9"
+    },
+    {
+      "entry": "api_lua_getfenv",
+      "rva": "0x7B8D90",
+      "full_addr": "0x1407b8d90",
+      "claim": "lua_getfenv Lua 5.0.2 C API entry -- Ghidra: checks tag==6+C, reads env from clo",
+      "inv_name": "sub_1407B8D90",
+      "inv_size": "0x5a"
+    },
+    {
+      "entry": "api_lua_getgccount",
+      "rva": "0x7B8DF0",
+      "full_addr": "0x1407b8df0",
+      "claim": "lua_getgccount Lua 5.0.2 C API entry -- Ghidra: returns global_State+0x74 >> 10.",
+      "inv_name": "sub_1407B8DF0",
+      "inv_size": "0xb"
+    },
+    {
+      "entry": "api_lua_getgcthreshold",
+      "rva": "0x7B8E00",
+      "full_addr": "0x1407b8e00",
+      "claim": "lua_getgcthreshold Lua 5.0.2 C API entry -- Ghidra: returns global_State+0x70 >>",
+      "inv_name": "sub_1407B8E00",
+      "inv_size": "0xb"
+    },
+    {
+      "entry": "api_lua_getmetatable",
+      "rva": "0x7B8E10",
+      "full_addr": "0x1407b8e10",
+      "claim": "lua_getmetatable Lua 5.0.2 C API entry -- Ghidra: checks tag==5||7, reads metata",
+      "inv_name": "sub_1407B8E10",
+      "inv_size": "0x77"
+    },
+    {
+      "entry": "api_lua_gettable",
+      "rva": "0x7B8E90",
+      "full_addr": "0x1407b8e90",
+      "claim": "lua_gettable Lua 5.0.2 C API entry -- Ghidra: resolves table, calls luaV_gettabl",
+      "inv_name": "sub_1407B8E90",
+      "inv_size": "0x53"
+    },
+    {
+      "entry": "api_lua_gettable_wrong",
+      "rva": "0x7B8E10",
+      "full_addr": "0x1407b8e10",
+      "claim": "DEPRECATED: 0x7B8E10 was mislabeled lua_gettable. Actual function at that RVA is",
+      "inv_name": "sub_1407B8E10",
+      "inv_size": "0x77"
+    },
+    {
+      "entry": "api_lua_gettop",
+      "rva": "0x7B8EF0",
+      "full_addr": "0x1407b8ef0",
+      "claim": "lua_gettop Lua 5.0.2 C API entry -- bytes 48 8B 41 10 48 2B 41 18 48 C1 F8 04 C3",
+      "inv_name": "sub_1407B8EF0",
+      "inv_size": "0xd"
+    },
+    {
+      "entry": "api_lua_insert",
+      "rva": "0x7B8F00",
+      "full_addr": "0x1407b8f00",
+      "claim": "lua_insert Lua 5.0.2 C API entry -- Ghidra: shifts values above idx, copies top.",
+      "inv_name": "sub_1407B8F00",
+      "inv_size": "0x5f"
+    },
+    {
+      "entry": "api_lua_iscfunction",
+      "rva": "0x7B8F60",
+      "full_addr": "0x1407b8f60",
+      "claim": "lua_iscfunction Lua 5.0.2 C API entry -- Ghidra: checks tag==6 && gc+0x0a != 0.",
+      "inv_name": "sub_1407B8F60",
+      "inv_size": "0x4a"
+    },
+    {
+      "entry": "api_lua_isnumber",
+      "rva": "0x7B8FB0",
+      "full_addr": "0x1407b8fb0",
+      "claim": "lua_isnumber Lua 5.0.2 C API entry -- Ghidra: checks tag==3 or calls tonumber.",
+      "inv_name": "sub_1407B8FB0",
+      "inv_size": "0x52"
+    },
+    {
+      "entry": "api_lua_isstring",
+      "rva": "0x7B9010",
+      "full_addr": "0x1407b9010",
+      "claim": "lua_isstring Lua 5.0.2 C API entry -- Ghidra: checks tag-3 < 2.",
+      "inv_name": "sub_1407B9010",
+      "inv_size": "0x45"
+    },
+    {
+      "entry": "api_lua_lessthan",
+      "rva": "0x7B9690",
+      "full_addr": "0x1407b9690",
+      "claim": "lua_lessthan Lua 5.0.2 C API entry -- Ghidra: calls luaV_lessthan.",
+      "inv_name": "sub_1407B9690",
+      "inv_size": "0x84"
+    },
+    {
+      "entry": "api_lua_load",
+      "rva": "0x7B90F0",
+      "full_addr": "0x1407b90f0",
+      "claim": "lua_load Lua 5.0.2 C API entry -- Ghidra: calls parser/compiler chain.",
+      "inv_name": "sub_1407B90F0",
+      "inv_size": "0x4b"
+    },
+    {
+      "entry": "api_lua_newtable",
+      "rva": "0x7B9140",
+      "full_addr": "0x1407b9140",
+      "claim": "lua_newtable Lua 5.0.2 C API entry -- FoCAPI RVA match + DLL self-test PASSED.",
+      "inv_name": "sub_1407B9140",
+      "inv_size": "0x49"
+    },
+    {
+      "entry": "api_lua_newthread",
+      "rva": "0x7B9190",
+      "full_addr": "0x1407b9190",
+      "claim": "lua_newthread Lua 5.0.2 C API entry -- Ghidra: creates thread, pushes type=8.",
+      "inv_name": "sub_1407B9190",
+      "inv_size": "0x3b"
+    },
+    {
+      "entry": "api_lua_newuserdata",
+      "rva": "0x7B91D0",
+      "full_addr": "0x1407b91d0",
+      "claim": "lua_newuserdata Lua 5.0.2 C API entry -- Ghidra: allocates Udata, returns gc+0x2",
+      "inv_name": "sub_1407B91D0",
+      "inv_size": "0x50"
+    },
+    {
+      "entry": "api_lua_next",
+      "rva": "0x7B9220",
+      "full_addr": "0x1407b9220",
+      "claim": "lua_next Lua 5.0.2 C API entry -- Ghidra: hash traversal on table.",
+      "inv_name": "sub_1407B9220",
+      "inv_size": "0x57"
+    },
+    {
+      "entry": "api_lua_open",
+      "rva": "0x7B8930",
+      "full_addr": "0x1407b8930",
+      "claim": "lua_open Lua 5.0.2 C API entry -- MinHook hooked, 400+ states captured at runtim",
+      "inv_name": "sub_1407B8930",
+      "inv_size": "0xe1"
+    },
+    {
+      "entry": "api_lua_pcall",
+      "rva": "0x7B9280",
+      "full_addr": "0x1407b9280",
+      "claim": "lua_pcall Lua 5.0.2 C API entry -- Ghidra: 4 params, calls luaD_pcall at 0x7BBBE",
+      "inv_name": "sub_1407B9280",
+      "inv_size": "0x85"
+    },
+    {
+      "entry": "api_lua_pushboolean",
+      "rva": "0x7B9320",
+      "full_addr": "0x1407b9320",
+      "claim": "lua_pushboolean Lua 5.0.2 C API entry -- byte pattern writes type=1 based on EDX",
+      "inv_name": "sub_1407B9320",
+      "inv_size": "0x1c"
+    },
+    {
+      "entry": "api_lua_pushcclosure",
+      "rva": "0x7B9340",
+      "full_addr": "0x1407b9340",
+      "claim": "lua_pushcclosure Lua 5.0.2 C API entry -- FoCAPI match + DLL registration works.",
+      "inv_name": "sub_1407B9340",
+      "inv_size": "0xa1"
+    },
+    {
+      "entry": "api_lua_pushfstring",
+      "rva": "0x7B9640",
+      "full_addr": "0x1407b9640",
+      "claim": "lua_pushfstring Lua 5.0.2 C API entry -- Ghidra: wraps luaO_pushfstring.",
+      "inv_name": "sub_1407B9640",
+      "inv_size": "0x48"
+    },
+    {
+      "entry": "api_lua_pushlightuserdata",
+      "rva": "0x7B9480",
+      "full_addr": "0x1407b9480",
+      "claim": "lua_pushlightuserdata Lua 5.0.2 C API entry -- byte pattern writes type=2 from R",
+      "inv_name": "sub_1407B9480",
+      "inv_size": "0x14"
+    },
+    {
+      "entry": "api_lua_pushlstring",
+      "rva": "0x7B94A0",
+      "full_addr": "0x1407b94a0",
+      "claim": "lua_pushlstring Lua 5.0.2 C API entry -- Ghidra: pushes type=4, calls string int",
+      "inv_name": "sub_1407B94A0",
+      "inv_size": "0x66"
+    },
+    {
+      "entry": "api_lua_pushnil",
+      "rva": "0x7B9510",
+      "full_addr": "0x1407b9510",
+      "claim": "lua_pushnil Lua 5.0.2 C API entry -- byte pattern writes type=0.",
+      "inv_name": "sub_1407B9510",
+      "inv_size": "0x10"
+    },
+    {
+      "entry": "api_lua_pushnumber",
+      "rva": "0x7B9520",
+      "full_addr": "0x1407b9520",
+      "claim": "lua_pushnumber Lua 5.0.2 C API entry -- byte-verified movsd [rax+8],xmm1 + type=",
+      "inv_name": "sub_1407B9520",
+      "inv_size": "0x15"
+    },
+    {
+      "entry": "api_lua_pushstring",
+      "rva": "0x7B9540",
+      "full_addr": "0x1407b9540",
+      "claim": "lua_pushstring Lua 5.0.2 C API entry -- FoCAPI RVA + DLL self-test PASSED.",
+      "inv_name": "sub_1407B9540",
+      "inv_size": "0x93"
+    },
+    {
+      "entry": "api_lua_pushstring_wrong",
+      "rva": "0x7B94A0",
+      "full_addr": "0x1407b94a0",
+      "claim": "DEPRECATED: 0x7B94A0 was mislabeled lua_pushstring. It is actually lua_pushlstri",
+      "inv_name": "sub_1407B94A0",
+      "inv_size": "0x66"
+    },
+    {
+      "entry": "api_lua_pushvalue",
+      "rva": "0x7B9600",
+      "full_addr": "0x1407b9600",
+      "claim": "lua_pushvalue Lua 5.0.2 C API entry -- Ghidra: copies TValue at idx to top.",
+      "inv_name": "sub_1407B9600",
+      "inv_size": "0x3e"
+    },
+    {
+      "entry": "api_lua_rawseti",
+      "rva": "0x7B9820",
+      "full_addr": "0x1407b9820",
+      "claim": "lua_rawseti Lua 5.0.2 C API entry -- FoCAPI RVA + DLL self-test PASSED.",
+      "inv_name": "sub_1407B9820",
+      "inv_size": "0x5d"
+    },
+    {
+      "entry": "api_lua_settable",
+      "rva": "0x7B9A60",
+      "full_addr": "0x1407b9a60",
+      "claim": "lua_settable Lua 5.0.2 C API entry -- FoCAPI RVA + DLL registration PASSED.",
+      "inv_name": "sub_1407B9A60",
+      "inv_size": "0x48"
+    },
+    {
+      "entry": "api_lua_settable_wrong",
+      "rva": "0x7B97C0",
+      "full_addr": "0x1407b97c0",
+      "claim": "DEPRECATED: 0x7B97C0 was mislabeled lua_settable; crashes when called. Real is 0",
+      "inv_name": "sub_1407B97C0",
+      "inv_size": "0x5b"
+    },
+    {
+      "entry": "api_lua_settop",
+      "rva": "0x7B99D0",
+      "full_addr": "0x1407b99d0",
+      "claim": "lua_settop Lua 5.0.2 C API entry -- DLL self-test PASSED (pop operations).",
+      "inv_name": "sub_1407B99D0",
+      "inv_size": "0x8c"
+    },
+    {
+      "entry": "api_lua_tocfunction",
+      "rva": "0x7B9B10",
+      "full_addr": "0x1407b9b10",
+      "claim": "lua_tocfunction at 0x7B9B10 -- IDA decompile session 2026-04-07: returns *(value",
+      "inv_name": "sub_1407B9B10",
+      "inv_size": "0x5c"
+    },
+    {
+      "entry": "api_lua_tonumber",
+      "rva": "0x7B9BC0",
+      "full_addr": "0x1407b9bc0",
+      "claim": "lua_tonumber Lua 5.0.2 C API entry -- DLL self-test returned 12345.0 correctly.",
+      "inv_name": "sub_1407B9BC0",
+      "inv_size": "0x53"
+    },
+    {
+      "entry": "api_lua_tostring",
+      "rva": "0x7B9CC0",
+      "full_addr": "0x1407b9cc0",
+      "claim": "lua_tostring at 0x7B9CC0 -- IDA decompile session 2026-04-07: two paths (string ",
+      "inv_name": "sub_1407B9CC0",
+      "inv_size": "0x9a"
+    },
+    {
+      "entry": "api_lua_tostring_candidate_1",
+      "rva": "0x7B9B10",
+      "full_addr": "0x1407b9b10",
+      "claim": "DEPRECATED 2026-04-07: function at 0x7B9B10 is actually lua_tocfunction, not a l",
+      "inv_name": "sub_1407B9B10",
+      "inv_size": "0x5c"
+    },
+    {
+      "entry": "api_lua_tostring_candidate_2",
+      "rva": "0x7B9CC0",
+      "full_addr": "0x1407b9cc0",
+      "claim": "DEPRECATED 2026-04-07: promoted to api_lua_tostring after IDA cross-validation. ",
+      "inv_name": "sub_1407B9CC0",
+      "inv_size": "0x9a"
+    },
+    {
+      "entry": "api_lua_type",
+      "rva": "0x7B9E00",
+      "full_addr": "0x1407b9e00",
+      "claim": "lua_type Lua 5.0.2 C API entry -- DLL self-test returned 4 for string, 3 for num",
+      "inv_name": "sub_1407B9E00",
+      "inv_size": "0x3d"
+    },
+    {
+      "entry": "rva_ability_absorb_blaster",
+      "rva": "0x6EE840",
+      "full_addr": "0x1406ee840",
+      "claim": "AbsorbBlasterAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406EE840",
+      "inv_size": "0xf4"
+    },
+    {
+      "entry": "rva_ability_arc_sweep",
+      "rva": "0x6EEAE0",
+      "full_addr": "0x1406eeae0",
+      "claim": "ArcSweepAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406EEAE0",
+      "inv_size": "0xab"
+    },
+    {
+      "entry": "rva_ability_berserker",
+      "rva": "0x712D20",
+      "full_addr": "0x140712d20",
+      "claim": "BerserkerAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140712D20",
+      "inv_size": "0x43"
+    },
+    {
+      "entry": "rva_ability_cable_attack",
+      "rva": "0x6F22F0",
+      "full_addr": "0x1406f22f0",
+      "claim": "CableAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406F22F0",
+      "inv_size": "0xe0"
+    },
+    {
+      "entry": "rva_ability_combat_bonus",
+      "rva": "0x6F42D0",
+      "full_addr": "0x1406f42d0",
+      "claim": "CombatBonusAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406F42D0",
+      "inv_size": "0x8d5"
+    },
+    {
+      "entry": "rva_ability_concentrate_fire",
+      "rva": "0x6F52C0",
+      "full_addr": "0x1406f52c0",
+      "claim": "ConcentrateFireAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406F52C0",
+      "inv_size": "0x48"
+    },
+    {
+      "entry": "rva_ability_drain_life",
+      "rva": "0x71B560",
+      "full_addr": "0x14071b560",
+      "claim": "DrainLifeAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14071B560",
+      "inv_size": "0x22"
+    },
+    {
+      "entry": "rva_ability_earthquake",
+      "rva": "0x6F7170",
+      "full_addr": "0x1406f7170",
+      "claim": "EarthquakeAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406F7170",
+      "inv_size": "0x50"
+    },
+    {
+      "entry": "rva_ability_eat_attack",
+      "rva": "0x6F7A30",
+      "full_addr": "0x1406f7a30",
+      "claim": "EatAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406F7A30",
+      "inv_size": "0xcb"
+    },
+    {
+      "entry": "rva_ability_energy_weapon",
+      "rva": "0x6F9980",
+      "full_addr": "0x1406f9980",
+      "claim": "EnergyWeaponAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406F9980",
+      "inv_size": "0x84"
+    },
+    {
+      "entry": "rva_ability_generic_attack",
+      "rva": "0x6FFFF0",
+      "full_addr": "0x1406ffff0",
+      "claim": "GenericAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406FFFF0",
+      "inv_size": "0x7e"
+    },
+    {
+      "entry": "rva_ability_ion_cannon_shot",
+      "rva": "0x7048E0",
+      "full_addr": "0x1407048e0",
+      "claim": "IonCannonShotAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1407048E0",
+      "inv_size": "0x39"
+    },
+    {
+      "entry": "rva_ability_leech_shields",
+      "rva": "0x717530",
+      "full_addr": "0x140717530",
+      "claim": "LeechShieldsAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140717530",
+      "inv_size": "0xd2"
+    },
+    {
+      "entry": "rva_ability_lucky_shot",
+      "rva": "0x706280",
+      "full_addr": "0x140706280",
+      "claim": "LuckyShotAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140706280",
+      "inv_size": "0x39"
+    },
+    {
+      "entry": "rva_ability_maximum_firepower",
+      "rva": "0x706B10",
+      "full_addr": "0x140706b10",
+      "claim": "MaximumFirepowerAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140706B10",
+      "inv_size": "0x39"
+    },
+    {
+      "entry": "rva_ability_periodic_damage",
+      "rva": "0x6F80D0",
+      "full_addr": "0x1406f80d0",
+      "claim": "PeriodicDamage (DoT) ability ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406F80D0",
+      "inv_size": "0x187"
+    },
+    {
+      "entry": "rva_ability_reduce_production_price",
+      "rva": "0x70A280",
+      "full_addr": "0x14070a280",
+      "claim": "ReduceProductionPriceAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14070A280",
+      "inv_size": "0x48"
+    },
+    {
+      "entry": "rva_ability_reduce_production_time",
+      "rva": "0x70B040",
+      "full_addr": "0x14070b040",
+      "claim": "ReduceProductionTimeAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14070B040",
+      "inv_size": "0x48"
+    },
+    {
+      "entry": "rva_ability_shield_flare",
+      "rva": "0x71C820",
+      "full_addr": "0x14071c820",
+      "claim": "ShieldFlareAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14071C820",
+      "inv_size": "0x3b"
+    },
+    {
+      "entry": "rva_ability_starbase_upgrade",
+      "rva": "0x70EB50",
+      "full_addr": "0x14070eb50",
+      "claim": "StarbaseUpgradeAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14070EB50",
+      "inv_size": "0x39"
+    },
+    {
+      "entry": "rva_ability_tractor_beam",
+      "rva": "0x710080",
+      "full_addr": "0x140710080",
+      "claim": "TractorBeamAttackAbilityClass ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140710080",
+      "inv_size": "0x49"
+    },
+    {
+      "entry": "rva_add_credits",
+      "rva": "0x27F370",
+      "full_addr": "0x14027f370",
+      "claim": "PlayerClass::AddCredits(player, amount, track) -- AOB signature verified unique,",
+      "inv_name": "sub_14027F370",
+      "inv_size": "0x103"
+    },
+    {
+      "entry": "rva_ai_budget_class_ctor",
+      "rva": "0x6109C0",
+      "full_addr": "0x1406109c0",
+      "claim": "AIBudgetClass::ctor (DISCOVERED-GHIDRA, single tool).",
+      "inv_name": "sub_1406109C0",
+      "inv_size": "0xb0"
+    },
+    {
+      "entry": "rva_ai_budgeted_category_struct_ctor",
+      "rva": "0x610A70",
+      "full_addr": "0x140610a70",
+      "claim": "BudgetedCategoryStruct::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140610A70",
+      "inv_size": "0x65"
+    },
+    {
+      "entry": "rva_ai_build_task_class_ctor",
+      "rva": "0x6478C0",
+      "full_addr": "0x1406478c0",
+      "claim": "AIBuildTaskClass::ctor -- FSM with 25 states (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406478C0",
+      "inv_size": "0x117"
+    },
+    {
+      "entry": "rva_ai_build_task_state_machine_handler",
+      "rva": "0x64AEC0",
+      "full_addr": "0x14064aec0",
+      "claim": "AIBuildTaskClass::StateMachineHandler (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14064AEC0",
+      "inv_size": "0x1243"
+    },
+    {
+      "entry": "rva_ai_enable_as_actor",
+      "rva": "0x4B0250",
+      "full_addr": "0x1404b0250",
+      "claim": "Enable_As_Actor -- AI enable Lua binding (CONFIRMED-RE, single tool).",
+      "inv_name": "sub_1404B0250",
+      "inv_size": "0xb4"
+    },
+    {
+      "entry": "rva_ai_execution_system_ctor",
+      "rva": "0x524CE0",
+      "full_addr": "0x140524ce0",
+      "claim": "AIExecutionSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140524CE0",
+      "inv_size": "0x35"
+    },
+    {
+      "entry": "rva_ai_galactic_goal_system_ctor",
+      "rva": "0x6B8480",
+      "full_addr": "0x1406b8480",
+      "claim": "GalacticGoalSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406B8480",
+      "inv_size": "0x21"
+    },
+    {
+      "entry": "rva_ai_galactic_perception_ctor",
+      "rva": "0x4E1880",
+      "full_addr": "0x1404e1880",
+      "claim": "GalacticPerceptionSystemClass::ctor -- galactic mode (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404E1880",
+      "inv_size": "0x38"
+    },
+    {
+      "entry": "rva_ai_goal_proposal_fn_mgr_ctor",
+      "rva": "0x5E5C30",
+      "full_addr": "0x1405e5c30",
+      "claim": "TheAIGoalProposalFunctionSetManagerClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1405E5C30",
+      "inv_size": "0x8b"
+    },
+    {
+      "entry": "rva_ai_goal_system_ctor",
+      "rva": "0x6C7970",
+      "full_addr": "0x1406c7970",
+      "claim": "AIGoalSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406C7970",
+      "inv_size": "0xb3"
+    },
+    {
+      "entry": "rva_ai_goal_type_mgr_ctor",
+      "rva": "0x5E6690",
+      "full_addr": "0x1405e6690",
+      "claim": "TheAIGoalTypeManagerClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1405E6690",
+      "inv_size": "0x8b"
+    },
+    {
+      "entry": "rva_ai_land_goal_system_ctor",
+      "rva": "0x6B86E0",
+      "full_addr": "0x1406b86e0",
+      "claim": "LandGoalSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406B86E0",
+      "inv_size": "0x21"
+    },
+    {
+      "entry": "rva_ai_land_perception_ctor",
+      "rva": "0x6B8980",
+      "full_addr": "0x1406b8980",
+      "claim": "LandPerceptionSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406B8980",
+      "inv_size": "0xc9"
+    },
+    {
+      "entry": "rva_ai_learning_system_ctor",
+      "rva": "0x585D00",
+      "full_addr": "0x140585d00",
+      "claim": "AILearningSystemClass::ctor -- 5 hash maps (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140585D00",
+      "inv_size": "0x356"
+    },
+    {
+      "entry": "rva_ai_perception_system_ctor",
+      "rva": "0x4DAD80",
+      "full_addr": "0x1404dad80",
+      "claim": "AIPerceptionSystemClass::ctor -- base perception (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404DAD80",
+      "inv_size": "0xb5"
+    },
+    {
+      "entry": "rva_ai_planet_build_task_ctor",
+      "rva": "0x6954B0",
+      "full_addr": "0x1406954b0",
+      "claim": "AIPlanetBuildTaskClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406954B0",
+      "inv_size": "0x49"
+    },
+    {
+      "entry": "rva_ai_planning_system_ctor",
+      "rva": "0x6BAC00",
+      "full_addr": "0x1406bac00",
+      "claim": "AIPlanningSystemClass::ctor -- 4.0s interval (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406BAC00",
+      "inv_size": "0x8b"
+    },
+    {
+      "entry": "rva_ai_player_class_ctor",
+      "rva": "0x4AF810",
+      "full_addr": "0x1404af810",
+      "claim": "AIPlayerClass::ctor -- per-player AI controller. AIPlayerClass inherits from AID",
+      "inv_name": "sub_1404AF810",
+      "inv_size": "0x5b"
+    },
+    {
+      "entry": "rva_ai_player_class_simple_factory",
+      "rva": "0x4AFF50",
+      "full_addr": "0x1404aff50",
+      "claim": "AIPlayerClass simple factory: (PlayerObject*) -> new AIPlayerClass*. Allocates 0",
+      "inv_name": "sub_1404AFF50",
+      "inv_size": "0x38"
+    },
+    {
+      "entry": "rva_ai_player_class_typed_factory",
+      "rva": "0x4AFF90",
+      "full_addr": "0x1404aff90",
+      "claim": "AIPlayerClass typed factory: (PlayerObject*, type_name_cstr) -> new AIPlayerClas",
+      "inv_name": "sub_1404AFF90",
+      "inv_size": "0x2bc"
+    },
+    {
+      "entry": "rva_ai_player_type_mgr_ctor",
+      "rva": "0x4E9940",
+      "full_addr": "0x1404e9940",
+      "claim": "TheAIPlayerTypeManagerClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404E9940",
+      "inv_size": "0x7c"
+    },
+    {
+      "entry": "rva_ai_produce_force_block_status_ctor",
+      "rva": "0x6C6500",
+      "full_addr": "0x1406c6500",
+      "claim": "ProduceForceBlockStatus::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406C6500",
+      "inv_size": "0x3e"
+    },
+    {
+      "entry": "rva_ai_release_credits_tactical",
+      "rva": "0x4B06D0",
+      "full_addr": "0x1404b06d0",
+      "claim": "Release_Credits_For_Tactical -- AI credits release (CONFIRMED-RE, single tool).",
+      "inv_name": "sub_1404B06D0",
+      "inv_size": "0x74"
+    },
+    {
+      "entry": "rva_ai_serviced_system_ctor",
+      "rva": "0x64C250",
+      "full_addr": "0x14064c250",
+      "claim": "ServicedAISystemClass::ctor -- base subsystem (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14064C250",
+      "inv_size": "0x38"
+    },
+    {
+      "entry": "rva_ai_space_goal_system_ctor",
+      "rva": "0x6B88D0",
+      "full_addr": "0x1406b88d0",
+      "claim": "SpaceGoalSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406B88D0",
+      "inv_size": "0x21"
+    },
+    {
+      "entry": "rva_ai_space_perception_ctor",
+      "rva": "0x6B9A20",
+      "full_addr": "0x1406b9a20",
+      "claim": "SpacePerceptionSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406B9A20",
+      "inv_size": "0x4d"
+    },
+    {
+      "entry": "rva_ai_tactical_perception_grid_ctor",
+      "rva": "0x653340",
+      "full_addr": "0x140653340",
+      "claim": "TacticalPerceptionGridClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140653340",
+      "inv_size": "0x91"
+    },
+    {
+      "entry": "rva_ai_template_mgr_ctor",
+      "rva": "0x4E8920",
+      "full_addr": "0x1404e8920",
+      "claim": "TheAITemplateManagerClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404E8920",
+      "inv_size": "0x8b"
+    },
+    {
+      "entry": "rva_ai_template_system_ctor",
+      "rva": "0x6BB9E0",
+      "full_addr": "0x1406bb9e0",
+      "claim": "AITemplateSystemClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406BB9E0",
+      "inv_size": "0x4f"
+    },
+    {
+      "entry": "rva_ai_the_ai_class_ctor",
+      "rva": "0x4D9C80",
+      "full_addr": "0x1404d9c80",
+      "claim": "TheAIClass::ctor -- top-level singleton (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404D9C80",
+      "inv_size": "0x1c"
+    },
+    {
+      "entry": "rva_ai_the_ai_data_mgr_ctor",
+      "rva": "0x4747E0",
+      "full_addr": "0x1404747e0",
+      "claim": "TheAIDataManagerClass::ctor -- singleton (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404747E0",
+      "inv_size": "0x4a"
+    },
+    {
+      "entry": "rva_animation_dispatch",
+      "rva": "0x3A92F0",
+      "full_addr": "0x1403a92f0",
+      "claim": "AnimationDispatch -- damage type routing, Berserker override.",
+      "inv_name": "sub_1403A92F0",
+      "inv_size": "0x33b"
+    },
+    {
+      "entry": "rva_auto_upgrade_tech",
+      "rva": "0x282190",
+      "full_addr": "0x140282190",
+      "claim": "Auto_Upgrade_Tech -- increments tech_level at +0x84 (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140282190",
+      "inv_size": "0x1e"
+    },
+    {
+      "entry": "rva_base_combatant_ctor",
+      "rva": "0x6CB700",
+      "full_addr": "0x1406cb700",
+      "claim": "BaseCombatantClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406CB700",
+      "inv_size": "0x145"
+    },
+    {
+      "entry": "rva_behavior_attach",
+      "rva": "0x38C570",
+      "full_addr": "0x14038c570",
+      "claim": "BehaviorAttach -- attaches behavior object to unit. Called by Make_Invulnerable ",
+      "inv_name": "sub_14038C570",
+      "inv_size": "0x16c"
+    },
+    {
+      "entry": "rva_behavior_remove_dispatch",
+      "rva": "0x3A54C0",
+      "full_addr": "0x1403a54c0",
+      "claim": "BehaviorRemoveDispatch -- removes behavior from unit. Called by Make_Invulnerabl",
+      "inv_name": "sub_1403A54C0",
+      "inv_size": "0x16d"
+    },
+    {
+      "entry": "rva_buff_modifier_read",
+      "rva": "0x395C70",
+      "full_addr": "0x140395c70",
+      "claim": "BuffModifier_Read -- reads +0xF0 (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140395C70",
+      "inv_size": "0x96"
+    },
+    {
+      "entry": "rva_buildpad_check_secondary",
+      "rva": "0x3F8B30",
+      "full_addr": "0x1403f8b30",
+      "claim": "BuildPad_CheckSecondary -- secondary slot check.",
+      "inv_name": "sub_1403F8B30",
+      "inv_size": "0xe"
+    },
+    {
+      "entry": "rva_buildpad_check_slots",
+      "rva": "0x3F8AA0",
+      "full_addr": "0x1403f8aa0",
+      "claim": "BuildPad_CheckSlots -- validates build pad availability.",
+      "inv_name": "sub_1403F8AA0",
+      "inv_size": "0xe"
+    },
+    {
+      "entry": "rva_camera_class_ctor",
+      "rva": "0x261470",
+      "full_addr": "0x140261470",
+      "claim": "CameraClass::ctor -- sub-object 0x308 bytes.",
+      "inv_name": "sub_140261470",
+      "inv_size": "0xbe"
+    },
+    {
+      "entry": "rva_camera_get_position",
+      "rva": "0x261A40",
+      "full_addr": "0x140261a40",
+      "claim": "CameraClass::GetPosition -- +0x0C, +0x1C, +0x2C.",
+      "inv_name": "sub_140261A40",
+      "inv_size": "0x22"
+    },
+    {
+      "entry": "rva_camera_set_transform_matrix",
+      "rva": "0x261BD0",
+      "full_addr": "0x140261bd0",
+      "claim": "CameraClass::SetTransformMatrix (CONFIRMED-RE).",
+      "inv_name": "sub_140261BD0",
+      "inv_size": "0x50"
+    },
+    {
+      "entry": "rva_can_produce",
+      "rva": "0x2804D0",
+      "full_addr": "0x1402804d0",
+      "claim": "CanProduce -- 18 prerequisite gates.",
+      "inv_name": "sub_1402804D0",
+      "inv_size": "0x731"
+    },
+    {
+      "entry": "rva_capture_timer_update",
+      "rva": "0x3FE810",
+      "full_addr": "0x1403fe810",
+      "claim": "CaptureTimer_Update -- writes capture timer fields.",
+      "inv_name": "sub_1403FE810",
+      "inv_size": "0x1c2"
+    },
+    {
+      "entry": "rva_change_owner",
+      "rva": "0x574BF0",
+      "full_addr": "0x140574bf0",
+      "claim": "Change_Owner -- Phase 2 RE.",
+      "inv_name": "sub_140574BF0",
+      "inv_size": "0x25e"
+    },
+    {
+      "entry": "rva_check_pop_cap",
+      "rva": "0x2AC320",
+      "full_addr": "0x1402ac320",
+      "claim": "CheckPopCap -- unit cap validation.",
+      "inv_name": "sub_1402AC320",
+      "inv_size": "0x272"
+    },
+    {
+      "entry": "rva_clear_speed_override",
+      "rva": "0x38F8B0",
+      "full_addr": "0x14038f8b0",
+      "claim": "ClearSpeedOverride -- AOB verified unique.",
+      "inv_name": "sub_14038F8B0",
+      "inv_size": "0x1e"
+    },
+    {
+      "entry": "rva_combatant_behavior_ctor",
+      "rva": "0x6383E0",
+      "full_addr": "0x1406383e0",
+      "claim": "CombatantBehaviorClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406383E0",
+      "inv_size": "0x37"
+    },
+    {
+      "entry": "rva_company_combatant_ctor",
+      "rva": "0x6CBEE0",
+      "full_addr": "0x1406cbee0",
+      "claim": "CompanyCombatantClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406CBEE0",
+      "inv_size": "0x6b"
+    },
+    {
+      "entry": "rva_compute_build_time",
+      "rva": "0x400370",
+      "full_addr": "0x140400370",
+      "claim": "ComputeBuildTime -- 5-factor formula.",
+      "inv_name": "sub_140400370",
+      "inv_size": "0x2dc"
+    },
+    {
+      "entry": "rva_crc32_hash",
+      "rva": "0x215A30",
+      "full_addr": "0x140215a30",
+      "claim": "CRC32_Hash -- standard CRC32 with table at 0xA14D20.",
+      "inv_name": "sub_140215A30",
+      "inv_size": "0x36"
+    },
+    {
+      "entry": "rva_damage_visual_level",
+      "rva": "0x3AC290",
+      "full_addr": "0x1403ac290",
+      "claim": "DamageVisualLevel -- damage model swap thresholds.",
+      "inv_name": "sub_1403AC290",
+      "inv_size": "0x29f"
+    },
+    {
+      "entry": "rva_death_handler",
+      "rva": "0x39BDB0",
+      "full_addr": "0x14039bdb0",
+      "claim": "Death_Handler -- full death sequence (17 steps).",
+      "inv_name": "sub_14039BDB0",
+      "inv_size": "0x5e9"
+    },
+    {
+      "entry": "rva_death_signal_behavior",
+      "rva": "0x38EB10",
+      "full_addr": "0x14038eb10",
+      "claim": "Death_Signal_Behavior -- notifies behavior system of death.",
+      "inv_name": "sub_14038EB10",
+      "inv_size": "0x1d5"
+    },
+    {
+      "entry": "rva_faction_affiliation_check",
+      "rva": "0x3751A0",
+      "full_addr": "0x1403751a0",
+      "claim": "FactionAffiliation_Check -- used by SetTechLevel, CanProduce.",
+      "inv_name": "sub_1403751A0",
+      "inv_size": "0x37"
+    },
+    {
+      "entry": "rva_find_all_objects_of_type_wrapper",
+      "rva": "0x540B20",
+      "full_addr": "0x140540b20",
+      "claim": "Find_All_Objects_Of_Type Lua wrapper -- size 0x558, registered via sub_140546C70",
+      "inv_name": "sub_140540B20",
+      "inv_size": "0x558"
+    },
+    {
+      "entry": "rva_find_planet_type",
+      "rva": "0x331CC0",
+      "full_addr": "0x140331cc0",
+      "claim": "FindPlanetType -- checks is_planet flag.",
+      "inv_name": "sub_140331CC0",
+      "inv_size": "0x46"
+    },
+    {
+      "entry": "rva_find_player_wrapper",
+      "rva": "0x6A4820",
+      "full_addr": "0x1406a4820",
+      "claim": "Find_Player Lua wrapper -- size 0x159. Accepts string only; 'local' (case-insens",
+      "inv_name": "sub_1406A4820",
+      "inv_size": "0x159"
+    },
+    {
+      "entry": "rva_fire_control_dispatch",
+      "rva": "0x38D730",
+      "full_addr": "0x14038d730",
+      "claim": "FireControl_Dispatch -- master fire control, enemy/invuln/LOS checks.",
+      "inv_name": "sub_14038D730",
+      "inv_size": "0x6c3"
+    },
+    {
+      "entry": "rva_fow_disable_rendering_impl",
+      "rva": "0x6A53B0",
+      "full_addr": "0x1406a53b0",
+      "claim": "FogOfWar.Disable_Rendering Lua method.",
+      "inv_name": "sub_1406A53B0",
+      "inv_size": "0xc5"
+    },
+    {
+      "entry": "rva_fow_reveal_all_impl",
+      "rva": "0x6A5B00",
+      "full_addr": "0x1406a5b00",
+      "claim": "FogOfWar.Reveal_All Lua method -- size 0xE9. Tactical-only, 1 arg (player), extr",
+      "inv_name": "sub_1406A5B00",
+      "inv_size": "0xe9"
+    },
+    {
+      "entry": "rva_fow_reveal_command_class_ctor",
+      "rva": "0x6A51B0",
+      "full_addr": "0x1406a51b0",
+      "claim": "LuaFOWRevealCommandClass constructor -- size 0x16C. Registers Reveal, Reveal_All",
+      "inv_name": "sub_1406A51B0",
+      "inv_size": "0x16c"
+    },
+    {
+      "entry": "rva_fow_reveal_impl",
+      "rva": "0x6A5700",
+      "full_addr": "0x1406a5700",
+      "claim": "FogOfWar.Reveal Lua method -- (player, object [, radius]).",
+      "inv_name": "sub_1406A5700",
+      "inv_size": "0x3ff"
+    },
+    {
+      "entry": "rva_fow_sub_14035d4f0",
+      "rva": "0x35D4F0",
+      "full_addr": "0x14035d4f0",
+      "claim": "FOW reveal underlying function -- validates game mode, bounds-checks player inde",
+      "inv_name": "sub_14035D4F0",
+      "inv_size": "0x4e"
+    },
+    {
+      "entry": "rva_fow_temporary_reveal_impl",
+      "rva": "0x6A5CF0",
+      "full_addr": "0x1406a5cf0",
+      "claim": "FogOfWar.Temporary_Reveal Lua method.",
+      "inv_name": "sub_1406A5CF0",
+      "inv_size": "0x1fb"
+    },
+    {
+      "entry": "rva_fow_undo_reveal_all",
+      "rva": "0x6A53B0",
+      "full_addr": "0x1406a53b0",
+      "claim": "FOW_Undo_Reveal_All -- sets global toggle.",
+      "inv_name": "sub_1406A53B0",
+      "inv_size": "0xc5"
+    },
+    {
+      "entry": "rva_front_shield_read",
+      "rva": "0x3963C0",
+      "full_addr": "0x1403963c0",
+      "claim": "FrontShield_Read -- reads front shield current value.",
+      "inv_name": "sub_1403963C0",
+      "inv_size": "0x22"
+    },
+    {
+      "entry": "rva_front_shield_read_impl",
+      "rva": "0x56BFB0",
+      "full_addr": "0x14056bfb0",
+      "claim": "FrontShield_Read_Impl -- shield behavior read.",
+      "inv_name": "sub_14056BFB0",
+      "inv_size": "0x1e"
+    },
+    {
+      "entry": "rva_front_shield_write_impl",
+      "rva": "0x56C1B0",
+      "full_addr": "0x14056c1b0",
+      "claim": "FrontShield_Write_Impl -- shield behavior write.",
+      "inv_name": "sub_14056C1B0",
+      "inv_size": "0x75"
+    },
+    {
+      "entry": "rva_galactic_camera_ctor",
+      "rva": "0x3C2B20",
+      "full_addr": "0x1403c2b20",
+      "claim": "GalacticCameraClass::ctor (CONFIRMED-RE).",
+      "inv_name": "sub_1403C2B20",
+      "inv_size": "0x57"
+    },
+    {
+      "entry": "rva_galactic_camera_update",
+      "rva": "0x3C2C00",
+      "full_addr": "0x1403c2c00",
+      "claim": "GalacticCameraClass::Update -- main frame update.",
+      "inv_name": "sub_1403C2C00",
+      "inv_size": "0x606"
+    },
+    {
+      "entry": "rva_galactic_mode_ctor",
+      "rva": "0x4B1270",
+      "full_addr": "0x1404b1270",
+      "claim": "GalacticModeClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404B1270",
+      "inv_size": "0x7a"
+    },
+    {
+      "entry": "rva_galactic_sell_event_ctor",
+      "rva": "0x532690",
+      "full_addr": "0x140532690",
+      "claim": "GalacticSellEventClass::ctor -- Event ID=46.",
+      "inv_name": "sub_140532690",
+      "inv_size": "0x2f"
+    },
+    {
+      "entry": "rva_game_mode_manager_get_mode_by_type",
+      "rva": "0x28A950",
+      "full_addr": "0x14028a950",
+      "claim": "GameModeManagerClass::GetModeByType -- iterates modes.",
+      "inv_name": "sub_14028A950",
+      "inv_size": "0x66"
+    },
+    {
+      "entry": "rva_game_object_ctor_default",
+      "rva": "0x388720",
+      "full_addr": "0x140388720",
+      "claim": "GameObjectClass::ctor (default) -- Ghidra, writes vtable 0x8661B8.",
+      "inv_name": "sub_140388720",
+      "inv_size": "0x433"
+    },
+    {
+      "entry": "rva_game_object_ctor_full",
+      "rva": "0x388B60",
+      "full_addr": "0x140388b60",
+      "claim": "GameObjectClass::ctor (full) -- Ghidra, 5+ params.",
+      "inv_name": "sub_140388B60",
+      "inv_size": "0x7ce"
+    },
+    {
+      "entry": "rva_get_adjusted_cost",
+      "rva": "0x400240",
+      "full_addr": "0x140400240",
+      "claim": "GetAdjustedCost -- modified cost calculation.",
+      "inv_name": "sub_140400240",
+      "inv_size": "0x124"
+    },
+    {
+      "entry": "rva_get_adjusted_cost_variant",
+      "rva": "0x3711C0",
+      "full_addr": "0x1403711c0",
+      "claim": "GetAdjustedCost variant -- cost modifier chain.",
+      "inv_name": "sub_1403711C0",
+      "inv_size": "0x6d"
+    },
+    {
+      "entry": "rva_get_hardpoint",
+      "rva": "0x4052D0",
+      "full_addr": "0x1404052d0",
+      "claim": "GetHardpoint -- returns hardpoint by index from hardpoint manager.",
+      "inv_name": "sub_1404052D0",
+      "inv_size": "0x2d"
+    },
+    {
+      "entry": "rva_get_hull_percentage",
+      "rva": "0x396DF0",
+      "full_addr": "0x140396df0",
+      "claim": "GetHullPercentage -- per-hardpoint hull ratio.",
+      "inv_name": "sub_140396DF0",
+      "inv_size": "0x62"
+    },
+    {
+      "entry": "rva_get_max_front_shield",
+      "rva": "0x372320",
+      "full_addr": "0x140372320",
+      "claim": "GetMaxFrontShield -- reads type+0xDD0 (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140372320",
+      "inv_size": "0xd4"
+    },
+    {
+      "entry": "rva_get_max_health",
+      "rva": "0x3727A0",
+      "full_addr": "0x1403727a0",
+      "claim": "GetMaxHealth -- reads type+0xDCC, applies multipliers.",
+      "inv_name": "sub_1403727A0",
+      "inv_size": "0x142"
+    },
+    {
+      "entry": "rva_get_max_rear_shield",
+      "rva": "0x3725F0",
+      "full_addr": "0x1403725f0",
+      "claim": "GetMaxRearShield -- reads type+0xDD4 (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1403725F0",
+      "inv_size": "0xf7"
+    },
+    {
+      "entry": "rva_get_owner_lua",
+      "rva": "0x5792E0",
+      "full_addr": "0x1405792e0",
+      "claim": "Get_Owner_Lua -- Phase 1 RE, pseudocode available.",
+      "inv_name": "sub_1405792E0",
+      "inv_size": "0x106"
+    },
+    {
+      "entry": "rva_hardpoint_count",
+      "rva": "0x405300",
+      "full_addr": "0x140405300",
+      "claim": "HardpointCount -- returns number of hardpoints from manager.",
+      "inv_name": "sub_140405300",
+      "inv_size": "0x17"
+    },
+    {
+      "entry": "rva_hardpoint_fire",
+      "rva": "0x387F50",
+      "full_addr": "0x140387f50",
+      "claim": "HardpointFire -- per-hardpoint damage, station level loss.",
+      "inv_name": "sub_140387F50",
+      "inv_size": "0x1a8"
+    },
+    {
+      "entry": "rva_has_combat_behavior",
+      "rva": "0x374DA0",
+      "full_addr": "0x140374da0",
+      "claim": "HasCombatBehavior -- checked during spawn init.",
+      "inv_name": "sub_140374DA0",
+      "inv_size": "0x18"
+    },
+    {
+      "entry": "rva_health_regen_periodic",
+      "rva": "0x5D70F0",
+      "full_addr": "0x1405d70f0",
+      "claim": "HealthRegen_Periodic -- natural HP regen.",
+      "inv_name": "sub_1405D70F0",
+      "inv_size": "0x25a"
+    },
+    {
+      "entry": "rva_hull_ratio_via_hardpoints",
+      "rva": "0x405230",
+      "full_addr": "0x140405230",
+      "claim": "HullRatio_ViaHardpoints -- aggregate health display.",
+      "inv_name": "sub_140405230",
+      "inv_size": "0x94"
+    },
+    {
+      "entry": "rva_invulnerability_cleanup",
+      "rva": "0x3A56B0",
+      "full_addr": "0x1403a56b0",
+      "claim": "Invulnerability_Cleanup -- cleans up invulnerability state.",
+      "inv_name": "sub_1403A56B0",
+      "inv_size": "0x4b"
+    },
+    {
+      "entry": "rva_is_ally_engine",
+      "rva": "0x2823E0",
+      "full_addr": "0x1402823e0",
+      "claim": "PlayerClass::Is_Ally -- returns diplomacy_table[id] == 0.",
+      "inv_name": "sub_1402823E0",
+      "inv_size": "0x13"
+    },
+    {
+      "entry": "rva_is_enemy_engine",
+      "rva": "0x2824F0",
+      "full_addr": "0x1402824f0",
+      "claim": "PlayerClass::Is_Enemy -- returns diplomacy_table[id] == 1.",
+      "inv_name": "sub_1402824F0",
+      "inv_size": "0x13"
+    },
+    {
+      "entry": "rva_is_locked",
+      "rva": "0x282550",
+      "full_addr": "0x140282550",
+      "claim": "PlayerClass::IsLocked -- reads +0x1C8/0x1D0.",
+      "inv_name": "sub_140282550",
+      "inv_size": "0x2f"
+    },
+    {
+      "entry": "rva_is_unlocked",
+      "rva": "0x282580",
+      "full_addr": "0x140282580",
+      "claim": "PlayerClass::IsUnlocked -- reads +0x1B0/0x1B8.",
+      "inv_name": "sub_140282580",
+      "inv_size": "0x2f"
+    },
+    {
+      "entry": "rva_lock_tech_add",
+      "rva": "0x27F7C0",
+      "full_addr": "0x14027f7c0",
+      "claim": "Lock_Tech_Add -- Ghidra decompilation of Lock_Tech flow.",
+      "inv_name": "sub_14027F7C0",
+      "inv_size": "0x93"
+    },
+    {
+      "entry": "rva_lock_tech_engine",
+      "rva": "0x286150",
+      "full_addr": "0x140286150",
+      "claim": "Lock_Tech engine function -- writes to locked_types DVec.",
+      "inv_name": "sub_140286150",
+      "inv_size": "0x45"
+    },
+    {
+      "entry": "rva_lua_disable_bombing_run",
+      "rva": "0x601AA0",
+      "full_addr": "0x140601aa0",
+      "claim": "Player Lua wrapper Disable_Bombing_Run (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140601AA0",
+      "inv_size": "0x13c"
+    },
+    {
+      "entry": "rva_lua_disable_orbital_bombardment",
+      "rva": "0x601BE0",
+      "full_addr": "0x140601be0",
+      "claim": "Player Lua wrapper Disable_Orbital_Bombardment (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140601BE0",
+      "inv_size": "0x291"
+    },
+    {
+      "entry": "rva_lua_enable_advisor_hints",
+      "rva": "0x601E80",
+      "full_addr": "0x140601e80",
+      "claim": "Player Lua wrapper Enable_Advisor_Hints (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140601E80",
+      "inv_size": "0x193"
+    },
+    {
+      "entry": "rva_lua_enable_as_actor_wrapper",
+      "rva": "0x602640",
+      "full_addr": "0x140602640",
+      "claim": "Player Lua wrapper Enable_As_Actor -- delegates to engine 0x4B0250.",
+      "inv_name": "sub_140602640",
+      "inv_size": "0x45"
+    },
+    {
+      "entry": "rva_lua_get_credits",
+      "rva": "0x6027F0",
+      "full_addr": "0x1406027f0",
+      "claim": "Player Lua wrapper Get_Credits (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406027F0",
+      "inv_size": "0xdc"
+    },
+    {
+      "entry": "rva_lua_get_difficulty",
+      "rva": "0x602AE0",
+      "full_addr": "0x140602ae0",
+      "claim": "Player Lua wrapper Get_Difficulty (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140602AE0",
+      "inv_size": "0x15c"
+    },
+    {
+      "entry": "rva_lua_get_faction_name",
+      "rva": "0x602A00",
+      "full_addr": "0x140602a00",
+      "claim": "Player Lua wrapper Get_Faction_Name (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140602A00",
+      "inv_size": "0xdc"
+    },
+    {
+      "entry": "rva_lua_get_id",
+      "rva": "0x602C40",
+      "full_addr": "0x140602c40",
+      "claim": "Player Lua wrapper Get_ID (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140602C40",
+      "inv_size": "0x159"
+    },
+    {
+      "entry": "rva_lua_get_name_ai_type",
+      "rva": "0x602060",
+      "full_addr": "0x140602060",
+      "claim": "Player Lua wrapper Get_Name (AI type) (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140602060",
+      "inv_size": "0x13b"
+    },
+    {
+      "entry": "rva_lua_get_space_station_level",
+      "rva": "0x602690",
+      "full_addr": "0x140602690",
+      "claim": "Player Lua wrapper Get_Space_Station_Level (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140602690",
+      "inv_size": "0x15c"
+    },
+    {
+      "entry": "rva_lua_get_team_id",
+      "rva": "0x602EE0",
+      "full_addr": "0x140602ee0",
+      "claim": "Player Lua wrapper Get_Team_ID (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140602EE0",
+      "inv_size": "0x159"
+    },
+    {
+      "entry": "rva_lua_get_tech_level",
+      "rva": "0x603040",
+      "full_addr": "0x140603040",
+      "claim": "Player Lua wrapper Get_Tech_Level (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140603040",
+      "inv_size": "0xe2"
+    },
+    {
+      "entry": "rva_lua_give_money",
+      "rva": "0x603130",
+      "full_addr": "0x140603130",
+      "claim": "Player Lua wrapper Give_Money -- delegates to AddCredits 0x27F370.",
+      "inv_name": "sub_140603130",
+      "inv_size": "0xc0"
+    },
+    {
+      "entry": "rva_lua_is_ally_wrapper",
+      "rva": "0x603560",
+      "full_addr": "0x140603560",
+      "claim": "Player Lua wrapper Is_Ally -- delegates to engine 0x2823E0.",
+      "inv_name": "sub_140603560",
+      "inv_size": "0x1f6"
+    },
+    {
+      "entry": "rva_lua_is_enemy_wrapper",
+      "rva": "0x603760",
+      "full_addr": "0x140603760",
+      "claim": "Player Lua wrapper Is_Enemy -- delegates to engine 0x2824F0.",
+      "inv_name": "sub_140603760",
+      "inv_size": "0x1f6"
+    },
+    {
+      "entry": "rva_lua_is_human",
+      "rva": "0x603A40",
+      "full_addr": "0x140603a40",
+      "claim": "Player Lua wrapper Is_Human (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140603A40",
+      "inv_size": "0xdd"
+    },
+    {
+      "entry": "rva_lua_is_local_player",
+      "rva": "0x603960",
+      "full_addr": "0x140603960",
+      "claim": "Player Lua wrapper Is_Local_Player (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140603960",
+      "inv_size": "0xd6"
+    },
+    {
+      "entry": "rva_lua_lock_tech_wrapper",
+      "rva": "0x603B20",
+      "full_addr": "0x140603b20",
+      "claim": "Player Lua wrapper Lock_Tech -- delegates to engine 0x286150.",
+      "inv_name": "sub_140603B20",
+      "inv_size": "0x144"
+    },
+    {
+      "entry": "rva_lua_make_ally_wrapper",
+      "rva": "0x6046A0",
+      "full_addr": "0x1406046a0",
+      "claim": "Player Lua wrapper Make_Ally -- delegates to engine 0x288800.",
+      "inv_name": "sub_1406046A0",
+      "inv_size": "0xdd"
+    },
+    {
+      "entry": "rva_lua_make_enemy_wrapper",
+      "rva": "0x604780",
+      "full_addr": "0x140604780",
+      "claim": "Player Lua wrapper Make_Enemy -- delegates to engine 0x288800.",
+      "inv_name": "sub_140604780",
+      "inv_size": "0xe0"
+    },
+    {
+      "entry": "rva_lua_player_wrapper_create",
+      "rva": "0x6019F0",
+      "full_addr": "0x1406019f0",
+      "claim": "PlayerWrapper::Create -- CONFIRMED-FOCAPI (community reference match).",
+      "inv_name": "sub_1406019F0",
+      "inv_size": "0xaa"
+    },
+    {
+      "entry": "rva_lua_release_credits_tactical_wrapper",
+      "rva": "0x603C70",
+      "full_addr": "0x140603c70",
+      "claim": "Player Lua wrapper Release_Credits_For_Tactical -- delegates to 0x4B06D0.",
+      "inv_name": "sub_140603C70",
+      "inv_size": "0x161"
+    },
+    {
+      "entry": "rva_lua_retreat_wrapper",
+      "rva": "0x603DE0",
+      "full_addr": "0x140603de0",
+      "claim": "Player Lua wrapper Retreat -- delegates to engine 0x340920.",
+      "inv_name": "sub_140603DE0",
+      "inv_size": "0x177"
+    },
+    {
+      "entry": "rva_lua_script_ctor",
+      "rva": "0x242570",
+      "full_addr": "0x140242570",
+      "claim": "LuaScriptClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140242570",
+      "inv_size": "0x157"
+    },
+    {
+      "entry": "rva_lua_script_register_globals",
+      "rva": "0x2567B0",
+      "full_addr": "0x1402567b0",
+      "claim": "LuaScriptClass::RegisterGlobals -- 14 globals including GetEvent.",
+      "inv_name": "sub_1402567B0",
+      "inv_size": "0x51a"
+    },
+    {
+      "entry": "rva_lua_select_object_wrapper",
+      "rva": "0x603F60",
+      "full_addr": "0x140603f60",
+      "claim": "Player Lua wrapper Select_Object -- delegates to engine 0x2BD2F0.",
+      "inv_name": "sub_140603F60",
+      "inv_size": "0x39e"
+    },
+    {
+      "entry": "rva_lua_set_black_market_tutorial",
+      "rva": "0x604300",
+      "full_addr": "0x140604300",
+      "claim": "Player Lua wrapper Set_Black_Market_Tutorial (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140604300",
+      "inv_size": "0xb9"
+    },
+    {
+      "entry": "rva_lua_set_hull_caller",
+      "rva": "0x42DBD0",
+      "full_addr": "0x14042dbd0",
+      "claim": "Lua_Set_Hull caller -- SetHP caller from Lua.",
+      "inv_name": "sub_14042DBD0",
+      "inv_size": "0x3a1"
+    },
+    {
+      "entry": "rva_lua_set_sabotage_tutorial",
+      "rva": "0x6043C0",
+      "full_addr": "0x1406043c0",
+      "claim": "Player Lua wrapper Set_Sabotage_Tutorial (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406043C0",
+      "inv_size": "0xb9"
+    },
+    {
+      "entry": "rva_lua_set_tech_level_wrapper",
+      "rva": "0x604480",
+      "full_addr": "0x140604480",
+      "claim": "Player Lua wrapper Set_Tech_Level -- delegates to engine 0x288980.",
+      "inv_name": "sub_140604480",
+      "inv_size": "0xc0"
+    },
+    {
+      "entry": "rva_lua_unlock_tech_wrapper",
+      "rva": "0x604540",
+      "full_addr": "0x140604540",
+      "claim": "Player Lua wrapper Unlock_Tech -- delegates to engine 0x286100.",
+      "inv_name": "sub_140604540",
+      "inv_size": "0x154"
+    },
+    {
+      "entry": "rva_make_ally_make_enemy_engine",
+      "rva": "0x288800",
+      "full_addr": "0x140288800",
+      "claim": "Make_Ally / Make_Enemy engine function -- writes diplomacy_table[target_id].",
+      "inv_name": "sub_140288800",
+      "inv_size": "0xf"
+    },
+    {
+      "entry": "rva_make_invulnerable_lua_ghidra",
+      "rva": "0x5819E0",
+      "full_addr": "0x1405819e0",
+      "claim": "DEPRECATED: Claimed to be Make_Invulnerable_Lua at 0x5819E0, but IDA Pro decompi",
+      "inv_name": "sub_1405819E0",
+      "inv_size": "0xdd"
+    },
+    {
+      "entry": "rva_make_invulnerable_lua_wrapper",
+      "rva": "0x57D550",
+      "full_addr": "0x14057d550",
+      "claim": "GameObjectWrapper::Make_Invulnerable Lua binding -- full Lua wrapper with tactic",
+      "inv_name": "sub_14057D550",
+      "inv_size": "0x316"
+    },
+    {
+      "entry": "rva_make_invulnerable_setter_wrong",
+      "rva": "0x3ABB80",
+      "full_addr": "0x1403abb80",
+      "claim": "DEPRECATED: 0x3ABB80 was mislabeled Make_Invulnerable_Setter. It is actually Set",
+      "inv_name": "sub_1403ABB80",
+      "inv_size": "0x2be"
+    },
+    {
+      "entry": "rva_object_under_construction_ctor",
+      "rva": "0x3FFF70",
+      "full_addr": "0x1403fff70",
+      "claim": "ObjectUnderConstructionClass::ctor -- 0x38 bytes (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1403FFF70",
+      "inv_size": "0x265"
+    },
+    {
+      "entry": "rva_object_under_construction_dtor",
+      "rva": "0x5242C0",
+      "full_addr": "0x1405242c0",
+      "claim": "ObjectUnderConstructionClass::dtor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1405242C0",
+      "inv_size": "0x21d"
+    },
+    {
+      "entry": "rva_object_under_construction_serialize",
+      "rva": "0x497900",
+      "full_addr": "0x140497900",
+      "claim": "ObjectUnderConstruction_Serialize -- save/load.",
+      "inv_name": "sub_140497900",
+      "inv_size": "0x2cc"
+    },
+    {
+      "entry": "rva_operator_new",
+      "rva": "0x769C58",
+      "full_addr": "0x140769c58",
+      "claim": "operator new -- CONFIRMED-FOCAPI Phase 2 RE + FoCAPI match.",
+      "inv_name": "??2@YAPEAX_K@Z",
+      "inv_size": "0x3c"
+    },
+    {
+      "entry": "rva_planet_compute_income",
+      "rva": "0x3F6AF0",
+      "full_addr": "0x1403f6af0",
+      "claim": "Planet_ComputeIncomeValue -- called during ownership changes.",
+      "inv_name": "sub_1403F6AF0",
+      "inv_size": "0x293"
+    },
+    {
+      "entry": "rva_planet_faction_change_full",
+      "rva": "0x3FB040",
+      "full_addr": "0x1403fb040",
+      "claim": "PlanetFactionChange_FullTransfer -- full ownership transfer with UI.",
+      "inv_name": "sub_1403FB040",
+      "inv_size": "0xf95"
+    },
+    {
+      "entry": "rva_planet_faction_change_initial",
+      "rva": "0x3FA160",
+      "full_addr": "0x1403fa160",
+      "claim": "PlanetFactionChange_InitialSet -- initial ownership assignment.",
+      "inv_name": "sub_1403FA160",
+      "inv_size": "0x10f"
+    },
+    {
+      "entry": "rva_planet_reachability_ctor",
+      "rva": "0x663530",
+      "full_addr": "0x140663530",
+      "claim": "PlanetReachabilityClass::ctor -- 11 slots (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140663530",
+      "inv_size": "0x1ec"
+    },
+    {
+      "entry": "rva_planetary_behavior_dtor",
+      "rva": "0x3F3340",
+      "full_addr": "0x1403f3340",
+      "claim": "PlanetaryBehaviorClass::dtor -- links planet to data pack.",
+      "inv_name": "sub_1403F3340",
+      "inv_size": "0x1d9"
+    },
+    {
+      "entry": "rva_player_destructor",
+      "rva": "0x27ED40",
+      "full_addr": "0x14027ed40",
+      "claim": "PlayerClass::~PlayerClass destructor -- Ghidra destructor analysis, RTTI confirm",
+      "inv_name": "sub_14027ED40",
+      "inv_size": "0x49a"
+    },
+    {
+      "entry": "rva_player_list_find_by_id",
+      "rva": "0x294BC0",
+      "full_addr": "0x140294bc0",
+      "claim": "PlayerList_FindByID -- Phase 1 RE + FoCAPI exact match.",
+      "inv_name": "sub_140294BC0",
+      "inv_size": "0x18"
+    },
+    {
+      "entry": "rva_production_behavior_dtor",
+      "rva": "0x3FFF10",
+      "full_addr": "0x1403fff10",
+      "claim": "ProductionBehaviorClass::dtor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1403FFF10",
+      "inv_size": "0x54"
+    },
+    {
+      "entry": "rva_production_completion_handler",
+      "rva": "0x42E890",
+      "full_addr": "0x14042e890",
+      "claim": "Production_CompletionHandler -- spawns finished unit.",
+      "inv_name": "sub_14042E890",
+      "inv_size": "0x437"
+    },
+    {
+      "entry": "rva_production_data_pack_ctor",
+      "rva": "0x559680",
+      "full_addr": "0x140559680",
+      "claim": "ProductionDataPackClass::ctor -- 2 queues (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140559680",
+      "inv_size": "0xed"
+    },
+    {
+      "entry": "rva_production_event_ctor",
+      "rva": "0x523F50",
+      "full_addr": "0x140523f50",
+      "claim": "ProductionEventClass::ctor -- Event ID=7.",
+      "inv_name": "sub_140523F50",
+      "inv_size": "0x28"
+    },
+    {
+      "entry": "rva_property_init_hp",
+      "rva": "0x3A06A0",
+      "full_addr": "0x1403a06a0",
+      "claim": "Property_Init_HP -- initial HP from XML data system.",
+      "inv_name": "sub_1403A06A0",
+      "inv_size": "0x269"
+    },
+    {
+      "entry": "rva_query_interface",
+      "rva": "0x395AC0",
+      "full_addr": "0x140395ac0",
+      "claim": "GameObjectClass::QueryInterface(obj, type) -- confirmed at runtime via Phase 1 R",
+      "inv_name": "sub_140395AC0",
+      "inv_size": "0x2b"
+    },
+    {
+      "entry": "rva_rear_shield_read_impl",
+      "rva": "0x549490",
+      "full_addr": "0x140549490",
+      "claim": "RearShield_Read_Impl -- rear shield read.",
+      "inv_name": "sub_140549490",
+      "inv_size": "0x1e"
+    },
+    {
+      "entry": "rva_rear_shield_write_impl",
+      "rva": "0x549810",
+      "full_addr": "0x140549810",
+      "claim": "RearShield_Write_Impl -- rear shield write.",
+      "inv_name": "sub_140549810",
+      "inv_size": "0x2a6"
+    },
+    {
+      "entry": "rva_resolve_parent_owner",
+      "rva": "0x3956C0",
+      "full_addr": "0x1403956c0",
+      "claim": "ResolveParentOwner -- Phase 1 RE.",
+      "inv_name": "sub_1403956C0",
+      "inv_size": "0x169"
+    },
+    {
+      "entry": "rva_resolve_reward_type_from_string",
+      "rva": "0x45C3F0",
+      "full_addr": "0x14045c3f0",
+      "claim": "ResolveRewardTypeFromString -- CRC32 tree lookup.",
+      "inv_name": "sub_14045C3F0",
+      "inv_size": "0x76"
+    },
+    {
+      "entry": "rva_retreat_engine",
+      "rva": "0x340920",
+      "full_addr": "0x140340920",
+      "claim": "Retreat_Engine -- called by Lua Retreat wrapper.",
+      "inv_name": "sub_140340920",
+      "inv_size": "0xd0"
+    },
+    {
+      "entry": "rva_schedule_hero_respawn",
+      "rva": "0x48EB10",
+      "full_addr": "0x14048eb10",
+      "claim": "ScheduleHeroRespawn -- Phase 2 RE.",
+      "inv_name": "sub_14048EB10",
+      "inv_size": "0x694"
+    },
+    {
+      "entry": "rva_select_event_ctor",
+      "rva": "0x3AC9D0",
+      "full_addr": "0x1403ac9d0",
+      "claim": "SelectEventClass::ctor -- Event ID=5.",
+      "inv_name": "sub_1403AC9D0",
+      "inv_size": "0x40"
+    },
+    {
+      "entry": "rva_select_object_engine",
+      "rva": "0x2BD2F0",
+      "full_addr": "0x1402bd2f0",
+      "claim": "Select_Object_Engine -- called by Lua Select_Object wrapper.",
+      "inv_name": "sub_1402BD2F0",
+      "inv_size": "0x6c"
+    },
+    {
+      "entry": "rva_set_cannot_be_killed_wrapper",
+      "rva": "0x580010",
+      "full_addr": "0x140580010",
+      "claim": "Set_Cannot_Be_Killed Lua wrapper -- size 0x164. Writes bit 7 (0x80) of byte at o",
+      "inv_name": "sub_140580010",
+      "inv_size": "0x164"
+    },
+    {
+      "entry": "rva_set_front_shield",
+      "rva": "0x3A8630",
+      "full_addr": "0x1403a8630",
+      "claim": "SetFrontShield -- front shield write.",
+      "inv_name": "sub_1403A8630",
+      "inv_size": "0x99"
+    },
+    {
+      "entry": "rva_set_hp",
+      "rva": "0x3A89D0",
+      "full_addr": "0x1403a89d0",
+      "claim": "SetHP(obj, float) -- Phase 1 RE + CT hook + AOB unique. Writes obj+0x5C.",
+      "inv_name": "sub_1403A89D0",
+      "inv_size": "0xfc"
+    },
+    {
+      "entry": "rva_set_position",
+      "rva": "0x3ABB80",
+      "full_addr": "0x1403abb80",
+      "claim": "SetPosition/Teleport -- propagates position to hardpoints via QI(0x16). Previous",
+      "inv_name": "sub_1403ABB80",
+      "inv_size": "0x2be"
+    },
+    {
+      "entry": "rva_set_rear_shield",
+      "rva": "0x3A91E0",
+      "full_addr": "0x1403a91e0",
+      "claim": "SetRearShield -- rear shield write.",
+      "inv_name": "sub_1403A91E0",
+      "inv_size": "0xed"
+    },
+    {
+      "entry": "rva_set_speed_override",
+      "rva": "0x3A8C90",
+      "full_addr": "0x1403a8c90",
+      "claim": "SetSpeedOverride -- AOB verified unique.",
+      "inv_name": "sub_1403A8C90",
+      "inv_size": "0x1c"
+    },
+    {
+      "entry": "rva_set_tech_level",
+      "rva": "0x288980",
+      "full_addr": "0x140288980",
+      "claim": "PlayerClass::SetTechLevel -- AOB verified unique, Phase 2 RE.",
+      "inv_name": "sub_140288980",
+      "inv_size": "0x1fe"
+    },
+    {
+      "entry": "rva_spawn_init",
+      "rva": "0x3989A0",
+      "full_addr": "0x1403989a0",
+      "claim": "Spawn_Init -- allocates combatant (0x3B8), sets initial HP.",
+      "inv_name": "sub_1403989A0",
+      "inv_size": "0xaad"
+    },
+    {
+      "entry": "rva_squadron_combatant_ctor",
+      "rva": "0x6CBA40",
+      "full_addr": "0x1406cba40",
+      "claim": "SquadronCombatantClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1406CBA40",
+      "inv_size": "0x69"
+    },
+    {
+      "entry": "rva_story_event_build_from_parsed",
+      "rva": "0x4562A0",
+      "full_addr": "0x1404562a0",
+      "claim": "StoryEvent_BuildFromParsed (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404562A0",
+      "inv_size": "0x6c2"
+    },
+    {
+      "entry": "rva_story_event_command_unit_ctor",
+      "rva": "0x4504E0",
+      "full_addr": "0x1404504e0",
+      "claim": "StoryEventCommandUnitClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1404504E0",
+      "inv_size": "0x53"
+    },
+    {
+      "entry": "rva_story_event_ctor",
+      "rva": "0x4501D0",
+      "full_addr": "0x1404501d0",
+      "claim": "StoryEventClass::ctor -- size >= 0x360.",
+      "inv_name": "sub_1404501D0",
+      "inv_size": "0x307"
+    },
+    {
+      "entry": "rva_story_event_dtor",
+      "rva": "0x450600",
+      "full_addr": "0x140450600",
+      "claim": "StoryEventClass::dtor (CONFIRMED-RE).",
+      "inv_name": "sub_140450600",
+      "inv_size": "0x3aa"
+    },
+    {
+      "entry": "rva_story_event_factory_create",
+      "rva": "0x453310",
+      "full_addr": "0x140453310",
+      "claim": "StoryEvent_Factory_Create -- 61 type IDs, switch/case.",
+      "inv_name": "sub_140453310",
+      "inv_size": "0x9cc"
+    },
+    {
+      "entry": "rva_story_event_hero_move_ctor",
+      "rva": "0x450540",
+      "full_addr": "0x140450540",
+      "claim": "StoryEventHeroMoveClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140450540",
+      "inv_size": "0x4d"
+    },
+    {
+      "entry": "rva_story_event_parse_xml_block",
+      "rva": "0x45C5D0",
+      "full_addr": "0x14045c5d0",
+      "claim": "StoryEvent_ParseXMLBlock (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14045C5D0",
+      "inv_size": "0x8d7"
+    },
+    {
+      "entry": "rva_story_event_wrapper_lua_ctor",
+      "rva": "0x73DC80",
+      "full_addr": "0x14073dc80",
+      "claim": "StoryEventWrapper::LuaConstructor -- 7 methods.",
+      "inv_name": "sub_14073DC80",
+      "inv_size": "0x2d7"
+    },
+    {
+      "entry": "rva_story_plot_wrapper_lua_ctor",
+      "rva": "0x724120",
+      "full_addr": "0x140724120",
+      "claim": "StoryPlotWrapper::LuaConstructor -- 5 methods.",
+      "inv_name": "sub_140724120",
+      "inv_size": "0x223"
+    },
+    {
+      "entry": "rva_story_subplot_compute_dependencies",
+      "rva": "0x452D70",
+      "full_addr": "0x140452d70",
+      "claim": "StorySubPlot_ComputeDependencies -- builds dependency graph.",
+      "inv_name": "sub_140452D70",
+      "inv_size": "0x5a0"
+    },
+    {
+      "entry": "rva_story_subplot_ctor",
+      "rva": "0x52D400",
+      "full_addr": "0x14052d400",
+      "claim": "StorySubPlotClass::ctor -- size >= 0x650.",
+      "inv_name": "sub_14052D400",
+      "inv_size": "0x598"
+    },
+    {
+      "entry": "rva_story_subplot_dtor",
+      "rva": "0x52E220",
+      "full_addr": "0x14052e220",
+      "claim": "StorySubPlotClass::dtor (CONFIRMED-RE).",
+      "inv_name": "sub_14052E220",
+      "inv_size": "0x281"
+    },
+    {
+      "entry": "rva_story_subplot_find_event_by_name",
+      "rva": "0x52EF90",
+      "full_addr": "0x14052ef90",
+      "claim": "StorySubPlot_FindEventByName -- CRC32 XOR 0xDEADBEEF + LCG.",
+      "inv_name": "sub_14052EF90",
+      "inv_size": "0x109"
+    },
+    {
+      "entry": "rva_story_subplot_reset",
+      "rva": "0x52FC10",
+      "full_addr": "0x14052fc10",
+      "claim": "StorySubPlot_Reset -- iterates events, clears +0x4C.",
+      "inv_name": "sub_14052FC10",
+      "inv_size": "0x58"
+    },
+    {
+      "entry": "rva_sub_object_owner_resolve",
+      "rva": "0x395920",
+      "full_addr": "0x140395920",
+      "claim": "SubObject_OwnerResolve -- reads +0xB8, +0xD8 (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140395920",
+      "inv_size": "0x1a0"
+    },
+    {
+      "entry": "rva_tactical_build_behavior_dtor",
+      "rva": "0x42D850",
+      "full_addr": "0x14042d850",
+      "claim": "TacticalBuildObjectsBehaviorClass::dtor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_14042D850",
+      "inv_size": "0x54"
+    },
+    {
+      "entry": "rva_tactical_build_datapack_ctor",
+      "rva": "0x561270",
+      "full_addr": "0x140561270",
+      "claim": "TacticalBuildObjectsDataPackClass::ctor (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_140561270",
+      "inv_size": "0x2a"
+    },
+    {
+      "entry": "rva_tactical_build_event_ctor",
+      "rva": "0x5D7740",
+      "full_addr": "0x1405d7740",
+      "claim": "TacticalBuildEventClass::ctor -- Event ID=33.",
+      "inv_name": "sub_1405D7740",
+      "inv_size": "0x37"
+    },
+    {
+      "entry": "rva_take_damage_impl",
+      "rva": "0x3AB890",
+      "full_addr": "0x1403ab890",
+      "claim": "Take_Damage_Impl -- core old_hp - damage, prevent-death.",
+      "inv_name": "sub_1403AB890",
+      "inv_size": "0x1fa"
+    },
+    {
+      "entry": "rva_take_damage_outer",
+      "rva": "0x38A350",
+      "full_addr": "0x14038a350",
+      "claim": "Take_Damage_Outer -- damage routing function with 56 damage type cases and 15 ca",
+      "inv_name": "sub_14038A350",
+      "inv_size": "0x221b"
+    },
+    {
+      "entry": "rva_take_damage_property_dispatch",
+      "rva": "0x3A97E0",
+      "full_addr": "0x1403a97e0",
+      "claim": "Take_Damage_PropertyDispatch -- shield/hardpoint routing.",
+      "inv_name": "sub_1403A97E0",
+      "inv_size": "0x52"
+    },
+    {
+      "entry": "rva_teleport_lua_wrapper",
+      "rva": "0x5819E0",
+      "full_addr": "0x1405819e0",
+      "claim": "GameObjectWrapper::Teleport Lua binding \u2014 discovered by IDA Pro decompile on 202",
+      "inv_name": "sub_1405819E0",
+      "inv_size": "0xdd"
+    },
+    {
+      "entry": "rva_transform_update",
+      "rva": "0x3AC530",
+      "full_addr": "0x1403ac530",
+      "claim": "Transform_Update -- signal listener notify, position update (DISCOVERED-GHIDRA).",
+      "inv_name": "sub_1403AC530",
+      "inv_size": "0x32c"
+    },
+    {
+      "entry": "rva_unlock_tech_engine",
+      "rva": "0x27F860",
+      "full_addr": "0x14027f860",
+      "claim": "Unlock_Tech engine function -- writes to +0x1B0/0x1B8 confirmed.",
+      "inv_name": "sub_14027F860",
+      "inv_size": "0x93"
+    },
+    {
+      "entry": "rva_unlock_tech_remove",
+      "rva": "0x286100",
+      "full_addr": "0x140286100",
+      "claim": "Unlock_Tech_Remove -- removes from locked list.",
+      "inv_name": "sub_140286100",
+      "inv_size": "0x44"
+    },
+    {
+      "entry": "rva_weapon_tick",
+      "rva": "0x387010",
+      "full_addr": "0x140387010",
+      "claim": "WeaponTick -- per-frame weapon update, cooldown via delta-time.",
+      "inv_name": "sub_140387010",
+      "inv_size": "0x158"
+    },
+    {
+      "entry": "rva_player_list_switch_sides",
+      "rva": "0x297E80",
+      "full_addr": "0x140297e80",
+      "claim": "PlayerListClass::Switch_Sides at RVA 0x297E80. Canonical method for rotating the",
+      "inv_name": "sub_140297E80",
+      "inv_size": "0x23b"
+    },
+    {
+      "entry": "rva_player_list_get_current_player",
+      "rva": "0x294A40",
+      "full_addr": "0x140294a40",
+      "claim": "PlayerListClass::GetCurrentPlayer at RVA 0x294A40. Companion reader to Switch_Si",
+      "inv_name": "sub_140294A40",
+      "inv_size": "0x29"
+    },
+    {
+      "entry": "rva_player_list_set_current_by_faction",
+      "rva": "0x2924D0",
+      "full_addr": "0x1402924d0",
+      "claim": "PlayerListClass::Set_Current_Player_By_Faction at RVA 0x2924D0. Galactic-mode eq",
+      "inv_name": "sub_1402924D0",
+      "inv_size": "0xbe"
+    },
+    {
+      "entry": "rva_gamemode_refresh_local_player_subsystems",
+      "rva": "0x2B59B0",
+      "full_addr": "0x1402b59b0",
+      "claim": "GameModeClass::Refresh_Local_Player_Subsystems at RVA 0x2B59B0. Walks the linked",
+      "inv_name": "sub_1402B59B0",
+      "inv_size": "0x71"
+    }
+  ],
+  "misses": [
+    {
+      "entry": "api_lua_close_legacy",
+      "rva": "0x7B8A70",
+      "full_addr": "0x1407b8a70",
+      "claim": "DEPRECATED: lua_close was guessed at 0x7B8A70 between lua_open and lua_checkstac"
+    },
+    {
+      "entry": "api_lua_pushnumber_wrong",
+      "rva": "0x7B9500",
+      "full_addr": "0x1407b9500",
+      "claim": "DEPRECATED: 0x7B9500 was guessed as lua_pushnumber and crashed the game. Real is"
+    },
+    {
+      "entry": "rva_apocalypticx_build_conquest",
+      "rva": "0x3A1B4C",
+      "full_addr": "0x1403a1b4c",
+      "claim": "Apocalypticx community CE table: Build time/cost (Conquest) at 0x3A1B4C. AOB ver"
+    },
+    {
+      "entry": "rva_apocalypticx_build_skirmish",
+      "rva": "0x333E73",
+      "full_addr": "0x140333e73",
+      "claim": "Apocalypticx community CE table: Build time/cost (Skirmish) at 0x333E73. AOB ver"
+    },
+    {
+      "entry": "rva_apocalypticx_fow_visibility",
+      "rva": "0x451974",
+      "full_addr": "0x140451974",
+      "claim": "Apocalypticx community CE table: Fog of war visibility check at 0x451974. AOB ve"
+    },
+    {
+      "entry": "rva_apocalypticx_unit_cap_gc",
+      "rva": "0x28DF6F",
+      "full_addr": "0x14028df6f",
+      "claim": "Apocalypticx community CE table: Unit cap calculation (GC) at 0x28DF6F. AOB veri"
+    }
+  ]
+}

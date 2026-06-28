@@ -1,0 +1,7 @@
+{
+  "addr": "0x140644e90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140644ea4        *arg1 = &SurfaceFXBehaviorClass::`vftable'{for `BehaviorClass'}\n140644eb0        arg1[1] = &SurfaceFXBehaviorClass::`vftable'{for `RefCountClass'}\n140644ebb        arg1[3] = &SurfaceFXBehaviorClass::`vftable'{for `SignalListenerClass'}\n140644ebf        void* rcx = arg1[8]\n140644ec6        if (rcx != 0)\n140644eda        if (((arg1[0xa] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n140644edc        void* r8_1 = *(rcx - 8)\n140644eef        if (rcx - r8_1 - 8 u> 0x1f)\n140644f30        _invalid_parameter_noinfo_noreturn()\n140644f30        noreturn\n140644ef1        rcx = r8_1\n140644ef4        j_sub_1407864b8(rcx)\n140644efb        __builtin_memset(&arg1[8], 0, 0x18)\n140644f0a        sub_1404c3310(arg1)\n140644f13        if ((arg2 & 1) != 0)\n140644f1d        j_sub_1407864b8(arg1)\n140644f2f        return arg1",
+  "fetched_at": "2026-04-26T17:03:41Z"
+}

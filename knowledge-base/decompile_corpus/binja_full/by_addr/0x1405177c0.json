@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405177c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405177c0        int32_t rax_2 = *arg1\n1405177c2        int32_t temp0 = *arg2\n1405177c2        bool c = rax_2 u< temp0\n1405177c4        if (rax_2 == temp0 || c)\n1405177ce        return zx.q(sbb.d(rax_2, rax_2, c))\n1405177cb        return 1",
+  "fetched_at": "2026-04-26T17:32:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347da0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140347da0(void)\n\n{\n  undefined *puVar1;\n  undefined **ppuVar2;\n  int iVar3;\n  \n  iVar3 = 0;\n  ppuVar2 = &PTR_s_i_main_commandbar_140a174e0;\n  do {\n    puVar1 = (undefined *)FUN_1402f5bf0(&DAT_140b27f60,*ppuVar2);\n    if (puVar1 != (undefined *)0x0) {\n      *(undefined ***)(puVar1 + 0x98) = ppuVar2;\n      *(int *)(puVar1 + 0xa8) = iVar3;\n      ppuVar2[1] = puVar1;\n    }\n    iVar3 = iVar3 + 1;\n    ppuVar2 = ppuVar2 + 9;\n  } while (iVar3 < 0x3c5);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:27Z"
+}

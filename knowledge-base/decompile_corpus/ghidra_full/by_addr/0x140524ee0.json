@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIBuildTaskClass *\nFUN_140524ee0(longlong param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,\n             undefined4 param_5,undefined1 param_6)\n\n{\n  char cVar1;\n  AIBuildTaskClass *pAVar2;\n  AIBuildTaskClass *pAVar3;\n  \n  pAVar2 = (AIBuildTaskClass *)FUN_140769c58(0xe8);\n  pAVar3 = (AIBuildTaskClass *)0x0;\n  if (pAVar2 != (AIBuildTaskClass *)0x0) {\n    pAVar3 = AIBuildTaskClass::AIBuildTaskClass(pAVar2);\n  }\n  FUN_140649200(pAVar3,param_2,param_3,param_4,param_5,param_6);\n  pAVar2 = (AIBuildTaskClass *)&pAVar3->vftablePtr;\n  if (pAVar3 == (AIBuildTaskClass *)0x0) {\n    pAVar2 = (AIBuildTaskClass *)0x0;\n  }\n  cVar1 = FUN_14020aa60(*(undefined8 *)(param_1 + 0x40),pAVar2,1);\n  if (cVar1 == '\\x01') {\n    (*pAVar3->vftablePtr->vfunction1)(&pAVar3->vftablePtr);\n  }\n  return pAVar3;\n}",
+  "fetched_at": "2026-04-26T18:27:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140569f60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nFleetLocomotorBehaviorClass::vfunction10(FleetLocomotorBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  puVar1 = param_1[0x15];\n  if (puVar1 != (undefined *)0x0) {\n    *(undefined4 *)(puVar1 + 8) = *(undefined4 *)(param_1 + 0xf);\n    *(undefined4 *)(puVar1 + 0xc) = *(undefined4 *)((longlong)param_1 + 0x7c);\n    *(undefined4 *)(puVar1 + 0x10) = *(undefined4 *)(param_1 + 0x10);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068acb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068acb0(void)\n\n{\n  RedirectBlasterAbilityClass *this;\n  \n  this = (RedirectBlasterAbilityClass *)FUN_140769c58(400);\n  if (this != (RedirectBlasterAbilityClass *)0x0) {\n    RedirectBlasterAbilityClass::RedirectBlasterAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:21Z"
+}

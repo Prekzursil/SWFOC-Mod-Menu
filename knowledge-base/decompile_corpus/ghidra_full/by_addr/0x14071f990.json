@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall FreeStoreMovementBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a44a98;\n}",
+  "fetched_at": "2026-04-26T17:59:02Z"
+}

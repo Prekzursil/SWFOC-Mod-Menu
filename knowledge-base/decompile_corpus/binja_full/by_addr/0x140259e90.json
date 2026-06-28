@@ -1,0 +1,7 @@
+{
+  "addr": "0x140259e90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140259ea9        struct LuaUserVar::GetEvent::VTable** result = arg1\n140259eac        sub_140249c20(arg1, 0, 1)\n140259eba        *result = &GetEvent::`vftable'{for `LuaUserVar'}\n140259ebd        __builtin_memset(&result[5], 0, 0x30)\n140259ed8        struct LuaUserVar::LuaMemberFunctionWrapper<class GetEvent>::VTable** rax = operator new(0x40)\n140259ee4        struct LuaUserVar::LuaMemberFunctionWrapper<class GetEvent>::VTable** rbx = rax\n140259eea        if (rax == 0)\n140259f11        rbx = nullptr\n140259ef4        sub_140249c20(rax, 0, 0)\n140259f00        *rbx = &LuaMemberFunctionWrapper<class GetEvent>::`vftable'{for `LuaUserVar'}\n140259f03        rbx[5] = sub_14025a870\n140259f07        rbx[6] = result\n140259f0b        rbx[7].b = 0\n140259f21        sub_14024be40(result, \"Params\", rbx)\n140259f2b        int64_t* rax_1 = operator new(0x40)\n140259f30        int64_t* rbx_1 = rax_1\n140259f36        if (rax_1 == 0)\n140259f5d        rbx_1 = nullptr\n140259f40        sub_140249c20(rax_1, 0, 0)\n140259f4c        *rbx_1 = &LuaMemberFunctionWrapper<class GetEvent>::`vftable'{for `LuaUserVar'}\n140259f4f        rbx_1[5] = sub_14025a920\n140259f53        rbx_1[6] = result\n140259f57        rbx_1[7].b = 0\n140259f6d        sub_14024be40(result, \"Reset\", rbx_1)\n140259f89        return result",
+  "fetched_at": "2026-04-26T17:30:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f4ba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f4ba6        int64_t* rdx = *(arg1 + 0x28)\n1404f4baa        void* rbx = rdx[0x21]\n1404f4bb4        if (rbx == 0)\n1404f4bb4        return \n1404f4bba        void* rcx = data_140b31900\n1404f4bc9        if (rcx != 0)\n1404f4bcb        sub_140658930(rcx, rdx)\n1404f4bd0        int32_t i = 0\n1404f4bd5        if (*(rbx + 0x18) s> 0)\n1404f4bdc        int64_t* rsi_1 = nullptr\n1404f4be4        int64_t* rcx_1 = *(rsi_1 + *(rbx + 0x10))\n1404f4beb        if (rcx_1 != 0)\n1404f4bf5        (**rcx_1)(rcx_1, 1)\n1404f4bf7        i += 1\n1404f4bf9        rsi_1 = &rsi_1[1]\n1404f4c00        do while (i s< *(rbx + 0x18))\n1404f4c07        int64_t lpMem = *(rbx + 0x10)\n1404f4c0e        if (lpMem == 0)\n1404f4c0e        return \n1404f4c17        if ((*(rbx + 0x1c) & 0x80000000) == 0)\n1404f4c32        j_sub_1407864b8(lpMem)\n1404f4c27        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1404f4c37        *(rbx + 0x1c) &= 0x80000000\n1404f4c3e        *(rbx + 0x10) = 0\n1404f4c46        *(rbx + 0x18) = 0\n1404f4c57        return ",
+  "fetched_at": "2026-04-26T17:31:41Z"
+}

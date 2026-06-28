@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407de1b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407de1c9        *arg1 = &alRenderablePlane::`vftable'{for `alRenderable'}\n1407de1d3        arg1[2] = &alRenderablePlane::`vftable'{for `MultiLinkedListMember'}\n1407de1de        arg1[4] = &alRenderablePlane::`vftable'{for `CullObjectClass'}\n1407de1e2        int64_t* rcx = arg1[0x21]\n1407de1ec        if (rcx != 0)\n1407de1f1        (*(*rcx + 8))(rcx)\n1407de1f4        arg1[0x21] = 0\n1407de208        sub_1407e0120(&arg1[0x23], 0)\n1407de216        sub_140141700(&arg1[0x26], 0)\n1407de222        sub_1401415b0(&arg1[0x26])\n1407de22e        sub_140369ff0(&arg1[0x23])\n1407de233        int64_t* rcx_5 = arg1[0x22]\n1407de23d        if (rcx_5 != 0)\n1407de242        (*(*rcx_5 + 8))(rcx_5)\n1407de245        int64_t* rcx_6 = arg1[0x21]\n1407de24f        if (rcx_6 != 0)\n1407de254        (*(*rcx_6 + 8))(rcx_6)\n1407de269        return sub_14013f770(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:34:09Z"
+}

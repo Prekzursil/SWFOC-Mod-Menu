@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bf390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PotentialPlanClass * __thiscall\nPotentialPlanClass::scalar_deleting_destructor(PotentialPlanClass *this,uint param_1)\n\n{\n  ~PotentialPlanClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x210);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:38:54Z"
+}

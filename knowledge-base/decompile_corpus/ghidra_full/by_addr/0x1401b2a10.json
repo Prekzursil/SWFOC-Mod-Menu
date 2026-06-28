@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b2a10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall alSimpleScene::vfunction27(alSimpleScene *this,undefined8 param_1)\n\n{\n  longlong lVar1;\n  byte bVar2;\n  byte bVar3;\n  longlong *plVar4;\n  undefined1 *puVar5;\n  longlong *plVar6;\n  \n  bVar3 = 0;\n  lVar1 = (this->alSimpleScene_data).offset_0x1a8;\n  if (lVar1 == 0) {\n    puVar5 = (undefined1 *)(this->alSimpleScene_data).offset_0x168;\n    plVar6 = &(this->alSimpleScene_data).offset_0x160;\n    if ((longlong *)puVar5 != plVar6) {\n      do {\n        plVar4 = (longlong *)(*(longlong *)(puVar5 + 0x18) + -0x10);\n        if (*(longlong *)(puVar5 + 0x18) == 0) {\n          plVar4 = (longlong *)0x0;\n        }\n        if ((*(byte *)((longlong)plVar4 + 0x31) & 0x40) == 0) {\n          bVar2 = (**(code **)(*plVar4 + 0x80))(plVar4,param_1);\n          bVar3 = bVar3 | bVar2;\n        }\n        puVar5 = *(undefined1 **)(puVar5 + 8);\n      } while ((longlong *)puVar5 != plVar6);\n    }\n  }\n  else {\n    bVar2 = FUN_1401b4010(this,lVar1,param_1);\n    bVar3 = FUN_1401b4010(this,(this->alSimpleScene_data).offset_0x1b0,param_1);\n    bVar3 = bVar3 | bVar2;\n  }\n  return bVar3;\n}",
+  "fetched_at": "2026-04-26T17:43:47Z"
+}

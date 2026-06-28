@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056ac90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BaseShieldBehaviorClass * __thiscall\nBaseShieldBehaviorClass::vfunction4(BaseShieldBehaviorClass *this,int param_1)\n\n{\n  BaseShieldBehaviorClass *pBVar1;\n  \n  pBVar1 = (BaseShieldBehaviorClass *)0x0;\n  if (param_1 == 0x39) {\n    pBVar1 = this;\n  }\n  return pBVar1;\n}",
+  "fetched_at": "2026-04-26T18:39:55Z"
+}

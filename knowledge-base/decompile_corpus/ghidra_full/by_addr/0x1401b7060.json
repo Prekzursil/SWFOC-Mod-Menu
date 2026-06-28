@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b7060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nulonglong FUN_1401b7060(longlong param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  byte bVar1;\n  ulonglong uVar2;\n  int iVar3;\n  byte bVar4;\n  int iVar5;\n  undefined2 local_48 [2];\n  undefined4 local_44;\n  undefined4 local_40;\n  undefined4 local_3c;\n  undefined4 uStack_38;\n  undefined4 uStack_34;\n  undefined4 uStack_30;\n  undefined8 local_2c;\n  \n  local_44 = DAT_1407ffaf8;\n  local_48[0] = 1;\n  local_40 = 0;\n  local_2c = 0;\n  local_3c = _DAT_140800840;\n  uStack_38 = _UNK_140800844;\n  uStack_34 = _UNK_140800848;\n  uStack_30 = _UNK_14080084c;\n  bVar4 = 0;\n  uVar2 = FUN_14020c6d0(param_2,param_1 + 0xa8,local_48);\n  if ((char)uVar2 == '\\0') {\n    return uVar2;\n  }\n  iVar5 = 0;\n  do {\n    iVar3 = 0;\n    do {\n      bVar1 = FUN_1401b92a0(param_1,iVar3,iVar5,param_2,param_3);\n      bVar4 = bVar4 | bVar1;\n      iVar3 = iVar3 + 1;\n    } while (iVar3 < 0x1f);\n    iVar5 = iVar5 + 1;\n  } while (iVar5 < 0x1f);\n  return (ulonglong)bVar4;\n}",
+  "fetched_at": "2026-04-26T17:45:02Z"
+}

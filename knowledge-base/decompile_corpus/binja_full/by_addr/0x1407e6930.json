@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e6930",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e6937        data_1409cf218 = &SingletonInstance<class LandPositionFinderClass>::`vftable'{for `SingletonManager'}\n1407e693e        return &SingletonInstance<class LandPositionFinderClass>::`vftable'{for `SingletonManager'}",
+  "fetched_at": "2026-04-26T17:34:36Z"
+}

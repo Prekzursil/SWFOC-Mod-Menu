@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407139f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ForceSightAbilityClass * __thiscall\nForceSightAbilityClass::ForceSightAbilityClass(ForceSightAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->ForceSightAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:56:01Z"
+}

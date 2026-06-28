@@ -1,0 +1,7 @@
+{
+  "addr": "0x140387e60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140387e66        int64_t* result = *(arg1 + 0x20)\n140387e7e        if (result != 0 && result[0x3a] != 0)\n140387e89        result = sub_1403858b0(arg1)\n140387e8e        int64_t* result_1 = result\n140387e94        if (result != 0)\n140387e9e        void** rdx_2 = *(arg1 + 0x20) + 0x1c0\n140387eaf        if (rdx_2[3] u>= 0x10)\n140387eb1        rdx_2 = *rdx_2\n140387eb7        int64_t rdx_3\n140387eb7        result, rdx_3 = sub_14012d2a0(result_1, rdx_2)\n140387ebc        int32_t rsi_1 = result.d\n140387ec0        if (result.d s>= 0)\n140387ed4        uint64_t zmm2_1[0x2] = *(*(arg1 + 0x20) + 0x4bc)\n140387ee6        double zmm1_1[0x2] = 0x40490fdb\n140387eee        zmm1_1[0].d = 3.14159274f * 2f\n140387ef6        int128_t var_38\n140387ef6        __builtin_memcpy(&var_38, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\", 0x30)\n140387efb        zmm1_1[0].d = zmm1_1[0].d f/ 360f\n140387f0a        zmm1_1[0].d = zmm1_1[0].d f* zmm2_1[0].d\n140387f13        sub_1400480f0(&var_38, rdx_3, zmm2_1, zmm1_1)\n140387f20        sub_14012d430(result_1, rsi_1, 1)\n140387f2f        return sub_14012d480(result_1, rsi_1, &var_38)\n140387f43        return result",
+  "fetched_at": "2026-04-26T17:20:46Z"
+}

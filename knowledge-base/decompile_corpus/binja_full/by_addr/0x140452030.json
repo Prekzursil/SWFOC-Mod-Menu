@@ -1,0 +1,7 @@
+{
+  "addr": "0x140452030",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14045203a        int64_t r8 = arg1[0x6f]\n140452041        int32_t r14 = 0\n140452054        int64_t result = (arg1[0x70] - r8) s>> 5\n14045205b        if (result != 0)\n140452066        uint64_t rcx = 0\n140452076        void** rcx_2 = (rcx << 5) + r8\n14045207e        if (rcx_2[3] u>= 0x10)\n140452080        rcx_2 = *rcx_2\n14045208d        int64_t rax_2 = sub_140407e00(&data_140b2f020, rcx_2)\n1404520a3        void* rax_3 = sub_1402a87d0(*(data_140b15418 + 0x18), rax_2, nullptr)\n1404520a8        int32_t i = 0\n1404520b0        if (*(rax_3 + 0x10) s> 0)\n1404520b2        int64_t* rdi_1 = nullptr\n1404520c4        void* rax_4 = *(rdi_1 + *(rax_3 + 8))\n1404520cd        float zmm0_1 = *(rax_4 + 0x78) - *arg2\n1404520d7        float zmm1_1 = *(rax_4 + 0x7c) - arg2[1]\n1404520e5        float zmm2_1 = *(rax_4 + 0x80) - arg2[2]\n1404520ff        zmm0_1 = sqrtf(zmm0_1 * zmm0_1 + zmm1_1 * zmm1_1 + zmm2_1 * zmm2_1)\n14045210f        if (arg1[0x72].d f> zmm0_1)\n14045214a        return sub_140455db0(arg1, nullptr, 0)\n140452111        i += 1\n140452113        rdi_1 = &rdi_1[1]\n14045211a        do while (i s< *(rax_3 + 0x10))\n14045211c        r8 = arg1[0x6f]\n140452123        r14 += 1\n140452130        rcx = zx.q(r14)\n140452133        result = (arg1[0x70] - r8) s>> 5\n14045213a        do while (rcx u< result)\n140452167        return result",
+  "fetched_at": "2026-04-26T17:27:41Z"
+}

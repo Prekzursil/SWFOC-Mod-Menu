@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a2f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a2f0(void)\n\n{\n  ConcentrateFireAttackAbilityClass *this;\n  \n  this = (ConcentrateFireAttackAbilityClass *)FUN_140769c58(0x188);\n  if (this != (ConcentrateFireAttackAbilityClass *)0x0) {\n    ConcentrateFireAttackAbilityClass::ConcentrateFireAttackAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403d6610",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403d662d        if (*(arg1 + 0x211c) != 1 || *(arg1 + 0x2a33) != 0)\n1403d6725        int64_t rax\n1403d6725        rax.b = 0\n1403d672c        return rax\n1403d6642        int64_t rdi = sx.q(*(arg1 + 0xdf8))\n1403d6655        int32_t rax_1 = sub_140294a70(&data_140a16fd0)\n1403d665d        int64_t rbp = rdi\n1403d6660        int64_t rax_4\n1403d6660        while (true)\n1403d6660        int32_t rdx_1 = *(arg1 + 0xde8)\n1403d6666        int32_t r8_1 = (rdi + 1).d\n1403d6671        int64_t rcx = rbp + 1\n1403d6675        rbp = 0\n1403d667a        if (r8_1 s< rdx_1)\n1403d667a        rbp = rcx\n1403d667e        rdi = 0\n1403d6683        if (r8_1 s< rdx_1)\n1403d6683        rdi = zx.q(r8_1)\n1403d668e        char* rsi_1 = *(rbp * 0x188 + *(arg1 + 0xde0))\n1403d669e        if (*(sub_1403956c0(rsi_1) + 4) == rax_1)\n1403d66e7        sub_1403de570(arg1, rsi_1, 0)\n1403d66f6        int32_t zmm1_1 = *(rsi_1 + 0x7c)\n1403d6702        int32_t var_18 = *(rsi_1 + 0x78)\n1403d6710        int32_t var_10_1 = *(rsi_1 + 0x80)\n1403d6716        int32_t var_14_1 = zmm1_1\n1403d671c        sub_140448c20(&data_140b30350, &var_18)\n1403d6721        rax_4.b = 1\n1403d6723        break\n1403d66a6        if (rdi.d == *(arg1 + 0xdf8))\n1403d66bd        sub_14032edd0(data_140b15418 + 0xa0, \"next_planet\")\n1403d66c2        rax_4.b = 0\n1403d66c2        break\n1403d66dd        return rax_4",
+  "fetched_at": "2026-04-26T17:24:58Z"
+}

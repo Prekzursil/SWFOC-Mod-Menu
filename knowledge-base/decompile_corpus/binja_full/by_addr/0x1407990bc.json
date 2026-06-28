@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407990bc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407990bc        int64_t rdx_2 = sx.q(arg1)\n1407990dc        return LeaveCriticalSection((&data_140b3c4d0)[rdx_2 s>> 6] + (zx.q(rdx_2.d) & 0x3f) * 0x48) __tailcall",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

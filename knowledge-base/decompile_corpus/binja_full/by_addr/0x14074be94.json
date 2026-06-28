@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074be94",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074bea8        *arg1 = &std::numpunct<wchar_t>::`vftable'{for `std::locale::facet'}\n14074beb1        free(arg1[2])\n14074beba        free(arg1[4])\n14074bec3        free(arg1[5])\n14074becf        *arg1 = &std::_Facet_base::`vftable'\n14074bed5        if ((arg2 & 1) != 0)\n14074bedf        j_sub_1407864b8(arg1)\n14074bef1        return arg1",
+  "fetched_at": "2026-04-26T17:29:44Z"
+}

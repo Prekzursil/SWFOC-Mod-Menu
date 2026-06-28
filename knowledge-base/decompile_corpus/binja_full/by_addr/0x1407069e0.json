@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407069e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407069f5        sub_14048e920(arg1, arg2, arg3, 0)\n140706a0a        int64_t var_18 = 0\n140706a16        int32_t var_10 = 0\n140706a2a        int128_t zmm6\n140706a2a        sub_14038a350(arg2, 0x22, 0, &var_18, arg4, zmm6, 0xffffffff, 0x3fffff)\n140706a31        void* rbx = &arg2[7]\n140706a38        if (arg2 == 0)\n140706a38        rbx = nullptr\n140706a43        if (data_140a10b50 == 0)\n140706a48        struct SignalDispatcherClass::VTable** rax_1 = operator new(0x78)\n140706a50        if (rax_1 == 0)\n140706a63        data_140a10b50 = 0\n140706a5a        data_140a10b50 = sub_140221820(rax_1)\n140706a6a        int32_t* rdx = data_140a7bc10\n140706a78        bool cond:0_1 = rdx == data_140a7bc18\n140706a7f        void** arg_10 = &data_140a10b48\n140706a84        if (cond:0_1)\n140706a9f        sub_14001ded0(&data_140a7bc08, rdx, &arg_10)\n140706a86        *rdx = &data_140a10b48\n140706a89        data_140a7bc10 += 8\n140706ab5        void* result = sub_140220ed0(data_140a10b50, rbx, 0x29, 0)\n140706aba        void* rbx_1 = arg2[0x20]\n140706ac4        if (rbx_1 != 0)\n140706acd        if (*(rbx_1 + 0x28c) != 0)\n140706ad7        result = sub_1403a9840(arg2, 0x22)\n140706adc        *(rbx_1 + 0x280) = 0\n140706ae3        *(rbx_1 + 0x288) = 0xffffffff\n140706aed        *(rbx_1 + 0x28c) = 0\n140706b03        return result",
+  "fetched_at": "2026-04-26T17:27:18Z"
+}

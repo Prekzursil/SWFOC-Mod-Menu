@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ec58",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ec61        int64_t rax_1 = *(__acrt_getptd() + 0x18)\n14078ec68        if (rax_1 != 0)\n14078ec70        rax_1()\n14078ec72        abort()\n14078ec72        noreturn",
+  "fetched_at": "2026-04-26T17:31:38Z"
+}

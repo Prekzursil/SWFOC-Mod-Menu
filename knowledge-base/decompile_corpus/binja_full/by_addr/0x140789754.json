@@ -1,0 +1,7 @@
+{
+  "addr": "0x140789754",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407897a8        int32_t rdi_2 = (arg3 - (arg2 + 6) s% 7 + 7) s/ 7\n1407897af        uint32_t r8 = zx.d(__crt_time_is_leap_year<long>(arg1))\n1407897cc        int32_t r9_3 = arg3 - r8\n1407897dc        int32_t rsi_3 = (arg2 - arg3 + 0x173) s% 7\n1407897f8        int32_t rcx_9 = (r8 + 0x16d + rsi_3) s% 7\n140789814        if ((r9_3 s>= 0x16c && rcx_9 == 2) || (r9_3 s>= 0x16b && rcx_9 == 3))\n140789824        return 0xffffffff\n140789822        if (r9_3 s>= 0x16a && rcx_9 == 4)\n140789824        return 0xffffffff\n140789831        if (rsi_3 - 2 u> 2)\n140789845        return zx.q(rdi_2)\n140789833        return zx.q(rdi_2 + 1)",
+  "fetched_at": "2026-04-26T17:31:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076e034",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076e04f        int64_t rbx = 0\n14076e054        int64_t rsi\n14076e054        if (*arg3 s>= 0)\n14076e05f        rsi = sx.q(arg3[2]) + *arg2\n14076e056        rsi = arg2\n14076e062        int32_t rax = BuildCatchObjectHelperInternal<class __FrameHandler3>(arg1, arg2, arg3, arg4)\n14076e067        int32_t result = rax - 1\n14076e06a        if (rax == 1)\n14076e0b0        int64_t rax_3 = __AdjustPointer(*(arg1 + 0x28), &arg4[8])\n14076e0bb        if (*(arg4 + 0x18) != 0)\n14076e0bd        int64_t rax_4 = _GetThrowImageBase()\n14076e0c6        rbx = sx.q(*(arg4 + 0x18)) + rax_4\n14076e0d2        return _CallMemberFunction1(rsi, rbx, rax_3)\n14076e06f        if (result != 1)\n14076e0ed        return result\n14076e079        int64_t rax_1 = __AdjustPointer(*(arg1 + 0x28), &arg4[8])\n14076e084        if (*(arg4 + 0x18) != 0)\n14076e086        int64_t rax_2 = _GetThrowImageBase()\n14076e08f        rbx = sx.q(*(arg4 + 0x18)) + rax_2\n14076e0a1        return _CallMemberFunction2(rsi, rbx, rax_1, 1)",
+  "fetched_at": "2026-04-26T17:30:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770ef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _CallSettingFrame_LookupContinuationIndex\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _CallSettingFrame_LookupContinuationIndex(undefined8 param_1,undefined8 *param_2)\n\n{\n  code *pcVar1;\n  \n  pcVar1 = (code *)_NLG_Notify(param_1,*param_2);\n  (*pcVar1)();\n  FUN_140770b30();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:59Z"
+}

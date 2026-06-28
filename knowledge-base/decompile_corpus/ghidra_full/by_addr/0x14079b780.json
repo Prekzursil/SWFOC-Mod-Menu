@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b780",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    LcidFromHexString\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint LcidFromHexString(ushort *param_1)\n\n{\n  short sVar1;\n  ushort uVar2;\n  ushort uVar3;\n  int iVar4;\n  \n  uVar3 = *param_1;\n  iVar4 = 0;\n  do {\n    if (uVar3 == 0) {\n      return iVar4;\n    }\n    param_1 = param_1 + 1;\n    if ((ushort)(uVar3 - 0x61) < 6) {\n      sVar1 = -0x27;\nLAB_14079b7b0:\n      uVar2 = uVar3 + sVar1;\n    }\n    else {\n      uVar2 = uVar3;\n      if ((ushort)(uVar3 - 0x41) < 6) {\n        sVar1 = -7;\n        goto LAB_14079b7b0;\n      }\n    }\n    uVar3 = *param_1;\n    iVar4 = iVar4 * 0x10 + -0x30 + (uint)uVar2;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:53:52Z"
+}

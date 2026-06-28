@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404674c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventStringClass::vfunction2(StoryEventStringClass *this)\n\n{\n  SignalGeneratorClass_data *pSVar1;\n  undefined8 *puVar2;\n  longlong lVar3;\n  longlong lVar4;\n  ulonglong uVar5;\n  \n  pSVar1 = &this[1].SignalGeneratorClass_data;\n  uVar5 = 0;\n  lVar4 = this[1].SignalGeneratorClass_data.offset_0x8;\n  lVar3 = *(longlong *)pSVar1;\n  if (lVar4 - lVar3 >> 5 != 0) {\n    do {\n      puVar2 = (undefined8 *)(uVar5 * 0x20 + lVar3);\n      puVar2[2] = 0;\n      if (0xf < (ulonglong)puVar2[3]) {\n        puVar2 = (undefined8 *)*puVar2;\n      }\n      *(undefined1 *)puVar2 = 0;\n      uVar5 = (ulonglong)((int)uVar5 + 1);\n      lVar4 = this[1].SignalGeneratorClass_data.offset_0x8;\n      lVar3 = *(longlong *)pSVar1;\n    } while (uVar5 < (ulonglong)(lVar4 - lVar3 >> 5));\n  }\n  FUN_140025180(lVar3,lVar4,pSVar1);\n  this[1].SignalGeneratorClass_data.offset_0x8 = *(longlong *)pSVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:21Z"
+}

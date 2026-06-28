@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d24f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d24ff        uint64_t rax = zx.q(arg1[1].d)\n1401d250c        if (rax.d != 0xffff)\n1401d2512        uint32_t rbx_1 = (rax * 2).d\n1401d251c        if (arg2 != 0xffffffff && arg2 s>= rbx_1)\n1401d251e        rbx_1 = arg2 * 2\n1401d2523        if (rbx_1 s> 0xffff)\n1401d2523        rbx_1 = 0xffff\n1401d252a        if (rax.d == 0)\n1401d2533        rbx_1 = 0x100\n1401d252e        if (rbx_1 s> 0xffff)\n1401d252e        rbx_1 = 0xffff\n1401d2538        int64_t rcx = sx.q(rbx_1)\n1401d2540        uint64_t rax_1 = 2 * rcx\n1401d254a        if (mulu.dp.q(2, rcx) u>> 0x40 != zx.o(0))\n1401d254a        rax_1 = -1\n1401d2551        rax = j_operator new(rax_1)\n1401d255c        if (rax != 0)\n1401d255e        int32_t* rdx = *arg1\n1401d2564        if (rdx != 0)\n1401d2574        memcpy(rax, rdx, sx.q(*(arg1 + 0xc) + 1) * 2)\n1401d2579        rdx = *arg1\n1401d257f        j_sub_1407864b8(rdx)\n1401d2584        int64_t rax_2\n1401d2584        rax_2.b = 1\n1401d2586        *arg1 = rax\n1401d2589        arg1[1].d = rbx_1\n1401d259b        return rax_2\n1401d25a1        rax.b = 0\n1401d25ad        return rax",
+  "fetched_at": "2026-04-26T17:26:43Z"
+}

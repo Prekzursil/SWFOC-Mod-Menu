@@ -1,0 +1,7 @@
+{
+  "addr": "0x140294a40",
+  "tool": "binary_ninja",
+  "fact_id": "rva_player_list_get_current_player",
+  "body": "140294a40        int64_t r9 = *arg1\n140294a43        int64_t rdx = arg1[1]\n140294a4a        if (r9 != rdx)\n140294a4c        int64_t r8_1 = sx.q(arg1[6].d)\n140294a5f        if (r8_1.d s>= 0 && r8_1.d s< ((rdx - r9) s>> 3).d)\n140294a65        return *(r9 + (r8_1 << 3))\n140294a68        return 0",
+  "fetched_at": "2026-04-26T16:43:13Z"
+}

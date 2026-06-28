@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402199d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402199e1        if (arg2 - 1 u> -3)\n140219a0b        void* rax\n140219a0b        rax.b = 0\n140219a12        return rax\n1402199e3        HANDLE hFindFile = *(arg2 + 0x90)\n1402199ee        if (hFindFile != -1)\n1402199f0        FindClose(hFindFile)\n1402199fe        sub_14021b730(arg2, 1)\n140219a03        void* rax_1\n140219a03        rax_1.b = 1\n140219a0a        return rax_1",
+  "fetched_at": "2026-04-26T17:28:43Z"
+}

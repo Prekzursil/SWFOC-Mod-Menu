@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023ae00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023ae04        char* rdx = *(arg1 + 0x38)\n14023ae12        int64_t r9 = *(arg1 + 0x40)\n14023ae20        int64_t result\n14023ae20        while (true)\n14023ae20        int64_t r8_1 = sx.q(*rdx)\n14023ae2e        if (r8_1.b u<= 0x20 && test_bit(0x100002600, r8_1))\n14023ae30        r9 = *(arg1 + 0x40)\n14023ae37        if (rdx u>= r9)\n14023ae37        break\n14023ae3d        if (r8_1.b != 0xa)\n14023ae4f        *(arg1 + 0x4c) += 1\n14023ae52        rdx = &rdx[1]\n14023ae55        *(arg1 + 0x38) = rdx\n14023ae59        continue\n14023ae3f        *(arg1 + 0x48) += 1\n14023ae42        rdx = &rdx[1]\n14023ae45        *(arg1 + 0x4c) = 0\n14023ae49        *(arg1 + 0x38) = rdx\n14023ae4d        continue\n14023ae5e        if (rdx u>= r9)\n14023ae5e        break\n14023ae60        result.b = 1\n14023ae66        return result\n14023ae70        if (*(arg1 + 0x28) u>= 0x10)\n14023ae72        *(arg1 + 0x10)\n14023ae75        *(arg1 + 0x4c)\n14023ae79        *(arg1 + 0x48)\n14023ae89        result.b = 0\n14023ae8f        return result",
+  "fetched_at": "2026-04-26T17:29:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c4180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSquadLeaderBehaviorClass::vfunction10(SquadLeaderBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  undefined4 uVar2;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  uVar2 = DAT_140a440ec;\n  puVar1 = param_1[0x1c];\n  if (puVar1 != (undefined *)0x0) {\n    *(undefined4 *)(puVar1 + 0x20) = 0;\n    FUN_140560e00(puVar1 + 8,uVar2,1);\n    puVar1[0x24] = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:38Z"
+}

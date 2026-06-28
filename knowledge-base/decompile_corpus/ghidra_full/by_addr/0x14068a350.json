@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a350(void)\n\n{\n  CorruptSystemsAbilityClass *this;\n  \n  this = (CorruptSystemsAbilityClass *)FUN_140769c58(400);\n  if (this != (CorruptSystemsAbilityClass *)0x0) {\n    CorruptSystemsAbilityClass::CorruptSystemsAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:42Z"
+}

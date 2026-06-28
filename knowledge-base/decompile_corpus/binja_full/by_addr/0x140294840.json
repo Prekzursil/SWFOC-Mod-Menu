@@ -1,0 +1,7 @@
+{
+  "addr": "0x140294840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140294840        int32_t result = arg2\n140294842        int32_t i_2 = *(arg1 + 0x28)\n140294847        if (i_2 s> 0)\n140294849        int64_t* r9_1 = *(arg1 + 0x20)\n140294854        uint64_t i_1 = zx.q(i_2)\n1402948c5        uint64_t i\n140294857        void* rcx = *r9_1\n140294866        if (rcx != 0 && *(rcx + 0x180) != 0)\n140294868        int32_t r8_1 = *(rcx + 0x70)\n140294881        int32_t rax_1 = result u>> 8 ^ *(&data_140a14d20 + ((zx.q(r8_1.b) ^ zx.q(result.b)) << 2))\n140294896        int32_t rax_3 = rax_1 u>> 8 ^ *(&data_140a14d20 + ((zx.q((r8_1 u>> 8).b) ^ zx.q(rax_1.b)) << 2))\n1402948a5        int32_t rax_5 = rax_3 u>> 8 ^ *(&data_140a14d20 + ((zx.q((r8_1 u>> 0x10).b) ^ zx.q(rax_3.b)) << 2))\n1402948b9        result = rax_5 u>> 8 ^ *(&data_140a14d20 + ((zx.q((zx.q(r8_1) u>> 0x18).b) ^ zx.q(rax_5.b)) << 2))\n1402948bd        r9_1 = &r9_1[1]\n1402948c1        i = i_1\n1402948c1        i_1 -= 1\n1402948c5        do while (i != 1)\n1402948c7        return result",
+  "fetched_at": "2026-04-26T17:32:38Z"
+}

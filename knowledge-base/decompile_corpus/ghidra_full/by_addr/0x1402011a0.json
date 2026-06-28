@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402011a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1402011a0(longlong param_1)\n\n{\n  longlong lVar1;\n  undefined1 *puVar2;\n  undefined1 *puVar3;\n  undefined8 *puVar4;\n  longlong lVar5;\n  \n  lVar1 = *(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8);\n  if ((*(uint *)(lVar1 + 0xd0) & 1) == 0) {\n    *(undefined8 *)(lVar1 + 200) = 0xf;\n    *(uint *)(lVar1 + 0xd0) = *(uint *)(lVar1 + 0xd0) | 1;\n    *(undefined8 *)(lVar1 + 0xb0) = 0;\n    *(undefined8 *)(lVar1 + 0xc0) = 0;\n    __tlregdtor(FUN_1407ece00);\n  }\n  puVar4 = (undefined8 *)(lVar1 + 0xb0);\n  lVar5 = -1;\n  do {\n    lVar5 = lVar5 + 1;\n  } while (*(char *)(param_1 + lVar5) != '\\0');\n  FUN_140022730(puVar4,param_1);\n  if (0xf < *(ulonglong *)(lVar1 + 200)) {\n    puVar4 = (undefined8 *)*puVar4;\n  }\n  puVar2 = (undefined1 *)FUN_14076c894(puVar4,0x5c);\n  puVar3 = (undefined1 *)FUN_14076c894(puVar4,0x2f);\n  if (puVar2 < puVar3) {\n    puVar2 = puVar3;\n  }\n  if (puVar2 != (undefined1 *)0x0) {\n    *puVar2 = 0;\n    puVar4 = (undefined8 *)(puVar2 + 1);\n  }\n  puVar2 = (undefined1 *)FUN_14076c894(puVar4,0x2e);\n  if (puVar2 != (undefined1 *)0x0) {\n    *puVar2 = 0;\n  }\n  return puVar4;\n}",
+  "fetched_at": "2026-04-26T17:55:37Z"
+}

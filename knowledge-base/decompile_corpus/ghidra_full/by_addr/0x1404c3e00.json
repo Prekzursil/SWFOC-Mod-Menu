@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c3e00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1404c3e00(undefined8 *param_1,undefined8 *param_2)\n\n{\n  char cVar1;\n  int iVar2;\n  char *pcVar3;\n  int iVar4;\n  longlong lVar5;\n  char *pcVar7;\n  longlong lVar6;\n  \n  *param_1 = *param_2;\n  param_1[1] = 0;\n  iVar4 = DAT_140a2bb44 * 2 >> 1;\n  if (iVar4 <= DAT_140a2bb40) {\n    iVar2 = iVar4 / 10;\n    if (iVar4 / 10 < 10) {\n      iVar2 = 10;\n    }\n    FUN_140047aa0(&PTR_vftable_140a2bb30,iVar2 + iVar4,0,1);\n  }\n  *(undefined8 **)(DAT_140a2bb38 + (longlong)DAT_140a2bb40 * 8) = param_1;\n  DAT_140a2bb40 = DAT_140a2bb40 + 1;\n  pcVar7 = (char *)param_2[1];\n  if (param_1[1] != 0) {\n    thunk_FUN_1407864b8();\n    param_1[1] = 0;\n  }\n  if (pcVar7 != (char *)0x0) {\n    lVar5 = -1;\n    do {\n      lVar6 = lVar5;\n      lVar5 = lVar6 + 1;\n    } while (pcVar7[lVar5] != '\\0');\n    pcVar3 = (char *)thunk_FUN_140769c58(lVar6 + 2);\n    param_1[1] = pcVar3;\n    do {\n      cVar1 = *pcVar7;\n      pcVar7 = pcVar7 + 1;\n      *pcVar3 = cVar1;\n      pcVar3 = pcVar3 + 1;\n    } while (cVar1 != '\\0');\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:11:43Z"
+}

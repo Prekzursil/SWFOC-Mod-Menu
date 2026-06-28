@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall SpaceGoalSystemClass::vfunction10(SpaceGoalSystemClass *this,longlong *param_1)\n\n{\n  char cVar1;\n  longlong *local_res8 [4];\n  \n  local_res8[0] = param_1;\n  if (param_1 != (longlong *)0x0) {\n    (**(code **)*param_1)(param_1);\n  }\n  cVar1 = FUN_140721a50(&this->AIGoalSystemClass_data,local_res8);\n  if (local_res8[0] != (longlong *)0x0) {\n    (**(code **)(*local_res8[0] + 8))();\n  }\n  return cVar1 != '\\0';\n}",
+  "fetched_at": "2026-04-26T17:37:26Z"
+}

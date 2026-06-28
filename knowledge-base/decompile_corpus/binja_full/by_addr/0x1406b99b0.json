@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b99b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b99bf        int64_t rdi = *(arg1 + 0xe8)\n1406b99c9        int64_t* rbx = *(arg1 + 0xe0)\n1406b99d3        if (rbx != rdi)\n1406b99d5        int64_t* rcx = *rbx\n1406b99db        if (rcx != 0)\n1406b99e0        (*(*rcx + 8))(rcx)\n1406b99e3        rbx = &rbx[1]\n1406b99ea        do while (rbx != rdi)\n1406b99ec        rbx = *(arg1 + 0xe0)\n1406b99f6        *(arg1 + 0xe8) = rbx\n1406b9a0c        return sub_1404e0220(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:24:51Z"
+}

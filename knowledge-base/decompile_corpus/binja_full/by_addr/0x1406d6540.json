@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d6540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d654a        float result = arg1[0x1f].d\n1406d655d        result - 9.99999984e+17f\n1406d6562        if (is_unordered.d(result, 9.99999984e+17f) || result != 9.99999984e+17f)\n1406d658e        label_1406d658e:\n1406d658e        int64_t* rax_1 = sub_14028a950(&data_140b153e0, 1)\n1406d6596        if (rax_1 != 0)\n1406d6598        int64_t r8_1 = *rax_1\n1406d65a5        int64_t rax_2 = (*(r8_1 + 0x180))(rax_1, &arg1[0x1f], r8_1)\n1406d65ac        int64_t r8_2 = *arg1\n1406d65b5        (*(r8_2 + 0x68))(arg1, rax_2, r8_2)\n1406d6564        result = *(arg1 + 0xfc)\n1406d656c        result - 9.99999984e+17f\n1406d6571        if (is_unordered.d(result, 9.99999984e+17f) || result != 9.99999984e+17f)\n1406d656f        goto label_1406d658e\n1406d6573        result = arg1[0x20].d\n1406d657b        result - 9.99999984e+17f\n1406d6580        if (is_unordered.d(result, 9.99999984e+17f) || not(result == 9.99999984e+17f))\n1406d657e        goto label_1406d658e\n1406d65c3        return result",
+  "fetched_at": "2026-04-26T17:25:40Z"
+}

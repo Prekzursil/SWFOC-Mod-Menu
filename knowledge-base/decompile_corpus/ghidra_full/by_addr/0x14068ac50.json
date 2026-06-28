@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ac50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ac50(void)\n\n{\n  ProximityMinesAbilityClass *this;\n  \n  this = (ProximityMinesAbilityClass *)FUN_140769c58(0x1b0);\n  if (this != (ProximityMinesAbilityClass *)0x0) {\n    ProximityMinesAbilityClass::ProximityMinesAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:19Z"
+}

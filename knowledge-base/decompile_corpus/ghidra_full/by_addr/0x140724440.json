@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140724440(undefined4 param_1)\n\n{\n  LuaMemberFunctionWrapper<class_StoryPlotWrapper> *pLVar1;\n  \n  pLVar1 = (LuaMemberFunctionWrapper<class_StoryPlotWrapper> *)FUN_140769c58(0x48);\n  if (pLVar1 != (LuaMemberFunctionWrapper<class_StoryPlotWrapper> *)0x0) {\n    pLVar1 = LuaMemberFunctionWrapper<class_StoryPlotWrapper>::\n             LuaMemberFunctionWrapper<class_StoryPlotWrapper>(pLVar1);\n    *(undefined4 *)&(pLVar1->RefCountClass_data).offset_0x18 = param_1;\n    return;\n  }\n  _DAT_00000020 = param_1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:46Z"
+}

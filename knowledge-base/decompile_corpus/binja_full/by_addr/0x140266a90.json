@@ -1,0 +1,7 @@
+{
+  "addr": "0x140266a90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140266aa4        *arg1 = &SceneClass::`vftable'{for `RefCountClass'}\n140266aae        arg1[3] = &ReferenceListClass<class ModelClass>::`vftable'{for `GenericMultiLinkedList'}\n140266abe        if (sub_14012ef50(&arg1[3]) != 0)\n140266aee        int64_t i\n140266ac9        int64_t* arg_8\n140266ac9        void* rax_1 = sub_14020ac80(&arg1[3], &arg_8)\n140266ada        if (rax_1 != 0 && rax_1 != 0x10)\n140266adf        (*(*(rax_1 - 0x10) + 8))(rax_1 - 0x10)\n140266ae6        i = sub_14012ef50(&arg1[3])\n140266aee        do while (i != 0)\n140266af4        sub_14020a960(&arg1[3])\n140266af9        int64_t* rcx_5 = arg1[2]\n140266b00        if (rcx_5 != 0)\n140266b05        (*(*rcx_5 + 8))(rcx_5)\n140266b14        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n140266b1c        return &RefCountClass::`vftable'{for `IRefCountClass'}",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

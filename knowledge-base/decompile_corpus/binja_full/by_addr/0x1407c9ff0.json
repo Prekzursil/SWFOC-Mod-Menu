@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c9ff0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c9fff        bool cond:0 = arg1[8] == 0x11f\n1407ca00f        arg1[2] = arg1[1]\n1407ca012        if (cond:0)\n1407ca029        int32_t rax_1\n1407ca029        rax_1, arg4, arg3 = sub_1407be0c0(arg1, &arg1[6])\n1407ca02e        arg1[4] = rax_1\n1407ca014        int128_t zmm0 = *(arg1 + 0x20)\n1407ca018        arg1[8] = 0x11f\n1407ca01f        *(arg1 + 0x10) = zmm0\n1407ca03d        sub_1407cb490(arg1, arg2, 0xffffffff, arg4, arg3)\n1407ca049        sub_1407cc870(*(arg1 + 0x30), arg2)\n1407ca052        if (arg1[4] != 0x5d)\n1407ca0a9        int64_t rax_4 = sub_1407bea70(arg1, 0x5d)\n1407ca0bc        gzprintf(*(arg1 + 0x38), \"`%s' expected\", rax_4)\n1407ca0d6        noreturn sub_1407be9e0(arg1) __tailcall\n1407ca054        bool cond:1 = arg1[8] == 0x11f\n1407ca05b        int32_t rax_2 = arg1[1]\n1407ca05e        arg1[2] = rax_2\n1407ca061        if (cond:1)\n1407ca089        int32_t rax_3 = sub_1407be0c0(arg1, &arg1[6])\n1407ca08e        arg1[4] = rax_3\n1407ca0a0        return rax_3\n1407ca063        int128_t zmm0_1 = *(arg1 + 0x20)\n1407ca067        arg1[8] = 0x11f\n1407ca06e        *(arg1 + 0x10) = zmm0_1\n1407ca081        return rax_2",
+  "fetched_at": "2026-04-26T17:33:48Z"
+}

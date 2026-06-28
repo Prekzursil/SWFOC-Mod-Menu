@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f4b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f4b5b        sub_140522dd0(&data_140b379e0)\n1407f4b67        sub_1404b3e40(&data_140b37978)\n1407f4b6f        data_140b37968 = 0\n1407f4b81        data_140b37970 = 0\n1407f4b89        data_140b37974 = 0\n1407f4b90        LCRec::`default constructor closure'(&data_140b37958)\n1407f4b9c        sub_14001e870(&data_140b37940)\n1407f4ba8        data_140b37910 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1407f4bb3        return &RefCountClass::`vftable'{for `IRefCountClass'}",
+  "fetched_at": "2026-04-26T17:37:34Z"
+}

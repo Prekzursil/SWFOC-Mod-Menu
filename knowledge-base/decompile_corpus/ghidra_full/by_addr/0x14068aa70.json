@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068aa70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068aa70(void)\n\n{\n  MoveActionClass *this;\n  \n  this = (MoveActionClass *)FUN_140769c58(0xf8);\n  if (this != (MoveActionClass *)0x0) {\n    MoveActionClass::MoveActionClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:13Z"
+}

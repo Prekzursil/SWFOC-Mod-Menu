@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d5c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d5cf        int32_t rdx_1 = arg1 u>> 0x18 & 0x3f\n14079d615        int32_t r8_5 = (rdx_1 & 1) << 5 | (zx.d((rdx_1 u>> 1).b) & 1) << 4 | (zx.d((rdx_1 u>> 2).b) & 1) << 3 | (zx.d((rdx_1 u>> 3).b) & 1) << 2\n14079d63a        int32_t result = (arg2 & 0xffffffc0) | ((r8_5 | (zx.d((rdx_1 u>> 4).b) & 1) | ((zx.d((rdx_1 u>> 5).b) & 1) * 2)) & 0x3f)\n14079d63d        int32_t result_1 = result\n14079d646        return result",
+  "fetched_at": "2026-04-26T17:32:14Z"
+}

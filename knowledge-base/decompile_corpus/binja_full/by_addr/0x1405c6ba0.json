@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c6ba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c6bb7        *arg3 = 0\n1405c6bbd        arg3[1].d = 0\n1405c6bd0        if (arg1 == 0 || arg2 == 0)\n1405c6c9f        return 0\n1405c6be3        int128_t zmm0_1\n1405c6be3        int512_t zmm7_1\n1405c6be3        zmm0_1, zmm7_1 = sub_1403969f0(arg1)\n1405c6beb        zmm7_1.o = zmm0_1\n1405c6bee        float zmm0_2\n1405c6bee        float zmm7_2\n1405c6bee        zmm0_2, zmm7_2 = sub_1403969f0(arg2)\n1405c6bf8        zmm7_2 = zmm7_2 + zmm0_2\n1405c6c01        zmm0_2 = arg1[0xf].d f- arg2[0xf].d\n1405c6c06        float zmm1_1 = *(arg1 + 0x7c) f- *(arg2 + 0x7c)\n1405c6c13        float zmm2_1 = arg1[0x10].d f- arg2[0x10].d\n1405c6c3c        int128_t zmm6_1\n1405c6c3c        zmm6_1.d = sqrtf(zmm0_2 * zmm0_2 + zmm1_1 * zmm1_1 + zmm2_1 * zmm2_1).d f+ zmm7_2\n1405c6c40        void var_78\n1405c6c40        sub_140673ac0(&var_78)\n1405c6c4d        sub_14067c9f0(&var_78, arg1)\n1405c6c56        int32_t var_38\n1405c6c56        int32_t rax_2 = var_38 | 0x10\n1405c6c59        char var_40_1 = 0\n1405c6c5e        int32_t var_38_1 = rax_2\n1405c6c62        int32_t var_3c_1 = rax_2\n1405c6c66        uint64_t rax_3\n1405c6c66        int64_t r8\n1405c6c66        int512_t zmm2_2\n1405c6c66        rax_3, r8, zmm2_2 = sub_140508e30()\n1405c6c76        zmm2_2.o = zmm6_1\n1405c6c79        return sub_14067b4c0(rax_3, &var_78, r8, arg3)",
+  "fetched_at": "2026-04-26T17:37:39Z"
+}

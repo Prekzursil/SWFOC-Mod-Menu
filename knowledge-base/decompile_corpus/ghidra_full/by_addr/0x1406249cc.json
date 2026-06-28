@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406249cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nImposingPresenceBehaviorClass::vfunction1(ImposingPresenceBehaviorClass *this,uint param_1)\n\n{\n  ~ImposingPresenceBehaviorClass\n            ((ImposingPresenceBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c4a60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c4a72        void* arg_18\n1404c4a72        if ((arg2 & 2) == 0)\n1404c4b18        if (*arg1 != 0)\n1404c4b1f        arg_18 = arg1\n1404c4b2b        sub_1400474a0(&data_140a28570, &arg_18)\n1404c4b30        int64_t rcx_4 = *arg1\n1404c4b36        if (rcx_4 != 0)\n1404c4b38        j_sub_1407864b8(rcx_4)\n1404c4b3f        *arg1 = 0\n1404c4b46        if ((arg2 & 1) != 0)\n1404c4b50        j_sub_1407864b8(arg1)\n1404c4b60        return arg1\n1404c4a82        int64_t i = *(arg1 - 8)\n1404c4a92        void* rbx_2 = (i << 4) + arg1\n1404c4a98        while (i != 0)\n1404c4aa0        int64_t rcx = *(rbx_2 - 0x10)\n1404c4aa4        rbx_2 -= 0x10\n1404c4aa8        i -= 1\n1404c4aae        if (rcx != 0)\n1404c4ab5        arg_18 = rbx_2\n1404c4ac1        sub_1400474a0(&data_140a28570, &arg_18)\n1404c4ac6        int64_t rcx_1 = *rbx_2\n1404c4acc        if (rcx_1 != 0)\n1404c4ace        j_sub_1407864b8(rcx_1)\n1404c4ad3        *rbx_2 = 0\n1404c4ae9        if ((arg2 & 1) != 0)\n1404c4aeb        *(arg1 - 8)\n1404c4afb        j_sub_1407864b8(arg1 - 8)\n1404c4b11        return arg1 - 8",
+  "fetched_at": "2026-04-26T17:30:41Z"
+}

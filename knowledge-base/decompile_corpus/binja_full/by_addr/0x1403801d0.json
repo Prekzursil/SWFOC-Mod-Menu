@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403801d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403801e7        sub_14013fc40(arg1, nullptr)\n1403801f1        struct MultiLinkedListMember::alRenderTask::VTable** rax = operator new(0x68)\n1403801f6        struct MultiLinkedListMember::alRenderTask::VTable** rbx = rax\n1403801fc        if (rax == 0)\n140380227        rbx = nullptr\n140380216        sub_14015e020(rbx, arg2, arg1, 0, &arg1[0x13])\n140380222        *rbx = &alSimpleRenderTask::`vftable'{for `alRenderTask'}\n140380244        return sub_140149490(arg2, rbx, 8) __tailcall",
+  "fetched_at": "2026-04-26T17:19:49Z"
+}

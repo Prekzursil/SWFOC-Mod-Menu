@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ffff0",
+  "tool": "ghidra",
+  "fact_id": "rva_ability_generic_attack",
+  "body": "\nGenericAttackAbilityClass * __thiscall\nGenericAttackAbilityClass::GenericAttackAbilityClass(GenericAttackAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->GenericAttackAbilityClass_data).offset_0x0 = 0x3f800000;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->GenericAttackAbilityClass_data).offset_0x14 = 1;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->GenericAttackAbilityClass_data).offset_0x8 = 0;\n  (this->GenericAttackAbilityClass_data).offset_0x10 = 0;\n  (this->GenericAttackAbilityClass_data).offset_0x18 = 0xffffffff;\n  (this->GenericAttackAbilityClass_data).offset_0x1c = 0x3f800000;\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &(this->GenericAttackAbilityClass_data).field_0x28);\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 9;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:17Z"
+}

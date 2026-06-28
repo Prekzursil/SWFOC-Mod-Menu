@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404acd50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404acd56        int32_t result\n1404acd56        if (arg2 != 1)\n1404acd60        if (((arg2 - 2) & 0xfffffffd) == 0)\n1404acd8a        result = 0\n1404acd8c        void* const rcx = &data_140875d70\n1404acda3        while (arg1 != *rcx)\n1404acda5        result += 1\n1404acda7        rcx += 4\n1404acdae        if (rcx s>= &data_140875d80)\n1404acdb2        return 0\n1404acd65        if (arg2 != 3)\n1404acdd3        return 0\n1404acd67        result = 0\n1404acd69        void* const rdx = &data_140875d80\n1404acd7a        while (arg1 != *rdx)\n1404acd7c        result += 1\n1404acd7e        rdx += 4\n1404acd85        if (rdx s>= \"TEXT_WIN_CONDITION_ALL_PLANETS_CONTROLLED\")\n1404acd89        return 0\n1404acdd5        return result\n1404acdb3        result = 0\n1404acdb5        void* const rcx_1 = &data_140875d58\n1404acdc6        while (true)\n1404acdc6        if (arg1 == *rcx_1)\n1404acdd5        return result\n1404acdc8        result += 1\n1404acdca        rcx_1 += 4\n1404acdd1        if (rcx_1 s>= &data_140875d6c)\n1404acdd3        return 0",
+  "fetched_at": "2026-04-26T17:29:31Z"
+}

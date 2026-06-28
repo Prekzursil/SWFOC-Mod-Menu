@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074832c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140748338        if (data_140a44b50 == 0)\n140748361        abort()\n140748361        noreturn\n14074833a        int64_t result = EncodePointer(arg1)\n14074834e        int64_t rcx_1 = data_140a44b50 - 1\n140748351        data_140a44b50 = rcx_1\n140748358        *(&data_140b3b6c0 + (rcx_1 << 3)) = result\n140748360        return result",
+  "fetched_at": "2026-04-26T17:29:32Z"
+}

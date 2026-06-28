@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f5320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f5333        *arg1 = &ConcentrateFireAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f5340        arg1[1] = &ConcentrateFireAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406f5344        sub_14048c8d0(arg1)\n1406f534c        if ((arg2 & 1) != 0)\n1406f5356        j_sub_1407864b8(arg1)\n1406f5368        return arg1",
+  "fetched_at": "2026-04-26T17:26:34Z"
+}

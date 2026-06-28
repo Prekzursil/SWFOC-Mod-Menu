@@ -1,0 +1,7 @@
+{
+  "addr": "0x140149330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140149342        *(arg1 + 0xb0) -= 1\n140149348        void* rbx = arg1 + 0x6c648\n140149359        int64_t i = 0xc\n14014939e        while (i != 0)\n140149360        rbx -= 0x48\n140149364        i -= 1\n14014936b        *rbx = &MultiLinkedListClass<class alRenderTask>::`vftable'{for `GenericMultiLinkedList'}\n140149372        while (*(rbx + 0x10) != rbx + 8)\n140149388        int64_t* arg_8\n140149388        sub_14020ac80(rbx, &arg_8)\n140149396        sub_14020a960(rbx)\n1401493b6        return sub_1401a20b0() __tailcall",
+  "fetched_at": "2026-04-26T17:20:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407de3f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalRenderablePlane::vfunction9_for_RefCountClass(alRenderablePlane *this,longlong param_1)\n\n{\n  char cVar1;\n  alRenderTask *this_00;\n  \n  cVar1 = FUN_14013fc10();\n  if (((cVar1 == '\\0') && ((this->field_0x30 & 0xd) == 0)) &&\n     ((*(uint *)(param_1 + 0x14) >> 3 & 1) != 0)) {\n    this_00 = (alRenderTask *)FUN_140769c58(0x68);\n    if (this_00 == (alRenderTask *)0x0) {\n      this_00 = (alRenderTask *)0x0;\n    }\n    else {\n      alRenderTask::alRenderTask(this_00,param_1,(longlong *)this,0,&this->alRenderable_data);\n      this_00->vftablePtr = (alRenderTask_vftable *)&alSimpleRenderTask::vftable;\n    }\n    FUN_140149490(param_1,this_00,7);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:11Z"
+}

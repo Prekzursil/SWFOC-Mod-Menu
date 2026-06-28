@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079399c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407939cd        int64_t rax = try_get_function(0x12, \"InitializeCriticalSectionEx\", &data_1408d82a8, &data_1408d82b0)\n1407939da        if (rax == 0)\n1407939e7        return InitializeCriticalSectionAndSpinCount(arg1, arg2)\n1407939fc        return rax(arg1, arg2, zx.q(arg3))",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

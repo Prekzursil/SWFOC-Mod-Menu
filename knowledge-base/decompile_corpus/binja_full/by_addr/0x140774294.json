@@ -1,0 +1,7 @@
+{
+  "addr": "0x140774294",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077429a        *(arg1 + 0x20) += 8\n1407742a6        int32_t r8 = *(arg1 + 0x38)\n1407742ae        wchar16 const* const rcx = *(*(arg1 + 0x20) - 8)\n1407742b7        int32_t rdx = *(arg1 + 0x3c)\n1407742ba        if (r8 == 0xffffffff)\n1407742ba        r8 = 0x7fffffff\n1407742be        *(arg1 + 0x48) = rcx\n1407742c5        int32_t result\n1407742c5        bool rax_1\n1407742c5        if (rdx == 2)\n1407742e3        rax_1 = false\n1407742e5        label_1407742e5:\n1407742e7        if (rax_1 != 0)\n1407742e7        goto label_1407742ec\n14077430a        label_14077430a:\n14077430a        if (rcx == 0)\n14077430c        rcx = \"(null)\"\n140774313        *(arg1 + 0x48) = \"(null)\"\n14077431a        int64_t r10\n14077431a        result = strnlen(rcx, sx.q(r8), r10)\n1407742cf        if (rdx != 3 && rdx != 0xc)\n1407742d5        if (*(arg1 + 0x3c) == 0xd)\n1407742d5        goto label_14077430a\n1407742de        rax_1 = ((*(arg1 + 0x41) - 0x63) & 0xef) != 0\n1407742e1        goto label_1407742e5\n1407742ec        label_1407742ec:\n1407742ec        if (rcx == 0)\n1407742ee        rcx = u\"(null)\"\n1407742f5        *(arg1 + 0x48) = u\"(null)\"\n1407742fc        *(arg1 + 0x54) = 1\n140774300        int64_t r11\n140774300        result = wcsnlen(rcx, sx.q(r8), r11)\n14077431f        *(arg1 + 0x50) = result\n140774322        result.b = 1\n140774329        return result",
+  "fetched_at": "2026-04-26T17:30:48Z"
+}

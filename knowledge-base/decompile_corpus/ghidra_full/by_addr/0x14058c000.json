@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058c000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DeathDataPackClass::~DeathDataPackClass(DeathDataPackClass *this)\n\n{\n  longlong *plVar1;\n  \n  this->vftablePtr = &vftable;\n  plVar1 = (this->DeathDataPackClass_data).offset_0x10;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->DeathDataPackClass_data).offset_0x10 = (longlong *)0x0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:41:45Z"
+}

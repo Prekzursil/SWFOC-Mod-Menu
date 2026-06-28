@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023bc40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023bc57        int64_t rdi = sx.q(arg2)\n14023bc62        sub_140204360(arg1, 0, 0)\n14023bc69        arg1[0xf] = 1\n14023bc71        arg1[0xb] = 0\n14023bc7c        *arg1 = &PacketClass::`vftable'{for `BitStreamClass'}\n14023bc86        arg1[0xd].d = 0\n14023bc90        arg1[0xa] = &PacketClass::`vftable'{for `MultiLinkedListMember'}\n14023bc9e        arg1[0xe] = 0\n14023bca2        arg1[0xc] = &PacketClass::`vftable'{for `RefCountClass'}\n14023bcae        arg1[0x10].d = data_140a156fc\n14023bcb4        *(arg1 + 0x84) = 0\n14023bcbb        *(arg1 + 0x8c) = 0\n14023bcc2        *(arg1 + 0x94) = 0xffffffff\n14023bccc        sub_140202370(&arg1[0x13], 0, 0)\n14023bcd1        arg1[0x14].d = 0\n14023bcd7        arg1[0x15] = 0\n14023bcde        arg1[0x16].b = 0\n14023bce8        if (arg3 != 0)\n14023bced        arg1[0x15] = arg3\n14023bcf7        arg1[0xe].d = rdi.d\n14023bcfd        sub_140205200(arg1, arg3, zx.q(rdi.d))\n14023bd02        *(arg1 + 0x14) = 0\n14023bd41        arg1[2].d = data_140a156f8\n14023bd0f        if (rdi.d != 0)\n14023bd14        int64_t rax_2 = j_operator new(rdi)\n14023bd1c        arg1[0x15] = rax_2\n14023bd26        arg1[0xe].d = rdi.d\n14023bd2c        sub_140205200(arg1, rax_2, zx.q(rdi.d))\n14023bd31        *(arg1 + 0x14) = 0\n14023bd3a        arg1[0x16].b = 1\n14023bd41        arg1[2].d = data_140a156f8\n14023bd5b        return arg1",
+  "fetched_at": "2026-04-26T17:30:01Z"
+}

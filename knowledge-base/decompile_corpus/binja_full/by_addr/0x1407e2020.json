@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e2020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e202f        int64_t* rdi = *(arg1 + 0x10)\n1407e203c        if (rdi == 0)\n1407e203c        return \n1407e2048        void* i = (*(*rdi + 0x20))(rdi)\n1407e204e        if (i == 0)\n1407e204e        return \n1407e2063        while (i != &data_140a46380)\n1407e2065        i = *(i + 8)\n1407e206c        if (i == 0)\n1407e207d        return \n1407e2083        int32_t rsi_1 = *(arg1 + 0x68)\n1407e2089        if (rsi_1 == 0xffffffff)\n1407e2089        return \n1407e208f        int32_t rbx_1 = *(arg1 + 0x70)\n1407e2095        if (rbx_1 == 0xffffffff)\n1407e2095        return \n1407e20a0        void* rax_1 = operator new(0x20)\n1407e20ac        int64_t var_18_1 = 0x15\n1407e20ba        int64_t var_10_1 = 0x1f\n1407e20c3        __builtin_strncpy(rax_1, \"lightning_default.tga\", 0x16)\n1407e20e4        void* var_28 = rax_1\n1407e20e9        sub_1407b43b0(&rdi[0x19], &var_28)\n1407e20f7        if (var_10_1 u>= 0x10)\n1407e20f9        void* rcx_2 = var_28\n1407e2101        void* rax_2 = rcx_2\n1407e210b        if (var_10_1 + 1 u>= 0x1000)\n1407e210d        rcx_2 = *(rcx_2 - 8)\n1407e2120        if (rax_2 - rcx_2 - 8 u> 0x1f)\n1407e2151        _invalid_parameter_noinfo_noreturn()\n1407e2151        noreturn\n1407e2122        j_sub_1407864b8(rcx_2)\n1407e2137        sub_1407b4200(&rdi[0x19], arg2, rsi_1, rbx_1)\n1407e2150        return ",
+  "fetched_at": "2026-04-26T17:34:15Z"
+}

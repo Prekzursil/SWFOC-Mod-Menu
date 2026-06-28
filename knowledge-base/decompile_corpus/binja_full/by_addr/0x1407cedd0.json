@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cedd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cede3        void* rax_1\n1407cede3        if (arg2 == 0)\n1407cedf4        rax_1 = sub_140784a34(0)\n1407cedeb        rax_1 = fopen(arg2, arg3)\n1407cedff        if (rax_1 == 0)\n1407cee0b        return rax_1\n1407cee1b        int64_t* rax_2 = sub_1407bf7e0(*(arg1 + 0x30), 0, 0, 0x208)\n1407cee20        *rax_2 = rax_1\n1407cee2d        return rax_2",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

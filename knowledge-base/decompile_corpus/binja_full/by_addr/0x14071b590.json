@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071b590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071b590        float zmm1 = arg1[0x30].d\n14071b598        int512_t result\n14071b598        result.o = zx.o(0)\n14071b59b        zmm1 - 0f\n14071b5a0        if (is_unordered.d(zmm1, 0f) || not(zmm1 == 0f))\n14071b5a2        void* rax_1 = *(arg2 + 0x100)\n14071b5b5        if (rax_1 != 0 && *(rax_1 + 0x390) s> 0)\n14071b5c0        jump(*(*arg1 + 0x78))\n14071b5c4        return result",
+  "fetched_at": "2026-04-26T17:28:06Z"
+}

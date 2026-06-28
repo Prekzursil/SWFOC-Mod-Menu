@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780644",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    mbstowcs_s\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nerrno_t __cdecl\nmbstowcs_s(size_t *_PtNumOfCharConverted,wchar_t *_DstBuf,size_t _SizeInWords,char *_SrcBuf,\n          size_t _MaxCount)\n\n{\n  errno_t eVar1;\n  \n  eVar1 = _mbstowcs_s_l(_PtNumOfCharConverted,_DstBuf,_SizeInWords,_SrcBuf,_MaxCount,(_locale_t)0x0)\n  ;\n  return eVar1;\n}",
+  "fetched_at": "2026-04-26T18:51:00Z"
+}

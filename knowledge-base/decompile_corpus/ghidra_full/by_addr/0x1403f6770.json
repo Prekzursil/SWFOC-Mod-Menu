@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f6770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_1403f6770(undefined8 param_1,longlong param_2,undefined8 param_3,undefined4 param_4)\n\n{\n  longlong lVar1;\n  char cVar2;\n  \n  if ((((param_2 != 0) && (lVar1 = *(longlong *)(param_2 + 0xb8), lVar1 != 0)) &&\n      (*(char *)(lVar1 + 0x2e2) == '\\0')) && (*(char *)(lVar1 + 0x2e3) == '\\0')) {\n    cVar2 = FUN_1404b7260(lVar1,param_4);\n    if (cVar2 != '\\0') {\n      FUN_1403ff230(param_1,param_2,lVar1);\n      FUN_14032edd0(DAT_140b15418 + 0xa0,\"decrease_corruption\");\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:41:02Z"
+}

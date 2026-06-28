@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006b2e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006b2eb        __builtin_memset(arg1, 0, 0xa0)\n14006b346        int32_t result = SteamAPI_GetHSteamPipe()\n14006b34e        if (result == 0)\n14006b362        return result\n14006b358        return sub_14006afa0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T16:55:58Z"
+}

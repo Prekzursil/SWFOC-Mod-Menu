@@ -1,0 +1,7 @@
+{
+  "addr": "0x140768180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nstd::collate<char>::vfunction6(collate<char> *this,longlong param_1,longlong param_2)\n\n{\n  FUN_14011f750(param_1,param_2 - param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:30Z"
+}

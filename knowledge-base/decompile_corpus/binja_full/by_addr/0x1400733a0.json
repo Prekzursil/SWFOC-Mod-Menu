@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400733a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400733bf        int64_t rax = SteamInternal_ContextInit(&data_140a10e00)\n1400733ce        if (arg4[3] u>= 0x10)\n1400733d0        *arg4\n1400733d8        if (arg3[3] u>= 0x10)\n1400733da        *arg3\n1400733f8        jump(*(**(rax + 0x20) + 0xa0))",
+  "fetched_at": "2026-04-26T16:56:37Z"
+}

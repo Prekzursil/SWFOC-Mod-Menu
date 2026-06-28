@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eeda0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void SingletonInstance<class_TheShipNamesManagerClass>::\n     SingletonInstance<class_TheShipNamesManagerClass>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a16dd8 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:49Z"
+}

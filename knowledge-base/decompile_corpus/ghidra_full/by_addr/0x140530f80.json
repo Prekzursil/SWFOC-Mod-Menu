@@ -1,0 +1,7 @@
+{
+  "addr": "0x140530f80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* LogWindowItem member function inherited by MainLogWindow\n   LogWindowItem member function inherited by AILogWindow\n   LogWindowItem member function inherited by StoryLogWindow\n   LogWindowItem member function inherited by EventLogWindow */\n\nvoid __thiscall LogWindowItem::vfunction8(LogWindowItem *this)\n\n{\n  *(undefined1 *)&(this->RefCountClass_data).offset_0x50 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:28:57Z"
+}

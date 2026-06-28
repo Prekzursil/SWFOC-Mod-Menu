@@ -1,0 +1,7 @@
+{
+  "addr": "0x140104a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140104a30        int64_t* rbx = arg1[1]\n140104a3d        int64_t rcx = *arg1\n140104a43        int64_t rdx_2 = (rbx - rcx) s>> 4\n140104a4a        if (arg2 u< rdx_2)\n140104a50        void* rdi_2 = (arg2 << 4) + rcx\n140104a58        void* rsi = rdi_2\n140104a5e        if (rdi_2 != rbx)\n140104a60        void* rcx_1 = *(rsi + 8)\n140104a67        if (rcx_1 != 0)\n140104a71        (*(*(rcx_1 + 0x40) + 8))(rcx_1 + 0x40)\n140104a74        rsi += 0x10\n140104a7b        do while (rsi != rbx)\n140104a82        arg1[1] = rdi_2\n140104a96        return \n140104a97        if (arg2 u<= rdx_2)\n140104a97        return \n140104aa7        if (arg2 u> (arg1[2] - rcx) s>> 4)\n140104ab4        sub_140104630(arg1, arg2)\n140104ac9        return \n140104aca        int64_t i_1 = arg2 - rdx_2\n140104acd        if (arg2 != rdx_2)\n140104ae0        int64_t i\n140104ad1        *rbx = 0\n140104ad4        rbx[1] = 0\n140104ad8        rbx = &rbx[2]\n140104adc        i = i_1\n140104adc        i_1 -= 1\n140104ae0        do while (i != 1)\n140104ae2        arg1[1] = rbx\n140104af6        return ",
+  "fetched_at": "2026-04-26T17:05:27Z"
+}

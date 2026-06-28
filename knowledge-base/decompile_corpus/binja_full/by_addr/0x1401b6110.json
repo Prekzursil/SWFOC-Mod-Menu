@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b6110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b6126        sub_140177df0(0, *(arg1 + 0x20), 0, *(arg1 + 0x14))\n1401b612e        sub_140177db0(zx.q(*(arg1 + 0x18)))\n1401b6133        void* rcx_1 = *(arg1 + 0x40)\n1401b613a        int64_t result\n1401b613a        int64_t rcx_5\n1401b613a        uint128_t zmm0\n1401b613a        if (rcx_1 == 0)\n1401b619b        sub_140177e50(*(*(arg1 + 8) + 0x38))\n1401b61be        sub_140177ee0(4, 0, 0, 0x400, 0, 0x782)\n1401b61c3        result = sx.q(data_140a6e740)\n1401b61d5        rcx_5 = result * 0x30\n1401b61de        zmm0.d = (*(rcx_5 + &data_140a6e750)).d f+ 1024f\n1401b6140        sub_140177e50(*(rcx_1 + 0x18))\n1401b6165        sub_140177ee0(4, 0, 0, 0x400, 0, **(arg1 + 0x40))\n1401b617c        result = *(arg1 + 0x40)\n1401b6180        rcx_5 = sx.q(data_140a6e740) * 0x30\n1401b618c        zmm0.d = _mm_cvtepi32_ps(zx.o(*(result + 4))).d f+ *(rcx_5 + &data_140a6e750)\n1401b61e6        *(rcx_5 + &data_140a6e750) = zmm0.d\n1401b61f1        zmm0.d = (*(rcx_5 + &data_140a6e750:4)).d f+ 1f\n1401b61f9        *(rcx_5 + &data_140a6e750:4) = zmm0.d\n1401b6204        return result",
+  "fetched_at": "2026-04-26T17:25:51Z"
+}

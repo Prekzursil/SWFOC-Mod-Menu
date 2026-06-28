@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044cd90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044cd96        *(arg1 + 0x82) = arg2.b\n14044cda7        if (data_140a16d90 == 0)\n14044cdae        struct TheAIClass::VTable** rax_1 = operator new(0x10)\n14044cdb6        if (rax_1 == 0)\n14044cdc9        data_140a16d90 = 0\n14044cdc0        data_140a16d90 = sub_1404d9c80(rax_1)\n14044cdd4        arg2 = data_140a7bc10\n14044cde2        bool cond:1_1 = arg2 == data_140a7bc18\n14044cde9        void** arg_8 = &data_140a16d88\n14044cdee        if (cond:1_1)\n14044ce09        sub_14001ded0(&data_140a7bc08, arg2, &arg_8)\n14044cdf0        *arg2 = &data_140a16d88\n14044cdf3        data_140a7bc10 += 8\n14044ce22        arg2.b = *(arg1 + 0x82) == 0\n14044ce2a        return sub_1404d9fa0(data_140a16d90, arg2.b, 3) __tailcall",
+  "fetched_at": "2026-04-26T17:27:32Z"
+}

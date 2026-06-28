@@ -1,0 +1,7 @@
+{
+  "addr": "0x140615210",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061528c        char rdi = sub_14021fe20(arg2, 0x1e, arg3, arg4) & sub_14021ffa0(arg2, 0x1f) & sub_1402200b0(arg2, arg1 + 0x28, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 0x20) & sub_1402200b0(arg2, arg1 + 0x2c, 4, nullptr)\n1406152ee        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 0x21) & sub_1402200b0(arg2, arg1 + 0x30, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 0x22) & sub_1402200b0(arg2, arg1 + 0x34, 4, nullptr)\n14061534d        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 0x23) & sub_1402200b0(arg2, arg1 + 0x38, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 0x24) & sub_1402200b0(arg2, arg1 + 0x3c, 4, nullptr)\n1406153b2        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 0x25) & sub_1402200b0(arg2, arg1 + 0x40, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 0x26) & sub_1402200b0(arg2, arg1 + 0x44, 1, nullptr)\n1406153ba        rdi &= sub_140220030(arg2)\n1406153c2        if (*(arg1 + 0x48) != 0)\n1406153db        rdi &= sub_14021ffa0(arg2, 0x27)\n1406153ed        char rbx_1 = sub_1402200b0(arg2, arg1 + 0x48, 8, nullptr) & 1\n1406153f7        rdi &= sub_140220030(arg2) & rbx_1\n140615414        return sub_14021feb0(arg2) & rdi",
+  "fetched_at": "2026-04-26T17:23:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035d4f0",
+  "tool": "ghidra",
+  "fact_id": "rva_fow_sub_14035d4f0",
+  "body": "\nvoid FUN_14035d4f0(longlong *param_1,int param_2)\n\n{\n  char cVar1;\n  \n  cVar1 = (**(code **)(*param_1 + 0x240))();\n  if ((((cVar1 != '\\0') && (param_1[0x33] != 0)) && (-1 < param_2)) &&\n     ((param_2 < (int)param_1[0x32] && (*(longlong *)(param_1[0x33] + (longlong)param_2 * 8) != 0)))\n     ) {\n    FUN_1404c1560();\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:15Z"
+}

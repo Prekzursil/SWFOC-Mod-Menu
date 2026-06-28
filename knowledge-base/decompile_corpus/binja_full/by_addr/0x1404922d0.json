@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404922d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404922e8        *(arg1 + 0x18) = &DynamicVectorClass<class PlayerBombingRunClass>::`vftable'\n1404922ef        *(arg1 + 0x20) = 0\n1404922f3        *(arg1 + 0x28) = 0\n1404922f7        *(arg1 + 8) = 0\n1404922fb        void* rdi = *(arg1 + 0x20)\n140492302        if (rdi != 0)\n14049230a        sub_140492670(rdi, 3)\n14049230f        *(arg1 + 0x2c) &= 0x80000000\n140492316        *(arg1 + 0x20) = 0\n14049231a        *(arg1 + 0x28) = 0\n14049231d        *arg1 = 0\n140492323        *(arg1 + 0x14) = 0\n14049232b        *(arg1 + 0x10) = 0xffffffff\n14049233c        return arg1",
+  "fetched_at": "2026-04-26T17:29:06Z"
+}

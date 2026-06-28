@@ -1,0 +1,7 @@
+{
+  "addr": "0x140189500",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140189516        int64_t* rdi = *(arg1 + 0x108)\n140189522        uint32_t rsi = *(arg1 + 0x24) * 3\n14018952b        int64_t rax_2\n14018952b        if (rdi == 0)\n14018955e        uint32_t rbp_1 = rsi * 2\n140189570        int32_t rax_3 = sub_140177fa0(rbp_1, 0, 0x65, 1, arg1 + 0x70)\n140189577        if (rax_3 s< 0)\n140189583        OutputDebugStringA(sub_140001000(rax_3))\n140189590        OutputDebugStringA(&data_140819c5c)\n140189596        int64_t* rcx_4 = *(arg1 + 0x70)\n1401895ae        int64_t arg_8\n1401895ae        int32_t rax_6 = (*(*rcx_4 + 0x58))(rcx_4, 0, zx.q(rbp_1), &arg_8, 0)\n1401895b8        if (rax_6 s< 0)\n1401895c4        OutputDebugStringA(sub_140001000(rax_6))\n1401895d1        OutputDebugStringA(&data_140819c5c)\n1401895d7        rax_2 = arg_8\n14018952d        int64_t r8 = sx.q(rsi)\n14018953c        uint64_t rax_1 = 2 * r8\n14018953f        if (mulu.dp.q(2, r8) u>> 0x40 != zx.o(0))\n14018953f        rax_1 = -1\n140189546        rax_2 = j_operator new(rax_1)\n14018954b        *rdi = rax_2\n1401895e9        uint64_t result = sub_140220730(arg2, rax_2, rsi * 2, nullptr)\n140189605        if (*(arg1 + 0x108) != 0)\n14018961c        return result\n140189613        jump(*(**(arg1 + 0x70) + 0x60))",
+  "fetched_at": "2026-04-26T17:24:03Z"
+}

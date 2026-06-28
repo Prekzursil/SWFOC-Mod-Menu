@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140014ee0        InitializeCriticalSectionAndSpinCount(&data_140a15440, 0xfa0)\n140014eef        data_140a15468 = &DynamicVectorClass<enum NATUtilsClass::ThreadTaskType>::`vftable'\n140014efd        data_140a15480 = &DynamicVectorClass<int32_t>::`vftable'\n140014f0b        data_140a15498 = &DynamicVectorClass<class std::wstring>::`vftable'\n140014f19        data_140a15470 = 0\n140014f20        data_140a15478 = 0\n140014f27        data_140a15488 = 0\n140014f2e        data_140a15490 = 0\n140014f35        data_140a154a0 = 0\n140014f3c        data_140a154a8 = 0\n140014f43        __builtin_memset(&data_140a154b8, 0, 0x11)\n140014f57        data_140a154cc = 0\n140014f5d        data_140a154d0 = 0\n140014f64        data_140a154d8 = 0\n140014f6a        data_140a1555c = 0\n140014f77        data_140a154b0 = &DynamicVectorClass<struct UPnPDeviceInfoStruct>::`vftable'\n140014f82        return atexit(sub_1407edac0) __tailcall",
+  "fetched_at": "2026-04-26T16:50:13Z"
+}

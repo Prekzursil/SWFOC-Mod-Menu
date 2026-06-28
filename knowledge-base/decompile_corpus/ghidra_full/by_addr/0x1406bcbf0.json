@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bcbf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BudgetBlockStatus * __thiscall\nBudgetBlockStatus::scalar_deleting_destructor(BudgetBlockStatus *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = *(longlong **)&(this->RefCountClass_data).field_0x20;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:38:14Z"
+}

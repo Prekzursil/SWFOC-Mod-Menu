@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ef2d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ef2d5        int64_t arg_10 = arg2\n1403ef2f1        uint64_t result\n1403ef2f1        if (arg2 != 0 && arg3 != 0)\n1403ef301        uint64_t result_1\n1403ef301        sub_1401ff780(arg1, &result_1, &arg_10)\n1403ef306        result = result_1\n1403ef30f        if (result != *(arg1 + 8))\n1403ef311        int64_t r10_1 = *(arg1 + 0x40)\n1403ef319        uint64_t r8_1 = zx.q(*(result + 0x18))\n1403ef320        int64_t r9_3 = (*(arg1 + 0x48) - r10_1) s>> 3\n1403ef327        if (r8_1 u< r9_3)\n1403ef329        void* r8_2 = *(r10_1 + (r8_1 << 3))\n1403ef330        if (r8_2 != 0)\n1403ef332        int64_t r11_1 = *(r8_2 + 8)\n1403ef336        int32_t i = 0\n1403ef33f        int64_t r8_5 = (*(r8_2 + 0x10) - r11_1) s>> 4\n1403ef346        if (r8_5.d != 0)\n1403ef348        uint64_t i_1 = zx.q(i)\n1403ef34d        int32_t result_2\n1403ef34d        if (i_1 u>= r8_5)\n1403ef358        result_2 = -1\n1403ef352        result_2 = *(r11_1 + i_1 * 0x10)\n1403ef35d        result = zx.q(result_2)\n1403ef362        if (result u< r9_3)\n1403ef364        result = *(r10_1 + (result << 3))\n1403ef370        if (result != 0 && *result == arg3)\n1403ef38b        result.b = 1\n1403ef392        return result\n1403ef372        i += 1\n1403ef377        do while (i u< r8_5.d)\n1403ef379        result.b = 0\n1403ef385        return result",
+  "fetched_at": "2026-04-26T17:25:20Z"
+}

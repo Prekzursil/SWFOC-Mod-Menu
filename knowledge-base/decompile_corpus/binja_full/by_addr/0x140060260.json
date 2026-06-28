@@ -1,0 +1,7 @@
+{
+  "addr": "0x140060260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006026c        if (arg1 == 0)\n140060276        arg1 = &data_140a10d40\n14006027d        if (data_140a10d58 u>= 0x10)\n14006027d        arg1 = data_140a10d40\n14006028c        int64_t* rax = fopen(arg1, \"rt\")\n140060297        if (rax == 0)\n1400602a1        return rax\n1400602a5        char var_208[0x200]\n1400602a5        var_208[0] = 0\n1400602bc        if (j_sub_14077ffac(&var_208, 0x1ff, rax) != 0)\n140060307        char* i\n1400602d0        int64_t rax_2 = sx.q(var_208[0])\n1400602de        if (rax_2.b u> 0x2d || not(test_bit(0x200000002401, rax_2)))\n1400602ed        sub_14007e040(sub_14001fb80(), &var_208)\n1400602ff        i = j_sub_14077ffac(&var_208, 0x1ff, rax)\n140060307        do while (i != 0)\n140060314        fclose(rax)\n140060319        uint64_t rax_4\n140060319        rax_4.b = 1\n140060323        return rax_4",
+  "fetched_at": "2026-04-26T16:55:32Z"
+}

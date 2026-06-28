@@ -1,0 +1,7 @@
+{
+  "addr": "0x140694b30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float __thiscall FUN_140694b30(void *this)\n\n{\n  float fVar1;\n  float fVar2;\n  GreaterThan<float>_vftable *local_res8;\n  Plus<float>_vftable *local_res10;\n  \n  FUN_140497bd0((longlong)this + 0x60);\n                    /* inlined constructor or destructor (approx location) for GreaterThan<float> */\n  local_res8 = &GreaterThan<float>::vftable;\n                    /* inlined constructor or destructor (approx location) for Plus<float> */\n  local_res10 = &Plus<float>::vftable;\n  fVar1 = (float)FUN_14033fb70((longlong)this + 0x60,&local_res10,&local_res8);\n  fVar2 = (fVar1 + DAT_1407ffaf8) * *(float *)((longlong)this + 0x58);\n  fVar1 = DAT_1407ffaf8;\n  if (DAT_1407ffaf8 <= fVar2) {\n    fVar1 = fVar2;\n  }\n  return fVar1;\n}",
+  "fetched_at": "2026-04-26T17:19:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f3f50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDynamicVectorClass<class_GameObjectClass*___ptr64>::\n~DynamicVectorClass<class_GameObjectClass*___ptr64>(void)\n\n{\n  uint *puVar1;\n  LPVOID lpMem;\n  HANDLE hHeap;\n  uint *puVar2;\n  longlong lVar3;\n  \n  FUN_1404fc6e0(&PTR_vftable_140a2bd00);\n  lVar3 = 6;\n  puVar2 = (uint *)((longlong)&DAT_140a2bdd0 + 4);\n  do {\n    lpMem = *(LPVOID *)(puVar2 + -9);\n    puVar1 = puVar2 + -6;\n    lVar3 = lVar3 + -1;\n    *(DynamicVectorClass<class_GameObjectClass*___ptr64>_vftable **)(puVar2 + -0xb) = &vftable;\n    if (lpMem != (LPVOID)0x0) {\n      if ((*puVar1 & 0x80000000) == 0) {\n        thunk_FUN_1407864b8(lpMem);\n      }\n      else {\n        hHeap = GetProcessHeap();\n        HeapFree(hHeap,0,lpMem);\n      }\n      *puVar1 = *puVar1 & 0x80000000;\n      puVar2[-9] = 0;\n      puVar2[-8] = 0;\n      puVar2[-7] = 0;\n    }\n    puVar2 = puVar1;\n  } while (lVar3 != 0);\n  DynamicVectorClass<class_FleetMember>::~DynamicVectorClass<class_FleetMember>\n            ((DynamicVectorClass<class_FleetMember> *)&PTR_vftable_140a2bd18);\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)&PTR_vftable_140a2bd00);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:46Z"
+}

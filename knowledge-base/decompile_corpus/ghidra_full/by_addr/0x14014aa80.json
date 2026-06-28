@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014aa80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14014aa80(longlong param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  \n  lVar1 = -1;\n  do {\n    lVar1 = lVar1 + 1;\n  } while (*(char *)(param_2 + lVar1) != '\\0');\n  FUN_140022730(param_1 + 200);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:02Z"
+}

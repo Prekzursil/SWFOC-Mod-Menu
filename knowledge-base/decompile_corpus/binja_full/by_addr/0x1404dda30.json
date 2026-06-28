@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dda30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404dda38        arg2[3] = 0xf\n1404dda43        *arg2 = 0\n1404dda46        arg2[2] = 0\n1404dda58        sub_140022730(arg2, \"Perception System\", 0x11)\n1404dda65        return arg2",
+  "fetched_at": "2026-04-26T17:31:16Z"
+}

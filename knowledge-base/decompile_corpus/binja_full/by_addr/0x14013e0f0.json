@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e0f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013e102        struct RefCountClass::alShaderInstance::VTable** rax = operator new(0x60)\n14013e10a        struct alShaderInstance::alD3dEffectInstance::VTable** result\n14013e10a        if (rax == 0)\n14013e119        result = nullptr\n14013e114        result = sub_14018b120(rax)\n14013e128        if (sub_14018b4d0(result, arg1) != 0)\n14013e137        return result\n14013e13e        (*result)->__offset(0x0).q(result)\n14013e146        (*result)->vFunc_1(result)\n14013e155        return 0",
+  "fetched_at": "2026-04-26T17:16:23Z"
+}

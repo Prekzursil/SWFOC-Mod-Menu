@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f7eb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall EatAttackAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Eat_Attack_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:49:03Z"
+}

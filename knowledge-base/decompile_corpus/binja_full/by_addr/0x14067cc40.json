@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067cc40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14067cc61        uint128_t* r10 = *(arg1 + 0x88)\n14067cc68        int64_t rdx = *(arg1 + 0x80)\n14067cc75        int64_t rcx_2 = (r10 - rdx) s>> 2\n14067cc79        int64_t rbx_3 = zx.q(((*(arg1 + 0x10) - *(arg1 + 8)) s>> 3).d)\n14067cc7b        int32_t arg_8 = 0\n14067cc84        if (rbx_3 u< rcx_2)\n14067ccc6        *(arg1 + 0x88) = rdx + (rbx_3 << 2)\n14067cc8c        if (rbx_3 u> rcx_2)\n14067cc9c        if (rbx_3 u<= (*(arg1 + 0x90) - rdx) s>> 2)\n14067ccc6        *(arg1 + 0x88) = sub_1403f2d10(arg1 + 0x80, r10, rbx_3 - rcx_2, &arg_8)\n14067cca9        sub_1403eea40(arg1 + 0x80, rbx_3, &arg_8)\n14067ccd7        int64_t* rax_5 = sub_14067e0c0(arg1 + 0x98, rbx_3, 0)\n14067cce6        arg_8 = 0\n14067cceb        uint128_t* rdi_1 = *(arg1 + 0xc0)\n14067ccef        int64_t rdx_4 = *(arg1 + 0xb8)\n14067ccf8        int64_t rcx_8 = (rdi_1 - rdx_4) s>> 2\n14067ccff        if (rbx_3 u< rcx_8)\n14067cd01        int64_t rax_6 = rdx_4 + (rbx_3 << 2)\n14067cd05        *(arg1 + 0xc0) = rax_6\n14067cd18        return rax_6\n14067cd19        if (rbx_3 u> rcx_8)\n14067cd29        if (rbx_3 u> (*(arg1 + 0xc8) - rdx_4) s>> 2)\n14067cd4a        return sub_1403ee880(arg1 + 0xb8, rbx_3, &arg_8)\n14067cd53        int64_t rbx_5 = (rbx_3 - rcx_8) << 2\n14067cd5e        rax_5 = memset(rdi_1, 0, rbx_5)\n14067cd66        *(arg1 + 0xc0) = rdi_1 + rbx_5\n14067cd79        return rax_5",
+  "fetched_at": "2026-04-26T17:11:41Z"
+}

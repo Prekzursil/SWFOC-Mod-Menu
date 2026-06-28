@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d43c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d43d8        int32_t rbx = 0\n1407d43ea        if (arg2 u>= *(arg1 + 8))\n1407d446a        label_1407d446a:\n1407d446a        int32_t temp0_1\n1407d445d        void* result\n1407d445d        result, arg5 = sub_1407d3c60(arg1, &arg2[sx.q(rbx)], arg4 + 1, arg5)\n1407d4465        if (result != 0)\n1407d4486        return result\n1407d4467        temp0_1 = rbx\n1407d4467        rbx -= 1\n1407d446a        do while (temp0_1 - 1 s>= 0)\n1407d43ec        char* rdi_1 = arg2\n1407d43f0        uint32_t r8 = zx.d(*arg3)\n1407d43f4        uint32_t r9 = zx.d(*rdi_1)\n1407d43f8        char rax_1 = r8.b\n1407d4400        int32_t rax_2\n1407d4400        int32_t rcx\n1407d4400        if (r8.b == 0x25)\n1407d442d        rax_2 = sub_1407d4090(r9, sx.d(arg3[1]))\n1407d4432        label_1407d4432:\n1407d4432        rcx = rax_2\n1407d4434        label_1407d4434:\n1407d4436        if (rcx == 0)\n1407d4436        break\n1407d4404        if (rax_1 != 0x2e)\n1407d4408        if (rax_1 == 0x5b)\n1407d441e        rax_2 = sub_1407d41e0(r9, arg3, arg4 - 1)\n1407d4423        goto label_1407d4432\n1407d440f        rcx.b = r8 == r9\n1407d4412        goto label_1407d4434\n1407d4438        rbx += 1\n1407d443a        rdi_1 = &rdi_1[1]\n1407d4447        do while (&arg2[sx.q(rbx)] u< *(arg1 + 8))\n1407d444b        if (rbx s>= 0)\n1407d444b        goto label_1407d446a\n1407d446c        return nullptr",
+  "fetched_at": "2026-04-26T17:34:01Z"
+}

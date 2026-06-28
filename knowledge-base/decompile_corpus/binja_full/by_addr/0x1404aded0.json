@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404aded0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404aded6        struct ScheduledEventClass::WithdrawlEventClass::VTable** result = arg1\n1404aded9        sub_140512c50(arg1)\n1404adee5        result[4].d = 0x31\n1404adeec        *result = &WithdrawlEventClass::`vftable'{for `ScheduledEventClass'}\n1404adef7        return result",
+  "fetched_at": "2026-04-26T17:29:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140527f00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall BitwiseAnd<bool>::~BitwiseAnd<bool>(BitwiseAnd<bool> *this)\n\n{\n  char cVar1;\n  BitwiseAnd<bool>_vftable *local_res8 [4];\n  \n  local_res8[0] = &vftable;\n  cVar1 = FUN_1402800d0(this + 0x59,local_res8);\n  return cVar1 == '\\0';\n}",
+  "fetched_at": "2026-04-26T18:27:31Z"
+}

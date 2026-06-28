@@ -1,0 +1,7 @@
+{
+  "addr": "0x140025ac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nSingletonInstance<class_SteamClass>::vfunction1(SingletonInstance<class_SteamClass> *this)\n\n{\n  SingletonInstance<class_SteamClass>_vftable *pSVar1;\n  \n  if (this[1].vftablePtr != (SingletonInstance<class_SteamClass>_vftable *)0x0) {\n    SingletonInstance<class_DatabaseConversionSystemClass>::\n    ~SingletonInstance<class_DatabaseConversionSystemClass>\n              ((SingletonInstance<class_DatabaseConversionSystemClass> *)this);\n    pSVar1 = this[1].vftablePtr;\n    if (pSVar1 != (SingletonInstance<class_SteamClass>_vftable *)0x0) {\n      (**(code **)pSVar1->vfunction1)(pSVar1,1);\n    }\n    this[1].vftablePtr = (SingletonInstance<class_SteamClass>_vftable *)0x0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:10Z"
+}

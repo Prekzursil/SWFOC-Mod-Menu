@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a2050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400a2050(int param_1)\n\n{\n  undefined8 uVar1;\n  int iVar2;\n  float fVar3;\n  float fVar4;\n  char *local_38 [2];\n  undefined8 local_28;\n  ulonglong local_20;\n  \n  if ((DAT_140b15418 == 0) || (iVar2 = DAT_140b153b4, DAT_140b155c4 != '\\0')) {\n    iVar2 = DAT_140a7c398;\n  }\n  if (param_1 != -1) {\n    iVar2 = param_1;\n  }\n  fVar3 = ((float)iVar2 - 0.0) / (DAT_1408007e0 - 0.0);\n  fVar4 = 0.0;\n  if ((0.0 <= fVar3) && (fVar4 = DAT_1407ffaf8, fVar3 <= DAT_1407ffaf8)) {\n    fVar4 = fVar3;\n  }\n  local_38[0] = (char *)FUN_140769c58(0x20);\n  uVar1 = s_IDC_GAME_SPEED_SLIDER_140805e80._8_8_;\n  local_28 = 0x15;\n  local_20 = 0x1f;\n  *(undefined8 *)local_38[0] = s_IDC_GAME_SPEED_SLIDER_140805e80._0_8_;\n  *(undefined8 *)(local_38[0] + 8) = uVar1;\n  *(undefined4 *)(local_38[0] + 0x10) = s_IDC_GAME_SPEED_SLIDER_140805e80._16_4_;\n  local_38[0][0x14] = s_IDC_GAME_SPEED_SLIDER_140805e80[0x14];\n  local_38[0][0x15] = '\\0';\n  FUN_1401c9080(&DAT_140a78510,DAT_140a113c0,local_38,fVar4);\n  if (0xf < local_20) {\n    if (0xfff < local_20 + 1) {\n      if ((char *)0x1f < local_38[0] + (-8 - *(longlong *)(local_38[0] + -8))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_38[0] + -8),local_20 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:49Z"
+}

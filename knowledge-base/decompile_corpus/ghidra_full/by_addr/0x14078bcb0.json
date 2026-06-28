@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078bcb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n/* Library Function - Single Match\n    _query_new_handler\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nulonglong _query_new_handler(void)\n\n{\n  byte bVar1;\n  ulonglong uVar2;\n  \n  __acrt_lock(0);\n  bVar1 = (byte)DAT_140a44b98 & 0x3f;\n  uVar2 = DAT_140a44b98 ^ _DAT_140b3c310;\n  __acrt_unlock(0);\n  return uVar2 >> bVar1 | uVar2 << 0x40 - bVar1;\n}",
+  "fetched_at": "2026-04-26T18:51:56Z"
+}

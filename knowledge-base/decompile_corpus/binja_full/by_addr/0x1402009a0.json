@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402009a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402009b4        int64_t rbp = arg2[2]\n1402009b8        int64_t* lpMultiByteStr = arg2\n1402009c1        if (rbp != 0)\n1402009ed        int64_t* lpMultiByteStr_1 = lpMultiByteStr\n1402009f5        if (arg2[3] u>= 0x10)\n1402009f7        lpMultiByteStr_1 = *arg2\n140200a0d        int32_t rax_1 = MultiByteToWideChar(1, 0, lpMultiByteStr_1, rbp.d, nullptr, 0)\n140200a13        int64_t r14_1 = sx.q(rax_1)\n140200a18        if (rax_1 != 0)\n140200a40        wchar16* lpWideCharStr_1 = nullptr\n140200a48        int64_t var_18_1 = 0\n140200a52        int64_t var_10_1 = 7\n140200a5b        sub_1402015c0(&lpWideCharStr_1, r14_1, 0)\n140200a66        wchar16* lpWideCharStr = &lpWideCharStr_1\n140200a6b        if (var_10_1 u>= 8)\n140200a6b        lpWideCharStr = lpWideCharStr_1\n140200a76        if (lpMultiByteStr[3] u>= 0x10)\n140200a78        lpMultiByteStr = *lpMultiByteStr\n140200a90        MultiByteToWideChar(1, 0, lpMultiByteStr, rbp.d, lpWideCharStr, r14_1.d)\n140200aa0        *arg1 = lpWideCharStr_1.o\n140200aa3        *(arg1 + 0x10) = var_18_1.o\n140200a1d        *arg1 = 0\n140200a27        arg1[2] = 0\n140200a2e        arg1[3] = 7\n140200a36        sub_1400228a0(arg1, &data_1407ff7e8, nullptr)\n1402009c5        arg1[3] = 7\n1402009d0        *arg1 = 0\n1402009da        arg1[2] = 0\n1402009de        sub_1400228a0(arg1, &data_1407ff7e8, nullptr)\n140200ac3        return arg1",
+  "fetched_at": "2026-04-26T17:27:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402286e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402286e0(float *param_1,float param_2,float param_3)\n\n{\n  longlong lVar1;\n  \n  lVar1 = 0x10;\n  do {\n    if (*(char *)(param_1 + 0xc) == '\\x01') {\n      AIL_set_sample_volume_pan\n                (*(undefined8 *)(param_1 + 10),param_2 * param_1[0x10] * param_3 * param_1[0x12],\n                 param_1[0x13]);\n    }\n    lVar1 = lVar1 + -1;\n    param_1 = param_1 + 0x10;\n  } while (lVar1 != 0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:05:10Z"
+}

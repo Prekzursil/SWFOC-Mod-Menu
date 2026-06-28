@@ -1,0 +1,7 @@
+{
+  "addr": "0x140259940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LuaExternalFunction::vfunction2_for_SignalListenerClass(LuaExternalFunction *this)\n\n{\n  undefined8 uVar1;\n  LuaExternalFunction *pLVar2;\n  LuaExternalFunction *pLVar3;\n  \n  pLVar3 = this;\n  if (&this[-1].offset_0x68 == (undefined8 *)0x0) {\n    pLVar3 = (LuaExternalFunction *)0x0;\n  }\n  pLVar2 = (LuaExternalFunction *)(this->offset_0x8 + 5);\n  if (this->offset_0x8 == (undefined **)0x0) {\n    pLVar2 = (LuaExternalFunction *)0x0;\n  }\n  uVar1 = FUN_140058570();\n  FUN_140220eb0(uVar1,pLVar2,pLVar3,0x2f);\n  FUN_1402599e0(&this[-1].offset_0x68);\n  if (this->offset_0x8 != (undefined **)0x0) {\n    (**(code **)(*this->offset_0x8 + 8))();\n    this->offset_0x8 = (undefined **)0x0;\n  }\n  if ((longlong *)this->offset_0x10 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)this->offset_0x10 + 8))();\n    this->offset_0x10 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:13:42Z"
+}

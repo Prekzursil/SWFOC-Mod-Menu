@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ceb90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cebad        int32_t rdi = arg2\n1407cebb7        if (arg2 + 0x270f u<= 0x270f)\n1407cebc0        rdi = rdi + 1 + sub_1407b8ef0(arg1)\n1407cebd2        sub_1407b94a0(arg1, U\"n\", 1)\n1407cebdc        sub_1407b9720(arg1, rdi)\n1407cebee        int32_t rbp = int.d(sub_1407b9bc0(arg1, 0xffffffff))\n1407cebf4        int32_t rax_2\n1407cebf4        if (rbp == 0)\n1407cebfc        rax_2 = sub_1407b8fb0(arg1, rbp - 1)\n1407cec03        if (rbp != 0 || rax_2 != 0)\n1407cec69        sub_1407b9ab0(arg1, 0xfffffffe)\n1407cec70        if (rbp s>= 0)\n1407cec82        sub_1407b94a0(arg1, U\"n\", 1)\n1407cec92        sub_1407b9520(arg1, _mm_cvtepi32_pd(zx.q(arg3)))\n1407cec9c        return sub_1407b97c0(arg1, rdi)\n1407cec0b        sub_1407b9ab0(arg1, rbp - 2)\n1407cec13        sub_1407cdd60(arg1)\n1407cec1d        sub_1407b9600(arg1, rdi)\n1407cec2d        sub_1407b9520(arg1, _mm_cvtepi32_pd(zx.q(arg3)))\n1407cec3a        sub_1407b97c0(arg1, 0xfffffffd)\n1407cec47        return sub_1407b9ab0(arg1, 0xfffffffe)",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

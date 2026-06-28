@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404511a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StoryEventWinBattlesClass * __thiscall\nStoryEventWinBattlesClass::vfunction1(StoryEventWinBattlesClass *this,ulonglong param_1)\n\n{\n  FUN_140066600(&this[1].StoryEventClass_data.offset_0x18);\n  DynamicVectorClass<enum_ShipClassType>::~DynamicVectorClass<enum_ShipClassType>\n            ((DynamicVectorClass<enum_ShipClassType> *)&this[1].StoryEventClass_data);\n  StoryEventClass::~StoryEventClass((StoryEventClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x3a0);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:55:19Z"
+}

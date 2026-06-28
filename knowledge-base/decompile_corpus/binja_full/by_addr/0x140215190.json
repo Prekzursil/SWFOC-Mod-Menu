@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402151a4        uint8_t var_338[0x110]\n1402151a4        int64_t result = GetModuleFileNameA(nullptr, &var_338, 0x104)\n1402151ac        if (result.d == 0)\n140215242        return result\n1402151c2        int64_t rbx_1 = 0\n1402151d9        char var_228[0x110]\n1402151d9        char var_118[0x110]\n1402151d9        _splitpath(&var_338, &var_228, &var_118, 0, result, 0)\n1402151f2        char i\n1402151e0        i = var_228[rbx_1]\n1402151e8        var_338[rbx_1] = i\n1402151ec        rbx_1 += 1\n1402151f2        do while (i != 0)\n140215201        void var_339\n140215201        void* rax = &var_339\n14021520c        bool cond:0_1\n140215204        cond:0_1 = *(rax + 1) != 0\n140215208        rax += 1\n14021520c        do while (cond:0_1)\n140215216        int64_t rdx_2 = 0\n14021522e        char i_1\n140215220        i_1 = var_118[rdx_2]\n140215225        *(rax + rdx_2) = i_1\n140215228        rdx_2 += 1\n14021522e        do while (i_1 != 0)\n140215235        return SetCurrentDirectoryA(&var_338)",
+  "fetched_at": "2026-04-26T17:28:29Z"
+}

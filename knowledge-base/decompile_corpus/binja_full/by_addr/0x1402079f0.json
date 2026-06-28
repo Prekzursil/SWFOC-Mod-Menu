@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402079f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402079ff        int64_t lpMem = arg1[1]\n140207a0a        *arg1 = &DynamicVectorClass<struct PacketTypeClass::tPacketMagicStruct>::`vftable'\n140207a15        if (lpMem != 0)\n140207a1e        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n140207a39        j_sub_1407864b8(lpMem)\n140207a2e        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140207a40        *(arg1 + 0x14) &= 0x80000000\n140207a47        arg1[1] = 0\n140207a4b        arg1[2].d = 0\n140207a52        if ((arg2 & 1) != 0)\n140207a5c        j_sub_1407864b8(arg1)\n140207a73        return arg1",
+  "fetched_at": "2026-04-26T17:27:57Z"
+}

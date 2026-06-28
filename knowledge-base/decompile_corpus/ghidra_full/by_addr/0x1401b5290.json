@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b5290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dEffectStateManager::vfunction2(alD3dEffectStateManager *this)\n\n{\n  *(int *)&this[1].vftablePtr = *(int *)&this[1].vftablePtr + 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:44:21Z"
+}

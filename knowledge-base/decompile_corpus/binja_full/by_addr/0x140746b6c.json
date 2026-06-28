@@ -1,0 +1,7 @@
+{
+  "addr": "0x140746b6c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140746b8e        void var_398\n140746b8e        int64_t rax_1 = __security_cookie ^ &var_398\n140746bb8        int32_t var_368\n140746bb8        int32_t* var_370 = &var_368\n140746bc5        var_368 = 0x3b9aca00\n140746bd2        char var_358\n140746bd2        int32_t rax_3 = sub_140742e9c(arg1, &var_358, arg3, arg4, arg5, var_370)\n140746bdc        if (var_358 == 0)\n140746c35        *arg6 = 2\n140746c3b        *arg7 = 0\n140746bf0        int32_t var_364\n140746bf0        int64_t var_360\n140746bf0        uint128_t zmm0_1 = std::_Stofx_v2(&var_358, &var_360, rax_3, &var_364)\n140746bfa        *arg7 = zmm0_1.d\n140746c0a        if (var_360 == &var_358 || var_364 != 0)\n140746c35        *arg6 = 2\n140746c3b        *arg7 = 0\n140746c0c        int32_t rdx_2 = var_368\n140746c1a        if (rdx_2 != 0x3b9aca00 && rdx_2 != 0)\n140746c1c        zmm0_1.q = fconvert.d(zmm0_1.d)\n140746c2f        *arg7 = fconvert.s(ldexp(zmm0_1, rdx_2 << 2).q)\n140746c4b        if (std::istreambuf_iterator<char,struct std::char_traits<char> >::equal(arg3, arg4) != 0)\n140746c4d        *arg6 |= 1\n140746c57        *arg2 = *arg3\n140746c65        __security_check_cookie(rax_1 ^ &var_398)\n140746c80        return arg2",
+  "fetched_at": "2026-04-26T17:29:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b4990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b4992        *arg1 = 0\n1401b4994        __builtin_memset(&arg1[2], 0, 0x20)\n1401b49a7        return arg1",
+  "fetched_at": "2026-04-26T17:25:45Z"
+}

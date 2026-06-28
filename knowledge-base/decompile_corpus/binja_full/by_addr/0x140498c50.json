@@ -1,0 +1,7 @@
+{
+  "addr": "0x140498c50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140498c5b        struct ScheduledEventClass::DistributeMoneyEventClass::VTable** result = operator new(0x48)\n140498c66        if (result == 0)\n140498c8f        return result\n140498c6b        sub_140512c50(result)\n140498c77        result[4].d = 0x2a\n140498c7e        *result = &DistributeMoneyEventClass::`vftable'{for `ScheduledEventClass'}\n140498c89        return result",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

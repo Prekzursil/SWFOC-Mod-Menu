@@ -1,0 +1,7 @@
+{
+  "addr": "0x140333350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140333350(undefined8 param_1,undefined2 param_2)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  int iVar3;\n  longlong lVar4;\n  undefined1 local_res18 [16];\n  \n  uVar2 = FUN_140202370(local_res18,0xffffffff,param_2);\n  iVar3 = DAT_140a17344 * 2 >> 1;\n  if (iVar3 <= DAT_140a17340) {\n    iVar1 = iVar3 / 10;\n    if (iVar3 / 10 < 10) {\n      iVar1 = 10;\n    }\n    FUN_140339350(&PTR_vftable_140a17330,iVar1 + iVar3,0,1);\n  }\n  lVar4 = (longlong)DAT_140a17340;\n  DAT_140a17340 = DAT_140a17340 + 1;\n  FUN_1402024a0(DAT_140a17338 + lVar4 * 8,uVar2);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:08Z"
+}

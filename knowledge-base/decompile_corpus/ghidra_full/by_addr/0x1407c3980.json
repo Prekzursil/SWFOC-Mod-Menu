@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c3980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407c3980(undefined8 *param_1,longlong param_2,ulonglong param_3)\n\n{\n  longlong lVar1;\n  byte *pbVar2;\n  uint uVar3;\n  int iVar4;\n  uint uVar5;\n  undefined1 *puVar6;\n  \n  uVar5 = (uint)param_3;\n  if (*(int *)(param_1 + 4) == 0) {\n    iVar4 = FUN_1407c38e0(param_1[1],param_2,(longlong)(int)uVar5);\n    if (iVar4 != 0) {\n      FUN_1407bad30(*param_1,\"unexpected end of file in %s\",param_1[5]);\n      return;\n    }\n  }\n  else {\n    puVar6 = (undefined1 *)(param_2 + -1 + param_3);\n    while (uVar5 != 0) {\n      uVar5 = (int)param_3 - 1;\n      param_3 = (ulonglong)uVar5;\n      lVar1 = *(longlong *)param_1[1];\n      *(longlong *)param_1[1] = lVar1 + -1;\n      if (lVar1 == 0) {\n        uVar3 = FUN_1407c37d0();\n      }\n      else {\n        pbVar2 = *(byte **)(param_1[1] + 8);\n        uVar3 = (uint)*pbVar2;\n        *(byte **)(param_1[1] + 8) = pbVar2 + 1;\n      }\n      if (uVar3 == 0xffffffff) {\n        FUN_1407bad30(*param_1,\"unexpected end of file in %s\",param_1[5]);\n      }\n      *puVar6 = (char)uVar3;\n      puVar6 = puVar6 + -1;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:58Z"
+}

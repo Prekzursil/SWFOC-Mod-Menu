@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d94c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl common_sopen_dispatch<char>(char const * __ptr64 const,int,int,int,int * __ptr64\n   const,int)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl\ncommon_sopen_dispatch<char>\n          (char *param_1,int param_2,int param_3,int param_4,int *param_5,int param_6)\n\n{\n  byte *pbVar1;\n  int iVar2;\n  ulong *puVar3;\n  int local_18;\n  errno_t local_14;\n  \n  if (((param_5 == (int *)0x0) || (*param_5 = -1, param_1 == (char *)0x0)) ||\n     ((param_6 != 0 && ((param_4 & 0xfffffe7fU) != 0)))) {\n    puVar3 = __doserrno();\n    iVar2 = 0x16;\n    *puVar3 = 0x16;\n    FUN_1407711ac();\n  }\n  else {\n    local_18 = 0;\n    local_14 = 0;\n    iVar2 = _sopen_nolock(&local_18,param_5,param_1,param_2,param_3,param_4,param_6);\n    if (local_18 != 0) {\n      if (iVar2 != 0) {\n        pbVar1 = (byte *)((&DAT_140b3c4d0)[(longlong)*param_5 >> 6] + 0x38 +\n                         (ulonglong)(*param_5 & 0x3f) * 0x48);\n        *pbVar1 = *pbVar1 & 0xfe;\n      }\n      local_14 = iVar2;\n      __acrt_lowio_unlock_fh(*param_5);\n    }\n    if (iVar2 != 0) {\n      *param_5 = -1;\n    }\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:54:02Z"
+}

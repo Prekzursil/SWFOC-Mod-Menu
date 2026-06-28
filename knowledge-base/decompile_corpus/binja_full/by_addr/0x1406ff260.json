@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ff27b        char rax_1 = (*(*arg1 + 0x28))()\n1406ff280        if (rax_1 == 0)\n1406ff291        return rax_1\n1406ff297        sub_1403a92d0(arg2, 1)\n1406ff2a7        sub_1403a86d0(arg2, arg1[0x2f].d)\n1406ff2bd        sub_14048cca0(arg1, arg2, arg2, 0, 1)\n1406ff2cb        sub_14048e4d0(arg1, arg2, arg3)\n1406ff2d5        uint64_t rax_2\n1406ff2d5        rax_2.b = 1\n1406ff2e1        return rax_2",
+  "fetched_at": "2026-04-26T17:26:55Z"
+}

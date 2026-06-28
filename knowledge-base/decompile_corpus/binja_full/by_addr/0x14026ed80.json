@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026ed80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026ed90        *arg1 = &DrawPrimitiveClass::`vftable'\n14026ed97        sub_1401f92f0(&arg1[1])\n14026ed9e        arg1[3] = 2\n14026eda6        arg1[4] = 0\n14026edaa        arg1[5].d = 0\n14026edad        arg1[7] = 0\n14026edb4        *(arg1 + 0x2c) = 0x3f800000\n14026edbb        arg1[6].b = 1\n14026edc4        return arg1",
+  "fetched_at": "2026-04-26T17:31:44Z"
+}

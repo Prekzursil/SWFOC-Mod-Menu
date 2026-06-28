@@ -1,0 +1,7 @@
+{
+  "addr": "0x140163a90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140163a90        uint64_t result = *(arg1 + 0x100)\n140163aa7        if (*(result + 0xc8) == 0 || data_140a12648 != 0)\n140163aad        bool cond:0_1 = *(arg1 + 0xf8) != 0\n140163ab7        float zmm0 = arg2[0] f+ *(arg1 + 0x10c)\n140163abf        result = zx.q(*(arg1 + 0x120))\n140163ac5        *(arg1 + 0x1b4) = arg2[0]\n140163acd        *(arg1 + 0x1bd) = 1\n140163ad4        *(arg1 + 0x1c0) = result.d\n140163ada        *(arg1 + 0x10c) = zmm0\n140163ae2        __builtin_memcpy(arg1 + 0x1dc, \"\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\", 0x18)\n140163b27        if (cond:0_1 || *(arg1 + 0x2cc) == 0)\n140163b37        if (*(*(arg1 + 0x118) + 0x87f) != 0)\n140163b37        return sub_1401670f0(arg1, arg2) __tailcall\n140163b3d        return sub_140166020(arg1, arg2) __tailcall\n140163b42        return result",
+  "fetched_at": "2026-04-26T17:22:43Z"
+}

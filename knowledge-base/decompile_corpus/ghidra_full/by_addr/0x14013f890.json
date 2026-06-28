@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f890",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alRenderable member function inherited by alBlob\n   alRenderable member function inherited by alEmitter\n   alRenderable member function inherited by alLightSource\n   alRenderable member function inherited by alRenderableMesh\n   alRenderable member function inherited by alParticles\n   alRenderable member function inherited by alParticleGroup\n   alRenderable member function inherited by alScene\n   alRenderable member function inherited by alSimpleScene\n   alRenderable member function inherited by LineSubClass\n   alRenderable member function inherited by WaypointLineSubClass\n   alRenderable member function inherited by alLaserBeam\n   alRenderable member function inherited by alLaserKite\n   alRenderable member function inherited by alSplineRenderer\n   alRenderable member function inherited by al3DCable\n   alRenderable member function inherited by LightningEffectClass\n   alRenderable member function inherited by alRenderablePlane\n   alRenderable member function inherited by alLightningBolt\n   alRenderable member function inherited by alHModel */\n\nundefined1 * __thiscall alRenderable::vfunction13_for_RefCountClass(alRenderable *this)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = (longlong *)(this->alRenderable_data).offset_0x18;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 0x78))();\n  }\n  return &this->field_0x38;\n}",
+  "fetched_at": "2026-04-26T17:19:06Z"
+}

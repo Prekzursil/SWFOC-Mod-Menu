@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028ed40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14028ed50        int64_t* rcx = *(arg1 + 0x38)\n14028ed57        if (rcx == 0)\n14028ed57        return \n14028ed60        uint64_t rax = (*(*rcx + 0xf8))(rcx)\n14028ed68        if (rax.b == 0)\n14028ed68        return \n14028ed6e        int64_t* rcx_1 = *(arg1 + 0x38)\n14028ed75        if (rcx_1 != 0)\n14028ed7a        rax = (*(*rcx_1 + 0xf0))(rcx_1)\n14028ed82        if (rcx_1 != 0 && rax.b == 1)\n14028ed82        return \n14028ed87        if (arg2 == 0)\n14028ed89        rax = zx.q(data_140b27dcc)\n14028eda5        if ((rax.d u> 0xc || not(test_bit(0x1902, rax.d))) && *(arg1 + 0x1e4) != 1)\n14028eda5        goto label_14028edae\n14028eda5        return \n14028edae        label_14028edae:\n14028edb6        if (sub_140294a40(&data_140a16fd0) == 0)\n14028edb6        return \n14028edc4        void* rdx = *(sub_140294a40(&data_140a16fd0) + 0x68)\n14028edcb        if (rdx == 0)\n14028edcb        return \n14028edcd        void* rdx_1 = *(rdx + 0x430)\n14028edd7        if (rdx_1 != 0)\n14028edec        sub_1402d21f0(&data_140b27dc0, rdx_1, 1, 0, 0)\n14028edfb        return ",
+  "fetched_at": "2026-04-26T17:32:34Z"
+}

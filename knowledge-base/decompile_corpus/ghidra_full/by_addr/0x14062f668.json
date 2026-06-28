@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062f668",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTeamLocomotorBehaviorClass::vfunction1(TeamLocomotorBehaviorClass *this,uint param_1)\n\n{\n  LocomotorCommonClass::~LocomotorCommonClass\n            ((LocomotorCommonClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:59Z"
+}

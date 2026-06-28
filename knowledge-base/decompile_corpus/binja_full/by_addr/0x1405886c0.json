@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405886c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405886c9        *arg2 = 0\n1405886d0        arg2[3] = 0xf\n1405886db        arg2[2] = 0xc\n1405886f0        memcpy(arg2, \"Recent plans\", 0xc)\n1405886f8        *(arg2 + 0xc) = 0\n140588701        return arg2",
+  "fetched_at": "2026-04-26T17:36:09Z"
+}

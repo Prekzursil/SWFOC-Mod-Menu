@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407089d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407089d6        struct SpecialAbilityClass::PoliticalControlBonusAbilityClass::VTable** result = arg1\n1407089d9        sub_14048c780(arg1)\n1407089e5        result[0x2f] = 1\n1407089f0        *result = &PoliticalControlBonusAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1407089fa        result[1] = &PoliticalControlBonusAbilityClass::`vftable'{for `RefCountClass'}\n140708a01        result[8].w = 1\n140708a07        *(result + 0x3c) = 3\n140708a13        return result",
+  "fetched_at": "2026-04-26T17:27:22Z"
+}

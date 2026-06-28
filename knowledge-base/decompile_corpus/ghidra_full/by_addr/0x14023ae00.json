@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023ae00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14023ae00(longlong param_1)\n\n{\n  byte bVar1;\n  byte *pbVar2;\n  longlong *plVar3;\n  byte *pbVar4;\n  \n  pbVar2 = *(byte **)(param_1 + 0x38);\n  pbVar4 = *(byte **)(param_1 + 0x40);\n  while( true ) {\n    bVar1 = *pbVar2;\n    if ((0x20 < bVar1) || ((0x100002600U >> ((longlong)(char)bVar1 & 0x3fU) & 1) == 0)) break;\n    pbVar4 = *(byte **)(param_1 + 0x40);\n    if (pbVar4 <= pbVar2) goto LAB_14023ae67;\n    if (bVar1 == 10) {\n      *(int *)(param_1 + 0x48) = *(int *)(param_1 + 0x48) + 1;\n      pbVar2 = pbVar2 + 1;\n      *(undefined4 *)(param_1 + 0x4c) = 0;\n      *(byte **)(param_1 + 0x38) = pbVar2;\n    }\n    else {\n      *(int *)(param_1 + 0x4c) = *(int *)(param_1 + 0x4c) + 1;\n      pbVar2 = pbVar2 + 1;\n      *(byte **)(param_1 + 0x38) = pbVar2;\n    }\n  }\n  if (pbVar2 < pbVar4) {\n    return 1;\n  }\nLAB_14023ae67:\n  plVar3 = (longlong *)(param_1 + 0x10);\n  if (0xf < *(ulonglong *)(param_1 + 0x28)) {\n    plVar3 = (longlong *)*plVar3;\n  }\n  FUN_140025760(\"xml parse error: file %s, line %d, col %d - unexpected end of file.\\n\",plVar3,\n                *(undefined4 *)(param_1 + 0x48),*(undefined4 *)(param_1 + 0x4c));\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:08:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14010a7c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14010a7d5        void var_1b8\n14010a7d5        char r8 = sub_14010ea10(&var_1b8)\n14010a7da        int64_t* rax = data_140a62540\n14010a7e8        int64_t rdx_2\n14010a7e8        int512_t zmm0\n14010a7e8        if (rax == data_140a62548)\n14010a81d        zmm0 = sub_14010c540(&data_140a62538, rax, &var_1b8)\n14010a822        rdx_2 = data_140a62540\n14010a7f2        zmm0 = sub_14010e5f0(rax, &var_1b8, r8)\n14010a7fe        rdx_2 = data_140a62540 + 0x1a8\n14010a805        data_140a62540 = rdx_2\n14010a829        int64_t rcx_2 = data_140a62538\n14010a852        void* rdi = sx.q(((rdx_2 - rcx_2) s/ 0x1a8).d - 1) * 0x1a8\n14010a860        double zmm10[0x2]\n14010a860        int512_t zmm0_1 = sub_14010ab40(arg1, rdi + rcx_2, zmm0, zmm10)\n14010a865        int32_t rcx_4 = data_140a62360\n14010a86d        if (rcx_4 == 0)\n14010a8ae        sub_14010b0f0(arg1, data_140a62538 + rdi, zmm0_1)\n14010a872        if (rcx_4 == 1)\n14010a89a        sub_14010a8e0(arg1, data_140a62538 + rdi, zmm0_1)\n14010a877        if (rcx_4 == 2)\n14010a886        sub_14010b7c0(arg1, data_140a62538 + rdi, zmm0_1.o)\n14010a8b8        sub_14010ed20(&var_1b8)\n14010a8cd        return 0",
+  "fetched_at": "2026-04-26T17:06:09Z"
+}

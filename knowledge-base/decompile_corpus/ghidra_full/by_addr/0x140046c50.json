@@ -1,0 +1,7 @@
+{
+  "addr": "0x140046c50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nfloat * FUN_140046c50(float *param_1,float *param_2,float param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  \n  fVar1 = param_1[2];\n  fVar2 = *param_1;\n  param_2[1] = param_3 * param_1[1];\n  param_2[2] = param_3 * fVar1;\n  *param_2 = param_3 * fVar2;\n  return param_2;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018d4c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018d4cd        struct alD3dTexture::alD3dTexture2D::VTable** result = arg1\n14018d4d0        sub_140185d30(arg1)\n14018d4d5        result[0xf] = arg2\n14018d4e0        *result = &alD3dTexture2D::`vftable'{for `alD3dTexture'}\n14018d4ea        result[2] = &alD3dTexture2D::`vftable'{for `MultiLinkedListMember'}\n14018d4ee        result[0x10].b = 0\n14018d4f8        if (arg2 != 0)\n14018d500        (*(*arg2 + 8))(arg2)\n14018d510        return result",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

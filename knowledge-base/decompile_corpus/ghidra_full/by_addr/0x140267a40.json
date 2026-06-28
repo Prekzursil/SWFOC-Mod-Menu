@@ -1,0 +1,7 @@
+{
+  "addr": "0x140267a40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* SceneClass member function inherited by SimpleSceneClass */\n\nundefined * __thiscall SceneClass::vfunction5(void)\n\n{\n  return &DAT_140b0a170;\n}",
+  "fetched_at": "2026-04-26T18:17:26Z"
+}

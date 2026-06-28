@@ -1,0 +1,7 @@
+{
+  "addr": "0x140738870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140738876        struct BlockingStatus::SpaceMovementBlockStatus::VTable** result = arg1\n140738879        sub_1407d8d80(arg1)\n140738887        result[7] = 0\n14073888b        *result = &SpaceMovementBlockStatus::`vftable'{for `BlockingStatus'}\n140738895        result[6] = &SpaceMovementBlockStatus::`vftable'{for `SignalListenerClass'}\n14073889c        result[8].w = 0\n1407388a0        *(result + 0x42) = 0\n1407388a3        __builtin_memset(&result[9], 0, 0x18)\n1407388af        result[0xc] = 0x5d5e0b6b\n1407388b7        result[0xd].d = 0x3f\n1407388be        result[0xe] = 0\n1407388c2        result[0xf] = 0\n1407388cb        return result",
+  "fetched_at": "2026-04-26T17:29:05Z"
+}

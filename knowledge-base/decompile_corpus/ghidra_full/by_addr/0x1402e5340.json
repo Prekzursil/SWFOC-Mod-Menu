@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e5340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402e5340(longlong param_1,undefined4 param_2)\n\n{\n  ProductionEventClass *pPVar1;\n  \n  if ((*(char *)(param_1 + 0x2042) != '\\0') && (*(longlong *)(param_1 + 0x2048) != 0)) {\n    pPVar1 = (ProductionEventClass *)FUN_140769c58(0x60);\n    if (pPVar1 == (ProductionEventClass *)0x0) {\n      pPVar1 = (ProductionEventClass *)0x0;\n    }\n    else {\n      pPVar1 = ProductionEventClass::ProductionEventClass(pPVar1);\n    }\n    FUN_1405244e0(pPVar1,param_2,*(undefined4 *)(*(longlong *)(param_1 + 0x2048) + 0x50),0xffffffff,\n                  0,0xffffffff,0xffffffff);\n    OutgoingEventQueueClass::vfunction2\n              ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pPVar1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:24:48Z"
+}

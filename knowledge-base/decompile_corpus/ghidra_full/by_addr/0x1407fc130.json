@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407fc130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407fc130(void)\n\n{\n  longlong lVar1;\n  \n  if (DAT_140b3b5f8 != 0) {\n    lVar1 = (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    if (lVar1 != 0) {\n      (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(lVar1,1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:05:36Z"
+}

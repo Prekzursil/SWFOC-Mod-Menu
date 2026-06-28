@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007c050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* CCallbackImpl<24> member function inherited by\n   CCallback<class_SteamPeerLobbyClass,struct_LobbyKicked_t,0>\n   CCallbackImpl<24> member function inherited by\n   CCallback<class_SteamPeerLobbyClass,struct_LobbyChatMsg_t,0>\n   CCallbackImpl<24> member function inherited by\n   CCallback<class_SteamPeerLobbyClass,struct_LobbyDataUpdate_t,0>\n   CCallbackImpl<24> member function inherited by\n   CCallback<class_SteamPeerLobbyClass,struct_LobbyInvite_t,0> */\n\nundefined8 __thiscall CCallbackImpl<24>::vfunction3(void)\n\n{\n  return 0x18;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:00Z"
+}

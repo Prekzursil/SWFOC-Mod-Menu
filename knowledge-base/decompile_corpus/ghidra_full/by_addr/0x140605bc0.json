@@ -1,0 +1,7 @@
+{
+  "addr": "0x140605bc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall LuaValue<bool,5>::~LuaValue<bool,5>(LuaValue<bool,5> *this)\n\n{\n  uint uVar1;\n  undefined8 *puVar2;\n  undefined1 uVar3;\n  longlong *plVar4;\n  longlong *plVar5;\n  longlong *local_res20;\n  \n  plVar4 = (longlong *)FUN_140769c58(0x18);\n  if (plVar4 != (longlong *)0x0) {\n    uVar1 = *(uint *)(*(longlong *)&(this->RefCountClass_data).field_0x20 + 0x1fe8);\n    if ((uVar1 < 7) && ((0x52U >> (uVar1 & 0x1f) & 1) != 0)) {\n      uVar3 = 1;\n    }\n    else {\n      uVar3 = 0;\n    }\n    *(undefined4 *)(plVar4 + 1) = 0;\n    *plVar4 = (longlong)&vftable;\n    *(undefined1 *)(plVar4 + 2) = uVar3;\n    plVar5 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n             ::\n             ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                       ();\n    local_res20 = plVar4;\n    (**(code **)*plVar4)(plVar4);\n    puVar2 = (undefined8 *)plVar5[3];\n    if (puVar2 == (undefined8 *)plVar5[4]) {\n      FUN_140144900(plVar5 + 2,puVar2,&local_res20);\n    }\n    else {\n      *puVar2 = plVar4;\n      (**(code **)*plVar4)(plVar4);\n      plVar5[3] = plVar5[3] + 8;\n    }\n    (**(code **)(*plVar4 + 8))(plVar4);\n    return (longlong)plVar5;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:25:32Z"
+}

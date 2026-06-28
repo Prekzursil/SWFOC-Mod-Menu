@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014ac20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alLightSource::vfunction8_for_RefCountClass(alLightSource *this,float param_1)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  float fVar3;\n  \n  fVar3 = (this->alLightSource_data).offset_0x50;\n  if (0.0 < fVar3) {\n    fVar3 = fVar3 - param_1;\n    (this->alLightSource_data).offset_0x50 = fVar3;\n    if (0.0 < fVar3) {\n      FUN_14014b660();\n      return;\n    }\n    plVar1 = (longlong *)FUN_14013fe60();\n    (**(code **)(*plVar1 + 0xd8))(plVar1,this,0);\n    plVar1 = (longlong *)(this->alRenderable_data).offset_0x18;\n    if (plVar1 != (longlong *)0x0) {\n      for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n          puVar2 = *(undefined **)(puVar2 + 8)) {\n        if (puVar2 == &DAT_140a12370) {\n          FUN_14012d860(plVar1,this);\n          return;\n        }\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:05Z"
+}

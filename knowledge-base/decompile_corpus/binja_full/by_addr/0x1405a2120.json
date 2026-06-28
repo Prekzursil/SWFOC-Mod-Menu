@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405a2120",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405a2124        uint64_t rax = zx.q(*(arg1 + 0x38))\n1405a212d        if (rax.d u< 1)\n1405a2135        return 0\n1405a2136        void* rdx = *(arg1 + 0x20)\n1405a213a        uint64_t r8 = 1\n1405a2152        int64_t result = *(rdx + 8)\n1405a2156        *(rdx + 8) = *(rdx + (rax << 3))\n1405a215a        *(arg1 + 0x38) -= 1\n1405a2160        while (true)\n1405a2160        int32_t r9_1 = *(arg1 + 0x38)\n1405a2164        uint64_t rdi_1 = zx.q((r8 * 2).d)\n1405a2168        uint64_t rbx_1 = zx.q(((r8 << 1) + 1).d)\n1405a2170        int32_t r10_1 = r8.d\n1405a2176        if (rdi_1.d u<= r9_1)\n1405a2178        int64_t rcx_1 = *(arg1 + 0x20)\n1405a2190        if (*(*(rcx_1 + (zx.q(r8.d) << 3)) + 0xc) f> *(*(rcx_1 + (rdi_1 << 3)) + 0xc))\n1405a2190        r10_1 = rdi_1.d\n1405a2197        if (rbx_1.d u<= r9_1)\n1405a2199        int64_t rcx_3 = *(arg1 + 0x20)\n1405a21b1        if (*(*(rcx_3 + (zx.q(r10_1) << 3)) + 0xc) f> *(*(rcx_3 + (rbx_1 << 3)) + 0xc))\n1405a21b1        r10_1 = rbx_1.d\n1405a21b8        if (r10_1 == r8.d)\n1405a21b8        break\n1405a21ba        int64_t r9_2 = *(arg1 + 0x20)\n1405a21be        uint64_t rdx_3 = zx.q(r8.d)\n1405a21c1        uint64_t rcx_5 = zx.q(r10_1)\n1405a21c4        int64_t r8_1 = *(r9_2 + (rdx_3 << 3))\n1405a21cc        *(r9_2 + (rdx_3 << 3)) = *(r9_2 + (rcx_5 << 3))\n1405a21d4        *(*(arg1 + 0x20) + (rcx_5 << 3)) = r8_1\n1405a21d8        r8 = zx.q(r10_1)\n1405a21f2        return result",
+  "fetched_at": "2026-04-26T17:36:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f9220",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f9224        void* rax = *(*(arg1 + 0x28) + 0xb8)\n1403f9232        if (*(rax + 0x130) s> 0)\n1403f9241        return sub_140294bc0(&data_140a16fd0, *(rax + 0x124)) __tailcall\n1403f924d        if (*(rax + 0xe8) != 0)\n1403f9266        return sub_140294bc0(&data_140a16fd0, *(**(rax + 0xe0) + 0x58)) __tailcall\n1403f9251        return 0",
+  "fetched_at": "2026-04-26T17:25:30Z"
+}

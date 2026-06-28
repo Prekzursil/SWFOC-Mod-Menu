@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068d730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068d740        *arg1 = &WeightedTypeListClass::`vftable'{for `LuaUserVar'}\n14068d747        sub_14068d670(&arg1[5])\n14068d754        return sub_140249eb0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:16:50Z"
+}

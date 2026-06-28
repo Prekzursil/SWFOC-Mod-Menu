@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014c50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140014c59        int64_t* rax = operator new(0xb8)\n140014c70        *rax = rax\n140014c73        rax[1] = rax\n140014c77        data_140a7c800 = zx.o(0)\n140014c87        data_140a7c7e0 = 0x3f800000\n140014c8f        data_140a7c7e8 = rax\n140014c96        data_140a7c7f8 = 0\n140014ca1        data_140a7c810 = 7\n140014cac        data_140a7c818 = 8\n140014cb7        sub_140048250(&data_140a7c7f8, 0x10, rax)\n140014cc7        return atexit(sub_1407ed420) __tailcall",
+  "fetched_at": "2026-04-26T16:50:11Z"
+}

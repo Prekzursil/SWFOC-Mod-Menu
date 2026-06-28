@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f1a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BountyOnFactionAbilityClass * __thiscall\nBountyOnFactionAbilityClass::scalar_deleting_destructor\n          (BountyOnFactionAbilityClass *this,uint param_1)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = &(this->BountyOnFactionAbilityClass_data).offset_0x8;\n                    /* inlined destructor: BountyOnFactionAbilityClass::~BountyOnFactionAbilityClass\n                        */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->BountyOnFactionAbilityClass_data).offset_0x0 = 0;\n  FUN_140025840(puVar1,*puVar1,(this->BountyOnFactionAbilityClass_data).offset_0x10);\n  (this->BountyOnFactionAbilityClass_data).offset_0x10 = *puVar1;\n  (this->BountyOnFactionAbilityClass_data).offset_0x20 = 0;\n  FUN_140066600(puVar1);\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x1a0);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:47:31Z"
+}

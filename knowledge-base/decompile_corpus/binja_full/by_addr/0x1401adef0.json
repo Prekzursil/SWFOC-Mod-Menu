@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401adef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401adefe        struct alD3dSimpleEngineParam::_EngineParam_Get_D3d_Model_Inverse_Transpose_Transform::VTable** result = operator new(0x10)\n1401adf06        if (result == 0)\n1401adf21        return result\n1401adf0f        result[1] = arg1\n1401adf13        *result = &_EngineParam_Get_D3d_Model_Inverse_Transpose_Transform::`vftable'{for `alD3dSimpleEngineParam'}\n1401adf1b        return result",
+  "fetched_at": "2026-04-26T17:25:30Z"
+}

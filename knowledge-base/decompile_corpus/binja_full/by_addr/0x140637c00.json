@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637c00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140637c13        *arg1 = &CorruptSystemsBehaviorClass::`vftable'{for `BehaviorClass'}\n140637c20        arg1[1] = &CorruptSystemsBehaviorClass::`vftable'{for `RefCountClass'}\n140637c2b        arg1[3] = &CorruptSystemsBehaviorClass::`vftable'{for `SignalListenerClass'}\n140637c2f        sub_1404c3310(arg1)\n140637c37        if ((arg2 & 1) != 0)\n140637c41        j_sub_1407864b8(arg1)\n140637c53        return arg1",
+  "fetched_at": "2026-04-26T17:00:58Z"
+}

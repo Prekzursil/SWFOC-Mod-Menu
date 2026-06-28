@@ -1,0 +1,7 @@
+{
+  "addr": "0x140267c10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* SceneClass member function inherited by SimpleSceneClass\n   SceneClass member function inherited by RtsSceneClass */\n\nvoid __thiscall SceneClass::vfunction7(SceneClass *this,longlong *param_1)\n\n{\n  undefined4 uVar1;\n  undefined4 extraout_var;\n  undefined8 uVar2;\n  longlong lVar3;\n  \n  if (param_1 != (longlong *)0x0) {\n    uVar1 = (*this->vftablePtr->vfunction2)(this);\n    lVar3 = *(longlong *)CONCAT44(extraout_var,uVar1);\n    uVar2 = ActionDrivenHeroClashClass::vfunction5((ActionDrivenHeroClashClass *)param_1);\n    (**(code **)(lVar3 + 0xb0))((longlong *)CONCAT44(extraout_var,uVar1),uVar2);\n    lVar3 = FUN_14020abe0(&(this->RefCountClass_data).offset_0x10,param_1 + 2);\n    if (lVar3 != 0) {\n      (**(code **)(*param_1 + 8))(param_1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140266c80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* SceneClass member function inherited by SimpleSceneClass\n   SceneClass member function inherited by RtsSceneClass */\n\nvoid __thiscall SceneClass::vfunction6(SceneClass *this,undefined8 *param_1)\n\n{\n  longlong lVar1;\n  char cVar2;\n  undefined4 uVar3;\n  undefined4 extraout_var;\n  undefined8 uVar4;\n  undefined8 *puVar5;\n  \n  puVar5 = param_1 + 2;\n  if (param_1 == (undefined8 *)0x0) {\n    puVar5 = (undefined8 *)0x0;\n  }\n  cVar2 = FUN_14020a9b0(&(this->RefCountClass_data).offset_0x10,puVar5,1);\n  if (cVar2 == '\\x01') {\n    (**(code **)*param_1)(param_1);\n  }\n  uVar3 = (*this->vftablePtr->vfunction2)(this);\n  lVar1 = *(longlong *)CONCAT44(extraout_var,uVar3);\n  uVar4 = ActionDrivenHeroClashClass::vfunction5((ActionDrivenHeroClashClass *)param_1);\n                    /* WARNING: Could not recover jumptable at 0x000140266ced. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(lVar1 + 0xa8))((longlong *)CONCAT44(extraout_var,uVar3),uVar4);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:18Z"
+}

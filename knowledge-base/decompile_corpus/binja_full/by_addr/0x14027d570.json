@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027d570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027d594        *arg1 = 0\n14027d597        arg1[1] = 0\n14027d59b        arg1[2].d = 2\n14027d5a2        arg1[3] = 0x1e\n14027d5aa        arg1[4].d = 0x1e\n14027d5b1        *(arg1 + 0x4c) = 0\n14027d5b5        arg1[7] = 0\n14027d5b9        *(arg1 + 0x14) = 0\n14027d5bd        *(arg1 + 0x34) = 1\n14027d5c4        arg1[8].d = 0\n14027d5c7        arg1[9].d = 0\n14027d5ca        arg1[5] = 0\n14027d5ce        arg1[6].d = 0\n14027d5d1        arg1[0x190].d = 0\n14027d5de        arg1[0x1613] = 2\n14027d5e9        arg1[0x1612].d = 2\n14027d5f3        *(arg1 + 0xb094) = 2\n14027d5fd        *(arg1 + 0xb0b5) = 0\n14027d604        arg1[0x191].d = 0\n14027d60a        __builtin_memset(&arg1[0x1614], 0, 0x14)\n14027d61f        *(arg1 + 0x24) = 1f / 30f\n14027d628        int64_t result = sub_1404c1a60(arg1 + 0x54)\n14027d62d        int64_t rsi = sx.q(data_140a16fb0)\n14027d637        if (rsi s> 0)\n14027d63e        int64_t rdi_1 = 0\n14027d647        int32_t* rcx_1 = *(arg1[0x18d] + (rdi_1 << 3))\n14027d64e        if (rcx_1 != 0)\n14027d650        sub_1404c1a60(rcx_1)\n14027d655        rdi_1 += 1\n14027d65b        do while (rdi_1 s< rsi)\n14027d662        int64_t rcx_2 = 0\n14027d66c        *(arg1[0x18f] + (rcx_2 << 3)) = 0\n14027d66f        result = arg1[0x18f]\n14027d676        *(result + (rcx_2 << 3) + 4) = 0\n14027d67a        rcx_2 += 1\n14027d680        do while (rcx_2 s< rsi)\n14027d691        return result",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

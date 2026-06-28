@@ -1,0 +1,7 @@
+{
+  "addr": "0x140249c20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LuaMemberFunctionWrapper<class_LuaUserVar> * __thiscall\nLuaMemberFunctionWrapper<class_LuaUserVar>::LuaMemberFunctionWrapper<class_LuaUserVar>\n          (LuaMemberFunctionWrapper<class_LuaUserVar> *this,undefined4 param_1,char param_2)\n\n{\n  LuaMemberFunctionWrapper<class_LuaUserVar> *this_00;\n  \n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n                    /* inlined constructor: LuaUserVar::LuaUserVar */\n  this->vftablePtr = (LuaMemberFunctionWrapper<class_LuaUserVar>_vftable *)&LuaUserVar::vftable;\n  (this->RefCountClass_data).offset_0x8 = (undefined **)0x0;\n  (this->RefCountClass_data).offset_0x10 = 0;\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x18 = param_1;\n  if (param_2 != '\\0') {\n    this_00 = (LuaMemberFunctionWrapper<class_LuaUserVar> *)FUN_140769c58(0x40);\n    if (this_00 == (LuaMemberFunctionWrapper<class_LuaUserVar> *)0x0) {\n      this_00 = (LuaMemberFunctionWrapper<class_LuaUserVar> *)0x0;\n    }\n    else {\n      LuaMemberFunctionWrapper<class_LuaUserVar>(this_00,0,'\\0');\n      *(LuaMemberFunctionWrapper<class_LuaUserVar> **)&(this_00->RefCountClass_data).field_0x28 =\n           this;\n      this_00->vftablePtr = &vftable;\n      *(undefined1 **)&(this_00->RefCountClass_data).field_0x20 = &LAB_14024a10c;\n      (this_00->RefCountClass_data).field_0x30 = 0;\n    }\n    FUN_14024be40(this,\"Is_Pool_Safe\",this_00);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:11:00Z"
+}

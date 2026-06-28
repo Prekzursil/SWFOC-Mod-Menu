@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070db00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070db0c        int64_t result = sub_14048f2c0(arg1)\n14070db15        char var_108[0x100]\n14070db15        if (*(arg1 + 0x3c) != 2)\n14070db1c        void* r8_1 = arg1 + 0x18\n14070db20        if (*(arg1 + 0x30) u>= 0x10)\n14070db22        r8_1 = *r8_1\n14070db31        sscanf_s(&var_108, \"Error: (%s) The only currently supported Activation_Style is Galactic_Automatic.\", r8_1)\n14070db3b        result = sub_1402149d0(&var_108)\n14070db40        *(arg1 + 0x3c) = 2\n14070db47        *(arg1 + 0x41) = 0\n14070db66        if ((zx.o(0)).d f> *(arg1 + 0x178) || not(*(arg1 + 0x178) f< 1f))\n14070db6d        void* r8_2 = arg1 + 0x18\n14070db71        if (*(arg1 + 0x30) u>= 0x10)\n14070db73        r8_2 = *r8_2\n14070db82        sscanf_s(&var_108, \"Error: (%s) Retreat_Loss_Mitigation must be >= 0.0 and < 1.0\", r8_2)\n14070db8c        result = sub_1402149d0(&var_108)\n14070db91        *(arg1 + 0x178) = 0\n14070dba3        return result",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

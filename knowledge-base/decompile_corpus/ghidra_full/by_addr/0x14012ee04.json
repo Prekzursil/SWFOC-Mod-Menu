@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012ee04",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall alHModel::vfunction1_for_CullObjectClass(alHModel *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alHModel *)&this[-1].alHModel_data.offset_0x110,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406908f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSpaceFreeStoreClass::vfunction23_for_LuaUserVar\n          (SpaceFreeStoreClass *this,longlong param_1,longlong param_2,longlong param_3)\n\n{\n  float fVar1;\n  \n  if ((*(char *)(param_1 + 0x361) != -1) || (*(char *)(param_1 + 0x369) != -1)) {\n    if (*(longlong *)(param_1 + 0x158) == 0) {\n      return 2;\n    }\n    fVar1 = (float)FUN_1404914e0();\n    if (fVar1 < DAT_1407ffaf8) {\n      return 1;\n    }\n  }\n  if (*(longlong *)(param_3 + 0x18) !=\n      *(longlong *)\n       (*(longlong *)(*(longlong *)(*(longlong *)(param_2 + 0xa0) + 0xf0) + 0x88) + 0x68)) {\n    return 2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:18:47Z"
+}

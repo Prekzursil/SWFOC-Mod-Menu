@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406940e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall\nLandExecutionPathFinderClass::vfunction4(LandExecutionPathFinderClass *this,int param_1)\n\n{\n  float fVar1;\n  \n  if ((*(longlong *)((this->AIExecutionPathFinderClass_data).offset_0x18 + 0x360) != 0) &&\n     (DAT_140b31900 != 0)) {\n    fVar1 = (float)FUN_140653e90(DAT_140b31900,\n                                 *(longlong *)\n                                  ((this->AIExecutionPathFinderClass_data).offset_0x0 +\n                                  (longlong)param_1 * 0x10) + 0x90);\n    if (fVar1 <= 0.0) {\n      fVar1 = 0.0;\n    }\n    return (longlong)fVar1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:19:38Z"
+}

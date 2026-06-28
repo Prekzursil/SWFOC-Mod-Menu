@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076da34",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: static int __cdecl __FrameHandler3::GetCurrentState(unsigned __int64 * __ptr64,struct\n   _xDISPATCHER_CONTEXT * __ptr64,struct _s_FuncInfo const * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl\n__FrameHandler3::GetCurrentState\n          (__uint64 *param_1,_xDISPATCHER_CONTEXT *param_2,_s_FuncInfo *param_3)\n\n{\n  int iVar1;\n  \n  iVar1 = *(int *)((longlong)param_3->dispUnwindHelp + *param_1);\n  if (iVar1 == -2) {\n    iVar1 = FUN_14076dae0(param_3,param_2,*(undefined8 *)param_2);\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:11:15Z"
+}

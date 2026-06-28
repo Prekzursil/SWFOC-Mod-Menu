@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056ba20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8\nFUN_14056ba20(undefined8 param_1,longlong param_2,undefined8 param_3,undefined8 param_4,\n             longlong param_5,char *param_6)\n\n{\n  longlong lVar1;\n  int iVar2;\n  undefined4 local_28;\n  undefined4 local_24;\n  undefined4 local_20;\n  \n  if ((param_2 != 0) && (param_6 != (char *)0x0)) {\n    iVar2 = _stricmp(param_6,\"SHIELD\");\n    if (iVar2 == 0) {\n      if (param_5 != 0) {\n        lVar1 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_2 + 0x58));\n        lVar1 = *(longlong *)(*(longlong *)(lVar1 + 0x68) + 0x690);\n        if (lVar1 != 0) {\n          local_28 = *(undefined4 *)(param_5 + 0x78);\n          local_24 = *(undefined4 *)(param_5 + 0x7c);\n          local_20 = *(undefined4 *)(param_5 + 0x80);\n          FUN_1402d5240(&DAT_140b27e60,lVar1,&local_28,0,0,0);\n        }\n      }\n      return param_4;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:39:59Z"
+}

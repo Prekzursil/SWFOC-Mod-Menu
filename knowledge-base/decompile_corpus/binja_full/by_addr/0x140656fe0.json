@@ -1,0 +1,7 @@
+{
+  "addr": "0x140656fe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140657004        uint64_t result\n140657004        if (*(arg4 + 0x62) != 0)\n140657075        label_140657075:\n140657075        void* rdx = *(*(arg1 + 0x10) + (sx.q(arg3 * *(arg1 + 0xb0) + arg2) << 3))\n140657079        void* rbx_3 = *(rdx + 0x10)\n140657084        if (rbx_3 == rdx + 8)\n1406570c4        label_1406570c4:\n1406570c4        result.b = 0\n140657094        while (true)\n140657094        int64_t* rcx_2 = *(*(rbx_3 + 0x18) + 0x10)\n14065709f        if (*(rcx_2 + 0x344) != 0xff && sub_1404f57d0((*(*rcx_2 + 0x10))(rcx_2, 0x12), arg4).b == 0)\n1406570b9        break\n1406570bb        rbx_3 = *(rbx_3 + 8)\n1406570c2        if (rbx_3 == rdx + 8)\n1406570c2        goto label_1406570c4\n1406570db        result.b = 1\n140657006        int64_t* rcx = data_140b15418\n140657010        int32_t r10_1\n140657010        if (rcx != 0)\n140657020        int32_t rax_2 = (*(*rcx + 0xe0))(rcx)\n140657026        rcx = data_140b15418\n14065702d        r10_1 = rax_2\n140657030        result = zx.q(data_140b153fc)\n140657012        result = zx.q(data_140b153fc)\n140657018        r10_1 = result.d\n140657043        if (r10_1 != 2 || data_140b15aed != 0)\n14065704c        if (rcx != 0)\n140657051        result = (*(*rcx + 0xe0))(rcx)\n140657063        if (result.d != 1 || data_140b15aee != 0)\n14065705a        goto label_140657075\n1406570db        result.b = 1\n1406570db        result.b = 1\n1406570da        return result",
+  "fetched_at": "2026-04-26T17:06:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e77e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e77ea        struct DatabaseUIntConversionClass::DatabaseObjectManagerClass<class LuaScriptClass>::VTable** result = arg1\n1405e77ed        sub_14023ae90(arg1, arg2)\n1405e77fb        *result = &DatabaseObjectManagerClass<class LuaScriptClass>::`vftable'{for `DatabaseUIntConversionClass'}\n1405e7800        result[1].b = 0\n1405e7803        __builtin_memset(result + 0xc, 0, 0x14)\n1405e7811        int64_t* rax = operator new(0x38)\n1405e781d        *rax = rax\n1405e7820        rax[1] = rax\n1405e7824        result[2] = rax\n1405e7828        int64_t r8 = result[2]\n1405e782c        __builtin_memset(&result[4], 0, 0x18)\n1405e7837        result[7] = 7\n1405e783f        result[8] = 8\n1405e7847        *(result + 0xc) = 0x3f800000\n1405e784e        sub_140048250(&result[4], 0x10, r8)\n1405e785a        *result = &TheEvaluatorScriptManagerClass::`vftable'{for `DatabaseObjectManagerClass<class LuaScriptClass>'}\n1405e786a        return result",
+  "fetched_at": "2026-04-26T17:38:30Z"
+}

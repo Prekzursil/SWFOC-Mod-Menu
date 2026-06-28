@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ff0e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401ff0e0(longlong *param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  undefined8 uVar3;\n  longlong lVar4;\n  longlong local_res8;\n  undefined1 local_res10 [8];\n  undefined1 local_res18 [16];\n  \n  if (*param_1 == 0) {\n    return;\n  }\n  lVar1 = param_1[1];\n  if ((lVar1 == 0) || (lVar1 == 0x3fffff)) {\nLAB_1401ff1b0:\n    uVar3 = 0;\n  }\n  else {\n    local_res8 = lVar1;\n    if (DAT_140a7bed4 == '\\0') {\n      plVar2 = (longlong *)FUN_1401ff780(&DAT_140a7bf40,local_res18,&local_res8);\n      lVar4 = *plVar2;\n      if (lVar4 == DAT_140a7bf48) {\n        FUN_140025760(\"%s(%d) : SaveLoadClass::Map_Pointer -- Request to fixup old pointer 0x%8.8X failed!\\n\"\n                      ,param_1[2],(int)param_1[3],lVar1);\n        if (lVar4 != DAT_140a7bf48) {\n          uVar3 = *(undefined8 *)(lVar4 + 0x18);\n          goto LAB_1401ff1b2;\n        }\n        goto LAB_1401ff1b0;\n      }\n    }\n    else {\n      plVar2 = (longlong *)FUN_1401ff780(&DAT_140a7bfc0,local_res10,&local_res8);\n      lVar4 = *plVar2;\n      if ((lVar4 == DAT_140a7bfc8) &&\n         (FUN_140025760(\"%s(%d) : SaveLoadClass::Map_Pointer -- Request to fixup old pointer 0x%8.8X failed!\\n\"\n                        ,param_1[2],(int)param_1[3],lVar1), lVar4 == DAT_140a7bfc8))\n      goto LAB_1401ff1b0;\n    }\n    uVar3 = *(undefined8 *)(lVar4 + 0x18);\n  }\nLAB_1401ff1b2:\n  *(undefined8 *)*param_1 = uVar3;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:11Z"
+}

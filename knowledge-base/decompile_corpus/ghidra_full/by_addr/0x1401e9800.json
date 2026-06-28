@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e9800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetComboboxClass::vfunction5(GUIGadgetComboboxClass *this,undefined4 param_2)\n\n{\n  undefined1 *puVar1;\n  \n  (**(code **)(*(longlong *)&(this->GUIGadgetComboboxClass_data).field_0x58 + 0x40))();\n  puVar1 = &(this->GUIGadgetComboboxClass_data).field_0xe8;\n  (**(code **)(*(longlong *)puVar1 + 0x40))(puVar1,param_2);\n  puVar1 = &(this->GUIGadgetComboboxClass_data).field_0x178;\n  (**(code **)(*(longlong *)puVar1 + 0x40))(puVar1,param_2);\n  puVar1 = &(this->GUIGadgetComboboxClass_data).field_0x238;\n                    /* WARNING: Could not recover jumptable at 0x0001401e9855. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*(longlong *)puVar1 + 0x40))(puVar1,param_2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:53Z"
+}

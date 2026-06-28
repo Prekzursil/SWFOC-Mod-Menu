@@ -1,0 +1,7 @@
+{
+  "addr": "0x140153be0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140153bf3        *arg1 = &alTerrainTrack::`vftable'{for `RefCountClass'}\n140153c00        arg1[1].d = 0\n140153c03        arg1[2] = &alTerrainTrack::`vftable'{for `MultiLinkedListMember'}\n140153c07        arg1[3] = 0\n140153c0f        sub_14022fa30(&arg1[4])\n140153c1b        sub_1401a20e0(&arg1[0x21])\n140153c20        arg1[0x33] = -1\n140153c2e        arg1[0x34].d = 0xffffffff\n140153c38        __builtin_memset(&arg1[0x36], 0, 0x30)\n140153c62        arg1[0x44] = 0\n140153c69        arg1[0x45] = 0\n140153c70        arg1[0x47] = 0\n140153c77        arg1[0x48] = 0xf\n140153c82        __builtin_memset(&arg1[0x4a], 0, 0x18)\n140153c97        arg1[0x2d] = 0\n140153c9e        arg1[0x2e] = 0\n140153ca5        sub_140153f80(arg1)\n140153cad        sub_140157600(arg1)\n140153cbf        return arg1",
+  "fetched_at": "2026-04-26T17:22:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140199b80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alScene::vfunction21_for_RefCountClass(alScene *this)\n\n{\n  FUN_14013d940(*(undefined1 *)((longlong)&this[2].offset_0x68 + 4));\n  thunk_FUN_140196a70(&this[2].offset_0x60);\n  thunk_FUN_140196b20(*(undefined4 *)&this[2].offset_0x58,\n                      *(undefined4 *)((longlong)&this[2].offset_0x58 + 4));\n  thunk_FUN_140196990((undefined1 *)((longlong)&this[2].offset_0x48 + 4));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:49Z"
+}

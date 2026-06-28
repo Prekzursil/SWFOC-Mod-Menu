@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769cac",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __scrt_acquire_startup_lock\n   \n   Library: Visual Studio 2019 Release */\n\nundefined8 __scrt_acquire_startup_lock(void)\n\n{\n  longlong lVar1;\n  int iVar2;\n  longlong lVar3;\n  undefined8 uVar4;\n  bool bVar5;\n  \n  iVar2 = __scrt_is_ucrt_dll_in_use();\n  if (iVar2 == 0) {\nLAB_140769cda:\n    uVar4 = 0;\n  }\n  else {\n    do {\n      lVar3 = 0;\n      LOCK();\n      bVar5 = DAT_140b3b918 == 0;\n      lVar1 = *(longlong *)((longlong)Self + 8);\n      if (!bVar5) {\n        lVar3 = DAT_140b3b918;\n        lVar1 = DAT_140b3b918;\n      }\n      DAT_140b3b918 = lVar1;\n      UNLOCK();\n      if (bVar5) goto LAB_140769cda;\n    } while (*(longlong *)((longlong)Self + 8) != lVar3);\n    uVar4 = 1;\n  }\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T18:09:49Z"
+}

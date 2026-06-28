@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b7f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall alBlobFlushTask::vfunction2(void)\n\n{\n  return &DAT_140a124c8;\n}",
+  "fetched_at": "2026-04-26T17:14:50Z"
+}

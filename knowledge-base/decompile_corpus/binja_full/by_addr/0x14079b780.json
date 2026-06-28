@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079b780        int16_t i = *arg1\n14079b786        int32_t r8 = 0\n14079b789        int16_t* r9 = arg1\n14079b7c8        while (i != 0)\n14079b791        r9 = &r9[1]\n14079b799        if (i - 0x61 u<= 5)\n14079b7b0        i -= 0x27\n14079b7a9        if (i - 0x41 u<= 5)\n14079b7b0        i -= 7\n14079b7b7        uint32_t i_1 = zx.d(i)\n14079b7be        i = *r9\n14079b7c2        r8 = (r8 << 4) - 0x30 + i_1\n14079b7cd        return zx.q(r8)",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

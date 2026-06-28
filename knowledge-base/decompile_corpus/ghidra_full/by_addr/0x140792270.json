@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __cdecl common_flush_all(bool param_1)\n\n{\n  int iVar1;\n  \n  iVar1 = common_flush_all(true);\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:53Z"
+}

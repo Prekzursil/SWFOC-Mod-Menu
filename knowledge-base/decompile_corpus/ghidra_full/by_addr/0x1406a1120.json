@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a1120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1406a1120(CombatantBehaviorClass *param_1,undefined8 param_2,undefined4 param_3,\n                  undefined1 param_4,undefined8 param_5,undefined4 *param_6)\n\n{\n  undefined1 uVar1;\n  undefined **ppuVar2;\n  undefined *puVar3;\n  \n  param_1->field_0x45 = param_4;\n  FUN_1407d9080();\n  param_1->field_0x44 = 1;\n  *(undefined4 *)&param_1->field_0x40 = param_3;\n  param_1->offset_0x40 = param_5;\n  *(undefined4 *)&param_1->offset_0x48 = *param_6;\n  *(undefined4 *)((longlong)&param_1->offset_0x48 + 4) = param_6[1];\n  *(undefined4 *)&param_1->offset_0x50 = param_6[2];\n  ppuVar2 = CombatantBehaviorClass::vfunction47(param_1);\n  if ((ppuVar2 != (undefined **)0x0) &&\n     (puVar3 = (undefined *)(**(code **)(*ppuVar2 + 0x20))(ppuVar2), puVar3 != (undefined *)0x0)) {\n    while (puVar3 != &DAT_140a441e0) {\n      puVar3 = *(undefined **)(puVar3 + 8);\n      if (puVar3 == (undefined *)0x0) {\n        return;\n      }\n    }\n    uVar1 = FUN_1405f7650(ppuVar2[0x1e]);\n    param_1->field_0x44 = uVar1;\n    FUN_1405f8360(ppuVar2[0x1e],0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:15Z"
+}

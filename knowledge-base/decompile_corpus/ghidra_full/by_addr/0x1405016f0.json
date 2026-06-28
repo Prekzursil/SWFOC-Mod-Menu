@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405016f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCapturePointBehaviorClass::vfunction10(CapturePointBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  FUN_140501710(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:16Z"
+}

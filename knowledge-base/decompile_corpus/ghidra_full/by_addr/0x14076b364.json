@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b364",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: static void __cdecl __FrameHandler4::FrameUnwindToEmptyState(unsigned __int64 *\n   __ptr64,struct _xDISPATCHER_CONTEXT * __ptr64,struct FH4::FuncInfo4 * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl\n__FrameHandler4::FrameUnwindToEmptyState\n          (__uint64 *param_1,_xDISPATCHER_CONTEXT *param_2,FuncInfo4 *param_3)\n\n{\n  __uint64 local_res8 [4];\n  \n  local_res8[0] = *param_1;\n  if (((byte)*param_3 & 1) != 0) {\n    local_res8[0] = *(__uint64 *)(*(uint *)(param_3 + 0x14) + local_res8[0]);\n  }\n  FUN_140770334(local_res8,param_2,param_3,0xffffffff);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401abac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401abaca        int64_t* i = data_140a70a40\n1401abad1        int64_t rdi\n1401abad1        rdi.b = 1\n1401abad7        while (i != 0)\n1401abae0        int64_t rdx_1 = *i\n1401abae6        char rax_1 = (*(rdx_1 + 8))(i, rdx_1)\n1401abae9        i = i[1]\n1401abaed        rdi.b &= rax_1\n1401abb03        return zx.q(rdi.b)",
+  "fetched_at": "2026-04-26T17:25:24Z"
+}

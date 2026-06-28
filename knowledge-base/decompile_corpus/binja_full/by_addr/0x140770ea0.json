@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770ea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770ea4        int64_t arg_8 = arg1\n140770eae        int32_t r8\n140770eae        int32_t arg_18 = r8\n140770eb3        int64_t rdx = *arg2\n140770eb9        _NLG_Notify()\n140770ebe        int64_t result = arg1(arg3, rdx)\n140770ecd        *arg2\n140770ed6        _NLG_Notify()\n140770edf        return result",
+  "fetched_at": "2026-04-26T17:30:40Z"
+}

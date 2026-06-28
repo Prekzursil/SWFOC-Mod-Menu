@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __stdcall WSAGetLastError(void)\n\n{\n  int iVar1;\n  \n                    /* WARNING: Could not recover jumptable at 0x000140227400. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  iVar1 = WSAGetLastError();\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:04:54Z"
+}

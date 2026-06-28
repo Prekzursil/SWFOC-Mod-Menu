@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140786005        return iswctype(arg1, 0x117) __tailcall",
+  "fetched_at": "2026-04-26T17:31:16Z"
+}

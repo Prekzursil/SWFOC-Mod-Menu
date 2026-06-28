@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c8660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402c8675        if (*(arg1 + 8) == 0)\n1402c8677        int64_t* rdx_1 = *(arg1 + 0x18)\n1402c867e        int128_t* rcx = *(arg1 + 0x10)\n1402c868c        float entry_zmm3\n1402c868c        sub_1402c3c10(rcx, rdx_1, (rdx_1 - rcx) s>> 3, 0, entry_zmm3)\n1402c8691        *(arg1 + 8) = 1\n1402c8695        int32_t* r8_4 = *(arg1 + 0x10)\n1402c86a0        int64_t rax_2 = (*(arg1 + 0x18) - r8_4) s>> 3\n1402c86c2        if (rax_2 u< 2 || *r8_4 f> arg2.d || arg2.d f> r8_4[rax_2 * 2 - 2])\n1402c8782        return (zx.o(0)).d\n1402c86cc        int32_t* rax_3 = r8_4\n1402c86d2        int64_t i = (*(arg1 + 0x18) - r8_4) s>> 3\n1402c86d9        if (i s> 0)\n1402c86e3        uint64_t i_1 = i u>> 1\n1402c86f3        if (r8_4[i_1 * 2] f< arg2.d)\n1402c86fa        r8_4 = &r8_4[i_1 * 2 + 2]\n1402c8708        i += -1 - i_1\n1402c86f5        i = i_1\n1402c870e        do while (i s> 0)\n1402c8710        rax_3 = *(arg1 + 0x10)\n1402c8717        if (r8_4 == rax_3)\n1402c8729        return r8_4[1]\n1402c8734        float zmm2 = *r8_4 f- arg2.d\n1402c8738        int128_t zmm6\n1402c8738        zmm6.d = arg2.d f- r8_4[-2]\n1402c8749        arg2.d = (*r8_4).d f- r8_4[-2]\n1402c8753        zmm6.d = zmm6.d f/ arg2.d\n1402c875d        zmm6.d = zmm6.d f* r8_4[1]\n1402c8774        return zmm2 / (*r8_4 f- r8_4[-2]) f* r8_4[-1] f+ zmm6.d",
+  "fetched_at": "2026-04-26T17:33:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027cf30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027cf35        int32_t r9 = arg1[3]\n14027cf3e        int32_t r11 = *arg1\n14027cf41        int32_t r10 = arg1[2]\n14027cf45        int32_t rax = r9 - 1\n14027cf4f        if (rax s< 1)\n14027cf4f        rax = 1\n14027cf56        int32_t r8_1 = r10 + rax + r11 + 1\n14027cf5c        if (r9 != 0)\n14027cf69        r8_1 = divu.dp.d(0:r8_1, r9) * r9\n14027cf75        if (r10 == 0 && r8_1 == r11)\n14027cf75        r8_1 = r11 + 1\n14027cf81        return zx.q(r8_1)",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

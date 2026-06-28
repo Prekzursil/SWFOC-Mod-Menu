@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023abb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14023abb0(longlong param_1,undefined8 param_2)\n\n{\n  longlong *plVar1;\n  CHAR local_108 [264];\n  \n  plVar1 = (longlong *)(param_1 + 0x10);\n  if (0xf < *(ulonglong *)(param_1 + 0x28)) {\n    plVar1 = (longlong *)*plVar1;\n  }\n  FUN_140048ec0(local_108,\"xml parse error - File %s: %s\\n\",plVar1,param_2);\n  MessageBoxA((HWND)0x0,local_108,\"Expect Strange Bugs...\",0x10);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:11Z"
+}

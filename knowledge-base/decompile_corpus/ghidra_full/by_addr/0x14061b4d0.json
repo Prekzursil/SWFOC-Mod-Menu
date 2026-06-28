@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061b4d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HackSuperWeaponAbilityClass * __thiscall\nHackSuperWeaponAbilityClass::scalar_deleting_destructor\n          (HackSuperWeaponAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: HackSuperWeaponAbilityClass::~HackSuperWeaponAbilityClass\n                        */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x178);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:28:57Z"
+}

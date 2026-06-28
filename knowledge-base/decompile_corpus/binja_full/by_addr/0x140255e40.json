@@ -1,0 +1,7 @@
+{
+  "addr": "0x140255e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140255e4a        int64_t* rbx = *(arg3 + 0x10)\n140255e60        char const* const rdx\n140255e60        if ((*(arg3 + 0x18) - rbx) s>> 3 u>= 1)\n140255e6b        int64_t* rbx_1 = *rbx\n140255e71        if (rbx_1 != 0)\n140255e79        void* i\n140255e79        i, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n140255e7f        while (i != 0)\n140255e8b        if (i == &data_140a157c0)\n140255eb8        (**rbx_1)(rbx_1)\n140255eba        int32_t rdx_1 = int.d(fconvert.t(rbx_1[2]))\n140255ec2        if (*(arg2 + 0x60) != rdx_1)\n140255ec7        sub_140245d40(arg2, rdx_1)\n140255ed2        (*(*rbx_1 + 8))(rbx_1)\n140255ee1        return 0\n140255e8d        i = *(i + 8)\n140255e96        rdx = \"LuaCreateThread::Kill -- Expected a number for thread id parameter.\"\n140255e62        rdx = \"LuaCreateThread::Kill -- Expected a thread id parameter.\"\n140255ea0        sub_140248190(arg2, rdx, arg3)\n140255eb1        return 0",
+  "fetched_at": "2026-04-26T17:30:49Z"
+}

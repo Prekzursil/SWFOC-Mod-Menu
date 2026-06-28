@@ -1,0 +1,7 @@
+{
+  "addr": "0x140730470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TacticalLocationPerceptualEvaluatorClass member function inherited by\n   SpaceLocationPerceptualEvaluatorClass */\n\nvoid __thiscall\nTacticalLocationPerceptualEvaluatorClass::vfunction14\n          (TacticalLocationPerceptualEvaluatorClass *this,longlong param_1)\n\n{\n  undefined4 uVar1;\n  \n  (this->SignalListenerClass_data).offset_0x58 = param_1;\n  uVar1 = DAT_140800804;\n  if (param_1 != 0) {\n    *(undefined4 *)&(this->SignalListenerClass_data).offset_0x60 = *(undefined4 *)(param_1 + 0x30);\n    *(undefined4 *)((longlong)&(this->SignalListenerClass_data).offset_0x60 + 4) =\n         *(undefined4 *)(param_1 + 0x34);\n    *(undefined4 *)&(this->SignalListenerClass_data).offset_0x68 = *(undefined4 *)(param_1 + 0x38);\n    return;\n  }\n  *(undefined4 *)&(this->SignalListenerClass_data).offset_0x60 = 0x5d5e0b6b;\n  *(undefined4 *)((longlong)&(this->SignalListenerClass_data).offset_0x60 + 4) = 0x5d5e0b6b;\n  *(undefined4 *)&(this->SignalListenerClass_data).offset_0x68 = uVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:01:38Z"
+}

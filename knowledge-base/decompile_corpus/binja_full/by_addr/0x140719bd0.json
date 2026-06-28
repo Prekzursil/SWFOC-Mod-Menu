@@ -1,0 +1,7 @@
+{
+  "addr": "0x140719bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140719be3        *arg1 = &RemoteBombAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140719bf0        arg1[1] = &RemoteBombAbilityClass::`vftable'{for `RefCountClass'}\n140719bf4        int64_t rdx = arg1[0x36]\n140719bff        if (rdx u>= 0x10)\n140719c01        void* rcx = arg1[0x33]\n140719c12        if (rdx + 1 u>= 0x1000)\n140719c14        void* r8_1 = *(rcx - 8)\n140719c27        if (rcx - r8_1 - 8 u> 0x1f)\n140719c83        _invalid_parameter_noinfo_noreturn()\n140719c83        noreturn\n140719c29        rcx = r8_1\n140719c2c        j_sub_1407864b8(rcx)\n140719c38        arg1[0x35] = 0\n140719c43        arg1[0x36] = 0xf\n140719c4e        arg1[0x33].b = 0\n140719c55        sub_1404c4770(&arg1[0x30])\n140719c5d        sub_14048c8d0(arg1)\n140719c66        if ((arg2 & 1) != 0)\n140719c70        j_sub_1407864b8(arg1)\n140719c82        return arg1",
+  "fetched_at": "2026-04-26T17:28:00Z"
+}

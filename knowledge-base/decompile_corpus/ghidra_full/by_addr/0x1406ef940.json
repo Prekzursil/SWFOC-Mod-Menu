@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ef940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall BaseDestructionAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Base_Destruction_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:47:07Z"
+}

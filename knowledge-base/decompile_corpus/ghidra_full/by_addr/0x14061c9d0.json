@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061c9d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SkyDomeBehaviorClass::vfunction9(void)\n\n{\n  return \"SkyDomeBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:29:16Z"
+}

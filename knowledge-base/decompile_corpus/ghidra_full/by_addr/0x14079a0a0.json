@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a0a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_locale_free_time\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_locale_free_time(void **param_1)\n\n{\n  if (param_1 != (void **)0x0) {\n    free_crt_array_internal(param_1,7);\n    free_crt_array_internal(param_1 + 7,7);\n    free_crt_array_internal(param_1 + 0xe,0xc);\n    free_crt_array_internal(param_1 + 0x1a,0xc);\n    free_crt_array_internal(param_1 + 0x26,2);\n    _free_base(param_1[0x28]);\n    _free_base(param_1[0x29]);\n    _free_base(param_1[0x2a]);\n    free_crt_array_internal(param_1 + 0x2c,7);\n    free_crt_array_internal(param_1 + 0x33,7);\n    free_crt_array_internal(param_1 + 0x3a,0xc);\n    free_crt_array_internal(param_1 + 0x46,0xc);\n    free_crt_array_internal(param_1 + 0x52,2);\n    _free_base(param_1[0x54]);\n    _free_base(param_1[0x55]);\n    _free_base(param_1[0x56]);\n    _free_base(param_1[0x57]);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:43Z"
+}

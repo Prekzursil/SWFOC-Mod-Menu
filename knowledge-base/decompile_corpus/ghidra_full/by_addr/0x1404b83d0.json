@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b83d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_1404b83d0(longlong param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  \n  if (0 < *(int *)(param_1 + 0x118)) {\n    plVar1 = *(longlong **)(param_1 + 0x110);\n    lVar2 = 0;\n    do {\n      if (param_2 == *plVar1) {\n        return 1;\n      }\n      lVar2 = lVar2 + 1;\n      plVar1 = plVar1 + 1;\n    } while (lVar2 < *(int *)(param_1 + 0x118));\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:08:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404aaa40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404aaa4e        uint64_t zmm6[0x2] = arg4\n1404aaa6a        uint64_t zmm0[0x2]\n1404aaa6a        uint64_t zmm7[0x2]\n1404aaa6a        if ((zmm6[0].d & 0x7f800000) u<= 0x1d000000)\n1404aaa79        zmm7 = 0x3f800000\n1404aaa6f        zmm0, arg2, arg3, zmm6 = cosf(arg4, arg2, arg3)\n1404aaa74        zmm7 = zmm0\n1404aaa8b        int32_t result = zmm6[0].d & 0x7f800000\n1404aaa95        if (result u> 0x1d000000)\n1404aaa9a        result, zmm0 = sinf(zmm6, arg2, arg3)\n1404aaa9f        zmm6 = zmm0\n1404aaaa8        zmm7[0].d = zmm7[0].d f* arg1[2]\n1404aaaad        zmm6[0].d = zmm6[0].d f* *arg1\n1404aaab1        zmm6[0].d = zmm6[0].d f* arg1[2]\n1404aaab6        zmm7[0].d = zmm7[0].d f* *arg1\n1404aaaba        zmm7[0].d = zmm7[0].d f- zmm6[0].d\n1404aaac3        zmm6[0].d = zmm6[0].d f+ zmm7[0].d\n1404aaac7        arg1[2] = zmm7[0].d\n1404aaad1        *arg1 = zmm6[0].d\n1404aaada        return result",
+  "fetched_at": "2026-04-26T17:29:29Z"
+}

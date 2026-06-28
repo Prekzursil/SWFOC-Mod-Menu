@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790500",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140790516        void* result\n140790516        if (arg1 == sub_140784a34(2))\n14079053e        result.b = 1\n140790525        if (arg1 != sub_140784a34(1))\n14079053a        result.b = 0\n140790538        if (_isatty(_fileno(arg1)).d != 0)\n14079053e        result.b = 1\n14079053a        result.b = 0\n140790545        return result",
+  "fetched_at": "2026-04-26T17:31:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140136ab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140136abb        float zmm2 = arg2 f* *(arg1 + 0x2d8)\n140136ac9        if (zmm2 >= 0f)\n140136ad0        zmm2 = _mm_min_ss(zmm2, 0x3f800000)\n140136acb        zmm2 = (zx.o(0)).d\n140136ad4        arg2 = *(arg1 + 0x2dc)\n140136ae7        float zmm0 = (1f - arg2) * zmm2 + arg2\n140136aee        if (zmm0 >= 0f)\n140136af8        return _mm_min_ss(zmm0, 0x3f800000)\n140136af3        return (zx.o(0)).d",
+  "fetched_at": "2026-04-26T17:11:35Z"
+}

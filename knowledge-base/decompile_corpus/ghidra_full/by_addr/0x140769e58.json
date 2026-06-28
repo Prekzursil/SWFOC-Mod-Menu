@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769e58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __scrt_release_startup_lock\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __scrt_release_startup_lock(char param_1)\n\n{\n  int iVar1;\n  \n  iVar1 = __scrt_is_ucrt_dll_in_use();\n  if ((iVar1 != 0) && (param_1 == '\\0')) {\n    LOCK();\n    DAT_140b3b918 = 0;\n    UNLOCK();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:52Z"
+}

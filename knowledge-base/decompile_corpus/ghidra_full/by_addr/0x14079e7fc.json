@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079e7fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_DownlevelLocaleNameToLCID\n   \n   Library: Visual Studio 2019 Release */\n\nundefined4 __acrt_DownlevelLocaleNameToLCID(longlong param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  uint uVar3;\n  int iVar4;\n  int iVar5;\n  \n  if (param_1 != 0) {\n    iVar4 = 0;\n    iVar5 = 0xe3;\n    do {\n      iVar1 = (iVar5 + iVar4) / 2;\n      iVar2 = __ascii_wcsnicmp(param_1,(&PTR_PTR_1408dc580)[(longlong)iVar1 * 2],0x55);\n      if (iVar2 == 0) {\n        uVar3 = *(uint *)(&DAT_1408dc588 + (longlong)iVar1 * 0x10);\n        goto LAB_14079e876;\n      }\n      if (iVar2 < 0) {\n        iVar5 = iVar1 + -1;\n      }\n      else {\n        iVar4 = iVar1 + 1;\n      }\n    } while (iVar4 <= iVar5);\n    uVar3 = 0xffffffff;\nLAB_14079e876:\n    if ((-1 < (int)uVar3) && (uVar3 < 0xe4)) {\n      return *(undefined4 *)(&DAT_1408dab30 + (longlong)(int)uVar3 * 0x10);\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:54:06Z"
+}

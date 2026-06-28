@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354f30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140354f3f        void* rdx = *(arg1 + 0x7a8)\n140354f4c        if (rdx != 0)\n140354f55        sub_140260f10(&data_140b0a130, rdx)\n140354f5a        struct ButtonComponentClass::TextButtonComponentClass::VTable** rdi = *(arg1 + 0x600)\n140354f63        *(arg1 + 0x7a8) = 0\n140354f6d        if (rdi != 0)\n140354f72        sub_14034af40(rdi)\n140354f7f        j_sub_1407864b8(rdi)\n140354f84        *(arg1 + 0x600) = 0\n140354f8b        int64_t* rdi_1 = *(arg1 + 0x670)\n140354f95        if (rdi_1 != 0)\n140354f9a        sub_14026cf20(rdi_1)\n140354fa7        j_sub_1407864b8(rdi_1)\n140354fac        *(arg1 + 0x670) = 0\n140354fb3        int64_t* rdi_2 = *(arg1 + 0x6c0)\n140354fbd        if (rdi_2 != 0)\n140354fc2        sub_14026cf20(rdi_2)\n140354fcf        j_sub_1407864b8(rdi_2)\n140354fd4        *(arg1 + 0x6c0) = 0\n140354fdb        int64_t* rdi_3 = *(arg1 + 0x710)\n140354fe5        if (rdi_3 == 0)\n140354fe5        return \n140354fea        sub_14026cf20(rdi_3)\n140354ff7        j_sub_1407864b8(rdi_3)\n140354ffc        *(arg1 + 0x710) = 0\n140355012        return ",
+  "fetched_at": "2026-04-26T17:11:02Z"
+}

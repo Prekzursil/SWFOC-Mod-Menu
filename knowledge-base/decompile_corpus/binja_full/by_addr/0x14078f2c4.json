@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f2c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078f2cf        void* result = __acrt_FlsAlloc(destroy_fls)\n14078f2d4        data_140a44db0 = result.d\n14078f2dd        if (result.d != 0xffffffff)\n14078f2eb        if (__acrt_getptd_noexit() != 0)\n14078f2f6        result.b = 1\n14078f2ef        __acrt_uninitialize_ptd()\n14078f2df        result.b = 0\n14078f2df        result.b = 0\n14078f2fc        return result",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

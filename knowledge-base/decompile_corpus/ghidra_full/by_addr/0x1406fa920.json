@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fa920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nEnhanceDefenseAbilityClass::vfunction31_for_IXMLLoadableClass\n          (EnhanceDefenseAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  byte bVar2;\n  int iVar3;\n  ulonglong in_RAX;\n  longlong lVar4;\n  int iVar5;\n  byte bVar6;\n  \n  if (((param_1 == 0) || (*(longlong *)(param_1 + 0x298) == 0)) || (param_2 != 0)) {\nLAB_1406faa53:\n    return in_RAX & 0xffffffffffffff00;\n  }\n  iVar3 = *(int *)(param_1 + 0x58);\n  lVar4 = FUN_140294aa0(&DAT_140a16fd0);\n  if (*(int *)(lVar4 + 0x4c) == iVar3) {\n    in_RAX = FUN_14028a910(&DAT_140b153e0);\n    iVar3 = (int)in_RAX;\n    if (iVar3 == -1) goto LAB_1406faa53;\n  }\n  bVar6 = 0;\n  if ((this->EnhanceDefenseAbilityClass_data).offset_0x8 == '\\x01') {\n    iVar5 = 0;\n    if ((int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3) < 1) goto LAB_1406faa3b;\n    do {\n      lVar4 = FUN_140294bc0(&DAT_140a16fd0,iVar5);\n      if ((lVar4 != 0) && (cVar1 = FUN_1402823c0(lVar4,iVar3), cVar1 == '\\x01')) {\n        bVar2 = FUN_1406faa60(this,param_1,*(undefined4 *)(lVar4 + 0x4c));\n        bVar6 = bVar6 | bVar2;\n      }\n      iVar5 = iVar5 + 1;\n    } while (iVar5 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3));\n  }\n  else {\n    bVar6 = FUN_1406faa60(this,param_1,iVar3);\n  }\n  if (bVar6 == 1) {\n    FUN_14048e4d0(this,param_1,0);\n  }\nLAB_1406faa3b:\n  return (ulonglong)bVar6;\n}",
+  "fetched_at": "2026-04-26T17:49:40Z"
+}

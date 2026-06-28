@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bbe80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bbe89        *arg2 = 0\n1406bbe90        arg2[3] = 0xf\n1406bbe9b        arg2[2] = 0xf\n1406bbeb0        memcpy(arg2, \"Template System\", 0xf)\n1406bbeb8        *(arg2 + 0xf) = 0\n1406bbec1        return arg2",
+  "fetched_at": "2026-04-26T17:24:55Z"
+}

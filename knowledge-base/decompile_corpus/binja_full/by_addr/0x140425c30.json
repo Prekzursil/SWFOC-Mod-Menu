@@ -1,0 +1,7 @@
+{
+  "addr": "0x140425c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140425c3a        int32_t* r11 = arg1[1]\n140425c41        int64_t r9 = *arg1\n140425c5a        int64_t rax\n140425c5a        int64_t rdx\n140425c5a        rdx:rax = muls.dp.q(0x4ec4ec4ec4ec4ec5, r11 - r9)\n140425c67        uint64_t rax_2 = rdx s>> 5 u>> 0x3f\n140425c6b        int64_t r8_4 = (r11 - r9) s/ 0x68\n140425c71        if (arg2 u< r8_4)\n140425c77        int64_t rax_4 = arg2 * 0x68 + r9\n140425c7a        arg1[1] = rax_4\n140425c88        return rax_4\n140425c89        if (arg2 u> r8_4)\n140425c95        int64_t rax_5\n140425c95        int64_t rdx_1\n140425c95        rdx_1:rax_5 = muls.dp.q(0x4ec4ec4ec4ec4ec5, arg1[2] - r9)\n140425c9b        int64_t rdx_2 = rdx_1 s>> 5\n140425cac        if (arg2 u> rdx_2 + (rdx_2 u>> 0x3f))\n140425cc5        return sub_14040bbe0(arg1, arg2, &arg3)\n140425cd5        rax_2 = sub_140425610(arg1, r11, arg2 - r8_4)\n140425cda        arg1[1] = rax_2\n140425ce8        return rax_2",
+  "fetched_at": "2026-04-26T17:26:26Z"
+}

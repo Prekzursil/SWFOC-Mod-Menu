@@ -1,0 +1,7 @@
+{
+  "addr": "0x140526730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AIExecutionSystemClass::vfunction8(AIExecutionSystemClass *this)\n\n{\n  longlong *plVar1;\n  undefined8 *puVar2;\n  \n  plVar1 = (longlong *)(this->AIExecutionSystemClass_data).offset_0x8;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))(plVar1,1);\n  }\n  (this->AIExecutionSystemClass_data).offset_0x8 = 0;\n  if ((this->AIExecutionSystemClass_data).offset_0x0 != 0) {\n    FUN_1404d6400();\n  }\n  plVar1 = (longlong *)(this->AIExecutionSystemClass_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->AIExecutionSystemClass_data).offset_0x0 = 0;\n  }\n  if (*(int *)((this->ServicedAISystemClass_data).offset_0x0 + 0x34) == 0) {\n    FUN_14053d520();\n  }\n  puVar2 = (undefined8 *)(this->AIExecutionSystemClass_data).offset_0x10;\n  if (puVar2 != (undefined8 *)0x0) {\n    (**(code **)*puVar2)(puVar2,1);\n  }\n  (this->AIExecutionSystemClass_data).offset_0x10 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:27:18Z"
+}

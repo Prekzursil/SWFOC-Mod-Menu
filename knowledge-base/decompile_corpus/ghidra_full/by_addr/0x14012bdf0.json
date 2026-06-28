@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012bdf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall alHModel::vfunction6_for_RefCountClass(alHModel *this)\n\n{\n  ReferenceListClass<class_alExtraRenderPass> *this_00;\n  \n  this_00 = (ReferenceListClass<class_alExtraRenderPass> *)FUN_140769c58(0x1f8);\n  if (this_00 != (ReferenceListClass<class_alExtraRenderPass> *)0x0) {\n    ReferenceListClass<class_alExtraRenderPass>::ReferenceListClass<class_alExtraRenderPass>\n              (this_00,(longlong)this);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:56Z"
+}

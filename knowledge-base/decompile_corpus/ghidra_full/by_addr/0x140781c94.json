@@ -1,0 +1,7 @@
+{
+  "addr": "0x140781c94",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _wcsupr_s_l\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nerrno_t __cdecl _wcsupr_s_l(wchar_t *_Str,size_t _Size,_locale_t _Locale)\n\n{\n  int iVar1;\n  longlong local_28;\n  __crt_locale_pointers local_20 [16];\n  char local_10;\n  \n  _LocaleUpdate::_LocaleUpdate((_LocaleUpdate *)&local_28,(__crt_locale_pointers *)_Locale);\n  iVar1 = _wcsupr_s_l_stat(_Str,_Size,local_20);\n  if (local_10 != '\\0') {\n    *(uint *)(local_28 + 0x3a8) = *(uint *)(local_28 + 0x3a8) & 0xfffffffd;\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:51:07Z"
+}

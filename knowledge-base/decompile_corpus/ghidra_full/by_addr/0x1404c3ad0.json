@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c3ad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_NameReferenceClass> * __thiscall\nDynamicVectorClass<class_NameReferenceClass>::DynamicVectorClass<class_NameReferenceClass>\n          (DynamicVectorClass<class_NameReferenceClass> *this)\n\n{\n  DynamicVectorClass<class_NameReferenceClass> *local_res8 [4];\n  \n  this->vftablePtr = &vftable;\n  (this->DynamicVectorClass<class_NameReferenceClass>_data).offset_0x0 = (LPVOID)0x0;\n  *(undefined8 *)&(this->DynamicVectorClass<class_NameReferenceClass>_data).field_0x8 = 0;\n  local_res8[0] = this;\n  FUN_140046fc0(&PTR_vftable_140a28588,local_res8);\n  (this->DynamicVectorClass<class_NameReferenceClass>_data).offset_0x10 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:11:39Z"
+}

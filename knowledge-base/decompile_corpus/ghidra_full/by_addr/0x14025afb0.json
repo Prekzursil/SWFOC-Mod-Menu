@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025afb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DrawTextClass * __thiscall DrawTextClass::DrawTextClass(DrawTextClass *this,longlong param_1)\n\n{\n  TextureRectClass *this_00;\n  TextureRectClass *pTVar1;\n  \n  DrawPrimitiveClass::DrawPrimitiveClass((DrawPrimitiveClass *)this,param_1);\n  FUN_14026ccb0(&this->StringTextureClass,param_1 + 0x50);\n  pTVar1 = (TextureRectClass *)0x0;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&this->field_0x48 = 0;\n  this->vftablePtr = &vftable;\n  FUN_1401f9320(&(this->DrawTextClass_data).field_0x48,param_1 + 0xa0);\n  FUN_1401f9320(&(this->DrawTextClass_data).field_0x58,param_1 + 0xb0);\n  (this->DrawTextClass_data).offset_0x68 = (longlong *)0x0;\n  if (*(longlong *)(param_1 + 0xc0) != 0) {\n    this_00 = (TextureRectClass *)FUN_140769c58(0x90);\n    if (this_00 != (TextureRectClass *)0x0) {\n      pTVar1 = TextureRectClass::TextureRectClass(this_00,*(longlong *)(param_1 + 0xc0));\n    }\n    (this->DrawTextClass_data).offset_0x68 = (longlong *)pTVar1;\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:14:01Z"
+}

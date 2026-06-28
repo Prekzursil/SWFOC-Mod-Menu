@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ed04",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ed09        int32_t* arg_20 = arg4\n14078ed1b        __vcrt_unlock(*arg2)\n14078ed27        int32_t* rax_1 = *(**arg3 + 0x88)\n14078ed2e        *rax_1 += 1\n14078ed42        return __vcrt_lock(*arg4)",
+  "fetched_at": "2026-04-26T17:31:38Z"
+}

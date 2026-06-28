@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a0240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalQuantizedAnim::vfunction13(alQuantizedAnim *this,int param_1,undefined8 param_2,longlong param_3)\n\n{\n  undefined4 local_28;\n  undefined4 local_24;\n  undefined4 local_20;\n  undefined1 local_18 [16];\n  \n  if (param_1 < (int)((*(longlong *)&(this->RefCountClass_data).field_0x38 -\n                      *(longlong *)&(this->RefCountClass_data).field_0x30) / 0x88)) {\n    (*this->vftablePtr->vfunction14)(this,(longlong *)(ulonglong)(uint)param_1);\n    FUN_1402350a0(local_18,param_3);\n    *(undefined4 *)(param_3 + 0xc) = local_28;\n    *(undefined4 *)(param_3 + 0x2c) = local_20;\n    *(undefined4 *)(param_3 + 0x1c) = local_24;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:38:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f9fd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f9fd5        int32_t arg_18 = arg3\n1405f9ffc        struct LuaUserVar::GameObjectTypeWrapper::VTable** result = sub_1406051b0(arg2, sub_140264a30(*(arg1 + 0xf0)))\n1405fa001        struct LuaUserVar::GameObjectTypeWrapper::VTable** result_1 = result\n1405fa006        struct LuaUserVar::GameObjectTypeWrapper::VTable** result_2 = result\n1405fa00c        if (result != 0)\n1405fa014        result = (*result)->__offset(0x0).q(result_2)\n1405fa016        struct LuaUserVar::GameObjectTypeWrapper::VTable*** rdx_1 = *(arg1 + 0x68)\n1405fa01e        if (rdx_1 == *(arg1 + 0x70))\n1405fa040        result = sub_140045680(arg1 + 0x60, rdx_1, &result_1)\n1405fa020        *rdx_1 = result_2\n1405fa026        if (result_2 != 0)\n1405fa02e        result = (*result_2)->__offset(0x0).q(result_2, rdx_1)\n1405fa030        *(arg1 + 0x68) += 8\n1405fa048        if (result_2 != 0)\n1405fa050        result = (*result_2)->__offset(0x8).q(result_2)\n1405fa05a        int32_t* rdx_2 = *(arg1 + 0x98)\n1405fa062        if (rdx_2 == *(arg1 + 0xa0))\n1405fa08e        return std::vector<uint64_t const& __ptr64,uint64_t,class std::allocator<uint64_t> >::_Emplace_reallocate<uint64_t const& __ptr64>(arg1 + 0x90, rdx_2, &arg_18)\n1405fa064        *rdx_2 = arg3\n1405fa066        *(arg1 + 0x98) += 4\n1405fa077        return result",
+  "fetched_at": "2026-04-26T17:22:40Z"
+}

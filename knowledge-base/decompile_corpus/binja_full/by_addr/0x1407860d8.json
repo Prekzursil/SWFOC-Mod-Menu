@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407860d8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407860f5        int64_t* result = _calloc_base(1, 0x28)\n1407860ff        _free_base(0)\n140786109        if (result == 0)\n140786134        return nullptr\n14078610f        *result = arg1\n140786115        result[1] = arg2\n14078611c        GetModuleHandleExW(4, arg1, &result[3])\n140786122        return result",
+  "fetched_at": "2026-04-26T17:31:17Z"
+}

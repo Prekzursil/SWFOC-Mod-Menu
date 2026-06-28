@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b1070",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b1084        int64_t result = sub_14048f2c0(arg1)\n1405b1089        int32_t zmm6 = (zx.o(0)).d\n1405b1093        char var_118[0x100]\n1405b1093        if (not(0f f<= *(arg1 + 0x178)))\n1405b109a        void* r8_1 = arg1 + 0x18\n1405b109e        if (*(arg1 + 0x30) u>= 0x10)\n1405b10a0        r8_1 = *r8_1\n1405b10af        sscanf_s(&var_118, \"Error: (%s) Activation_Min_Range cannot be less than zero.\", r8_1)\n1405b10b9        result, zmm6 = sub_1402149d0(&var_118)\n1405b10be        *(arg1 + 0x178) = 0\n1405b10cf        if (not(zmm6 f<= *(arg1 + 0x17c)))\n1405b10d6        void* r8_2 = arg1 + 0x18\n1405b10da        if (*(arg1 + 0x30) u>= 0x10)\n1405b10dc        r8_2 = *r8_2\n1405b10eb        sscanf_s(&var_118, \"Error: (%s) Activation_Max_Range cannot be less than zero.\", r8_2)\n1405b10f5        result = sub_1402149d0(&var_118)\n1405b10fa        *(arg1 + 0x17c) = 0\n1405b1114        return result",
+  "fetched_at": "2026-04-26T17:37:17Z"
+}

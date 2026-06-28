@@ -1,0 +1,7 @@
+{
+  "addr": "0x140373ac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140373ad3        void var_38\n140373ad3        int32_t rdx = *(sub_14025e500(&var_38) + 0x1c)\n140373ad8        if (rdx == 0)\n140373ae1        return 0\n140373ae8        if (rdx s>= *(arg1 + 0x17bc) && sub_14025de50() != 0)\n140373b02        return 2\n140373af8        return 1",
+  "fetched_at": "2026-04-26T17:16:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140783ff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140783ff0(uchar *param_1,uchar *param_2)\n\n{\n  _mbsstr_l(param_1,param_2,(_locale_t)0x0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798b38",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798b53        int64_t* rdi = arg1\n140798b59        if (arg1 == 0)\n140798b5b        return 0\n140798b78        int64_t rcx = 0\n140798b7b        int64_t* rax_1 = rdi\n140798b81        if (*rdi != 0)\n140798b83        rcx += 1\n140798b86        rax_1 = &rax_1[1]\n140798b8d        do while (*rax_1 != 0)\n140798b97        int64_t result = _calloc_base(rcx + 1, 8)\n140798ba2        if (result == 0)\n140798c21        label_140798c21:\n140798c21        abort()\n140798c21        noreturn\n140798ba4        int64_t i = *rdi\n140798baa        if (i != 0)\n140798baf        void* r14_2 = result - rdi\n140798bb2        int64_t rsi_1 = -1\n140798bb6        rsi_1 += 1\n140798bbd        do while (*(i + (rsi_1 << 1)) != 0)\n140798bcf        *(r14_2 + rdi) = _calloc_base(rsi_1 + 1, 2)\n140798bd3        _free_base(0)\n140798bd8        int16_t* rcx_3 = *(r14_2 + rdi)\n140798bdf        if (rcx_3 == 0)\n140798bdf        goto label_140798c21\n140798bef        if (wcscpy_s(rcx_3, rsi_1 + 1, *rdi) != 0)\n140798c0f        int64_t var_18 = 0\n140798c1b        _invoke_watson()\n140798c1b        noreturn\n140798bf1        rdi = &rdi[1]\n140798bf5        i = *rdi\n140798bfb        do while (i != 0)\n140798bff        _free_base(0)\n140798c04        return result",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

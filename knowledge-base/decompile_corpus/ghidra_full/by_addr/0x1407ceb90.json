@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ceb90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407ceb90(undefined8 param_1,int param_2,int param_3)\n\n{\n  int iVar1;\n  double dVar2;\n  \n  if (param_2 + 9999U < 10000) {\n    iVar1 = FUN_1407b8ef0();\n    param_2 = param_2 + 1 + iVar1;\n  }\n  FUN_1407b94a0(param_1,&DAT_1408fd330,1);\n  FUN_1407b9720(param_1,param_2);\n  dVar2 = (double)FUN_1407b9bc0(param_1,0xffffffff);\n  if (((int)dVar2 == 0) && (iVar1 = FUN_1407b8fb0(param_1,0xffffffff), iVar1 == 0)) {\n    FUN_1407b9ab0(param_1,0xfffffffe);\n  }\n  else {\n    FUN_1407b9ab0(param_1,0xfffffffe);\n    if (-1 < (int)dVar2) {\n      FUN_1407b94a0(param_1,&DAT_1408fd330,1);\n      FUN_1407b9520(param_1,(double)param_3);\n      FUN_1407b97c0(param_1,param_2);\n      return;\n    }\n  }\n  FUN_1407cdd60(param_1);\n  FUN_1407b9600(param_1,param_2);\n  FUN_1407b9520(param_1,(double)param_3);\n  FUN_1407b97c0(param_1,0xfffffffd);\n  FUN_1407b9ab0(param_1,0xfffffffe);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:57:45Z"
+}

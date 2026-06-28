@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d2940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1404d2940(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  return CONCAT31((int3)((uint)*(int *)(param_3 + 0x50) >> 8),\n                  *(int *)(param_2 + 0x50) < *(int *)(param_3 + 0x50));\n}",
+  "fetched_at": "2026-04-26T18:13:16Z"
+}

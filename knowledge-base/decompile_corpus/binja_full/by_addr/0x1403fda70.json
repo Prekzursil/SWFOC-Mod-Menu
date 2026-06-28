@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403fda70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403fda84        void* result = sub_1403f3520(arg1, arg3)\n1403fda89        int32_t r14 = 0\n1403fda8f        void* i = *result\n1403fda96        if (i != *(result + 8))\n1403fdaa6        int128_t* rsi_1 = i + 0x30\n1403fdabe        if (sub_1404ad550(&rsi_1[-2], arg2) == 0)\n1403fdb0b        i += 0x30\n1403fdb0f        rsi_1 = &rsi_1[3]\n1403fdac0        void* rdx_2 = *(result + 8)\n1403fdac4        int128_t* rax_1 = rsi_1\n1403fdaca        if (rsi_1 != rdx_2)\n1403fdacc        void* rcx_1 = &rsi_1[-3]\n1403fdad3        rcx_1 += 0x30\n1403fdad7        *(rcx_1 - 0x30) = *rax_1\n1403fdadf        *(rcx_1 - 0x20) = rax_1[1]\n1403fdae3        int128_t zmm0_1 = rax_1[2]\n1403fdae7        rax_1 = &rax_1[3]\n1403fdaeb        *(rcx_1 - 0x10) = zmm0_1\n1403fdaf2        do while (rax_1 != rdx_2)\n1403fdaf4        rdx_2 = *(result + 8)\n1403fdafc        sub_1404ad530(rdx_2 - 0x20)\n1403fdb01        *(result + 8) -= 0x30\n1403fdb06        r14 += 1\n1403fdb1a        do while (i != *(result + 8))\n1403fdb2e        result.b = r14 s> 0\n1403fdb3a        return result",
+  "fetched_at": "2026-04-26T17:25:36Z"
+}

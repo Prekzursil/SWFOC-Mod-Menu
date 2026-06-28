@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c41a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c41a9        if (arg2 != 0 && *(arg2 + 0x30) == 0xb)\n1401c41ae        return _DeleteExceptionPtr(arg2) __tailcall\n1401c41b3        return ",
+  "fetched_at": "2026-04-26T17:26:21Z"
+}

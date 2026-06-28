@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406111f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAIBudgetedCategoryDiagnosticsNodeClass::vfunction4(AIBudgetedCategoryDiagnosticsNodeClass *this)\n\n{\n  longlong lVar1;\n  AIDiagnosticsManagerClass *this_00;\n  undefined8 *puVar2;\n  undefined **local_res8;\n  \n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  puVar2 = *(undefined8 **)(lVar1 + 0x68);\n  if (puVar2 != *(undefined8 **)(lVar1 + 0x70)) {\n    do {\n      if (DAT_140a10970 == (AIDiagnosticsManagerClass *)0x0) {\n        this_00 = (AIDiagnosticsManagerClass *)FUN_140769c58(0xc0);\n        if (this_00 == (AIDiagnosticsManagerClass *)0x0) {\n          DAT_140a10970 = (AIDiagnosticsManagerClass *)0x0;\n        }\n        else {\n          DAT_140a10970 = AIDiagnosticsManagerClass::~AIDiagnosticsManagerClass(this_00);\n        }\n        local_res8 = &PTR_vftable_140a10968;\n        if (DAT_140a7bc10 == DAT_140a7bc18) {\n          FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,&local_res8);\n        }\n        else {\n          *DAT_140a7bc10 = &PTR_vftable_140a10968;\n          DAT_140a7bc10 = DAT_140a7bc10 + 1;\n        }\n      }\n      FUN_140475af0(DAT_140a10970,*puVar2);\n      puVar2 = puVar2 + 1;\n    } while (puVar2 != *(undefined8 **)((this->AIDiagnosticsNodeClass_data).offset_0x0 + 0x70));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:20Z"
+}

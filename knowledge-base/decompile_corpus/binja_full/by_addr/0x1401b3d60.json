@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b3d60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b3d7c        struct CullSystemClass::TreeCullClass::VTable** rax = operator new(0x38)\n1401b3d86        struct CullSystemClass::TreeCullClass::VTable** rax_1\n1401b3d86        if (rax == 0)\n1401b3d92        rax_1 = nullptr\n1401b3d8b        rax_1 = sub_14020e370(rax)\n1401b3d9a        *(arg1 + 0x270) = rax_1\n1401b3da1        struct CullSystemClass::TreeCullClass::VTable** rax_2 = operator new(0x38)\n1401b3da9        struct CullSystemClass::TreeCullClass::VTable** result\n1401b3da9        if (rax_2 == 0)\n1401b3db5        result = nullptr\n1401b3dae        result = sub_14020e370(rax_2)\n1401b3db8        *(arg1 + 0x278) = result\n1401b3dc6        void* i = *(arg1 + 0x230)\n1401b3dd0        while (i != arg1 + 0x228)\n1401b3de0        int64_t rcx_2 = *(i + 0x18)\n1401b3de7        int64_t rax_3 = rcx_2 - 0x10\n1401b3deb        if (rcx_2 == 0)\n1401b3deb        rax_3 = 0\n1401b3df3        int64_t rdx_1 = rax_3 + 0x20\n1401b3df7        if ((*(rax_3 + 0x32) & 1) == 0)\n1401b3e13        if (rax_3 == 0)\n1401b3e15        rdx_1 = 0\n1401b3e18        int64_t* rcx_4 = *(arg1 + 0x270)\n1401b3e22        result = (*(*rcx_4 + 8))(rcx_4, rdx_1)\n1401b3df9        int64_t* rcx_3 = *(arg1 + 0x278)\n1401b3e03        if (rax_3 == 0)\n1401b3e03        rdx_1 = 0\n1401b3e07        int64_t r8_1 = *rcx_3\n1401b3e0a        result = (*(r8_1 + 8))(rcx_3, rdx_1, r8_1)\n1401b3e25        i = *(i + 8)\n1401b3e42        return result",
+  "fetched_at": "2026-04-26T17:25:43Z"
+}

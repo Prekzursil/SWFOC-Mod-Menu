@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fdc80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass\n   TaskForceClass member function inherited by SpaceTaskForceClass\n   TaskForceClass member function inherited by LandTaskForceClass */\n\nundefined8 __thiscall\nTaskForceClass::vfunction32(TaskForceClass *this,undefined8 param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  \n  if (*(longlong *)(param_2 + 0x18) - (longlong)*(longlong **)(param_2 + 0x10) >> 3 != 1) {\n    FUN_140248190(param_1,\"Set_Plan_Result - invalid number of parameters; expected 1, got %d\");\n    return 0;\n  }\n  plVar1 = (longlong *)**(longlong **)(param_2 + 0x10);\n  if (plVar1 != (longlong *)0x0) {\n    for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n        puVar2 = *(undefined **)(puVar2 + 8)) {\n      if (puVar2 == &DAT_140a157b0) {\n        (**(code **)*plVar1)(plVar1);\n        *(char *)(this[1].offset_0x50 + 0x15) = (char)plVar1[2];\n        (**(code **)(*plVar1 + 8))(plVar1);\n        return 0;\n      }\n    }\n  }\n  FUN_140248190(param_1,\"Set_Plan_Result - invalid type for parameter 1.  Expected boolean.\");\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:24:40Z"
+}

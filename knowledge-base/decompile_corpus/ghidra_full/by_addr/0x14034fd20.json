@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034fd20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ShellComponentClass::vfunction13(ShellComponentClass *this,undefined8 param_1)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  \n  plVar1 = (this->ShellComponentClass_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    FUN_140265280(plVar1,param_1,0);\n    lVar2 = (this->BaseComponentClass_data).offset_0x78;\n    if ((lVar2 == 0) || ((*(byte *)(lVar2 + 0x3e3) & 0x40) == 0)) {\n                    /* WARNING: Could not recover jumptable at 0x00014034fd6b. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (*this->vftablePtr->vfunction26)(this,(float *)&DAT_140b28f7c,(float *)&DAT_140b28f88);\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:46Z"
+}

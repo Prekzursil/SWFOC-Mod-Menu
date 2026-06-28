@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007dab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007dab3        int64_t arg_10 = arg2\n14007dab7        int64_t arg_18 = arg3\n14007dabb        int64_t r9\n14007dabb        int64_t arg_20 = r9\n14007dae3        int64_t i = 0\n14007daea        int64_t rdi_1 = -1\n14007db00        char var_438[0x408]\n14007db00        j_sub_140771450(data_140a60d90 | 1, &var_438, -1, arg2, nullptr, &arg_18)\n14007db05        int32_t result = &var_438\n14007db10        rdi_1 += 1\n14007db17        do while (var_438[rdi_1] != 0)\n14007db1e        if (rdi_1.d s> 0)\n14007db30        int32_t r14_1 = sx.d(var_438[i])\n14007db39        if (r14_1.b != 0)\n14007db4f        if (((*(arg1 + 0x20) - *(arg1 + 0x18)) & 0xffffffffffffffe0) == 0 || *(arg1 + 0x10) != 0)\n14007db54        sub_14007e6c0(arg1)\n14007db59        *(arg1 + 0x10) = 0\n14007db6c        void* rdi_5 = ((*(arg1 + 0x20) - *(arg1 + 0x18)) & 0xffffffffffffffe0) + *(arg1 + 0x18)\n14007db70        result = isgraph(r14_1)\n14007db7e        if (result != 0 || r14_1.w == 0x20)\n14007db96        void* rcx_5 = rdi_5 - 0x20\n14007db9a        if (*(rdi_5 - 8) u>= 8)\n14007db9c        rcx_5 = *(rdi_5 - 0x20)\n14007dbb5        void* var_448\n14007dbb5        result = sub_14007f7a0(rdi_5 - 0x20, &var_448, rcx_5 + (*(rdi_5 - 0x10) << 1), r14_1.w)\n14007db85        if (r14_1.w == 0xa)\n14007db8a        result = sub_14007e6c0(arg1)\n14007dbba        i += 1\n14007dbc0        do while (i s< sx.q(rdi_1.d))\n14007dbdb        return result",
+  "fetched_at": "2026-04-26T16:57:11Z"
+}

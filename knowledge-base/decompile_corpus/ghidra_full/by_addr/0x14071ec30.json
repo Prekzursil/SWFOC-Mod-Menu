@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071ec30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall AttackActionClass::vfunction10(AttackActionClass *this)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  undefined4 uVar3;\n  undefined4 uVar4;\n  char cVar5;\n  undefined4 uVar6;\n  \n  uVar4 = DAT_1408007b4;\n  lVar1 = (this->ActionClass_data).offset_0x98;\n  if (lVar1 != 0) {\n    uVar6 = FUN_1401ffbb0(&DAT_140a13e24,DAT_1408007b4,DAT_1408007c0);\n    uVar3 = DAT_1407ffaf8;\n    cVar5 = FUN_1403a92f0(lVar1,6,0xffff,1,uVar6,DAT_1407ffaf8,0,0,0,0);\n    if (cVar5 == '\\0') {\n      lVar2 = *(longlong *)(lVar1 + 0x298);\n      uVar6 = FUN_140395920(lVar1);\n      FUN_1403a92f0(lVar1,uVar6,0,*(undefined1 *)(lVar2 + 0x30),uVar4,uVar3,0,0,0,0);\n    }\n    register0x00000020 = (BADSPACEBASE *)FUN_14071f050(this,0);\n  }\n  return CONCAT71((int7)((ulonglong)register0x00000020 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:58:43Z"
+}

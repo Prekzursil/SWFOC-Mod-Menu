@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d7e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021d7f8        char const* const rax_1\n14021d7f8        if (sub_140216870() == 0)\n14021d801        rax_1 = \"{0FC0F8BD-6DC5-48fa-B8FB-7B7B7B82AFB1} Insert version number here...\"\n14021d7fa        rax_1 = sub_140216870()\n14021d81c        SYSTEMTIME systemTime\n14021d81c        if (FileTimeToSystemTime(&rax_1[0xac], &systemTime) == 0)\n14021d915        return &data_140a7e100\n14021d825        if (arg1 != 0)\n14021d8e6        uint32_t wSecond = zx.d(systemTime.wSecond)\n14021d8ea        uint32_t wMinute = zx.d(systemTime.wMinute)\n14021d8f1        sub_14021dc70(&data_140a7e100, 0x100, \"%02d:%02d:%02d\", zx.q(systemTime.wHour))\n14021d903        return &data_140a7e100\n14021d82b        uint64_t wMonth = zx.q(systemTime.wMonth)\n14021d83a        if (arg2 != 0)\n14021d8a5        uint32_t wYear_1 = zx.d(systemTime.wYear)\n14021d8a9        uint32_t wDay_1 = zx.d(systemTime.wDay)\n14021d8b0        sub_14021dc70(&data_140a7e100, 0x100, \"%d-%d-%d\", wMonth)\n14021d8c2        return &data_140a7e100\n14021d857        uint32_t wSecond_1 = zx.d(systemTime.wSecond)\n14021d85b        uint32_t wMinute_1 = zx.d(systemTime.wMinute)\n14021d862        uint32_t wHour = zx.d(systemTime.wHour)\n14021d86b        uint32_t wYear = zx.d(systemTime.wYear)\n14021d877        uint32_t wDay = zx.d(systemTime.wDay)\n14021d87c        sub_14021dc70(&data_140a7e100, 0x100, \"%d-%d-%d - %02d:%02d:%02d\", wMonth)\n14021d88e        return &data_140a7e100",
+  "fetched_at": "2026-04-26T17:29:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140591f60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140591f6b        struct BehaviorClass::BarrageAreaBehaviorClass::VTable** result = operator new(0x40)\n140591f76        if (result == 0)\n140591fb6        return result\n140591f7b        sub_1404c32d0(result)\n140591f8a        *result = &BarrageAreaBehaviorClass::`vftable'{for `BehaviorClass'}\n140591f94        result[1] = &BarrageAreaBehaviorClass::`vftable'{for `RefCountClass'}\n140591f9f        result[3] = &BarrageAreaBehaviorClass::`vftable'{for `SignalListenerClass'}\n140591fa3        sub_1404c30b0(result)\n140591fb0        return result",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

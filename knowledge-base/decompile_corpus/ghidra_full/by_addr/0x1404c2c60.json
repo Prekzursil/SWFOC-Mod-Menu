@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2c60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall HintBehaviorClass::vfunction9(void)\n\n{\n  return \"HintBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:10:48Z"
+}

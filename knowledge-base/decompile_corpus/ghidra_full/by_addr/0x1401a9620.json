@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a9620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401a9620(longlong param_1,longlong param_2,longlong param_3)\n\n{\n  char cVar1;\n  undefined4 local_res8 [2];\n  \n  if ((*(uint *)(param_2 + 0x24) >> 0x10 & 1) != 0) {\n    if (((*(uint *)(param_2 + 0x24) >> 0x14 & 1) != 0) &&\n       ((*(code **)(param_1 + 0x10) == (code *)0x0 ||\n        (cVar1 = (**(code **)(param_1 + 0x10))(param_2 + 8,3,*(undefined4 *)(param_3 + 0xc)),\n        cVar1 != '\\0')))) {\n      local_res8[0] = 3;\n      FUN_1401a82e0(*(undefined8 *)(param_3 + 0x38),local_res8);\n    }\n    if ((*(code **)(param_1 + 0x10) == (code *)0x0) ||\n       (cVar1 = (**(code **)(param_1 + 0x10))(param_2 + 8,2,*(undefined4 *)(param_3 + 0xc)),\n       cVar1 != '\\0')) {\n      local_res8[0] = 2;\n      FUN_1401a82e0(*(undefined8 *)(param_3 + 0x38),local_res8);\n    }\n    if ((*(char *)(param_1 + 0x31) != '\\0') &&\n       ((*(code **)(param_1 + 0x10) == (code *)0x0 ||\n        (cVar1 = (**(code **)(param_1 + 0x10))(param_2 + 8,1,*(undefined4 *)(param_3 + 0xc)),\n        cVar1 != '\\0')))) {\n      local_res8[0] = 1;\n      FUN_1401a82e0(*(undefined8 *)(param_3 + 0x38),local_res8);\n    }\n  }\n  if ((*(code **)(param_1 + 0x10) == (code *)0x0) ||\n     (cVar1 = (**(code **)(param_1 + 0x10))(param_2 + 8,0,*(undefined4 *)(param_3 + 0xc)),\n     cVar1 != '\\0')) {\n    local_res8[0] = 0;\n    FUN_1401a82e0(*(undefined8 *)(param_3 + 0x38),local_res8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:24Z"
+}

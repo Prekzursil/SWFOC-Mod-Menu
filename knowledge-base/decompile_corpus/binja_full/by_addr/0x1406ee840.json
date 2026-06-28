@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ee840",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_absorb_blaster",
+  "body": "1406ee860        int64_t* rax_1\n1406ee860        if ((*(*arg1 + 0x28))().b != 0)\n1406ee866        rax_1 = arg1[0x2e]\n1406ee870        if (rax_1 != 0)\n1406ee876        void* rdx = *rax_1\n1406ee87c        if (rdx != 0 && sub_14048e290(arg1, rdx).b != 0 && (((*(arg3 + 0x298))[0x3fd].d - 1) & 0xfffffffd) != 0)\n1406ee8a9        int32_t zmm0_1\n1406ee8a9        zmm0_1, rax_1 = sub_1405324d0()\n1406ee8b9        if (not(arg1[0x2f].d.d f<= zmm0_1))\n1406ee8ea        int128_t zmm1\n1406ee8ea        zmm1.d = (*(arg2 + 0x5c)).d f+ *(*(arg3 + 0x298) + 0x474) f* *(arg1 + 0x17c) f+ arg1[0x30].d\n1406ee8ee        uint64_t rax_3\n1406ee8ee        float zmm6_1\n1406ee8ee        rax_3, zmm6_1 = sub_1403a89d0(arg2, zmm1)\n1406ee900        if (not(*(arg2 + 0x5c) <= zmm6_1))\n1406ee90b        sub_14048e4d0(arg1, arg2, arg3)\n1406ee910        rax_3.b = 1\n1406ee921        return rax_3\n1406ee927        rax_1.b = 0\n1406ee933        return rax_1",
+  "fetched_at": "2026-04-26T16:44:14Z"
+}

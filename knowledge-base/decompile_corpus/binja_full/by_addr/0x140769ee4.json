@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ee4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769ee8        int64_t rax = _onexit(arg1)\n140769eed        int32_t rax_1 = (neg.q(rax)).d\n140769efa        return zx.q(neg.d(sbb.d(rax_1, rax_1, rax != 0)) - 1)",
+  "fetched_at": "2026-04-26T17:30:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140431c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140431c35        void* rax_1 = (*(*arg3 + 0x10))(arg3, 3)\n140431c3b        int32_t i = 0\n140431c57        while (i s<= 2)\n140431c42        if (i != 0 && sub_1403f6d90(rax_1, i) == 0)\n140431c72        return zx.q(i)\n140431c52        i += 1\n140431c65        return 0",
+  "fetched_at": "2026-04-26T17:26:55Z"
+}

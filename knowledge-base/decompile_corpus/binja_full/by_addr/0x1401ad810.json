@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ad810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ad81e        struct alD3dSimpleEngineParam::alD3dShadowExtrusionParam::VTable** result = operator new(0x10)\n1401ad826        if (result == 0)\n1401ad841        return result\n1401ad82f        result[1] = arg1\n1401ad833        *result = &alD3dShadowExtrusionParam::`vftable'{for `alD3dSimpleEngineParam'}\n1401ad83b        return result",
+  "fetched_at": "2026-04-26T17:25:28Z"
+}

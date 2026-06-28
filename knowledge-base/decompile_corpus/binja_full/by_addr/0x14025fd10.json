@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025fd10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025fd1a        void** rdi = data_140b0a0d8\n14025fd21        void** rbx = rdi[1]\n14025fd29        while (*(rbx + 0x19) == 0)\n14025fd42        sub_14025d140(&data_140b0a0d8, &data_140b0a0d8, rbx[2])\n14025fd47        void** rcx_1 = rbx\n14025fd4f        rbx = *rbx\n14025fd52        j_sub_1407864b8(rcx_1)\n14025fd5d        rdi[1] = rdi\n14025fd61        *rdi = rdi\n14025fd64        rdi[2] = rdi\n14025fd68        int64_t rdi_1 = data_140b0a0f0\n14025fd6f        int64_t* rbx_1 = data_140b0a0e8\n14025fd76        data_140b0a0e0 = 0\n14025fd84        if (rbx_1 != rdi_1)\n14025fd89        sub_14025d470(rbx_1)\n14025fd8e        rbx_1 = &rbx_1[0x14]\n14025fd98        do while (rbx_1 != rdi_1)\n14025fd9a        rbx_1 = data_140b0a0e8\n14025fda1        int64_t* rcx_3 = data_140b0a0c0\n14025fda8        data_140b0a0f0 = rbx_1\n14025fdb2        if (rcx_3 != 0)\n14025fdbc        (**rcx_3)(rcx_3, 1)\n14025fdbe        data_140b0a0c0 = 0\n14025fdd3        return sub_14013edd0() __tailcall",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

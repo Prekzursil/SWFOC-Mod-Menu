@@ -1,0 +1,7 @@
+{
+  "addr": "0x140629ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: virtual void * __ptr64 __cdecl Concurrency::details::UMSFreeThreadProxy::`scalar\n   deleting destructor'(unsigned int) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release\n   ***** Removed Bad FID Symbol ***** */\n\nvoid * __thiscall SquashBehaviorClass::~SquashBehaviorClass(SquashBehaviorClass *this,uint param_1)\n\n{\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  BehaviorClass::~BehaviorClass((BehaviorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x40);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:31:43Z"
+}

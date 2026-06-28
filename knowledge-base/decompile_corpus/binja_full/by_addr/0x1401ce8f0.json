@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ce8f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ce8fe        int64_t* rax = arg2\n1401ce901        arg2[2] = 0\n1401ce90a        if (arg2[3] u>= 8)\n1401ce90c        rax = *arg2\n1401ce90f        *rax = 0\n1401ce912        int32_t rdx = *(arg1 + 0x198)\n1401ce91b        if (rdx s>= 1)\n1401ce921        int32_t zmm1 = *arg3\n1401ce92c        if (not(zmm1 f< 0f))\n1401ce92e        float zmm0 = arg3[1]\n1401ce943        if (not(zmm0 < 0f) && not(zmm1 f> *(arg1 + 0x4c)) && not(zmm0 f> *(arg1 + 0x50)))\n1401ce94d        int32_t rax_1 = *(arg1 + 0x9c)\n1401ce953        int32_t rcx = int.d(zmm0 f/ *(arg1 + 0xa0))\n1401ce959        if (rcx s>= rax_1)\n1401ce959        rcx = rax_1\n1401ce95c        int32_t rcx_1 = rcx + *(arg1 + 0x98)\n1401ce966        if (rcx + *(arg1 + 0x98) s>= 0 && rcx_1 s< rdx)\n1401ce974        int64_t rbx = sx.q(rcx_1)\n1401ce985        sub_14007f690(arg2, *(*(*(arg1 + 0xa8) + (rbx << 3)) + 0x98))\n1401ce9a1        return zx.q(**(*(arg1 + 0xa8) + (rbx << 3)))\n1401ce9ac        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:26:37Z"
+}

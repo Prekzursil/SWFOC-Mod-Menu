@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028a950",
+  "tool": "ghidra",
+  "fact_id": "rva_game_mode_manager_get_mode_by_type",
+  "body": "\nundefined8 FUN_14028a950(longlong param_1,int param_2)\n\n{\n  int iVar1;\n  int iVar2;\n  longlong lVar3;\n  \n  iVar2 = 0;\n  if (0 < *(int *)(param_1 + 0x50)) {\n    lVar3 = 0;\n    do {\n      iVar1 = (**(code **)(**(longlong **)(lVar3 + *(longlong *)(param_1 + 0x48)) + 0xe0))();\n      if (iVar1 == param_2) {\n        return *(undefined8 *)(*(longlong *)(param_1 + 0x48) + (longlong)iVar2 * 8);\n      }\n      iVar2 = iVar2 + 1;\n      lVar3 = lVar3 + 8;\n    } while (iVar2 < *(int *)(param_1 + 0x50));\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:12Z"
+}

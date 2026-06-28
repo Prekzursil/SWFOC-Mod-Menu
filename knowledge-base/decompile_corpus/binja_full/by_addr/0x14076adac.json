@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076adac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076adac        int32_t arg_8 = arg1\n14076adc1        if (IsProcessorFeaturePresent(PF_FASTFAIL_AVAILABLE) != 0)\n14076adc9        trap(0xd)\n14076add2        capture_current_context(&data_140b3ba70)\n14076addc        data_140b3bb68 = __return_addr\n14076adec        data_140b3bb08 = &arg_8\n14076adfa        data_140b3b9e0 = data_140b3bb68\n14076ae01        data_140b3b9d0 = 0xc0000409\n14076ae0b        data_140b3b9d4 = 1\n14076ae15        data_140b3b9e8 = 1\n14076ae33        data_140b3b9f0 = zx.q(arg_8)\n14076ae3e        __raise_securityfailure(&data_1408d0c28)\n14076ae3e        noreturn",
+  "fetched_at": "2026-04-26T17:30:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769208",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076922c        int32_t rbx_1 = arg4 - arg3.d\n14076922f        int32_t rdi_1 = arg2 - arg1.d\n14076923a        uint32_t rax_2\n14076923a        int64_t rsi\n14076923a        if (arg5 != 0)\n14076924c        rsi = *(arg5 + 8)\n140769250        rax_2 = *arg5\n140769241        rsi = *(___lc_locale_name_func() + 8)\n140769245        rax_2 = ___lc_collate_cp_func()\n140769255        if (rsi != 0)\n14076929c        int32_t rax_4 = __crtCompareStringA(rsi, 0x1000, arg1, rdi_1, arg3, rbx_1, rax_2)\n1407692a3        if (rax_4 != 0)\n1407692b7        return rax_4 - 2\n1407692aa        *_errno() = 0x16\n1407692b0        return 0x7fffffff\n140769257        int32_t rax_3 = rbx_1\n140769261        if (rdi_1 s< rbx_1)\n140769261        rax_3 = rdi_1\n140769267        int32_t result = memcmp(arg1, arg3, sx.q(rax_3))\n140769272        if (result == 0 && rdi_1 != rbx_1)\n140769277        result = (rsi + 1).d\n14076927c        if (rdi_1 s< rbx_1)\n14076927c        return -1\n1407692d4        return result",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

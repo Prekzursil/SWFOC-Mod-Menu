@@ -1,0 +1,7 @@
+{
+  "addr": "0x140544e70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LuaStopAllSpeech::vfunction11(void)\n\n{\n  FUN_14022c8e0(&DAT_140a7dfe0);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:27Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f23d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCableAttackAbilityClass::vfunction3_for_RefCountClass(CableAttackAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((CableAttackAbilityClass *)&this[-1].CableAttackAbilityClass_data.offset_0x48,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:47:38Z"
+}

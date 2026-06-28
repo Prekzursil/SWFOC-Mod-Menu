@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407df380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1407df380(undefined8 *param_1)\n\n{\n  *param_1 = 0;\n  param_1[1] = 0;\n  param_1[2] = 0;\n  param_1[3] = 0;\n  param_1[4] = 0;\n  param_1[5] = 0;\n  FUN_1407dffe0(param_1,0x20);\n  if ((ulonglong)((longlong)(param_1[5] - param_1[3]) / 0xc) < 0x20) {\n    FUN_140153a90(param_1 + 3,0x20);\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:59:15Z"
+}

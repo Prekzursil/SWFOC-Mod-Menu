@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a9830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a983a        void* rbx = *(arg1 + 8)\n1401a9844        if (rbx != 0)\n1401a984b        int32_t i = 0\n1401a9850        if (*(rbx + 0x14) u<= 0)\n1401a988c        CBitVect32GSI::~CBitVect32GSI(rbx)\n1401a9899        j_sub_1407864b8(rbx)\n1401a9857        void* rax = sub_1401a83f0(rbx, i)\n1401a9862        if (rax != 0)\n1401a9867        sub_1401a8570(rax)\n1401a9874        j_sub_1407864b8(rax)\n1401a9879        rbx = *(arg1 + 8)\n1401a987d        i += 1\n1401a9882        do while (i u< *(rbx + 0x14))\n1401a9887        if (rbx != 0)\n1401a988c        CBitVect32GSI::~CBitVect32GSI(rbx)\n1401a9899        j_sub_1407864b8(rbx)\n1401a98a3        void* rbx_2 = *(arg1 + 0x38)\n1401a98aa        if (rbx_2 == 0)\n1401a98aa        return \n1401a98af        CBitVect32GSI::~CBitVect32GSI(rbx_2)\n1401a98bc        j_sub_1407864b8(rbx_2)\n1401a98c1        *(arg1 + 0x38) = 0\n1401a98d3        return ",
+  "fetched_at": "2026-04-26T17:25:20Z"
+}

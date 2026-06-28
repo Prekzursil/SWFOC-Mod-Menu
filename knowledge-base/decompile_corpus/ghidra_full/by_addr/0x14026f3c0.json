@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026f3c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DrawPrimitiveClass member function inherited by TextureRectClass\n   DrawPrimitiveClass member function inherited by FillRectClass\n   DrawPrimitiveClass member function inherited by DrawLineSegmentClass */\n\nvoid __thiscall DrawPrimitiveClass::vfunction12(DrawPrimitiveClass *this)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  iVar2 = DAT_140a16cfc * 2 >> 1;\n  if (iVar2 <= DAT_140a16cf8) {\n    iVar1 = iVar2 / 10;\n    if (iVar1 < 10) {\n      iVar1 = 10;\n    }\n    FUN_1401399c0(&PTR_vftable_140a16ce8,iVar1 + iVar2,0,1);\n  }\n  *(DrawPrimitiveClass **)(DAT_140a16cf0 + (longlong)DAT_140a16cf8 * 8) = this;\n  DAT_140a16cf8 = DAT_140a16cf8 + 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:25Z"
+}

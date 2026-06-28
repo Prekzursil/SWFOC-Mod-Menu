@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019e680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall alRawAnim::vfunction11(alRawAnim *this,char *param_1)\n\n{\n  int iVar1;\n  char *_Str1;\n  int iVar2;\n  \n  iVar2 = 0;\n  iVar1 = (*this->vftablePtr->vfunction9)();\n  if (0 < iVar1) {\n    do {\n      _Str1 = (char *)(*this->vftablePtr->vfunction10)(this,iVar2);\n      iVar1 = _stricmp(_Str1,param_1);\n      if (iVar1 == 0) {\n        return iVar2;\n      }\n      iVar2 = iVar2 + 1;\n      iVar1 = (*this->vftablePtr->vfunction9)(this);\n    } while (iVar2 < iVar1);\n  }\n  return -1;\n}",
+  "fetched_at": "2026-04-26T17:37:40Z"
+}

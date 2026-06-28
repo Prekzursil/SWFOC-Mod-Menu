@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c078",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl try_cor_exit_process(unsigned int)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl try_cor_exit_process(uint param_1)\n\n{\n  BOOL BVar1;\n  FARPROC pFVar2;\n  HMODULE local_res10 [3];\n  \n  local_res10[0] = (HMODULE)0x0;\n  BVar1 = GetModuleHandleExW(0,L\"mscoree.dll\",local_res10);\n  if (BVar1 != 0) {\n    pFVar2 = GetProcAddress(local_res10[0],\"CorExitProcess\");\n    if (pFVar2 != (FARPROC)0x0) {\n      (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(param_1);\n    }\n  }\n  if (local_res10[0] != (HMODULE)0x0) {\n    FreeLibrary(local_res10[0]);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:59Z"
+}

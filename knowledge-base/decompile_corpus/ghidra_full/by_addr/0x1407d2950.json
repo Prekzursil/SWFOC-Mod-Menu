@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d2950",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d2950(undefined8 param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  int iVar3;\n  undefined **ppuVar4;\n  uint uVar5;\n  double dVar6;\n  int local_res10 [2];\n  \n  lVar2 = FUN_1407ce170(param_1,1,local_res10);\n  iVar3 = local_res10[0];\n  dVar6 = (double)FUN_1407ce220(param_1,2);\n  iVar1 = local_res10[0];\n  uVar5 = (uint)dVar6;\n  if ((int)uVar5 < 0) {\n    uVar5 = uVar5 + 1 + iVar3;\n  }\n  dVar6 = (double)FUN_1407ce9b0(param_1,3,DAT_1408b4700);\n  iVar3 = (int)dVar6;\n  if (iVar3 < 0) {\n    iVar3 = iVar3 + 1 + iVar1;\n  }\n  if ((int)uVar5 < 1) {\n    uVar5 = 1;\n  }\n  if (local_res10[0] < iVar3) {\n    iVar3 = local_res10[0];\n  }\n  if (iVar3 < (int)uVar5) {\n    ppuVar4 = &PTR_1407ff8a8;\n    lVar2 = 0;\n  }\n  else {\n    ppuVar4 = (undefined **)(lVar2 + -1 + (ulonglong)uVar5);\n    lVar2 = (longlong)(int)((iVar3 - uVar5) + 1);\n  }\n  FUN_1407b94a0(param_1,ppuVar4,lVar2);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:58:12Z"
+}

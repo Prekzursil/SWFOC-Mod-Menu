@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637464",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall BuzzDroidsBehaviorClass::vfunction1(BuzzDroidsBehaviorClass *this,uint param_1)\n\n{\n  ~BuzzDroidsBehaviorClass((BuzzDroidsBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1)\n  ;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:50Z"
+}

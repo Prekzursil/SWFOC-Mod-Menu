@@ -1,0 +1,7 @@
+{
+  "addr": "0x140387b70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140387b8b        void* const rsi = arg3\n140387ba2        if (arg2 != 0 && arg3 != 0 && arg2 != *(arg3 + 0x10))\n140387ba2        rsi = nullptr\n140387ba6        void* rbx = *(arg1 + 0x40)\n140387bb1        if (rbx != 0)\n140387bb6        if (arg1 != -0x40)\n140387bb8        *(arg1 + 0x40) = 0\n140387bd1        if (rbx != *(arg1 + 0xc0) && rbx != *(arg1 + 0xa8) && rbx != *(arg1 + 0x50))\n140387be8        sub_140220eb0(sub_140058570(), rbx + 0x38, arg1, 0x28)\n140387c02        sub_140220eb0(sub_140058570(), rbx + 0x38, arg1, 1)\n140387c07        *(arg1 + 0x48) = 0\n140387c0e        int64_t* result\n140387c0e        if (arg2 == 0)\n140387c24        result = arg1 + 0x50\n140387c2b        if (result != 0)\n140387c2d        void* rbx_1 = *result\n140387c33        if (rbx_1 != 0)\n140387c35        *result = 0\n140387c4d        if (rbx_1 != *(arg1 + 0xc0) && rbx_1 != *(arg1 + 0xa8) && rbx_1 != *(arg1 + 0x40))\n140387c64        sub_140220eb0(sub_140058570(), rbx_1 + 0x38, arg1, 0x28)\n140387c7e        result = sub_140220eb0(sub_140058570(), rbx_1 + 0x38, arg1, 1)\n140387c19        result = sub_140382510(arg1, arg2, arg1 + 0x40)\n140387c1e        *(arg1 + 0x48) = rsi\n140387c92        *(arg1 + 0x6d) = 0\n140387c9f        return result",
+  "fetched_at": "2026-04-26T17:20:42Z"
+}

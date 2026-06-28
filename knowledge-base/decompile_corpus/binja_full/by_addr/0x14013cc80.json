@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013cc80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013cc80        int64_t* arg_8 = arg1\n14013cc9d        int64_t rdx = *arg1\n14013ccad        int64_t rax_2 = (arg1[1] - rdx) s>> 4\n14013ccb1        int64_t rbx = 0xfffffffffffffff\n14013ccbe        if (rax_2 == 0xfffffffffffffff)\n14013cd73        sub_140022630()\n14013cd73        noreturn\n14013cccf        int64_t rcx_2 = (arg1[2] - rdx) s>> 4\n14013ccd6        uint64_t rdx_2 = rcx_2 u>> 1\n14013cce2        if (rcx_2 u<= 0xfffffffffffffff - rdx_2)\n14013cce4        rbx = rdx_2 + rcx_2\n14013cceb        if (rbx u< rax_2 + 1)\n14013cceb        rbx = rax_2 + 1\n14013ccef        int64_t arg_10 = rbx\n14013ccfa        int32_t* rax_4 = sub_140058890(arg1, rbx)\n14013cd02        int32_t* arg_20 = rax_4\n14013cd0b        void* result = ((arg2 - rdx) & 0xfffffffffffffff0) + rax_4\n14013cd13        *result = *arg3\n14013cd17        int64_t r8 = arg1[1]\n14013cd1b        int32_t* rdx_4 = *arg1\n14013cd24        if (arg2 != r8)\n14013cd36        memcpy(rax_4, rdx_4, arg2 - rdx_4)\n14013cd49        memcpy(result + 0x10, arg2, arg1[1] - arg2)\n14013cd29        memcpy(rax_4, rdx_4, r8 - rdx_4)\n14013cd5b        sub_14013cd80(arg1, rax_4, rax_2 + 1, rbx)\n14013cd72        return result",
+  "fetched_at": "2026-04-26T17:15:20Z"
+}

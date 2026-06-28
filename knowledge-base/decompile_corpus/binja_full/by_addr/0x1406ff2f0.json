@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ff2f7        return \"Galactic_Stealth_Ability\"",
+  "fetched_at": "2026-04-26T17:26:55Z"
+}

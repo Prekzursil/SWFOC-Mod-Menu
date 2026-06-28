@@ -1,0 +1,7 @@
+{
+  "addr": "0x140628dc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140628dcb        struct BehaviorClass::WallBehaviorClass::VTable** result = operator new(0x40)\n140628dd6        if (result == 0)\n140628e0e        return result\n140628ddb        sub_1404c32d0(result)\n140628de7        *result = &WallBehaviorClass::`vftable'{for `BehaviorClass'}\n140628df1        result[1] = &WallBehaviorClass::`vftable'{for `RefCountClass'}\n140628dfc        result[3] = &WallBehaviorClass::`vftable'{for `SignalListenerClass'}\n140628e08        return result",
+  "fetched_at": "2026-04-26T17:23:57Z"
+}

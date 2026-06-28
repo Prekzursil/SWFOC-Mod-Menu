@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023e0a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall TreeCullClass::~TreeCullClass(TreeCullClass *this,longlong param_1)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong lVar4;\n  undefined7 uVar5;\n  \n  lVar4 = (this->TreeCullClass_data).offset_0x0;\n  lVar3 = 0;\n  while( true ) {\n    lVar2 = lVar4;\n    if (lVar2 == 0) {\n      return 0;\n    }\n    if (lVar2 == param_1) break;\n    lVar4 = *(longlong *)(lVar2 + 0x10);\n    lVar3 = lVar2;\n  }\n  uVar1 = *(undefined8 *)(lVar2 + 0x10);\n  uVar5 = (undefined7)((ulonglong)uVar1 >> 8);\n  if (lVar3 == 0) {\n    (this->TreeCullClass_data).offset_0x0 = uVar1;\n    return CONCAT71(uVar5,1);\n  }\n  *(undefined8 *)(lVar3 + 0x10) = uVar1;\n  return CONCAT71(uVar5,1);\n}",
+  "fetched_at": "2026-04-26T18:09:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404456f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140445701        *arg1 = 0\n140445704        *(arg1 + 0x4c) = 0\n14044570b        *(arg1 + 0x30) = 0x3f800000\n140445712        *(arg1 + 0x34) = 0x3f800000\n140445719        *(arg1 + 0x38) = 0x3f800000\n140445720        *(arg1 + 0x3c) = 0x3f800000\n140445727        *(arg1 + 0x40) = 0x3f800000\n14044572e        *(arg1 + 0x44) = 0x3f800000\n140445736        *(arg1 + 0x98) = 0x41700000\n140445740        *(arg1 + 0x9c) = 0x41700000\n14044574a        int64_t* lpMem = *(arg1 + 0x1b0)\n140445754        if (lpMem != 0)\n140445760        if ((*(arg1 + 0x1bc) & 0x80000000) == 0)\n140445780        sub_14001eef0(lpMem, 3)\n140445770        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140445785        *(arg1 + 0x1bc) &= 0x80000000\n14044578f        *(arg1 + 0x1b0) = 0\n140445796        *(arg1 + 0x1b8) = 0\n1404457a8        __builtin_memcpy(&arg1[0x1c8], \"\\x60\\x00\\x00\\x00\\x08\\x00\\x00\\x00\\x7d\\x00\\x00\\x00\\x7d\\x00\\x00\\x00\\x00\", 0x11)\n1404457da        return ",
+  "fetched_at": "2026-04-26T17:27:22Z"
+}

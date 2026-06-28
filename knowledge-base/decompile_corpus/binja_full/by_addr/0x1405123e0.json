@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405123e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405123f4        int64_t* rdi = arg4\n140512400        int32_t* i\n140512400        if (arg4 != 0)\n140512408        i = (**arg4)(arg4)\n14051240d        if (arg4 == 0 || i == 0)\n140512424        label_140512424:\n140512424        i.b = 0\n140512419        while (i != &data_140a2bf70)\n14051241b        i = *(i + 8)\n140512422        if (i == 0)\n140512422        goto label_140512424\n140512465        i.b = 1\n14051242a        if (i.b == 0)\n14051242a        rdi = nullptr\n140512431        if (arg3 == 7)\n14051246c        if (rdi != 0)\n14051246e        int64_t r8 = *(arg1 + 0x18)\n140512472        int32_t* rcx_3 = *(arg1 + 0x10)\n140512479        if (rcx_3 != r8)\n14051247b        i = zx.q(rdi[1].d)\n14051248e        int32_t* rdx\n140512480        rdx = &rcx_3[1]\n140512486        if (*rcx_3 == i.d)\n140512495        i = memcpy(rcx_3, rdx, r8 - rdx)\n14051249a        *(arg1 + 0x18) -= 4\n14051249a        break\n140512488        rcx_3 = rdx\n14051248e        do while (rdx != r8)\n140512436        if (arg3 == 0x10)\n140512438        int64_t rcx_1 = *(arg1 + 0x10)\n140512443        i = (*(arg1 + 0x18) - rcx_1) s>> 2\n14051244a        if (i != 0)\n14051244c        *(arg1 + 0x18) = rcx_1\n140512450        int64_t* rcx_2 = *(arg1 + 0x28)\n140512457        if (rcx_2 != 0)\n14051245c        i = (*(*rcx_2 + 8))(rcx_2)\n14051245f        *(arg1 + 0x28) = 0\n1405124b3        return i",
+  "fetched_at": "2026-04-26T17:32:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407904e8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407904fc        int64_t result\n1407904fc        result.b = data_140b3c4b0 == (__security_cookie | 1)\n1407904ff        return result",
+  "fetched_at": "2026-04-26T17:31:42Z"
+}

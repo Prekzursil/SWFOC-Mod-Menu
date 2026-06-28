@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_140390320(longlong param_1)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = *(undefined8 **)(param_1 + 0x238);\n  if (puVar1 == (undefined8 *)0x0) {\n    puVar1 = (undefined8 *)FUN_140769c58();\n    if (puVar1 != (undefined8 *)0x0) {\n                    /* inlined constructor: BoardableDataPackClass::BoardableDataPackClass */\n      *puVar1 = &BoardableDataPackClass::vftable;\n      puVar1[1] = 0;\n      puVar1[2] = 0;\n      puVar1[3] = 0;\n      puVar1[4] = 0;\n      *(undefined8 **)(param_1 + 0x238) = puVar1;\n      return puVar1;\n    }\n    puVar1 = (undefined8 *)0x0;\n    *(undefined8 *)(param_1 + 0x238) = 0;\n  }\n  return puVar1;\n}",
+  "fetched_at": "2026-04-26T17:21:34Z"
+}

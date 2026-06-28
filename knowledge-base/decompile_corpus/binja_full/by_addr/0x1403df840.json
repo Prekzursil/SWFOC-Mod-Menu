@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403df840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403df843        if (arg2 == 0)\n1403df843        return \n1403df85f        struct RefCountClass::EventClass::VTable** rax_1 = operator new(0x50)\n1403df867        struct ScheduledEventClass::SetMarkerIDEventClass::VTable** rbx_1\n1403df867        if (rax_1 == 0)\n1403df876        rbx_1 = nullptr\n1403df871        rbx_1 = sub_1405b05a0(rax_1)\n1403df881        sub_1405b06b0(rbx_1, *(arg2 + 0x50), arg3)\n1403df890        sub_1403b01f0(&data_140b2ed18, rbx_1)\n1403df8a4        return ",
+  "fetched_at": "2026-04-26T17:25:08Z"
+}

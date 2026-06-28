@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074bbc4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >\n   & __ptr64 __cdecl std::basic_string<char,struct std::char_traits<char>,class std::allocator<char>\n   >::operator+=(char) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nbasic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_> * __thiscall\nstd::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>::operator+=\n          (basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_> *this,\n          char param_1)\n\n{\n  ulonglong uVar1;\n  basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_> *pbVar2;\n  undefined1 local_res10;\n  \n  uVar1 = *(ulonglong *)(this + 0x10);\n  if (uVar1 < *(ulonglong *)(this + 0x18)) {\n    *(ulonglong *)(this + 0x10) = uVar1 + 1;\n    pbVar2 = this;\n    if (0xf < *(ulonglong *)(this + 0x18)) {\n      pbVar2 = *(basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_> **)\n                this;\n    }\n    pbVar2[uVar1] =\n         (basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>)param_1;\n    pbVar2[uVar1 + 1] =\n         (basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>)0x0;\n  }\n  else {\n    FUN_140741c68(this,1,local_res10,param_1);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:06:17Z"
+}

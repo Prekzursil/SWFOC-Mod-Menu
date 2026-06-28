@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532510",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053251b        struct ScheduledEventClass::RetreatEventClass::VTable** result = operator new(0x50)\n140532526        if (result == 0)\n14053255a        return result\n14053252b        sub_140512c50(result)\n140532537        result[4].d = 0x16\n14053253e        *result = &RetreatEventClass::`vftable'{for `ScheduledEventClass'}\n140532544        *(result + 0x24) = 0xffffffff\n14053254b        result[9].b = 0\n140532554        return result",
+  "fetched_at": "2026-04-26T17:33:36Z"
+}

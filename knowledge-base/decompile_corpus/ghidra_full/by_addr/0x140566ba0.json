@@ -1,0 +1,7 @@
+{
+  "addr": "0x140566ba0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nTeamTargetingBehaviorClass::vfunction36(TeamTargetingBehaviorClass *this,longlong param_2)\n\n{\n  undefined **ppuVar1;\n  undefined8 uVar2;\n  char cVar3;\n  longlong lVar4;\n  undefined *puVar5;\n  \n  if (param_2 == 0) {\nLAB_140566c62:\n    return (ulonglong)DAT_140899788;\n  }\n  cVar3 = FUN_1403751e0(this->offset_0x18[0x53],*(undefined8 *)(param_2 + 0x1648));\n  if (cVar3 != '\\0') goto LAB_140566c62;\n  ppuVar1 = this->offset_0x18;\n  if (ppuVar1[0x1e] == (undefined *)0x0) goto LAB_140566c4f;\n  lVar4 = *(longlong *)(ppuVar1[0x1e] + 0x160);\n  if (lVar4 == 0) {\n    puVar5 = ppuVar1[0x53];\n    if (*(char *)(ppuVar1 + 0x69) != -1) {\n      if (ppuVar1[0x22] == (undefined *)0x0) goto LAB_140566c4f;\n      lVar4 = FUN_1404ec820();\n      if (lVar4 == 0) goto LAB_140566c4f;\n      lVar4 = FUN_1404ec820(this->offset_0x18[0x22]);\n      puVar5 = *(undefined **)(lVar4 + 0x298);\n    }\n    lVar4 = *(longlong *)(puVar5 + 0x520);\n    if (lVar4 == 0) {\nLAB_140566c4f:\n      return (ulonglong)DAT_140899780;\n    }\n  }\n  uVar2 = FUN_14054dc00(lVar4,param_2);\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:39:34Z"
+}

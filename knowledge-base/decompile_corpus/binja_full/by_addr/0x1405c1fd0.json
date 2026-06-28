@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c1fd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c1fea        void* rdi = arg1\n1405c1fed        int64_t i_1 = 6\n1405c2005        int64_t i\n1405c1ff5        sub_1405c20b0(rdi)\n1405c1ffa        rdi += 0x90\n1405c2001        i = i_1\n1405c2001        i_1 -= 1\n1405c2005        do while (i != 1)\n1405c2009        *(arg1 + 0x378) = 0xf\n1405c2014        *(arg1 + 0x360) = 0\n1405c201b        *(arg1 + 0x370) = 0\n1405c2022        *(arg1 + 0x388) = 0\n1405c2029        *(arg1 + 0x398) = 0\n1405c2030        *(arg1 + 0x3a0) = 0xf\n1405c203e        if (arg2 != 0)\n1405c2046        sub_1405c2a10(arg1, arg2)\n1405c2050        *(arg1 + 0x3b0) = 0\n1405c2057        *(arg1 + 0x3a8) = 2\n1405c2061        int64_t* rax = operator new(0x20)\n1405c2069        int64_t* rax_1\n1405c2069        if (rax == 0)\n1405c2077        rax_1 = nullptr\n1405c2070        rax_1 = sub_140046350(rax, 0)\n1405c2084        *(arg1 + 0x3b0) = rax_1\n1405c208e        *(arg1 + 0x3c0) = 0\n1405c2094        *(arg1 + 0x3b8) = 0\n1405c209b        *(arg1 + 0x3c4) = 0\n1405c20ac        return arg1",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

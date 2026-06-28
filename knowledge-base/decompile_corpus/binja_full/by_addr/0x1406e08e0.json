@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e08e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e08ed        int64_t var_10 = 0xf\n1406e08fb        int32_t rdx = data_140a43ec4\n1406e0904        void* var_28 = nullptr\n1406e090e        int64_t var_18 = 0\n1406e091d        int64_t* rbx\n1406e091d        if (sub_1405f41e0(arg2, rdx, &var_28) != 0)\n1406e0939        int64_t zmm0_1\n1406e0939        if (sub_1404dd530(*(arg1 + 0xa0), &var_28, 0) == 0)\n1406e0945        zmm0_1 = (zx.o(0)).q\n1406e093b        zmm0_1 = 0x3ff0000000000000\n1406e0948        *arg3 = zmm0_1\n1406e094c        rbx.b = 1\n1406e091f        rbx.b = 0\n1406e0957        if (var_10 u>= 0x10)\n1406e0959        void* rcx_2 = var_28\n1406e0961        void* rax_3 = rcx_2\n1406e096b        if (var_10 + 1 u>= 0x1000)\n1406e096d        rcx_2 = *(rcx_2 - 8)\n1406e0980        if (rax_3 - rcx_2 - 8 u> 0x1f)\n1406e0995        _invalid_parameter_noinfo_noreturn()\n1406e0995        noreturn\n1406e0982        j_sub_1407864b8(rcx_2)\n1406e0994        return zx.q(rbx.b)",
+  "fetched_at": "2026-04-26T17:25:55Z"
+}

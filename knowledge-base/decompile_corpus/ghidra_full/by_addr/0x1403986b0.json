@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403986b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_1403986b0(longlong *param_1,int param_2)\n\n{\n  char cVar1;\n  int iVar2;\n  undefined8 uVar3;\n  longlong lVar4;\n  int iVar5;\n  \n  if (param_2 - 1U < 0x4c) {\n    switch(param_2) {\n    case 1:\n      if (*(char *)((longlong)param_1 + 0x342) != -1) {\n        (**(code **)(*param_1 + 0x10))(param_1,0x10);\n      }\n      break;\n    case 10:\n    case 0x26:\n    case 0x27:\n      lVar4 = FUN_140397d90(param_1,param_2);\n      if (lVar4 != 0) {\n        FUN_14043ead0(&DAT_140b2f2e0,param_2);\n      }\n      break;\n    case 0x2f:\n      lVar4 = (**(code **)(*DAT_140b15418 + 0x220))(DAT_140b15418,(int)param_1[0xb]);\n      if (lVar4 != 0) {\n        BitwiseAnd<bool>::BitwiseAnd<bool>_Constructor_or_Destructor(lVar4);\n      }\n    }\n    cVar1 = FUN_14043fa90(&DAT_140b2f2e0,param_2);\n    if ((cVar1 != '\\0') || ((char)param_1[0x69] == -1)) {\n      return param_1[((longlong)param_2 + 0x3d) * 2] != 0;\n    }\n    uVar3 = (**(code **)(*param_1 + 0x10))(param_1,0x16);\n    iVar5 = 0;\n    iVar2 = FUN_140405300(uVar3);\n    if (0 < iVar2) {\n      do {\n        lVar4 = FUN_1404052d0(uVar3,iVar5);\n        if ((lVar4 != 0) && (cVar1 = FUN_1403986b0(lVar4,param_2), cVar1 != '\\0')) {\n          return true;\n        }\n        iVar5 = iVar5 + 1;\n        iVar2 = FUN_140405300(uVar3);\n      } while (iVar5 < iVar2);\n    }\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:30:44Z"
+}

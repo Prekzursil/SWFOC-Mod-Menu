@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026c820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026c82e        int128_t zmm0\n14026c82e        zmm0.d = arg2.d f+ *(arg1 + 0x1c)\n14026c83b        int128_t zmm6 = arg3\n14026c843        float zmm3 = *(arg1 + 0x20) f- zmm6.d\n14026c847        int128_t zmm7 = arg2\n14026c84a        *(arg1 + 0x1c) = zmm0.d\n14026c84f        *(arg1 + 0x20) = zmm3\n14026c854        int64_t* rcx = *(arg1 + 0x50)\n14026c85b        (*(*rcx + 0x18))(rcx)\n14026c85e        int64_t* rcx_1 = *(arg1 + 0x58)\n14026c86b        (*(*rcx_1 + 0x18))(rcx_1, zmm7, zmm6)\n14026c86e        arg2 = *(arg1 + 0x70)\n14026c876        arg3.d = zmm6.d f+ *(arg1 + 0x28)\n14026c87b        int64_t* rcx_2 = *(arg1 + 0x60)\n14026c882        arg3.d = arg3.d f- arg2.d\n14026c886        arg2.d = arg2.d f+ zmm7.d\n14026c88a        (*(*rcx_2 + 0x18))(rcx_2, arg2, arg3)\n14026c88d        zmm7.d = zmm7.d f+ *(arg1 + 0x24)\n14026c892        zmm0 = *(arg1 + 0x70)\n14026c89e        arg3.d = zmm0.d f+ zmm6.d\n14026c8a2        zmm7.d = zmm7.d f- zmm0.d\n14026c8bb        jump(*(**(arg1 + 0x68) + 0x18))",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

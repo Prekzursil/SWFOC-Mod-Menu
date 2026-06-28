@@ -1,0 +1,7 @@
+{
+  "addr": "0x140537010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053702c        int32_t rax = sub_140294a70(&data_140a16fd0)\n14053703a        void* result = sub_14035e330(data_140b15418, rax)\n140537042        if (result == 0)\n1405370ac        *(arg1 + 0x48) = 10f * 10f\n1405370bb        return result\n14053704e        float zmm0 = (*(result + 0x30) f+ *(result + 0x2c)) / 2f\n14053705a        *(arg1 + 0x48) = zmm0 * zmm0\n14053705f        void* rax_1 = data_140b15418\n140537069        if (rax_1 == 0)\n140537081        jump(*(*arg1 + 0x30))\n140537085        *(rax_1 + 0x10)\n14053709c        jump(*(*arg1 + 0x30))",
+  "fetched_at": "2026-04-26T17:33:48Z"
+}

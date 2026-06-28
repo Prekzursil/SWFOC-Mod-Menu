@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c18f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Removing unreachable block (ram,0x0001404c192a) */\n/* WARNING: Removing unreachable block (ram,0x0001404c1942) */\n/* WARNING: Removing unreachable block (ram,0x0001404c1961) */\n/* WARNING: Removing unreachable block (ram,0x0001404c1957) */\n\nvoid FUN_1404c18f0(void)\n\n{\n  FUN_1404c1000();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:12Z"
+}

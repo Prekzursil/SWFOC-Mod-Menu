@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f6fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FormationClass * FUN_1404f6fb0(longlong param_1)\n\n{\n  undefined8 *puVar1;\n  int iVar2;\n  FormationClass *pFVar3;\n  FormationClass *local_res10 [3];\n  \n  pFVar3 = (FormationClass *)FUN_140769c58(0x290);\n  if (pFVar3 != (FormationClass *)0x0) {\n    pFVar3 = FormationClass::FormationClass(pFVar3);\n    if (pFVar3 != (FormationClass *)0x0) {\n      iVar2 = DAT_140a2bcf0 + 1;\n      (pFVar3->FormationClass_data).offset_0x1a0 = DAT_140a2bcf0;\n      DAT_140a2bcf0 = iVar2;\n      puVar1 = *(undefined8 **)(param_1 + 0x18);\n      local_res10[0] = pFVar3;\n      if (puVar1 != *(undefined8 **)(param_1 + 0x20)) {\n        *puVar1 = pFVar3;\n        *(longlong *)(param_1 + 0x18) = *(longlong *)(param_1 + 0x18) + 8;\n        FUN_140423c00(pFVar3,param_1);\n        return pFVar3;\n      }\n      FUN_14001ded0(param_1 + 0x10,puVar1,local_res10);\n      FUN_140423c00(pFVar3,param_1);\n      return pFVar3;\n    }\n  }\n  return (FormationClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:19:00Z"
+}

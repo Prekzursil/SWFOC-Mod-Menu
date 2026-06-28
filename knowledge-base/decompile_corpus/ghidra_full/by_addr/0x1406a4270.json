@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a4270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1406a4270(longlong *param_1,longlong param_2,longlong param_3,longlong param_4)\n\n{\n  ulonglong uVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  \n  plVar2 = (longlong *)*param_1;\n  if (plVar2 != (longlong *)0x0) {\n    plVar3 = (longlong *)param_1[1];\n    if (plVar2 != plVar3) {\n      do {\n        if ((longlong *)*plVar2 != (longlong *)0x0) {\n          (**(code **)(*(longlong *)*plVar2 + 8))();\n        }\n        plVar2 = plVar2 + 2;\n      } while (plVar2 != plVar3);\n      plVar2 = (longlong *)*param_1;\n    }\n    uVar1 = param_1[2] - (longlong)plVar2 & 0xfffffffffffffff0;\n    plVar3 = plVar2;\n    if (0xfff < uVar1) {\n      plVar3 = (longlong *)plVar2[-1];\n      if (0x1f < (ulonglong)((longlong)plVar2 + (-8 - (longlong)plVar3))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(plVar3,uVar1 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(plVar3);\n  }\n  *param_1 = param_2;\n  param_1[1] = param_3 * 0x10 + param_2;\n  param_1[2] = param_4 * 0x10 + param_2;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:38Z"
+}

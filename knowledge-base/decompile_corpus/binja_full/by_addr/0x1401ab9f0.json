@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ab9f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ab9f9        arg1[1] = 0\n1401ab9fd        *arg1 = &alD3dResource::`vftable'\n1401aba00        arg1[2] = 0\n1401aba04        void* rax = data_140a70a40\n1401aba0b        arg1[1] = rax\n1401aba12        if (rax != 0)\n1401aba14        *(rax + 0x10) = arg1\n1401aba18        arg1[2] = 0\n1401aba1f        data_140a70a40 = arg1\n1401aba26        return arg1",
+  "fetched_at": "2026-04-26T17:25:23Z"
+}

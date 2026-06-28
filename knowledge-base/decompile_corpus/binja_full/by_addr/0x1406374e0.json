@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406374e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406374eb        struct BehaviorClass::BuzzDroidsBehaviorClass::VTable** result = operator new(0x40)\n1406374f6        if (result == 0)\n14063752e        return result\n1406374fb        sub_1404c32d0(result)\n140637507        *result = &BuzzDroidsBehaviorClass::`vftable'{for `BehaviorClass'}\n140637511        result[1] = &BuzzDroidsBehaviorClass::`vftable'{for `RefCountClass'}\n14063751c        result[3] = &BuzzDroidsBehaviorClass::`vftable'{for `SignalListenerClass'}\n140637528        return result",
+  "fetched_at": "2026-04-26T17:00:52Z"
+}

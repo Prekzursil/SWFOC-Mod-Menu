@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061bd50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061bd60        struct BaseDataPackClass::SpecialWeaponDataPackClass::VTable** result = sub_140390ed0(arg2)\n14061bd65        void* rbx_1 = *(arg2 + 0x158)\n14061bd6c        int64_t lpMem = *(rbx_1 + 0x38)\n14061bd73        if (lpMem != 0)\n14061bd7c        if ((*(rbx_1 + 0x44) & 0x80000000) == 0)\n14061bd97        j_sub_1407864b8(lpMem)\n14061bd8c        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14061bd9c        result = nullptr\n14061bd9e        *(rbx_1 + 0x44) &= 0x80000000\n14061bda5        *(rbx_1 + 0x38) = 0\n14061bda9        *(rbx_1 + 0x40) = 0\n14061bdb6        return result",
+  "fetched_at": "2026-04-26T17:23:36Z"
+}

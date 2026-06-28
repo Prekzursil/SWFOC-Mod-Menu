@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402490c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402490d0        int64_t* rbx = arg1[1]\n1402490da        int64_t rdx = *arg1\n1402490e3        int64_t rcx_2 = (rbx - rdx) s>> 6\n1402490ea        if (arg2 u< rcx_2)\n1402490f0        void* rsi_2 = (arg2 << 6) + rdx\n1402490f8        void* rdi = rsi_2\n1402490fe        if (rsi_2 != rbx)\n140249103        sub_140242a10(rdi)\n140249108        rdi += 0x40\n14024910f        do while (rdi != rbx)\n140249116        arg1[1] = rsi_2\n14024912a        return \n14024912b        if (arg2 u<= rcx_2)\n14024912b        return \n14024913b        if (arg2 u> (arg1[2] - rdx) s>> 6)\n140249148        sub_140241bb0(arg1, arg2)\n14024915d        return \n14024915e        int64_t i_1 = arg2 - rcx_2\n140249161        if (arg2 != rcx_2)\n140249163        int64_t rax = &rbx[5]\n14024919c        int64_t i\n140249170        *rbx = 0\n140249173        rbx = &rbx[8]\n140249177        *(rax - 0x20) = 0\n14024917b        *(rax - 0x18) = 0\n14024917f        *(rax - 8) = 0\n140249183        *rax = 0xf\n14024918a        *(rax + 8) = 0\n14024918d        *(rax + 0xc) = 0\n140249190        *(rax + 0x10) = 0\n140249194        rax += 0x40\n140249198        i = i_1\n140249198        i_1 -= 1\n14024919c        do while (i != 1)\n14024919e        arg1[1] = rbx\n1402491b2        return ",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

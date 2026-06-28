@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140640075        sub_1404c2f70(arg1, arg2, arg3)\n14064007a        void* rsi = arg2[0x31]\n140640084        if (rsi == 0)\n14064009a        return 0x80650001\n14064009b        int32_t rcx = *(rsi + 8)\n1406400a1        if (rcx == 1)\n140640122        void* r8_2 = *(rsi + 0x18)\n140640129        char rax_7\n140640129        if (r8_2 != 0)\n140640138        void var_18\n140640138        sub_14020acd0(&var_18, &arg2[0xf], r8_2 + 0x78)\n140640148        int64_t* rax_6 = (*(*arg2 + 0x10))(arg2, 1)\n14064014e        if (rax_6 != 0)\n140640150        int64_t r8_4 = *rax_6\n14064015b        (*(r8_4 + 0x2f0))(rax_6, &var_18, r8_4)\n140640176        rax_7 = sub_14020af60(arg2 + 0x84, &var_18, 0.100000001f)\n14064017d        if (r8_2 == 0 || rax_7 == 1)\n140640188        sub_1406403f0(arg1, arg2, rsi)\n1406400a6        if (rcx == 2)\n14064011b        sub_1406401b0(arg1, arg2, rsi)\n1406400ab        if (rcx == 3)\n1406400c9        sub_140220ed0(sub_140058570(), &arg2[7], 0x29, 0)\n1406400ce        void* rax_3 = *(rsi + 0x18)\n1406400d2        void* rdi_1 = arg1 + 0x18\n1406400db        if (arg1 == 0)\n1406400db        rdi_1 = nullptr\n1406400df        void* const rbx_1 = rax_3 + 0x38\n1406400e6        if (rax_3 == 0)\n1406400e6        rbx_1 = nullptr\n1406400fe        sub_140220eb0(sub_140058570(), rbx_1, rdi_1, 0x28)\n140640106        sub_1405528b0(rsi)\n1406401a1        return 0x650000",
+  "fetched_at": "2026-04-26T17:02:59Z"
+}

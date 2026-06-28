@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c7970",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_goal_system_ctor",
+  "body": "1406c7982        struct ServicedAISystemClass::AIGoalSystemClass::VTable** result = arg1\n1406c7985        sub_14064c250(arg1, arg2)\n1406c7995        *result = &AIGoalSystemClass::`vftable'{for `ServicedAISystemClass'}\n1406c7998        sub_140721360(&result[7])\n1406c79a4        sub_140721360(&result[0x1b])\n1406c79b5        result[0x2f] = 0\n1406c79bc        result[0x30].d = 0\n1406c79c2        *(result + 0x184) = 0\n1406c79c9        result[0x31] = 0\n1406c79d0        sub_1406109c0(&result[0x32], arg2)\n1406c79dc        sub_14040cfc0(&result[0x44])\n1406c79e8        sub_14040cfc0(&result[0x4c])\n1406c79f5        __builtin_memset(&result[0x54], 0, 0x18)\n1406c7a0f        result[0x17] = result\n1406c7a16        result[0x2b] = result\n1406c7a22        return result",
+  "fetched_at": "2026-04-26T16:44:13Z"
+}

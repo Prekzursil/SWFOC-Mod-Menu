@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a0bc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a0c0        int64_t rax = data_140b3b998\n14076a0ca        if (rax != 0)\n14076a0d7        return rax(&data_140b3b958) __tailcall\n14076a0e5        SetEvent(data_140b3b960)\n14076a0f6        return ResetEvent(data_140b3b960) __tailcall",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074bf54",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074bf68        *arg1 = &std::time_get<wchar_t>::`vftable'{for `std::time_base'}\n14074bf71        free(arg1[2])\n14074bf7a        free(arg1[3])\n14074bf83        free(arg1[4])\n14074bf8f        *arg1 = &std::_Facet_base::`vftable'\n14074bf95        if ((arg2 & 1) != 0)\n14074bf9f        j_sub_1407864b8(arg1)\n14074bfb1        return arg1",
+  "fetched_at": "2026-04-26T17:29:44Z"
+}

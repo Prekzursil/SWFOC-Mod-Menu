@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057ff10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057ff2a        if (*(arg1 + 0x60) != 0)\n14057ff2c        int64_t* rbx_1 = *(arg3 + 0x10)\n14057ff37        int64_t r8_2 = (*(arg3 + 0x18) - rbx_1) s>> 3\n14057ff3f        if (r8_2 != 1)\n14057ff4b        sub_140248190(arg2, \"GameObjectWrapper::Set_All_Abilities_Autofire -- invalid number of parameters.  Expected 1, got %d.\", r8_2)\n14057ff61        return 0\n14057ff62        int64_t* rbx_2 = *rbx_1\n14057ff68        if (rbx_2 != 0)\n14057ff70        void* i\n14057ff70        i, r8_2 = (*(*rbx_2 + 0x20))(rbx_2)\n14057ff76        while (i != 0)\n14057ff83        if (i == &data_140a157b0)\n14057ffba        (**rbx_2)(rbx_2)\n14057ffbc        int32_t j = 0\n14057ffe7        while (j s< 0x4d)\n14057ffcd        if (sub_1403986b0(*(arg1 + 0x60), j) != 0)\n14057ffdd        sub_1403a78b0(*(arg1 + 0x60), j, rbx_2[2].b, arg2)\n14057ffe2        j += 1\n14057ffef        (*(*rbx_2 + 8))(rbx_2)\n140580008        return 0\n14057ff85        i = *(i + 8)\n14057ff98        sub_140248190(arg2, \"GameObjectWrapper::Set_All_Abilities_Autofire -- invalid type for parameter 1.  Expected bool.\", r8_2)\n14057ffae        return 0",
+  "fetched_at": "2026-04-26T17:35:21Z"
+}

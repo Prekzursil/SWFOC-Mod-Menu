@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8850",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandGoalSystemClass::vfunction11(LandGoalSystemClass *this)\n\n{\n  FUN_1406bae50(*(undefined8 *)((this->ServicedAISystemClass_data).offset_0x0 + 0x48));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:24Z"
+}

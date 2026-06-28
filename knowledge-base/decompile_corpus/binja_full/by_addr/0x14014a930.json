@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014a930",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014a937        *(arg1 + 0xe8) = *(arg2 + 0xe8)\n14014a943        *(arg1 + 0xec) = *(arg2 + 0xec)\n14014a94f        *(arg1 + 0xf0) = *(arg2 + 0xf0)\n14014a95b        *(arg1 + 0xf4) = *(arg2 + 0xf4)\n14014a967        *(arg1 + 0xf8) = *(arg2 + 0xf8)\n14014a973        *(arg1 + 0xfc) = *(arg2 + 0xfc)\n14014a97f        *(arg1 + 0x100) = *(arg2 + 0x100)\n14014a98b        *(arg1 + 0x104) = *(arg2 + 0x104)\n14014a997        *(arg1 + 0x108) = *(arg2 + 0x108)\n14014a9a3        *(arg1 + 0x10c) = *(arg2 + 0x10c)\n14014a9af        *(arg1 + 0x114) = *(arg2 + 0x114)\n14014a9bb        *(arg1 + 0x110) = *(arg2 + 0x110)\n14014a9c7        *(arg1 + 0x128) = *(arg2 + 0x128)\n14014a9d3        *(arg1 + 0x12c) = *(arg2 + 0x12c)\n14014a9df        *(arg1 + 0x130) = *(arg2 + 0x130)\n14014a9eb        *(arg1 + 0x134) = *(arg2 + 0x134)\n14014a9f7        *(arg1 + 0x138) = *(arg2 + 0x138)\n14014aa05        arg2.b = *(arg2 + 0x120) != 0\n14014aa08        return sub_14014adf0(arg1, arg2.b) __tailcall",
+  "fetched_at": "2026-04-26T17:20:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8980",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_land_perception_ctor",
+  "body": "1406b898a        struct AIPerceptionSystemClass::LandPerceptionSystemClass::VTable** result = arg1\n1406b898d        sub_1404dad80(arg1, arg2)\n1406b899b        *result = &LandPerceptionSystemClass::`vftable'{for `AIPerceptionSystemClass'}\n1406b89a5        result[0x1a] = &LandPerceptionSystemClass::`vftable'{for `SignalListenerClass'}\n1406b89ae        __builtin_memset(&result[0x1b], 0, 0x21)\n1406b89d3        __builtin_memset(result + 0xfc, 0, 0x14)\n1406b89e7        int64_t* rax = operator new(0x20)\n1406b89f6        *rax = rax\n1406b89f9        rax[1] = rax\n1406b89fd        result[0x20] = rax\n1406b8a04        int64_t r8 = result[0x20]\n1406b8a0b        __builtin_memset(&result[0x22], 0, 0x18)\n1406b8a16        result[0x25] = 7\n1406b8a21        result[0x26] = 8\n1406b8a2c        *(result + 0xfc) = 0x3f800000\n1406b8a36        sub_140048250(&result[0x22], 0x10, r8)\n1406b8a48        return result",
+  "fetched_at": "2026-04-26T16:44:11Z"
+}

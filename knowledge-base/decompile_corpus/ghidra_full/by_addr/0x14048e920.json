@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048e920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14048e920(longlong param_1,longlong param_2,longlong param_3,char param_4)\n\n{\n  undefined1 uVar1;\n  undefined8 *puVar2;\n  longlong *plVar3;\n  undefined8 *puVar4;\n  \n  if ((param_2 != 0) && (param_3 != 0)) {\n    if (param_4 == '\\0') {\n      puVar4 = (undefined8 *)(*(longlong *)(param_3 + 0x298) + 0xf8);\n      if (0xf < *(ulonglong *)(*(longlong *)(param_3 + 0x298) + 0x110)) {\n        puVar4 = (undefined8 *)*puVar4;\n      }\n      plVar3 = (longlong *)(param_1 + 0x18);\n      if (0xf < *(ulonglong *)(param_1 + 0x30)) {\n        plVar3 = (longlong *)*plVar3;\n      }\n      puVar2 = (undefined8 *)(*(longlong *)(param_2 + 0x298) + 0xf8);\n      if (0xf < *(ulonglong *)(*(longlong *)(param_2 + 0x298) + 0x110)) {\n        puVar2 = (undefined8 *)*puVar2;\n      }\n      FUN_140025760(\"%s has REMOVED his/her %s effect from %s.\\n\",puVar2,plVar3,puVar4);\n    }\n    if ((*(char *)(param_1 + 0x169) != '\\x01') && (*(longlong *)(param_2 + 0x100) != 0)) {\n      uVar1 = FUN_14055f120(*(longlong *)(param_2 + 0x100),param_1 + 0x18,param_3);\n      return uVar1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:02:03Z"
+}

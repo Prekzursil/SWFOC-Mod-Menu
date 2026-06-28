@@ -1,0 +1,7 @@
+{
+  "addr": "0x140037ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140037b19        if (*(arg1 + 0x10) s< 1 || arg3 - 1 u> 0x4b || arg4 u> 6)\n140037b19        return \n140037b24        int128_t zmm6 = zx.o(0)\n140037b2c        int128_t zmm7 = arg5\n140037b38        if (not(0f f<= zmm7.d))\n140037b3a        zmm7.d f- -1f\n140037b47        if (not(is_unordered.d(zmm7.d, -1f)) && not(zmm7.d f!= -1f))\n140037b47        goto label_140037b53\n140037b47        return \n140037b53        label_140037b53:\n140037b53        int128_t zmm8 = arg6\n140037b61        if (0f f> zmm8.d)\n140037b61        return \n140037b6e        sub_140047a20(&data_140a61718)\n140037b85        data_140a6171b = arg7\n140037b8b        data_140a61740 = zmm7.d\n140037b93        data_140a61744 = zmm8.d\n140037b9c        data_140a61719 = 1\n140037ba3        sub_140046b30(&data_140a61720, arg1)\n140037bb0        bool cond:1_1 = data_140a61740 <= 0f\n140037bbb        data_140a6173c = arg2\n140037bc1        data_140a61738 = arg3\n140037bc7        data_140a6171c = arg4\n140037bcd        data_140a61748 = arg8\n140037bd3        uint32_t rax\n140037bd3        if (not(cond:1_1))\n140037bdc        rax, zmm6 = sub_140035280(&data_140a60df0)\n140037bec        if (not(data_140a61744 f<= zmm6.d))\n140037bf5        sub_1400356b0(&data_140a60df0)\n140037c1e        return ",
+  "fetched_at": "2026-04-26T16:52:59Z"
+}

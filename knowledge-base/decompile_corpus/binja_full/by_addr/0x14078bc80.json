@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078bc80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078bc89        int64_t rax = _query_new_handler()\n14078bc91        if (rax != 0 && rax(arg1) != 0)\n14078bca0        return 1\n14078bca7        return 0",
+  "fetched_at": "2026-04-26T17:31:25Z"
+}

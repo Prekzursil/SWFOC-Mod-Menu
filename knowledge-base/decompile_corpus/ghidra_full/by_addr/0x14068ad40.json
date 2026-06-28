@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ad40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ad40(void)\n\n{\n  ReduceTechnologyPriceAbilityClass *this;\n  \n  this = (ReduceTechnologyPriceAbilityClass *)FUN_140769c58(0x180);\n  if (this != (ReduceTechnologyPriceAbilityClass *)0x0) {\n    ReduceTechnologyPriceAbilityClass::ReduceTechnologyPriceAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:23Z"
+}

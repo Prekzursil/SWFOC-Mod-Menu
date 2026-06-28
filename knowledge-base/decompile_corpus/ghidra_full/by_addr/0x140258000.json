@@ -1,0 +1,7 @@
+{
+  "addr": "0x140258000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SignalListenerClass * __thiscall\nSignalListenerClass::scalar_deleting_destructor(SignalListenerClass *this,uint param_1)\n\n{\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = &vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x10);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:13:13Z"
+}

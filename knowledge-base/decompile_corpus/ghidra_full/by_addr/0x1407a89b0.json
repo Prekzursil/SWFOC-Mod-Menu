@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a89b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alLaserBeam::~alLaserBeam(alLaserBeam *this)\n\n{\n  longlong *plVar1;\n  \n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  plVar1 = (this->alLaserBeam_data).offset_0x30;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->alLaserBeam_data).offset_0x30 = (longlong *)0x0;\n  }\n  FUN_1400e5160(&DAT_140b3cc38,0);\n  plVar1 = (this->alLaserBeam_data).offset_0x30;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  alRenderable::~alRenderable((alRenderable *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:55Z"
+}

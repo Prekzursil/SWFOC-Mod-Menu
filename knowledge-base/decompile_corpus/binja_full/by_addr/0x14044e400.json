@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044e400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044e404        int64_t rcx = data_140a28cc8\n14044e410        int32_t i = 0\n14044e418        if (data_140a28cd0 s> 0)\n14044e41f        int64_t* rbx_1 = nullptr\n14044e428        void* r8_1 = *(data_140b306d0 + 0xa0)\n14044e432        if (r8_1 != 0)\n14044e43b        sub_1405dabf0(r8_1, *(rbx_1 + rcx))\n14044e440        rcx = data_140a28cc8\n14044e452        sub_14025c490(data_140b306a0, *(rbx_1 + rcx))\n14044e457        rcx = data_140a28cc8\n14044e45e        int64_t* r8_2 = *(rbx_1 + rcx)\n14044e465        if (r8_2 != 0)\n14044e472        (**r8_2)(r8_2, 1)\n14044e474        rcx = data_140a28cc8\n14044e47b        i += 1\n14044e47d        rbx_1 = &rbx_1[1]\n14044e487        do while (i s< data_140a28cd0)\n14044e496        if (rcx != 0)\n14044e4a2        if ((data_140a28cd4 & 0x80000000) == 0)\n14044e4be        j_sub_1407864b8(rcx)\n14044e4b6        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a28cc8)\n14044e4c3        data_140a28cd4 &= 0x80000000\n14044e4cd        data_140a28cc8 = 0\n14044e4d8        data_140a28cd0 = 0\n14044e4e2        void* rdx_3 = data_140b306b0\n14044e4ec        if (rdx_3 != 0)\n14044e4f5        sub_140260f10(&data_140b0a130, rdx_3)\n14044e4fa        data_140b306b0 = 0\n14044e505        data_140a28c98 = 0xffffffff\n14044e50f        data_140a28c9c = 0x78\n14044e519        data_140b30699 = 0\n14044e524        return ",
+  "fetched_at": "2026-04-26T17:27:37Z"
+}

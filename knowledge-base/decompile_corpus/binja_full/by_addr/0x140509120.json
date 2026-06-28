@@ -1,0 +1,7 @@
+{
+  "addr": "0x140509120",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14050912a        int64_t* result = data_140b15418\n140509134        void* rsi = result[3]\n14050913b        if (rsi != 0)\n14050915f        sub_140220e90(sub_140058570(), rsi, arg1, 0x1c)\n140509164        int32_t rbp_1 = *(rsi + 0x68)\n14050916c        result = operator new(0x48)\n140509171        int32_t rbx_1 = 0\n140509176        if (result == 0)\n1405091bc        result = nullptr\n14050917c        result[6].d = 0\n14050917f        __builtin_memset(&result[2], 0, 0x18)\n14050918b        result[2] = &result[1]\n14050918f        result[5] = 0\n140509193        result[1] = &result[1]\n14050919d        *result = &MultiLinkedListClass<class GameObjectClass>::`vftable'{for `GenericMultiLinkedList'}\n1405091a0        *(result + 0x34) = 1\n1405091a7        result[7].d = 0xfffffc19\n1405091ae        result[8] = 0\n1405091b2        result[4] = 0\n1405091b6        result[3] = 0\n1405091bf        *(arg1 + 0xd8) = result\n1405091c8        if (rbp_1 s> 0)\n1405091d5        result = sub_1402ac9c0(rsi, rbx_1)\n1405091dd        if (result != 0)\n1405091e5        result = sub_140504880(arg1, result)\n1405091ea        rbx_1 += 1\n1405091ee        do while (rbx_1 s< rbp_1)\n1405091fa        *(arg1 + 0xe0) = 1\n14050920b        return result",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

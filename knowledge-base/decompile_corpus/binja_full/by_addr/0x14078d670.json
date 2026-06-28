@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d670",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d675        int32_t temp0 = data_140b3c49c\n14078d675        data_140b3c49c = 1\n14078d67b        return zx.q(temp0)",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

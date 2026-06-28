@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9b10",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_tocfunction",
+  "body": "1407b9b1b        void* rbx_2\n1407b9b1b        if (arg2 s<= 0)\n1407b9b42        rbx_2 = sub_1407b9f20(arg1, arg2)\n1407b9b45        label_1407b9b45:\n1407b9b48        if (rbx_2 != 0)\n1407b9b4d        int32_t rax_3\n1407b9b4d        if (*rbx_2 != 4)\n1407b9b55        rax_3 = sub_1407c83c0(arg1, rbx_2)\n1407b9b5c        if (*rbx_2 == 4 || rax_3 != 0)\n1407b9b6b        return *(*(rbx_2 + 8) + 0x10)\n1407b9b2c        rbx_2 = *(arg1 + 0x18) - 0x10 + (sx.q(arg2) << 4)\n1407b9b33        if (rbx_2 u< *(arg1 + 0x10))\n1407b9b33        goto label_1407b9b45\n1407b9b3c        return 0",
+  "fetched_at": "2026-04-26T16:44:33Z"
+}

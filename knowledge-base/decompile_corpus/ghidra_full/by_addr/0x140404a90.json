@@ -1,0 +1,7 @@
+{
+  "addr": "0x140404a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall TeamBehaviorClass::vfunction9(void)\n\n{\n  return \"TeamBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:43:57Z"
+}

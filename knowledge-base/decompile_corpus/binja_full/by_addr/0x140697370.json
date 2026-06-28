@@ -1,0 +1,7 @@
+{
+  "addr": "0x140697370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140697384        struct LuaUserVar::FindTargetClass::VTable** result = arg1\n140697387        sub_140249c20(arg1, 0, 1)\n140697398        *result = &FindTargetClass::`vftable'{for `LuaUserVar'}\n14069739b        struct LuaUserVar::LuaMemberFunctionWrapper<class FindTargetClass>::VTable** rax = operator new(0x40)\n1406973a7        struct LuaUserVar::LuaMemberFunctionWrapper<class FindTargetClass>::VTable** rbx = rax\n1406973ad        if (rax == 0)\n1406973d4        rbx = nullptr\n1406973b7        sub_140249c20(rax, 0, 0)\n1406973c3        *rbx = &LuaMemberFunctionWrapper<class FindTargetClass>::`vftable'{for `LuaUserVar'}\n1406973c6        rbx[5] = sub_140698360\n1406973ca        rbx[6] = result\n1406973ce        rbx[7].b = 0\n1406973e3        sub_14024be40(result, \"Reachable_Target\", rbx)\n1406973ed        struct LuaVar::LuaUserVar::VTable** rax_1 = operator new(0x40)\n1406973f2        int64_t* rbx_1 = rax_1\n1406973f8        if (rax_1 == 0)\n14069741f        rbx_1 = nullptr\n140697402        sub_140249c20(rax_1, 0, 0)\n14069740e        *rbx_1 = &LuaMemberFunctionWrapper<class FindTargetClass>::`vftable'{for `LuaUserVar'}\n140697411        rbx_1[5] = sub_140697450\n140697415        rbx_1[6] = result\n140697419        rbx_1[7].b = 0\n14069742e        sub_14024be40(result, \"Best_Of\", rbx_1)\n140697445        return result",
+  "fetched_at": "2026-04-26T17:20:17Z"
+}

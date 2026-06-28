@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637cd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nCorruptSystemsBehaviorClass * __thiscall\nCorruptSystemsBehaviorClass::vfunction4(CorruptSystemsBehaviorClass *this,int param_1)\n\n{\n  CorruptSystemsBehaviorClass *pCVar1;\n  \n  pCVar1 = (CorruptSystemsBehaviorClass *)0x0;\n  if (param_1 == 0x58) {\n    pCVar1 = this;\n  }\n  return pCVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:01Z"
+}

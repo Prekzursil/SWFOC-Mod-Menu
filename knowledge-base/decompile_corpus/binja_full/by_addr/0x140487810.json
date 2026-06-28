@@ -1,0 +1,7 @@
+{
+  "addr": "0x140487810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048782c        sub_14027d370(8, \"%s -- \\n\", \"TheGameScoringManagerClass::Reset_Tactical_Stats\")\n140487849        int64_t* arg_8\n140487849        int64_t* result = sub_1402437c0(*(arg1 + 0x10), &arg_8, \"Reset_Tactical_Stats\", nullptr, 0)\n14048784e        int64_t* rcx_1 = arg_8\n140487856        if (rcx_1 == 0)\n140487863        return result\n14048785b        return (*(*rcx_1 + 8))(rcx_1)",
+  "fetched_at": "2026-04-26T17:28:36Z"
+}

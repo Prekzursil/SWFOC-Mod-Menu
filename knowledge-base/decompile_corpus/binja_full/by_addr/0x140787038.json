@@ -1,0 +1,7 @@
+{
+  "addr": "0x140787038",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078705a        uint64_t result\n14078705a        if (arg2 != 0)\n140787080        uint64_t rax_1 = _ctrlfp(0x1f80, 0xffc0)\n140787098        if ((arg1.q:6.w & 0x7ff0) != 0x7ff0)\n1407870d8        arg1.q f- 0.0\n1407870e2        int32_t rax_5\n1407870e2        if (not(is_unordered.q(arg1.q, 0.0)) && not(arg1.q f!= 0.0))\n1407870e7        rax_5 = _ldsign(arg1.q)\n1407870ee        if (not(is_unordered.q(arg1.q, 0.0)) && not(arg1.q f!= 0.0) && rax_5 != 0)\n1407870f0        *arg2 = 0\n1407870d1        return _except1(0, 0x17, arg1, -0x8000000000000000, rax_1)\n140787105        _decomp(arg1.q, arg2)\n14078709a        *arg2 = 0xffffffff\n1407870a0        int32_t rax_2 = _sptype(arg1.q)\n1407870b2        if (rax_2 != 1 && rax_2 != 2 && rax_2 != 3)\n1407870d1        return _except1(8, 0x17, arg1, arg1.q f+ 1.0, rax_1)\n140787113        result = _ctrlfp(rax_1.d, 0xffc0)\n140787061        *_errno() = 0x16\n140787067        int512_t zmm0\n140787067        result, zmm0 = _invalid_parameter_noinfo()\n14078706c        zmm0.o = zx.o(0)\n14078712f        return result",
+  "fetched_at": "2026-04-26T17:31:19Z"
+}

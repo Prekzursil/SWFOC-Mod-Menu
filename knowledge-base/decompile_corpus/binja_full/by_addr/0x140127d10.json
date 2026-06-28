@@ -1,0 +1,7 @@
+{
+  "addr": "0x140127d10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140127d1c        void* var_28\n140127d1c        int64_t* r8 = &var_28\n140127d2a        uint64_t rdx = zx.q(data_140a12318)\n140127d30        data_140a62622 = arg1\n140127d3d        __builtin_strncpy(&var_28, \"IDC_APPLY\", 0xa)\n140127d47        int64_t var_10 = 0xf\n140127d50        int64_t var_18 = 9\n140127d5e        int64_t result\n140127d5e        void* rcx\n140127d5e        if (arg1 == 0)\n140127d9b        result = sub_1401c29e0(&data_140a78510, rdx, r8)\n140127da9        if (var_10 u>= 0x10)\n140127dab        rcx = var_28\n140127db3        void* rax_3 = rcx\n140127dbd        if (var_10 + 1 u>= 0x1000)\n140127dbf        rcx = *(rcx - 8)\n140127dd2        if (rax_3 - rcx - 8 u> 0x1f)\n140127dde        _invalid_parameter_noinfo_noreturn()\n140127dde        noreturn\n140127dd4        return j_sub_1407864b8(rcx)\n140127d60        result = sub_1401c2a40(&data_140a78510, rdx, r8)\n140127d6e        if (var_10 u>= 0x10)\n140127d70        rcx = var_28\n140127d78        void* rax = rcx\n140127d82        if (var_10 + 1 u>= 0x1000)\n140127d84        rcx = *(rcx - 8)\n140127d97        if (rax - rcx - 8 u> 0x1f)\n140127de4        _invalid_parameter_noinfo_noreturn()\n140127de4        noreturn\n140127dd4        return j_sub_1407864b8(rcx)\n140127ddd        return result",
+  "fetched_at": "2026-04-26T17:07:43Z"
+}

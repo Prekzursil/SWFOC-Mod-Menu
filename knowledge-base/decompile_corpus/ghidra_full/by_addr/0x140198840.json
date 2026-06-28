@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alRenderTarget * __thiscall\nalDepthBuffer::scalar_deleting_destructor(alDepthBuffer *this,uint param_1)\n\n{\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (alDepthBuffer_vftable0 *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x20);\n  }\n  return (alRenderTarget *)this;\n}",
+  "fetched_at": "2026-04-26T17:36:21Z"
+}

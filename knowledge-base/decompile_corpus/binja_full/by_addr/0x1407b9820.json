@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9820",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_rawseti",
+  "body": "1407b9832        void* rax_2\n1407b9832        if (arg2 s<= 0)\n1407b9848        rax_2 = sub_1407b9f20(arg1, arg2)\n1407b9843        rax_2 = arg1[3] - 0x10 + (sx.q(arg2) << 4)\n1407b9854        void* rbx = arg1[2]\n1407b985b        void* result = sub_1407c0360(arg1, *(rax_2 + 8), arg3)\n1407b9863        *result = *(rbx - 0x10)\n1407b986e        *(result + 8) = *(rbx - 8)\n1407b9872        arg1[2] -= 0x10\n1407b987c        return result",
+  "fetched_at": "2026-04-26T16:44:32Z"
+}

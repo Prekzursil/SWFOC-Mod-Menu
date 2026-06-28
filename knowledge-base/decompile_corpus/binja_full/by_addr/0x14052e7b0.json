@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052e7b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14052e7ba        int64_t* result = *(arg1 + 0x20)\n14052e7c6        int128_t zmm6 = arg2\n14052e7c9        void** i = *result\n14052e7cf        if (i != result)\n14052e7df        int128_t zmm7 = zx.o(0)\n14052e7e8        int128_t zmm8 = 0xbf800000\n14052e7f1        int64_t* rdi_1 = i[3]\n14052e7f8        if (rdi_1 != 0)\n14052e7fe        double zmm2 = rdi_1[0x5b].d\n14052e827        if (not(zmm2.d f<= zmm7.d) && *(rdi_1 + 0x4d) != 0 && *(rdi_1 + 0x4c) == 0 && *(rdi_1 + 0x4f) == 0)\n14052e829        result = zx.q(data_140b153f8)\n14052e83c        if (result.d == 0 || result.d == 3 || *(rdi_1 + 0x4e) != 0)\n14052e83e        arg2 = *(rdi_1 + 0x2dc)\n14052e846        arg2.d f- zmm8.d\n14052e84c        if (not(is_unordered.d(arg2.d, zmm8.d)) && not(arg2.d f!= zmm8.d))\n14052e84e        *(rdi_1 + 0x2dc) = zmm6.d\n14052e862        if (not(zmm6.d f- arg2.d f< zmm2.d))\n14052e869        void* rdx_1 = &rdi_1[3]\n14052e86d        if (rdi_1[6] u>= 0x10)\n14052e86f        rdx_1 = *rdx_1\n14052e891        sub_140467540(\"STORY INACTIVE TRIGGER - Event %s triggered due to inactivity.  Total elapsed %f, elapsed %f\\r\\n\", rdx_1)\n14052e89e        result, zmm6, zmm7, zmm8 = sub_140455db0(rdi_1, nullptr, 1)\n14052e8a3        i = *i\n14052e8aa        do while (i != *(arg1 + 0x20))\n14052e8cf        return result",
+  "fetched_at": "2026-04-26T17:33:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f695e        *arg1 = &PlanBehaviorClass::`vftable'{for `SignalListenerClass'}\n1405f696a        arg1[2] = &PlanBehaviorClass::`vftable'{for `RefCountClass'}\n1405f6975        arg1[4] = &PlanBehaviorClass::`vftable'{for `AIDiagnosticsClass'}\n1405f6979        void* rcx = arg1[9]\n1405f6980        if (rcx != 0)\n1405f6982        sub_1402488e0(rcx)\n1405f6987        int64_t* rdi = arg1[0x12]\n1405f6991        if (rdi != 0)\n1405f6996        sub_140688710(rdi)\n1405f69a3        j_sub_1407864b8(rdi)\n1405f69a8        int64_t* rcx_3 = arg1[0x14]\n1405f69b2        if (rcx_3 != 0)\n1405f69b7        (*(*rcx_3 + 8))(rcx_3)\n1405f69be        sub_1400466c0(&arg1[0xd])\n1405f69c3        int64_t* rcx_5 = arg1[0xb]\n1405f69ca        if (rcx_5 != 0)\n1405f69cf        (*(*rcx_5 + 8))(rcx_5)\n1405f69d2        int64_t* rcx_6 = arg1[0xa]\n1405f69d9        if (rcx_6 != 0)\n1405f69de        (*(*rcx_6 + 8))(rcx_6)\n1405f69e1        int64_t* rcx_7 = arg1[9]\n1405f69e8        if (rcx_7 != 0)\n1405f69ed        (*(*rcx_7 + 8))(rcx_7)\n1405f69f4        sub_1405f6540(&arg1[4])\n1405f6a03        arg1[2] = &RefCountClass::`vftable'{for `IRefCountClass'}\n1405f6a0e        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1405f6a11        sub_14020a820(arg1)\n1405f6a1a        if ((arg2 & 1) != 0)\n1405f6a24        j_sub_1407864b8(arg1)\n1405f6a40        return arg1",
+  "fetched_at": "2026-04-26T17:22:34Z"
+}

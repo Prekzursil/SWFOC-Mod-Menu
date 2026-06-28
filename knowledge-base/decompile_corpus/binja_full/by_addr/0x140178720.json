@@ -1,0 +1,7 @@
+{
+  "addr": "0x140178720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140178724        int32_t rax = data_140a6d400\n14017872e        data_140a6d3f8 = arg1\n140178734        if (arg3 != 0xffffffff)\n140178734        rax = arg3\n140178738        data_140a6d3fc = arg2\n14017873e        data_140a6d400 = rax\n140178744        sub_14017a180()\n140178752        sub_140179dc0(sub_14017a010(0, nullptr))\n140178765        EnumDisplayMonitors(nullptr, nullptr, sub_14017ac80, 0)\n140178778        int32_t Y = data_140a6e70c\n140178788        int32_t X = data_140a6e708\n1401787b3        return SetWindowPos(data_140a6e658, -ffffffffffffffff, X, Y, data_140a6e710 - X, data_140a6e714 - Y, SWP_SHOWWINDOW)",
+  "fetched_at": "2026-04-26T17:23:21Z"
+}

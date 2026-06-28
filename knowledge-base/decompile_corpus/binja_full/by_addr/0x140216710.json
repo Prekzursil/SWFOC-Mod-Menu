@@ -1,0 +1,7 @@
+{
+  "addr": "0x140216710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140216716        HMODULE hModule = data_140a7d070\n140216720        if (hModule != 0)\n140216745        label_140216745:\n140216745        int64_t rax = GetProcAddress(hModule, \"GetProcessMemoryInfo\")\n140216751        void var_58\n140216751        int64_t result\n140216751        if (rax != 0 && rax(GetCurrentProcess(), &var_58, 0x48) != 0)\n140216777        return result\n140216729        hModule = LoadLibraryA(\"psapi.dll\")\n14021672f        data_140a7d070 = hModule\n140216739        if (hModule != 0)\n140216739        goto label_140216745\n14021677f        return 0",
+  "fetched_at": "2026-04-26T17:28:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140176560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140176560(void)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  \n  DAT_140a6d420 = DAT_140a6d390;\n  FUN_140179d40();\n  iVar1 = FUN_1401797f0();\n  if (iVar1 < 0) {\n    if (iVar1 != -0x7789fe84) {\n      iVar1 = -0x7dfffff4;\n    }\n    if (DAT_140a6d420 == '\\0') {\n      DAT_140a6d420 = '\\x01';\n      DAT_140a6d390 = '\\x01';\n      FUN_14017a180();\n      SetWindowPos(DAT_140a6e658,(HWND)0xfffffffffffffffe,DAT_140a6e668,DAT_140a6e66c,\n                   DAT_140a6e670 - DAT_140a6e668,DAT_140a6e674 - DAT_140a6e66c,0x40);\n    }\n    uVar2 = FUN_14017a460(iVar1,1);\n    return uVar2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:27:04Z"
+}

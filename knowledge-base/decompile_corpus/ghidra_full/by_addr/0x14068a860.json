@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a860(void)\n\n{\n  HackSuperWeaponAbilityClass *this;\n  \n  this = (HackSuperWeaponAbilityClass *)FUN_140769c58(0x178);\n  if (this != (HackSuperWeaponAbilityClass *)0x0) {\n    HackSuperWeaponAbilityClass::HackSuperWeaponAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:05Z"
+}

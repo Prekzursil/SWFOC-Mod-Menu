@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407707a4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    unsigned char __cdecl Is_bad_exception_allowed(struct _s_ESTypeList const * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nuchar __cdecl Is_bad_exception_allowed(_s_ESTypeList *param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  int iVar3;\n  longlong lVar4;\n  \n  iVar3 = 0;\n  if (0 < *(int *)param_1) {\n    lVar4 = 0;\n    do {\n      lVar2 = _GetImageBase();\n      if (*(int *)((longlong)*(int *)(param_1 + 4) + 4 + lVar2 + lVar4) == 0) {\n        lVar2 = 0;\n      }\n      else {\n        lVar2 = _GetImageBase();\n        iVar1 = *(int *)((longlong)*(int *)(param_1 + 4) + 4 + lVar2 + lVar4);\n        lVar2 = _GetImageBase();\n        lVar2 = lVar2 + iVar1;\n      }\n      iVar1 = __std_type_info_compare(lVar2 + 8,0x140a465c0);\n      if (iVar1 == 0) {\n        return '\\x01';\n      }\n      iVar3 = iVar3 + 1;\n      lVar4 = lVar4 + 0x14;\n    } while (iVar3 < *(int *)param_1);\n  }\n  return '\\0';\n}",
+  "fetched_at": "2026-04-26T18:11:43Z"
+}

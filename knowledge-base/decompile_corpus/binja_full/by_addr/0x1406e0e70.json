@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e0e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e0e8a        if (sub_1402205a0(arg2) != 0x10000)\n1406e0e9f        return sub_14064e0f0(arg1, arg2) & 1\n1406e0ea8        int64_t rdi\n1406e0ea8        rdi.b = 1\n1406e0eb2        if (sub_140220610(arg2) != 0)\n1406e0f55        char i\n1406e0ec8        int32_t rax_3 = sub_140220710(arg2)\n1406e0ecf        if (rax_3 == 0)\n1406e0f1d        char rax_5 = sub_140220730(arg2, arg1 + 0x98, 8, nullptr)\n1406e0f22        int64_t rdx_4 = *(arg1 + 0x98)\n1406e0f29        rdi.b &= rax_5\n1406e0f2f        if (rdx_4 != 0)\n1406e0f3e        sub_1401fe4a0(arg1 + 0x98, rdx_4, 0, 0)\n1406e0ed4        if (rax_3 == 1)\n1406e0ed9        int64_t arg_18 = 0\n1406e0ef4        void* rdx_2 = arg1 + 0x88\n1406e0efb        rdi.b &= sub_140220730(arg2, &arg_18, rax_3 + 7, nullptr)\n1406e0f01        if (arg1 == 0)\n1406e0f01        rdx_2 = nullptr\n1406e0f05        sub_1401fe2d0(arg_18, rdx_2)\n1406e0f46        sub_1402206a0(arg2)\n1406e0f4e        i = sub_140220610(arg2)\n1406e0f55        do while (i != 0)\n1406e0f6f        sub_1401ff040(sub_1406dfab0, arg1)\n1406e0f74        rdi.b &= 1\n1406e0f87        return zx.q(rdi.b)",
+  "fetched_at": "2026-04-26T17:25:56Z"
+}

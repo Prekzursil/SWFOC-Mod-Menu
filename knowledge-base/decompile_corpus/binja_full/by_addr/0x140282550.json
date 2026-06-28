@@ -1,0 +1,7 @@
+{
+  "addr": "0x140282550",
+  "tool": "binary_ninja",
+  "fact_id": "rva_is_locked",
+  "body": "140282550        int64_t result = sx.q(*(arg1 + 0x1d0))\n140282559        if (result.d s> 0)\n14028255b        int64_t result_1 = result\n14028255e        int64_t r8_1 = 0\n140282561        result = *(arg1 + 0x1c8)\n14028256b        if (*result == arg2)\n14028257c        result.b = 1\n14028257e        return result\n14028256d        r8_1 += 1\n140282570        result += 8\n140282577        do while (r8_1 s< result_1)\n140282579        result.b = 0\n14028257b        return result",
+  "fetched_at": "2026-04-26T16:43:10Z"
+}

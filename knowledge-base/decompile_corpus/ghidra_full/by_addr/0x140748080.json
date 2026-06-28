@@ -1,0 +1,7 @@
+{
+  "addr": "0x140748080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall std::numpunct<char>::vfunction5(numpunct<char> *this)\n\n{\n  return this[1]._Crt_new_delete.field_0x1;\n}",
+  "fetched_at": "2026-04-26T18:05:21Z"
+}

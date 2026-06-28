@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402668c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402668c9        *arg1 = &SceneClass::`vftable'{for `RefCountClass'}\n1402668d0        arg1[1].d = 0\n1402668d3        arg1[2] = 0\n1402668d7        __builtin_memset(&arg1[5], 0, 0x18)\n1402668e3        arg1[5] = &arg1[4]\n1402668e7        arg1[8] = 0\n1402668eb        arg1[4] = &arg1[4]\n1402668f5        arg1[3] = &ReferenceListClass<class ModelClass>::`vftable'{for `GenericMultiLinkedList'}\n1402668fc        arg1[9].d = 0\n1402668ff        *(arg1 + 0x4c) = 1\n140266906        arg1[0xa].d = 0xfffffc19\n14026690d        arg1[0xb] = 0\n140266911        arg1[7] = 0\n140266915        arg1[6] = 0\n140266919        __builtin_memcpy(&arg1[0xc], \"\\x00\\x00\\x7a\\x44\\x00\\x40\\x1c\\x46\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\", 0x15)\n14026693f        return arg1",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035d4f0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_fow_sub_14035d4f0",
+  "body": "14035d500        int64_t rbx = sx.q(arg2)\n14035d503        char result = (*(*arg1 + 0x240))()\n14035d50b        if (result != 0)\n14035d50d        int64_t rcx = arg1[0x33]\n14035d523        if (rcx != 0 && rbx.d s>= 0 && rbx.d s< arg1[0x32].d)\n14035d525        int64_t* rcx_1 = *(rcx + (rbx << 3))\n14035d52c        if (rcx_1 != 0)\n14035d52e        return sub_1404c1560(rcx_1)\n14035d53d        return result",
+  "fetched_at": "2026-04-26T16:43:15Z"
+}

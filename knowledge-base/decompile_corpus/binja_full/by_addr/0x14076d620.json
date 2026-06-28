@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076d631        return __vcrt_getptd() + 0x20",
+  "fetched_at": "2026-04-26T17:30:28Z"
+}

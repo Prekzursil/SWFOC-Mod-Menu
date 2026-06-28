@@ -1,0 +1,7 @@
+{
+  "addr": "0x140206120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140206120(longlong param_1,longlong param_2,undefined1 *param_3,char param_4)\n\n{\n  char cVar1;\n  int iVar2;\n  undefined8 uVar3;\n  int local_res10 [2];\n  \n  *param_3 = 0;\n  if (param_2 == 0) {\nLAB_1402061d4:\n    uVar3 = 1;\n  }\n  else {\n    if (*(longlong *)(param_1 + 0x98) != 0) {\n      if (*(longlong *)(param_1 + 0xe0) != 0) {\n        iVar2 = *(int *)(param_2 + 0x10) + 7;\n        cVar1 = FUN_14023c340(*(longlong *)(param_1 + 0xe0),(int)((iVar2 >> 0x1f & 7U) + iVar2) >> 3\n                              ,param_4);\n        if ((cVar1 != '\\x01') && (param_4 == '\\0')) goto LAB_1402061d4;\n      }\n      FUN_14023c000(param_2);\n      iVar2 = *(int *)(param_2 + 0x10) + 7;\n      cVar1 = FUN_1402062b0(param_1,*(undefined8 *)(param_2 + 0xa8),\n                            (int)((iVar2 >> 0x1f & 7U) + iVar2) >> 3,param_2 + 0x98,local_res10);\n      if (cVar1 != '\\0') goto LAB_1402061d4;\n      if (local_res10[0] == 0x2733) {\n        *param_3 = 1;\n      }\n    }\n    uVar3 = 0;\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T17:56:48Z"
+}

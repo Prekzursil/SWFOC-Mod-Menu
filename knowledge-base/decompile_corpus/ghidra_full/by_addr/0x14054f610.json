@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054f610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_14054f610(longlong *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  longlong lVar3;\n  int iVar4;\n  ulonglong uVar5;\n  ulonglong uVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  \n  fVar10 = 0.0;\n  uVar5 = 0;\n  if ((ulonglong)((param_1[1] - *param_1) / 0x34) < 2) {\n    fVar10 = 0.0;\n  }\n  else {\n    uVar6 = 1;\n    do {\n      lVar1 = *param_1;\n      iVar4 = (int)uVar5;\n      lVar3 = uVar5 * 0x34;\n      lVar2 = uVar6 * 0x34;\n      fVar8 = *(float *)(lVar3 + lVar1) - *(float *)(lVar2 + lVar1);\n      fVar7 = *(float *)(lVar3 + 4 + lVar1) - *(float *)(lVar2 + 4 + lVar1);\n      fVar9 = *(float *)(lVar3 + 8 + lVar1) - *(float *)(lVar2 + 8 + lVar1);\n      fVar7 = (float)FUN_140776d48(fVar8 * fVar8 + fVar7 * fVar7 + fVar9 * fVar9);\n      fVar10 = fVar10 + fVar7;\n      uVar5 = (ulonglong)(iVar4 + 1);\n      uVar6 = (ulonglong)(iVar4 + 2);\n    } while (uVar6 < (ulonglong)((param_1[1] - *param_1) / 0x34));\n  }\n  return fVar10;\n}",
+  "fetched_at": "2026-04-26T18:37:50Z"
+}

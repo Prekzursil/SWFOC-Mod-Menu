@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058d8c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058d8cb        struct BehaviorClass::HarassBehaviorClass::VTable** result = operator new(0x40)\n14058d8d6        if (result == 0)\n14058d90e        return result\n14058d8db        sub_1404c32d0(result)\n14058d8e7        *result = &HarassBehaviorClass::`vftable'{for `BehaviorClass'}\n14058d8f1        result[1] = &HarassBehaviorClass::`vftable'{for `RefCountClass'}\n14058d8fc        result[3] = &HarassBehaviorClass::`vftable'{for `SignalListenerClass'}\n14058d908        return result",
+  "fetched_at": "2026-04-26T17:36:12Z"
+}

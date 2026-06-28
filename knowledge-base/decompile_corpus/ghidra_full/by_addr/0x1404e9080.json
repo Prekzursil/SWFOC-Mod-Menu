@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e9080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTheAITemplateManagerClass::scalar_deleting_destructor\n          (TheAITemplateManagerClass *this,TheAITemplateManagerClass *param_1)\n\n{\n  if (param_1 != (TheAITemplateManagerClass *)0x0) {\n    ~TheAITemplateManagerClass(param_1);\n    thunk_FUN_1407864b8(param_1,0x1e8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:40Z"
+}

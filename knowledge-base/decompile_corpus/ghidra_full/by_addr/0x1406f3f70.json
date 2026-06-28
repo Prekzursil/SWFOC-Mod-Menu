@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f3f70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CancelSpecialAbilityClass * __thiscall\nCancelSpecialAbilityClass::scalar_deleting_destructor(CancelSpecialAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: CancelSpecialAbilityClass::~CancelSpecialAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x178);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:47:58Z"
+}

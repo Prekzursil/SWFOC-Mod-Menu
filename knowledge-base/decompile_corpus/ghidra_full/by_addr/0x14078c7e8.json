@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c7e8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    void __cdecl free_environment<char>(char * __ptr64 * __ptr64 const)\n    void __cdecl free_environment<wchar_t>(wchar_t * __ptr64 * __ptr64 const)\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid free_environment<>(longlong *param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n  if (param_1 != (longlong *)0x0) {\n    lVar1 = *param_1;\n    plVar2 = param_1;\n    while (lVar1 != 0) {\n      _free_base(lVar1);\n      plVar2 = plVar2 + 1;\n      lVar1 = *plVar2;\n    }\n    _free_base(param_1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:03Z"
+}

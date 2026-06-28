@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c3d00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c3d07        return \"SquadLeaderBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:37:34Z"
+}

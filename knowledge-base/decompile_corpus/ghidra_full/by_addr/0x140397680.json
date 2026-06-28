@@ -1,0 +1,7 @@
+{
+  "addr": "0x140397680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140397680(longlong param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  lVar1 = *(longlong *)(param_1 + 0x298);\n  if (lVar1 == 0) {\n    return;\n  }\n  if (*(char *)(lVar1 + 0x3e) != '\\0') {\n                    /* WARNING: Could not recover jumptable at 0x0001403976a0. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(**(longlong **)(*(longlong *)(param_1 + 0x2b8) + 0x20) + 0x108))();\n    return;\n  }\n  if (*(char *)(lVar1 + 0x3f) != '\\0') {\n                    /* WARNING: Could not recover jumptable at 0x0001403976bb. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(**(longlong **)(*(longlong *)(param_1 + 0x2b8) + 0x20) + 0x110))();\n    return;\n  }\n  lVar2 = **(longlong **)(*(longlong *)(param_1 + 0x2b8) + 0x20);\n  if (*(char *)(lVar1 + 0x40) != '\\0') {\n                    /* WARNING: Could not recover jumptable at 0x0001403976d6. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(lVar2 + 0x118))();\n    return;\n  }\n                    /* WARNING: Could not recover jumptable at 0x0001403976dd. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(lVar2 + 0x100))();\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:24Z"
+}

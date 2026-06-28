@@ -1,0 +1,7 @@
+{
+  "addr": "0x140143740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140143740(char *param_1,char *param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  int iVar3;\n  longlong lVar4;\n  char *pcVar5;\n  longlong lVar6;\n  char acStack_409 [1024];\n  undefined1 local_9;\n  \n  strncpy(acStack_409 + 1,param_2,0x3ff);\n  pcVar5 = acStack_409 + 1;\n  local_9 = 0;\n  lVar6 = -1;\n  do {\n    lVar4 = lVar6 + 1;\n    lVar2 = lVar6 + 2;\n    lVar6 = lVar4;\n  } while (acStack_409[lVar2] != '\\0');\n  iVar3 = (int)lVar4 + -1;\n  lVar6 = (longlong)iVar3;\n  if (-1 < iVar3) {\n    do {\n      cVar1 = acStack_409[lVar6 + 1];\n      if (cVar1 == '.') {\n        acStack_409[lVar6 + 1] = '\\0';\n      }\n      else if ((cVar1 == '/') || (cVar1 == '\\\\')) {\n        pcVar5 = acStack_409 + (longlong)(iVar3 + 1) + 1;\n        break;\n      }\n      iVar3 = iVar3 + -1;\n      lVar6 = lVar6 + -1;\n    } while (-1 < lVar6);\n  }\n  lVar6 = (longlong)param_1 - (longlong)pcVar5;\n  do {\n    cVar1 = *pcVar5;\n    pcVar5[lVar6] = cVar1;\n    pcVar5 = pcVar5 + 1;\n  } while (cVar1 != '\\0');\n  _strlwr(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140200ad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_140200ad0(char *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  int iVar3;\n  char *pcVar4;\n  char *pcVar5;\n  char *pcVar6;\n  \n  lVar1 = *(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8);\n  if ((*(uint *)(lVar1 + 0xa8) & 1) == 0) {\n    *(undefined8 *)(lVar1 + 0xa0) = 0xf;\n    *(uint *)(lVar1 + 0xa8) = *(uint *)(lVar1 + 0xa8) | 1;\n    *(undefined8 *)(lVar1 + 0x88) = 0;\n    *(undefined8 *)(lVar1 + 0x98) = 0;\n    __tlregdtor(FUN_1407ece80);\n  }\n  pcVar5 = (char *)(lVar1 + 0x88);\n  if (pcVar5 != param_1) {\n    pcVar4 = param_1;\n    if (0xf < *(ulonglong *)(param_1 + 0x18)) {\n      pcVar4 = *(char **)param_1;\n    }\n    FUN_140022730(pcVar5,pcVar4,*(undefined8 *)(param_1 + 0x10));\n  }\n  lVar2 = *(longlong *)(lVar1 + 0x98);\n  pcVar6 = pcVar5;\n  pcVar4 = pcVar5;\n  if (0xf < *(ulonglong *)(lVar1 + 0xa0)) {\n    pcVar6 = *(char **)pcVar5;\n    pcVar4 = *(char **)pcVar5;\n  }\n  for (; pcVar6 != pcVar4 + lVar2; pcVar6 = pcVar6 + 1) {\n    iVar3 = toupper((int)*pcVar6);\n    *pcVar6 = (char)iVar3;\n  }\n  return pcVar5;\n}",
+  "fetched_at": "2026-04-26T17:55:32Z"
+}

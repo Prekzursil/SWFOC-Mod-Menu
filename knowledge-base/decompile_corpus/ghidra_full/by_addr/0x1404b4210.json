@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b4210",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpecialAbilityEventClass * __thiscall\nSpecialAbilityEventClass::SpecialAbilityEventClass(SpecialAbilityEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  this->vftablePtr = &vftable;\n  FUN_1404bdf20(&this->SpecialAbilityEventClass_data,0);\n  (this->SpecialAbilityEventClass_data).offset_0x10 = 0;\n  (this->SpecialAbilityEventClass_data).offset_0x18 = 0;\n  (this->SpecialAbilityEventClass_data).offset_0x1c = 0;\n  FUN_1404b3db0(&(this->SpecialAbilityEventClass_data).field_0x20,0);\n  DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64>\n            ((DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64> *)\n             &(this->SpecialAbilityEventClass_data).field_0x88);\n  (this->SpecialAbilityEventClass_data).offset_0xf0 = 0;\n  (this->SpecialAbilityEventClass_data).offset_0xf4 = 0x3fffff;\n  (this->SpecialAbilityEventClass_data).offset_0xf8 = 0x3fffff;\n  (this->SpecialAbilityEventClass_data).offset_0x108 = 0;\n  (this->EventClass_data).offset_0x8 = 0xd;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:07:27Z"
+}

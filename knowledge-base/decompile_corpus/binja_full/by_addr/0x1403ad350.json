@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ad350",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ad35b        struct ScheduledEventClass::MoveToGarrisonEventClass::VTable** result = operator new(0x68)\n1403ad366        if (result == 0)\n1403ad39d        return result\n1403ad36b        sub_140512c50(result)\n1403ad377        *(result + 0x54) = 0\n1403ad37e        *result = &MoveToGarrisonEventClass::`vftable'{for `ScheduledEventClass'}\n1403ad384        result[0xb].d = 0x3fffff\n1403ad38b        result[4].d = 0x37\n1403ad397        return result",
+  "fetched_at": "2026-04-26T17:24:12Z"
+}

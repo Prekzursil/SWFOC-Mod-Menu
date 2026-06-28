@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8f00",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_insert",
+  "body": "1407b8f09        void* r9_2\n1407b8f09        if (arg2 s<= 0)\n1407b8f24        r9_2 = sub_1407b9f20(arg1, arg2)\n1407b8f1a        r9_2 = *(arg1 + 0x18) - 0x10 + (sx.q(arg2) << 4)\n1407b8f27        int32_t* rcx = *(arg1 + 0x10)\n1407b8f2e        if (rcx u> r9_2)\n1407b8f47        void* r8_1\n1407b8f33        r8_1 = &rcx[-4]\n1407b8f37        *rcx = rcx[-4]\n1407b8f3d        *(rcx + 8) = *(rcx - 8)\n1407b8f41        rcx = r8_1\n1407b8f47        do while (r8_1 u> r9_2)\n1407b8f49        rcx = *(arg1 + 0x10)\n1407b8f4f        *r9_2 = *rcx\n1407b8f52        int64_t result = *(rcx + 8)\n1407b8f56        *(r9_2 + 8) = result\n1407b8f5e        return result",
+  "fetched_at": "2026-04-26T16:44:26Z"
+}

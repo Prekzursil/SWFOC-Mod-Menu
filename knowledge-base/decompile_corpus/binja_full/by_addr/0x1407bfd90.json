@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bfd90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bfd96        int32_t r8 = *arg2\n1407bfda5        if (r8 == 3)\n1407bfe1b        int32_t rdx_2 = int.d(fconvert.t(*(arg2 + 8)))\n1407bfe24        uint64_t zmm0 = _mm_cvtepi32_pd(zx.q(rdx_2)).q\n1407bfe28        double temp1_1 = *(arg2 + 8)\n1407bfe28        zmm0 f- temp1_1\n1407bfe2f        if (not(is_unordered.q(zmm0, temp1_1)) && not(zmm0 f!= temp1_1))\n1407bfe36        return sub_1407bfed0(arg1, rdx_2) __tailcall\n1407bfdaa        if (r8 == 4)\n1407bfdcb        void* r8_1 = *(arg2 + 8)\n1407bfde6        int32_t* i = *(arg1 + 0x20) + ((sx.q(1 << *(arg1 + 0xb)) - 1) & sx.q(*(r8_1 + 0xc))) * 0x28\n1407bfdf9        if (*i == 4 && *(i + 8) == r8_1)\n1407bfe1a        return &i[4]\n1407bfdfb        i = *(i + 0x20)\n1407bfe02        do while (i != 0)\n1407bfe10        return &data_1408fd750\n1407bfdaf        if (r8 == 0)\n1407bfdc1        return &data_1408fd750\n1407bfe48        int32_t* i_1 = sub_1407bffb0(arg1, arg2)\n1407bfe5d        if (sub_1407c3650(i_1, arg2) != 0)\n1407bfe88        return &i_1[4]\n1407bfe5f        i_1 = *(i_1 + 0x20)\n1407bfe66        do while (i_1 != 0)\n1407bfe79        return &data_1408fd750",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

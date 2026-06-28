@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nGarrisonVehicleBehaviorClass * __thiscall\nGarrisonVehicleBehaviorClass::vfunction4(GarrisonVehicleBehaviorClass *this,int param_1)\n\n{\n  GarrisonVehicleBehaviorClass *pGVar1;\n  \n  pGVar1 = (GarrisonVehicleBehaviorClass *)0x0;\n  if (param_1 == 0x4f) {\n    pGVar1 = this;\n  }\n  return pGVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:07Z"
+}

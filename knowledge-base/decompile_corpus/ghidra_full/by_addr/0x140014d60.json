@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014d60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140014d60(void)\n\n{\n  FUN_14022bb60(&DAT_140a7d0b0);\n  FUN_140227740(&DAT_140a7d108);\n  FUN_140229320(&DAT_140a7d530);\n  FUN_14022c3f0(&DAT_140a7dfe0);\n  _DAT_140a7e040 = 0x3f4ccccd;\n  _DAT_140a7e050 = 0;\n  _DAT_140a7e064 = 0;\n  _DAT_140a7e078 = 0;\n  _DAT_140a7e08c = 0;\n  DAT_140a7e090 = 0;\n  uRam0000000140a7e098 = 0;\n  _DAT_140a7e044 = 0x3f4ccccd;\n  _DAT_140a7e054 = 0x3f4ccccd;\n  _DAT_140a7e058 = 0x3f4ccccd;\n  _DAT_140a7e068 = 0x3f4ccccd;\n  _DAT_140a7e06c = 0x3f4ccccd;\n  _DAT_140a7e07c = 0x3f4ccccd;\n  _DAT_140a7e080 = 0x3f4ccccd;\n  _DAT_140a7e0c4 = 0x3f800000;\n  _DAT_140a7e0c8 = 0x3f800000;\n  FUN_14021d1b0(&DAT_140a7d0a0);\n  atexit(FUN_1407ed730);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:12Z"
+}

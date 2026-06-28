@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall\nLuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n::\n~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n          (void)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  \n  if (DAT_140b09e10[1] != 0) {\n    plVar3 = *(longlong **)(*(longlong *)*DAT_140b09e10 + 0x10);\n    (**(code **)*plVar3)(plVar3);\n    plVar1 = *(longlong **)*DAT_140b09e10;\n    lVar2 = *plVar1;\n    DAT_140b09e10[1] = DAT_140b09e10[1] + -1;\n    *(longlong *)plVar1[1] = lVar2;\n    *(longlong *)(lVar2 + 8) = plVar1[1];\n    if ((longlong *)plVar1[2] != (longlong *)0x0) {\n      (**(code **)(*(longlong *)plVar1[2] + 8))();\n    }\n    thunk_FUN_1407864b8(plVar1,0x18);\n    if ((int)plVar3[1] == 1) {\n      *(undefined4 *)(plVar3 + 1) = 0;\n      return plVar3;\n    }\n    (**(code **)(*plVar3 + 8))(plVar3);\n  }\n  plVar3 = (longlong *)FUN_140769c58();\n  if (plVar3 != (longlong *)0x0) {\n    *(undefined4 *)(plVar3 + 1) = 0;\n    *plVar3 = (longlong)&vftable;\n    plVar3[2] = 0;\n    plVar3[3] = 0;\n    plVar3[4] = 0;\n    return plVar3;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:11:08Z"
+}

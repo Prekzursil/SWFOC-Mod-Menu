@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d8d40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1402d8d40(void *param_1,undefined8 *param_2)\n\n{\n  int iVar1;\n  size_t sVar2;\n  undefined4 extraout_var;\n  undefined8 *_Buf1;\n  \n  sVar2 = 0xffffffffffffffff;\n  do {\n    sVar2 = sVar2 + 1;\n  } while (*(char *)((longlong)param_1 + sVar2) != '\\0');\n  _Buf1 = param_2;\n  if (0xf < (ulonglong)param_2[3]) {\n    _Buf1 = (undefined8 *)*param_2;\n  }\n  if (param_2[2] == sVar2) {\n    iVar1 = memcmp(_Buf1,param_1,param_2[2]);\n    sVar2 = CONCAT44(extraout_var,iVar1);\n    if (iVar1 == 0) {\n      return CONCAT71((int7)(sVar2 >> 8),1);\n    }\n  }\n  return sVar2 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:23:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261470",
+  "tool": "ghidra",
+  "fact_id": "rva_camera_class_ctor",
+  "body": "\nCameraClass * __thiscall CameraClass::CameraClass(CameraClass *this)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  \n  this->vftablePtr = &vftable;\n  puVar2 = (undefined8 *)0x0;\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  lVar1 = FUN_140769c58(0x308);\n  if (lVar1 != 0) {\n    puVar2 = (undefined8 *)FUN_140140100(lVar1);\n  }\n  *(undefined8 **)&(this->RefCountClass_data).field_0x38 = puVar2;\n  *puVar2 = 0x3f800000;\n  *(undefined4 *)(puVar2 + 1) = 0;\n  *(undefined4 *)((longlong)puVar2 + 0xc) = 0xc2700000;\n  *(undefined4 *)(puVar2 + 2) = 0;\n  *(undefined8 *)((longlong)puVar2 + 0x14) = 0x3f800000;\n  *(undefined8 *)((longlong)puVar2 + 0x1c) = 0;\n  *(undefined4 *)((longlong)puVar2 + 0x24) = 0;\n  puVar2[5] = 0x3f800000;\n  FUN_14022d390(puVar2,(longlong)puVar2 + 0x84);\n  FUN_1401417c0(puVar2);\n  lVar1 = *(longlong *)&(this->RefCountClass_data).field_0x38;\n  *(undefined4 *)(lVar1 + 0x44) = 0;\n  *(undefined4 *)(lVar1 + 0x48) = 0x3f800000;\n  *(undefined4 *)(lVar1 + 0x4c) = 0x3faaaaab;\n  FUN_140141260(lVar1);\n  FUN_1401417c0(lVar1);\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:42:56Z"
+}

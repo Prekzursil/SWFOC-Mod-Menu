@@ -1,0 +1,7 @@
+{
+  "addr": "0x140371a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_140371a90(longlong param_1,undefined8 *param_2,int param_3)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  \n  iVar1 = *(int *)(param_1 + 0x19f8);\n  if (iVar1 == 0) {\n    plVar2 = (longlong *)(param_1 + 0xf8);\n    if (0xf < *(ulonglong *)(param_1 + 0x110)) {\n      plVar2 = (longlong *)*plVar2;\n    }\n    FUN_140025760(\"WARNING!  %s does not have enemy spawn text defined! (This may be intentional)\\n\"\n                  ,plVar2);\n    param_2[3] = 0xf;\n    *param_2 = 0;\n    param_2[2] = 0;\n    return param_2;\n  }\n  if (iVar1 <= param_3) {\n    param_3 = iVar1 + -1;\n  }\n  FUN_14001e680(param_2,(longlong)param_3 * 0x20 + *(longlong *)(param_1 + 0x19f0));\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:15:51Z"
+}

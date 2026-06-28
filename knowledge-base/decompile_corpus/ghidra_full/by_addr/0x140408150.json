@@ -1,0 +1,7 @@
+{
+  "addr": "0x140408150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* std::_Mpunct<wchar_t> member function inherited by std::moneypunct<wchar_t,1>\n   std::_Mpunct<wchar_t> member function inherited by std::moneypunct<wchar_t,0> */\n\nundefined4 __thiscall std::_Mpunct<wchar_t>::vfunction10(_Mpunct<wchar_t> *this)\n\n{\n  return *(undefined4 *)&this[3]._Crt_new_delete;\n}",
+  "fetched_at": "2026-04-26T17:44:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d0b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021d0c4        if (*arg1 != 0)\n14021d0cd        AIL_set_3D_rolloff_factor(*(arg1 + 0xff8))\n14021d0d3        *(arg1 + 0x1028) = arg2.d\n14021d0e5        return ",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798f2c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798f49        if (arg1 u>= 0x2000)\n140798f55        *_errno() = 9\n140798f57        _invalid_parameter_noinfo()\n140798f5c        return 9\n140798f74        int32_t rdi_1 = 0\n140798f79        __vcrt_unlock(7)\n140798f7f        int64_t rbx_1 = 0\n140798f81        int32_t rax_2 = data_140b3c8d0\n140798f87        while (true)\n140798f87        int64_t var_18_1 = rbx_1\n140798f8e        if (arg1 s< rax_2)\n140798f8e        break\n140798f9b        if ((&data_140b3c4d0)[rbx_1] == 0)\n140798f9f        void* rax_3 = __acrt_lowio_create_handle_array()\n140798fa4        (&data_140b3c4d0)[rbx_1] = rax_3\n140798fab        if (rax_3 == 0)\n140798fad        rdi_1 = (rax_3 + 0xc).d\n140798fb0        break\n140798fb8        rax_2 = data_140b3c8d0 + 0x40\n140798fbb        data_140b3c8d0 = rax_2\n140798fc1        rbx_1 += 1\n140798fcb        __vcrt_lock(7)\n140798fd0        return zx.q(rdi_1)",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

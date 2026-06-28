@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404052d0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_get_hardpoint",
+  "body": "1404052d0        void* rax_4 = *(arg1 + 0x28)\n1404052d7        if (rax_4 != 0)\n1404052d9        void* rax = *(rax_4 + 0x110)\n1404052ec        if (rax != 0 && arg2 s>= 0 && arg2 s< *(rax + 0x18))\n1404052f9        return *(*(rax + 0x10) + (sx.q(arg2) << 3))\n1404052fc        return 0",
+  "fetched_at": "2026-04-26T16:43:36Z"
+}

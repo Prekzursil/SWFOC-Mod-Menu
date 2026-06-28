@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032f150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032f153        if (arg2 == 0)\n14032f153        return \n14032f16c        void** rdx_1 = *(arg2 + 0x298) + 0xf8\n14032f178        if (rdx_1[3] u>= 0x10)\n14032f17a        rdx_1 = *rdx_1\n14032f184        sub_140327b10(\"TUTORIAL - Clicked on planet %s\\r\\n\", rdx_1)\n14032f19f        sub_14032e5f0(arg1, 0x1a, 0, arg2, 0)\n14032f1ae        return ",
+  "fetched_at": "2026-04-26T17:02:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bf37c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPotentialPlanClass::vfunction3_for_RefCountClass(PotentialPlanClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((PotentialPlanClass *)&this[-1].PotentialPlanClass_data.offset_0x118,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:38:53Z"
+}

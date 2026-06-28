@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400173e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400173e0(void)\n\n{\n  LinearInterpolator::~LinearInterpolator((LinearInterpolator *)&DAT_140b15800);\n  atexit((_func_5014 *)&LAB_1407ef150);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:25Z"
+}

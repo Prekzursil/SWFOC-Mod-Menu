@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f6bf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall\nDetectHeroAbilityClass::vfunction4_for_IXMLLoadableClass(DetectHeroAbilityClass *this)\n\n{\n  if (*(float *)&(this->DetectHeroAbilityClass_data).offset_0x0 <= 0.0) {\n    return 0;\n  }\n  return (int)((float)DAT_140b0a340 * *(float *)&(this->DetectHeroAbilityClass_data).offset_0x0 +\n              DAT_1408007c0);\n}",
+  "fetched_at": "2026-04-26T17:48:43Z"
+}

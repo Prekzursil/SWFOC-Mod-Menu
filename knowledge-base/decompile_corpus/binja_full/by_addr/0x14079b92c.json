@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b92c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079b944        int32_t rdi = 0\n14079b949        int32_t rbx = arg2\n14079b950        int64_t result\n14079b950        if (arg2 s< 0)\n14079b982        label_14079b982:\n14079b982        result.b = 0\n14079b958        while (true)\n14079b958        int32_t temp0_1\n14079b958        int32_t temp1_1\n14079b958        temp0_1:temp1_1 = sx.q(rdi + rbx)\n14079b95d        int64_t rsi_1 = sx.q((temp1_1 - temp0_1) s>> 1)\n14079b963        int64_t r14_2 = rsi_1 << 4\n14079b970        int32_t temp2_1 = _wcsicmp(*arg3, *(r14_2 + arg1)).d\n14079b972        if (temp2_1 == 0)\n14079b9a4        *arg3 = arg1 + 8 + r14_2\n14079b9a7        result.b = 1\n14079b9a9        break\n14079b974        if (temp2_1 s>= 0)\n14079b97b        rdi = (rsi_1 + 1).d\n14079b976        rbx = (rsi_1 - 1).d\n14079b980        if (rdi s> rbx)\n14079b980        goto label_14079b982\n14079b99c        return result",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d2040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d2054        int32_t rax = arg1[4]\n1407d205d        int32_t i = arg3.d\n1407d2067        int32_t r10_2 = rax u>> 3 & 0x3f\n1407d206b        int32_t r9 = rax + (arg3 << 3).d\n1407d2077        arg1[4] = r9\n1407d207b        int32_t rcx = arg1[5]\n1407d2081        if (r9 u< (arg3 << 3).d)\n1407d2083        rcx += 1\n1407d208f        int32_t rbx = 0x40 - r10_2\n1407d2094        arg1[5] = (i u>> 0x1d) + rcx\n1407d2099        if (i u< rbx)\n1407d20dc        rbx = 0\n1407d20a8        memcpy(&arg1[6] + zx.q(r10_2), arg2, zx.q(rbx))\n1407d20b4        sub_1407d1790(arg1, &arg1[6])\n1407d20be        while (rbx + 0x3f u< i)\n1407d20c8        sub_1407d1790(arg1, zx.q(rbx) + arg2)\n1407d20cd        rbx += 0x40\n1407d20d7        r10_2 = 0\n1407d2106        return memcpy(&arg1[6] + zx.q(r10_2), zx.q(rbx) + arg2, zx.q(i - rbx)) __tailcall",
+  "fetched_at": "2026-04-26T17:33:59Z"
+}

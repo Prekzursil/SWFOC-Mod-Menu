@@ -1,0 +1,7 @@
+{
+  "addr": "0x140686e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140686e80(longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  char cVar3;\n  longlong lVar4;\n  longlong lVar5;\n  \n  plVar1 = *(longlong **)(param_1 + 0x40);\n  if ((((ulonglong)(*(longlong *)(param_1 + 0x48) - (longlong)plVar1 >> 3) < 2) ||\n      (plVar2 = (longlong *)*plVar1, plVar2 == (longlong *)0x0)) ||\n     (plVar1 = (longlong *)plVar1[1], plVar1 == (longlong *)0x0)) {\n    *(undefined4 *)(param_1 + 0x78) = 2;\n    return 1;\n  }\n  lVar4 = (**(code **)(*plVar2 + 0x10))(plVar2,1);\n  lVar5 = (**(code **)(*plVar1 + 0x10))(plVar1,1);\n  if (lVar4 == 0) {\n    if (lVar5 == 0) goto LAB_140686f01;\n  }\n  else {\n    cVar3 = FUN_14050e280(&DAT_140a2be20,plVar2,plVar2 + 0xf,0);\n    if (cVar3 == '\\0') goto LAB_140686f01;\n    if (lVar5 == 0) {\n      return 0;\n    }\n  }\n  cVar3 = FUN_14050e280(&DAT_140a2be20,plVar1,plVar1 + 0xf,0);\n  if (cVar3 != '\\0') {\n    return 0;\n  }\nLAB_140686f01:\n  *(undefined4 *)(param_1 + 0x78) = 3;\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:14:45Z"
+}

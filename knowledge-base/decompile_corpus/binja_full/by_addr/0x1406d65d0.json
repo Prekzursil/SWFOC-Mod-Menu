@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d65d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d65e0        int64_t* result = sub_140730470(arg1, arg2)\n1406d65e8        if (arg2 != 0)\n1406d65ee        result = *(arg2 + 0x58)\n1406d65f7        void** i = *result\n1406d65fd        if (i != result)\n1406d6600        int32_t rcx = i[2].d\n1406d6618        int32_t var_10_1 = 0\n1406d6628        void* rcx_2 = data_140b31900\n1406d662f        uint128_t zmm0_1 = _mm_cvtepi32_ps(zx.o(rcx u>> 0x10))\n1406d6632        uint128_t zmm1 = _mm_cvtepi32_ps(zx.o(rcx.w))\n1406d6635        zmm0_1.d = zmm0_1.d f* data_140b36b9c\n1406d663d        zmm1.d = zmm1.d f* data_140b36b98\n1406d6645        int32_t var_14_1 = zmm0_1.d\n1406d664b        int32_t var_18 = zmm1.d\n1406d6651        int32_t arg_10\n1406d6651        int32_t arg_18\n1406d6651        sub_140654210(rcx_2, &var_18, &arg_18, &arg_10)\n1406d6662        result = sub_14072cd00(arg1, arg_18, arg_10)\n1406d6667        i = *i\n1406d666e        do while (i != *(arg2 + 0x58))\n1406d6686        if (arg2 + 0x90 != arg1 + 0xb0)\n1406d668b        return sub_1406d66a0(arg2 + 0x90, arg1 + 0xb0, nullptr)\n1406d669a        return result",
+  "fetched_at": "2026-04-26T17:25:40Z"
+}

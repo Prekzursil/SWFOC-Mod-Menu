@@ -1,0 +1,7 @@
+{
+  "addr": "0x14066d490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14066d49d        if (arg3 != 0x11)\n14066d4a7        if (arg3 != 0x13)\n14066d4ae        return sub_1406e1680(arg1) __tailcall\n14066d4ba        if (*(arg1 + 0x10) != 0)\n14066d4d2        void* rax_3 = sub_1402ac5a0(*(sub_14028a950(&data_140b153e0, 0) + 0x18))\n14066d4d7        void* rcx_3 = *(arg1 + 0x10)\n14066d4e1        if (*(rcx_3 + 0x4c) == *(rax_3 + 8))\n14066d4e9        *(arg1 + 0x24) = data_140b0a320\n14066d4f1        return \n14066d4f5        if (rcx_3 != 0)\n14066d50d        void* rax_6 = sub_1402ac5a0(*(sub_14028a950(&data_140b153e0, 0) + 0x18))\n14066d51c        if (*(*(arg1 + 0x10) + 0x4c) == *(rax_6 + 4))\n14066d524        *(arg1 + 0x2c) = data_140b0a320\n14066d534        if (*(arg1 + 0x10) != 0)\n14066d548        void* rax_9 = sub_1402ad0e0(*(sub_14028a950(&data_140b153e0, 0) + 0x18))\n14066d54d        void* rcx_8 = *(arg1 + 0x10)\n14066d557        if (*(rcx_8 + 0x4c) == *(rax_9 + 8))\n14066d55f        *(arg1 + 0x20) = data_140b0a320\n14066d567        return \n14066d56b        if (rcx_8 != 0)\n14066d57f        void* rax_12 = sub_1402ad0e0(*(sub_14028a950(&data_140b153e0, 0) + 0x18))\n14066d58e        if (*(*(arg1 + 0x10) + 0x4c) == *(rax_12 + 4))\n14066d596        *(arg1 + 0x28) = data_140b0a320\n14066d59e        return ",
+  "fetched_at": "2026-04-26T17:10:21Z"
+}

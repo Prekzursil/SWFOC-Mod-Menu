@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059ee20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14059ee29        char r9 = arg1[5].b\n14059ee31        char rdi = *(arg1 + 0x29)\n14059ee3b        if (r9 s>= rdi)\n14059ee46        void* lpMem = *arg1\n14059ee49        char temp0_1 = rdi\n14059ee49        char temp1_1 = rdi\n14059ee49        rdi *= 2\n14059ee4c        if (temp0_1 != neg.b(temp1_1))\n14059ee94        uint64_t dwBytes = sx.q(rdi) << 3\n14059ee98        HANDLE hHeap = GetProcessHeap()\n14059eea6        if (lpMem != &arg1[1])\n14059eed5        void* rax_3 = HeapReAlloc(hHeap, HEAP_NONE, lpMem, dwBytes)\n14059eedb        char rcx_3 = arg1[5].b\n14059eee2        r9 = rdi\n14059eee6        *arg1 = rax_3\n14059eee9        if (rcx_3 s< rdi)\n14059eee9        r9 = rcx_3\n14059eeed        arg1[5].b = r9\n14059eeab        int32_t* rax_2 = HeapAlloc(hHeap, HEAP_NONE, dwBytes)\n14059eeb9        void* r8_4 = sx.q(arg1[5].b) << 3\n14059eec0        *arg1 = rax_2\n14059eec3        memcpy(rax_2, &arg1[1], r8_4)\n14059eec8        r9 = arg1[5].b\n14059eefb        *(arg1 + 0x29) = rdi\n14059ee51        if (lpMem != 0)\n14059ee5e        if (lpMem != &arg1[1])\n14059ee6e        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14059ee74        *arg1 = &arg1[1]\n14059ee77        arg1[5].w = 0x400\n14059ee7d        r9 = 0\n14059ef04        void* result = *arg1\n14059ef0b        *(result + (sx.q(r9) << 3)) = arg2\n14059ef0f        arg1[5].b += 1\n14059ef1a        return result",
+  "fetched_at": "2026-04-26T17:36:46Z"
+}

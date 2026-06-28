@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bffb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bffb0        int32_t r8_13 = *arg2\n1407bffb6        char rcx = *(arg1 + 0xb)\n1407bffc1        if (r8_13 == 1)\n1407c0085        return *(arg1 + 0x20) + (sx.q((1 << rcx) - 1) & sx.q(arg2[2])) * 0x28\n1407bffcb        if (r8_13 != 2)\n1407bffd1        if (r8_13 == 3)\n1407c000b        double zmm0 = *(arg2 + 8) + 1.0\n1407c003c        return *(arg1 + 0x20) + zx.q(modu.dp.d(0:(zmm0:4.d + zmm0.d), ((1 << rcx) - 1) | 1)) * 0x28\n1407bffdd        if (r8_13 == 4)\n1407bffff        return *(arg1 + 0x20) + (sx.q((1 << rcx) - 1) & sx.q(*(*(arg2 + 8) + 0xc))) * 0x28\n1407c0062        return *(arg1 + 0x20) + zx.q(modu.dp.d(0:(arg2[2]), ((1 << rcx) - 1) | 1)) * 0x28",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

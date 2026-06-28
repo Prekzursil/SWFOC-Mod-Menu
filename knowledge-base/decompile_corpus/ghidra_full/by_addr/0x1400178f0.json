@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400178f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400178f0(void)\n\n{\n  DynamicVectorClass<void_(__cdecl*)(class_SpeechEventClass_const*___ptr64)>::\n  DynamicVectorClass<void_(__cdecl*)(class_SpeechEventClass_const*___ptr64)>\n            ((DynamicVectorClass<void_(__cdecl*)(class_SpeechEventClass_const*___ptr64)> *)\n             &DAT_140b2b300);\n  atexit(FUN_1407ef5b0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:28Z"
+}

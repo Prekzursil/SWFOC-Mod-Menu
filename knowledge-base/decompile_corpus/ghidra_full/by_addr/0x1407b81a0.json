@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b81a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_1407b81a0(longlong param_1,longlong *param_2,longlong param_3)\n\n{\n  undefined4 uVar1;\n  undefined4 *puVar2;\n  undefined4 *puVar3;\n  undefined4 *puVar4;\n  \n  puVar2 = *(undefined4 **)(param_1 + 8);\n  puVar4 = (undefined4 *)(param_3 + 0x3c);\n  if (puVar4 != puVar2) {\n    puVar3 = (undefined4 *)(param_3 + 0x14);\n    do {\n      uVar1 = *puVar4;\n      puVar4 = puVar4 + 0xf;\n      puVar3[-5] = uVar1;\n      puVar3[-4] = puVar3[0xb];\n      puVar3[-3] = puVar3[0xc];\n      puVar3[-2] = puVar3[0xd];\n      puVar3[-1] = puVar3[0xe];\n      *puVar3 = puVar3[0xf];\n      puVar3[1] = puVar3[0x10];\n      puVar3[2] = puVar3[0x11];\n      puVar3[3] = puVar3[0x12];\n      puVar3[4] = puVar3[0x13];\n      puVar3[5] = puVar3[0x14];\n      puVar3[6] = puVar3[0x15];\n      puVar3[7] = puVar3[0x16];\n      puVar3[8] = puVar3[0x17];\n      puVar3[9] = puVar3[0x18];\n      puVar3 = puVar3 + 0xf;\n    } while (puVar4 != puVar2);\n  }\n  *param_2 = param_3;\n  *(undefined4 **)(param_1 + 8) = puVar2 + -0xf;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T18:55:58Z"
+}

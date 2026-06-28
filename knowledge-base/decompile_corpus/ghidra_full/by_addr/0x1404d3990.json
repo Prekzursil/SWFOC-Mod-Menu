@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d3990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1404d3990(longlong param_1)\n\n{\n  longlong *plVar1;\n  undefined4 uVar2;\n  longlong *plVar3;\n  char cVar4;\n  int iVar5;\n  longlong lVar6;\n  undefined8 uVar7;\n  longlong *plVar8;\n  longlong *plVar9;\n  int iVar10;\n  \n  if (*(longlong *)(param_1 + 0x40) == 0) {\n    return 0;\n  }\n  iVar10 = 0;\n  plVar3 = *(longlong **)(*(longlong *)(param_1 + 0x40) + 8);\n  uVar2 = *(undefined4 *)(*(longlong *)(*(longlong *)(param_1 + 0x38) + 0x28) + 0x34);\n  plVar8 = (longlong *)*plVar3;\n  if (plVar8 != plVar3) {\n    do {\n      plVar3 = (longlong *)plVar8[2];\n      plVar9 = plVar3;\n      if (plVar3 != (longlong *)0x0) {\n        do {\n          if (*(char *)((longlong)plVar9 + 0x335) != -1) {\n            lVar6 = (**(code **)(*plVar9 + 0x10))(plVar9,3);\n            if ((lVar6 != 0) && (cVar4 = FUN_1403fa420(lVar6,plVar9), cVar4 == '\\0'))\n            goto LAB_1404d3a3f;\n            break;\n          }\n          plVar1 = plVar9 + 0x56;\n          plVar9 = (longlong *)*plVar1;\n        } while ((longlong *)*plVar1 != (longlong *)0x0);\n        uVar7 = FUN_1403973b0(plVar3);\n        iVar5 = FUN_140373500(uVar7,uVar2);\n        iVar10 = iVar10 + iVar5;\n      }\nLAB_1404d3a3f:\n      plVar8 = (longlong *)*plVar8;\n    } while (plVar8 != (longlong *)*(longlong *)(*(longlong *)(param_1 + 0x40) + 8));\n  }\n  return iVar10;\n}",
+  "fetched_at": "2026-04-26T18:13:32Z"
+}

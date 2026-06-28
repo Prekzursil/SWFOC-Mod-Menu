@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d5290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nint FUN_1402d5290(longlong param_1,undefined8 *param_2,undefined4 param_3,char param_4,uint param_5)\n\n{\n  int iVar1;\n  DWORD DVar2;\n  ulonglong uVar3;\n  undefined4 local_18 [4];\n  \n  if (param_2 != (undefined8 *)0x0) {\n    iVar1 = DynamicVectorClass<class_ActiveSFXEventClass*___ptr64>::\n            DynamicVectorClass<class_ActiveSFXEventClass*___ptr64>_Constructor_or_Destructor\n                      (param_1,param_2,0,local_18,0,0,param_3,param_4);\n    if (0 < (int)param_5) {\n      uVar3 = (ulonglong)param_5;\n      do {\n        DVar2 = timeGetTime();\n        FUN_1402d72c0(&DAT_140b27e60,DVar2 - _DAT_140a7bec0,DAT_140b0a320,1);\n        uVar3 = uVar3 - 1;\n      } while (uVar3 != 0);\n    }\n    return iVar1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:23:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d0a8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _get_narrow_winmain_command_line\n   \n   Library: Visual Studio 2019 Release */\n\nbyte * _get_narrow_winmain_command_line(void)\n\n{\n  byte bVar1;\n  bool bVar2;\n  int iVar3;\n  byte *pbVar4;\n  \n  __acrt_initialize_multibyte();\n  pbVar4 = &DAT_140b3c498;\n  if (DAT_140b3cbf0 != (byte *)0x0) {\n    pbVar4 = DAT_140b3cbf0;\n  }\n  bVar2 = false;\n  do {\n    bVar1 = *pbVar4;\n    if (bVar1 < 0x21) {\n      if (bVar1 == 0) {\n        return pbVar4;\n      }\n      if (!bVar2) {\n        do {\n          if (0x20 < bVar1) {\n            return pbVar4;\n          }\n          pbVar4 = pbVar4 + 1;\n          bVar1 = *pbVar4;\n        } while (bVar1 != 0);\n        return pbVar4;\n      }\n    }\n    if (bVar1 == 0x22) {\n      bVar2 = !bVar2;\n    }\n    iVar3 = _ismbblead((uint)bVar1);\n    if (iVar3 != 0) {\n      pbVar4 = pbVar4 + 1;\n    }\n    pbVar4 = pbVar4 + 1;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:52:13Z"
+}

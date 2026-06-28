@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048a2d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048a2da        void* lpMem = *(arg1 + 8)\n14048a2e4        if (lpMem == 0)\n14048a2e4        return \n14048a2f1        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n14048a30e        int64_t i = *(lpMem - 8)\n14048a31e        void* rdi_3 = (i << 5) + lpMem\n14048a329        if (i != 0)\n14048a330        int64_t* rcx_1 = *(rdi_3 - 8)\n14048a334        rdi_3 -= 0x20\n14048a338        i -= 1\n14048a33e        if (rcx_1 != 0)\n14048a343        (*(*rcx_1 + 8))(rcx_1)\n14048a351        do while (i != 0)\n14048a353        *(lpMem - 8)\n14048a363        j_sub_1407864b8(lpMem - 8)\n14048a301        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14048a379        *(arg1 + 0x14) &= 0x80000000\n14048a380        *(arg1 + 8) = 0\n14048a384        *(arg1 + 0x10) = 0\n14048a391        return ",
+  "fetched_at": "2026-04-26T17:28:43Z"
+}

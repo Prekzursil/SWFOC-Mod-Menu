@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f1ab0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nBountyOnFactionAbilityClass::vfunction31_for_IXMLLoadableClass\n          (BountyOnFactionAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  undefined4 uVar1;\n  char cVar2;\n  byte bVar3;\n  ulonglong in_RAX;\n  longlong lVar4;\n  int iVar5;\n  byte bVar6;\n  \n  if (((param_1 == 0) || (*(longlong *)(param_1 + 0x298) == 0)) || (param_2 != 0)) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  bVar6 = 0;\n  uVar1 = *(undefined4 *)(param_1 + 0x58);\n  if ((this->BountyOnFactionAbilityClass_data).offset_0x20 == '\\x01') {\n    iVar5 = 0;\n    if ((int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3) < 1) goto LAB_1406f1b95;\n    do {\n      lVar4 = FUN_140294bc0(&DAT_140a16fd0,iVar5);\n      if ((lVar4 != 0) && (cVar2 = FUN_1402823c0(lVar4,uVar1), cVar2 == '\\x01')) {\n        bVar3 = FUN_1406f1bc0(this,param_1,*(undefined4 *)(lVar4 + 0x4c));\n        bVar6 = bVar6 | bVar3;\n      }\n      iVar5 = iVar5 + 1;\n    } while (iVar5 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3));\n  }\n  else {\n    bVar6 = FUN_1406f1bc0(this,param_1,uVar1);\n  }\n  if (bVar6 == 1) {\n    FUN_14048e4d0(this,param_1,0);\n  }\nLAB_1406f1b95:\n  return (ulonglong)bVar6;\n}",
+  "fetched_at": "2026-04-26T17:47:32Z"
+}

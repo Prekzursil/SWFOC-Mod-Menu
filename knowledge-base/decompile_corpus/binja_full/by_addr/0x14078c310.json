@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078c334        if (arg1 u< 0x1fffffffffffffff && arg2 u< divu.dp.q(-1, arg3))\n14078c336        int64_t rcx = arg1 << 3\n14078c33a        int64_t r9_1 = arg2 * arg3\n14078c347        if (not.q(rcx) u> r9_1)\n14078c351        int64_t result = _calloc_base(rcx + r9_1, 1)\n14078c35b        _free_base(0)\n14078c360        return result\n14078c365        return 0",
+  "fetched_at": "2026-04-26T17:31:29Z"
+}

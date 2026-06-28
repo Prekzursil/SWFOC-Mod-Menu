@@ -1,0 +1,7 @@
+{
+  "addr": "0x140550200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140550212        int64_t rbp\n140550212        rbp.b = 1\n14055021c        if (sub_140220610(arg2) != 0)\n14055037c        char i\n14055023b        int32_t rax_1 = sub_140220710(arg2)\n140550243        if (rax_1 u> 5)\n140550367        rbp.b = 0\n140550256        switch (rax_1)\n140550274        case 0\n140550274        rbp.b &= sub_140220730(arg2, arg1, 4, nullptr)\n14055028a        rbp.b &= sub_140220730(arg2, arg1 + 4, 4, nullptr)\n140550296        rbp.b &= sub_140220730(arg2, arg1 + 8, 4, nullptr)\n1405502bb        case 1\n1405502bb        rbp.b &= sub_140220730(arg2, arg1 + 0xc, 4, nullptr)\n1405502d1        rbp.b &= sub_140220730(arg2, arg1 + 0x10, 4, nullptr)\n1405502dd        rbp.b &= sub_140220730(arg2, arg1 + 0x14, 4, nullptr)\n1405502e5        case 2\n1405502f3        sub_140220730(arg2, arg1 + 0x18, 4, nullptr)\n140550347        case 3\n140550347        char rsi_1 = sub_140220730(arg2, arg1 + 0x1c, 4, nullptr) & 1 & sub_140220730(arg2, arg1 + 0x20, 4, nullptr) & sub_140220730(arg2, arg1 + 0x24, 4, nullptr)\n140550356        rbp.b &= sub_140220730(arg2, arg1 + 0x28, 4, nullptr) & rsi_1\n14055035b        case 4\n1405502f3        sub_140220730(arg2, arg1 + 0x2c, 4, nullptr)\n140550361        case 5\n1405502f3        sub_140220730(arg2, arg1 + 0x30, 4, nullptr)\n14055036d        sub_1402206a0(arg2)\n140550375        i = sub_140220610(arg2)\n14055037c        do while (i != 0)\n14055039d        return zx.q(rbp.b)",
+  "fetched_at": "2026-04-26T17:34:16Z"
+}

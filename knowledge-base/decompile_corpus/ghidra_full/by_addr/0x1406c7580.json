@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c7580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1406c7580(longlong param_1,longlong param_2,ulonglong param_3,undefined4 *param_4,\n                  undefined8 param_5)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  undefined4 *puVar3;\n  longlong lVar4;\n  longlong lVar5;\n  float fVar6;\n  float fVar7;\n  \n  lVar5 = (longlong)(param_3 - 1) >> 1;\n  lVar2 = param_2;\n  while (lVar2 < lVar5) {\n    puVar3 = (undefined4 *)(param_1 - (lVar2 * 8 + 8));\n    uVar1 = *puVar3;\n    fVar6 = (float)FUN_140612ee0(param_5,puVar3[-1]);\n    fVar7 = (float)FUN_140612ee0(param_5,uVar1);\n    lVar4 = (ulonglong)(fVar7 <= fVar6) + 1 + lVar2 * 2;\n    *(undefined4 *)(param_1 - (lVar2 * 4 + 4)) = *(undefined4 *)(param_1 - (lVar4 * 4 + 4));\n    lVar2 = lVar4;\n  }\n  if ((lVar2 == lVar5) && ((param_3 & 1) == 0)) {\n    *(undefined4 *)(param_1 - (lVar2 * 4 + 4)) = *(undefined4 *)(param_1 + param_3 * -4);\n    lVar2 = param_3 - 1;\n  }\n  while (param_2 < lVar2) {\n    uVar1 = *param_4;\n    lVar5 = lVar2 + -1 >> 1;\n    puVar3 = (undefined4 *)(param_1 - (lVar5 * 4 + 4));\n    fVar6 = (float)FUN_140612ee0(param_5,*puVar3);\n    fVar7 = (float)FUN_140612ee0(param_5,uVar1);\n    if (fVar7 <= fVar6) break;\n    *(undefined4 *)(param_1 - (lVar2 * 4 + 4)) = *puVar3;\n    lVar2 = lVar5;\n  }\n  *(undefined4 *)(param_1 - (lVar2 * 4 + 4)) = *param_4;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:05Z"
+}

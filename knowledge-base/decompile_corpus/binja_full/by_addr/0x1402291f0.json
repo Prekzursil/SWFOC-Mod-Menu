@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402291f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140229205        int32_t i_1 = -1\n14022920c        int32_t* r11 = arg1 + 0x38\n140229210        int32_t i = 0\n140229212        *arg3 = 0xffffffff\n140229215        int64_t r9 = 0\n140229218        int64_t r10 = -1\n140229226        if (r11[-2].b == 0)\n1402292c9        *arg3 = i\n1402292d2        return *((sx.q(i) << 6) + arg1 + 0x28)\n140229230        if (r10 == -1)\n140229250        i_1 = i\n140229252        r10 = r9\n140229232        int32_t rcx = *r11\n140229238        int64_t r8_1 = r10 << 6\n14022923c        int32_t temp0_1 = *(r8_1 + arg1 + 0x38)\n140229241        if (rcx s> temp0_1)\n140229250        i_1 = i\n140229252        r10 = r9\n14022924e        if (rcx == temp0_1 && r11[1] u< *(r8_1 + arg1 + 0x3c))\n140229250        i_1 = i\n140229252        r10 = r9\n140229255        i += 1\n140229257        r9 += 1\n14022925a        r11 = &r11[0x10]\n140229261        do while (i s< 0x10)\n14022926b        if (i_1 != 0xffffffff)\n140229270        int64_t rdi_2 = sx.q(i_1) << 6\n14022927c        if (*(rdi_2 + arg1 + 0x38) s>= arg2)\n140229288        int32_t var_18_1 = arg2\n140229293        sub_140214a70(data_140a15580, \"SFX2DManager: Priority system killing SFX2D index %d (pri %d) for pri %d\\n\", zx.q(i_1))\n14022929d        sub_140228ac0(arg1, i_1)\n1402292a2        *arg3 = i_1\n1402292a5        return *(rdi_2 + arg1 + 0x28)\n1402292c5        return 0",
+  "fetched_at": "2026-04-26T17:29:29Z"
+}

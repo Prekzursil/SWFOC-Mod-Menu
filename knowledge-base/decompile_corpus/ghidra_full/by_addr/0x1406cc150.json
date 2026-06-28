@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCompanyCombatantClass::vfunction37\n          (CompanyCombatantClass *this,undefined4 param_2,undefined4 param_3,longlong *param_4)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  undefined8 uVar3;\n  ulonglong uVar4;\n  ulonglong uVar5;\n  uint uVar6;\n  ulonglong uVar7;\n  \n  uVar2 = (**(code **)(*this->offset_0x18 + 0x10))(this->offset_0x18,5);\n  uVar5 = 0;\n  iVar1 = FUN_1404f3ba0(uVar2,this->offset_0x18);\n  uVar7 = uVar5;\n  if (0 < iVar1) {\n    do {\n      uVar3 = FUN_1404f3b80(uVar2,this->offset_0x18,uVar7);\n      uVar4 = uVar5;\n      if (param_4 != (longlong *)0x0) {\n        uVar4 = (**(code **)(*param_4 + 0x170))(param_4);\n      }\n      FUN_1403a9e30(uVar3,param_2,param_3,uVar4,0,0,0,0,0,0xffffffff,0,0,0,0);\n      uVar6 = (int)uVar7 + 1;\n      iVar1 = FUN_1404f3ba0(uVar2,this->offset_0x18);\n      uVar7 = (ulonglong)uVar6;\n    } while ((int)uVar6 < iVar1);\n  }\n  if (param_4 != (longlong *)0x0) {\n    uVar5 = (**(code **)(*param_4 + 0x170))(param_4);\n  }\n  FUN_1403a9e30(this->offset_0x18,param_2,param_3,uVar5,0,0,0,0,0,0xffffffff,0,0,0,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:09Z"
+}

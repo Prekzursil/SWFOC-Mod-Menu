@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1404c2e20(void)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58();\n  if (puVar1 != (undefined8 *)0x0) {\n    *(undefined4 *)(puVar1 + 2) = 0;\n    puVar1[4] = 0;\n    puVar1[5] = 0;\n    *(undefined4 *)(puVar1 + 6) = 0;\n    *(undefined4 *)((longlong)puVar1 + 0x3c) = 0;\n                    /* inlined constructor: StarshipDummyBehaviorClass::StarshipDummyBehaviorClass\n                        */\n    *puVar1 = &StarshipDummyBehaviorClass::vftable;\n    puVar1[1] = &StarshipDummyBehaviorClass::vftable;\n    puVar1[3] = &StarshipDummyBehaviorClass::vftable;\n    *(undefined4 *)((longlong)puVar1 + 0x34) = 1;\n    return puVar1;\n  }\n  return (undefined8 *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:11:00Z"
+}

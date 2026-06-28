@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068af20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068af20(void)\n\n{\n  SiphonCreditsAbilityClass *this;\n  \n  this = (SiphonCreditsAbilityClass *)FUN_140769c58(0x188);\n  if (this != (SiphonCreditsAbilityClass *)0x0) {\n    SiphonCreditsAbilityClass::SiphonCreditsAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:31Z"
+}

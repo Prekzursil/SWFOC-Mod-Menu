@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f9d50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f9d53        if (arg2 == 0)\n1404f9d53        return \n1404f9d5e        int32_t* rax = *(arg2 + 0x2b0)\n1404f9d70        if (rax != 0)\n1404f9d70        arg2 = rax\n1404f9d74        void* rbx_1 = *(arg2 + 0xa8)\n1404f9d7e        if (rbx_1 == 0)\n1404f9d7e        return \n1404f9d89        rax = 0x1c4\n1404f9d8e        if (*(arg1 + 0x34) == 0)\n1404f9d8e        rax = 0x1cc\n1404f9d91        int32_t r8_1 = *(rax + rbx_1)\n1404f9d95        int32_t rcx = *(rax + rbx_1 + 4)\n1404f9d9c        if (r8_1 s< 0)\n1404f9d9c        return \n1404f9d9e        rax = zx.q(arg1[1].d)\n1404f9dad        if (r8_1 s>= rax.d || rcx s< 0 || rcx s>= *(arg1 + 0xc))\n1404f9dad        return \n1404f9dc6        sub_14020abe0(*arg1 + sx.q(rax.d * rcx + r8_1) * 0x48, &arg2[6])\n1404f9ddd        if (*(arg1 + 0x34) != 0)\n1404f9ddf        *(rbx_1 + 0x1c4) = -1\n1404f9df0        return \n1404f9df1        *(rbx_1 + 0x1cc) = -1\n1404f9e02        return ",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198e70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTextureCube::~alD3dTextureCube(alD3dTextureCube *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  if ((longlong *)this->offset_0x70 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)this->offset_0x70 + 0x10))();\n  }\n  this->offset_0x70 = 0;\n  alD3dTexture::~alD3dTexture((alD3dTexture *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:35Z"
+}

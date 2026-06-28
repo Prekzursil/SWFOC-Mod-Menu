@@ -1,0 +1,7 @@
+{
+  "addr": "0x140621768",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nIndigenousUnitBehaviorClass::vfunction1(IndigenousUnitBehaviorClass *this,uint param_1)\n\n{\n  ~IndigenousUnitBehaviorClass\n            ((IndigenousUnitBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:58Z"
+}

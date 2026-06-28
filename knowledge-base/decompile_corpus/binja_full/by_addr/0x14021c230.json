@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021c230",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021c239        sub_14021d1b0(arg1)\n14021c247        *(arg1 + 0xfe4) = 0\n14021c24a        *(arg1 + 0xfec) = 0\n14021c24d        *(arg1 + 0xfdc) = 0xbf800000\n14021c253        *(arg1 + 0xfe0) = 0xbf800000\n14021c25a        *(arg1 + 0xfe8) = 0xbf800000\n14021c261        *(arg1 + 0xfc8) = 0xbf800000\n14021c268        *(arg1 + 0xfcc) = 0xbf800000\n14021c26f        *(arg1 + 0xfd0) = 0\n14021c272        *(arg1 + 0xfd4) = 0xbf800000\n14021c279        *(arg1 + 0xfd8) = 0\n14021c27c        *(arg1 + 0xfb4) = 0xbf800000\n14021c283        *(arg1 + 0xfb8) = 0xbf800000\n14021c28a        *(arg1 + 0xfbc) = 0\n14021c28d        *(arg1 + 0xfc0) = 0xbf800000\n14021c294        *(arg1 + 0xfc4) = 0\n14021c297        *(arg1 + 0xfa0) = 0xbf800000\n14021c29e        *(arg1 + 0xfa4) = 0xbf800000\n14021c2a5        *(arg1 + 0xfa8) = 0\n14021c2a8        *(arg1 + 0xfac) = 0xbf800000\n14021c2af        *(arg1 + 0xfb0) = 0\n14021c2b9        sub_14022c470(&arg1[0xf40])\n14021c2c5        sub_140229970(&arg1[0x490])\n14021c2ce        j_sub_140228d40(&arg1[0x68])\n14021c2dc        return sub_14022bba0(&arg1[0x10]) __tailcall",
+  "fetched_at": "2026-04-26T17:28:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c5b20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c5b41        int64_t rbp = arg3\n1403c5b48        int64_t* rsi = arg2\n1403c5b4b        int64_t* rdi = arg1\n1403c5b54        if (((arg2 - arg1) & 0xfffffffffffffff8) s> 0x100)\n1403c5b63        if (rbp s<= 0)\n1403c5c16        sub_1403c5020(rdi, rsi, arg4)\n1403c5c21        void* i = (rsi - rdi) & 0xfffffffffffffff8\n1403c5c29        if (i s>= 0x10)\n1403c5c2b        void* rsi_1 = &rsi[-1]\n1403c5c48        int64_t arg_8 = *rsi_1\n1403c5c5f        *rsi_1 = *rdi\n1403c5c67        sub_1403c5950(rdi, 0, (rsi_1 - rdi) s>> 3, &arg_8, arg4)\n1403c5c6c        rsi_1 -= 8\n1403c5c74        i = (8 - rdi + rsi_1) & 0xfffffffffffffff8\n1403c5c7c        do while (i s>= 0x10)\n1403c5c0c        return i\n1403c5b77        int64_t* var_28\n1403c5b77        sub_1403c5390(&var_28, rdi, rsi, arg4)\n1403c5b7c        int64_t* r15_1 = var_28\n1403c5b9a        rbp = (rbp s>> 1) + (rbp s>> 2)\n1403c5bb0        int64_t* var_20\n1403c5bb0        if (((r15_1 - rdi) & 0xfffffffffffffff8) s>= ((rsi - var_20) & 0xfffffffffffffff8))\n1403c5bc8        sub_1403c5b20(var_20, rsi, rbp, arg4)\n1403c5bcd        rsi = r15_1\n1403c5bb8        sub_1403c5b20(rdi, r15_1, rbp, arg4)\n1403c5bbd        rdi = var_20\n1403c5be0        do while (((rsi - rdi) & 0xfffffffffffffff8) s> 0x100)\n1403c5bef        return sub_1403c4e80(rdi, rsi, arg4)",
+  "fetched_at": "2026-04-26T17:24:45Z"
+}

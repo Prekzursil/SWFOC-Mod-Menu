@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b5d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>::\n~DynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>\n          (DynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>\n           *this)\n\n{\n  uint *puVar1;\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = (this->\n          DynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>_data\n          ).offset_0x0;\n  this->vftablePtr = &vftable;\n  if (lpMem != (LPVOID)0x0) {\n    if (((this->\n         DynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>_data)\n         .offset_0xc & 0x80000000) == 0) {\n      thunk_FUN_1407864b8(lpMem);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    puVar1 = &(this->\n              DynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>_data\n              ).offset_0xc;\n    *puVar1 = *puVar1 & 0x80000000;\n    (this->\n    DynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>_data).\n    offset_0x0 = (LPVOID)0x0;\n    (this->\n    DynamicVectorClass<class_SimpleModifierListClass<enum_tVisibilityLevelType>*___ptr64>_data).\n    offset_0x8 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:07:40Z"
+}

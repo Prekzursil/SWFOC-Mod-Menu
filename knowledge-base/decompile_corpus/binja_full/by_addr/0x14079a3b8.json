@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a3b8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a3b8        *(arg1 + 0x10) += 1\n14079a3bc        int32_t* rax = *(arg1 + 0xe0)\n14079a3c6        if (rax != 0)\n14079a3c8        *rax += 1\n14079a3cb        int32_t* rax_1 = *(arg1 + 0xf0)\n14079a3d5        if (rax_1 != 0)\n14079a3d7        *rax_1 += 1\n14079a3da        int32_t* rax_2 = *(arg1 + 0xe8)\n14079a3e4        if (rax_2 != 0)\n14079a3e6        *rax_2 += 1\n14079a3e9        int32_t* rax_3 = *(arg1 + 0x100)\n14079a3f3        if (rax_3 != 0)\n14079a3f5        *rax_3 += 1\n14079a3f8        void* rax_4 = arg1 + 0x38\n14079a3fc        int64_t i_1 = 6\n14079a435        int64_t i\n14079a40d        if (*(rax_4 - 0x10) != &data_140a44f28)\n14079a40f        int32_t* rdx_1 = *rax_4\n14079a415        if (rdx_1 != 0)\n14079a417        *rdx_1 += 1\n14079a41f        if (*(rax_4 - 0x18) != 0)\n14079a421        int32_t* rdx_2 = *(rax_4 - 8)\n14079a428        if (rdx_2 != 0)\n14079a42a        *rdx_2 += 1\n14079a42d        rax_4 += 0x20\n14079a431        i = i_1\n14079a431        i_1 -= 1\n14079a435        do while (i != 1)\n14079a43e        return __acrt_locale_add_lc_time_reference(*(arg1 + 0x120)) __tailcall",
+  "fetched_at": "2026-04-26T17:32:07Z"
+}

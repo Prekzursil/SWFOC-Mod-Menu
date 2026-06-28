@@ -1,0 +1,7 @@
+{
+  "addr": "0x14041c0a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14041c0a0        int64_t r8 = arg1[1]\n14041c0a4        int64_t* result = *arg1\n14041c0a7        bool cond:0 = result != r8\n14041c0aa        if (result != r8)\n14041c0b3        while (*result != arg2)\n14041c0b5        result = &result[1]\n14041c0bc        if (result == r8)\n14041c0bc        break\n14041c0be        cond:0 = result != r8\n14041c0c1        result.b = cond:0\n14041c0c4        return result",
+  "fetched_at": "2026-04-26T17:26:15Z"
+}

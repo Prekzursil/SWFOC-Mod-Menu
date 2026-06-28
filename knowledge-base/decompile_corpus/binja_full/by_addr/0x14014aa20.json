@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014aa20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014aa2e        struct RefCountClass::alRenderable::VTable** result = operator new(0x140)\n14014aa36        if (result == 0)\n14014aa4d        return result\n14014aa43        int128_t zmm7\n14014aa43        int128_t zmm8\n14014aa43        int128_t zmm9\n14014aa43        float zmm10[0x4]\n14014aa43        float zmm11[0x4]\n14014aa43        return sub_14014a200(result, arg1, zmm7, zmm8, zmm9, zmm10, zmm11) __tailcall",
+  "fetched_at": "2026-04-26T17:21:00Z"
+}

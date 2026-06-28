@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cedd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407cedd0(longlong param_1,longlong param_2,undefined8 param_3)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n  if (param_2 == 0) {\n    lVar1 = __acrt_iob_func(0);\n  }\n  else {\n    lVar1 = FUN_14078013c(param_2,param_3);\n  }\n  if (lVar1 == 0) {\n    return;\n  }\n  plVar2 = (longlong *)FUN_1407bf7e0(*(undefined8 *)(param_1 + 0x30),0,0,0x208);\n  *plVar2 = lVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:57:47Z"
+}

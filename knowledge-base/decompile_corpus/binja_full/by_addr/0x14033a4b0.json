@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033a4b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033a4bd        void* result = sub_1403355d0(arg1, arg2)\n14033a4c8        if (result != 0)\n14033a4d9        if (arg1 + 0x38 != result + 0x20)\n14033a4e0        int32_t* rdx = result + 0x20\n14033a4e3        if (*(result + 0x38) u>= 8)\n14033a4e5        rdx = *(result + 0x20)\n14033a4ec        sub_1400228a0(arg1 + 0x38, rdx, *(result + 0x30))\n14033a4fc        if (arg1 + 0x58 != result + 0x40)\n14033a503        int32_t* rdx_1 = result + 0x40\n14033a506        if (*(result + 0x58) u>= 8)\n14033a508        rdx_1 = *(result + 0x40)\n14033a50f        sub_1400228a0(arg1 + 0x58, rdx_1, *(result + 0x50))\n14033a51a        *(arg1 + 0x30) = *(result + 0xb8)\n14033a523        *(arg1 + 0x2c) = *(result + 0xa0)\n14033a52c        *(arg1 + 0x20) = *(result + 0x90)\n14033a535        *(arg1 + 0x24) = *(result + 0x94)\n14033a53e        *(arg1 + 0x28) = *(result + 0x98)\n14033a547        *(arg1 + 0xb8) = *(result + 0x108)\n14033a553        *(arg1 + 0xbc) = *(result + 0x10c)\n14033a559        result = zx.q(*(result + 0xc6))\n14033a560        *(arg1 + 0x151) = result.b\n14033a570        return result",
+  "fetched_at": "2026-04-26T17:04:13Z"
+}

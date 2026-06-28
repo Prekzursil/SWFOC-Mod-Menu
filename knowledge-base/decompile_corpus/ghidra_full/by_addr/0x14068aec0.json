@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068aec0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068aec0(void)\n\n{\n  SensorJammingAbilityClass *this;\n  \n  this = (SensorJammingAbilityClass *)FUN_140769c58(0x1b8);\n  if (this != (SensorJammingAbilityClass *)0x0) {\n    SensorJammingAbilityClass::SensorJammingAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f8800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandObstacleBehaviorClass::vfunction14(LandObstacleBehaviorClass *this,longlong param_1)\n\n{\n  if (param_1 != 0) {\n    _guard_check_icall();\n    FUN_1404f88b0(this,param_1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:20Z"
+}

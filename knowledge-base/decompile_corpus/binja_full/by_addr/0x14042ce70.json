@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042ce70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042ce7a        void* rdx = *(arg1 + 0x28)\n14042ce81        void* rbx = *(rdx + 0xa8)\n14042ce94        if (rbx == 0 || *(rbx + 0x260) == 0)\n14042ce94        return \n14042ce99        sub_140557c20(rbx, rdx)\n14042cea3        sub_140559230(rbx, 0)\n14042cebc        sub_14027d160(0x40, \"GO:%d resuming loco\\n\", zx.q(*(*(arg1 + 0x28) + 0x50)))\n14042cecb        return ",
+  "fetched_at": "2026-04-26T17:26:44Z"
+}

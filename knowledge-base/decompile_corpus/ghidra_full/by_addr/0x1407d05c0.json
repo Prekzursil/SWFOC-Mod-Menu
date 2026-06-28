@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d05c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d05c0(undefined8 param_1)\n\n{\n  FUN_1407b94a0(param_1,&DAT_1408fe4dc,2);\n  FUN_1407b9600(param_1,0xffffd8ef);\n  FUN_1407ce7a0(param_1,0,&PTR_s_error_1408fe120,0);\n  FUN_1407b94a0(param_1,\"_VERSION\",8);\n  FUN_1407b94a0(param_1,\"Lua 5.0.2\",9);\n  FUN_1407b97c0(param_1,0xfffffffd);\n  FUN_1407b94a0(param_1,\"newproxy\",8);\n  FUN_1407b9140(param_1);\n  FUN_1407b9600(param_1,0xffffffff);\n  FUN_1407b99d0(param_1,0xfffffffe);\n  FUN_1407b94a0(param_1,\"__mode\",6);\n  FUN_1407b94a0(param_1,&DAT_1408fde80,1);\n  FUN_1407b97c0(param_1,0xfffffffd);\n  FUN_1407b9340(param_1,FUN_1407d04c0,1);\n  FUN_1407b97c0(param_1,0xfffffffd);\n  FUN_1407b97c0(param_1,0xffffffff);\n  FUN_1407ce7a0(param_1,\"coroutine\",&PTR_s_create_1408fe2c0,0);\n  FUN_1407b9140(param_1);\n  FUN_1407b9540(param_1,\"_LOADED\");\n  FUN_1407b8f00(param_1,0xfffffffe);\n  FUN_1407b9a60(param_1,0xffffd8ef);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:58:02Z"
+}

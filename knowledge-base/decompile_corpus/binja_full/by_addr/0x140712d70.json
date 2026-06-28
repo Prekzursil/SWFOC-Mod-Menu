@@ -1,0 +1,7 @@
+{
+  "addr": "0x140712d70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140712d83        *arg1 = &BerserkerAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140712d90        arg1[1] = &BerserkerAbilityClass::`vftable'{for `RefCountClass'}\n140712d94        sub_14048c8d0(arg1)\n140712d9c        if ((arg2 & 1) != 0)\n140712da6        j_sub_1407864b8(arg1)\n140712db8        return arg1",
+  "fetched_at": "2026-04-26T17:27:48Z"
+}

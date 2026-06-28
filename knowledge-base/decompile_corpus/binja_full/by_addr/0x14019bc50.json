@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019bc50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019bc84        int64_t rax\n14019bc84        int64_t rdx\n14019bc84        rdx:rax = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[1] - *arg1)\n14019bc87        int64_t i_1 = 6\n14019bc8c        int64_t rdx_1 = rdx s>> 3\n14019bc93        uint64_t result = rdx_1 u>> 0x3f\n14019bc97        int64_t rdx_2 = rdx_1 + result\n14019bc9a        int128_t* rdi_1 = arg2 + 0x30\n14019bcef        int64_t i\n14019bca0        int32_t result_1 = 0\n14019bca5        if (rdx_2 != 0)\n14019bca7        result = 0\n14019bcbe        sub_14019c9d0(result * 0x30 + *arg1, rdi_1)\n14019bcc7        result_1 += 1\n14019bccf        int64_t rax_2\n14019bccf        int64_t rdx_4\n14019bccf        rdx_4:rax_2 = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[1] - *arg1)\n14019bcd2        int64_t rdx_5 = rdx_4 s>> 3\n14019bcdd        rdx_2 = rdx_5 + (rdx_5 u>> 0x3f)\n14019bce0        result = zx.q(result_1)\n14019bce5        do while (result u< rdx_2)\n14019bce7        rdi_1 = &rdi_1[1]\n14019bceb        i = i_1\n14019bceb        i_1 -= 1\n14019bcef        do while (i != 1)\n14019bd0b        return result",
+  "fetched_at": "2026-04-26T17:24:45Z"
+}

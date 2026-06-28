@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fb60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047fb74        *arg1 = &TheDebugWindowManagerClass::`vftable'\n14047fb79        void* rcx = arg1[1]\n14047fb80        if (rcx != 0)\n14047fb82        HWND hWnd = *(rcx + 0x30)\n14047fb89        if (hWnd != 0)\n14047fb95        SendMessageA(hWnd, 0x10, 0, 0)\n14047fb9b        int64_t* rcx_1 = arg1[1]\n14047fba2        if (rcx_1 != 0)\n14047fba7        (*(*rcx_1 + 8))(rcx_1)\n14047fbaa        arg1[1] = 0\n14047fbb6        if ((arg2 & 1) != 0)\n14047fbc0        j_sub_1407864b8(arg1)\n14047fbd2        return arg1",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

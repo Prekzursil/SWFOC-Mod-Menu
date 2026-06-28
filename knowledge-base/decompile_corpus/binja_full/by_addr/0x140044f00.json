@@ -1,0 +1,7 @@
+{
+  "addr": "0x140044f00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140044f16        if (*(arg2 + 0x334) == 0xff)\n140044f16        return \n140044f1c        int64_t* rcx = arg2[0x56]\n140044f33        if (rcx == 0 || rcx[0x69].b == 0xff)\n140044fc7        return sub_1403c2670((*(*arg2 + 0x10))(arg2, 2), arg3.d) __tailcall\n140044f4c        void* rax_2 = (*(*rcx + 0x10))(rcx, 0x16)\n140044f55        uint64_t rax = sub_140405300(rax_2)\n140044f5a        int32_t rbx_1 = 0\n140044f5c        int32_t rdi_1 = rax.d\n140044f60        if (rax.d s<= 0)\n140044f60        return \n140044f67        int64_t* rax_3 = sub_1404052d0(rax_2, rbx_1)\n140044f74        int64_t r8_1 = *rax_3\n140044f77        rax = (*(r8_1 + 0x10))(rax_3, 2, r8_1)\n140044f7e        if (rax != 0)\n140044f86        sub_1403c2670(rax, arg3.d)\n140044f8b        rbx_1 += 1\n140044f8f        do while (rbx_1 s< rdi_1)\n140044fa9        return ",
+  "fetched_at": "2026-04-26T16:53:37Z"
+}

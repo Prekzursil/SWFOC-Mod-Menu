@@ -1,0 +1,7 @@
+{
+  "addr": "0x140217d50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140217d60        *arg4 = 0\n140217d67        int32_t rbp = arg3.d\n140217d6d        void* rax = sub_14021b210(arg1, arg2, arg3)\n140217d78        if (rax == 0)\n140217d87        return rax\n140217d8d        int64_t* rbx_1 = &arg1[5]\n140217d91        if (arg1 == -0x28)\n140217dcf        rbx_1 = arg5\n140217da3        if (WaitForSingleObject(*rbx_1, 0x2710) == WAIT_OBJECT_0)\n140217dc5        rbx_1[1] = 0\n140217da5        rbx_1[1]\n140217dd4        int32_t rax_3 = *(rax + 0xb0)\n140217ddd        int32_t* rdi_1\n140217ddd        int32_t* rax_4\n140217ddd        void* rsi_1\n140217ddd        if (rax_3 != 1)\n140217df1        if (rax_3 == 0)\n140217df3        rsi_1 = rax + 0x28\n140217dfc        rax_4 = sub_1402401d0(rsi_1, rbp)\n140217dfc        goto label_140217e01\n140217e18        rdi_1 = nullptr\n140217ddf        rsi_1 = rax + 0x28\n140217de8        rax_4 = sub_140240100(rsi_1, rbp)\n140217e01        label_140217e01:\n140217e01        rdi_1 = rax_4\n140217e07        if (rax_4 == 0)\n140217e18        rdi_1 = nullptr\n140217e13        *arg4 = sub_1402404e0(rsi_1, rbp)\n140217e1d        if (rbx_1 != 0)\n140217e1f        rbx_1[1]\n140217e23        HANDLE hMutex = *rbx_1\n140217e26        rbx_1[1] = 0\n140217e36        if (ReleaseMutex(hMutex) == 0)\n140217e38        GetLastError()\n140217e6b        return rdi_1",
+  "fetched_at": "2026-04-26T17:28:42Z"
+}

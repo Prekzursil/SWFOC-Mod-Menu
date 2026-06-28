@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ad7d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ad7e9        int512_t zmm2\n1401ad7e9        zmm2.o = sub_140196980()\n1401ad7ec        *(arg1 + 8)\n1401ad7fd        jump(*(**(arg2 + 0x68) + 0xf0))",
+  "fetched_at": "2026-04-26T17:25:28Z"
+}

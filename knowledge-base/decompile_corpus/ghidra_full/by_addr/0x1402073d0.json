@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402073d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PacketHandlerClass * __thiscall\nPacketHandlerClass::scalar_deleting_destructor(PacketHandlerClass *this,uint param_1)\n\n{\n  ~PacketHandlerClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x118);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:57:06Z"
+}

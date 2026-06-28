@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769efc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769f12        InitializeCriticalSectionAndSpinCount(&data_140b3b968, 0xfa0)\n140769f1f        HMODULE hModule_1 = GetModuleHandleW(u\"api-ms-win-core-synch-l1-2-0.dll\")\n140769f25        HMODULE hModule = hModule_1\n140769f2b        HMODULE hModule_2\n140769f2b        if (hModule_1 == 0)\n140769f34        hModule_2 = GetModuleHandleW(u\"kernel32.dll\")\n140769f3a        hModule = hModule_2\n140769f40        if (hModule_1 != 0 || hModule_2 != 0)\n140769f4c        int64_t rax = GetProcAddress(hModule, \"SleepConditionVariableCS\")\n140769f5f        int64_t rax_1 = GetProcAddress(hModule, \"WakeAllConditionVariable\")\n140769f6d        if (rax == 0 || rax_1 == 0)\n140769f8b        HANDLE rax_2 = CreateEventW(nullptr, 1, 0, nullptr)\n140769f91        data_140b3b960 = rax_2\n140769f9b        if (rax_2 != 0)\n140769f9b        goto label_140769f9f\n140769f6f        data_140b3b990 = rax\n140769f76        data_140b3b998 = rax_1\n140769f9f        label_140769f9f:\n140769fa6        if (__scrt_initialize_onexit_tables(0) != 0)\n140769faf        atexit(__scrt_uninitialize_thread_safe_statics)\n140769fc0        return 0\n140769fc6        __scrt_fastfail(7)\n140769fcb        breakpoint",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

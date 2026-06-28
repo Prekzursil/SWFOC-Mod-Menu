@@ -1,0 +1,7 @@
+{
+  "addr": "0x140563b80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GarrisonDataPackClass::~GarrisonDataPackClass(GarrisonDataPackClass *this)\n\n{\n  *(undefined8 *)\n   &(this->PooledObjectClass<class_GarrisonDataPackClass,20,class_EmptyLockerClass>).field_0x4 =\n       0x3fffff;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&this->PooledObjectClass<class_GarrisonDataPackClass,20,class_EmptyLockerClass> = 0\n  ;\n  (this->GarrisonDataPackClass_data).offset_0x4 = 0;\n  (this->GarrisonDataPackClass_data).offset_0x24 = 0;\n  (this->GarrisonDataPackClass_data).offset_0xc = 0x3f800000;\n  (this->GarrisonDataPackClass_data).offset_0x10 = 0x3f800000;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:14Z"
+}

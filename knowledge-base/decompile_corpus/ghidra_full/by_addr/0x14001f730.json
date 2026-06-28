@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001f730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nLuaValue<double,4> * __thiscall\nLuaValue<void*___ptr64,10>::scalar_deleting_destructor\n          (LuaValue<void*___ptr64,10> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (LuaValue<void*___ptr64,10>_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return (LuaValue<double,4> *)this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:41Z"
+}

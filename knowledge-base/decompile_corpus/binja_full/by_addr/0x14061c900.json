@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061c900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061c913        *arg1 = &SkyDomeBehaviorClass::`vftable'{for `BehaviorClass'}\n14061c920        arg1[1] = &SkyDomeBehaviorClass::`vftable'{for `RefCountClass'}\n14061c92b        arg1[3] = &SkyDomeBehaviorClass::`vftable'{for `SignalListenerClass'}\n14061c92f        sub_1404c3310(arg1)\n14061c937        if ((arg2 & 1) != 0)\n14061c941        j_sub_1407864b8(arg1)\n14061c953        return arg1",
+  "fetched_at": "2026-04-26T17:23:38Z"
+}

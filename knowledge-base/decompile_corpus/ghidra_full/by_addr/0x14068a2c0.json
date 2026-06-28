@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a2c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a2c0(void)\n\n{\n  CombatBonusAbilityClass *this;\n  \n  this = (CombatBonusAbilityClass *)FUN_140769c58(0x1c8);\n  if (this != (CombatBonusAbilityClass *)0x0) {\n    CombatBonusAbilityClass::CombatBonusAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:40Z"
+}

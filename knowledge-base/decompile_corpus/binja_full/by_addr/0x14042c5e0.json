@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042c5e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042c5e0        int64_t* rdx_1 = *(arg1 + 0x28)\n14042c5e4        void* rcx = rdx_1[0x53]\n14042c5ee        if (rcx != 0)\n14042c5f4        return sub_140370f00(rcx, rdx_1) __tailcall\n14042c5f0        int512_t zmm0\n14042c5f0        zmm0.o = zx.o(0)\n14042c5f3        return ",
+  "fetched_at": "2026-04-26T17:26:42Z"
+}

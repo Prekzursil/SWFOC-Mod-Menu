@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063646c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ConfuseBehaviorClass::vfunction1(ConfuseBehaviorClass *this,uint param_1)\n\n{\n  ~ConfuseBehaviorClass((ConfuseBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:25Z"
+}

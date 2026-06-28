@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f71d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f71e3        *arg1 = &EarthquakeAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f71f0        arg1[1] = &EarthquakeAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406f71fd        __builtin_memset(&arg1[0x2f], 0, 0x18)\n1406f7210        sub_14048c8d0(arg1)\n1406f7218        if ((arg2 & 1) != 0)\n1406f7222        j_sub_1407864b8(arg1)\n1406f7234        return arg1",
+  "fetched_at": "2026-04-26T17:26:40Z"
+}

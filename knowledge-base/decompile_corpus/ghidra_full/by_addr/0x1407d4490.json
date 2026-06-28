@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d4490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1407d4490(longlong *param_1,longlong param_2,longlong param_3)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  int iVar4;\n  \n  FUN_1407ce280(param_1[2],(int)param_1[3],\"too many captures\");\n  iVar1 = (int)param_1[3];\n  if ((iVar1 == 0) && (param_2 != 0)) {\n    FUN_1407b94a0(param_1[2],param_2,param_3 - param_2);\n    return 1;\n  }\n  iVar4 = 0;\n  if (0 < iVar1) {\n    plVar3 = param_1 + 4;\n    do {\n      iVar1 = (int)plVar3[1];\n      if (iVar1 == -1) {\n        FUN_1407ce300(param_1[2],\"unfinished capture\");\n        lVar2 = *plVar3;\nLAB_1407d451c:\n        FUN_1407b94a0(param_1[2],lVar2,(longlong)iVar1);\n      }\n      else {\n        lVar2 = *plVar3;\n        if (iVar1 != -2) goto LAB_1407d451c;\n        FUN_1407b9520(param_1[2],(double)((lVar2 - *param_1) + 1));\n      }\n      iVar1 = (int)param_1[3];\n      iVar4 = iVar4 + 1;\n      plVar3 = plVar3 + 2;\n    } while (iVar4 < iVar1);\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:58:21Z"
+}

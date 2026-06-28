@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c4ec0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c4ec9        char* rcx = *arg1\n1404c4ecf        if (rcx == 0)\n1404c4ecf        return \n1404c4edf        if (_stricmp(rcx, \"None\") != 0)\n1404c4ef0        arg1[1] = sub_140407e00(&data_140b2f020, *arg1)\n1404c4ef9        return \n1404c4efa        arg1[1] = 0\n1404c4f07        return ",
+  "fetched_at": "2026-04-26T17:30:42Z"
+}

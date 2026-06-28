@@ -1,0 +1,7 @@
+{
+  "addr": "0x140504550",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl std::vector<struct CHN * __ptr64,class std::allocator<struct CHN * __ptr64>\n   >::vector<struct CHN * __ptr64,class std::allocator<struct CHN * __ptr64> >(class\n   std::vector<struct CHN * __ptr64,class std::allocator<struct CHN * __ptr64> > const & __ptr64)\n   __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_> * __thiscall\nstd::vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_>::\nvector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_>\n          (vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_> *this,\n          vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_> *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong lVar4;\n  \n  *(undefined8 *)this = 0;\n  *(undefined8 *)(this + 8) = 0;\n  *(undefined8 *)(this + 0x10) = 0;\n  lVar1 = *(longlong *)param_1;\n  if (lVar1 != *(longlong *)(param_1 + 8)) {\n    lVar4 = *(longlong *)(param_1 + 8) - lVar1;\n    lVar3 = lVar4 >> 2;\n    lVar2 = FUN_140048c40(this,lVar3);\n    *(longlong *)this = lVar2;\n    *(longlong *)(this + 8) = lVar2;\n    *(longlong *)(this + 0x10) = lVar2 + lVar3 * 4;\n    FUN_14076bd80(lVar2,lVar1,lVar4);\n    *(longlong *)(this + 8) = lVar2 + lVar3 * 4;\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:20:44Z"
+}

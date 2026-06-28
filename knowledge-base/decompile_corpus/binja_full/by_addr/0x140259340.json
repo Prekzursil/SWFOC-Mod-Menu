@@ -1,0 +1,7 @@
+{
+  "addr": "0x140259340",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140259351        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x58)\n140259356        struct LuaUserVar::LuaExternalFunction::VTable** rbx = rax\n14025935c        if (rax == 0)\n1402593ac        rax[4].d = arg1\n1402593b4        return rax\n140259366        sub_140249c20(rax, 0, 1)\n140259374        rbx[6] = 0\n140259378        *rbx = &LuaExternalFunction::`vftable'{for `LuaUserVar'}\n140259382        rbx[5] = &LuaExternalFunction::`vftable'{for `SignalListenerClass'}\n140259386        __builtin_memset(&rbx[7], 0, 0x18)\n140259395        rbx[0xa].b = 1\n140259399        rbx[4].d = arg1\n1402593a6        return rbx",
+  "fetched_at": "2026-04-26T17:30:57Z"
+}

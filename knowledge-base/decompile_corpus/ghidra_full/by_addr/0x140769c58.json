@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769c58",
+  "tool": "ghidra",
+  "fact_id": "rva_operator_new",
+  "body": "\nvoid FUN_140769c58(size_t param_1)\n\n{\n  longlong lVar1;\n  int iVar2;\n  \n  do {\n    lVar1 = _malloc_base(param_1);\n    if (lVar1 != 0) {\n      return;\n    }\n    iVar2 = _callnewh(param_1);\n  } while (iVar2 != 0);\n  if (param_1 == 0xffffffffffffffff) {\n                    /* WARNING: Subroutine does not return */\n    FUN_1400225f0();\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_1407408bc();\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:22Z"
+}

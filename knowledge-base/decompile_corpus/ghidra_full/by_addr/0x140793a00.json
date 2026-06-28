@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793a00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_IsValidLocaleName\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_IsValidLocaleName(undefined8 param_1)\n\n{\n  LCID Locale;\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(0x13,\"IsValidLocaleName\",(module_id *)&DAT_1408d82b0,\n                            (module_id *)\"IsValidLocaleName\");\n  if (pvVar1 != (void *)0x0) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    return;\n  }\n  Locale = __acrt_LocaleNameToLCID(param_1,0);\n                    /* WARNING: Could not recover jumptable at 0x000140793a4f. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  IsValidLocale(Locale,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:05Z"
+}

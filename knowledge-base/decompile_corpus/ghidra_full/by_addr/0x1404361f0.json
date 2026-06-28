@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404361f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ControlGroupEventClass::vfunction5(ControlGroupEventClass *this)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  \n  lVar2 = FUN_140294bc0(&DAT_140a16fd0,(this->EventClass_data).offset_0xc);\n  if (lVar2 == 0) {\n    return;\n  }\n  uVar1 = (this->ControlGroupEventClass_data).offset_0x0;\n  if (*(char *)&(this->ControlGroupEventClass_data).offset_0x4 != '\\0') {\n    FUN_14027fbf0(lVar2,uVar1,\n                  *(undefined1 *)((longlong)&(this->ControlGroupEventClass_data).offset_0x4 + 1));\n    return;\n  }\n  FUN_140287ce0(lVar2,uVar1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:38Z"
+}

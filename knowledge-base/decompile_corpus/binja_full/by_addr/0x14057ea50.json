@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057ea50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057ea54        void* r8 = *(arg1 + 0x60)\n14057ea5e        if (r8 == 0)\n14057ea98        sub_140248190(arg2, \"GameObjectWrapper::Play_Cinematic_Engine_Flyby -- Object invalid\", r8)\n14057ea67        int64_t* rdx = *(*(r8 + 0x298) + 0x1520)\n14057ea71        if (rdx != 0)\n14057ea82        sub_1402d5320(&data_140b27e60, rdx, r8, zx.o(0), arg3, 0)\n14057eaa3        return 0",
+  "fetched_at": "2026-04-26T17:35:18Z"
+}

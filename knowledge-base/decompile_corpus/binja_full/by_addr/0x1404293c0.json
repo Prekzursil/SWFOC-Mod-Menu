@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404293c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404293d3        if (arg2 != 0 && sub_140512ca0(arg1, arg2) != 0 && sub_1402051c0(arg2, 7) != 0)\n140429403        int32_t result = sub_1402043b0(arg2, 7)\n140429408        *(arg1 + 0x4c) = result\n14042940d        if (result == 0)\n1404294f6        result.b = 1\n140429502        return result\n140429422        if (sub_1402051c0(arg2, result << 5) != 0)\n14042942d        int32_t i = 0\n140429432        if (*(arg1 + 0x4c) s> 0)\n140429439        void* r14_1 = arg1 + 0x50\n14042944d        *r14_1 = sub_1402043b0(arg2, 0x20)\n140429450        r14_1 += 4\n140429454        i += 1\n140429459        do while (i s< *(arg1 + 0x4c))\n140429474        if (sub_1402051c0(arg2, 0x20) != 0)\n14042948c        *(arg1 + 0x48) = sub_1402043b0(arg2, 0x20)\n140429499        if (sub_1402051c0(arg2, 0x20) != 0)\n1404294ad        *(arg1 + 0x24c) = sub_1402043b0(arg2, 0x20)\n1404294bd        if (sub_1402051c0(arg2, 7) != 0)\n1404294d1        *(arg1 + 0x250) = sub_1402043b0(arg2, 7)\n1404294e1        if (sub_1402051c0(arg2, 0x20) != 0)\n1404294f0        *(arg1 + 0x254) = sub_1402043b0(arg2, 0x20)\n1404294f6        result.b = 1\n140429502        return result\n14042950f        return 0",
+  "fetched_at": "2026-04-26T17:26:36Z"
+}

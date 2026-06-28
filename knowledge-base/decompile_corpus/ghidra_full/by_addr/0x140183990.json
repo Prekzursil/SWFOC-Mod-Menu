@@ -1,0 +1,7 @@
+{
+  "addr": "0x140183990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140183990(longlong param_1)\n\n{\n  bool bVar1;\n  bool bVar2;\n  char cVar3;\n  \n  cVar3 = FUN_14013ec70();\n  if ((cVar3 == '\\0') || (*(char *)(param_1 + 0x20) == '\\0')) {\n    bVar1 = false;\n  }\n  else {\n    bVar1 = true;\n  }\n  cVar3 = FUN_14013ecb0();\n  if ((cVar3 == '\\0') || (*(char *)(param_1 + 0x21) == '\\0')) {\n    bVar2 = false;\n  }\n  else {\n    bVar2 = true;\n  }\n  if ((bVar1) || (bVar2)) {\n    FUN_140198380(DAT_140a6fdd8,0);\n    if (bVar1) {\n      cVar3 = FUN_14013ec90();\n      if (cVar3 == '\\0') {\n        FUN_140178010(0,0,1,0x8080ff,DAT_1407ffaf8,0);\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

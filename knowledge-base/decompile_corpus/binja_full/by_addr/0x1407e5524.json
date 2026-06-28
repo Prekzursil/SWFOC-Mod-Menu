@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e5524",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e5533        int32_t result = *(arg2 + 0xb0) & 1\n1407e5538        if (result == 0)\n1407e554f        return result\n1407e553a        *(arg2 + 0xb0) &= 0xfffffffe\n1407e5545        return std::_Locinfo::~_Locinfo(arg2 + 0x20)",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

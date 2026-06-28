@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407054d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPersonalFlameThrowerAbilityClass::vfunction3_for_RefCountClass\n          (PersonalFlameThrowerAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((PersonalFlameThrowerAbilityClass *)\n             &this[-1].PersonalFlameThrowerAbilityClass_data.offset_0x38,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:23Z"
+}

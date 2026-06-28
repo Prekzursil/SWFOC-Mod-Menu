@@ -1,0 +1,7 @@
+{
+  "addr": "0x140035560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140035593        if (*(arg1 + 0x929) == 0 || *(arg1 + 0x860) == 0 || 0f f>= *(arg1 + 0x950))\n140035593        return \n140035599        int64_t* rcx = data_140b15418\n1400355a3        uint64_t rax\n1400355a3        if (rcx != 0)\n1400355b0        rax = (*(*rcx + 0xe0))(rcx)\n1400355b6        rcx = data_140b15418\n1400355a5        rax = zx.q(data_140b153fc)\n1400355d7        if (rax.d != 1 || rcx == 0 || *(arg1 + 0x860) == 0)\n1400355d7        return \n1400355e9        void* rdi_1 = **(arg1 + 0x938)\n1400355ef        if (rdi_1 == 0)\n1400355ef        return \n140035609        int128_t zmm6\n140035609        zmm6.d = (*(arg1 + 0x950)).d f* 2f\n140035616        void* rcx_1 = *(sub_140294a40(&data_140a16fd0) + 0x68)\n14003561d        if (rcx_1 != 0)\n14003561f        zmm6.d = zmm6.d f* *(rcx_1 + 0x2d68)\n140035631        int32_t zmm1 = *(rdi_1 + 0x7c)\n14003563b        void* rcx_2 = *(arg1 + 0x860)\n140035645        int32_t var_38 = *(rdi_1 + 0x78)\n140035653        int32_t var_34_1 = zmm1\n140035661        int32_t var_30_1 = *(rdi_1 + 0x80)\n14003566d        int32_t arg_8 = zmm6.d\n140035673        int32_t arg_c = zmm6.d\n140035679        sub_14012f570(rcx_2, &var_38, zx.o(0), &arg_8, 0x3f800000)\n140035687        sub_14012fba0(*(arg1 + 0x860), 1)\n1400356a0        return ",
+  "fetched_at": "2026-04-26T16:52:46Z"
+}

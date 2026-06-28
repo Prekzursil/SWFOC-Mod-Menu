@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014fa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid MainThreadClass::MainThreadClass_Constructor_or_Destructor(void)\n\n{\n  undefined8 *puVar1;\n  int iVar2;\n  undefined *puVar3;\n  DWORD DVar4;\n  int iVar5;\n  undefined4 uStack_c;\n  \n  DVar4 = GetCurrentThreadId();\n  puVar3 = PTR_s_Main_Thread_140a155c0;\n  iVar5 = DAT_140a155ac * 2 >> 1;\n  DAT_140a155d0 = DVar4;\n  if (iVar5 <= DAT_140a155a8) {\n    iVar2 = iVar5 / 10;\n    if (iVar5 / 10 < 10) {\n      iVar2 = 10;\n    }\n    FUN_14022eb30(&PTR_vftable_140a15598,iVar2 + iVar5,0,1);\n  }\n  puVar1 = (undefined8 *)(DAT_140a155a0 + (longlong)DAT_140a155a8 * 0x10);\n  *puVar1 = puVar3;\n  puVar1[1] = CONCAT44(uStack_c,DVar4);\n  DAT_140a155a8 = DAT_140a155a8 + 1;\n  PTR_vftable_140a155b0 = (undefined *)&vftable;\n  atexit(ThreadClass::ThreadClass_Constructor_or_Destructor);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013be70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alEmitter::vfunction8_for_RefCountClass(alEmitter *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014013be7a. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*(this->alEmitter_data).offset_0x8 + 0x38))();\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:57Z"
+}

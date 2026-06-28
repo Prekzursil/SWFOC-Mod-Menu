@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770f50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _CallSettingFrameEncoded\n   \n   Libraries: Visual Studio 2017 Debug, Visual Studio 2017 Release, Visual Studio 2019 Debug, Visual\n   Studio 2019 Release */\n\nvoid _CallSettingFrameEncoded\n               (undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)\n\n{\n  code *pcVar1;\n  undefined8 uVar2;\n  \n  pcVar1 = (code *)_NLG_Notify(param_1,param_2,param_4);\n  (*pcVar1)(param_3);\n  uVar2 = FUN_140770b30();\n  _NLG_Notify(uVar2,param_2,2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:12:01Z"
+}

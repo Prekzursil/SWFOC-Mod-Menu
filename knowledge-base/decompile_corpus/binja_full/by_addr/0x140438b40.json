@@ -1,0 +1,7 @@
+{
+  "addr": "0x140438b40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140438b43        if (arg2 == 0)\n140438b43        return \n140438b5b        int64_t* rbx_1 = arg2\n140438b6d        int64_t* rax = (*(*arg2 + 0x10))(rbx_1, 1)\n140438b73        if (rax == 0)\n140438b73        return \n140438b83        int64_t rdx = *rax\n140438b86        bool cond:2_1\n140438b86        if (rbx_1[0x69].b != 0xff)\n140438b8e        cond:2_1 = (*(rdx + 0x230))(rax, rdx).b == 0\n140438ba6        label_140438ba6:\n140438ba6        if (not(cond:2_1))\n140438ba6        goto label_140438ba8\n140438ba6        return \n140438b9a        if ((*(rdx + 0x228))(rax, rdx).b != 0)\n140438b9c        rbx_1 = rbx_1[0x56]\n140438ba3        cond:2_1 = rbx_1 == 0\n140438ba3        goto label_140438ba6\n140438ba8        label_140438ba8:\n140438bb4        if (*(rbx_1 + 0x35b) == 0xff)\n140438bf1        sub_1404f6b60(arg1, rbx_1, arg3)\n140438bf1        return \n140438bc1        int64_t rax_3 = (*(*rbx_1 + 0x10))(rbx_1, 0x29)\n140438bd5        if (sub_14042e3b0(rax_3, rbx_1) == 0 && sub_14042e3d0(rax_3, rbx_1) == 0)\n140438bf1        sub_1404f6b60(arg1, rbx_1, arg3)\n140438c0a        return ",
+  "fetched_at": "2026-04-26T17:27:11Z"
+}

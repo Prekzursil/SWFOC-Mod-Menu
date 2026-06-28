@@ -1,0 +1,7 @@
+{
+  "addr": "0x140240640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140240656        *arg1 = &SignalGeneratorClass::`vftable'\n14024065c        void** result = sub_140240940(arg1, 0, 0)\n140240661        void* rbx = arg1[2]\n140240668        if (rbx != 0)\n140240672        if (data_140a10b50 != 0)\n14024067f        result = sub_140221440(sub_140058570(), arg1)\n140240684        rbx = arg1[2]\n14024068b        if (data_140a10b50 == 0 || rbx != 0)\n140240690        sub_140241580(rbx)\n14024069d        result = j_sub_1407864b8(rbx)\n1402406a7        arg1[2] = 0\n1402406b4        return result",
+  "fetched_at": "2026-04-26T17:30:12Z"
+}

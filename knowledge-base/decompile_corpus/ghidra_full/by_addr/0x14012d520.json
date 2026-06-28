@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012d520",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_14012d520(longlong param_1,char *param_2)\n\n{\n  int iVar1;\n  char *_Str1;\n  ulonglong uVar2;\n  longlong lVar3;\n  \n  if (param_2 != (char *)0x0) {\n    lVar3 = *(longlong *)(param_1 + 0xf0);\n    uVar2 = 0;\n    if (*(longlong *)(param_1 + 0xf8) - lVar3 >> 4 != 0) {\n      do {\n        _Str1 = (char *)(**(code **)(**(longlong **)(lVar3 + 8 + uVar2 * 0x10) + 0x30))();\n        iVar1 = _stricmp(_Str1,param_2);\n        if (iVar1 == 0) {\n          return uVar2;\n        }\n        lVar3 = *(longlong *)(param_1 + 0xf0);\n        uVar2 = (ulonglong)((int)uVar2 + 1);\n      } while (uVar2 < (ulonglong)(*(longlong *)(param_1 + 0xf8) - lVar3 >> 4));\n    }\n  }\n  return 0xffffffff;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:24Z"
+}

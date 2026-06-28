@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042f760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAbilityCountdownBehaviorClass::vfunction10(AbilityCountdownBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  if (param_1[0x3d] != (undefined *)0x0) {\n    *(undefined4 *)(param_1[0x3d] + 0x2c0) =\n         *(undefined4 *)(*(longlong *)(param_1[0x57] + 0x20) + 0x10);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:50:16Z"
+}

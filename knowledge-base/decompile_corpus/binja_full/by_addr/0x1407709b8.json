@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407709b8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407709cf        int32_t rbx = arg2\n1407709d1        int64_t r10 = *(arg5 + 8)\n1407709e3        if (r10 u> *(arg3 + 8) || *(arg1 + 8) u> r10)\n140770a6c        return 0xffffffff\n1407709fa        uint128_t var_18\n1407709fa        uint128_t zmm0\n1407709fa        if (r10 - *(arg1 + 8) s>= *(arg3 + 8) - r10)\n140770a31        zmm0 = *arg5\n140770a34        rbx = arg4\n140770a37        var_18 = zmm0\n140770a41        int64_t rax_4 = _mm_bsrli_si128(zmm0, 8).q\n140770a4a        if (*(arg3 + 8) u> rax_4)\n140770a56        FH4::UWMap4::ReadEntry(var_18.q, &var_18:8)\n140770a60        rbx -= 1\n140770a66        do while (*(arg3 + 8) u> var_18:8.q)\n1407709fc        zmm0 = *arg1\n1407709ff        var_18 = zmm0\n140770a11        if (r10 u> _mm_bsrli_si128(zmm0, 8).q)\n140770a1d        FH4::UWMap4::ReadEntry(var_18.q, &var_18:8)\n140770a27        rbx += 1\n140770a2d        do while (*(arg5 + 8) u> var_18:8.q)\n140770a68        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:30:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405cf3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceMovementCoordinatorClass * __thiscall\nSpaceMovementCoordinatorClass::scalar_deleting_destructor\n          (SpaceMovementCoordinatorClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       SpaceMovementCoordinatorClass::~SpaceMovementCoordinatorClass */\n  this->vftablePtr = &vftable;\n  MovementCoordinatorClass::~MovementCoordinatorClass((MovementCoordinatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xb8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:45:17Z"
+}

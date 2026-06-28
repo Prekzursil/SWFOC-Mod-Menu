@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403af250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403af25b        struct ScheduledEventClass::MoveObjectToObjectEventClass::VTable** result = operator new(0x50)\n1403af266        if (result == 0)\n1403af28f        return result\n1403af26b        sub_140512c50(result)\n1403af277        result[4].d = 3\n1403af27e        *result = &MoveObjectToObjectEventClass::`vftable'{for `ScheduledEventClass'}\n1403af289        return result",
+  "fetched_at": "2026-04-26T17:24:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402918d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_PlayerClass*___ptr64> * __thiscall\nDynamicVectorClass<class_PlayerClass*___ptr64>::DynamicVectorClass<class_PlayerClass*___ptr64>\n          (DynamicVectorClass<class_PlayerClass*___ptr64> *this)\n\n{\n  (this->DynamicVectorClass<class_PlayerClass*___ptr64>_data).offset_0x10 =\n       &vftable.deleting_destructor;\n  this->vftablePtr = (DynamicVectorClass<class_PlayerClass*___ptr64>_vftable *)0x0;\n  (this->DynamicVectorClass<class_PlayerClass*___ptr64>_data).offset_0x0 = (LPVOID)0x0;\n  *(undefined8 *)&(this->DynamicVectorClass<class_PlayerClass*___ptr64>_data).field_0x8 = 0;\n  (this->DynamicVectorClass<class_PlayerClass*___ptr64>_data).offset_0x18 = 0;\n  (this->DynamicVectorClass<class_PlayerClass*___ptr64>_data).offset_0x20 = 0;\n  (this->DynamicVectorClass<class_PlayerClass*___ptr64>_data).offset_0x28 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:24:30Z"
+}

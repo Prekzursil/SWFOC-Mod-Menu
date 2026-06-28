@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405944f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405944fd        void* const rsi = arg1\n140594504        if (arg3 != 0xa)\n140594510        return sub_1404c30c0(arg1, arg2, arg3) __tailcall\n14059451e        int32_t rbx = 0\n14059452e        void* rdi = *(*(arg1 + 0x10) + 0x118)\n14059453c        if (arg1 == 0x18)\n14059453c        rsi = nullptr\n140594552        sub_140220eb0(sub_140058570(), arg2, rsi, 0xa)\n14059457e        *(rdi + 0x58) = 0\n140594591        int32_t result = sub_1403a92f0(*(arg1 + 0x10), 0x46, 0xffff, 0, 0, 0x3f800000, 0, 0, 0, 0)\n140594598        if (result.b == 0)\n1405945a3        *(rdi + 0x50) = 0\n1405945a6        void* rax_4 = data_140b15418\n1405945b0        if (rax_4 != 0)\n1405945b2        rbx = *(rax_4 + 0x10)\n1405945ce        uint128_t zmm1_1\n1405945ce        zmm1_1.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f* *(*(*(arg1 + 0x10) + 0x298) + 0xa98)\n1405945d9        zmm1_1.d = zmm1_1.d f+ _mm_cvtepi32_ps(zx.o(rbx)).d\n1405945dd        result = int.d(zmm1_1.d)\n1405945e1        *(rdi + 0x64) = result\n14059459a        *(rdi + 0x50) = 3\n1405945fd        return result",
+  "fetched_at": "2026-04-26T17:36:29Z"
+}

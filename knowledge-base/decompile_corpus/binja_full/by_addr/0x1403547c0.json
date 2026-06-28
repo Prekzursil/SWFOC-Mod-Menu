@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403547c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403547cd        char* rcx = *arg1\n1403547d0        char* rbx = arg2\n1403547d6        if (arg2 != 0)\n1403547f9        int64_t rdi_1 = -1\n140354803        int64_t rax_1\n140354803        int64_t rdx\n140354803        if (rcx != 0)\n140354805        rax_1 = -1\n140354810        rax_1 += 1\n140354817        do while (rcx[rax_1] != 0)\n140354819        rdx = -1\n140354820        rdx += 1\n140354827        do while (rbx[rdx] != 0)\n14035482c        if (rcx == 0 || rax_1 u< rdx)\n14035482e        j_sub_1407864b8(rcx)\n14035483c        bool cond:0_1\n140354833        cond:0_1 = rbx[rdi_1 + 1] != 0\n140354838        rdi_1 += 1\n14035483c        do while (cond:0_1)\n140354842        char* rax_2 = j_operator new(rdi_1 + 1)\n140354847        rcx = rax_2\n14035484a        *arg1 = rax_2\n140354852        void* rcx_2 = rcx - rbx\n14035486c        char i\n140354860        i = *rbx\n140354863        *(rcx_2 + rbx) = i\n140354866        rbx = &rbx[1]\n14035486c        do while (i != 0)\n1403547db        if (rcx != 0)\n1403547e1        j_sub_1407864b8(rcx)\n1403547e6        *arg1 = rbx\n140354878        return ",
+  "fetched_at": "2026-04-26T17:10:42Z"
+}

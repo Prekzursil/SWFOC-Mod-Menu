@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b398",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076b3ae        uint64_t rdi = zx.q(*(arg3 + 0xc))\n14076b3c1        int32_t rax = sub_14076dad0(arg3, arg2)\n14076b3cc        *arg4 = *arg1\n14076b3d1        while (rdi.d != 0)\n14076b3d7        rdi = zx.q(rdi.d - 1)\n14076b3e1        void* rbx_2 = sx.q(*(arg3 + 0x10)) + rdi * 0x14 + arg2[1]\n14076b3e8        if (rax s> *(rbx_2 + 4) && rax s<= *(rbx_2 + 8))\n14076b3fa        uint64_t ImageBase\n14076b3fa        IMAGE_RUNTIME_FUNCTION_ENTRY* rax_2 = RtlLookupFunctionEntry(*arg2, &ImageBase, nullptr)\n14076b404        uint64_t rcx_2 = 0\n14076b406        int64_t r8_1 = sx.q(*(rbx_2 + 0x10)) + ImageBase\n14076b40b        int32_t i = *(rbx_2 + 0xc)\n14076b415        if (i != 0)\n14076b417        int32_t* rdx_2 = r8_1 + 0xc\n14076b421        if (sx.q(*rdx_2) == zx.q(rax_2->BeginAddress))\n14076b421        goto label_14076b444\n14076b423        rcx_2 = zx.q(rcx_2.d + 1)\n14076b425        rdx_2 = &rdx_2[5]\n14076b42c        do while (rcx_2.d u< i)\n14076b431        if (rcx_2.d u< i)\n14076b444        label_14076b444:\n14076b444        *arg4 = *(sx.q(*(r8_1 + rcx_2 * 0x14 + 0x10)) + *arg1)\n14076b444        break\n14076b460        return arg4",
+  "fetched_at": "2026-04-26T17:30:22Z"
+}

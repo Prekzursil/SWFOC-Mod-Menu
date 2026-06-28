@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5eb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DebugTreeItem::~DebugTreeItem(DebugTreeItem *this)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  undefined **ppuVar3;\n  longlong lVar4;\n  \n  this->vftablePtr = &vftable;\n  uVar1 = (this->RefCountClass_data).offset_0x48;\n  if (0xf < uVar1) {\n    lVar2 = *(longlong *)&(this->RefCountClass_data).field_0x30;\n    lVar4 = lVar2;\n    if (0xfff < uVar1 + 1) {\n      lVar4 = *(longlong *)(lVar2 + -8);\n      if (0x1f < (lVar2 - lVar4) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar2 - lVar4,uVar1 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar4);\n  }\n  (this->RefCountClass_data).offset_0x40 = 0;\n  (this->RefCountClass_data).offset_0x48 = 0xf;\n  (this->RefCountClass_data).field_0x30 = 0;\n  FUN_1400466c0(&(this->RefCountClass_data).offset_0x10);\n  ppuVar3 = (this->RefCountClass_data).offset_0x8;\n  if (ppuVar3 != (undefined **)0x0) {\n    (**(code **)(*ppuVar3 + 8))();\n  }\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (DebugTreeItem_vftable *)&RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:23:16Z"
+}

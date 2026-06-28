@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023c340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14023c340(int *param_1,uint param_2,char param_3)\n\n{\n  undefined1 uVar1;\n  \n  EnterCriticalSection((LPCRITICAL_SECTION)(param_1 + 4));\n  if ((param_3 != '\\0') || (uVar1 = 0, param_2 <= (uint)(param_1[1] - *param_1))) {\n    *param_1 = *param_1 + param_2;\n    uVar1 = 1;\n  }\n  LeaveCriticalSection((LPCRITICAL_SECTION)(param_1 + 4));\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:08:44Z"
+}

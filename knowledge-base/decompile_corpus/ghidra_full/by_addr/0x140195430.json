@@ -1,0 +1,7 @@
+{
+  "addr": "0x140195430",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alDrawPrimitive * __thiscall\nalDrawPrimitive::alDrawPrimitive(alDrawPrimitive *this,undefined4 param_1)\n\n{\n  char cVar1;\n  \n  this->offset_0x10 = 0;\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  *(undefined4 *)&this->offset_0x18 = param_1;\n  *(undefined1 *)((longlong)&this->offset_0x18 + 4) = 0;\n  cVar1 = FUN_14020aa60(&PTR_vftable_140a12ae0,&this->vftablePtr,1);\n  if (cVar1 == '\\x01') {\n    (*this->vftablePtr->vfunction1)(this);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:35:12Z"
+}

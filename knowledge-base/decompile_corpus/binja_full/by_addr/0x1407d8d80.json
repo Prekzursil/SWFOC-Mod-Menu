@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d8d80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d8d94        struct LuaUserVar::BlockingStatus::VTable** result = arg1\n1407d8d97        sub_140249c20(arg1, 0, 1)\n1407d8da8        *result = &BlockingStatus::`vftable'{for `LuaUserVar'}\n1407d8dab        result[5] = 0\n1407d8db3        struct LuaUserVar::LuaMemberFunctionWrapper<class BlockingStatus>::VTable** rax = operator new(0x40)\n1407d8dbf        struct LuaUserVar::LuaMemberFunctionWrapper<class BlockingStatus>::VTable** rbx = rax\n1407d8dc5        if (rax == 0)\n1407d8dec        rbx = nullptr\n1407d8dcf        sub_140249c20(rax, 0, 0)\n1407d8ddb        *rbx = &LuaMemberFunctionWrapper<class BlockingStatus>::`vftable'{for `LuaUserVar'}\n1407d8dde        rbx[5] = &data_140254a1c\n1407d8de2        rbx[6] = result\n1407d8de6        rbx[7].b = 0\n1407d8dfb        sub_14024be40(result, \"IsFinished\", rbx)\n1407d8e05        int64_t* rax_1 = operator new(0x40)\n1407d8e0a        int64_t* rbx_1 = rax_1\n1407d8e10        if (rax_1 == 0)\n1407d8e37        rbx_1 = nullptr\n1407d8e1a        sub_140249c20(rax_1, 0, 0)\n1407d8e26        *rbx_1 = &LuaMemberFunctionWrapper<class BlockingStatus>::`vftable'{for `LuaUserVar'}\n1407d8e29        rbx_1[5] = &data_140254a28\n1407d8e2d        rbx_1[6] = result\n1407d8e31        rbx_1[7].b = 0\n1407d8e46        sub_14024be40(result, \"Result\", rbx_1)\n1407d8e5d        return result",
+  "fetched_at": "2026-04-26T17:34:04Z"
+}

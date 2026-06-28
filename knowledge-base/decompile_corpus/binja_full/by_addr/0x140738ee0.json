@@ -1,0 +1,7 @@
+{
+  "addr": "0x140738ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140738f03        struct MovementCoordinatorClass::SpaceMovementCoordinatorClass::VTable** i\n140738f03        if (arg2 != 0)\n140738f0b        i = (*(*arg2 + 0x20))(arg2)\n140738f11        if (arg2 == 0 || i == 0)\n140738f2e        label_140738f2e:\n140738f2e        *(arg1 + 0x40) = 1\n140738f2e        return \n140738f23        while (i != &data_140a441e0)\n140738f25        i = i[1]\n140738f2c        if (i == 0)\n140738f2c        goto label_140738f2e\n140738f4d        sub_1407d9080(arg1, arg2)\n140738f59        *(arg1 + 0x64) = arg5\n140738f66        *(arg1 + 0x68) = arg6\n140738f69        *(arg1 + 0x60) = arg4.d\n140738f6e        sub_1407389a0(arg1, arg3, 1)\n140738f46        return ",
+  "fetched_at": "2026-04-26T17:29:05Z"
+}

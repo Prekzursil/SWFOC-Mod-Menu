@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ec7f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TeamDataPackClass::~TeamDataPackClass(TeamDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  DynamicVectorClass<class_Vector3>::~DynamicVectorClass<class_Vector3>\n            ((DynamicVectorClass<class_Vector3> *)&(this->TeamDataPackClass_data).field_0x60);\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &this->PooledObjectClass<class_TeamDataPackClass,20,class_EmptyLockerClass>);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:11Z"
+}

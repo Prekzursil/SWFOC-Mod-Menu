@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058f609        char result = sub_1404c30b0(arg1)\n14058f60e        void* rcx = *(arg1 + 0x28)\n14058f615        if (rcx != 0)\n14058f621        int64_t rax = sub_140397d90(rcx, 0x26)\n14058f62f        sub_1403a8e50(*(arg1 + 0x28), 0)\n14058f637        if (rax == 0)\n14058f64a        return sub_1402149d0(\"Object is trying to deactivate DEPLOY_TROOPERS behavior but does not have DEPLOY_TROOPERS unit ability!\") __tailcall\n14058f65b        result = sub_14039b950(*(arg1 + 0x28), 0x26, 1)\n14058f662        if (result == 0)\n14058f664        void* rax_2 = *(arg1 + 0x28)\n14058f66d        void* rbx_2 = rax_2 + 0x38\n14058f671        if (rax_2 == 0)\n14058f671        rbx_2 = nullptr\n14058f68a        return sub_140220eb0(sub_140058570(), rbx_2, arg1 + 0x18, 0x28)\n14058f699        return result",
+  "fetched_at": "2026-04-26T17:36:18Z"
+}

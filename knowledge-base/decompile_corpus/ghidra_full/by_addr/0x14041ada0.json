@@ -1,0 +1,7 @@
+{
+  "addr": "0x14041ada0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float * FUN_14041ada0(longlong param_1,float *param_2,longlong param_3,float param_4)\n\n{\n  float fVar1;\n  float fVar2;\n  longlong lVar3;\n  longlong lVar4;\n  float *pfVar5;\n  uint uVar6;\n  ulonglong uVar7;\n  int iVar8;\n  undefined8 local_38;\n  float local_30;\n  undefined1 local_2c [36];\n  \n  lVar3 = *(longlong *)(param_1 + 0xe0);\n  if ((param_3 != 0) && (iVar8 = (int)(*(longlong *)(param_1 + 0xe8) - lVar3 >> 2), iVar8 != 0)) {\n    uVar6 = iVar8 - 1;\n    lVar4 = *(longlong *)(param_3 + 0xa8);\n    uVar7 = (ulonglong)uVar6;\n    if ((uint)(longlong)(param_4 / DAT_140b2f0f4) <= uVar6) {\n      uVar7 = (longlong)(param_4 / DAT_140b2f0f4) & 0xffffffff;\n    }\n    if (lVar4 != 0) {\n      if (uVar7 < (ulonglong)(*(longlong *)(param_1 + 0xe8) - lVar3 >> 2)) {\n        FUN_140556710(lVar4,&local_38,*(undefined4 *)(lVar3 + uVar7 * 4));\n      }\n      else {\n        FUN_140556710(lVar4,&local_38,0);\n      }\n      goto LAB_14041ae4b;\n    }\n  }\n  local_30 = 0.0;\n  local_38 = 0;\nLAB_14041ae4b:\n  pfVar5 = (float *)FUN_14041b770(param_1,local_2c,param_3,param_4);\n  fVar1 = pfVar5[1];\n  fVar2 = *pfVar5;\n  param_2[2] = local_30 + pfVar5[2];\n  param_2[1] = local_38._4_4_ + fVar1;\n  *param_2 = (float)local_38 + fVar2;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:46:25Z"
+}

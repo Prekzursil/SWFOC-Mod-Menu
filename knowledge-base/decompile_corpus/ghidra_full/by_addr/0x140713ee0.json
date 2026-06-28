@@ -1,0 +1,7 @@
+{
+  "addr": "0x140713ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SaberThrowAbilityClass * __thiscall\nSaberThrowAbilityClass::SaberThrowAbilityClass(SaberThrowAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->SaberThrowAbilityClass_data).offset_0x0 = 0;\n  (this->SaberThrowAbilityClass_data).offset_0x8 = 0;\n  (this->SaberThrowAbilityClass_data).offset_0x10 = 0;\n  (this->SaberThrowAbilityClass_data).offset_0x20 = 0;\n  (this->SaberThrowAbilityClass_data).offset_0x28 = 0xf;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:56:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e8920",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_template_mgr_ctor",
+  "body": "1404e892a        struct DatabaseUIntConversionClass::DatabaseObjectManagerClass<class AITemplateClass>::VTable** result = arg1\n1404e892d        sub_14023ae90(arg1, arg2)\n1404e893b        *result = &DatabaseObjectManagerClass<class AITemplateClass>::`vftable'{for `DatabaseUIntConversionClass'}\n1404e8940        result[1].b = 0\n1404e8943        __builtin_memset(result + 0xc, 0, 0x14)\n1404e8951        int64_t* rax = operator new(0x38)\n1404e895d        *rax = rax\n1404e8960        rax[1] = rax\n1404e8964        result[2] = rax\n1404e8968        int64_t r8 = result[2]\n1404e896c        __builtin_memset(&result[4], 0, 0x18)\n1404e8977        result[7] = 7\n1404e897f        result[8] = 8\n1404e8987        *(result + 0xc) = 0x3f800000\n1404e898e        sub_140048250(&result[4], 0x10, r8)\n1404e899a        *result = &TheAITemplateManagerClass::`vftable'{for `DatabaseObjectManagerClass<class AITemplateClass>'}\n1404e89aa        return result",
+  "fetched_at": "2026-04-26T16:43:46Z"
+}

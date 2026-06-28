@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013dd10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTexture2D * FUN_14013dd10(longlong *param_1,char param_2,undefined1 param_3)\n\n{\n  char cVar1;\n  alD3dTexture2D *paVar2;\n  undefined8 uVar3;\n  \n  cVar1 = (**(code **)(*param_1 + 8))(param_1,0,0);\n  if (cVar1 == '\\0') {\n    uVar3 = (**(code **)(*param_1 + 0x50))(param_1);\n    FUN_140025760(\"*** WARNING *** alGraphicsDriver::Load_Texture - Failed to find texture %s\\n\",\n                  uVar3);\n    if (param_2 != '\\0') {\n      if (DAT_140a626b0 != (alD3dTexture2D *)0x0) {\n        return DAT_140a626b0;\n      }\n      paVar2 = (alD3dTexture2D *)FUN_140186210();\n      if (DAT_140a626b0 == paVar2) {\n        return DAT_140a626b0;\n      }\n      if (DAT_140a626b0 != (alD3dTexture2D *)0x0) {\n        (*DAT_140a626b0->vftablePtr->vfunction2)(DAT_140a626b0);\n      }\n      if (paVar2 == (alD3dTexture2D *)0x0) {\n        DAT_140a626b0 = paVar2;\n        return (alD3dTexture2D *)0x0;\n      }\n      DAT_140a626b0 = paVar2;\n      (*paVar2->vftablePtr->vfunction1)(paVar2);\n      return DAT_140a626b0;\n    }\n  }\n  else {\n    (**(code **)(*param_1 + 0x20))();\n    paVar2 = (alD3dTexture2D *)FUN_140769c58(0x98);\n    if (paVar2 != (alD3dTexture2D *)0x0) {\n      paVar2 = alD3dTexture2D::alD3dTexture2D(paVar2,param_1,DAT_140a626c0,param_3);\n      return paVar2;\n    }\n  }\n  return (alD3dTexture2D *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:16:18Z"
+}

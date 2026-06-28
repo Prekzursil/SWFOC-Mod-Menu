@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b5e10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandModeClass::vfunction4(LandModeClass *this)\n\n{\n  LandModeClass_vftable *pLVar1;\n  char cVar2;\n  undefined8 uVar3;\n  longlong lVar4;\n  ulonglong uVar5;\n  int in_EDX;\n  uint uVar6;\n  ulonglong uVar7;\n  int in_R8D;\n  \n  pLVar1 = this->vftablePtr;\n  uVar7 = 0;\n  (this->LandModeClass_data).field_0x90 = 1;\n  *(undefined4 *)&(this->LandModeClass_data).field_0x8 = 0;\n  uVar3 = (*pLVar1->vfunction2)(this,in_EDX,in_R8D);\n  if ((char)uVar3 == '\\x01') {\n    lVar4 = FUN_140769c58(0x20);\n    uVar5 = uVar7;\n    if (lVar4 != 0) {\n      uVar5 = FUN_1404eab00(lVar4);\n    }\n    *(ulonglong *)&(this->LandModeClass_data).field_0x298 = uVar5;\n    FUN_1404eb4e0(uVar5);\n  }\n  uVar3 = FUN_14028a5d0();\n  FUN_1404d9df0(uVar3,this);\n  FUN_14044b500(&DAT_140a28c10,this);\n  (this->LandModeClass_data).field_0x92 = 1;\n  cVar2 = FUN_14028afb0(&DAT_140b153e0);\n  if ((cVar2 == '\\x01') && (0 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3))) {\n    do {\n      lVar4 = FUN_140294bc0(&DAT_140a16fd0,uVar7);\n      if (lVar4 != 0) {\n        FUN_140288980(lVar4,1,0);\n      }\n      uVar6 = (int)uVar7 + 1;\n      uVar7 = (ulonglong)uVar6;\n    } while ((int)uVar6 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3));\n  }\n  if (DAT_140b31418 != (code *)0x0) {\n    (*DAT_140b31418)();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:42Z"
+}

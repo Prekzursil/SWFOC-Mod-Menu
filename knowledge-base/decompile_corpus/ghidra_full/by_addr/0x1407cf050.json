@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cf050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1407cf050(undefined8 param_1)\n\n{\n  double dVar1;\n  ulong uVar2;\n  byte *_Str;\n  int iVar3;\n  undefined8 uVar4;\n  byte *local_res10;\n  \n  dVar1 = (double)FUN_1407ce9b0(param_1,2,DAT_1408cfa68);\n  iVar3 = (int)dVar1;\n  if (iVar3 == 10) {\n    FUN_1407ce130();\n    iVar3 = FUN_1407b8fb0(param_1,1);\n    if (iVar3 != 0) {\n      uVar4 = FUN_1407b9bc0(param_1,1);\n      FUN_1407b9520(param_1,uVar4);\n      return 1;\n    }\n  }\n  else {\n    _Str = (byte *)FUN_1407ce170(param_1,1,0);\n    if (0x22 < iVar3 - 2U) {\n      FUN_1407cdf80(param_1,2,\"base out of range\");\n    }\n    uVar2 = strtoul((char *)_Str,(char **)&local_res10,iVar3);\n    if (_Str != local_res10) {\n      iVar3 = isspace((uint)*local_res10);\n      while (iVar3 != 0) {\n        local_res10 = local_res10 + 1;\n        iVar3 = isspace((uint)*local_res10);\n      }\n      if (*local_res10 == 0) {\n        FUN_1407b9520(param_1,(double)uVar2);\n        return 1;\n      }\n    }\n  }\n  FUN_1407b9510(param_1);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:57:49Z"
+}

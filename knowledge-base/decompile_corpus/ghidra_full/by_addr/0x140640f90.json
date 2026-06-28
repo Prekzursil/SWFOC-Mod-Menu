@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640f90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall\nJetPackLocomotorBehaviorClass::vfunction72(JetPackLocomotorBehaviorClass *this)\n\n{\n  if (this->offset_0x18[0x15] != (undefined *)0x0) {\n    switch(*(undefined4 *)(this->offset_0x18[0x15] + 0x48)) {\n    case 0:\n    case 0xf:\n    case 0x10:\n    case 0x11:\n    case 0x12:\n    case 0x13:\n      break;\n    default:\n      return 1;\n    }\n  }\n  return 2;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:12Z"
+}

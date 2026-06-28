@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026b000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026b011        uint32_t result = GetCurrentThreadId()\n14026b026        if (result != data_140a155d0 || data_140a62740 == 0)\n14026b028        int32_t zmm0 = (zx.o(0)).d\n14026b02e        if (not(arg2.d f< 0f))\n14026b033        zmm0 = __minss_xmmss_memss(arg2.d, 0x3f800000)\n14026b042        if (not(zmm0 f== *(arg1 + 0xa0)))\n14026b047        *(arg1 + 0xa0) = zmm0\n14026b04f        return sub_14026b350(arg1)\n14026b05e        return result",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

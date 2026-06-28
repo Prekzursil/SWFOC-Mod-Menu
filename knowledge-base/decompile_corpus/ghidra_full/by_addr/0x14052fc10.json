@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052fc10",
+  "tool": "ghidra",
+  "fact_id": "rva_story_subplot_reset",
+  "body": "\nvoid FUN_14052fc10(longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  \n  plVar2 = (longlong *)**(longlong **)(param_1 + 0x20);\n  if (plVar2 != *(longlong **)(param_1 + 0x20)) {\n    do {\n      plVar1 = (longlong *)plVar2[3];\n      if (plVar1 != (longlong *)0x0) {\n        *(undefined1 *)((longlong)plVar1 + 0x4c) = 0;\n        (**(code **)(*plVar1 + 0x20))(plVar1);\n        (**(code **)(*plVar1 + 0x20))(plVar1);\n      }\n      plVar2 = (longlong *)*plVar2;\n    } while (plVar2 != (longlong *)*(longlong *)(param_1 + 0x20));\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:49Z"
+}

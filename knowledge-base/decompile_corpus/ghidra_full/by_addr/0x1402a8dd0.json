@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402a8dd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1402a8dd0(longlong param_1,longlong param_2,longlong param_3)\n\n{\n  longlong lVar1;\n  double dVar2;\n  char cVar3;\n  longlong lVar4;\n  longlong lVar5;\n  double dVar6;\n  undefined4 local_38;\n  undefined4 local_34;\n  undefined4 local_30;\n  \n  lVar1 = *(longlong *)(param_1 + 0x48);\n  DAT_140b1567c = 0;\n  DAT_140a170b0 = 0xfffffffe;\n  lVar5 = 0;\n  dVar2 = DAT_14085c078;\n  for (; lVar1 != param_1 + 0x40; lVar1 = *(longlong *)(lVar1 + 8)) {\n    lVar4 = *(longlong *)(lVar1 + 0x18) + -0x18;\n    if (*(longlong *)(lVar1 + 0x18) == 0) {\n      lVar4 = 0;\n    }\n    if ((((lVar4 != param_3) && ((*(byte *)(lVar4 + 0x3a0) & 2) == 0)) &&\n        (*(int *)(lVar4 + 0x58) != -1)) &&\n       ((*(char *)(lVar4 + 0x335) != -1 && (cVar3 = FUN_1402c0510(lVar4), cVar3 != '\\0')))) {\n      local_38 = *(undefined4 *)(param_2 + 0x78);\n      local_34 = *(undefined4 *)(param_2 + 0x7c);\n      local_30 = *(undefined4 *)(param_2 + 0x80);\n      dVar6 = (double)FUN_140397640(lVar4,&local_38);\n      if (dVar6 < dVar2) {\n        lVar5 = lVar4;\n        dVar2 = dVar6;\n      }\n    }\n  }\n  return lVar5;\n}",
+  "fetched_at": "2026-04-26T18:26:46Z"
+}

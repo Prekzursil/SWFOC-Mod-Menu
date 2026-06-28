@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d11a",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _fclrf\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid _fclrf(void)\n\n{\n  MXCSR = MXCSR & 0xffffffc0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:57Z"
+}

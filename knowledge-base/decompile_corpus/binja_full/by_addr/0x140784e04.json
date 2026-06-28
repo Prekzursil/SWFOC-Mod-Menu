@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784e04",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140784e18        void var_348\n140784e18        int64_t rax_1 = __security_cookie ^ &var_348\n140784e31        int64_t result\n140784e31        if (arg3 == 0 || arg1 == 0)\n140784e38        *_errno() = 0x16\n140784e3e        _invalid_parameter_noinfo()\n140784e43        int64_t* rcx = arg2[1]\n140784e4a        if (rcx != 0)\n140784e4f        *rcx = *arg2\n140784e52        result = 1\n140784e6d        void var_328\n140784e6d        result = __crt_strtox::parse_floating_point_write_result<float>(__crt_strtox::parse_floating_point_from_source<class __crt_strtox::c_string_character_source<char> >(arg1, arg2, &var_328), &var_328, arg3)\n140784e72        int64_t* rdx_1 = arg2[1]\n140784e79        if (rdx_1 != 0)\n140784e7e        *rdx_1 = *arg2\n140784e8c        __security_check_cookie(rax_1 ^ &var_348)\n140784ea1        return result",
+  "fetched_at": "2026-04-26T17:31:13Z"
+}

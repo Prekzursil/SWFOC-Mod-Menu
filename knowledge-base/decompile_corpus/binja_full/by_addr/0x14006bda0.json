@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006bda0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006bda0        int32_t result = data_140a61b90\n14006bda8        if (result != 0)\n14006bdaa        int32_t result_1 = result\n14006bdaa        result -= 1\n14006bdad        data_140a61b90 = result\n14006bdb3        if (result_1 == 1)\n14006bdb5        return SteamAPI_Shutdown() __tailcall\n14006bdbc        return result",
+  "fetched_at": "2026-04-26T16:56:01Z"
+}

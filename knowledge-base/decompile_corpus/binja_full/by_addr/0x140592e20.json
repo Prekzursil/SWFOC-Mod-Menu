@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592e20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140592e27        return \"Stealth_Ability\"",
+  "fetched_at": "2026-04-26T17:36:24Z"
+}

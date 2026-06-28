@@ -1,0 +1,7 @@
+{
+  "addr": "0x140606630",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nGameObjectTypeWrapper::vfunction15\n          (GameObjectTypeWrapper *this,undefined8 param_1,undefined8 param_2)\n\n{\n  longlong lVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  undefined4 local_res8 [2];\n  \n  lVar1 = *(longlong *)&(this->RefCountClass_data).field_0x20;\n  if (lVar1 == 0) {\n    local_res8[0] = 0;\n  }\n  else {\n    local_res8[0] = *(undefined4 *)(lVar1 + 0x11c);\n  }\n  bVar2 = FUN_14021ffa0(param_2,0);\n  bVar3 = FUN_1402200b0(param_2,local_res8,4);\n  bVar4 = FUN_140220030(param_2);\n  return bVar4 & bVar2 & 1 & bVar3;\n}",
+  "fetched_at": "2026-04-26T17:25:42Z"
+}

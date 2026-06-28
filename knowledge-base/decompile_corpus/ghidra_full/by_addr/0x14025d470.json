@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025d470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14025d470(longlong *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  lVar1 = param_1[0x11];\n  if (lVar1 != 0) {\n    uVar3 = param_1[0x13] - lVar1 & 0xfffffffffffffffc;\n    lVar2 = lVar1;\n    if (0xfff < uVar3) {\n      lVar2 = *(longlong *)(lVar1 + -8);\n      uVar3 = uVar3 + 0x27;\n      lVar1 = lVar1 - lVar2;\n      if (0x1f < lVar1 - 8U) goto LAB_14025d52d;\n    }\n    thunk_FUN_1407864b8(lVar2,uVar3);\n    param_1[0x11] = 0;\n    param_1[0x12] = 0;\n    param_1[0x13] = 0;\n  }\n  FUN_140066600(param_1 + 5);\n  uVar3 = param_1[3];\n  if (0xf < uVar3) {\n    lVar1 = *param_1;\n    lVar2 = lVar1;\n    if (0xfff < uVar3 + 1) {\n      lVar2 = *(longlong *)(lVar1 + -8);\n      uVar3 = uVar3 + 0x28;\n      lVar1 = lVar1 - lVar2;\n      if (0x1f < lVar1 - 8U) {\nLAB_14025d52d:\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1,uVar3);\n      }\n    }\n    thunk_FUN_1407864b8(lVar2);\n  }\n  param_1[2] = 0;\n  param_1[3] = 0xf;\n  *(undefined1 *)param_1 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:40Z"
+}

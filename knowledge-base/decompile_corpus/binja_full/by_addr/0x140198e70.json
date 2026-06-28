@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140198e80        *arg1 = &alD3dTextureCube::`vftable'{for `alD3dTexture'}\n140198e8a        arg1[2] = &alD3dTextureCube::`vftable'{for `MultiLinkedListMember'}\n140198e8e        int64_t* rcx = arg1[0xf]\n140198e95        if (rcx != 0)\n140198e9a        (*(*rcx + 0x10))(rcx)\n140198ea0        arg1[0xf] = 0\n140198ead        return sub_140185e50(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:24:38Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c90f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402c9112        sub_140025840(arg1 + 0x1660, *(arg1 + 0x1660), *(arg1 + 0x1668))\n1402c9125        *(arg1 + 0x1668) = *(arg1 + 0x1660)\n1402c913a        sub_140025840(arg1 + 0x1678, *(arg1 + 0x1678), *(arg1 + 0x1680))\n1402c914d        *(arg1 + 0x1680) = *(arg1 + 0x1678)\n1402c9162        sub_1402cb610(arg1 + 0x1690, *(arg1 + 0x1690), *(arg1 + 0x1698))\n1402c9170        *(arg1 + 0x1698) = *(arg1 + 0x1690)\n1402c9186        *(arg1 + 0x16b8) = *(arg1 + 0x16b0)\n1402c918d        int64_t rax_4 = *(arg1 + 0x16d0)\n1402c9194        *(arg1 + 0x16a8) = 0\n1402c919a        *(arg1 + 0x16c8) = 0\n1402c91a7        *(arg1 + 0x16d8) = rax_4\n1402c91b8        return memset(arg1 + 0x16e8, 0, 0x10000) __tailcall",
+  "fetched_at": "2026-04-26T17:33:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14021fae0(undefined8 *param_1,LPCSTR param_2,LPBYTE param_3,DWORD *param_4)\n\n{\n  DWORD local_res8 [8];\n  \n  local_res8[0] = *param_4;\n  if ((HKEY)*param_1 != (HKEY)0x0) {\n    RegQueryValueExA((HKEY)*param_1,param_2,(LPDWORD)0x0,(LPDWORD)0x0,param_3,local_res8);\n    *param_4 = local_res8[0];\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:57Z"
+}

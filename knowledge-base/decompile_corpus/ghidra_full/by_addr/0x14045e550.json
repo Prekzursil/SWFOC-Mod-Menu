@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045e550",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventElapsedClass::vfunction5(StoryEventElapsedClass *this)\n\n{\n  bool bVar1;\n  \n  if ((0 < *(int *)&(this->StoryEventClass_data).offset_0x320) &&\n     (bVar1 = (float)(this->StoryEventClass_data).offset_0x2f0 != DAT_14080080c,\n     *(undefined1 *)((longlong)&(this->StoryEventClass_data).offset_0x34 + 1) = 0, bVar1)) {\n    _guard_check_icall();\n    this[1].SignalGeneratorClass_data.offset_0x4 = 0;\n    *(undefined1 *)((longlong)&this[1].SignalGeneratorClass_data.offset_0x8 + 4) = 0;\n    return;\n  }\n  *(undefined1 *)((longlong)&this[1].SignalGeneratorClass_data.offset_0x8 + 4) = 0;\n  this[1].SignalGeneratorClass_data.offset_0x4 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070eb50",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_starbase_upgrade",
+  "body": "14070eb56        struct SpecialAbilityClass::StarbaseUpgradeAbilityClass::VTable** result = arg1\n14070eb59        sub_14048c780(arg1)\n14070eb65        result[8].w = 1\n14070eb6b        *result = &StarbaseUpgradeAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070eb75        result[1] = &StarbaseUpgradeAbilityClass::`vftable'{for `RefCountClass'}\n14070eb7c        *(result + 0x3c) = 0xc\n14070eb88        return result",
+  "fetched_at": "2026-04-26T16:44:19Z"
+}

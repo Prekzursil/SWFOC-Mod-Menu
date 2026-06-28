@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077e5b4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077e5ce        *(arg1 + 0x60)\n14077e5d8        int64_t rsi\n14077e5d8        rsi.b = arg3\n14077e5db        int16_t rax = __crt_stdio_input::skip_whitespace<class __crt_stdio_input::string_input_adapter,wchar_t>(arg1 + 8)\n14077e5e3        int64_t rax_1 = *(arg1 + 0x18)\n14077e5fa        if (rax_1 != *(arg1 + 8) && (rax_1 != *(arg1 + 0x10) || rax != 0xffff))\n14077e600        *(arg1 + 0x18) = rax_1 - 2\n14077e60d        int128_t* rcx_2 = *(arg1 + 0x60)\n14077e614        int64_t var_20 = *(arg1 + 0x40)\n14077e61c        int64_t* var_28 = arg1 + 8\n14077e628        char arg_8\n14077e628        char* var_10 = &arg_8\n14077e62d        int64_t var_18 = 0\n14077e632        arg_8 = 1\n14077e637        int64_t result = __crt_strtox::parse_integer<uint64_t,class __crt_strtox::input_adapter_character_source<class __crt_stdio_input::string_input_adapter<wchar_t> > >(rcx_2, &var_28, arg2, rsi.b)\n14077e641        if (arg_8 != 0)\n14077e64b        if (*(arg1 + 0x3c) == 0)\n14077e657        return __crt_stdio_input::input_processor<wchar_t,class __crt_stdio_input::string_input_adapter<wchar_t> >::write_integer(arg1, result)\n14077e64d        result.b = 1\n14077e643        result.b = 0\n14077e670        return result",
+  "fetched_at": "2026-04-26T17:31:01Z"
+}

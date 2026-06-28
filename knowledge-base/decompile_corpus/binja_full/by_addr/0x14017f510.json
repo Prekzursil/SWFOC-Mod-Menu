@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017f510",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017f514        data_140a6ee74 = *arg1\n14017f521        data_140a6ee78 = arg1[1]\n14017f52e        data_140a6ee7c = arg1[2]\n14017f53b        data_140a6ee80 = arg1[3]\n14017f548        data_140a6ee84 = arg1[4]\n14017f555        data_140a6ee88 = arg1[5]\n14017f562        data_140a6ee8c = arg1[6]\n14017f56f        data_140a6ee90 = arg1[7]\n14017f57c        data_140a6ee94 = arg1[8]\n14017f589        data_140a6ee98 = arg1[9]\n14017f596        data_140a6ee9c = arg1[0xa]\n14017f5a3        data_140a6eea0 = arg1[0xb]\n14017f5af        data_140a6eea4 = *arg1\n14017f5bc        data_140a6eea8 = arg1[4]\n14017f5c9        data_140a6eeac = arg1[8]\n14017f5d1        data_140a6eeb0 = 0\n14017f5e0        data_140a6eeb4 = arg1[1]\n14017f5ed        data_140a6eeb8 = arg1[5]\n14017f5fa        data_140a6eebc = arg1[9]\n14017f602        data_140a6eec0 = 0\n14017f611        data_140a6eec4 = arg1[2]\n14017f61e        data_140a6eec8 = arg1[6]\n14017f62b        data_140a6eecc = arg1[0xa]\n14017f633        data_140a6eed0 = 0\n14017f642        data_140a6eed4 = arg1[3]\n14017f64f        data_140a6eed8 = arg1[7]\n14017f664        data_140a6eedc = arg1[0xb]\n14017f66c        data_140a6eee0 = 0x3f800000\n14017f674        data_140a6eb61 = 1\n14017f67b        data_140a6eb63 = 0x1010101\n14017f685        data_140a6eb67 = 1\n14017f68c        data_140a6eb69 = 1\n14017f693        return 0x3f800000",
+  "fetched_at": "2026-04-26T17:23:46Z"
+}

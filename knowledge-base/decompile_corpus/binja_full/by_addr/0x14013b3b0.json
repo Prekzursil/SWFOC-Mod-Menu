@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b3b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013b3b4        int32_t zmm4 = *(arg1 + 0x11c)\n14013b3bf        float zmm5 = *(arg1 + 0x120)\n14013b3c7        int32_t zmm3 = *(arg1 + 0x124)\n14013b3cf        float zmm2 = *(arg1 + 0x118)\n14013b3d7        int32_t rcx = *(arg1 + 0xc8)\n14013b3dd        int128_t zmm6\n14013b3dd        int128_t var_18 = zmm6\n14013b3e4        if (rcx == 1)\n14013b46a        zmm4 = zmm4 f* zmm2\n14013b46e        zmm5 = zmm5 * zmm2\n14013b472        zmm3 = zmm3 f* zmm2\n14013b476        zmm2 = zmm2 * zmm2\n14013b3ed        if (rcx == 2)\n14013b45f        zmm2 = *(arg1 + 0x128)\n14013b3f2        if (rcx == 3)\n14013b406        if (not(zmm4 f!= 1f))\n14013b408        zmm4 = (zx.o(0)).d\n14013b410        if (zmm4 f!= 0f)\n14013b41e        zmm4 = zmm4 f+ 1f - zmm2\n14013b412        zmm4 = 0x3f800000\n14013b425        if (not(zmm5 != 1f))\n14013b427        zmm5 = (zx.o(0)).d\n14013b42f        if (zmm5 != 0f)\n14013b43d        zmm5 = zmm5 + 1f - zmm2\n14013b431        zmm5 = 1f\n14013b444        if (not(zmm3 f!= 1f))\n14013b446        zmm3 = (zx.o(0)).d\n14013b44e        if (zmm3 f!= 0f)\n14013b459        zmm3 = zmm3 f+ 1f - zmm2\n14013b450        zmm3 = 0x3f800000\n14013b4b5        char result = (int.q(zmm3 f* 255f)).b\n14013b4c2        *(arg1 + 0x130) = ((zx.d((int.q(zmm4 f* 255f)).b) | (int.q(zmm2 * 255f)).d << 8) << 8 | zx.d((int.q(zmm5 * 255f)).b)) << 8 | zx.d(result)\n14013b4cd        return result",
+  "fetched_at": "2026-04-26T17:14:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c156a        int32_t result = arg1[4].d\n1404c156d        int32_t rsi = 0\n1404c1574        if (result s<= 0)\n1404c165a        arg1[0xa].b = 1\n1404c1663        return result\n1404c157f        char* rbx = nullptr\n1404c15ac        if (rbx s>= 0 && rsi s< result)\n1404c15b7        if (*(arg1[1] + (rbx << 1)) == 0)\n1404c15b9        char* rcx = *arg1\n1404c15bc        uint32_t rax_1 = zx.d(*(rcx + rbx))\n1404c15c2        if (rax_1.b u< 0xef)\n1404c15c6        if (rax_1.b u< 0x10)\n1404c15d8        if (rax_1.b != 0)\n1404c15ea        uint128_t zmm0\n1404c15ea        zmm0.d = _mm_cvtepi32_ps(zx.o(rax_1)).d f/ 16f\n1404c15fc        *(rcx + rbx) = (int.d((1f f- zmm0.d) * 16f)).b - 0x11\n1404c15da        *(rcx + rbx) = 0xef\n1404c160b        rbx[arg1[2]] = sub_1404c0dc0(arg1)\n1404c15c8        *(rcx + rbx) = 0xff\n1404c15d0        rbx[arg1[2]] = 0\n1404c160e        int64_t rcx_3 = arg1[1]\n1404c1612        int16_t rax_5 = *(rcx_3 + (rbx << 1))\n1404c1619        if (rax_5 u< 0xffff)\n1404c161e        *(rcx_3 + (rbx << 1)) = rax_5 + 1\n1404c1622        result = arg1[4].d\n1404c1625        rsi += 1\n1404c1627        rbx = &rbx[1]\n1404c162c        do while (rsi s< result)\n1404c1646        arg1[0xa].b = 1\n1404c1654        return result",
+  "fetched_at": "2026-04-26T17:30:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140549480",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall ShieldBehaviorClass::vfunction9(void)\n\n{\n  return \"ShieldBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:37:27Z"
+}

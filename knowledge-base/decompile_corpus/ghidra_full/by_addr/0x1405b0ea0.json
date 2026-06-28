@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b0ea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall\nTacticalBribeAbilityClass::vfunction28_for_IXMLLoadableClass(TacticalBribeAbilityClass *this)\n\n{\n  return *(undefined4 *)((longlong)&(this->TacticalBribeAbilityClass_data).offset_0x0 + 4);\n}",
+  "fetched_at": "2026-04-26T18:43:39Z"
+}

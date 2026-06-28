@@ -1,0 +1,7 @@
+{
+  "addr": "0x140614a70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140614a77        if (*(arg1 + 0x84) == 0)\n140614ab8        return \n140614a79        void* rax = *(arg1 + 0x78)\n140614a7d        *(arg1 + 0x84) = 0\n140614a8e        void* r8 = *(*(rax + 0x28) + 0x28)\n140614a92        int128_t zmm1 = *(r8 + 0x70)\n140614a98        *(r8 + 0x70) = *(arg1 + 0x88)\n140614a9c        r8.b = 1\n140614aa3        zmm1.d = zmm1.d f- *(arg1 + 0x8c)\n140614ab3        return sub_14027f370(*(*(*(arg1 + 0x78) + 0x28) + 0x28), zmm1, r8.b) __tailcall",
+  "fetched_at": "2026-04-26T17:23:23Z"
+}

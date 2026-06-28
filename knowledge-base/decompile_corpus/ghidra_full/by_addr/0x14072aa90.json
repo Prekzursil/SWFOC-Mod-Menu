@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072aa90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ContrastInstantiationMarshallerClass * __thiscall\nContrastInstantiationMarshallerClass::scalar_deleting_destructor\n          (ContrastInstantiationMarshallerClass *this,ulonglong param_1)\n\n{\n  DAT_140b3ae98 = 0;\n                    /* inlined destructor:\n                       InstantiationMarshallerClass::~InstantiationMarshallerClass */\n  this->vftablePtr =\n       (ContrastInstantiationMarshallerClass_vftable *)&InstantiationMarshallerClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x10);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:00:52Z"
+}

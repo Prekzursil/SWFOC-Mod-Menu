@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052afc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlanetaryBombardEventClass * __thiscall\nPlanetaryBombardEventClass::PlanetaryBombardEventClass(PlanetaryBombardEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x36;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:27:58Z"
+}

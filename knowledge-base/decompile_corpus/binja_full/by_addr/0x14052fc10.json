@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052fc10",
+  "tool": "binary_ninja",
+  "fact_id": "rva_story_subplot_reset",
+  "body": "14052fc1a        int64_t* result = *(arg1 + 0x20)\n14052fc21        void** i = *result\n14052fc27        if (i != result)\n14052fc30        int64_t* rdi_1 = i[3]\n14052fc37        if (rdi_1 != 0)\n14052fc39        int64_t rax = *rdi_1\n14052fc3f        *(rdi_1 + 0x4c) = 0\n14052fc43        (*(rax + 0x20))(rdi_1)\n14052fc4c        result = (*(*rdi_1 + 0x20))(rdi_1)\n14052fc4f        i = *i\n14052fc56        do while (i != *(arg1 + 0x20))\n14052fc67        return result",
+  "fetched_at": "2026-04-26T16:43:49Z"
+}

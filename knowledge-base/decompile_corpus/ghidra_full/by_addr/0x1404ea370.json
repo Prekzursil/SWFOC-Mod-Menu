@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ea370",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLobbingSuperweaponBehaviorClass::vfunction3(LobbingSuperweaponBehaviorClass *this,uint param_1)\n\n{\n  ~LobbingSuperweaponBehaviorClass\n            ((LobbingSuperweaponBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:46Z"
+}

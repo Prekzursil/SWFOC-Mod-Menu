@@ -1,0 +1,7 @@
+{
+  "addr": "0x14030e610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14030e610(void)\n\n{\n  StopMovementEventClass *pSVar1;\n  \n  pSVar1 = (StopMovementEventClass *)FUN_140769c58(0x48);\n  if (pSVar1 != (StopMovementEventClass *)0x0) {\n    pSVar1 = StopMovementEventClass::StopMovementEventClass(pSVar1);\n    OutgoingEventQueueClass::vfunction2\n              ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pSVar1);\n    return;\n  }\n  OutgoingEventQueueClass::vfunction2((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)0x0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:28:05Z"
+}

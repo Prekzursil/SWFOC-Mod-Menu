@@ -1,0 +1,7 @@
+{
+  "addr": "0x140255c30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaGetThreadID::vfunction5(void)\n\n{\n  return &DAT_140a15908;\n}",
+  "fetched_at": "2026-04-26T18:12:47Z"
+}

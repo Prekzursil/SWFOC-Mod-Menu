@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407413ac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407413b7        void arg_8\n1407413b7        std::_Lockit::_Lockit(&arg_8, 0)\n1407413c3        _Deletegloballocale(&data_140b3b618)\n1407413c8        data_140b3b618 = 0\n1407413de        return std::_Lockit::~_Lockit(&arg_8)",
+  "fetched_at": "2026-04-26T17:29:20Z"
+}

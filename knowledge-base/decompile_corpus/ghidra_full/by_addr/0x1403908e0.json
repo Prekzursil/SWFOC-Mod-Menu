@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403908e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403908e0(longlong param_1)\n\n{\n  HintDataPackClass *pHVar1;\n  \n  if (*(longlong *)(param_1 + 0x1c0) == 0) {\n    pHVar1 = (HintDataPackClass *)FUN_140769c58(0x28);\n    if (pHVar1 != (HintDataPackClass *)0x0) {\n      pHVar1 = HintDataPackClass::HintDataPackClass(pHVar1);\n      *(HintDataPackClass **)(param_1 + 0x1c0) = pHVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x1c0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:49Z"
+}

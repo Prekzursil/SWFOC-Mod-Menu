@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053e0f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AffectedByShieldDataPackClass * __thiscall\nAffectedByShieldDataPackClass::AffectedByShieldDataPackClass(AffectedByShieldDataPackClass *this)\n\n{\n  this->PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass>)0x0;\n  this->vftablePtr = &vftable;\n  (this->AffectedByShieldDataPackClass_data).offset_0x8 = 0x3fffff;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:34:54Z"
+}

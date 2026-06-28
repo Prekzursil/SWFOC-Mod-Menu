@@ -1,0 +1,7 @@
+{
+  "addr": "0x140138e10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140138e2f        *arg1 = &MultiLinkedListClass<class alTerrainTrack>::`vftable'{for `GenericMultiLinkedList'}\n140138e36        while (arg1[2] != &arg1[1])\n140138e48        int64_t* arg_8\n140138e48        sub_14020ac80(arg1, &arg_8)\n140138e56        sub_14020a960(arg1)\n140138e5f        if ((arg2 & 1) != 0)\n140138e69        j_sub_1407864b8(arg1)\n140138e80        return arg1",
+  "fetched_at": "2026-04-26T17:14:21Z"
+}

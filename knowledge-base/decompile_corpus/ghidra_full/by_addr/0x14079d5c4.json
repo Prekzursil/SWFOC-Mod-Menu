@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d5c4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_fenv_set_status\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_fenv_set_status(uint param_1)\n\n{\n  uint uVar1;\n  \n  uVar1 = param_1 >> 0x18 & 0x3f;\n  MXCSR = MXCSR & 0xffffffc0 |\n          (param_1 >> 0x18 & 1) << 5 | (uVar1 >> 1 & 1) << 4 | (uVar1 >> 2 & 1) << 3 |\n          (uVar1 >> 3 & 1) << 2 | uVar1 >> 4 & 1 | (uVar1 >> 5) * 2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407808d4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl reset_buffers<char,class <lambda_53a6356d19cc262edbc98b4248a685b4> >(struct\n   `anonymous namespace'::component_buffers<char> * __ptr64 const,class\n   <lambda_53a6356d19cc262edbc98b4248a685b4>)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl\nreset_buffers<char,class_<lambda_53a6356d19cc262edbc98b4248a685b4>_>(undefined8 *param_1)\n\n{\n  if (((undefined1 *)*param_1 != (undefined1 *)0x0) && (param_1[1] != 0)) {\n    *(undefined1 *)*param_1 = 0;\n  }\n  if (((undefined1 *)param_1[2] != (undefined1 *)0x0) && (param_1[3] != 0)) {\n    *(undefined1 *)param_1[2] = 0;\n  }\n  if (((undefined1 *)param_1[4] != (undefined1 *)0x0) && (param_1[5] != 0)) {\n    *(undefined1 *)param_1[4] = 0;\n  }\n  if (((undefined1 *)param_1[6] != (undefined1 *)0x0) && (param_1[7] != 0)) {\n    *(undefined1 *)param_1[6] = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:00Z"
+}

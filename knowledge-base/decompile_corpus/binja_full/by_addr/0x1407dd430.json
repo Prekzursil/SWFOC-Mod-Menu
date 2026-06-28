@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd433        int32_t temp0 = _mm_max_ss(arg2, arg3)\n1407dd437        int32_t result = _mm_min_ss(arg2, arg3)\n1407dd43b        *(arg1 + 0x128) = temp0\n1407dd443        *(arg1 + 0x124) = result\n1407dd44b        return result",
+  "fetched_at": "2026-04-26T17:34:07Z"
+}

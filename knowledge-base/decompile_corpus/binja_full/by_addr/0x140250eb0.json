@@ -1,0 +1,7 @@
+{
+  "addr": "0x140250eb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140250eb9        int64_t rdx = *(arg2 + 0x48)\n140250ec1        if (rdx u< 0x10)\n140250ec1        goto label_140250ef0\n140250ec3        void* rcx = *(arg2 + 0x30)\n140250ed1        if (rdx + 1 u< 0x1000)\n140250ed1        goto label_140250eeb\n140250ed3        void* r8_1 = *(rcx - 8)\n140250ee6        if (rcx - r8_1 - 8 u<= 0x1f)\n140250ee8        rcx = r8_1\n140250eeb        label_140250eeb:\n140250eeb        j_sub_1407864b8(rcx)\n140250ef0        label_140250ef0:\n140250ef0        *(arg2 + 0x40) = 0\n140250ef8        *(arg2 + 0x48) = 0xf\n140250f00        *(arg2 + 0x30) = 0\n140250f04        int64_t rdx_3 = *(arg2 + 0x20)\n140250f0c        if (rdx_3 u< 0x10)\n140250f0c        goto label_140250f3b\n140250f0e        void* rcx_2 = *(arg2 + 8)\n140250f1c        if (rdx_3 + 1 u< 0x1000)\n140250f1c        goto label_140250f36\n140250f1e        void* r8_2 = *(rcx_2 - 8)\n140250f31        if (rcx_2 - r8_2 - 8 u<= 0x1f)\n140250f33        rcx_2 = r8_2\n140250f36        label_140250f36:\n140250f36        j_sub_1407864b8(rcx_2)\n140250f3b        label_140250f3b:\n140250f3b        *(arg2 + 0x18) = 0\n140250f43        *(arg2 + 0x20) = 0xf\n140250f4b        *(arg2 + 8) = 0\n140250f54        return \n140250f55        _invalid_parameter_noinfo_noreturn()\n140250f55        noreturn",
+  "fetched_at": "2026-04-26T17:30:38Z"
+}

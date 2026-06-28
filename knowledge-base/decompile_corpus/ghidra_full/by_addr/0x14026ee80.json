@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026ee80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DrawPrimitiveClass * __thiscall\nDrawPrimitiveClass::scalar_deleting_destructor(DrawPrimitiveClass *this,uint param_1)\n\n{\n  longlong lVar1;\n  DrawPrimitiveClass *local_res8;\n  \n                    /* inlined destructor: DrawPrimitiveClass::~DrawPrimitiveClass */\n  this->vftablePtr = &vftable;\n  lVar1 = (this->DrawPrimitiveClass_data).offset_0x30;\n  if (lVar1 != 0) {\n    FUN_14025c490(lVar1,this);\n  }\n  local_res8 = this;\n  FUN_1400474a0(&PTR_vftable_140a16ce8,&local_res8);\n  FUN_1401f9440(&this->DrawPrimitiveClass_data);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x40);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:19:18Z"
+}

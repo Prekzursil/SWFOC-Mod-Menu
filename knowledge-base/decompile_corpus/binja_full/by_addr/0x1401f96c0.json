@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f96c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f96c0        float zmm0 = *arg1\n1401f96c4        float temp0 = *arg2\n1401f96c4        zmm0 - temp0\n1401f96c9        int64_t result\n1401f96c9        if (not(is_unordered.d(zmm0, temp0)) && not(zmm0 != temp0))\n1401f96cb        zmm0 = arg1[1]\n1401f96d0        float temp1_1 = arg2[1]\n1401f96d0        zmm0 - temp1_1\n1401f96d6        if (not(is_unordered.d(zmm0, temp1_1)) && not(zmm0 != temp1_1))\n1401f96d8        zmm0 = arg1[2]\n1401f96dd        float temp2_1 = arg2[2]\n1401f96dd        zmm0 - temp2_1\n1401f96e3        if (not(is_unordered.d(zmm0, temp2_1)) && not(zmm0 != temp2_1))\n1401f96e5        zmm0 = arg1[3]\n1401f96ea        float temp3_1 = arg2[3]\n1401f96ea        zmm0 - temp3_1\n1401f96f0        if (not(is_unordered.d(zmm0, temp3_1)) && not(zmm0 != temp3_1))\n1401f96f2        result.b = 0\n1401f96f4        return result\n1401f96f5        result.b = 1\n1401f96f7        return result",
+  "fetched_at": "2026-04-26T17:27:28Z"
+}

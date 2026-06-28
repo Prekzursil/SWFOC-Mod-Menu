@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ad090",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dEyePosParam * __thiscall\n_EngineParam_Get_D3d_Model_View_Inverse_Transform::scalar_deleting_destructor\n          (_EngineParam_Get_D3d_Model_View_Inverse_Transform *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: alD3dEngineParamInterface::~alD3dEngineParamInterface */\n  this->vftablePtr =\n       (_EngineParam_Get_D3d_Model_View_Inverse_Transform_vftable *)\n       &alD3dEngineParamInterface::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x10);\n  }\n  return (alD3dEyePosParam *)this;\n}",
+  "fetched_at": "2026-04-26T17:41:08Z"
+}

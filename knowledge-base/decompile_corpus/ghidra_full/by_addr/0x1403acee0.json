@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403acee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MoveToPositionEventClass * __thiscall\nMoveToPositionEventClass::MoveToPositionEventClass(MoveToPositionEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->MoveToPositionEventClass_data).offset_0xc = 0;\n  this->vftablePtr = &vftable;\n  (this->EventClass_data).offset_0x8 = 1;\n  (this->MoveToPositionEventClass_data).offset_0x10 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:33:19Z"
+}

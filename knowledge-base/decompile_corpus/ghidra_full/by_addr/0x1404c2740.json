@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SquadronDummyBehaviorClass::vfunction9(void)\n\n{\n  return \"SquadronDummyBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:10:20Z"
+}

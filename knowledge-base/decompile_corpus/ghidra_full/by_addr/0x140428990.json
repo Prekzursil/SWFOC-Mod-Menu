@@ -1,0 +1,7 @@
+{
+  "addr": "0x140428990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall WaypointLineSubClass::vfunction5_for_RefCountClass(void)\n\n{\n  return &DAT_140a28b90;\n}",
+  "fetched_at": "2026-04-26T17:48:21Z"
+}

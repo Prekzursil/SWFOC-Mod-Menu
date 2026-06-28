@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ae590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ae598        int32_t* r9 = arg3\n1407ae59b        arg1[1].d = 0\n1407ae59e        arg3.b = 1\n1407ae5a1        arg1[0xe].d = 0\n1407ae5ae        *arg1 = &BoxCollisionBodyClass::`vftable'{for `CollisionBodyClass'}\n1407ae5b3        arg1[0xf].d = *arg2\n1407ae5b9        *(arg1 + 0x7c) = arg2[1]\n1407ae5bf        arg1[0x10].d = arg2[2]\n1407ae5c8        *(arg1 + 0x84) = arg2[3]\n1407ae5d1        arg1[0x11].d = arg2[4]\n1407ae5dd        *(arg1 + 0x8c) = arg2[5]\n1407ae5e3        sub_1407ae9c0(arg1, r9, arg3.b)\n1407ae5eb        arg1[0xe].d = 1\n1407ae5f7        return arg1",
+  "fetched_at": "2026-04-26T17:32:45Z"
+}

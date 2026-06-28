@@ -1,0 +1,7 @@
+{
+  "addr": "0x140138110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140138121        *(arg1 + 0xc) = 0xffffffff\n14013812f        arg1[6] = 0\n140138133        arg1[6] = &arg1[5]\n140138137        __builtin_memset(&arg1[7], 0, 0x18)\n140138143        arg1[5] = &arg1[5]\n14013814d        arg1[4] = &MultiLinkedListClass<class alTerrainShadowBlob>::`vftable'{for `GenericMultiLinkedList'}\n140138151        *arg1 = 0\n140138154        arg1[1].d = 0\n140138157        arg1[2].d = 0\n14013815a        *(arg1 + 0x14) = 0xffffffff\n140138161        arg1[3].d = 0\n140138164        arg1[0xa].d = 0\n140138167        *(arg1 + 0x54) = 1\n14013816e        arg1[0xb].d = 0xfffffc19\n140138175        __builtin_memset(&arg1[0xc], 0, 0x20)\n140138179        arg1[8] = 0\n14013817d        arg1[7] = 0\n140138199        if (sub_14012ef50(&arg1[4]) == 0)\n1401381df        arg1[0xe] = 0\n1401381ed        return arg1\n1401381ba        int64_t i\n1401381a9        int64_t* arg_8\n1401381a9        sub_14020ac80(&arg1[4], &arg_8)\n1401381b2        i = sub_14012ef50(&arg1[4])\n1401381ba        do while (i != 0)\n1401381c0        arg1[0xe] = arg1[0xd]\n1401381d6        return arg1",
+  "fetched_at": "2026-04-26T17:11:59Z"
+}

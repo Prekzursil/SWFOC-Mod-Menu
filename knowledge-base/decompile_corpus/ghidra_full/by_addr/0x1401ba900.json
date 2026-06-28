@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ba900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alLightContext * __thiscall alLightContext::alLightContext(alLightContext *this)\n\n{\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  FUN_1401ba950();\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:45:33Z"
+}

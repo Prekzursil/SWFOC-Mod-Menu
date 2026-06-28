@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407992e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _get_osfhandle\n   \n   Library: Visual Studio 2019 Release */\n\nintptr_t __cdecl _get_osfhandle(int _FileHandle)\n\n{\n  ulong *puVar1;\n  \n  if (_FileHandle == -2) {\n    puVar1 = __doserrno();\n    *puVar1 = 0;\n    puVar1 = __doserrno();\n    *puVar1 = 9;\n  }\n  else {\n    if ((-1 < _FileHandle) && ((uint)_FileHandle < DAT_140b3c8d0)) {\n      if ((*(byte *)((&DAT_140b3c4d0)[(longlong)_FileHandle >> 6] + 0x38 +\n                    (ulonglong)(_FileHandle & 0x3f) * 0x48) & 1) != 0) {\n        return *(intptr_t *)\n                ((&DAT_140b3c4d0)[(longlong)_FileHandle >> 6] + 0x28 +\n                (ulonglong)(_FileHandle & 0x3f) * 0x48);\n      }\n    }\n    puVar1 = __doserrno();\n    *puVar1 = 0;\n    puVar1 = __doserrno();\n    *puVar1 = 9;\n    FUN_1407711ac();\n  }\n  return -1;\n}",
+  "fetched_at": "2026-04-26T18:53:40Z"
+}

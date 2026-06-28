@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013c610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alEmitter::vfunction11_for_RefCountClass(alEmitter *this,undefined8 *param_1)\n\n{\n  *(undefined4 *)((longlong)param_1 + 0xc) = 0x3c23d70a;\n  *param_1 = 0;\n  *(undefined4 *)(param_1 + 1) = 0;\n  *(undefined4 *)(param_1 + 2) = 0x3c23d70a;\n  *(undefined4 *)((longlong)param_1 + 0x14) = 0x3c23d70a;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:04Z"
+}

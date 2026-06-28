@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e18c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e18d4        *arg1 = &GalacticPerceptionSystemClass::`vftable'{for `AIPerceptionSystemClass'}\n1404e18e0        sub_1400466c0(&arg1[0x1a])\n1404e18e8        sub_1404dafd0(arg1)\n1404e18f0        if ((arg2 & 1) != 0)\n1404e18fa        j_sub_1407864b8(arg1)\n1404e190c        return arg1",
+  "fetched_at": "2026-04-26T17:31:20Z"
+}

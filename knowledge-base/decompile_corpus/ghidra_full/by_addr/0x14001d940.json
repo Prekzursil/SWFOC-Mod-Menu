@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001d940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nSingletonInstance<class_SteamPeerLobbyClass>::vfunction1\n          (SingletonInstance<class_SteamPeerLobbyClass> *this)\n\n{\n  SingletonInstance<class_SteamPeerLobbyClass>_vftable *pSVar1;\n  \n  if (this[1].vftablePtr != (SingletonInstance<class_SteamPeerLobbyClass>_vftable *)0x0) {\n    SingletonInstance<class_DatabaseConversionSystemClass>::\n    ~SingletonInstance<class_DatabaseConversionSystemClass>\n              ((SingletonInstance<class_DatabaseConversionSystemClass> *)this);\n    pSVar1 = this[1].vftablePtr;\n    if (pSVar1 != (SingletonInstance<class_SteamPeerLobbyClass>_vftable *)0x0) {\n      FUN_14006cdf0(pSVar1);\n      thunk_FUN_1407864b8(pSVar1,0x350);\n    }\n    this[1].vftablePtr = (SingletonInstance<class_SteamPeerLobbyClass>_vftable *)0x0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:28Z"
+}

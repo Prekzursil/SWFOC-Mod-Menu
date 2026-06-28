@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee370",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall HintDataPackClass::vfunction1(HintDataPackClass *this,undefined8 param_1)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  byte bVar5;\n  PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass> PVar6;\n  \n  bVar1 = FUN_14021fe20(param_1,0);\n  bVar2 = FUN_14021ffa0(param_1,1);\n  PVar6 = (PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass>)\n          &this->PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass>;\n  if (0xf < (this->HintDataPackClass_data).offset_0x10) {\n    PVar6 = *(PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass> *)PVar6;\n  }\n  bVar3 = FUN_140220140(param_1,PVar6,0);\n  bVar4 = FUN_140220030(param_1);\n  bVar5 = FUN_14021feb0(param_1);\n  return bVar5 & bVar1 & 1 & bVar2 & bVar3 & bVar4;\n}",
+  "fetched_at": "2026-04-26T18:17:25Z"
+}

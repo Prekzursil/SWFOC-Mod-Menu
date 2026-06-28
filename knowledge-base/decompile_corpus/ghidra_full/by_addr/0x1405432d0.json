@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405432d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nLuaPointCamera::vfunction11(LuaPointCamera *this,undefined8 param_1,longlong param_2)\n\n{\n  char cVar1;\n  float local_res20;\n  float local_res24;\n  float local_18;\n  float local_14;\n  float local_10;\n  \n  cVar1 = (**(code **)(*DAT_140b15418 + 0xf0))();\n  if (cVar1 == '\\0') {\n    FUN_140248190(param_1,\"LuaPointCamera -- Command only valid in a tactical game.\");\n    return 0;\n  }\n  if (*(longlong *)(param_2 + 0x18) - (longlong)*(undefined8 **)(param_2 + 0x10) >> 3 != 0) {\n    local_18 = 1e+18;\n    local_14 = 1e+18;\n    local_10 = 1e+18;\n    FUN_1404990b0(**(undefined8 **)(param_2 + 0x10),&local_18,0);\n    if (((local_18 == DAT_140800804) && (local_14 == DAT_140800804)) && (local_10 == DAT_140800804))\n    {\n      FUN_140248620(param_1,\"LuaPointCamera -- Invalid position.\");\n      return 0;\n    }\n    local_res20 = local_18;\n    local_res24 = local_14;\n    FUN_14044bac0(&DAT_140a28c10,&local_res20);\n    return 0;\n  }\n  FUN_140248190(param_1,\"LuaPointCamera -- Expected position parameter 1\");\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:20Z"
+}

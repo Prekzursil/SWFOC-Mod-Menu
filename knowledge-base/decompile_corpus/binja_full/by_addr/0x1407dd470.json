@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd47f        float zmm1 = *arg2\n1407dd4db        if (not(zmm1 f!= *(arg1 + 0xc8)) && not(arg2[1] f!= *(arg1 + 0xcc)) && not(arg2[2] f!= *(arg1 + 0xd0)) && not(*arg3 f!= *(arg1 + 0xd4)) && not(arg3[1] f!= *(arg1 + 0xd8)) && arg3[2] f== *(arg1 + 0xdc))\n1407dd493        return \n1407dd4e1        *(arg1 + 0xc8) = zmm1\n1407dd4ec        *(arg1 + 0xcc) = arg2[1]\n1407dd4f5        *(arg1 + 0xd0) = arg2[2]\n1407dd4fe        *(arg1 + 0xd4) = *arg3\n1407dd508        *(arg1 + 0xd8) = arg3[1]\n1407dd512        *(arg1 + 0xdc) = arg3[2]\n1407dd52b        int32_t i_1 = 0\n1407dd534        if ((*(arg1 + 0x190) - *(arg1 + 0x188)) s>> 3 == 0)\n1407dd534        return \n1407dd53a        uint64_t i = 0\n1407dd549        zmm1 = arg3[1]\n1407dd553        int64_t rcx = *(arg1 + 0x188)\n1407dd55a        int32_t var_28 = *arg3\n1407dd565        float var_24_1 = zmm1\n1407dd56f        int32_t var_20_1 = arg3[2]\n1407dd575        int32_t zmm0 = arg2[1]\n1407dd57a        float var_18 = *arg2\n1407dd585        int32_t var_14_1 = zmm0\n1407dd58b        float var_10_1 = arg2[2]\n1407dd595        sub_1407e0f80(*(rcx + (i << 3)), &var_18, &var_28)\n1407dd5a1        i_1 += 1\n1407dd5ae        i = zx.q(i_1)\n1407dd5b4        do while (i u< (*(arg1 + 0x190) - *(arg1 + 0x188)) s>> 3)\n1407dd5ca        return ",
+  "fetched_at": "2026-04-26T17:34:07Z"
+}

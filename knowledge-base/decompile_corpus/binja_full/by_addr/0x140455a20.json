@@ -1,0 +1,7 @@
+{
+  "addr": "0x140455a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140455a20        int64_t result = arg1[0x6c]\n140455a2a        if (result == 0)\n140455a33        return sub_140467540(\"ERROR! STORY_VICTORY - Can't trigger event, we couldn't find the player at startup.\\r\\n\", arg2) __tailcall\n140455a3b        if (result != arg2)\n140455a47        return result\n140455a42        return sub_140455db0(arg1, nullptr, 0) __tailcall",
+  "fetched_at": "2026-04-26T17:27:45Z"
+}

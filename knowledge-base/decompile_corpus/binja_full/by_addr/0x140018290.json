@@ -1,0 +1,7 @@
+{
+  "addr": "0x140018290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400182a2        InitializeCriticalSectionAndSpinCount(&data_140b2f020, 0xfa0)\n1400182aa        data_140b2f05c = 0x80000000\n1400182bb        data_140b2f050 = 0\n1400182c5        data_140b2f058 = 0\n1400182cb        data_140b2f048 = &DynamicVectorRefClass<class GameObjectTypeClass* __ptr64>::`vftable'{for `DynamicVectorClass<class GameObjectTypeClass* __ptr64>'}\n1400182d5        data_140b2f060 = zx.o(0)\n1400182dd        int64_t* rax = operator new(0x30)\n1400182e8        *rax = rax\n1400182eb        rax[1] = rax\n1400182ef        rax[2] = rax\n1400182f3        rax[3].w = 0x101\n1400182f9        data_140b2f060.q = rax\n140018300        data_140b2f070 = zx.o(0)\n140018308        int64_t* rax_1 = operator new(0x30)\n140018317        *rax_1 = rax_1\n14001831a        rax_1[1] = rax_1\n14001831e        data_140b2f070.q = rax_1\n14001832c        data_140b2f080 = &DynamicVectorClass<uint64_t>::`vftable'\n14001833a        data_140b2f0c0 = &DynamicVectorClass<class GameObjectTypeClass* __ptr64>::`vftable'\n140018341        __builtin_memset(&data_140b2f088, 0, 0x34)\n14001836b        data_140b2f0c8 = 0\n140018372        data_140b2f0d0 = 0\n140018378        data_140b2f0d4 = 0x80000000\n140018387        return atexit(sub_1407f1060) __tailcall",
+  "fetched_at": "2026-04-26T16:50:40Z"
+}

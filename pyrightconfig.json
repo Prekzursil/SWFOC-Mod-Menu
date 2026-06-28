@@ -10,6 +10,7 @@
     "swfoc_overlay",
     "swfoc_toolkit",
     "ghidra_scripts",
-    "re-findings"
+    "re-findings",
+    "knowledge-base"
   ]
 }

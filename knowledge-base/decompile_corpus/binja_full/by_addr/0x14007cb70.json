@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007cb70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007cb74        int64_t* r10 = arg4\n14007cb7d        if (arg2 != arg3)\n14007cb83        void* r9 = arg4 - arg2\n14007cb8d        void* rax_1 = arg2 + 0x38\n14007cb91        *r10 = 0\n14007cb94        *(r9 + rax_1 - 0x28) = 0\n14007cb99        *(r9 + rax_1 - 0x20) = 0\n14007cb9e        int128_t zmm0 = *(rax_1 - 0x38)\n14007cba2        rax_1 += 0x60\n14007cba6        *r10 = zmm0\n14007cbb1        *(r10 + 0x10) = *(rax_1 - 0x88)\n14007cbb6        *(rax_1 - 0x88) = 0\n14007cbbd        r10 = &r10[0xc]\n14007cbc1        *(rax_1 - 0x80) = 0xf\n14007cbc9        *(rax_1 - 0x98) = 0\n14007cbcf        *(r9 + rax_1 - 0x78) = 0\n14007cbd4        *(r9 + rax_1 - 0x68) = 0\n14007cbd9        *(r9 + rax_1 - 0x60) = 0\n14007cbe2        *(r9 + rax_1 - 0x78) = *(rax_1 - 0x78)\n14007cbec        *(r9 + rax_1 - 0x68) = *(rax_1 - 0x68)\n14007cbf2        *(rax_1 - 0x68) = 0\n14007cbf6        *(rax_1 - 0x60) = 0xf\n14007cbfe        *(rax_1 - 0x78) = 0\n14007cc05        *(r9 + rax_1 - 0x58) = *(rax_1 - 0x58)\n14007cc0d        *(r9 + rax_1 - 0x50) = *(rax_1 - 0x50)\n14007cc16        *(r9 + rax_1 - 0x48) = *(rax_1 - 0x48)\n14007cc1f        *(r9 + rax_1 - 0x40) = *(rax_1 - 0x40)\n14007cc28        *(r9 + rax_1 - 0x3f) = *(rax_1 - 0x3f)\n14007cc34        do while (rax_1 - 0x38 != arg3)\n14007cc4c        return sub_140079530(r10, r10) __tailcall",
+  "fetched_at": "2026-04-26T16:57:05Z"
+}

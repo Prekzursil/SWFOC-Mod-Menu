@@ -1,0 +1,7 @@
+{
+  "addr": "0x140058570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140058574        int64_t result = data_140a10b50\n14005857e        if (result != 0)\n1400585f8        return result\n140058583        struct SignalDispatcherClass::VTable** rax = operator new(zx.q((result + 0x78).d))\n14005858b        if (rax == 0)\n14005859e        data_140a10b50 = 0\n140058595        data_140a10b50 = sub_140221820(rax)\n1400585a9        int32_t* rdx_1 = data_140a7bc10\n1400585b7        bool cond:0_1 = rdx_1 == data_140a7bc18\n1400585be        void** arg_8 = &data_140a10b48\n1400585c3        if (cond:0_1)\n1400585e8        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n1400585ed        return data_140a10b50\n1400585c5        *rdx_1 = &data_140a10b48\n1400585c8        data_140a7bc10 += 8\n1400585db        return data_140a10b50",
+  "fetched_at": "2026-04-26T16:55:07Z"
+}

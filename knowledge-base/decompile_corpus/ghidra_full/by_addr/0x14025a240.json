@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025a240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall GetEvent::vfunction5(void)\n\n{\n  return &DAT_140a15938;\n}",
+  "fetched_at": "2026-04-26T18:13:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f9570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401f9570(longlong param_1,byte param_2)\n\n{\n  *(float *)(param_1 + 8) = (float)param_2 / DAT_1408054e8;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:13Z"
+}

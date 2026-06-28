@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nIncomeStreamAbilityClass::vfunction25_for_IXMLLoadableClass\n          (IncomeStreamAbilityClass *this,longlong param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  longlong *local_28;\n  longlong *local_20;\n  longlong local_18;\n  \n  if (((param_1 != 0) && (DAT_140b15418 != (longlong *)0x0)) &&\n     (lVar1 = (**(code **)(*DAT_140b15418 + 0x140))(), lVar1 != 0)) {\n    FUN_140537960(lVar1,&local_28,*(undefined4 *)(param_1 + 0x50));\n    plVar2 = local_20;\n    plVar3 = local_28;\n    if (local_28 != local_20) {\n      do {\n        lVar1 = *plVar3;\n        if (lVar1 != 0) {\n          FUN_1406950e0(lVar1);\n          FUN_1406950f0(lVar1);\n          FUN_1407038b0(this,param_1,lVar1);\n          plVar2 = local_20;\n        }\n        plVar3 = plVar3 + 1;\n      } while (plVar3 != plVar2);\n    }\n    if (local_28 != (longlong *)0x0) {\n      plVar2 = local_28;\n      if ((0xfff < (local_18 - (longlong)local_28 & 0xfffffffffffffff8U)) &&\n         (plVar2 = (longlong *)local_28[-1],\n         0x1f < (ulonglong)((longlong)local_28 + (-8 - (longlong)plVar2)))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc();\n      }\n      thunk_FUN_1407864b8(plVar2);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140071ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140071ad6        int64_t r11 = 0\n140071ae2        if (*(arg1 + 0x344) == 0)\n140071b5a        void* var_28 = nullptr\n140071b5f        int64_t var_10 = 0xf\n140071b68        int64_t var_18 = 0\n140071b6d        int64_t result = sub_140078040(arg1, 4, sx.q(arg3), &var_28)\n140071b7b        if (var_10 u< 0x10)\n140071bb5        return result\n140071b7d        void* rcx_2 = var_28\n140071b85        void* rax_5 = rcx_2\n140071b8f        if (var_10 + 1 u>= 0x1000)\n140071b91        rcx_2 = *(rcx_2 - 8)\n140071ba4        if (rax_5 - rcx_2 - 8 u> 0x1f)\n140071bb6        _invalid_parameter_noinfo_noreturn()\n140071bb6        noreturn\n140071bab        return j_sub_1407864b8(rcx_2) __tailcall\n140071ae4        void* r9 = *(arg1 + 0x2d0)\n140071afc        void* r10_1 = *(arg1 + 0x2d8) - r9\n140071aff        int64_t rax\n140071aff        void* rdx\n140071aff        rdx:rax = muls.dp.q(-0x75270d0456c797dd, r10_1)\n140071b05        int64_t rdx_2 = (rdx + r10_1) s>> 8\n140071b13        if (rdx_2 != neg.q(rdx_2 u>> 0x3f))\n140071b1c        while (*(r9 + 0xa0) != arg2)\n140071b1e        r11 += 1\n140071b21        r9 += 0x1d8\n140071b2b        if (r11 u>= r10_1 s/ 0x1d8)\n140071b32        return sub_14006deb0(arg1) __tailcall\n140071b3a        if (r9 != 0)\n140071b3c        *(r9 + 0x94) = arg3\n140071b48        return sub_14006deb0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T16:56:28Z"
+}

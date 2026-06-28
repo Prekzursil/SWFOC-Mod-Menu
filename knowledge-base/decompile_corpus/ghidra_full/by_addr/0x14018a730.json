@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018a730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14018a730(void)\n\n{\n  undefined8 uVar1;\n  longlong *plVar2;\n  undefined **ppuVar3;\n  longlong *plVar4;\n  \n  if (DAT_140a6fec8 != '\\0') {\n    if ((undefined **)PTR_LOOP_140a12a30 != &PTR_LOOP_140a12a28) {\n      ppuVar3 = (undefined **)PTR_LOOP_140a12a30;\n      do {\n        (**(code **)(*DAT_140a6feb8 + 0x40))(DAT_140a6feb8,0,0);\n        (**(code **)(*DAT_140a6feb8 + 0x48))();\n        (**(code **)(*DAT_140a6feb8 + 0x50))();\n        (**(code **)(*DAT_140a6feb8 + 0x58))();\n        plVar4 = (longlong *)(ppuVar3[3] + -0x10);\n        if (ppuVar3[3] == (undefined *)0x0) {\n          plVar4 = (longlong *)0x0;\n        }\n        if (plVar4 != DAT_140a6fec0) {\n          plVar2 = plVar4 + 0x31;\n          if (0xf < (ulonglong)plVar4[0x34]) {\n            plVar2 = (longlong *)*plVar2;\n          }\n          uVar1 = (**(code **)(*plVar4 + 0x30))(plVar4);\n          FUN_1401ae720(plVar4,uVar1,plVar2,plVar4[0x35]);\n          (**(code **)(*(longlong *)plVar4[0xd] + 0x238))();\n        }\n        ppuVar3 = (undefined **)ppuVar3[1];\n      } while (ppuVar3 != &PTR_LOOP_140a12a28);\n    }\n    FUN_14018b090();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:45Z"
+}

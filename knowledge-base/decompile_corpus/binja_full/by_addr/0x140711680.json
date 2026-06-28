@@ -1,0 +1,7 @@
+{
+  "addr": "0x140711680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140711686        struct SpecialAbilityClass::WeatherproofAbilityClass::VTable** result = arg1\n140711689        sub_14048c780(arg1)\n140711695        result[0x2f].b = 0\n14071169c        *result = &WeatherproofAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1407116a6        result[1] = &WeatherproofAbilityClass::`vftable'{for `RefCountClass'}\n1407116ad        result[8].w = 1\n1407116b3        *(result + 0x3c) = 5\n1407116bf        return result",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIDataPackClass * __thiscall GUIDataPackClass::GUIDataPackClass(GUIDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_GUIDataPackClass,20,class_EmptyLockerClass> =\n       0xffffffff;\n  this->vftablePtr = &vftable;\n  (this->GUIDataPackClass_data).offset_0x4 = 0;\n  (this->GUIDataPackClass_data).offset_0xc = 0;\n  (this->GUIDataPackClass_data).offset_0x1c = 0;\n  *(undefined8 *)\n   &(this->PooledObjectClass<class_GUIDataPackClass,20,class_EmptyLockerClass>).field_0x4 =\n       0x3f800000;\n  (this->GUIDataPackClass_data).offset_0x20 = 0x1000000;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:23Z"
+}

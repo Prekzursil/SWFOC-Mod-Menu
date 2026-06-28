@@ -1,0 +1,7 @@
+{
+  "addr": "0x140537660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RevealBehaviorClass::vfunction16(RevealBehaviorClass *this,undefined8 param_1)\n\n{\n  char cVar1;\n  longlong lVar2;\n  int iVar3;\n  \n  if ((this->offset_0x40 != this->offset_0x48) &&\n     (iVar3 = 0, 0 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3))) {\n    do {\n      lVar2 = FUN_140294bc0(&DAT_140a16fd0,iVar3);\n      if ((lVar2 != 0) && (cVar1 = FUN_14039a2c0(param_1,lVar2,0), cVar1 == '\\x01')) {\n        FUN_140365760(DAT_140b15418,*(undefined4 *)(lVar2 + 0x4c));\n      }\n      iVar3 = iVar3 + 1;\n    } while (iVar3 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:30:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eae80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>::\n~DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>(void)\n\n{\n  HANDLE hHeap;\n  \n  PTR_vftable_140a12388 = (undefined *)&vftable;\n  if (DAT_140a12390 != (MultiLinkedListClass<class_alTerrainShadowBlob> *)0x0) {\n    if ((DAT_140a1239c & 0x80000000) == 0) {\n      MultiLinkedListClass<class_alTerrainShadowBlob>::\n      ~MultiLinkedListClass<class_alTerrainShadowBlob>(DAT_140a12390,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,DAT_140a12390);\n    }\n    DAT_140a1239c = DAT_140a1239c & 0x80000000;\n    DAT_140a12390 = (MultiLinkedListClass<class_alTerrainShadowBlob> *)0x0;\n    DAT_140a12398 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:01:51Z"
+}

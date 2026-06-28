@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ed470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ed470        *(arg1 + 0x1c) = 0x80000000\n1404ed481        *arg1 = &TransportDataPackClass::`vftable'{for `BaseDataPackClass'}\n1404ed484        arg1[2] = 0\n1404ed488        void* rax = &arg1[4]\n1404ed48c        arg1[3].d = 0\n1404ed497        arg1[1] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n1404ed4a2        *rax = 0\n1404ed4a5        *(rax + 0x18) = 7\n1404ed4ad        arg1[0xc] = 0\n1404ed4b1        __builtin_memset(&arg1[0xf], 0, 0x18)\n1404ed4c3        arg1[0x13] = &ReinforcementsUnloadedDataClass::`vftable'{for `SignalDataClass'}\n1404ed4ca        arg1[0x14] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n1404ed4d1        __builtin_memset(&arg1[0x15], 0, 0x16)\n1404ed4df        __builtin_memset(&arg1[8], 0, 0x14)\n1404ed4eb        arg1[0xb] = 0\n1404ed4ef        arg1[0xd].d = 0\n1404ed4f3        arg1[0xe] = 0\n1404ed4f7        arg1[0x12].d = 0\n1404ed50d        arg1[0x18].d = 0x3f800000\n1404ed517        *(arg1 + 0xc4) = 0x40000000\n1404ed521        arg1[0x19].w = 0\n1404ed529        *(rax + 0x10) = 0\n1404ed532        if (*(rax + 0x18) u>= 8)\n1404ed534        rax = *rax\n1404ed537        *rax = 0\n1404ed53e        return arg1",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

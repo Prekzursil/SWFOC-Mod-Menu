@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ce80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall alD3dEffectInstance::vfunction5_for_RefCountClass(void)\n\n{\n  return &DAT_140a12a70;\n}",
+  "fetched_at": "2026-04-26T17:33:38Z"
+}

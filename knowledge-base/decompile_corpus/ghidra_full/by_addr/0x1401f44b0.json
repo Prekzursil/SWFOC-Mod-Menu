@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f44b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall GUIGadgetIMEEditboxClass::vfunction8(void)\n\n{\n  return 0xc;\n}",
+  "fetched_at": "2026-04-26T17:53:32Z"
+}

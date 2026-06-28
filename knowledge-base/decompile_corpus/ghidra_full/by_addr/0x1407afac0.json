@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407afac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall PlaneCollisionBodyClass::vfunction10(PlaneCollisionBodyClass *this,float *param_1)\n\n{\n  if (((((*(float *)&(this->RefCountClass_data).offset_0x8 == *param_1) &&\n        (*(float *)((longlong)&(this->RefCountClass_data).offset_0x8 + 4) == param_1[1])) &&\n       (*(float *)&(this->RefCountClass_data).offset_0x10 == param_1[2])) &&\n      ((((*(float *)((longlong)&(this->RefCountClass_data).offset_0x10 + 4) == param_1[3] &&\n         (*(float *)&(this->RefCountClass_data).offset_0x18 == param_1[4])) &&\n        ((*(float *)((longlong)&(this->RefCountClass_data).offset_0x18 + 4) == param_1[5] &&\n         ((*(float *)&(this->RefCountClass_data).field_0x20 == param_1[6] &&\n          (*(float *)&(this->RefCountClass_data).field_0x24 == param_1[7])))))) &&\n       (*(float *)&(this->RefCountClass_data).field_0x28 == param_1[8])))) &&\n     (((*(float *)&(this->RefCountClass_data).field_0x2c == param_1[9] &&\n       (*(float *)&(this->RefCountClass_data).field_0x30 == param_1[10])) &&\n      (*(float *)&(this->RefCountClass_data).field_0x34 == param_1[0xb])))) {\n    return;\n  }\n  BoxCollisionBodyClass::vfunction10((BoxCollisionBodyClass *)this,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:28Z"
+}

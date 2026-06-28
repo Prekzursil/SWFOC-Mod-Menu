@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003c9e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14003c9e9        int32_t result = sub_14003d950(arg1)\n14003c9ee        int64_t* rcx = data_140b15418\n14003ca05        if (rcx != 0 && rcx[0x13].b == 1)\n14003ca13        uint128_t zmm6 = zx.o(0)\n14003ca1e        if ((*(*rcx + 0xf8))(rcx) != 1)\n14003ca2a        int64_t* rcx_1 = data_140b15418\n14003ca34        if (rcx_1 != 0)\n14003ca41        if ((*(*rcx_1 + 0xf0))(rcx_1) == 1)\n14003ca43        zmm6 = data_140b16a2c\n14003ca41        goto label_14003ca4b\n14003ca9b        result = data_140b153fc\n14003ca20        zmm6 = data_140b16a38\n14003ca4b        label_14003ca4b:\n14003ca4b        int64_t* rcx_2 = data_140b15418\n14003ca55        if (rcx_2 == 0)\n14003ca9b        result = data_140b153fc\n14003ca62        if ((*(*rcx_2 + 0xf0))(rcx_2) == 1)\n14003ca7f        return sub_14003ce60(arg1, sub_14003cad0(arg1, zmm6)) __tailcall\n14003ca84        int64_t* rcx_6 = data_140b15418\n14003ca8e        if (rcx_6 == 0)\n14003ca9b        result = data_140b153fc\n14003ca93        result = (*(*rcx_6 + 0xe0))(rcx_6)\n14003caa3        if (result == 0)\n14003caab        return sub_14003d2b0(arg1, zmm6)\n14003caba        return result",
+  "fetched_at": "2026-04-26T16:53:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020ab10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020ab23        if (arg4 != 0)\n14020ab25        void* i = *(arg2 + 8)\n14020ab2c        while (i != 0)\n14020ab34        if (*(i + 0x20) == arg1)\n14020ab7f        i.b = 0\n14020ab8b        return i\n14020ab36        i = *(i + 0x10)\n14020ab44        void* rbx = *(arg3 + 8)\n14020ab4c        while (*(rbx + 0x20) != arg1)\n14020ab50        rbx = *(rbx + 0x10)\n14020ab5f        void** rax_1 = operator new(0x28)\n14020ab64        void** rcx = rax_1\n14020ab6a        if (rax_1 == 0)\n14020ab8c        rcx = rax_1\n14020ab76        __builtin_memset(rcx, 0, 0x18)\n14020ab79        rcx[4] = 0\n14020ab8f        rcx[3] = arg2\n14020ab97        rcx[2] = *(arg2 + 8)\n14020ab9b        *(arg2 + 8) = rcx\n14020aba4        *rcx = rbx\n14020aba7        void*** rax_3 = *(rbx + 8)\n14020abb0        rcx[1] = rax_3\n14020abb4        *rax_3 = rcx\n14020abba        *(*rcx + 8) = rcx\n14020abbe        void* rax_4\n14020abbe        rax_4.b = 1\n14020abc0        rcx[4] = arg1\n14020abc4        *(arg1 + 0x30) += 1\n14020abc7        *(arg1 + 0x38) = 0xfffffc19\n14020abd3        return rax_4",
+  "fetched_at": "2026-04-26T17:28:07Z"
+}

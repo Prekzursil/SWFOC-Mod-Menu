@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017d200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dVertexType<class_alD3dVertGrass>::vfunction8\n          (alD3dVertexType<class_alD3dVertGrass> *this,undefined8 param_1,undefined8 *param_2)\n\n{\n  *(undefined4 *)(param_2 + 1) = 0x3f800000;\n  *param_2 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:52Z"
+}

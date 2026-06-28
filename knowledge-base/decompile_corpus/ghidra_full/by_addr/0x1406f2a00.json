@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f2a00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCableAttackAbilityClass::vfunction14_for_IXMLLoadableClass\n          (CableAttackAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  if ((*(longlong *)(param_1 + 0x100) != 0) &&\n     (*(int *)(*(longlong *)(param_1 + 0x100) + 0x140) == *(int *)(param_2 + 0x50))) {\n                    /* WARNING: Could not recover jumptable at 0x0001406f2a1c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*this->vftablePtr->vfunction32_for_IXMLLoadableClass)(this,param_1,param_2);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:47:42Z"
+}

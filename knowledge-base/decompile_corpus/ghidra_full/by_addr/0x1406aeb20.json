@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406aeb20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MovementBlockStatus * __thiscall MovementBlockStatus::MovementBlockStatus(MovementBlockStatus *this)\n\n{\n  LuaMemberFunctionWrapper<class_BlockingStatus>::LuaMemberFunctionWrapper<class_BlockingStatus>\n            ((LuaMemberFunctionWrapper<class_BlockingStatus> *)this);\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  *(undefined8 *)&this->field_0x38 = 0;\n  *(undefined2 *)&this->field_0x40 = 0;\n  this->offset_0x40 = 0;\n  this->offset_0x48 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:36:02Z"
+}

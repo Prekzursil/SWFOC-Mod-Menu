@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001d768",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001d773        std::_Init_locks::_Init_locks(&data_140b3b470)\n14001d783        return atexit(&data_1407fc0c8) __tailcall",
+  "fetched_at": "2026-04-26T16:51:26Z"
+}

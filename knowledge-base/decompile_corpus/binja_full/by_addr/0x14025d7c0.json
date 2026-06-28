@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025d7c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025d7c0        int32_t rdx_2 = arg1[1]\n14025d7c3        int32_t r8 = 0\n14025d7c6        arg1[9] = 0x320\n14025d7cd        *(arg1 + 0x28) = 0x258\n14025d7d7        int64_t result\n14025d7d7        if (rdx_2 == 0)\n14025d806        result = data_140a15a78\n14025d80e        label_14025d80e:\n14025d816        if (not(result f<= 800.0))\n14025d818        arg1[9] = 0x500\n14025d81f        arg1[0xa] = 0x400\n14025d826        arg1[0xb] = 1\n14025d837        if (not(result f<= 500.0))\n14025d839        arg1[9] = 0x500\n14025d840        arg1[0xa] = 0x400\n14025d851        if (not(result f<= 250.0))\n14025d853        arg1[9] = 0x400\n14025d85a        arg1[0xa] = 0x300\n14025d7dc        if (rdx_2 == 1)\n14025d7fc        result = data_140a15a80\n14025d804        goto label_14025d80e\n14025d7e1        if (rdx_2 == 2)\n14025d7f2        result = data_140a15a88\n14025d7fa        goto label_14025d80e\n14025d7e6        if (rdx_2 == 3)\n14025d7e8        result = data_140a15a90\n14025d7f0        goto label_14025d80e\n14025d861        result = data_140a15a60\n14025d871        if (not(result f> 210.0))\n14025d87b        r8.b = result f<= 150.0\n14025d87f        r8 += 1\n14025d882        *arg1 = r8\n14025d885        return result",
+  "fetched_at": "2026-04-26T17:31:07Z"
+}

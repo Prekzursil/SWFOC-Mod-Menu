@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007cd50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* Library Function - Single Match\n    public: void __cdecl std::allocator<char>::deallocate(char * __ptr64 const,unsigned __int64)\n   __ptr64\n   \n   Library: Visual Studio 2017 Release */\n\nvoid __thiscall\nstd::allocator<char>::deallocate(allocator<char> *this,char *param_1,__uint64 param_2)\n\n{\n  char *pcVar1;\n  \n  pcVar1 = param_1;\n  if (0xfff < param_2) {\n    pcVar1 = *(char **)(param_1 + -8);\n    param_2 = param_2 + 0x27;\n    if ((char *)0x1f < param_1 + (-8 - (longlong)pcVar1)) {\n                    /* WARNING: Subroutine does not return */\n      FUN_1407711cc();\n    }\n  }\n  thunk_FUN_1407864b8(pcVar1,param_2);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:06Z"
+}

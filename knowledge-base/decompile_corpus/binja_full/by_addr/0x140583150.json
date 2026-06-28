@@ -1,0 +1,7 @@
+{
+  "addr": "0x140583150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140583159        sub_140583680(arg1, arg2, arg3, arg4)\n14058315e        int64_t* rcx = data_140b15418\n14058316d        int32_t var_28\n14058316d        (*(*rcx + 0x208))(rcx, &var_28)\n140583173        float zmm1[0x4] = var_28\n140583179        int32_t zmm3 = *arg2\n140583180        int32_t var_1c\n140583180        zmm1[0] = zmm1[0] f- var_1c\n140583186        zmm1[0] = zmm1[0] f+ var_1c\n14058318f        if (not(zmm1[0] f> zmm3))\n140583194        zmm1 = _mm_min_ss(zmm1[0], zmm3)\n140583198        int32_t zmm0 = arg2[1]\n14058319d        *arg2 = zmm1[0]\n1405831a1        int32_t var_24\n1405831a1        zmm1 = var_24\n1405831aa        int32_t var_18\n1405831aa        zmm1[0] = zmm1[0] f- var_18\n1405831b0        zmm1[0] = zmm1[0] f+ var_18\n1405831b9        if (not(zmm1[0] f> zmm0))\n1405831be        zmm1 = _mm_min_ss(zmm1[0], zmm0)\n1405831c2        float zmm2[0x4] = arg2[2]\n1405831ca        zmm0 = 0xc59c4000\n1405831d2        bool cond:0 = -5000f > zmm2[0]\n1405831d5        arg2[1] = zmm1[0]\n1405831da        if (not(cond:0))\n1405831e4        zmm0 = _mm_min_ss(0x459c4000, zmm2[0])\n1405831e8        arg2[2] = zmm0\n1405831f2        return arg2",
+  "fetched_at": "2026-04-26T17:35:48Z"
+}

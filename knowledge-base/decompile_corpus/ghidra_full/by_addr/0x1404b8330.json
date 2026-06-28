@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b8330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void BitwiseOr<bool>::BitwiseOr<bool>_Constructor_or_Destructor(longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  uint uVar3;\n  longlong *plVar4;\n  BitwiseOr<bool>_vftable *local_res8;\n  \n  plVar1 = (longlong *)(param_1 + 0x288);\n  uVar3 = FUN_1404c2030();\n  plVar4 = *(longlong **)*plVar1;\n  if (plVar4 != (longlong *)*plVar1) {\n    do {\n      plVar2 = (longlong *)*plVar4;\n      if (*(uint *)((longlong)plVar4 + 0x14) < uVar3) {\n        *(longlong **)plVar4[1] = plVar2;\n        *(longlong *)(*plVar4 + 8) = plVar4[1];\n        *(longlong *)(param_1 + 0x290) = *(longlong *)(param_1 + 0x290) + -1;\n        FUN_1404ad530(plVar4 + 4);\n        thunk_FUN_1407864b8(plVar4,0x40);\n      }\n      plVar4 = plVar2;\n    } while (plVar2 != (longlong *)*plVar1);\n  }\n  local_res8 = &vftable;\n  FUN_1402800d0(plVar1,&local_res8);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:21Z"
+}

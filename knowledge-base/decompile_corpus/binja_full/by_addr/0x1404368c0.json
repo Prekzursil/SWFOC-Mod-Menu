@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404368c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404368d3        *arg1 = &AsteroidFieldDamageBehaviorClass::`vftable'{for `BehaviorClass'}\n1404368e0        arg1[1] = &AsteroidFieldDamageBehaviorClass::`vftable'{for `RefCountClass'}\n1404368eb        arg1[3] = &AsteroidFieldDamageBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404368ef        sub_1404c3310(arg1)\n1404368f7        if ((arg2 & 1) != 0)\n140436901        j_sub_1407864b8(arg1)\n140436913        return arg1",
+  "fetched_at": "2026-04-26T17:27:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400579a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Function: __chkstk replaced with injection: alloca_probe */\n\nvoid FUN_1400579a0(undefined8 param_1,longlong *param_2)\n\n{\n  int iVar1;\n  int iVar2;\n  undefined8 uVar3;\n  int local_2038 [5];\n  int local_2024;\n  undefined8 uStack_10;\n  \n  uStack_10 = 0x1400579b0;\n  iVar1 = (**(code **)(*param_2 + 0x40))(param_2);\n  iVar2 = (**(code **)(*param_2 + 0x28))(param_2,local_2038,4);\n  if ((iVar2 == 4) && (local_2038[0] == 0x484d4752)) {\n    (**(code **)(*param_2 + 0x38))(param_2,iVar1,0);\n    (**(code **)(*param_2 + 0x28))(param_2,local_2038,0x2028);\n    if (local_2024 == 0) {\n      return;\n    }\n    uVar3 = 1;\n    iVar1 = local_2024;\n  }\n  else {\n    uVar3 = 0;\n  }\n  (**(code **)(*param_2 + 0x38))(param_2,iVar1,uVar3);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:03Z"
+}

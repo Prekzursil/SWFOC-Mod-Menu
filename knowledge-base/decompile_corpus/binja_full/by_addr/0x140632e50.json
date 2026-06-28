@@ -1,0 +1,7 @@
+{
+  "addr": "0x140632e50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140632e63        *arg1 = &EarthquakeTargetBehaviorClass::`vftable'{for `BehaviorClass'}\n140632e70        arg1[1] = &EarthquakeTargetBehaviorClass::`vftable'{for `RefCountClass'}\n140632e7b        arg1[3] = &EarthquakeTargetBehaviorClass::`vftable'{for `SignalListenerClass'}\n140632e7f        sub_1404c3310(arg1)\n140632e87        if ((arg2 & 1) != 0)\n140632e91        j_sub_1407864b8(arg1)\n140632ea3        return arg1",
+  "fetched_at": "2026-04-26T17:24:17Z"
+}

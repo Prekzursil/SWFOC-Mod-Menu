@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770e28",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __vcrt_InitializeCriticalSectionEx\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __vcrt_InitializeCriticalSectionEx(LPCRITICAL_SECTION param_1,DWORD param_2,undefined4 param_3)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_140770bac(4,\"InitializeCriticalSectionEx\",&DAT_1408d1d10,\"InitializeCriticalSectionEx\"\n                       );\n  if (lVar1 == 0) {\n    InitializeCriticalSectionAndSpinCount(param_1,param_2);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(param_1,param_2,param_3);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:57Z"
+}

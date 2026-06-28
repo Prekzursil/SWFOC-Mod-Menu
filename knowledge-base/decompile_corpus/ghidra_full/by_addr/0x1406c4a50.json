@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c4a50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1406c4a50(longlong param_1)\n\n{\n  int iVar1;\n  ulonglong in_RAX;\n  ulonglong uVar2;\n  longlong lVar3;\n  \n  if (*(char *)(param_1 + 0x4c) == '\\0') {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  if (*(char *)(param_1 + 0x100) == '\\0') {\n    FUN_1406c0e60();\n    DAT_140b3a524 = 0;\n    FUN_1406c3da0(param_1);\n    if (*(char *)(param_1 + 0x4c) != '\\0') {\n      uVar2 = 0;\n      *(undefined4 *)(*(longlong *)(param_1 + 0x20) + 0x7c) = *(undefined4 *)(param_1 + 0x48);\n      *(undefined4 *)(*(longlong *)(param_1 + 0x20) + 0x78) = *(undefined4 *)(param_1 + 0x44);\n      lVar3 = *(longlong *)(param_1 + 0x58);\n      if (*(longlong *)(param_1 + 0x60) - lVar3 >> 3 != 0) {\n        do {\n          lVar3 = *(longlong *)(lVar3 + uVar2 * 8);\n          if (lVar3 != 0) {\n            iVar1 = FUN_140373500(lVar3,*(undefined4 *)(param_1 + 0x198));\n            *(int *)(param_1 + 0x1a8) = *(int *)(param_1 + 0x1a8) + iVar1;\n          }\n          lVar3 = *(longlong *)(param_1 + 0x58);\n          uVar2 = (ulonglong)((int)uVar2 + 1);\n        } while (uVar2 < (ulonglong)(*(longlong *)(param_1 + 0x60) - lVar3 >> 3));\n      }\n    }\n    return (ulonglong)*(byte *)(param_1 + 0x4c);\n  }\n  uVar2 = FUN_1406c45e0();\n  *(char *)(param_1 + 0x4c) = (char)uVar2;\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T17:39:26Z"
+}

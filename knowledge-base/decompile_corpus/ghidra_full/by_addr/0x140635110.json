@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BehaviorClass * FUN_140635110(void)\n\n{\n  BehaviorClass *this;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x58);\n  if (this != (BehaviorClass *)0x0) {\n                    /* inlined constructor: HolsterWeaponBehaviorClass::HolsterWeaponBehaviorClass\n                        */\n    BehaviorClass::BehaviorClass(this);\n    *(undefined4 *)&this->field_0x40 = 0xffffffff;\n    this->vftablePtr = (BehaviorClass_vftable0 *)&HolsterWeaponBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable1 *)&HolsterWeaponBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable2 *)&HolsterWeaponBehaviorClass::vftable;\n    *(undefined8 *)&this->field_0x44 = 0;\n    *(undefined4 *)&this->field_0x4c = 0;\n    *(undefined1 *)&this->offset_0x40 = 0;\n    return this;\n  }\n  return (BehaviorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:34:39Z"
+}

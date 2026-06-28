@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ae910",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nUnitAnimationBlockStatus::vfunction15\n          (UnitAnimationBlockStatus *this,undefined8 param_1,undefined8 param_2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  byte bVar5;\n  byte bVar6;\n  byte bVar7;\n  byte bVar8;\n  \n  bVar1 = FUN_14021fe20(param_2,0);\n  bVar2 = BlockingStatus::vfunction15((BlockingStatus *)this,param_1,param_2);\n  bVar3 = FUN_14021feb0(param_2);\n  bVar4 = FUN_14021fe20(param_2,1);\n  bVar5 = FUN_14021ffa0(param_2,2);\n  bVar6 = FUN_1402200b0(param_2,&(this->RefCountClass_data).field_0x28,4);\n  bVar7 = FUN_140220030(param_2);\n  bVar8 = FUN_14021feb0(param_2);\n  return bVar8 & bVar1 & bVar2 & bVar3 & bVar4 & bVar5 & bVar6 & bVar7;\n}",
+  "fetched_at": "2026-04-26T17:35:59Z"
+}

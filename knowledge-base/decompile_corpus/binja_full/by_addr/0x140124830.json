@@ -1,0 +1,7 @@
+{
+  "addr": "0x140124830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012483b        int32_t* result\n14012483b        if (data_140a6261a == 1)\n14012484a        result = sub_1401c2960(&data_140a78510, data_140a122f0)\n140124852        if (data_140a6261a != 1 || result == 0)\n14012485d        char* rax_1 = operator new(0x20)\n140124869        int64_t var_18_1 = 0x17\n140124879        int64_t var_10_1 = 0x1f\n140124889        __builtin_strncpy(rax_1, \"IDD_UPNP_DETAILS_DIALOG\", 0x18)\n1401248c9        char* var_28 = rax_1\n1401248dd        data_140a122f0 = sub_1401c1570(&data_140a78510, &var_28, sub_140124980, 0, 1, 0x3f800000, 1)\n1401248e7        if (var_10_1 u>= 0x10)\n1401248e9        char* rcx_1 = var_28\n1401248f1        char* rax_3 = rcx_1\n1401248fb        if (var_10_1 + 1 u>= 0x1000)\n1401248fd        rcx_1 = *(rcx_1 - 8)\n140124910        if (rax_3 - rcx_1 - 8 u> 0x1f)\n140124928        _invalid_parameter_noinfo_noreturn()\n140124928        noreturn\n140124912        j_sub_1407864b8(rcx_1)\n140124917        result = sub_140124a20()\n14012491c        data_140a6261a = 1\n140124927        return result",
+  "fetched_at": "2026-04-26T17:07:30Z"
+}

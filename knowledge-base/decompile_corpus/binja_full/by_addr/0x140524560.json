@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140524566        struct ScheduledEventClass::BombingRunEventClass::VTable** result = arg1\n140524569        sub_140512c50(arg1)\n140524575        result[4].d = 0x1c\n14052457c        *result = &BombingRunEventClass::`vftable'{for `ScheduledEventClass'}\n140524587        return result",
+  "fetched_at": "2026-04-26T17:33:04Z"
+}

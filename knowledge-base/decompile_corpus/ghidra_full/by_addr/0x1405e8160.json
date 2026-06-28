@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e8160",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_1405e8160(undefined8 param_1,undefined8 param_2)\n\n{\n  undefined8 *puVar1;\n  undefined8 *puVar2;\n  longlong lVar3;\n  byte bVar4;\n  byte bVar5;\n  byte bVar6;\n  byte bVar7;\n  byte bVar8;\n  byte bVar9;\n  longlong *plVar10;\n  byte bVar11;\n  \n  bVar11 = 1;\n  puVar1 = *(undefined8 **)(DAT_140b310d0 + 0x10);\n  for (puVar2 = (undefined8 *)*puVar1; puVar2 != puVar1; puVar2 = (undefined8 *)*puVar2) {\n    lVar3 = puVar2[6];\n    if (lVar3 != 0) {\n      bVar4 = FUN_14021fe20(param_2,0);\n      plVar10 = (longlong *)(lVar3 + 0x68);\n      if (0xf < *(ulonglong *)(lVar3 + 0x80)) {\n        plVar10 = (longlong *)*plVar10;\n      }\n      bVar5 = FUN_140220140(param_2,plVar10,0);\n      bVar6 = FUN_14021feb0(param_2);\n      bVar7 = FUN_14021fe20(param_2,1);\n      bVar8 = FUN_140247e50(lVar3);\n      bVar9 = FUN_14021feb0(param_2);\n      bVar11 = bVar11 & bVar4 & bVar5 & bVar6 & bVar7 & bVar8 & bVar9;\n    }\n  }\n  return bVar11;\n}",
+  "fetched_at": "2026-04-26T18:46:16Z"
+}

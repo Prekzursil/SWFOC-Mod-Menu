@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b6070",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b608b        int64_t rcx = *(arg1 + 0x20)\n1406b608f        int64_t r9 = rcx\n1406b6092        int64_t r8 = *(arg1 + 0x18)\n1406b60a9        if (((rcx + r8).b & 1) == 0 && *(arg1 + 0x10) u<= (rcx + 2) u>> 1)\n1406b60b3        sub_14067d950(arg1, 1)\n1406b60b8        r8 = *(arg1 + 0x18)\n1406b60bc        r9 = *(arg1 + 0x20)\n1406b60c0        int64_t rcx_2 = *(arg1 + 0x10)\n1406b60cc        void* rax_4 = ((rcx_2 << 1) + -ffffffffffffffff) & r8\n1406b60cf        *(arg1 + 0x18) = rax_4\n1406b60d6        void* rdi = rax_4 + r9\n1406b60eb        int64_t* rcx_5 = *(arg1 + 8)\n1406b60f4        if (rcx_5[(rcx_2 - 1) & rdi u>> 1] == 0)\n1406b6104        *((((rcx_2 - 1) & rdi u>> 1) << 3) + *(arg1 + 8)) = operator new(0x10)\n1406b6108        rcx_5 = *(arg1 + 8)\n1406b6113        int64_t result = *arg2\n1406b611b        *(rcx_5[(rcx_2 - 1) & rdi u>> 1] + ((zx.q(rdi.d) & 1) << 3)) = result\n1406b611f        *(arg1 + 0x20) += 1\n1406b6133        return result",
+  "fetched_at": "2026-04-26T17:24:43Z"
+}

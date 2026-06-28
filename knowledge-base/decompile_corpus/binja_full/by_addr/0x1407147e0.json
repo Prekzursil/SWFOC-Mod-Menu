@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407147e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407147e6        struct SpecialAbilityClass::ForceCloakAbilityClass::VTable** result = arg1\n1407147e9        sub_14048c780(arg1)\n1407147f5        *result = &ForceCloakAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140714806        result[1] = &ForceCloakAbilityClass::`vftable'{for `RefCountClass'}\n14071480a        sub_1401f92f0(&result[0x2f])\n140714812        result[0x31].d = 0\n140714821        return result",
+  "fetched_at": "2026-04-26T17:27:51Z"
+}

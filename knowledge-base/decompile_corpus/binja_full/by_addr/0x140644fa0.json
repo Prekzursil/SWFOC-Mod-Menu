@@ -1,0 +1,7 @@
+{
+  "addr": "0x140644fa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140644faa        int64_t rdx = *(arg1 + 0x40)\n140644fae        int32_t rbx = 0\n140644fba        int64_t result = (*(arg1 + 0x48) - rdx) s>> 3\n140644fc1        if (result != 0)\n140644fc3        uint64_t rcx = 0\n140644fc5        int64_t* rcx_1 = *(rdx + (rcx << 3))\n140644fcc        if (rcx_1 != 0)\n140644fce        sub_1405efe00(rcx_1)\n140644fd3        rdx = *(arg1 + 0x40)\n140644fd7        rbx += 1\n140644fe0        rcx = zx.q(rbx)\n140644fe2        result = (*(arg1 + 0x48) - rdx) s>> 3\n140644fe9        do while (rcx u< result)\n140644ff5        return result",
+  "fetched_at": "2026-04-26T17:03:42Z"
+}

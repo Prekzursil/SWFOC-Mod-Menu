@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402592b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402592c8        *arg1 = &LuaExternalFunction::`vftable'{for `LuaUserVar'}\n1402592d5        arg1[5] = &LuaExternalFunction::`vftable'{for `SignalListenerClass'}\n1402592d9        sub_1402599e0(arg1)\n1402592de        int64_t* rcx = arg1[8]\n1402592e5        if (rcx != 0)\n1402592ea        (*(*rcx + 8))(rcx)\n1402592ed        int64_t* rcx_1 = arg1[7]\n1402592f4        if (rcx_1 != 0)\n1402592f9        (*(*rcx_1 + 8))(rcx_1)\n140259307        arg1[5] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14025930b        sub_14020a820(&arg1[5])\n140259313        sub_140249eb0(arg1)\n14025931c        if ((arg2 & 1) != 0)\n140259326        j_sub_1407864b8(arg1)\n14025933d        return arg1",
+  "fetched_at": "2026-04-26T17:30:57Z"
+}

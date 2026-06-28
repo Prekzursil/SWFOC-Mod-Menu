@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062fa00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall TeamLocomotorBehaviorClass::vfunction43(TeamLocomotorBehaviorClass *this)\n\n{\n  char cVar1;\n  byte bVar2;\n  int iVar3;\n  ulonglong uVar4;\n  longlong lVar5;\n  longlong *plVar6;\n  byte bVar7;\n  int iVar8;\n  \n  uVar4 = LocomotorCommonClass::vfunction43((LocomotorCommonClass *)this);\n  bVar7 = (byte)uVar4;\n  lVar5 = (**(code **)(*this->offset_0x18 + 0x10))(this->offset_0x18,0x16);\n  if (lVar5 == 0) {\n    return 0;\n  }\n  iVar8 = 0;\n  iVar3 = FUN_140405300(lVar5);\n  if (0 < iVar3) {\n    do {\n      plVar6 = (longlong *)FUN_1404052d0(lVar5,iVar8);\n      if (plVar6 != (longlong *)0x0) {\n        plVar6 = (longlong *)(**(code **)(*plVar6 + 0x10))(plVar6,1);\n        if (plVar6 != (longlong *)0x0) {\n          cVar1 = (**(code **)(*plVar6 + 0x220))(plVar6);\n          if (cVar1 != '\\0') {\n            bVar2 = (**(code **)(*plVar6 + 0x150))(plVar6);\n            bVar7 = bVar7 & bVar2;\n          }\n        }\n      }\n      iVar8 = iVar8 + 1;\n      iVar3 = FUN_140405300(lVar5);\n    } while (iVar8 < iVar3);\n  }\n  return bVar7;\n}",
+  "fetched_at": "2026-04-26T17:33:07Z"
+}

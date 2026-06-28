@@ -1,0 +1,7 @@
+{
+  "addr": "0x140709970",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall PoliticalTransitionBonusAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Political_Transition_Bonus_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:53:35Z"
+}

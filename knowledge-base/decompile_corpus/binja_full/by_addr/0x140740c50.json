@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740c50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140740c54        bool cond:0 = arg4[2] == 0\n140740c5c        wchar16 wideCharStr = arg2\n140740c61        if (cond:0)\n140740c76        BOOL usedDefaultChar[0x4]\n140740c76        usedDefaultChar[0] = 0\n140740ca8        int32_t result = WideCharToMultiByte(*arg4, 0, &wideCharStr, 1, arg1, arg4[1], nullptr, &usedDefaultChar)\n140740cb7        if (result != 0 && usedDefaultChar[0] == 0)\n140740ccb        return result\n140740c6b        if (arg2 u<= 0xff)\n140740c6d        *arg1 = arg2.b\n140740c6f        return 1\n140740cbe        *_errno() = 0x2a\n140740cc4        return -1",
+  "fetched_at": "2026-04-26T17:29:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e9a80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetCustomImageClass * __thiscall\nGUIGadgetCustomImageClass::GUIGadgetCustomImageClass(GUIGadgetCustomImageClass *this)\n\n{\n  GUIGadgetClass::GUIGadgetClass((GUIGadgetClass *)this);\n  this->vftablePtr = &vftable;\n  TextureRectClass::TextureRectClass((TextureRectClass *)&this->GUIGadgetCustomImageClass_data);\n  FUN_1401f92f0(&(this->GUIGadgetCustomImageClass_data).field_0x90);\n  (this->GUIGadgetCustomImageClass_data).offset_0xa0 = 0;\n  (this->GUIGadgetCustomImageClass_data).offset_0xa8 = 0;\n  (this->GUIGadgetCustomImageClass_data).offset_0xb0 = 0;\n  TextureRectClass::TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetCustomImageClass_data).field_0xb8);\n  DrawTextClass::DrawTextClass((DrawTextClass *)&(this->GUIGadgetCustomImageClass_data).field_0x148)\n  ;\n  *(undefined2 *)&(this->GUIGadgetCustomImageClass_data).offset_0x210 = 0;\n  (this->GUIGadgetCustomImageClass_data).offset_0x218 = 0;\n  (this->GUIGadgetCustomImageClass_data).offset_0x228 = 0;\n  (this->GUIGadgetCustomImageClass_data).offset_0x230 = 0xf;\n  (this->GUIGadgetCustomImageClass_data).offset_0x238 = 0;\n  (this->GUIGadgetCustomImageClass_data).offset_0x248 = 0;\n  (this->GUIGadgetCustomImageClass_data).offset_0x250 = 7;\n  vfunction25(this);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:51:56Z"
+}

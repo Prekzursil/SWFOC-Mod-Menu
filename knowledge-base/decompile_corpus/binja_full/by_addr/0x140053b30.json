@@ -1,0 +1,7 @@
+{
+  "addr": "0x140053b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140053b4a        if (sub_140220610(arg2) != 0)\n140053bd7        char i\n140053b79        switch (sub_140220710(arg2))\n140053ba9        case 0\n140053ba9        sub_1402209a0(arg2, arg3 + 8, nullptr)\n140053b93        case 1\n140053bc0        sub_140220730(arg2, arg3 + 0x5c, 4, nullptr)\n140053b99        case 2\n140053bc0        sub_140220730(arg2, arg3 + 0x58, 4, nullptr)\n140053b8d        case 3\n140053bc0        sub_140220730(arg2, arg3 + 0x60, 4, nullptr)\n140053b87        case 4\n140053bc0        sub_140220730(arg2, arg3 + 0x64, 4, nullptr)\n140053b7b        case 5\n140053bc0        sub_140220730(arg2, arg3 + 0x6c, 1, nullptr)\n140053bb0        case 6\n140053bc0        sub_140220730(arg2, arg3 + 0x68, 4, nullptr)\n140053bc8        sub_1402206a0(arg2)\n140053bd0        i = sub_140220610(arg2)\n140053bd7        do while (i != 0)\n140053bea        return 1",
+  "fetched_at": "2026-04-26T16:54:50Z"
+}

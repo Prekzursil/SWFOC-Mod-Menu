@@ -1,0 +1,7 @@
+{
+  "addr": "0x140136fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140136fb0(longlong param_1,undefined8 *param_2)\n\n{\n  undefined4 uVar1;\n  undefined4 *puVar2;\n  longlong *plVar3;\n  undefined4 local_18 [2];\n  longlong *local_10;\n  \n  plVar3 = (longlong *)thunk_FUN_140187650(param_2);\n  if (plVar3 != (longlong *)0x0) {\n    (**(code **)*plVar3)(plVar3);\n    uVar1 = *(undefined4 *)(*(longlong *)*param_2 + 0xe0);\n    local_18[0] = uVar1;\n    local_10 = plVar3;\n    (**(code **)*plVar3)(plVar3);\n    puVar2 = *(undefined4 **)(param_1 + 0x160);\n    if (puVar2 == *(undefined4 **)(param_1 + 0x168)) {\n      FUN_140137cc0(param_1 + 0x158,puVar2,local_18);\n    }\n    else {\n      *puVar2 = uVar1;\n      *(longlong **)(puVar2 + 2) = plVar3;\n      (**(code **)*plVar3)(plVar3);\n      *(longlong *)(param_1 + 0x160) = *(longlong *)(param_1 + 0x160) + 0x10;\n    }\n    (**(code **)(*plVar3 + 8))(plVar3);\n    (**(code **)(*plVar3 + 8))(plVar3);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:39Z"
+}

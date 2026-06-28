@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fa10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021fa22        int64_t* result = nullptr\n14021fa27        int16_t data[0x400]\n14021fa27        data[0] = 0\n14021fa3a        if (arg4 != 0 && arg3 != arg4)\n14021fa41        int64_t* rdx = arg4\n14021fa44        if (arg4[3] u>= 8)\n14021fa46        rdx = *arg4\n14021fa50        result = sub_1400228a0(arg3, rdx, arg4[2])\n14021fa55        HKEY hKey = *arg1\n14021fa58        uint32_t lpcbData = 0x800\n14021fa66        if (hKey != 0)\n14021fa88        RegQueryValueExA(hKey, arg2, nullptr, nullptr, &data, &lpcbData)\n14021fa8e        result = &data\n14021fa93        void* r8_1 = -ffffffffffffffff\n14021faa0        r8_1 += 1\n14021faa9        do while (data[r8_1] != 0)\n14021faae        if (r8_1 != 0)\n14021fab8        return sub_1400228a0(arg3, &data, r8_1)\n14021fad1        return result",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

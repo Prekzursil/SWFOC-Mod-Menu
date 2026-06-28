@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405313d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpawnIndigenousUnitsBehaviorClass::vfunction8\n          (SpawnIndigenousUnitsBehaviorClass *this,longlong param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  if (param_1 != 0) {\n    FUN_140390e30(param_1);\n    iVar2 = DAT_140a4369c * 2 >> 1;\n    if (iVar2 <= DAT_140a43698) {\n      iVar1 = iVar2 / 10;\n      if (iVar2 / 10 < 10) {\n        iVar1 = 10;\n      }\n      FUN_140047aa0(&PTR_vftable_140a43688,iVar1 + iVar2,0,1);\n    }\n    *(longlong *)(DAT_140a43690 + (longlong)DAT_140a43698 * 8) = param_1;\n    DAT_140a43698 = DAT_140a43698 + 1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077fb8c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    memcpy_s\n   \n   Libraries: Visual Studio 2015, Visual Studio 2017, Visual Studio 2019 */\n\nerrno_t __cdecl memcpy_s(void *_Dst,rsize_t _DstSize,void *_Src,rsize_t _MaxCount)\n\n{\n  ulong *puVar1;\n  ulong uVar2;\n  \n  if (_MaxCount == 0) {\nLAB_14077fba9:\n    uVar2 = 0;\n  }\n  else {\n    if (_Dst == (void *)0x0) {\nLAB_14077fbb2:\n      puVar1 = __doserrno();\n      uVar2 = 0x16;\n    }\n    else {\n      if ((_Src != (void *)0x0) && (_MaxCount <= _DstSize)) {\n        FUN_14076bd80(_Dst,_Src,_MaxCount);\n        goto LAB_14077fba9;\n      }\n      FUN_14076c430(_Dst,0,_DstSize);\n      if (_Src == (void *)0x0) goto LAB_14077fbb2;\n      if (_MaxCount <= _DstSize) {\n        return 0x16;\n      }\n      puVar1 = __doserrno();\n      uVar2 = 0x22;\n    }\n    *puVar1 = uVar2;\n    FUN_1407711ac();\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:50:55Z"
+}

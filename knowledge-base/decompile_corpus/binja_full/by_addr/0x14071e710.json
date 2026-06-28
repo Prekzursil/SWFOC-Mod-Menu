@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071e710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071e716        struct SpecialAbilityClass::PermanentWeaponSwapAbilityClass::VTable** result = arg1\n14071e719        sub_14048c780(arg1)\n14071e725        result[0x2f].d = 0\n14071e72f        *result = &PermanentWeaponSwapAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071e739        result[1] = &PermanentWeaponSwapAbilityClass::`vftable'{for `RefCountClass'}\n14071e745        return result",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020b7f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020b803        uint128_t* rsi = nullptr\n14020b808        *arg1 = 0\n14020b80d        *(arg1 + 8) = 0\n14020b811        int32_t r15 = *arg2\n14020b818        int32_t rbp_1 = (r15 + 7) s>> 3\n14020b81d        if (rbp_1 s> 0)\n14020b824        int64_t rbx_1 = sx.q(rbp_1)\n14020b82a        uint128_t* rax_1 = j_operator new(rbx_1)\n14020b837        rsi = rax_1\n14020b83a        memset(rax_1, 0, rbx_1)\n14020b83f        int32_t* rax_2 = *(arg1 + 8)\n14020b84b        if (rax_2 != 0)\n14020b84f        int32_t rdx = rbp_1\n14020b854        int32_t rcx_4 = (*arg1 + 7) s>> 3\n14020b859        if (rcx_4 s< rbp_1)\n14020b859        rdx = rcx_4\n14020b85e        if (rdx s> 0)\n14020b869        memcpy(rsi, rax_2, sx.q(rdx))\n14020b86e        rax_2 = *(arg1 + 8)\n14020b875        j_sub_1407864b8(rax_2)\n14020b87a        *arg1 = r15\n14020b880        *(arg1 + 8) = rsi\n14020b88b        memcpy(rsi, *(arg2 + 8), sx.q(rbp_1))\n14020b8a6        return arg1",
+  "fetched_at": "2026-04-26T17:28:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724be0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140724bef        int64_t* rcx = arg1[5]\n140724bf6        if (rcx != 0)\n140724bfb        (*(*rcx + 8))(rcx)\n140724c09        arg1[3] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140724c0c        sub_14020a820(&arg1[3])\n140724c18        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n140724c1f        if ((arg2 & 1) != 0)\n140724c29        j_sub_1407864b8(arg1)\n140724c3b        return arg1",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

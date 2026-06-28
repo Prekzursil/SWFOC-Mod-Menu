@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037c430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037c446        int32_t rax\n14037c446        if (arg2 != 0)\n14037c448        int64_t rax_1 = -1\n14037c450        rax_1 += 1\n14037c457        do while (arg2[rax_1] != 0)\n14037c461        rax = sub_140215a30(arg2, rax_1.d, 0)\n14037c46b        if (rax != 0)\n14037c47a        void* rcx_1 = *(arg1 + 0x18)\n14037c494        int64_t* i\n14037c483        i = *(rcx_1 + 0x1a98)\n14037c494        while (i != *(rcx_1 + 0x1aa0))\n14037c496        int64_t* rbx_1 = *i\n14037c4a2        if (rbx_1 != 0 && rax == rbx_1[7].d)\n14037c4cf        if (sub_14037c270(arg1, rbx_1, nullptr).b != 0)\n14037c4d7        i = sub_14037be10(arg1, rbx_1)\n14037c4df        if (i.d == 1)\n14037c4e1        void* rcx_4 = *(arg1 + 0x10)\n14037c4e8        if (rcx_4 != 0)\n14037c4ed        i = sub_14039b0b0(rcx_4, rbx_1)\n14037c4f4        if (rcx_4 == 0 || i.b != 0)\n14037c4fc        *(arg1 + 0x10)\n14037c512        jump(*(*rbx_1 + 0x28))\n14037c4cf        break\n14037c4a4        i = &i[1]\n14037c4b2        i.b = 0\n14037c4be        return i\n14037c46d        rax.b = 0\n14037c479        return rax",
+  "fetched_at": "2026-04-26T17:19:08Z"
+}

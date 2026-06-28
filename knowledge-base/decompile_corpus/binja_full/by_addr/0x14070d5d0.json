@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070d5d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070d5e3        *arg1 = &RetreatProtectionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070d5f0        arg1[1] = &RetreatProtectionAbilityClass::`vftable'{for `RefCountClass'}\n14070d5f4        sub_14048c8d0(arg1)\n14070d5fc        if ((arg2 & 1) != 0)\n14070d606        j_sub_1407864b8(arg1)\n14070d618        return arg1",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

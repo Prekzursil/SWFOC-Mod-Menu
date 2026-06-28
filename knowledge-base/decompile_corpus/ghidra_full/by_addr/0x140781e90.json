@@ -1,0 +1,7 @@
+{
+  "addr": "0x140781e90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl common_xtox<unsigned long,char>(unsigned long,char * __ptr64 const,unsigned\n   __int64,unsigned int,bool)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl\ncommon_xtox<unsigned_long,char>\n          (ulong param_1,char *param_2,__uint64 param_3,uint param_4,bool param_5)\n\n{\n  char *pcVar1;\n  char cVar2;\n  ulonglong uVar3;\n  ulong *puVar4;\n  int iVar5;\n  ulonglong uVar6;\n  char *pcVar7;\n  char *pcVar8;\n  \n  pcVar7 = param_2;\n  if (param_5) {\n    *param_2 = '-';\n    pcVar7 = param_2 + 1;\n    param_1 = -param_1;\n  }\n  uVar6 = (ulonglong)param_5;\n  pcVar1 = pcVar7;\n  do {\n    pcVar8 = pcVar1;\n    uVar3 = (ulonglong)param_1;\n    param_1 = param_1 / param_4;\n    cVar2 = 'W';\n    if ((uint)(uVar3 % (ulonglong)param_4) < 10) {\n      cVar2 = '0';\n    }\n    uVar6 = uVar6 + 1;\n    *pcVar8 = cVar2 + (char)(uVar3 % (ulonglong)param_4);\n  } while ((param_1 != 0) && (pcVar1 = pcVar8 + 1, uVar6 < param_3));\n  if (uVar6 < param_3) {\n    pcVar8[1] = '\\0';\n    do {\n      cVar2 = *pcVar8;\n      *pcVar8 = *pcVar7;\n      pcVar8 = pcVar8 + -1;\n      *pcVar7 = cVar2;\n      pcVar7 = pcVar7 + 1;\n    } while (pcVar7 < pcVar8);\n    iVar5 = 0;\n  }\n  else {\n    *param_2 = '\\0';\n    puVar4 = __doserrno();\n    iVar5 = 0x22;\n    *puVar4 = 0x22;\n    FUN_1407711ac();\n  }\n  return iVar5;\n}",
+  "fetched_at": "2026-04-26T18:51:09Z"
+}

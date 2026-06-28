@@ -1,0 +1,7 @@
+{
+  "addr": "0x140012280",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140012280(void)\n\n{\n  longlong lVar1;\n  \n  lVar1 = -1;\n  do {\n    lVar1 = lVar1 + 1;\n  } while (PTR_s___Data_XML_GameConstants_xml_140a107e8[lVar1] != '\\0');\n  FUN_140022730(&DAT_140a10888);\n  atexit(FUN_1407e6d30);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:49:13Z"
+}

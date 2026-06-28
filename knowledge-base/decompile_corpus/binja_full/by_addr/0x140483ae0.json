@@ -1,0 +1,7 @@
+{
+  "addr": "0x140483ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140483aea        struct DatabaseUIntConversionClass::DatabaseObjectManagerClass<class TargetingPrioritySetClass>::VTable** result = arg1\n140483aed        sub_14023ae90(arg1, arg2)\n140483afb        *result = &DatabaseObjectManagerClass<class TargetingPrioritySetClass>::`vftable'{for `DatabaseUIntConversionClass'}\n140483b00        result[1].b = 0\n140483b03        __builtin_memset(result + 0xc, 0, 0x14)\n140483b11        int64_t* rax = operator new(0x38)\n140483b1d        *rax = rax\n140483b20        rax[1] = rax\n140483b24        result[2] = rax\n140483b28        int64_t r8 = result[2]\n140483b2c        __builtin_memset(&result[4], 0, 0x18)\n140483b37        result[7] = 7\n140483b3f        result[8] = 8\n140483b47        *(result + 0xc) = 0x3f800000\n140483b4e        sub_140048250(&result[4], 0x10, r8)\n140483b5a        *result = &TargetingPrioritySetManagerClass::`vftable'{for `DatabaseObjectManagerClass<class TargetingPrioritySetClass>'}\n140483b60        result[9] = 0\n140483b64        result[0xb] = 0\n140483b68        result[0xc] = 0xf\n140483b70        __builtin_memset(&result[0xd], 0, 0x18)\n140483b86        return result",
+  "fetched_at": "2026-04-26T17:28:29Z"
+}

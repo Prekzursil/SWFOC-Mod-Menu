@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e98a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* ActionClass member function inherited by MoveActionClass\n   ActionClass member function inherited by AttackActionClass\n   ActionClass member function inherited by SpecialAbilityActionClass */\n\nvoid __thiscall ActionClass::vfunction11(ActionClass *this,longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  \n  if ((this->ActionClass_data).offset_0x98 == param_1) {\n    (this->ActionClass_data).offset_0x98 = 0;\n  }\n  if ((this->ActionClass_data).offset_0xa0 == param_1) {\n    (this->ActionClass_data).offset_0xa0 = 0;\n  }\n  plVar2 = (longlong *)(this->ActionClass_data).offset_0xb0;\n  plVar3 = (longlong *)(this->ActionClass_data).offset_0xa8;\n  if (plVar3 != plVar2) {\n    while (plVar1 = plVar3 + 1, *plVar3 != param_1) {\n      plVar3 = plVar1;\n      if (plVar1 == plVar2) {\n        return;\n      }\n    }\n    FUN_14076bd80(plVar3,plVar1,(longlong)plVar2 - (longlong)plVar1);\n    plVar2 = &(this->ActionClass_data).offset_0xb0;\n    *plVar2 = *plVar2 + -8;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:46:20Z"
+}

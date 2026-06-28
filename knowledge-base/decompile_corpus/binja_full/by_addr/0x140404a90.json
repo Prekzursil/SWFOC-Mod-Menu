@@ -1,0 +1,7 @@
+{
+  "addr": "0x140404a90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140404a97        return \"TeamBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:25:44Z"
+}

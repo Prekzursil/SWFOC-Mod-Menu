@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e4d50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpaceTaskForceClass::vfunction1_for_SignalListenerClass(SpaceTaskForceClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((SpaceTaskForceClass *)&this[-1].SpaceTaskForceClass_data.field_0x78,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:47Z"
+}

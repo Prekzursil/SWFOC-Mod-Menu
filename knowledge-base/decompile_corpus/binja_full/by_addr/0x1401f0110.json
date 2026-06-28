@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f0110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f0125        *(arg1 + 0x79) = arg2\n1401f0130        void var_28\n1401f0130        int32_t zmm0\n1401f0130        if (arg2 != 0)\n1401f0149        sub_1401f92f0(&var_28)\n1401f014e        zmm0 = 0x3f800000\n1401f0132        *(arg1 + 0x78) = arg2\n1401f013a        sub_1401f92f0(&var_28)\n1401f013f        zmm0 = (zx.o(0)).d\n1401f015d        int32_t var_1c = zmm0\n1401f016b        (*(*(arg1 + 0xa0) + 0x28))(arg1 + 0xa0, &var_28)\n1401f017d        (*(*(arg1 + 0x1c0) + 0x28))(arg1 + 0x1c0, &var_28)\n1401f018f        (*(*(arg1 + 0x130) + 0x28))(arg1 + 0x130, &var_28)\n1401f0195        if (arg2 == 0)\n1401f01a1        zmm0 = var_1c\n1401f0197        zmm0 = *(arg1 + 0x404)\n1401f01e0        void var_18\n1401f01e0        (*(*(arg1 + 0x330) + 0xc0))(arg1 + 0x330, sub_1401f9340(&var_18, *(arg1 + 0x3f8), *(arg1 + 0x3fc), *(arg1 + 0x400), zmm0))\n1401f01f3        int32_t zmm0_1\n1401f01f3        if (arg2 == 0)\n1401f01ff        zmm0_1 = var_1c\n1401f01f5        zmm0_1 = *(arg1 + 0x414)\n1401f026d        return (*(*(arg1 + 0x330) + 0xc8))(arg1 + 0x330, sub_1401f9340(&var_18, *(arg1 + 0x408), *(arg1 + 0x40c), *(arg1 + 0x410), zmm0_1))",
+  "fetched_at": "2026-04-26T17:27:16Z"
+}

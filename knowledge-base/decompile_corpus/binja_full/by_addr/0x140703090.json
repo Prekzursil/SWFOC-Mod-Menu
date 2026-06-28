@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140703096        struct SpecialAbilityClass::HeroProtectionAbilityClass::VTable** result = arg1\n140703099        sub_14048c780(arg1)\n1407030a5        result[0x2f] = 0x3f800000\n1407030b0        *result = &HeroProtectionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1407030ba        result[1] = &HeroProtectionAbilityClass::`vftable'{for `RefCountClass'}\n1407030c1        result[8].w = 1\n1407030c7        *(result + 0x3c) = 3\n1407030d3        return result",
+  "fetched_at": "2026-04-26T17:27:08Z"
+}

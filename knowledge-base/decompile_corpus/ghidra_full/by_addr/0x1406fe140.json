@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fe140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ForceTelekinesisAbilityClass * __thiscall\nForceTelekinesisAbilityClass::scalar_deleting_destructor\n          (ForceTelekinesisAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       ForceTelekinesisAbilityClass::~ForceTelekinesisAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  *(undefined8 *)((longlong)&(this->ForceTelekinesisAbilityClass_data).offset_0x0 + 4) = 0;\n  *(undefined4 *)&(this->ForceTelekinesisAbilityClass_data).offset_0x0 = 0;\n  *(undefined8 *)((longlong)&(this->ForceTelekinesisAbilityClass_data).offset_0x8 + 4) = 0;\n  *(undefined4 *)((longlong)&(this->ForceTelekinesisAbilityClass_data).offset_0x10 + 4) = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,400);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:50:23Z"
+}

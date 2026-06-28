@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052e4b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StorySubPlotClass * __thiscall\nStorySubPlotClass::scalar_deleting_destructor(StorySubPlotClass *this,uint param_1)\n\n{\n  ~StorySubPlotClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x668);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:28:23Z"
+}

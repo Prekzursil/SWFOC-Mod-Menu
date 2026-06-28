@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402acb60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402acb6e        return sx.q(arg2) * 0x38 + *(arg1 + 0xd0)",
+  "fetched_at": "2026-04-26T17:33:04Z"
+}

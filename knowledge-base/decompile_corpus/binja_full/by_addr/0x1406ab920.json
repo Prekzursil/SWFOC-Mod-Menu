@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ab920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ab926        struct HeroClashInterface::MeleeHeroClashClass::VTable** result = arg1\n1406ab929        sub_1407247c0(arg1, arg2, arg3)\n1406ab935        *result = &MeleeHeroClashClass::`vftable'{for `HeroClashInterface'}\n1406ab93a        __builtin_memset(&result[3], 0, 0x2c)\n1406ab951        result[9] = 0\n1406ab955        result[0xa].b = 0\n1406ab958        __builtin_memset(&result[0xb], 0, 0x68)\n1406ab9ac        return result",
+  "fetched_at": "2026-04-26T17:24:29Z"
+}

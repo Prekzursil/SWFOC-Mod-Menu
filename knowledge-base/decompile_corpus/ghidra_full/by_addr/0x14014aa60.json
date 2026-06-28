@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014aa60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alLightSource_data * __thiscall alLightSource::vfunction7_for_RefCountClass(alLightSource *this)\n\n{\n  alLightSource_data *paVar1;\n  \n  paVar1 = &this->alLightSource_data;\n  if (0xf < (this->alLightSource_data).offset_0x18) {\n    paVar1 = (alLightSource_data *)paVar1->offset_0x0;\n  }\n  return paVar1;\n}",
+  "fetched_at": "2026-04-26T17:21:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140629f90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SquashBehaviorClass * __thiscall\nSquashBehaviorClass::vfunction4(SquashBehaviorClass *this,int param_1)\n\n{\n  SquashBehaviorClass *pSVar1;\n  \n  pSVar1 = (SquashBehaviorClass *)0x0;\n  if (param_1 == 0x26) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T17:31:46Z"
+}

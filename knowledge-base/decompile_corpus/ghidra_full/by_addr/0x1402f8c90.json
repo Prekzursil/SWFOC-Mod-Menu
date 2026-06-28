@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f8c90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402f8c90(longlong param_1,char param_2)\n\n{\n  char *pcVar1;\n  longlong lVar2;\n  \n  pcVar1 = (char *)(param_1 + 0x2290);\n  lVar2 = 10;\n  do {\n    if (((*pcVar1 != '\\0') && (pcVar1 + -8 != (char *)0x0)) &&\n       ((param_2 != '\\0' || (*(int *)(pcVar1 + 4) != 1)))) {\n      FUN_140264c80(*(undefined8 *)(pcVar1 + -8),1);\n      *pcVar1 = '\\0';\n      pcVar1[0x20] = '\\0';\n    }\n    pcVar1 = pcVar1 + 0x68;\n    lVar2 = lVar2 + -1;\n  } while (lVar2 != 0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:26:22Z"
+}

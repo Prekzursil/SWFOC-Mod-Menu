@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _ValidateImageBase\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nBOOL __cdecl _ValidateImageBase(PBYTE pImageBase)\n\n{\n  if (((*(short *)pImageBase == 0x5a4d) &&\n      (*(int *)(pImageBase + *(int *)(pImageBase + 0x3c)) == 0x4550)) &&\n     ((short)*(int *)((longlong)(pImageBase + *(int *)(pImageBase + 0x3c)) + 0x18) == 0x20b)) {\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:59:03Z"
+}

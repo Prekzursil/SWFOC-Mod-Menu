@@ -1,0 +1,7 @@
+{
+  "addr": "0x140643af0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nTransportLandingBehaviorClass * __thiscall\nTransportLandingBehaviorClass::vfunction4(TransportLandingBehaviorClass *this,int param_1)\n\n{\n  TransportLandingBehaviorClass *pTVar1;\n  \n  pTVar1 = (TransportLandingBehaviorClass *)0x0;\n  if (param_1 == 0x36) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:31Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007cc60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007cc6b        std::_Xruntime_error(\"deque<T> too long\")\n14007cc6b        noreturn",
+  "fetched_at": "2026-04-26T16:57:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eeea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void DynamicVectorClass<class_RGBAClass>::\n     DynamicVectorClass<class_RGBAClass>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a16fb8 = (undefined *)&vftable;\n  FUN_1402932d0(&PTR_vftable_140a16fb8);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:50Z"
+}

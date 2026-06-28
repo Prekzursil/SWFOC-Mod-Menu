@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b9f50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b9f62        int32_t zmm3\n1401b9f62        int32_t var_18 = zmm3\n1401b9f6a        int32_t var_28 = 0\n1401b9f6d        int32_t rdx\n1401b9f6d        int32_t var_24 = rdx\n1401b9f70        int32_t var_20 = 0\n1401b9f76        int32_t r8\n1401b9f76        int32_t var_1c = r8\n1401b9f7a        int32_t* rax = operator new(0x40)\n1401b9f82        int32_t* rbx\n1401b9f82        if (rax == 0)\n1401b9f96        rbx = nullptr\n1401b9f91        rbx = sub_1401ba000(rax, &var_28)\n1401b9f99        int32_t result_1 = 0\n1401b9f9d        *(arg1 + 8) = rbx\n1401b9fa1        *rbx = 0\n1401b9fa7        int32_t result = result_1 + 1\n1401b9fa9        result_1 = result\n1401b9fad        int32_t* rcx_1 = *(rbx + 0x38)\n1401b9fb4        if (rcx_1 != 0)\n1401b9fbb        sub_1401ba470(rcx_1, &result_1)\n1401b9fc0        result = result_1\n1401b9fc4        int32_t* rcx_2 = *(rbx + 0x30)\n1401b9fcb        if (rcx_2 != 0)\n1401b9fd2        sub_1401ba470(rcx_2, &result_1)\n1401b9fd7        result = result_1\n1401b9fe5        *arg1 = result\n1401b9fec        return result",
+  "fetched_at": "2026-04-26T17:25:55Z"
+}

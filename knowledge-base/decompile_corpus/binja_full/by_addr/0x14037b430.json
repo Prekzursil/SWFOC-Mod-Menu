@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037b430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037b439        *arg1 = &SpecialAbilityManagerClass::`vftable'{for `SignalListenerClass'}\n14037b43f        __builtin_memset(&arg1[1], 0, 0x19)\n14037b44e        __builtin_memset(&arg1[5], 0, 0x18)\n14037b45a        return arg1",
+  "fetched_at": "2026-04-26T17:18:53Z"
+}

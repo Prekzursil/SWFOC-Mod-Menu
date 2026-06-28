@@ -1,0 +1,7 @@
+{
+  "addr": "0x140654b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nuint FUN_140654b70(longlong param_1,float *param_2,undefined8 param_3,undefined8 param_4,\n                  undefined1 param_5,undefined8 param_6)\n\n{\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  int iVar4;\n  uint uVar5;\n  int iVar6;\n  uint uVar7;\n  \n  uVar7 = 0;\n  iVar2 = (int)((*param_2 - *(float *)(param_1 + 0xa0)) / *(float *)(param_1 + 0xb8));\n  iVar1 = 0;\n  if (0 < iVar2) {\n    iVar1 = iVar2;\n  }\n  iVar2 = *(int *)(param_1 + 0xb0) + -1;\n  iVar3 = (int)(((*param_2 - *(float *)(param_1 + 0xa0)) + param_2[2]) / *(float *)(param_1 + 0xb8))\n  ;\n  if (iVar3 < iVar2) {\n    iVar2 = iVar3;\n  }\n  iVar3 = *(int *)(param_1 + 0xb4) + -1;\n  iVar6 = (int)((*(float *)(param_1 + 0xa4) - (param_2[3] + param_2[1])) /\n               *(float *)(param_1 + 0xbc));\n  iVar4 = (int)((*(float *)(param_1 + 0xa4) - param_2[1]) / *(float *)(param_1 + 0xbc));\n  if (iVar4 < iVar3) {\n    iVar3 = iVar4;\n  }\n  iVar4 = 0;\n  if (0 < iVar6) {\n    iVar4 = iVar6;\n  }\n  for (; iVar6 = iVar1, iVar4 <= iVar3; iVar4 = iVar4 + 1) {\n    for (; iVar6 <= iVar2; iVar6 = iVar6 + 1) {\n      uVar5 = FUN_140654d90(param_1,iVar6,iVar4,param_3,param_4,param_5,param_6);\n      uVar7 = uVar7 | uVar5;\n    }\n  }\n  return uVar7;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:37Z"
+}

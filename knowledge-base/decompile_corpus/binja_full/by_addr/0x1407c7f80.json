@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c7f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c7fa4        if (arg4 s> 0x64)\n1407c7fad        sub_1407bad30(arg1, \"loop in gettable\", arg3)\n1407c7fad        noreturn\n1407c7fb5        if (*arg2 != 5)\n1407c7fe9        return sub_1407c7ef0(arg1, arg2, arg3, arg4 + 1, arg5, arg6)\n1407c7fbe        void* result\n1407c7fbe        int512_t zmm0\n1407c7fbe        int512_t zmm1\n1407c7fbe        result, zmm0, zmm1 = sub_1407bfd90(*(arg2 + 8), arg3)\n1407c7fc6        if (*result != 0)\n1407c8002        return result\n1407c7fd5        return sub_1407c8010(arg1, arg2, arg3, arg4 + 1, zmm0, zmm1)",
+  "fetched_at": "2026-04-26T17:33:45Z"
+}

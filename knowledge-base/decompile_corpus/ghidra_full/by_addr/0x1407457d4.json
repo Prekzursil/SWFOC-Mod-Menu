@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407457d4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: void __cdecl std::istreambuf_iterator<char,struct std::char_traits<char> >::_Inc(void)\n   __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall\nstd::istreambuf_iterator<char,struct_std::char_traits<char>_>::_Inc\n          (istreambuf_iterator<char,struct_std::char_traits<char>_> *this)\n\n{\n  longlong lVar1;\n  int *piVar2;\n  byte *pbVar3;\n  uint uVar4;\n  istreambuf_iterator<char,struct_std::char_traits<char>_> iVar5;\n  \n  iVar5 = (istreambuf_iterator<char,struct_std::char_traits<char>_>)0x0;\n  lVar1 = *(longlong *)this;\n  if (lVar1 != 0) {\n    if ((**(longlong **)(lVar1 + 0x38) == 0) || (piVar2 = *(int **)(lVar1 + 0x50), *piVar2 < 1)) {\n      uVar4 = (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    }\n    else {\n      *piVar2 = *piVar2 + -1;\n      pbVar3 = (byte *)**(longlong **)(lVar1 + 0x38);\n      **(longlong **)(lVar1 + 0x38) = (longlong)(pbVar3 + 1);\n      uVar4 = (uint)*pbVar3;\n    }\n    if (uVar4 != 0xffffffff) goto LAB_140745828;\n  }\n  *(undefined8 *)this = 0;\n  iVar5 = (istreambuf_iterator<char,struct_std::char_traits<char>_>)0x1;\nLAB_140745828:\n  this[8] = iVar5;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:47Z"
+}

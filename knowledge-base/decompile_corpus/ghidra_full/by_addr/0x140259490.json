@@ -1,0 +1,7 @@
+{
+  "addr": "0x140259490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaExternalFunction::vfunction5_for_LuaUserVar(void)\n\n{\n  return &DAT_140a15928;\n}",
+  "fetched_at": "2026-04-26T18:13:37Z"
+}

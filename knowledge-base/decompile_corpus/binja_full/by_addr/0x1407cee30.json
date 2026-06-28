@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cee30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cee36        int64_t* rbx = *arg2\n1407cee4b        return ungetc(getc(rbx), rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

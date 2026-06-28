@@ -1,0 +1,7 @@
+{
+  "addr": "0x140037670",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140037670(void)\n\n{\n  SelectEventClass *this;\n  SelectEventClass *pSVar1;\n  \n  if (((DAT_140a60e68 != 0) && (DAT_140a60e68 != DAT_140a60e90)) &&\n     (1 < (uint)(DAT_140a60eb0 - _DAT_140a60ea8 >> 3))) {\n    FUN_14003bd20(&DAT_140a60df0,&DAT_140a60ea8,0);\n  }\n  FUN_1400337b0(&DAT_140a60df0);\n  pSVar1 = (SelectEventClass *)0x0;\n  DAT_140a60e40 = 0;\n  this = (SelectEventClass *)FUN_140769c58(0x248);\n  if (this != (SelectEventClass *)0x0) {\n    pSVar1 = SelectEventClass::SelectEventClass(this);\n  }\n  FUN_1403acdd0(pSVar1,&DAT_140a60e30);\n  OutgoingEventQueueClass::vfunction2((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pSVar1);\n  DAT_140a60ed4 = 0;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:56Z"
+}

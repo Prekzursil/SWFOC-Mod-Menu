@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404357d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404357da        if (arg2 == 0)\n1404357e0        return arg2\n1404357f0        int32_t rbx = 0\n140435801        struct DynamicVectorClass<class GameObjectClass* __ptr64>::VTable* const var_28 = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n140435809        int64_t lpMem = 0\n14043580e        int32_t var_18 = 0\n140435812        int32_t var_14 = 0x80000000\n14043581a        sub_1403965f0(arg2, &var_28, 1)\n14043581f        int32_t rdx_1 = var_18\n140435825        if (rdx_1 s<= 0)\n140435859        label_140435859:\n140435859        rbx.b = 0\n140435827        int64_t* rdi_1 = nullptr\n140435835        int64_t* rcx_1 = *(rdi_1 + lpMem)\n14043583c        if (rcx_1 != 0)\n140435845        if (sub_1403a9760(rcx_1) == 0)\n140435845        goto label_140435859\n140435847        rdx_1 = var_18\n14043584b        rbx += 1\n14043584d        rdi_1 = &rdi_1[1]\n140435853        do while (rbx s< rdx_1)\n140435855        rbx.b = 1\n140435866        var_28 = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n140435870        if (lpMem != 0)\n14043587a        if ((var_14 & 0x80000000) != 0)\n14043588c        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14043589e        return zx.q(rbx.b)\n1404358a4        j_sub_1407864b8(lpMem)\n1404358b5        return zx.q(rbx.b)",
+  "fetched_at": "2026-04-26T17:27:01Z"
+}

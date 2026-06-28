@@ -1,0 +1,7 @@
+{
+  "addr": "0x140136eb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140136ebb        int32_t i = 0\n140136ec3        if (data_140a12398 s> 0)\n140136ecf        int64_t r14_1 = 0\n140136ed9        void* rdi_2 = data_140a12390 + r14_1\n140136ee8        if (sub_14012ef50(rdi_2 + 0x20) != 0)\n140136f0a        int64_t j\n140136ef9        int64_t* arg_8\n140136ef9        sub_14020ac80(rdi_2 + 0x20, &arg_8)\n140136f02        j = sub_14012ef50(rdi_2 + 0x20)\n140136f0a        do while (j != 0)\n140136f10        i += 1\n140136f12        r14_1 -= -0x80\n140136f16        *(rdi_2 + 0x70) = *(rdi_2 + 0x68)\n140136f20        do while (i s< data_140a12398)\n140136f2c        int32_t rax_3 = data_140a1239c\n140136f32        void* rcx_4 = data_140a12390\n140136f46        if (rcx_4 != 0)\n140136f4a        if (rax_3 s>= 0)\n140136f6b        sub_140138a30(rcx_4, 3)\n140136f5e        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a12390)\n140136f70        data_140a1239c &= 0x80000000\n140136f7a        data_140a12390 = 0\n140136f85        data_140a12398 = 0\n140136fa3        return sub_140139f20(&data_140a12388, (rax_3 * 2) s>> 1, 0, 1) __tailcall",
+  "fetched_at": "2026-04-26T17:11:38Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140162b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140162b5f        float result = data_140a12570\n140162b67        char rbp = arg3\n140162b78        if (not(result f== *(arg1 + 0x2a0)))\n140162b86        result = sub_140173610(*(arg1 + 0x100), 2)\n140162b8b        rbp = 1\n140162b8e        bool cond:1 = *(arg1 + 0xf8) == 0\n140162b95        void* arg_8 = nullptr\n140162b9e        if (not(cond:1))\n140162ba4        int32_t rcx_1 = *(arg1 + 0x2c4)\n140162be2        if (rcx_1 != 0 && (*(arg1 + 0x268) != 0 || ((*(arg1 + 0x2b0) - *(arg1 + 0x2a8)) s>> 3).d * *(*(arg1 + 0x118) + 0x870) == rcx_1))\n140162bf0        j_sub_1401803f0(rcx_1, &arg_8, arg1 + 0x2c0)\n140162bfb        int32_t r9_1 = sub_140169d30(arg1, arg2)\n140162c06        sub_140165cd0(arg1, arg2)\n140162c15        void* r8_1 = arg_8\n140162c1d        if (*(arg1 + 0x268) != 0)\n140162c1f        return sub_140170130(arg1, arg2, r8_1, r9_1)\n140162c2a        sub_140162c60(arg1, arg2, r8_1, rbp)\n140162c38        return sub_140170d60(arg1 + 0x2a8, 0)\n140162c51        return result",
+  "fetched_at": "2026-04-26T17:22:42Z"
+}

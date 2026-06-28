@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c7d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1402c7d80(longlong param_1,int param_2,int param_3)\n\n{\n  int iVar1;\n  int iVar2;\n  ulonglong uVar3;\n  int *piVar4;\n  ulonglong uVar5;\n  int iVar6;\n  ulonglong uVar7;\n  float fVar8;\n  \n  uVar3 = 0;\n  if (0 < *(int *)(param_1 + 0x16a8)) {\n    piVar4 = *(int **)(param_1 + 0x16b0);\n    uVar5 = uVar3;\n    uVar7 = uVar3;\n    do {\n      iVar6 = (int)uVar7;\n      if (*piVar4 == param_2) goto LAB_1402c7dca;\n      uVar7 = (ulonglong)(iVar6 + 1);\n      uVar5 = uVar5 + 1;\n      piVar4 = piVar4 + 1;\n    } while ((longlong)uVar5 < (longlong)*(int *)(param_1 + 0x16a8));\n  }\n  iVar6 = -1;\nLAB_1402c7dca:\n  iVar1 = *(int *)(param_1 + 0x16c8);\n  if (0 < iVar1) {\n    piVar4 = *(int **)(param_1 + 0x16d0);\n    uVar5 = uVar3;\n    do {\n      iVar2 = (int)uVar3;\n      if (*piVar4 == param_3) goto LAB_1402c7dfd;\n      uVar3 = (ulonglong)(iVar2 + 1);\n      uVar5 = uVar5 + 1;\n      piVar4 = piVar4 + 1;\n    } while ((longlong)uVar5 < (longlong)iVar1);\n  }\n  iVar2 = -1;\nLAB_1402c7dfd:\n  if ((((iVar6 < 0) || (*(int *)(param_1 + 0x16a8) <= iVar6)) || (iVar2 < 0)) ||\n     ((iVar1 <= iVar2 ||\n      (fVar8 = *(float *)(param_1 + 0x16e8 + ((longlong)iVar6 * 0x80 + (longlong)iVar2) * 4),\n      fVar8 < 0.0)))) {\n    fVar8 = DAT_1407ffaf8;\n  }\n  return fVar8;\n}",
+  "fetched_at": "2026-04-26T18:29:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c5f70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CollisionClass * __thiscall CollisionClass::CollisionClass(CollisionClass *this,undefined4 param_1)\n\n{\n                    /* inlined constructor: SignalListenerClass::SignalListenerClass */\n  (this->MultiLinkedListMember_data).offset_0x0 = (longlong *)0x0;\n  this->vftablePtr = (CollisionClass_vftable_for_SignalListenerClass *)&SignalListenerClass::vftable\n  ;\n  AIDiagnosticsClass::AIDiagnosticsClass((AIDiagnosticsClass *)&this->vftablePtr);\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->offset_0x50 = 0;\n  this->offset_0x58 = 0;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  this->offset_0x30 = 0;\n  this->offset_0x38 = (longlong *)0x0;\n  this->offset_0x40 = 0;\n  this->offset_0x48 = 0;\n  *(undefined4 *)&this->offset_0x60 = 0;\n  this->offset_0x28 = param_1;\n  *(undefined4 *)((longlong)&this->offset_0x50 + 4) = DAT_140b0a320;\n  *(undefined4 *)((longlong)&this->offset_0x58 + 4) = DAT_140b0a320;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:44:48Z"
+}

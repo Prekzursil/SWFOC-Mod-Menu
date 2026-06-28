@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404504e0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_story_event_command_unit_ctor",
+  "body": "1404504e6        struct StoryEventClass::StoryEventCommandUnitClass::VTable** result = arg1\n1404504e9        sub_1404501d0(arg1)\n1404504f5        *result = &StoryEventCommandUnitClass::`vftable'{for `StoryEventClass'}\n1404504fa        __builtin_memset(&result[0x6c], 0, 0x34)\n140450532        return result",
+  "fetched_at": "2026-04-26T16:43:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14049bb40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14049bb51        int128_t zmm6 = arg3\n14049bb7c        int128_t zmm7\n14049bb7c        zmm7.d = 1f - arg4\n14049bb8c        int128_t zmm5\n14049bb8c        zmm5.d = 2f / (zmm7.d + 1f f- zmm6.d)\n14049bb90        if (not(zmm6.d f<= arg2))\n14049bb92        zmm5.d = zmm5.d f* arg2\n14049bb96        zmm6.d = zmm6.d f* 2f\n14049bb9b        zmm5.d = zmm5.d f* arg2\n14049bb9f        zmm5.d = zmm5.d f/ zmm6.d\n14049bba3        return zmm5.d\n14049bbae        arg3.d = zmm5.d f* zmm6.d\n14049bbb2        arg3.d = arg3.d f/ 2f\n14049bbb7        float zmm4\n14049bbb7        if (zmm7.d f<= arg2)\n14049bbc7        int128_t zmm9\n14049bbc7        zmm9.d = 1f f- zmm7.d\n14049bbe0        arg3.d = arg3.d f+ (zmm7.d f- zmm6.d) f* zmm5.d\n14049bbfc        zmm4 = (arg2 - arg2 * arg2 / 2f f- zmm7.d + zmm7.d f* zmm7.d / 2f) f* zmm5.d f/ zmm9.d\n14049bbbd        zmm4 = (arg2 f- zmm6.d) f* zmm5.d\n14049bc01        arg3.d = arg3.d f+ zmm4\n14049bc05        return arg3.d",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

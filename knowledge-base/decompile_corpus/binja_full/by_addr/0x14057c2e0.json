@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057c2e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057c2e6        void* rax = *(arg1 + 0x60)\n14057c2f3        if (rax != 0)\n14057c2fc        if (*(rax + 0x335) != 0xff)\n14057c31f        struct LuaVar::LuaValue<bool, 5>::VTable** rax_2 = operator new(0x18)\n14057c32a        if (rax_2 == 0)\n14057c3dc        return 0\n14057c342        char rcx_2 = *(*(*(arg1 + 0x60) + 0xb8) + 0x2c8)\n14057c349        rax_2[1].d = 0\n14057c353        *rax_2 = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n14057c356        rax_2[2].b = rcx_2\n14057c359        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result = sub_14024a250()\n14057c361        struct LuaVar::LuaValue<bool, 5>::VTable** arg_8 = rax_2\n14057c36c        (*rax_2)->vFunc_0(rax_2)\n14057c36e        struct LuaVar::LuaValue<bool, 5>::VTable*** rdx_1 = result[3]\n14057c376        if (rdx_1 == result[4])\n14057c3ad        sub_140144900(&result[2], rdx_1, &arg_8)\n14057c3b8        (*rax_2)->vFunc_1(rax_2)\n14057c3cd        return result\n14057c378        *rdx_1 = rax_2\n14057c381        (*rax_2)->vFunc_0(rax_2)\n14057c383        result[3] = &result[3]->vFunc_1\n14057c38e        (*rax_2)->vFunc_1(rax_2)\n14057c3a3        return result\n14057c308        sub_140248190(arg2, \"GameObjectWrapper::Is_Planet_Destroyed -- this function is only valid on planet objects.\", arg2)\n14057c314        return 0",
+  "fetched_at": "2026-04-26T17:35:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079f908",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n\nbyte * FUN_14079f908(byte *param_1,byte *param_2)\n\n{\n  byte bVar1;\n  ulonglong uVar2;\n  undefined1 auStack_58 [32];\n  byte abStack_38 [32];\n  ulonglong local_18;\n  \n  local_18 = DAT_140a44b98 ^ (ulonglong)auStack_58;\n  uVar2 = 0;\n  do {\n    if (0x1f < uVar2) {\n                    /* WARNING: Subroutine does not return */\n      FUN_14076ad98();\n    }\n    abStack_38[uVar2] = 0;\n    uVar2 = uVar2 + 1;\n  } while ((longlong)uVar2 < 0x20);\n  bVar1 = *param_2;\n  while (bVar1 != 0) {\n    param_2 = param_2 + 1;\n    abStack_38[bVar1 >> 3] = abStack_38[bVar1 >> 3] | (byte)(1 << (bVar1 & 7));\n    bVar1 = *param_2;\n  }\n  while( true ) {\n    bVar1 = *param_1;\n    if (bVar1 == 0) {\n      return (byte *)0x0;\n    }\n    if ((abStack_38[bVar1 >> 3] & (byte)(1 << (bVar1 & 7))) != 0) break;\n    param_1 = param_1 + 1;\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:54:12Z"
+}

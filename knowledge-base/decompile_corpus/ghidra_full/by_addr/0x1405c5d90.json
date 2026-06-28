@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c5d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405c5d90(longlong *param_1,uint param_2,undefined8 *param_3)\n\n{\n  if ((ulonglong)param_2 < (ulonglong)(param_1[1] - *param_1 >> 3)) {\n    *(undefined8 *)(*param_1 + (ulonglong)param_2 * 8) = *param_3;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:46Z"
+}

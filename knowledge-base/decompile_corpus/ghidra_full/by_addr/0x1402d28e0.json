@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d28e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402d28e0(char *param_1)\n\n{\n  int iVar1;\n  \n  if (*param_1 != '\\0') {\n    iVar1 = *(int *)(param_1 + 4);\n    if (0 < iVar1) {\n      iVar1 = iVar1 + -1;\n    }\n    if (iVar1 < 1) {\n      iVar1 = 0;\n    }\n    *(int *)(param_1 + 4) = iVar1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:51Z"
+}

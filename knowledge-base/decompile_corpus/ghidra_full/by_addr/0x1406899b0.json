@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406899b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_CinematicAnimationEventClass,26>::vfunction2(void)\n\n{\n  return 0x1a;\n}",
+  "fetched_at": "2026-04-26T17:15:21Z"
+}

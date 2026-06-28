@@ -1,0 +1,7 @@
+{
+  "addr": "0x140783b88",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140783b99        char* result_1 = arg1\n140783ba4        void* result = nullptr\n140783ba6        void* var_28\n140783ba6        _LocaleUpdate::_LocaleUpdate(&var_28, arg3)\n140783bae        void* var_18\n140783bae        if (result_1 == 0)\n140783bb5        *_errno() = 0x16\n140783bbb        _invalid_parameter_noinfo()\n140783bcb        if (*(var_18 + 8) != 0)\n140783c1b        uint32_t rdx_1\n140783bdc        uint64_t rcx_2 = zx.q(*result_1)\n140783bdf        void* result_2 = result_1\n140783be8        if ((*(rcx_2 + var_18 + 0x19) & 4) == 0)\n140783c0d        rdx_1.b = rcx_2.b\n140783c11        if (arg2 == rcx_2.d)\n140783c13        result = result_1\n140783bea        result_1 = &result_1[1]\n140783bed        rdx_1 = zx.d(*result_1)\n140783bf2        if (rdx_1.b != 0)\n140783bfb        if (arg2 != (rcx_2.d << 8 | rdx_1))\n140783bfb        result_2 = result\n140783bff        result = result_2\n140783c07        if (result == 0)\n140783c07        result = result_1\n140783c16        result_1 = &result_1[1]\n140783c1b        do while (rdx_1.b != 0)\n140783bd7        result = strrchr(result_1, arg2)\n140783c22        char var_10\n140783c22        if (var_10 != 0)\n140783c24        void* rcx_5 = var_28\n140783c29        *(rcx_5 + 0x3a8) &= 0xfffffffd\n140783c42        return result",
+  "fetched_at": "2026-04-26T17:31:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407babc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407babc3        int32_t* rax = arg3\n1407babcd        if (*arg2 != 4)\n1407babcd        rax = arg2\n1407babd4        noreturn sub_1407bb2e0(arg1, rax, \"concatenate\") __tailcall",
+  "fetched_at": "2026-04-26T17:33:16Z"
+}

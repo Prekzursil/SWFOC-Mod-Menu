@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001c600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001c60c        return sub_140689200(1, \"Space_Conflict_End\") __tailcall",
+  "fetched_at": "2026-04-26T16:51:18Z"
+}

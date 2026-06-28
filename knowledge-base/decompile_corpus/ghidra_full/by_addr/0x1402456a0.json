@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402456a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1402456a0(longlong param_1)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  \n  lVar1 = FUN_1407ba5d0(*(undefined8 *)(param_1 + 0x58));\n  if (lVar1 != 0) {\n    puVar2 = (undefined8 *)FUN_140769c58(0x18);\n    if (puVar2 != (undefined8 *)0x0) {\n                    /* inlined constructor:\n                       LuaValue<void_(__cdecl*)(void),8>::LuaValue<void_(__cdecl*)(void),8> */\n      *(undefined4 *)(puVar2 + 1) = 0;\n      *puVar2 = &LuaValue<void_(__cdecl*)(void),8>::vftable;\n      puVar2[2] = lVar1;\n      return puVar2;\n    }\n  }\n  return (undefined8 *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:10:14Z"
+}

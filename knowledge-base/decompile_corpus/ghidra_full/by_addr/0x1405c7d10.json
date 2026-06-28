@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c7d10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* CollisionClass member function inherited by MovingVsMovingCollisionClass\n   CollisionClass member function inherited by MovingVsStoppedCollisionClass\n   CollisionClass member function inherited by StoppedVsStoppedCollisionClass\n   CollisionClass member function inherited by TerrainCollisionClass */\n\nvoid __thiscall\nCollisionClass::vfunction2_for_SignalListenerClass(CollisionClass *this,longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  undefined8 uVar3;\n  longlong *plVar4;\n  longlong lVar5;\n  \n  lVar5 = param_1 + -0x38;\n  if (param_1 == 0) {\n    lVar5 = 0;\n  }\n  if (lVar5 != 0) {\n    plVar2 = this->offset_0x38;\n    plVar4 = (longlong *)this->offset_0x30;\n    if ((longlong *)this->offset_0x30 != plVar2) {\n      while (plVar1 = plVar4 + 1, *plVar4 != lVar5) {\n        plVar4 = plVar1;\n        if (plVar1 == plVar2) {\n          return;\n        }\n      }\n      FUN_14076bd80(plVar4,plVar1,(longlong)plVar2 - (longlong)plVar1);\n      this->offset_0x38 = this->offset_0x38 + -1;\n      uVar3 = FUN_140058570();\n      FUN_140220eb0(uVar3,lVar5 + 0x38,this,0);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:56Z"
+}

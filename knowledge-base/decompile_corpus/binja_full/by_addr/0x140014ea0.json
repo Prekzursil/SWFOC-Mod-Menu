@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014ea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140014eb8        sub_1400228a0(&data_140a15560, u\"Petroglyph\", 0xa)\n140014ec8        return atexit(sub_1407eda50) __tailcall",
+  "fetched_at": "2026-04-26T16:50:13Z"
+}

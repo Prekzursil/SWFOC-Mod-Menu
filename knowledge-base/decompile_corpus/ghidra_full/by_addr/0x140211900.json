@@ -1,0 +1,7 @@
+{
+  "addr": "0x140211900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_MappedKeyClass> * __thiscall\nDynamicVectorClass<class_MappedKeyClass>::DynamicVectorClass<class_MappedKeyClass>\n          (DynamicVectorClass<class_MappedKeyClass> *this)\n\n{\n  this->vftablePtr = &vftable;\n  (this->DynamicVectorClass<class_MappedKeyClass>_data).offset_0x0 = (LPVOID)0x0;\n  *(undefined8 *)&(this->DynamicVectorClass<class_MappedKeyClass>_data).field_0x8 = 0;\n  FUN_140211940();\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:46Z"
+}

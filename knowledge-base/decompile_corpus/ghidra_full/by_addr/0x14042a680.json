@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042a680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalSuperWeaponBehaviorClass::vfunction10\n          (TacticalSuperWeaponBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  puVar1 = param_1[0x29];\n  *(undefined8 *)(puVar1 + 0x10) = 0;\n  *(undefined8 *)(puVar1 + 0x18) = 0;\n  *(undefined4 *)(puVar1 + 0x20) = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StoryPlotWrapper * __thiscall\nStoryEventWrapper::scalar_deleting_destructor(StoryEventWrapper *this,uint param_1)\n\n{\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (StoryEventWrapper_vftable1 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return (StoryPlotWrapper *)this;\n}",
+  "fetched_at": "2026-04-26T17:59:44Z"
+}

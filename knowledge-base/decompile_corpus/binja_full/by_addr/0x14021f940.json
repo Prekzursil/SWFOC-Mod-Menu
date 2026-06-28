@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021f952        char data[0x400]\n14021f952        data[0] = 0\n14021f968        if (arg4 != 0 && arg3 != arg4)\n14021f96f        int64_t* rdx = arg4\n14021f972        if (arg4[3] u>= 0x10)\n14021f974        rdx = *arg4\n14021f97e        sub_140022730(arg3, rdx, arg4[2])\n14021f983        HKEY hKey = *arg1\n14021f986        uint32_t lpcbData = 0x400\n14021f994        if (hKey != 0)\n14021f9b6        RegQueryValueExA(hKey, arg2, nullptr, nullptr, &data, &lpcbData)\n14021f9c1        void* r8_1 = -ffffffffffffffff\n14021f9d0        r8_1 += 1\n14021f9d8        do while (*(&data + r8_1) != 0)\n14021f9fb        return sub_140022730(arg3, &data, r8_1)",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

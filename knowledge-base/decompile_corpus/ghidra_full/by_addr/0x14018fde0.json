@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fde0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall alD3dTerrainRender::vfunction12(alD3dTerrainRender *this)\n\n{\n  ulonglong in_RAX;\n  \n  if (*(int *)((longlong)&this[1].vftablePtr[4].vfunction9 + 4) == 1) {\n    return CONCAT71((int7)((ulonglong)this[0xc].vftablePtr >> 8),\n                    0 < *(int *)((longlong)&this[0xc].vftablePtr[3].vfunction4 + 4));\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:34:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140063620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar FUN_140063620(HWND param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  char cVar1;\n  undefined4 local_res18 [2];\n  float local_res20;\n  float local_res24;\n  undefined1 local_18 [24];\n  \n  local_res18[0] = param_3;\n  SetCapture(param_1);\n  cVar1 = FUN_14044b3f0(&DAT_140a28c10,8);\n  if ((cVar1 == '\\0') && (cVar1 = FUN_1402cc3e0(&DAT_140b27a10,8), cVar1 == '\\0')) {\n    FUN_14026cb30(local_18,local_res18);\n    cVar1 = FUN_1401c3660(&DAT_140a78510,4,0,local_18,0);\n    if (cVar1 != '\\0') {\n      return cVar1;\n    }\n    FUN_140065d00();\n    local_res20 = (float)(int)(short)local_res18[0];\n    local_res24 = (float)(int)(short)((uint)local_res18[0] >> 0x10);\n    cVar1 = FUN_140030fc0(&DAT_140a60df0,4,&local_res20,0,0);\n    return cVar1;\n  }\n  return '\\x01';\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:38Z"
+}

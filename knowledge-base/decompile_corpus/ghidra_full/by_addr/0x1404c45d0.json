@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c45d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDynamicVectorClass<class_NameReferenceClass>::~DynamicVectorClass<class_NameReferenceClass>\n          (DynamicVectorClass<class_NameReferenceClass> *this)\n\n{\n  uint *puVar1;\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = (this->DynamicVectorClass<class_NameReferenceClass>_data).offset_0x0;\n  this->vftablePtr = &vftable;\n  if (lpMem != (LPVOID)0x0) {\n    if (((this->DynamicVectorClass<class_NameReferenceClass>_data).offset_0xc & 0x80000000) == 0) {\n      FUN_1404c4a60(lpMem,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    puVar1 = &(this->DynamicVectorClass<class_NameReferenceClass>_data).offset_0xc;\n    *puVar1 = *puVar1 & 0x80000000;\n    (this->DynamicVectorClass<class_NameReferenceClass>_data).offset_0x0 = (LPVOID)0x0;\n    *(undefined4 *)&(this->DynamicVectorClass<class_NameReferenceClass>_data).field_0x8 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:50Z"
+}

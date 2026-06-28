@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402272f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall\nWinsockAsyncSocketImpl::vfunction8\n          (WinsockAsyncSocketImpl *this,char *param_1,int param_2,longlong *param_3,\n          undefined8 param_4)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  int local_res8 [2];\n  undefined1 local_38 [16];\n  sockaddr local_28;\n  sockaddr local_18;\n  \n  local_res8[0] = 0x10;\n  iVar1 = recvfrom((SOCKET)(this->RefCountClass_data).offset_0x8,param_1,param_2,0,&local_28,\n                   local_res8);\n  if (iVar1 != -1) {\n    *param_3 = (longlong)iVar1;\n    local_18.sa_family = local_28.sa_family;\n    local_18.sa_data[0] = local_28.sa_data[0];\n    local_18.sa_data[1] = local_28.sa_data[1];\n    local_18.sa_data[2] = local_28.sa_data[2];\n    local_18.sa_data[3] = local_28.sa_data[3];\n    local_18.sa_data[4] = local_28.sa_data[4];\n    local_18.sa_data[5] = local_28.sa_data[5];\n    local_18.sa_data[6] = local_28.sa_data[6];\n    local_18.sa_data[7] = local_28.sa_data[7];\n    local_18.sa_data[8] = local_28.sa_data[8];\n    local_18.sa_data[9] = local_28.sa_data[9];\n    local_18.sa_data[10] = local_28.sa_data[10];\n    local_18.sa_data[0xb] = local_28.sa_data[0xb];\n    local_18.sa_data[0xc] = local_28.sa_data[0xc];\n    local_18.sa_data[0xd] = local_28.sa_data[0xd];\n    uVar2 = FUN_140202390(local_38,&local_18);\n    FUN_1402024a0(param_4,uVar2);\n  }\n  return iVar1 != -1;\n}",
+  "fetched_at": "2026-04-26T18:04:52Z"
+}

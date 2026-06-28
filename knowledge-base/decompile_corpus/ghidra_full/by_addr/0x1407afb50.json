@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407afb50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall PlaneCollisionBodyClass::vfunction7(PlaneCollisionBodyClass *this,float *param_1)\n\n{\n  int iVar1;\n  float fVar2;\n  \n  fVar2 = (*(float *)((longlong)&(this->RefCountClass_data).offset_0x70 + 4) * param_1[1] +\n           *(float *)&(this->RefCountClass_data).offset_0x70 * *param_1 +\n          *(float *)&(this->RefCountClass_data).offset_0x78 * param_1[2]) -\n          *(float *)((longlong)&(this->RefCountClass_data).offset_0x78 + 4);\n  if (DAT_140852504 < fVar2) {\n    return false;\n  }\n  iVar1 = 4;\n  if (fVar2 < DAT_140852508) {\n    iVar1 = 2;\n  }\n  return iVar1 == 2;\n}",
+  "fetched_at": "2026-04-26T18:55:28Z"
+}

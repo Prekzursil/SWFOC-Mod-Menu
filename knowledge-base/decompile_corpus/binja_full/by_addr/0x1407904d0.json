@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407904d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407904d0        arg2[2].d -= 1\n1407904d4        if (arg2[2].d - 1 s< 0)\n1407904d4        return __acrt_stdio_flush_and_write_narrow_nolock(arg1, arg2) __tailcall\n1407904dd        **arg2 = arg1\n1407904df        *arg2 += 1\n1407904e5        return zx.q(arg1)",
+  "fetched_at": "2026-04-26T17:31:42Z"
+}

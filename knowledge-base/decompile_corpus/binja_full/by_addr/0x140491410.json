@@ -1,0 +1,7 @@
+{
+  "addr": "0x140491410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140491412        *(arg1 + 0x44) = 0x80000000\n140491420        arg1[7] = 0\n140491424        *arg1 = &SpecialWeaponDataPackClass::`vftable'{for `BaseDataPackClass'}\n14049142e        arg1[6] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n140491435        arg1[8].d = 0\n140491438        arg1[9].b = 0\n14049143b        __builtin_memset(&arg1[1], 0, 0x14)\n140491446        *(arg1 + 0x1c) = 0x3fffff\n14049144d        arg1[4] = 1\n140491455        arg1[5].b = 0\n140491458        return arg1",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

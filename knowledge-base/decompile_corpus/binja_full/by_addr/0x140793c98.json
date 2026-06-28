@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793c98",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793cb3        try_get_function(0, \"AreFileApisANSI\", &data_1408d81c8, &data_1408d81cc)\n140793cd2        try_get_function(1, \"CompareStringEx\", &data_1408d81e0, \"CompareStringEx\")\n140793cf1        try_get_function(2, \"EnumSystemLocalesEx\", &data_1408d81f8, \"EnumSystemLocalesEx\")\n140793d10        try_get_function(8, \"GetDateFormatEx\", &data_1408d8238, \"GetDateFormatEx\")\n140793d2f        try_get_function(0xb, \"GetLocaleInfoEx\", &data_1408d8250, \"GetLocaleInfoEx\")\n140793d4e        try_get_function(0xe, \"GetTimeFormatEx\", &data_1408d8268, \"GetTimeFormatEx\")\n140793d6d        try_get_function(0xf, \"GetUserDefaultLocaleName\", &data_1408d8280, \"GetUserDefaultLocaleName\")\n140793d8c        try_get_function(0x13, \"IsValidLocaleName\", &data_1408d82b0, \"IsValidLocaleName\")\n140793dab        try_get_function(0x14, \"LCMapStringEx\", &data_1408d82d0, \"LCMapStringEx\")\n140793dca        try_get_function(0x15, \"LCIDToLocaleName\", &data_1408d82e8, \"LCIDToLocaleName\")\n140793ded        return try_get_function(0x16, \"LocaleNameToLCID\", &data_1408d8308, \"LocaleNameToLCID\") __tailcall",
+  "fetched_at": "2026-04-26T17:31:52Z"
+}

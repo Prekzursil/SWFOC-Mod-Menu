@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002ddc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14002ddd0        *arg1 = &SingletonInstance<class GalacticPathFinderClass>::`vftable'{for `SingletonManager'}\n14002ddd6        if ((arg2 & 1) != 0)\n14002dddd        j_sub_1407864b8(arg1)\n14002ddea        return arg1",
+  "fetched_at": "2026-04-26T16:52:34Z"
+}

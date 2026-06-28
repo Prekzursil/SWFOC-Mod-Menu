@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a7770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401a7770(LPSTR param_1,LPCWSTR param_2,int param_3)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  \n  if (((param_1 != (LPSTR)0x0) && (param_2 != (LPCWSTR)0x0)) && (0 < param_3)) {\n    uVar2 = 0;\n    iVar1 = WideCharToMultiByte(0,0,param_2,-1,param_1,param_3,(LPCSTR)0x0,(LPBOOL)0x0);\n    param_1[(longlong)param_3 + -1] = '\\0';\n    if (iVar1 == 0) {\n      uVar2 = 0x80004005;\n    }\n    return uVar2;\n  }\n  return 0x80070057;\n}",
+  "fetched_at": "2026-04-26T17:39:51Z"
+}

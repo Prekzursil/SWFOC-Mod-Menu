@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078cae5        int32_t* arg_20 = arg4\n14078caf7        __vcrt_unlock(*arg2)\n14078cb00        int32_t rax = <lambda_f03950bc5685219e0bcd2087efbe011e>::operator()(arg3)\n14078cb09        __vcrt_lock(*arg4)\n14078cb1a        return zx.q(rax)",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

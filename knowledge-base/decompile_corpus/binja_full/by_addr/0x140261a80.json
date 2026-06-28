@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261a80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140261a86        int32_t* rbx = *(arg1 + 0x40)\n140261a8d        rbx[0x12] = arg2\n140261a92        rbx[0x13] = arg3\n140261a97        rbx[0x11] = 0\n140261a9e        sub_140141260(rbx)\n140261aab        return sub_1401417c0(rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:31:17Z"
+}

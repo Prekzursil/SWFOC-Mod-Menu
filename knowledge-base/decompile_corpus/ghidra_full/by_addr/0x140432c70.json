@@ -1,0 +1,7 @@
+{
+  "addr": "0x140432c70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FleetBehaviorClass * __thiscall FleetBehaviorClass::vfunction4(FleetBehaviorClass *this,int param_1)\n\n{\n  FleetBehaviorClass *pFVar1;\n  \n  pFVar1 = (FleetBehaviorClass *)0x0;\n  if (param_1 == 4) {\n    pFVar1 = this;\n  }\n  return pFVar1;\n}",
+  "fetched_at": "2026-04-26T17:51:09Z"
+}

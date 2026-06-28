@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079ae78",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n/* Library Function - Single Match\n    TestDefaultCountry\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 TestDefaultCountry(wchar_t *param_1)\n\n{\n  int iVar1;\n  undefined1 auStack_48 [32];\n  wchar_t local_28 [12];\n  ulonglong local_10;\n  \n  local_10 = DAT_140a44b98 ^ (ulonglong)auStack_48;\n  iVar1 = __acrt_GetLocaleInfoEx(param_1,0x59,local_28);\n  if ((iVar1 != 0) && (iVar1 = wcsncmp(local_28,param_1,9), iVar1 == 0)) {\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:53:49Z"
+}

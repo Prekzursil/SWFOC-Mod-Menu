@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532690",
+  "tool": "ghidra",
+  "fact_id": "rva_galactic_sell_event_ctor",
+  "body": "\nGalacticSellEventClass * __thiscall\nGalacticSellEventClass::GalacticSellEventClass(GalacticSellEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->GalacticSellEventClass_data).offset_0x0 = 0x3fffff;\n  this->vftablePtr = &vftable;\n  (this->EventClass_data).offset_0x8 = 0x2e;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400b3830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400b384f        void var_38\n1400b384f        sub_1401f9320(&var_38, sub_140294dc0(arg1[0x12].d))\n1400b3881        int64_t var_10 = 0xf\n1400b388d        int64_t var_18 = 0xf\n1400b3899        void* var_28\n1400b3899        __builtin_strncpy(&var_28, \"IDC_PLAYER_LIST\", 0x10)\n1400b38a4        int32_t rax_1 = sub_140202500(&arg1[0xe])\n1400b38ea        int64_t result = sub_1401c3c50(&data_140a78510, data_140a116b0, &var_28, arg1, rax_1, &var_38, &var_38, 0, 0, 1, 0)\n1400b38fb        if (var_10 u< 0x10)\n1400b393d        return result\n1400b38fd        void* rcx_3 = var_28\n1400b3905        void* rax_2 = rcx_3\n1400b390f        if (var_10 + 1 u>= 0x1000)\n1400b3911        rcx_3 = *(rcx_3 - 8)\n1400b3924        if (rax_2 - rcx_3 - 8 u> 0x1f)\n1400b393e        _invalid_parameter_noinfo_noreturn()\n1400b393e        noreturn\n1400b3926        return j_sub_1407864b8(rcx_3)",
+  "fetched_at": "2026-04-26T16:59:26Z"
+}

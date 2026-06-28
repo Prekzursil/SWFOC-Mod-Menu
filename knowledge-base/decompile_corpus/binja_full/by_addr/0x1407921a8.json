@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407921a8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407921ba        char rcx = (arg1[5]).b\n1407921c8        if ((rcx & 3) == 2 && (rcx & 0xc0) != 0)\n1407921cc        int32_t rdi_2 = *arg1 - arg1[2]\n1407921cf        arg1[4] = 0\n1407921d3        int16_t* rsi_1 = *(arg1 + 8)\n1407921d7        *arg1 = rsi_1\n1407921dc        if (rdi_2 s> 0)\n1407921f5        if (rdi_2 != _write(_fileno(arg1), rsi_1, rdi_2))\n1407921f7        arg1[5] |= 0x10\n1407921fc        return 0xffffffff\n140792209        if (((arg1[5] u>> 2).b & 1) != 0)\n14079220b        arg1[5] &= 0xfffffffd\n140792210        return 0",
+  "fetched_at": "2026-04-26T17:31:47Z"
+}

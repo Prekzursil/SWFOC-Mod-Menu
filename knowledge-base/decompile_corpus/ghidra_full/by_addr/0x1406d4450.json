@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d4450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TacticalPlayerPerceptualEvaluatorClass member function inherited by\n   LandPlayerPerceptualEvaluatorClass\n   TacticalPlayerPerceptualEvaluatorClass member function inherited by\n   SpacePlayerPerceptualEvaluatorClass */\n\nvoid __thiscall\nTacticalPlayerPerceptualEvaluatorClass::vfunction15(TacticalPlayerPerceptualEvaluatorClass *this)\n\n{\n  undefined8 in_RDX;\n  double *in_R8;\n  \n                    /* WARNING: Could not recover jumptable at 0x0001406d4456. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction14)(this,in_RDX,in_R8,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:53Z"
+}

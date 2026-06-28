@@ -1,0 +1,7 @@
+{
+  "addr": "0x140298d60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    void __cdecl std::_Med3_unchecked<struct REFMINIPDB2 * __ptr64 * __ptr64,bool (__cdecl*)(struct\n   REFMINIPDB2 const * __ptr64,struct REFMINIPDB2 const * __ptr64)>(struct REFMINIPDB2 * __ptr64 *\n   __ptr64,struct REFMINIPDB2 * __ptr64 * __ptr64,struct REFMINIPDB2 * __ptr64 * __ptr64,bool\n   (__cdecl*)(struct REFMINIPDB2 const * __ptr64,struct REFMINIPDB2 const * __ptr64))\n    void __cdecl std::_Med3_unchecked<struct SYMTYPE * __ptr64 * __ptr64,bool (__cdecl*)(struct\n   SYMTYPE * __ptr64,struct SYMTYPE * __ptr64)>(struct SYMTYPE * __ptr64 * __ptr64,struct SYMTYPE *\n   __ptr64 * __ptr64,struct SYMTYPE * __ptr64 * __ptr64,bool (__cdecl*)(struct SYMTYPE *\n   __ptr64,struct SYMTYPE * __ptr64))\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _Med3_unchecked<>(undefined8 *param_1,undefined8 *param_2,undefined8 *param_3,code *param_4)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  \n  cVar2 = (*param_4)(*param_2,*param_1);\n  if (cVar2 != '\\0') {\n    uVar1 = *param_2;\n    *param_2 = *param_1;\n    *param_1 = uVar1;\n  }\n  cVar2 = (*param_4)(*param_3,*param_2);\n  if (cVar2 != '\\0') {\n    uVar1 = *param_3;\n    *param_3 = *param_2;\n    *param_2 = uVar1;\n    cVar2 = (*param_4)(uVar1,*param_1);\n    if (cVar2 != '\\0') {\n      uVar1 = *param_2;\n      *param_2 = *param_1;\n      *param_1 = uVar1;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:25:19Z"
+}

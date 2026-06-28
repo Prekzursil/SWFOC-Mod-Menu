@@ -1,0 +1,7 @@
+{
+  "addr": "0x140474830",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TheAIDataManagerClass * __thiscall\nTheAIDataManagerClass::scalar_deleting_destructor(TheAIDataManagerClass *this,ulonglong param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n                    /* inlined destructor: TheAIDataManagerClass::~TheAIDataManagerClass */\n  this->vftablePtr = &vftable;\n  FUN_140066600(&(this->TheAIDataManagerClass_data).offset_0x60);\n  lVar1 = (this->TheAIDataManagerClass_data).offset_0x48;\n  if (lVar1 != 0) {\n    uVar3 = (this->TheAIDataManagerClass_data).offset_0x58 - lVar1 & 0xfffffffffffffffc;\n    lVar2 = lVar1;\n    if (0xfff < uVar3) {\n      lVar2 = *(longlong *)(lVar1 + -8);\n      if (0x1f < (lVar1 - lVar2) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1 - lVar2,uVar3 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(lVar2);\n    (this->TheAIDataManagerClass_data).offset_0x48 = 0;\n    (this->TheAIDataManagerClass_data).offset_0x50 = 0;\n    (this->TheAIDataManagerClass_data).offset_0x58 = 0;\n  }\n  FUN_1401450b0(&this->Singleton<class_TheAIDataManagerClass>);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x88);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:58:26Z"
+}

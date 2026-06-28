@@ -1,0 +1,7 @@
+{
+  "addr": "0x140796db4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140796de8        if (wcsncpy_s(arg2, 0x40, arg1, 0x20) != 0)\n140796e24        int64_t var_28_1 = 0\n140796e2e        _invoke_watson()\n140796e2e        noreturn\n140796dea        int64_t var_10 = 0\n140796df3        int64_t var_18 = 0\n140796e20        return __acrt_WideCharToMultiByte(arg4, 0, arg1, 0xffffffff, arg3, 0x40)",
+  "fetched_at": "2026-04-26T17:32:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e6640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LuaMemberFunctionWrapper<class_SpaceTaskForceClass> * FUN_1406e6640(void)\n\n{\n  LuaMemberFunctionWrapper<class_SpaceTaskForceClass>_vftable *pLVar1;\n  LuaMemberFunctionWrapper<class_SpaceTaskForceClass> *pLVar2;\n  \n  pLVar2 = (LuaMemberFunctionWrapper<class_SpaceTaskForceClass> *)FUN_140769c58(0x138);\n  if (pLVar2 == (LuaMemberFunctionWrapper<class_SpaceTaskForceClass> *)0x0) {\n    pLVar2 = (LuaMemberFunctionWrapper<class_SpaceTaskForceClass> *)0x0;\n  }\n  else {\n    pLVar2 = LuaMemberFunctionWrapper<class_SpaceTaskForceClass>::\n             LuaMemberFunctionWrapper<class_SpaceTaskForceClass>(pLVar2);\n  }\n  pLVar1 = pLVar2->vftablePtr;\n  *(undefined4 *)&(pLVar2->RefCountClass_data).offset_0x18 = 0x816;\n  (*pLVar1[1].vfunction1)(pLVar2);\n  return pLVar2;\n}",
+  "fetched_at": "2026-04-26T17:45:56Z"
+}

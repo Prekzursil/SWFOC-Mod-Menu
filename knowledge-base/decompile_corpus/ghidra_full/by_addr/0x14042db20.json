@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042db20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalBuildObjectsBehaviorClass::vfunction8\n          (TacticalBuildObjectsBehaviorClass *this,longlong param_1)\n\n{\n  longlong lVar1;\n  \n  if (param_1 != 0) {\n    FUN_140390f70();\n    lVar1 = *(longlong *)(param_1 + 0x150);\n    if (lVar1 != 0) {\n      *(undefined8 *)(lVar1 + 8) = 0;\n      *(undefined8 *)(lVar1 + 0x10) = 0;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:50Z"
+}

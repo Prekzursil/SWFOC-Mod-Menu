@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070f440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SystemSpyAbilityClass * __thiscall\nSystemSpyAbilityClass::scalar_deleting_destructor(SystemSpyAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: SystemSpyAbilityClass::~SystemSpyAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->SystemSpyAbilityClass_data).offset_0x0 = 0;\n  (this->SystemSpyAbilityClass_data).offset_0x8 = 0;\n  (this->SystemSpyAbilityClass_data).offset_0x10 = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,400);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:55:01Z"
+}

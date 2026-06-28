@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014b250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14014b250(longlong param_1,undefined8 param_2)\n\n{\n  longlong *plVar1;\n  undefined4 local_38;\n  undefined8 local_34;\n  undefined8 uStack_2c;\n  undefined4 local_24;\n  undefined4 uStack_20;\n  undefined4 uStack_1c;\n  undefined4 uStack_18;\n  \n  local_34 = *(undefined8 *)(param_1 + 0xf0);\n  uStack_2c = *(undefined8 *)(param_1 + 0xf8);\n  local_38 = *(undefined4 *)(param_1 + 0xec);\n  local_24 = *(undefined4 *)(param_1 + 0x100);\n  uStack_20 = *(undefined4 *)(param_1 + 0x104);\n  uStack_1c = *(undefined4 *)(param_1 + 0x108);\n  uStack_18 = *(undefined4 *)(param_1 + 0x10c);\n  if (*(longlong *)(param_1 + 0xd8) != 0) {\n    FUN_14021fe20(param_2,0x1301);\n    plVar1 = (longlong *)(param_1 + 200);\n    if (0xf < *(ulonglong *)(param_1 + 0xe0)) {\n      plVar1 = (longlong *)*plVar1;\n    }\n    FUN_140220140(param_2,plVar1,0);\n    FUN_14021feb0(param_2);\n  }\n  FUN_14021fe20(param_2,0x1302);\n  FUN_1402200b0(param_2,&local_38,0x24);\n  FUN_14021feb0(param_2);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:21:10Z"
+}

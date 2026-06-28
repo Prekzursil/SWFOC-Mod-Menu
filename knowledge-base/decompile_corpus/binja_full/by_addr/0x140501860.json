@@ -1,0 +1,7 @@
+{
+  "addr": "0x140501860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14050187a        void* rax_1 = sub_140294bc0(&data_140a16fd0, *(*(arg1 + 0x28) + 0x58))\n140501882        int64_t* rdx_1\n140501882        if (rax_1 != 0)\n140501888        rdx_1 = *(rax_1 + 0x68)\n140501884        rdx_1 = nullptr\n140501897        int32_t rax_2 = sub_140371070(*(*(arg1 + 0x28) + 0x298), rdx_1)\n1405018e6        int32_t var_18\n1405018e6        sub_1405013b0(arg1, &var_18, sub_1403a92f0(*(arg1 + 0x28), 0, rax_2, 1, 0, 0x3f800000, 0, 0, 0, 0))\n1405018eb        void* rax_3 = *(arg1 + 0x28)\n1405018ef        int32_t zmm0 = var_18\n140501901        int32_t var_38 = zmm0\n140501913        void* rcx_4 = *(rax_3 + 0x2a0)\n14050191d        if (rcx_4 != 0)\n140501927        sub_140266040(rcx_4, &var_38, 0)\n140501938        zmm0 = var_38\n14050193e        int32_t var_28 = zmm0\n140501954        int32_t var_1c = data_140a2bde8\n14050195a        int32_t var_14\n14050195a        int32_t var_24 = var_14\n140501960        int32_t var_10\n140501960        int32_t var_20 = var_10\n14050197d        return sub_1405021f0(arg1, &var_28)",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

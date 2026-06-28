@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a8386        arg1[0x74].b |= 2\n1403a8398        arg1[0x52].d = 0\n1403a83a2        if (arg1[0x54] != 0)\n1403a83a4        sub_1403a5840(arg1)\n1403a83a9        void* rcx = arg1[0x20]\n1403a83b3        if (rcx != 0)\n1403a83b9        sub_14037cc50(rcx + 8)\n1403a83c5        if (*(arg1 + 0x346) != 0xff)\n1403a83d2        int64_t rax_2 = (*(*arg1 + 0x10))(arg1, 0x14)\n1403a83d8        if (rax_2 != 0)\n1403a83e0        sub_1404f9100(rax_2, arg1)\n1403a83f9        if (sub_1401fecd0() == 0 && *(arg1 + 0x344) != 0xff)\n1403a83ff        int64_t* rcx_4 = data_140b15418\n1403a8411        if ((*(*rcx_4 + 0xf0))(rcx_4) != 0 && sub_140294bc0(&data_140a16fd0, arg1[0xb].d) != 0 && sub_1402814d0(sub_140294bc0(&data_140a16fd0, arg1[0xb].d)) != 0 && *(arg1 + 0x337) == 0xff)\n1403a846f        void* rax_10 = sub_1404b06d0(*(sub_140294bc0(&data_140a16fd0, arg1[0xb].d) + 0x360), 0)\n1403a8477        if (rax_10 != 0)\n1403a8481        void* rsi_1 = *(rax_10 + 0x58)\n1403a848a        float zmm0_1 = sub_140396df0(arg1)\n1403a8495        void* rax_11\n1403a8495        if (not(0f >= zmm0_1))\n1403a8497        rax_11 = arg1[0x22]\n1403a84a7        int64_t rdi\n1403a84a7        if (not(0f >= zmm0_1) && (rax_11 == 0 || *(rax_11 + 0x18) != 0))\n1403a84a9        rdi.b = 1\n1403a84ae        rdi.b = 0\n1403a84c3        sub_14058a9a0(rsi_1, sub_1403973b0(arg1), rdi.b)\n1403a84ea        return sub_140220ed0(sub_140058570(), &arg1[7], 0x10, 0) __tailcall",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

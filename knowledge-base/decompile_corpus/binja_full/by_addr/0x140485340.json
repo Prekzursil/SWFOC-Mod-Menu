@@ -1,0 +1,7 @@
+{
+  "addr": "0x140485340",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140485349        *arg1 = &TheGameScoringManagerClass::`vftable'{for `SignalListenerClass'}\n14048534f        __builtin_memset(&arg1[1], 0, 0x12)\n14048535b        return arg1",
+  "fetched_at": "2026-04-26T17:28:33Z"
+}

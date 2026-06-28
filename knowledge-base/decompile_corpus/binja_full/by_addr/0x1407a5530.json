@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5530",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a5544        int32_t rbx = arg2\n1407a5550        if (inflateStateCheck(arg1) == 0)\n1407a5552        void* rdi_1 = *(arg1 + 0x28)\n1407a5558        int32_t rsi_1\n1407a5558        if (arg2 s>= 0)\n1407a5565        rsi_1 = (rbx u>> 4) + 5\n1407a556b        if (rbx s< 0x30)\n1407a556d        rbx &= 0xf\n1407a555a        rsi_1 = 0\n1407a555c        rbx = neg.d(rbx)\n1407a557a        if (rbx == 0 || rbx - 8 u<= 7)\n1407a557c        int64_t rdx = *(rdi_1 + 0x40)\n1407a5588        if (rdx != 0 && *(rdi_1 + 0x30) != rbx)\n1407a558e        (*(arg1 + 0x38))(*(arg1 + 0x40), rdx)\n1407a5591        *(rdi_1 + 0x40) = 0\n1407a559c        *(rdi_1 + 0x10) = rsi_1\n1407a559f        *(rdi_1 + 0x30) = rbx\n1407a55a2        return sub_1407a5500(arg1)\n1407a55a9        return 0xfffffffe",
+  "fetched_at": "2026-04-26T17:32:27Z"
+}

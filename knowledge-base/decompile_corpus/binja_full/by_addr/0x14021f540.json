@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021f567        void* rbx = -ffffffffffffffff\n14021f56e        int16_t var_f0 = 0x73\n14021f573        int128_t var_118\n14021f573        __builtin_strncpy(&var_118, \"Software\\\\Petroglyph\\\\StarWars FOC\", 0x20)\n14021f583        int64_t rax = -1\n14021f586        uint64_t var_f8 = 0x656c69666f72505c\n14021f591        rax += 1\n14021f598        do while (*(&var_118 + rax) != 0)\n14021f5ac        sscanf_s(&var_118 + rax, \"\\Profile%d\", zx.q(arg2))\n14021f5b6        rbx += 1\n14021f5bd        do while (*(&var_118 + rbx) != 0)\n14021f5df        return sub_140022730(arg3, &var_118, rbx)",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

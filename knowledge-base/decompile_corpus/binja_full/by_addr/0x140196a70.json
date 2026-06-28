@@ -1,0 +1,7 @@
+{
+  "addr": "0x140196a70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140196a7c        data_140a12b40 = *arg1\n140196a89        data_140a12b44 = arg1[1]\n140196a96        data_140a12b48 = arg1[2]\n140196adf        return sub_140177a30(0x22, (zx.d((int.d(arg1[1] f* 255f)).b) | int.d(*arg1 * 255f) << 8) << 8 | zx.d((int.d(arg1[2] f* 255f)).b) | 0xff000000) __tailcall",
+  "fetched_at": "2026-04-26T17:24:29Z"
+}

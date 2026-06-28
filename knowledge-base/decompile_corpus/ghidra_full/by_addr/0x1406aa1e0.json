@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406aa1e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall CancelFastForwardClass::vfunction11(void)\n\n{\n  FUN_1402f4a80(&DAT_140b27f60);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:35:18Z"
+}

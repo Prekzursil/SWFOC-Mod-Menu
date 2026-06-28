@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407936b4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407936d6        int64_t rax = try_get_function(5, \"FlsGetValue\", &data_1408d8228, &data_1408d8230)\n1407936e0        if (rax == 0)\n1407936f3        return TlsGetValue(arg1) __tailcall\n1407936e7        return rax(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

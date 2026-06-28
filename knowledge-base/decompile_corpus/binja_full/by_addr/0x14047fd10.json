@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fd10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047fd15        struct INITCOMMONCONTROLSEX picce\n14047fd15        picce.dwICC.q = arg4\n14047fd30        if (arg2 == 0 || arg3 == 0)\n14047fd74        int64_t rax\n14047fd74        rax.b = 0\n14047fd80        return rax\n14047fd37        picce.dwSize = 8\n14047fd3f        picce.__offset(0x4).d = 2\n14047fd4d        bool cond:0 = InitCommonControlsEx(&picce) == 1\n14047fd50        *(arg1 + 0x10) = arg2\n14047fd54        *(arg1 + 0x18) = arg3\n14047fd58        BOOL rax_1\n14047fd58        rax_1.b = cond:0\n14047fd5b        *(arg1 + 0x38) = 1\n14047fd6e        return rax_1",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

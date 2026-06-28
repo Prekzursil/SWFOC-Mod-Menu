@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025fc80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025fc88        int32_t zmm1 = arg1[1]\n14025fc8d        int32_t var_18 = *arg1\n14025fc9d        int32_t var_10 = arg1[2]\n14025fca3        int32_t var_14 = zmm1\n14025fcb2        return sub_14013cf40(&var_18)",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b1270",
+  "tool": "binary_ninja",
+  "fact_id": "rva_galactic_mode_ctor",
+  "body": "1404b1276        struct GameModeClass::GalacticModeClass::VTable** result = arg1\n1404b1279        sub_14035a5e0(arg1)\n1404b1285        *result = &GalacticModeClass::`vftable'{for `GameModeClass'}\n1404b128a        __builtin_memset(&result[0x64], 0, 0x20)\n1404b12a6        result[0x69] = 0\n1404b12ad        result[0x6b] = 0\n1404b12b4        result[0x6d] = 0\n1404b12be        result[0x68].b = 1\n1404b12c5        result[0x6c] = 0xf\n1404b12d0        result[0x6e].d = 1\n1404b12da        *(result + 0x374) = 0x3fffff\n1404b12e9        return result",
+  "fetched_at": "2026-04-26T16:43:45Z"
+}

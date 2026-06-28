@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403857d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403857d9        void* rax = *(arg1 + 0x20)\n1403857ee        if (rax == 0 || *(arg1 + 0x10) == 0)\n14038589c        int512_t zmm0\n14038589c        zmm0.o = zx.o(0)\n1403858a7        return zmm0\n140385801        int128_t zmm6 = *(rax + 0x238)\n14038580b        void var_178\n14038580b        sub_140535cb0(&var_178)\n140385820        if (sub_140395c70(*(arg1 + 0x10), &var_178) == 1)\n140385829        struct ComparisonOp<float>::GreaterThan<float>::VTable* const arg_8 = &GreaterThan<float>::`vftable'{for `ComparisonOp<float>'}\n140385848        struct CalculationOp<float>::Plus<float>::VTable* const arg_10 = &Plus<float>::`vftable'{for `CalculationOp<float>'}\n140385865        void var_78\n140385865        zmm6.d = zmm6.d f* (sub_14033fb70(&var_78, &arg_10, &arg_8) + 1f)\n140385874        if (*(*(arg1 + 0x10) + 0x3a7) == 1)\n140385876        zmm6.d = zmm6.d f* data_140b278ac\n140385883        sub_140535fb0(&var_178)\n140385888        int512_t zmm0_2\n140385888        zmm0_2.o = zmm6\n14038589b        return zmm0_2",
+  "fetched_at": "2026-04-26T17:20:26Z"
+}

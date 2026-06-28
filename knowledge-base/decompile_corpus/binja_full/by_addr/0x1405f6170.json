@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f6176        struct DebugTreeItem::AIDiagsNode::VTable** result = arg1\n1405f6179        sub_1405f5e70(arg1)\n1405f6185        result[0xb] = 0\n1405f618d        *result = &AIDiagsNode::`vftable'{for `DebugTreeItem'}\n1405f6193        result[0xc].w = 0\n1405f619e        return result",
+  "fetched_at": "2026-04-26T17:22:32Z"
+}

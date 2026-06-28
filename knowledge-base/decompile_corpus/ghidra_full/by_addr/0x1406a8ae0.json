@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a8ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nRemovePlanetHighlightClass::vfunction11\n          (RemovePlanetHighlightClass *this,undefined8 param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  longlong *plVar3;\n  \n  if (*(longlong *)(param_2 + 0x18) - (longlong)*(longlong **)(param_2 + 0x10) >> 3 != 1) {\n    FUN_140248190(param_1,\n                  \"Remove_Planet_Highlight -- invalid number of parameters.  Expected 1, got %d.\");\n    return 0;\n  }\n  plVar1 = (longlong *)**(longlong **)(param_2 + 0x10);\n  if (plVar1 != (longlong *)0x0) {\n    for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n        puVar2 = *(undefined **)(puVar2 + 8)) {\n      if (puVar2 == &DAT_140a157d0) {\n        (**(code **)*plVar1)(plVar1);\n        plVar3 = plVar1 + 2;\n        if (0xf < (ulonglong)plVar1[5]) {\n          plVar3 = (longlong *)*plVar3;\n        }\n        FUN_1402f8dd0(&DAT_140b27f60,plVar3);\n        (**(code **)(*plVar1 + 8))(plVar1);\n        return 0;\n      }\n    }\n  }\n  FUN_140248190(param_1,\"Remove_Planet_Highlight -- invalid type for parameter 1.  Expected strng.\")\n  ;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:35:05Z"
+}

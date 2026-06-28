@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400b9ca0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400b9ca3        if (arg1 == 0 || arg1 != sub_1403355d0(&data_140b2ba20, arg2))\n1400b9cc3        return \n1400b9cc9        sub_1400b62e0()\n1400b9cce        sub_1400b1240()\n1400b9cec        void var_38\n1400b9cec        sub_1401f9320(&var_38, sub_1401fe0d0(&data_140a7bca0, 0xa))\n1400b9cf6        void* rax_2 = operator new(0x20)\n1400b9d02        int64_t var_18_1 = 0x11\n1400b9d15        int64_t var_10_1 = 0x1f\n1400b9d21        __builtin_strncpy(rax_2, \"IDC_LAN_CHAT_LIST\", 0x12)\n1400b9d39        int32_t rbx_2 = data_140a61f24\n1400b9d3f        void* var_28 = rax_2\n1400b9d47        data_140a61f24 = rbx_2 + 1\n1400b9d4d        void* rax_4 = sub_1401fa460(&data_140a7bc58, \"TEXT_HOST_LEFT_GAME\")\n1400b9d93        sub_1401c3c50(&data_140a78510, data_140a116b0, &var_28, rax_4, rbx_2, &var_38, &var_38, 0, 0, 1, 0)\n1400b9da4        if (var_10_1 u< 0x10)\n1400b9da4        return \n1400b9da6        void* rcx_1 = var_28\n1400b9dae        void* rax_5 = rcx_1\n1400b9db8        if (var_10_1 + 1 u>= 0x1000)\n1400b9dba        rcx_1 = *(rcx_1 - 8)\n1400b9dcd        if (rax_5 - rcx_1 - 8 u> 0x1f)\n1400b9de7        _invalid_parameter_noinfo_noreturn()\n1400b9de7        noreturn\n1400b9dcf        j_sub_1407864b8(rcx_1)\n1400b9de6        return ",
+  "fetched_at": "2026-04-26T16:59:56Z"
+}

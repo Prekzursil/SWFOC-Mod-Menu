@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall HintDataPackClass::~HintDataPackClass(HintDataPackClass *this)\n\n{\n  ulonglong uVar1;\n  PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass> PVar2;\n  PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass> PVar3;\n  \n  this->vftablePtr = &vftable;\n  uVar1 = (this->HintDataPackClass_data).offset_0x10;\n  if (0xf < uVar1) {\n    PVar2 = this->PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass>;\n    PVar3 = PVar2;\n    if (0xfff < uVar1 + 1) {\n      PVar3 = *(PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass> *)\n               ((longlong)PVar2 + -8);\n      if (0x1f < ((longlong)PVar2 - (longlong)PVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc((longlong)PVar2 - (longlong)PVar3,uVar1 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(PVar3);\n  }\n  (this->HintDataPackClass_data).offset_0x8 = 0;\n  (this->HintDataPackClass_data).offset_0x10 = 0xf;\n  *(undefined1 *)&this->PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass> = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140254cb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall DumpCallStack::vfunction11(DumpCallStack *this,undefined8 param_1)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  undefined8 uVar3;\n  longlong *plVar4;\n  longlong *local_res20;\n  \n  plVar2 = (longlong *)FUN_140769c58(0x30);\n  if (plVar2 != (longlong *)0x0) {\n    uVar3 = FUN_140251840(param_1);\n    *(undefined4 *)(plVar2 + 1) = 0;\n    *plVar2 = (longlong)\n              &LuaValue<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>,6>\n               ::vftable;\n    FUN_14001e680(plVar2 + 2,uVar3);\n    plVar4 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n             ::\n             ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                       ();\n    local_res20 = plVar2;\n    (**(code **)*plVar2)(plVar2);\n    puVar1 = (undefined8 *)plVar4[3];\n    if (puVar1 == (undefined8 *)plVar4[4]) {\n      FUN_140144900(plVar4 + 2,puVar1,&local_res20);\n    }\n    else {\n      *puVar1 = plVar2;\n      (**(code **)*plVar2)(plVar2);\n      plVar4[3] = plVar4[3] + 8;\n    }\n    (**(code **)(*plVar2 + 8))(plVar2);\n    return plVar4;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:12:32Z"
+}

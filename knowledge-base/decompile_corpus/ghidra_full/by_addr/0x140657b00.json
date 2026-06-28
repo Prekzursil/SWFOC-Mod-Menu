@@ -1,0 +1,7 @@
+{
+  "addr": "0x140657b00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nbyte FUN_140657b00(undefined8 param_1,undefined8 param_2,longlong param_3)\n\n{\n  undefined8 *puVar1;\n  char cVar2;\n  byte bVar3;\n  int iVar4;\n  byte bVar5;\n  undefined8 local_res20;\n  \n  bVar5 = 1;\n  cVar2 = FUN_1402204a0(param_2);\n  if (cVar2 != '\\0') {\n    local_res20 = 0;\n    do {\n      puVar1 = *(undefined8 **)(param_3 + 8);\n      if (puVar1 == *(undefined8 **)(param_3 + 0x10)) {\n        FUN_140045580(param_3,puVar1,&local_res20);\n      }\n      else {\n        *puVar1 = 0;\n        *(longlong *)(param_3 + 8) = *(longlong *)(param_3 + 8) + 8;\n      }\n      iVar4 = FUN_1402205a0(param_2);\n      if (iVar4 == 0xc) {\n        bVar3 = MultiLinkedListClass<class_PerceptionGridEntryClass>::\n                MultiLinkedListClass<class_PerceptionGridEntryClass>_Constructor_or_Destructor\n                          (param_2,(longlong *)(*(longlong *)(param_3 + 8) + -8));\n        bVar5 = bVar5 & bVar3;\n      }\n      else {\n        *(longlong *)(param_3 + 8) = *(longlong *)(param_3 + 8) + -8;\n        bVar5 = 0;\n      }\n      FUN_140220520(param_2);\n      cVar2 = FUN_1402204a0(param_2);\n    } while (cVar2 != '\\0');\n  }\n  return bVar5;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:55Z"
+}

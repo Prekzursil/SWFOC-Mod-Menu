@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ea670",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void DynamicVectorClass<class_DrawTextClass*___ptr64>::\n     DynamicVectorClass<class_DrawTextClass*___ptr64>_Constructor_or_Destructor(void)\n\n{\n  HANDLE hHeap;\n  \n  PTR_vftable_140a12148 = (undefined *)&vftable;\n  if (DAT_140a12150 != (LPVOID)0x0) {\n    if ((DAT_140a1215c & 0x80000000) == 0) {\n      thunk_FUN_1407864b8();\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,DAT_140a12150);\n    }\n    DAT_140a1215c = DAT_140a1215c & 0x80000000;\n    DAT_140a12150 = (LPVOID)0x0;\n    DAT_140a12158 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:01:45Z"
+}

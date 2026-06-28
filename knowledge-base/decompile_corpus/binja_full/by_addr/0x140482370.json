@@ -1,0 +1,7 @@
+{
+  "addr": "0x140482370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048238e        sub_140022730(arg1 + 0x30, \"Default\", 7)\n1404823a4        sub_140022730(arg1 + 0x50, \"lightning_default.tga\", 0x15)\n1404823ae        __builtin_memcpy(arg1 + 0x78, \"\\x00\\x00\\xa0\\x40\\x00\\x00\\xa0\\x41\\xcd\\xcc\\xcc\\x3e\\xcd\\xcc\\xcc\\x3e\\xcd\\xcc\\xcc\\x3e\\x00\\x00\\x20\\x41\", 0x18)\n1404823c1        *(arg1 + 0x70) = 0\n14048240d        int32_t var_18[0x4]\n14048240d        *(arg1 + 0x90) = *sub_1401f93e0(&var_18, 0x64, 0x64, 0xff, 0xff)\n14048242a        int32_t* result = sub_1401f93e0(&var_18, 0, 0, 0, 0)\n140482437        *(arg1 + 0xa0) = *result\n140482443        *(arg1 + 0xb0) = 0x3f800000\n14048244d        *(arg1 + 0xb4) = 0x40400000\n140482457        *(arg1 + 0xb8) = 0xa\n140482461        *(arg1 + 0xbc) = 0x3d4ccccd\n14048246b        *(arg1 + 0xc0) = 0x3e99999a\n140482476        *(arg1 + 0xc8) = 0\n14048247d        *(arg1 + 0xd0) = 0\n14048248e        return result",
+  "fetched_at": "2026-04-26T17:28:28Z"
+}

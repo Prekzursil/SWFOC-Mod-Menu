@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402023e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined2 * FUN_1402023e0(u_long *param_1,undefined2 *param_2)\n\n{\n  u_short uVar1;\n  u_long uVar2;\n  \n  uVar2 = param_1[1];\n  *param_2 = 2;\n  uVar1 = htons((u_short)uVar2);\n  uVar2 = *param_1;\n  param_2[1] = uVar1;\n  uVar2 = htonl(uVar2);\n  *(u_long *)(param_2 + 2) = uVar2;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:55:52Z"
+}

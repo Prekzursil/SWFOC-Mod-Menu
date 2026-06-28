@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e0bf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e0c00        uint8_t result = sub_14013fc10(arg1)\n1407e0c11        if (result == 0 && (arg1[6].b & 0xd) == 0)\n1407e0c1a        result = (*(arg2 + 0x14) u>> 8).b\n1407e0c1f        if ((result & 1) != 0)\n1407e0c2c        int32_t arg_18 = 0\n1407e0c39        int32_t arg_20 = 0\n1407e0c46        result = sub_1407b3b90(&arg1[0x19], &arg_18, &arg_20)\n1407e0c50        if (arg_18 != 0)\n1407e0c60        sub_14013fc40(arg1, nullptr)\n1407e0c6a        struct MultiLinkedListMember::alRenderTask::VTable** rax_1 = operator new(0x78)\n1407e0c6f        struct MultiLinkedListMember::alRenderTask::VTable** rbx_1 = rax_1\n1407e0c75        if (rax_1 == 0)\n1407e0caf        rbx_1 = nullptr\n1407e0c8f        sub_14015e020(rbx_1, arg2, arg1, 0, &arg1[0x13])\n1407e0c9b        rbx_1[0xd] = -1\n1407e0ca3        *rbx_1 = &alLightningBoltRenderTask::`vftable'{for `alRenderTask'}\n1407e0ca6        rbx_1[0xe].d = 0xffffffff\n1407e0cb1        rbx_1[0xb].d = 0\n1407e0cc5        *(rbx_1 + 0x5c) = arg_18\n1407e0ccf        rbx_1[0xc].d = arg_20\n1407e0cd2        return sub_140149490(arg2, rbx_1, 8)\n1407e0ce6        return result",
+  "fetched_at": "2026-04-26T17:34:12Z"
+}

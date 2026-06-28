@@ -1,0 +1,7 @@
+{
+  "addr": "0x140715250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nSuperLaserAbilityClass::vfunction6_for_IXMLLoadableClass\n          (SuperLaserAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  \n  if ((((param_1 != 0) && (param_2 != 0)) &&\n      (cVar1 = FUN_14039a450(param_2,*(undefined4 *)(param_1 + 0x58),0), cVar1 != '\\0')) &&\n     (cVar1 = FUN_14048e290(this,param_2), cVar1 != '\\0')) {\n    if (((*(char *)(param_1 + 0x3b4) == '\\x01') || (*(char *)(param_2 + 0x3b4) == '\\x01')) &&\n       (cVar1 = FUN_14039a540(param_1,param_2), cVar1 == '\\0')) {\n      return 0;\n    }\n    cVar1 = FUN_14039b480(param_1,0x37,1);\n    if (cVar1 != '\\0') {\n      if ((*(longlong *)(param_2 + 0xf0) != 0) && (cVar1 = FUN_140380bb0(), cVar1 != '\\0')) {\n        return 0;\n      }\n      if (*(longlong *)(param_2 + 0x2a0) != 0) {\n        return 1;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:56:30Z"
+}

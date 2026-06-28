@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004a500",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14004a50d        int64_t r13 = arg2[2]\n14004a514        int64_t* r15 = arg2\n14004a51a        void* rbx = -ffffffffffffffff\n14004a521        rbx += 1\n14004a52a        do while (*(arg3 + (rbx << 1)) != 0)\n14004a53f        if (0x7ffffffffffffffe - r13 u< rbx)\n14004a5ff        sub_140022610()\n14004a5ff        noreturn\n14004a559        if (arg2[3] u>= 8)\n14004a55b        r15 = *arg2\n14004a560        void* rbp = rbx + r13\n14004a564        int64_t rdi = 7\n14004a569        *arg1 = 0\n14004a56c        arg1[2] = 0\n14004a570        int64_t* r12 = arg1\n14004a573        arg1[3] = 0\n14004a57a        if (rbp u> 7)\n14004a57f        rdi = rbp | 7\n14004a586        if (rdi u> 0x7ffffffffffffffe)\n14004a588        rdi = 0x7ffffffffffffffe\n14004a595        if (rdi u< 0xa)\n14004a595        rdi = 0xa\n14004a5a0        int64_t* rax_1 = sub_1400226c0(arg1, rdi + 1)\n14004a5a5        r12 = rax_1\n14004a5a8        *arg1 = rax_1\n14004a5ab        arg1[3] = rdi\n14004a5b2        void* rdi_2 = r13 << 1\n14004a5ba        arg1[2] = rbp\n14004a5c4        memcpy(r12, r15, rdi_2)\n14004a5d4        memcpy(rdi_2 + r12, arg3, rbx * 2)\n14004a5e0        *(r12 + (rbp << 1)) = 0\n14004a5fe        return arg1",
+  "fetched_at": "2026-04-26T16:54:14Z"
+}

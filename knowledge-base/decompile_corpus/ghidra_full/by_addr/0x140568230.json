@@ -1,0 +1,7 @@
+{
+  "addr": "0x140568230",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall TargetingBehaviorClass::vfunction49(TargetingBehaviorClass *this,longlong *param_1)\n\n{\n  undefined **ppuVar1;\n  longlong lVar2;\n  char cVar3;\n  longlong lVar4;\n  undefined8 uVar5;\n  longlong *plVar6;\n  float fVar7;\n  undefined1 local_18 [16];\n  \n  ppuVar1 = this->offset_0x18;\n  if ((ppuVar1 == (undefined **)0x0) || (param_1 == (longlong *)0x0)) {\n    return false;\n  }\n  if ((((char)param_1[0x69] != -1) && (*(char *)((longlong)ppuVar1 + 0x33b) != -1)) &&\n     (lVar4 = (**(code **)(*ppuVar1 + 0x10))(ppuVar1,9), lVar4 != 0)) {\n    plVar6 = param_1;\n    if ((((char)param_1[0x69] != -1) &&\n        (lVar2 = *(longlong *)(*(longlong *)(lVar4 + 0x28) + 0xf0), lVar2 != 0)) &&\n       ((plVar6 = *(longlong **)(lVar2 + 0x148), plVar6 == (longlong *)0x0 ||\n        (param_1 != (longlong *)plVar6[0x56])))) {\n      uVar5 = (**(code **)(*param_1 + 0x10))(param_1,0x16);\n      plVar6 = (longlong *)FUN_140404fc0(uVar5,*(longlong *)(lVar4 + 0x28) + 0x78);\n      if (plVar6 == (longlong *)0x0) goto LAB_1405682e7;\n    }\n    param_1 = plVar6;\n  }\nLAB_1405682e7:\n  FUN_14020acd0(local_18,ppuVar1 + 0xf,param_1 + 0xf);\n  fVar7 = (float)FUN_140372560(ppuVar1[0x53]);\n  cVar3 = FUN_14020af60(local_18,(longlong)ppuVar1 + 0x84,fVar7 / DAT_1408007d4);\n  return cVar3 != '\\x01';\n}",
+  "fetched_at": "2026-04-26T18:39:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018d3c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018d3e4        struct alD3dTexture::alD3dTexture2D::VTable** result = arg1\n14018d3e7        sub_140185d30(arg1)\n14018d3f3        result[0xf] = 0\n14018d3fb        *result = &alD3dTexture2D::`vftable'{for `alD3dTexture'}\n14018d408        result[0x10].b = 0\n14018d40f        result[2] = &alD3dTexture2D::`vftable'{for `MultiLinkedListMember'}\n14018d416        char* rax_1 = (*(*arg2 + 0x50))(arg2)\n14018d419        void* rbx = -ffffffffffffffff\n14018d420        void* r8 = -ffffffffffffffff\n14018d423        r8 += 1\n14018d42b        do while (*(rax_1 + r8) != 0)\n14018d434        sub_140022730(&result[4], rax_1, r8)\n14018d43f        char* rax_3 = (*(*arg2 + 0x50))(arg2)\n14018d442        rbx += 1\n14018d449        do while (*(rax_3 + rbx) != 0)\n14018d455        sub_140022730(&result[9], rax_3, rbx)\n14018d467        sub_140186420(result, arg2, arg3, arg4)\n14018d47b        if (GetCurrentThreadId() != sub_1401771d0())\n14018d491        sub_14013cad0(sub_14018df60, result)\n14018d480        sub_14018d9f0(result)\n14018d4b3        return result",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

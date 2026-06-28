@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407090f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140709103        *arg1 = &PoliticalControlProtectionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140709110        arg1[1] = &PoliticalControlProtectionAbilityClass::`vftable'{for `RefCountClass'}\n140709114        sub_14048c8d0(arg1)\n14070911c        if ((arg2 & 1) != 0)\n140709126        j_sub_1407864b8(arg1)\n140709138        return arg1",
+  "fetched_at": "2026-04-26T17:27:24Z"
+}

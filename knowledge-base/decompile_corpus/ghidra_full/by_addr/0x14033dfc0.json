@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033dfc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14033dfc0(longlong param_1)\n\n{\n  LPVOID lpMem;\n  HANDLE hHeap;\n  LPVOID pvVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  lpMem = *(LPVOID *)(param_1 + 8);\n  if (lpMem != (LPVOID)0x0) {\n    if ((*(uint *)(param_1 + 0x14) & 0x80000000) == 0) {\n      lVar2 = *(longlong *)((longlong)lpMem + -8);\n      lVar3 = 0;\n      pvVar1 = (LPVOID)(lVar2 * 0x50 + (longlong)lpMem);\n      if (lVar2 != 0) {\n        do {\n          FUN_1404c46f0((longlong)pvVar1 + -0x28);\n          FUN_1404c4640((LPVOID)((longlong)pvVar1 + -0x50));\n          lVar2 = lVar2 + -1;\n          pvVar1 = (LPVOID)((longlong)pvVar1 + -0x50);\n        } while (lVar2 != 0);\n        lVar3 = *(longlong *)((longlong)lpMem + -8);\n      }\n      thunk_FUN_1407864b8((longlong)lpMem + -8,lVar3 * 0x50 + 8);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    *(uint *)(param_1 + 0x14) = *(uint *)(param_1 + 0x14) & 0x80000000;\n    *(undefined8 *)(param_1 + 8) = 0;\n    *(undefined4 *)(param_1 + 0x10) = 0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:22Z"
+}

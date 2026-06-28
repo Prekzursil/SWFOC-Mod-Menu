@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b06c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalBribeAbilityClass * __thiscall\nTacticalBribeAbilityClass::TacticalBribeAbilityClass(TacticalBribeAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->TacticalBribeAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1404c3df0(&(this->TacticalBribeAbilityClass_data).field_0x8);\n  FUN_1404c3df0(&(this->TacticalBribeAbilityClass_data).field_0x18);\n  (this->TacticalBribeAbilityClass_data).offset_0x28 = 0;\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &(this->TacticalBribeAbilityClass_data).field_0x30);\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &(this->TacticalBribeAbilityClass_data).field_0x40);\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:38Z"
+}

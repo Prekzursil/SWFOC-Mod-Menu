@@ -1,0 +1,7 @@
+{
+  "addr": "0x140561800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140561807        *arg1 = &TacticalUnderConstructionDataPackClass::`vftable'{for `BaseDataPackClass'}\n14056180c        __builtin_memset(&arg1[1], 0, 0x14)\n140561817        return 0",
+  "fetched_at": "2026-04-26T17:34:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a56b0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_invulnerability_cleanup",
+  "body": "1403a56b7        if (*(arg1 + 0x3a7) == 0)\n1403a56b7        return \n1403a56b9        void* rdx_1 = arg1[0x56]\n1403a56de        if (rdx_1 == 0 || (*(rdx_1 + 0x381) == 0xff && *(rdx_1 + 0x382) == 0xff && *(rdx_1 + 0x388) == 0xff))\n1403a56cc        return \n1403a56e0        void* rax = *(rdx_1 + 0xf8)\n1403a56ea        if (rax != 0)\n1403a56f5        return sub_14037a8d0(rax, rdx_1, arg1, 0) __tailcall\n1403a56fa        return ",
+  "fetched_at": "2026-04-26T16:43:27Z"
+}

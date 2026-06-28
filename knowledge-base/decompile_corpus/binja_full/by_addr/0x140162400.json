@@ -1,0 +1,7 @@
+{
+  "addr": "0x140162400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14016241c        int64_t* rbx_1 = *(arg1 + 0x118) + 0x4f8\n140162426        int64_t rdi = sx.q(arg2) << 3\n140162432        int32_t* rcx_1 = *rbx_1 + rdi\n14016243c        uint64_t zmm2[0x2] = memcpy(rcx_1, &rcx_1[2], rbx_1[1] - &rcx_1[2])\n140162441        rbx_1[1] -= 8\n140162453        sub_14016fa40(rbx_1, rbx_1 + 0x2c, 0x20, zmm2)\n14016245f        int64_t* rbx_3 = *(arg1 + 0x118) + 0x548\n14016246d        int32_t* rcx_4 = *rbx_3 + rdi\n140162477        uint64_t zmm2_1[0x2] = memcpy(rcx_4, &rcx_4[2], rbx_3[1] - &rcx_4[2])\n14016247c        rbx_3[1] -= 8\n14016248e        sub_14016fa40(rbx_3, rbx_3 + 0x2c, 0x20, zmm2_1)\n14016249a        int64_t* rbx_5 = *(arg1 + 0x118) + 0x598\n1401624a8        int32_t* rcx_7 = *rbx_5 + rdi\n1401624b2        uint64_t zmm2_2[0x2] = memcpy(rcx_7, &rcx_7[2], rbx_5[1] - &rcx_7[2])\n1401624b7        rbx_5[1] -= 8\n1401624c9        sub_14016fa40(rbx_5, rbx_5 + 0x2c, 0x20, zmm2_2)\n1401624d5        if (*(arg1 + 0x268) == 0)\n1401624d7        int64_t* result = *(arg1 + 0x118)\n1401624e5        if (*(result + 0x87f) == 0)\n140162500        return result\n1401624ec        return sub_140168130(arg1, 1)",
+  "fetched_at": "2026-04-26T17:22:40Z"
+}

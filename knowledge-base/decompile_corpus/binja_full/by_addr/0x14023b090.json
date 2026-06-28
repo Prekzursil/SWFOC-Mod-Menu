@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023b090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023b0c6        void var_48\n14023b0c6        int64_t rdx_3 = sub_14011f570(&data_140b09350, &var_48, arg1, sub_14011f9c0(&data_140b09350, arg1))[1]\n14023b0cd        if (rdx_3 == 0)\n14023b0cd        rdx_3 = data_140b09358\n14023b0dc        if (rdx_3 != data_140b09358)\n14023b0de        int64_t* rax_1\n14023b0de        rax_1.b = 0\n14023b0ea        return rax_1\n14023b0f3        void* var_38\n14023b0f3        sub_14001e680(&var_38, arg1)\n14023b0fd        int64_t rdx\n14023b0fd        int64_t var_18 = rdx\n14023b10e        sub_14023b240(&data_140b09350, &var_48, &var_38)\n14023b11c        int64_t var_20\n14023b11c        if (var_20 u>= 0x10)\n14023b11e        void* rcx_1 = var_38\n14023b126        void* rax_3 = rcx_1\n14023b130        if (var_20 + 1 u>= 0x1000)\n14023b132        rcx_1 = *(rcx_1 - 8)\n14023b145        if (rax_3 - rcx_1 - 8 u> 0x1f)\n14023b159        _invalid_parameter_noinfo_noreturn()\n14023b159        noreturn\n14023b147        j_sub_1407864b8(rcx_1)\n14023b151        int64_t* rax_2\n14023b151        rax_2.b = 1\n14023b158        return rax_2",
+  "fetched_at": "2026-04-26T17:30:00Z"
+}

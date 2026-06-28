@@ -1,0 +1,7 @@
+{
+  "addr": "0x140136660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140136678        int32_t r14 = *(arg1 + 0x1a0)\n140136688        int32_t rdi = 0\n14013668e        if (r14 s> 0)\n1401366a0        int32_t rax_1 = *(arg1 + 0x1a8)\n1401366ab        if (rdi == rax_1 + 1)\n1401366ad        void* rax_2 = *(arg1 + 0x1b0)\n1401366b4        *(arg1 + 0x1a8) = rax_1 + 1\n1401366be        *(arg1 + 0x1b0) = *(rax_2 + 8)\n1401366c9        if (rdi != rax_1)\n1401366cb        void* rcx_2 = *(arg1 + 0x180)\n1401366d2        *(arg1 + 0x1b0) = rcx_2\n1401366d9        *(arg1 + 0x1a8) = 0\n1401366e2        if (rdi s> 0)\n1401366e4        int32_t rax_3 = 0\n1401366f0        rcx_2 = *(rcx_2 + 8)\n1401366f4        rax_3 += 1\n1401366f6        *(arg1 + 0x1b0) = rcx_2\n1401366fd        *(arg1 + 0x1a8) = rax_3\n140136705        do while (rax_3 s< rdi)\n14013670e        void* rcx_3 = *(*(arg1 + 0x1b0) + 0x18)\n140136715        void* rsi_1 = rcx_3 - 0x10\n140136719        if (rcx_3 == 0)\n140136719        rsi_1 = nullptr\n140136728        if (sub_140153f10(rsi_1) == 2)\n140136734        float zmm1[0x4] = (*arg2)[1]\n14013673c        float var_28 = *arg2\n140136747        float var_20_1 = (*arg2)[2]\n14013674d        float var_24_1 = zmm1[0]\n14013675a        if (sub_140155d90(rsi_1, &var_28) != 0)\n14013679a        return sub_140135140(arg1, *arg2, (*arg2)[1]) f+ *(rsi_1 + 0x100)\n14013675c        rdi += 1\n140136761        do while (rdi s< r14)\n140136767        return *(arg1 + 0x200)",
+  "fetched_at": "2026-04-26T17:11:30Z"
+}

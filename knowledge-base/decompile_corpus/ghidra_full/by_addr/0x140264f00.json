@@ -1,0 +1,7 @@
+{
+  "addr": "0x140264f00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140264f00(longlong param_1)\n\n{\n  if ((*(longlong *)(param_1 + 0x68) != 0) && (*(longlong *)(param_1 + 0x70) != 0)) {\n    FUN_140136ba0();\n    if (*(longlong **)(param_1 + 0x68) != (longlong *)0x0) {\n      (**(code **)(**(longlong **)(param_1 + 0x68) + 8))();\n      *(undefined8 *)(param_1 + 0x68) = 0;\n    }\n    *(undefined8 *)(param_1 + 0x70) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:50Z"
+}

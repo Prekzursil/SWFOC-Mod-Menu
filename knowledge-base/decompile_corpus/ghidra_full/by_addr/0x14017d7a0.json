@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017d7a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dVertexType<class_alD3dVertNC>::vfunction9\n          (alD3dVertexType<class_alD3dVertNC> *this,undefined4 *param_1,undefined4 *param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  \n  fVar5 = DAT_1408054e8;\n  *param_1 = *param_2;\n  param_1[1] = param_2[1];\n  param_1[2] = param_2[2];\n  param_1[3] = param_2[3];\n  param_1[4] = param_2[4];\n  param_1[5] = param_2[5];\n  fVar1 = (float)param_2[0x17];\n  fVar2 = (float)param_2[0x14];\n  fVar3 = (float)param_2[0x15];\n  fVar4 = (float)param_2[0x16];\n  param_1[7] = 0;\n  param_1[6] = ((((int)(fVar1 * fVar5) & 0xffU) << 8 | (int)(fVar2 * fVar5) & 0xffU) << 8 |\n               (int)(fVar3 * fVar5) & 0xffU) << 8 | (int)(fVar4 * fVar5) & 0xffU;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

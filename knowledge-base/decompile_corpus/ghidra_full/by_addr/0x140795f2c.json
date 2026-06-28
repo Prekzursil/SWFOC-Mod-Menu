@@ -1,0 +1,7 @@
+{
+  "addr": "0x140795f2c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _raise_excf\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid _raise_excf(void)\n\n{\n  _raise_exc_ex();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:17Z"
+}

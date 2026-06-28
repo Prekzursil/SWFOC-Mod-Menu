@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406136f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1406136f0(void)\n\n{\n  longlong lVar1;\n  float fVar2;\n  \n  lVar1 = FUN_140612bd0();\n  if (lVar1 == 0) {\n    return 0.0;\n  }\n  fVar2 = *(float *)(lVar1 + 0x30);\n  if (fVar2 <= 0.0) {\n    fVar2 = 0.0;\n  }\n  return fVar2;\n}",
+  "fetched_at": "2026-04-26T17:27:44Z"
+}

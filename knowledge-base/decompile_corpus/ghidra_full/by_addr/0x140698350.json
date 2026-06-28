@@ -1,0 +1,7 @@
+{
+  "addr": "0x140698350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall FindTargetClass::vfunction5(void)\n\n{\n  return &DAT_140a444c0;\n}",
+  "fetched_at": "2026-04-26T17:20:20Z"
+}

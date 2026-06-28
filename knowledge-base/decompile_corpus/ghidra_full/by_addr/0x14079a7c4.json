@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a7c4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n\nvoid FUN_14079a7c4(longlong param_1)\n\n{\n  int iVar1;\n  errno_t eVar2;\n  longlong lVar3;\n  undefined1 auStackY_f8 [32];\n  wchar_t local_c8 [88];\n  ulonglong local_18;\n  longlong lVar4;\n  \n  local_18 = DAT_140a44b98 ^ (ulonglong)auStackY_f8;\n  *(uint *)(param_1 + 0x10) = *(uint *)(param_1 + 0x10) | 0x104;\n  iVar1 = __acrt_GetUserDefaultLocaleName(local_c8,0x55);\n  if (1 < iVar1) {\n    lVar3 = -1;\n    do {\n      lVar4 = lVar3;\n      lVar3 = lVar4 + 1;\n    } while (local_c8[lVar3] != L'\\0');\n    eVar2 = wcsncpy_s((wchar_t *)(param_1 + 600),0x55,local_c8,lVar4 + 2);\n    if (eVar2 != 0) {\n                    /* WARNING: Subroutine does not return */\n      _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:47Z"
+}

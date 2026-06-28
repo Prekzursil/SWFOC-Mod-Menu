@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ed730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1407ed730(void)\n\n{\n  FUN_14021d1b0(&DAT_140a7d0a0);\n  _DAT_140a7e040 = _DAT_140852e70;\n  _DAT_140a7e044 = _UNK_140852e74;\n  uRam0000000140a7e048 = _UNK_140852e78;\n  uRam0000000140a7e04c = _UNK_140852e7c;\n  _DAT_140a7e08c = 0;\n  _DAT_140a7e070 = 0;\n  _DAT_140a7e078 = 0;\n  _DAT_140a7e05c = 0;\n  _DAT_140a7e064 = 0;\n  _DAT_140a7e050 = 0;\n  _DAT_140a7e07c = 0xbf800000;\n  _DAT_140a7e080 = 0xbf800000;\n  _DAT_140a7e084 = 0;\n  _DAT_140a7e088 = 0xbf800000;\n  _DAT_140a7e068 = 0xbf800000;\n  _DAT_140a7e06c = 0xbf800000;\n  _DAT_140a7e074 = 0xbf800000;\n  _DAT_140a7e054 = 0xbf800000;\n  _DAT_140a7e058 = 0xbf800000;\n  _DAT_140a7e060 = 0xbf800000;\n  FUN_14022c470(&DAT_140a7dfe0);\n  FUN_140229970(&DAT_140a7d530);\n  thunk_FUN_140228d40(&DAT_140a7d108);\n  FUN_14022bba0(&DAT_140a7d0b0);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:31Z"
+}

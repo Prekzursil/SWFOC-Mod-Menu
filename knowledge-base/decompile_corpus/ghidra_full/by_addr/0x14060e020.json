@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060e020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AITargetLocationWrapper * __thiscall\nAITargetLocationWrapper::scalar_deleting_destructor(AITargetLocationWrapper *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: AITargetLocationWrapper::~AITargetLocationWrapper */\n  this->vftablePtr = &vftable_for_LuaUserVar;\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  FUN_14060e910();\n  if (*(longlong **)&this->field_0x38 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x38 + 8))();\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr =\n       (AITargetLocationWrapper_vftable_for_SignalListenerClass *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x50);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:26:40Z"
+}

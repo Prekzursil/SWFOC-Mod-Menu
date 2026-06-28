@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e2090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e2096        void* rcx = data_140b15418\n1406e20a3        if (rcx == 0)\n1406e20a5        int64_t result\n1406e20a5        result.b = 0\n1406e20ac        return result\n1406e20b4        if (sub_14035f790(rcx) == 0)\n1406e20d5        *arg3 = _mm_cvtps_pd(0)\n1406e20de        return 1\n1406e20c3        *arg3 = _mm_cvtps_pd(0x3f800000)\n1406e20cc        return 1",
+  "fetched_at": "2026-04-26T17:26:00Z"
+}

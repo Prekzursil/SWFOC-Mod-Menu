@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025ebc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14025ebc0(void)\n\n{\n  char *pcVar1;\n  \n  pcVar1 = (char *)thunk_FUN_140176550();\n  if (*pcVar1 != '\\0') {\n    return *(int *)(pcVar1 + 0x40) != -0x80000000;\n  }\n  return *(int *)(pcVar1 + 0x88) != -0x80000000;\n}",
+  "fetched_at": "2026-04-26T18:15:05Z"
+}

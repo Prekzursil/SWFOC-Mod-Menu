@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048a250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alExtraRenderPass * __thiscall\nOcclusionRenderPassClass::scalar_deleting_destructor\n          (OcclusionRenderPassClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: alExtraRenderPass::~alExtraRenderPass */\n  this->vftablePtr =\n       (OcclusionRenderPassClass_vftable_for_RefCountClass *)&alExtraRenderPass::vftable;\n  this->vftablePtr =\n       (OcclusionRenderPassClass_vftable_for_MultiLinkedListMember *)&alExtraRenderPass::vftable;\n  if (*(longlong **)&this->field_0x28 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x28 + 8))();\n    *(undefined8 *)&this->field_0x28 = 0;\n  }\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (OcclusionRenderPassClass_vftable_for_RefCountClass *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x38);\n  }\n  return (alExtraRenderPass *)this;\n}",
+  "fetched_at": "2026-04-26T18:01:16Z"
+}

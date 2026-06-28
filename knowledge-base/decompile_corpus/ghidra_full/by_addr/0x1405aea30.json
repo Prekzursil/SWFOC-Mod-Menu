@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405aea30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ScheduledEventClass * __thiscall\nEventFactoryClass<class_SetupPhaseMoveEventClass,31>::vfunction1(void)\n\n{\n  ScheduledEventClass *this;\n  \n  this = (ScheduledEventClass *)FUN_140769c58(0x60);\n  if (this != (ScheduledEventClass *)0x0) {\n    ScheduledEventClass::ScheduledEventClass(this);\n    *(undefined4 *)&this[1].vftablePtr = 0xffffffff;\n    this->vftablePtr = (ScheduledEventClass_vftable *)&SetupPhaseMoveEventClass::vftable;\n    (this->EventClass_data).offset_0x8 = 0x1f;\n    return this;\n  }\n  return (ScheduledEventClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:43:27Z"
+}

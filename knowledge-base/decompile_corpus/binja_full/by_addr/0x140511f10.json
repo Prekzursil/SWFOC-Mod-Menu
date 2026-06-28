@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511f10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140511f1f        int64_t* rcx = arg1[0xb]\n140511f26        if (rcx != 0)\n140511f2b        (*(*rcx + 8))(rcx)\n140511f2e        void* rcx_2 = arg1[8]\n140511f35        if (rcx_2 != 0)\n140511f49        if (((arg1[0xa] - rcx_2) & 0xfffffffffffffffc) u>= 0x1000)\n140511f4b        void* r8_1 = *(rcx_2 - 8)\n140511f5e        if (rcx_2 - r8_1 - 8 u> 0x1f)\n140511fc1        _invalid_parameter_noinfo_noreturn()\n140511fc1        noreturn\n140511f60        rcx_2 = r8_1\n140511f63        j_sub_1407864b8(rcx_2)\n140511f6a        __builtin_memset(&arg1[8], 0, 0x18)\n140511f81        arg1[6] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140511f84        sub_14020a820(&arg1[6])\n140511f89        int64_t* rcx_4 = arg1[5]\n140511f90        if (rcx_4 != 0)\n140511f95        (*(*rcx_4 + 8))(rcx_4)\n140511f9b        sub_140249eb0(arg1)\n140511fa4        if ((arg2 & 1) != 0)\n140511fae        j_sub_1407864b8(arg1)\n140511fc0        return arg1",
+  "fetched_at": "2026-04-26T17:32:16Z"
+}

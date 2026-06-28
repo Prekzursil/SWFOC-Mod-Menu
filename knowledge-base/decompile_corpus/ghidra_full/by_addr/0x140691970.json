@@ -1,0 +1,7 @@
+{
+  "addr": "0x140691970",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAIInstantiatedGoalDiagnosticsNodeClass::vfunction4(AIInstantiatedGoalDiagnosticsNodeClass *this)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  \n  lVar1 = *(longlong *)((this->AIDiagnosticsNodeClass_data).offset_0x0 + 0x60);\n  lVar3 = lVar1 + 0x20;\n  if (lVar1 == 0) {\n    lVar3 = 0;\n  }\n  uVar2 = FUN_14004faa0();\n  FUN_140475af0(uVar2,lVar3);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:07Z"
+}

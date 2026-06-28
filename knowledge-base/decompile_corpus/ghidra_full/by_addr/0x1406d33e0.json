@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d33e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalObjectPerceptualEvaluatorClass::vfunction9(TacticalObjectPerceptualEvaluatorClass *this)\n\n{\n  vfunction9(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:30Z"
+}

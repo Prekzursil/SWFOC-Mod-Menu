@@ -1,0 +1,7 @@
+{
+  "addr": "0x140054b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140054b6a        if (arg3 s< 0 || arg3 s>= *(arg1 + 0x10))\n140054c29        *arg2 = 0\n140054c2f        arg2[2] = 0\n140054c36        arg2[3] = 7\n140054c41        sub_1400228a0(arg2, &data_1407ff7e8, nullptr)\n140054c53        return arg2\n140054b73        int64_t r8 = sx.q(arg3) * 0x70\n140054b8d        *arg4 = *(*(arg1 + 8) + r8 + 0x48)\n140054b95        void* rsi_1 = *(arg1 + 8) + 8\n140054b99        *arg2 = 0\n140054b9c        void** rsi_2 = rsi_1 + r8\n140054b9f        arg2[2] = 0\n140054ba3        arg2[3] = 0\n140054bac        int64_t rbp = rsi_2[2]\n140054bb0        if (rsi_2[3] u>= 8)\n140054bb2        rsi_2 = *rsi_2\n140054bb9        int64_t rdi\n140054bb9        if (rbp u>= 8)\n140054bd5        rdi = rbp | 7\n140054bdf        if (rdi u> 0x7ffffffffffffffe)\n140054bdf        rdi = 0x7ffffffffffffffe\n140054be7        int32_t* rax_2 = sub_1400226c0(arg2, rdi + 1)\n140054bf4        *arg2 = rax_2\n140054bfd        memcpy(rax_2, rsi_2, (rbp << 1) + 2)\n140054bbe        rdi = 7\n140054bc3        *arg2 = *rsi_2\n140054c02        arg2[2] = rbp\n140054c09        arg2[3] = rdi\n140054c21        return arg2",
+  "fetched_at": "2026-04-26T16:54:52Z"
+}

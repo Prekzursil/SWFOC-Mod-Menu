@@ -1,0 +1,7 @@
+{
+  "addr": "0x140527dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140527de2        sub_1405369e0(arg1)\n140527dee        sub_140497bd0(&arg1[0x2c])\n140527dfa        sub_140285e40(&arg1[0x30])\n140527e06        sub_140285e40(&arg1[0x33])\n140527e12        sub_140285e40(&arg1[0x36])\n140527e1e        sub_140285e40(&arg1[0x39])\n140527e2a        sub_140285e40(&arg1[0x3c])\n140527e36        sub_140497bd0(&arg1[0x3f])\n140527e42        sub_140285e40(&arg1[0x43])\n140527e47        int32_t rax = sub_1404c2030()\n140527e4c        int64_t* rcx_8 = arg1[0x46]\n140527e55        int64_t* i_1 = *rcx_8\n140527e5b        if (i_1 != rcx_8)\n140527ea3        int64_t* i\n140527e62        i = *i_1\n140527e68        if (*(i_1 + 0x14) u< rax)\n140527e6e        *i_1[1] = i\n140527e78        *(*i_1 + 8) = i_1[1]\n140527e80        arg1[0x47] -= 1\n140527e87        sub_1404ad530(&i_1[4])\n140527e94        j_sub_1407864b8(i_1)\n140527e99        i_1 = i\n140527ea3        do while (i != arg1[0x46])\n140527eb1        sub_140285e40(&arg1[0x4a])\n140527ebd        sub_140497bd0(&arg1[0x4d])\n140527ec9        sub_140497bd0(&arg1[0x51])\n140527ed5        sub_140497bd0(&arg1[0x55])\n140527ef0        return sub_140285e40(&arg1[0x59]) __tailcall",
+  "fetched_at": "2026-04-26T17:33:12Z"
+}

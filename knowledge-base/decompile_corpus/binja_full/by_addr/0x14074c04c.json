@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074c04c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074c065        int128_t* rbx = arg2\n14074c068        int64_t rsi = arg2[2]\n14074c06f        if (arg2[3] u>= 8)\n14074c071        rbx = *arg2\n14074c078        int128_t result\n14074c078        if (rsi u>= 8)\n14074c09c        int64_t rbp_2 = rsi | 7\n14074c0a3        if (rbp_2 u> 0x7ffffffffffffffe)\n14074c0a3        rbp_2 = 0x7ffffffffffffffe\n14074c0b8        if (rbp_2 + 1 u> 0x7fffffffffffffff)\n14074c10c        stdext::threads::_Throw_lock_error()\n14074c10c        noreturn\n14074c0ba        uint64_t rcx_1 = (rbp_2 + 1) * 2\n14074c0c4        int32_t* rax_1\n14074c0c4        if (rcx_1 u< 0x1000)\n14074c0cd        rax_1 = nullptr\n14074c0d2        if (rcx_1 != 0)\n14074c0d4        rax_1 = operator new(rcx_1)\n14074c0c6        rax_1 = std::_Allocate_manually_vector_aligned<struct std::_Default_allocate_traits>(rcx_1)\n14074c0e1        *arg1 = rax_1\n14074c0ea        result = memcpy(rax_1, rbx, (rsi << 1) + 2)\n14074c0ef        arg1[1].q = rsi\n14074c0f3        *(arg1 + 0x18) = rbp_2\n14074c07a        result = *rbx\n14074c07d        *arg1 = result\n14074c081        arg1[1].q = rsi\n14074c085        *(arg1 + 0x18) = 7\n14074c10b        return result",
+  "fetched_at": "2026-04-26T17:29:44Z"
+}

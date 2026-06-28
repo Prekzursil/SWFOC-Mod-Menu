@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062ac90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DebrisBehaviorClass * __thiscall\nDebrisBehaviorClass::vfunction4(DebrisBehaviorClass *this,int param_1)\n\n{\n  DebrisBehaviorClass *pDVar1;\n  \n  pDVar1 = (DebrisBehaviorClass *)0x0;\n  if (param_1 == 0x28) {\n    pDVar1 = this;\n  }\n  return pDVar1;\n}",
+  "fetched_at": "2026-04-26T17:32:03Z"
+}

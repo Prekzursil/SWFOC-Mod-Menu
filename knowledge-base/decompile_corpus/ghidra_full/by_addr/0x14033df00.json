@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033df00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<class_FactionAndMusicEventPairClass> * __thiscall\nDynamicVectorClass<class_FactionAndMusicEventPairClass>::scalar_deleting_destructor\n          (DynamicVectorClass<class_FactionAndMusicEventPairClass> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       DynamicVectorClass<class_FactionAndMusicEventPairClass>::~DynamicVectorClass<class_FactionAndMusicEventPairClass>\n                        */\n  this->vftablePtr = &vftable;\n  FUN_14033dfc0();\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:20Z"
+}

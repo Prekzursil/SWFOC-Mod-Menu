@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c2b20",
+  "tool": "ghidra",
+  "fact_id": "rva_galactic_camera_ctor",
+  "body": "\nGalacticCameraClass * __thiscall GalacticCameraClass::GalacticCameraClass(GalacticCameraClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  (this->GalacticCameraClass_data).offset_0x8 = 0.0;\n  (this->GalacticCameraClass_data).offset_0xc = 0.0;\n  (this->GalacticCameraClass_data).offset_0x0 = 0;\n  (this->GalacticCameraClass_data).offset_0x4 = 0.0;\n  (this->GalacticCameraClass_data).offset_0x10 = (longlong *)0x0;\n  (this->GalacticCameraClass_data).offset_0x18 = 0;\n  (this->GalacticCameraClass_data).offset_0x20 = 0.0;\n  (this->GalacticCameraClass_data).offset_0x24 = 0.0;\n  (this->GalacticCameraClass_data).offset_0x28 = 0.0;\n  (this->GalacticCameraClass_data).offset_0x2c = 0.0;\n  *(undefined8 *)&(this->GalacticCameraClass_data).field_0x30 = 0;\n  *(undefined8 *)&(this->GalacticCameraClass_data).field_0x38 = 0x3f800000;\n  (this->GalacticCameraClass_data).offset_0x40 = 0;\n  (this->GalacticCameraClass_data).offset_0x44 = 0.0;\n  (this->GalacticCameraClass_data).offset_0x48 = 0.0;\n  (this->GalacticCameraClass_data).offset_0x50 = 0;\n  (this->GalacticCameraClass_data).offset_0x58 = 0;\n  FUN_1403c2c00(this,0);\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:31Z"
+}

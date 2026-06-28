@@ -1,0 +1,7 @@
+{
+  "addr": "0x140499420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall QuitGameEventClass::vfunction5(QuitGameEventClass *this)\n\n{\n  undefined4 uVar1;\n  int iVar2;\n  longlong lVar3;\n  undefined8 uVar4;\n  int iVar5;\n  \n  lVar3 = FUN_140294bc0(&DAT_140a16fd0,(this->EventClass_data).offset_0xc);\n  *(undefined1 *)(lVar3 + 99) = 1;\n  uVar4 = FUN_14004fd50();\n  FUN_140488190(uVar4,lVar3);\n  uVar1 = (this->EventClass_data).offset_0xc;\n  iVar5 = DAT_140a2ab00._4_4_ * 2 >> 1;\n  if (iVar5 <= (int)DAT_140a2ab00) {\n    iVar2 = iVar5 / 10;\n    if (iVar5 / 10 < 10) {\n      iVar2 = 10;\n    }\n    FUN_140021ec0(&PTR_vftable_140a2aaf0,iVar2 + iVar5,0,1);\n  }\n  *(undefined4 *)(DAT_140a2aaf8 + (longlong)(int)DAT_140a2ab00 * 4) = uVar1;\n  DAT_140a2ab00._0_4_ = (int)DAT_140a2ab00 + 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:08Z"
+}

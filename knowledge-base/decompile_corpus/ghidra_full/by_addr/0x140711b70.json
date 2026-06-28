@@ -1,0 +1,7 @@
+{
+  "addr": "0x140711b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StunAbilityClass * __thiscall StunAbilityClass::StunAbilityClass(StunAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->StunAbilityClass_data).offset_0x0 = 0;\n  (this->StunAbilityClass_data).offset_0x8 = 0;\n  (this->StunAbilityClass_data).offset_0x10 = 0;\n  FUN_1404c3df0(&(this->StunAbilityClass_data).field_0x18);\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 9;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:55:33Z"
+}

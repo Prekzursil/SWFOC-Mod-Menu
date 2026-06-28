@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bf790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1406bf790(longlong param_1,undefined4 param_2,longlong param_3)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  ulonglong uVar3;\n  uint uVar4;\n  ulonglong uVar5;\n  int iVar6;\n  \n  lVar1 = *(longlong *)\n           (*(longlong *)\n             (*(longlong *)(*(longlong *)(*(longlong *)(param_1 + 0x20) + 0x90) + 0x28) + 0x50) +\n           0x38);\n  if (lVar1 != 0) {\n    uVar2 = 0;\n    iVar6 = (int)(*(longlong *)(param_1 + 0x60) - *(longlong *)(param_1 + 0x58) >> 3);\n    uVar3 = uVar2;\n    uVar5 = uVar2;\n    if (0 < iVar6) {\n      do {\n        if (((*(longlong *)(uVar2 + *(longlong *)(param_1 + 0x58)) == param_3) &&\n            (*(int *)(uVar3 + *(longlong *)(param_1 + 0x120)) == -1)) &&\n           (*(longlong *)(uVar2 + *(longlong *)(param_1 + 0x108)) == 0)) {\n          *(undefined4 *)(*(longlong *)(param_1 + 0x120) + (longlong)(int)uVar5 * 4) = param_2;\n          FUN_1404d31a0(lVar1,param_2);\n          return;\n        }\n        uVar4 = (int)uVar5 + 1;\n        uVar2 = uVar2 + 8;\n        uVar3 = uVar3 + 4;\n        uVar5 = (ulonglong)uVar4;\n      } while ((int)uVar4 < iVar6);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:38:56Z"
+}

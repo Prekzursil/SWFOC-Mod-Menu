@@ -1,0 +1,554 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Alamo Engine Knowledge Base v3",
+  "description": "Machine-readable knowledge base merging Phase 1-2 (alamo_engine_kb.json) with all Phase 3 findings. Covers PlayerClass, GameObjectClass, Combat, AI, Galactic Map, Production, Story, Camera/Selection, Network, Save Format, and Lua integration.",
+  "_meta": {
+    "format_version": "3.0.0",
+    "engine": "Alamo",
+    "game": "Star Wars: Empire at War - Forces of Corruption",
+    "mod": "Thrawn's Revenge 3.5",
+    "module": {
+      "name": "StarWarsG.exe",
+      "architecture": "x86_64",
+      "compiler": "MSVC",
+      "image_size": 13369344,
+      "base_address_ghidra": "0x140000000",
+      "base_address_observed_runtime": "0x7FF6E3770000"
+    },
+    "analysis_dates": ["2025-06-15", "2026-04-04"],
+    "analysts": ["Prekzursil", "Agent 3B", "Agent 3C", "Agent 3D", "Agent 3E", "Agent 3F", "Agent 3G", "Agent 3H", "Agent 3I", "Agent 3K", "Agent 5A"],
+    "tools_used": ["Cheat Engine 7.5", "x64dbg", "Ghidra 12.0.3 MCP", "MinHook DLL bridge", "Python capstone/keystone", "Custom memory scanner"],
+    "rtti_total_classes": 1703,
+    "lua_version": "5.0.2",
+    "phases_completed": ["Phase 1 (struct discovery)", "Phase 2 (DLL bridge + Lua)", "Phase 3 (full subsystem decompilation)"]
+  },
+
+  "structs": {
+    "PlayerClass": {
+      "rtti_mangled_name": ".?AVPlayerClass@@",
+      "inherits": ["RefCountClass", "SignalGeneratorClass"],
+      "estimated_size": 1232,
+      "estimated_size_hex": "0x4D0",
+      "destructor_rva": "0x27ED40",
+      "access_pattern": "PlayerListClass global at 0xA16FD0 -> player_array[slot_index]; direct array at 0xA16FF0",
+      "notes": [
+        "Actual RTTI name is PlayerClass (not PlayerObject)",
+        "AIPlayerClass at +0x360 is a separate heap object, NOT inlined",
+        "PlayerWrapper Lua binding stores pointer at wrapper+0x28",
+        "15+ DynamicVectorClass instances inlined"
+      ],
+      "fields": {
+        "0x00": {"type": "pointer", "name": "vtable_ptr", "status": "CONFIRMED"},
+        "0x08": {"type": "struct(8B)", "name": "refcount_data", "status": "DISCOVERED"},
+        "0x10": {"type": "struct(32B)", "name": "signal_generator_base", "status": "DISCOVERED"},
+        "0x37": {"type": "uint8", "name": "playable", "status": "CONFIRMED", "values": {"2": "playable", "3": "allied"}},
+        "0x48": {"type": "int32", "name": "slot_index", "status": "CONFIRMED"},
+        "0x4C": {"type": "int32", "name": "player_id", "status": "CONFIRMED"},
+        "0x54": {"type": "int32", "name": "team_id", "status": "DISCOVERED"},
+        "0x58": {"type": "int32", "name": "ai_player_type_id", "status": "DISCOVERED"},
+        "0x62": {"type": "uint8", "name": "local_player", "status": "CONFIRMED", "values": {"1": "local human", "0": "others"}},
+        "0x68": {"type": "pointer", "name": "faction_ref", "status": "CONFIRMED", "note": "FactionClass ptr; name at *(faction+0x28)"},
+        "0x70": {"type": "float32", "name": "credits", "status": "CONFIRMED"},
+        "0x74": {"type": "float32", "name": "max_credits", "status": "CONFIRMED", "note": "-1 = uncapped"},
+        "0x84": {"type": "int32", "name": "tech_level", "status": "CONFIRMED"},
+        "0x88": {"type": "int32", "name": "max_tech_level", "status": "CONFIRMED"},
+        "0xE0": {"type": "DVec<HistoricallyBuiltObjectType>", "name": "historically_built_types", "status": "CONFIRMED"},
+        "0x108": {"type": "uint8", "name": "is_human_controlled", "status": "CONFIRMED"},
+        "0x1B0": {"type": "pointer", "name": "unlocked_types_array", "status": "CONFIRMED"},
+        "0x1B8": {"type": "int32", "name": "unlocked_types_count", "status": "CONFIRMED"},
+        "0x1C0": {"type": "DVec<GameObjectTypeClass const*>", "name": "locked_types_dvec", "status": "CONFIRMED"},
+        "0x1C8": {"type": "pointer", "name": "locked_types_array", "status": "CONFIRMED"},
+        "0x1D0": {"type": "int32", "name": "locked_types_count", "status": "CONFIRMED"},
+        "0x360": {"type": "pointer", "name": "ai_player_ptr", "status": "CONFIRMED", "note": "AIPlayerClass*; null for humans"},
+        "0x370": {"type": "pointer", "name": "diplomacy_table", "status": "CONFIRMED", "note": "int32[]: 0=ally, 1=enemy per player_id"},
+        "0x380": {"type": "DVec<BlackMarketItemClass const*>", "name": "black_market_items", "status": "CONFIRMED"},
+        "0x398": {"type": "int32", "name": "difficulty_level", "status": "DISCOVERED"},
+        "0x3F8": {"type": "uint8[16]", "name": "advisor_hints_base", "status": "CONFIRMED"},
+        "0x448": {"type": "uint8", "name": "black_market_tutorial_flag", "status": "CONFIRMED"},
+        "0x449": {"type": "uint8", "name": "sabotage_tutorial_flag", "status": "CONFIRMED"},
+        "0x484": {"type": "int32", "name": "space_station_level", "status": "DISCOVERED"}
+      },
+      "lua_methods": {
+        "Give_Money": {"wrapper_rva": "0x603130", "engine_rva": "0x27F370"},
+        "Get_Faction_Name": {"wrapper_rva": "0x602A00", "engine_rva": "inline"},
+        "Get_Credits": {"wrapper_rva": "0x6027F0", "engine_rva": "inline"},
+        "Get_ID": {"wrapper_rva": "0x602C40", "engine_rva": "inline"},
+        "Get_Tech_Level": {"wrapper_rva": "0x603040", "engine_rva": "inline"},
+        "Set_Tech_Level": {"wrapper_rva": "0x604480", "engine_rva": "0x288980"},
+        "Unlock_Tech": {"wrapper_rva": "0x604540", "engine_rva": "0x286100"},
+        "Lock_Tech": {"wrapper_rva": "0x603B20", "engine_rva": "0x286150"},
+        "Is_Enemy": {"wrapper_rva": "0x603760", "engine_rva": "0x2824F0"},
+        "Is_Ally": {"wrapper_rva": "0x603560", "engine_rva": "0x2823E0"},
+        "Is_Human": {"wrapper_rva": "0x603A40", "engine_rva": "inline"},
+        "Is_Local_Player": {"wrapper_rva": "0x603960", "engine_rva": "inline"},
+        "Make_Ally": {"wrapper_rva": "0x6046A0", "engine_rva": "0x288800"},
+        "Make_Enemy": {"wrapper_rva": "0x604780", "engine_rva": "0x288800"},
+        "Enable_As_Actor": {"wrapper_rva": "0x602640", "engine_rva": "0x4B0250"},
+        "Select_Object": {"wrapper_rva": "0x603F60", "engine_rva": "0x2BD2F0"},
+        "Retreat": {"wrapper_rva": "0x603DE0", "engine_rva": "0x340920"},
+        "Release_Credits_For_Tactical": {"wrapper_rva": "0x603C70", "engine_rva": "0x4B06D0"}
+      }
+    },
+
+    "GameObjectClass": {
+      "rtti_mangled_name": ".?AVGameObjectClass@@",
+      "vtable_rva": "0x8661B8",
+      "minimum_size": "0x3C8",
+      "constructors": ["0x388720", "0x388B60"],
+      "inherits": ["RootClass", "MultiLinkedListMember", "PooledObjectClass", "CullObjectClass", "SignalGeneratorClass"],
+      "additional_vtables": [
+        {"rva": "0x8661D8", "offset": "0x08", "class": "MultiLinkedListMember"},
+        {"rva": "0x866200", "offset": "0x18", "class": "CullObjectClass"},
+        {"rva": "0x866210", "offset": "0x20", "class": "SignalGeneratorClass"},
+        {"rva": "0x866228", "offset": "0x38", "class": "unknown_base_5"}
+      ],
+      "fields": {
+        "0x00": {"type": "pointer", "name": "vtable_ptr", "confidence": "high"},
+        "0x08": {"type": "pointer", "name": "vtable_MultiLinkedListMember", "confidence": "high"},
+        "0x18": {"type": "pointer", "name": "vtable_CullObjectClass", "confidence": "high"},
+        "0x20": {"type": "pointer", "name": "vtable_SignalGeneratorClass", "confidence": "high"},
+        "0x38": {"type": "pointer", "name": "vtable_5", "confidence": "high"},
+        "0x40": {"type": "uint32", "name": "visibility_mask", "confidence": "high", "init": "0x3FFFFF"},
+        "0x48": {"type": "int32", "name": "unique_session_id", "confidence": "high"},
+        "0x50": {"type": "int32", "name": "object_id", "confidence": "high"},
+        "0x58": {"type": "int32", "name": "owner_player_id", "confidence": "high"},
+        "0x5C": {"type": "float32", "name": "hp", "confidence": "high", "note": "Written exclusively by SetHP (0x3A89D0)"},
+        "0x68": {"type": "float32", "name": "spawn_position_x", "confidence": "high"},
+        "0x6C": {"type": "float32", "name": "spawn_position_y", "confidence": "high"},
+        "0x70": {"type": "float32", "name": "spawn_position_z", "confidence": "high"},
+        "0x78": {"type": "float32", "name": "current_position_x", "confidence": "high"},
+        "0x7C": {"type": "float32", "name": "current_position_y", "confidence": "high"},
+        "0x80": {"type": "float32", "name": "current_position_z", "confidence": "high"},
+        "0x84": {"type": "float32", "name": "render_position_x", "confidence": "high"},
+        "0x88": {"type": "float32", "name": "render_position_y", "confidence": "high"},
+        "0x8C": {"type": "float32", "name": "render_position_z", "confidence": "high"},
+        "0xA8": {"type": "pointer", "name": "locomotor_component_ptr", "confidence": "high", "sub_fields": {"+0x29C": "speed_override_active(uint8)", "+0x2A0": "speed_override_value(float32)"}},
+        "0xB8": {"type": "pointer", "name": "parent_container_component_ptr", "confidence": "high"},
+        "0xF0": {"type": "pointer", "name": "buff_modifier_component_ptr", "confidence": "medium"},
+        "0xF8": {"type": "pointer", "name": "game_object_type_wrapper_ptr", "confidence": "medium"},
+        "0x100": {"type": "pointer", "name": "combatant_behavior_ptr", "confidence": "high", "note": "size 0x3B8"},
+        "0x118": {"type": "pointer", "name": "health_sub_object_ptr", "confidence": "high"},
+        "0x278": {"type": "pointer", "name": "component_array_ptr", "confidence": "high"},
+        "0x298": {"type": "pointer", "name": "game_object_type_ptr", "confidence": "high", "note": "name at type+0xF8"},
+        "0x2B0": {"type": "pointer", "name": "container_ref", "confidence": "high"},
+        "0x332": {"type": "uint8[]", "name": "component_lookup_table", "confidence": "high"},
+        "0x335": {"type": "uint8", "name": "parent_component_index", "confidence": "high", "note": "0xFF=top-level"},
+        "0x341": {"type": "uint8", "name": "front_shield_present", "confidence": "high"},
+        "0x342": {"type": "uint8", "name": "rear_shield_present", "confidence": "high"},
+        "0x348": {"type": "uint8", "name": "direct_hp_path_flag", "confidence": "high", "note": "0xFF=direct, other=hardpoints"},
+        "0x3A0": {"type": "uint8", "name": "change_notification_flag", "confidence": "high"},
+        "0x3A1": {"type": "uint8", "name": "prevent_death_flags", "confidence": "high", "note": "bit7=prevent death"},
+        "0x3A7": {"type": "uint8", "name": "invulnerability_flag", "confidence": "high"}
+      },
+      "query_interface_types": {
+        "0x00": "Self",
+        "0x01": "BehaviorClass",
+        "0x03": "Parent/Container",
+        "0x0F": "BaseShieldBehaviorClass (front)",
+        "0x10": "ShieldBehaviorClass (rear)",
+        "0x16": "HardpointManager",
+        "0x19": "AbilityComponent",
+        "0x3D": "TransformComponent",
+        "0x46": "PropertyHandler"
+      }
+    },
+
+    "GameObjectType": {
+      "description": "Type definition struct for game objects. Shared across all instances of a given unit/building type.",
+      "key_offsets": {
+        "0xF8": {"type": "SSO_string", "name": "type_name"},
+        "0x880": {"type": "int32", "name": "build_limit_global"},
+        "0x888": {"type": "int32", "name": "build_limit_per_player"},
+        "0x890": {"type": "int32", "name": "base_build_time"},
+        "0x894": {"type": "int32", "name": "tech_level_requirement"},
+        "0x89C": {"type": "int32", "name": "min_tech_level"},
+        "0xDCC": {"type": "float32", "name": "base_max_hp"},
+        "0xDD0": {"type": "float32", "name": "base_max_front_shield"},
+        "0xDD4": {"type": "float32", "name": "base_max_rear_shield"},
+        "0xEB0": {"type": "pointer", "name": "damage_threshold_array"},
+        "0xF0C": {"type": "int32", "name": "build_pad_requirement"},
+        "0x1648": {"type": "bitmask", "name": "weapon_target_type_bitmask"},
+        "0x1F78": {"type": "int32", "name": "unit_cap_contribution"},
+        "0x1FF4": {"type": "int32", "name": "damage_type_flags"}
+      }
+    },
+
+    "PlanetaryDataPackClass": {
+      "rtti_mangled_name": ".?AVPlanetaryDataPackClass@@",
+      "minimum_size": "0x350",
+      "access": "PlanetaryBehaviorClass+0x18 -> parent[0xB8]",
+      "fields": {
+        "0x10": {"type": "DVec<PersistentTacticalBuiltObjectStruct>", "name": "persistent_tactical_objects"},
+        "0x20": {"type": "DVec<PersistentUpgradeObjectStruct>", "name": "persistent_upgrades"},
+        "0x30": {"type": "DVec<LineLinkStruct>", "name": "line_links"},
+        "0x50": {"type": "DVec<TradeRouteLinkEntryClass>", "name": "trade_route_links"},
+        "0x68": {"type": "float32", "name": "capture_progress", "confidence": "high"},
+        "0x6C": {"type": "int32", "name": "owning_player_id", "confidence": "high"},
+        "0x70": {"type": "float32", "name": "previous_capture_progress", "confidence": "high"},
+        "0x74": {"type": "int32", "name": "previous_owning_player_id", "confidence": "high"},
+        "0x98": {"type": "int32", "name": "capture_initiator_player_id", "confidence": "high"},
+        "0x1C9": {"type": "uint8", "name": "initial_owner_set_flag", "confidence": "high"},
+        "0x2C8": {"type": "uint8", "name": "planet_destroyed_flag", "confidence": "medium"},
+        "0x2E3": {"type": "uint8", "name": "capture_timer_active", "confidence": "medium"},
+        "0x2F4": {"type": "int32", "name": "corruption_level", "confidence": "high", "values": {"-1": "none", "0-3": "corruption tiers"}}
+      }
+    },
+
+    "FOWPlayerObject": {
+      "size": "0x58",
+      "description": "Per-player fog of war state, stored in GameModeClass+0x198 array",
+      "fields": {
+        "0x00": {"type": "pointer", "name": "visibility_grid", "note": "byte per cell: 0x00=fogged, 0xFF=visible"},
+        "0x08": {"type": "pointer", "name": "reveal_timer_grid", "note": "short per cell"},
+        "0x10": {"type": "pointer", "name": "output_visibility_grid"},
+        "0x20": {"type": "int64", "name": "grid_cell_count"},
+        "0x50": {"type": "uint8", "name": "dirty_flag"}
+      }
+    },
+
+    "ObjectUnderConstructionClass": {
+      "allocation_size": "0x38",
+      "constructor_rva": "0x3FFF70",
+      "destructor_rva": "0x5242C0",
+      "fields": {
+        "0x00": {"type": "pointer", "name": "vtable_ptr"},
+        "0x08": {"type": "pointer", "name": "producing_object_type_ptr"},
+        "0x10": {"type": "float32", "name": "build_countdown"},
+        "0x20": {"type": "int32", "name": "player_slot_id"},
+        "0x28": {"type": "float32", "name": "build_cost"},
+        "0x2C": {"type": "int32", "name": "producing_object_id"}
+      }
+    },
+
+    "CameraClass": {
+      "constructor_rva": "0x261470",
+      "sub_object_size": "0x308",
+      "fields": {
+        "outer": {
+          "0x00": {"type": "pointer", "name": "vtable_ptr"},
+          "0x04": {"type": "int32", "name": "ref_count"},
+          "0x10": {"type": "float32[12]", "name": "orientation_matrix_copy"},
+          "0x40": {"type": "pointer", "name": "camera_state_ptr"}
+        },
+        "sub_object": {
+          "0x00": {"type": "float32[12]", "name": "orientation_matrix"},
+          "0x0C": {"type": "float32", "name": "position_x"},
+          "0x1C": {"type": "float32", "name": "position_y"},
+          "0x2C": {"type": "float32", "name": "position_z"},
+          "0x30": {"type": "float32", "name": "near_clip", "default": 1.0},
+          "0x34": {"type": "float32", "name": "far_clip", "default": 1000.0},
+          "0x44": {"type": "int32", "name": "projection_mode", "values": {"0": "perspective", "1": "ortho"}},
+          "0x48": {"type": "float32", "name": "fov_radians", "default": 0.785},
+          "0x4C": {"type": "float32", "name": "aspect_ratio", "default": 1.333},
+          "0x74": {"type": "float32", "name": "viewport_x"},
+          "0x78": {"type": "float32", "name": "viewport_y"},
+          "0x7C": {"type": "float32", "name": "viewport_width"},
+          "0x80": {"type": "float32", "name": "viewport_height"},
+          "0xB4": {"type": "float32[16]", "name": "projection_matrix"}
+        }
+      }
+    },
+
+    "StorySubPlotClass": {
+      "rtti_mangled_name": ".?AVStorySubPlotClass@@",
+      "constructor_rva": "0x52D400",
+      "destructor_rva": "0x52E220",
+      "minimum_size": "0x650",
+      "inherits": ["SignalGeneratorClass"],
+      "key_offsets": {
+        "0x20": "Hash table linked list root (event lookup)",
+        "0x30": "Hash table bucket array pointer",
+        "0x48": "Hash table bucket mask",
+        "0x58-0x5F8": "61 DynamicVectorClass<StoryEventClass*> slots (0x18 each)",
+        "0x628": "Plot name string (MSVC SSO)",
+        "0x644": "is_active_story flag"
+      },
+      "hash_algorithm": "CRC32(strupr(name)) XOR 0xDEADBEEF -> LCG(a=16807,m=2^31-1) -> AND bucket_mask"
+    },
+
+    "StoryEventClass": {
+      "rtti_mangled_name": ".?AVStoryEventClass@@",
+      "constructor_rva": "0x4501D0",
+      "minimum_size": "0x360",
+      "inherits": ["SignalGeneratorClass"],
+      "key_offsets": {
+        "0x00-0x1F": "Event name SSO string",
+        "0x20": "Event type ID (int32)",
+        "0x3C": "Reward type ID (int32)",
+        "0x4C": "Active/triggered flag (byte)",
+        "0x50-0x190": "Reward parameters (14 SSO strings, 0x20 stride)",
+        "0x228": "Back-pointer to StorySubPlotClass",
+        "0x230": "Dialog ID string",
+        "0x2C0": "Dialog text entries DVec",
+        "0x358": "Event index within subplot"
+      },
+      "total_event_types": 61,
+      "unique_concrete_classes": 28
+    },
+
+    "lua_State": {
+      "description": "Lua 5.0.2 state struct (partial)",
+      "fields": {
+        "0x10": {"type": "pointer", "name": "top"},
+        "0x18": {"type": "pointer", "name": "base"}
+      }
+    }
+  },
+
+  "globals": {
+    "PlayerListClass_ptr": {"rva": "0xA16FD0", "type": "pointer", "verified": "FoCAPI"},
+    "PlayerArray": {"rva": "0xA16FF0", "type": "pointer", "verified": "CE MCP live"},
+    "PlayerCount": {"rva": "0xA16FF8", "type": "int32", "verified": "CE MCP live"},
+    "PlayerCount_static": {"rva": "0xA16FB0", "type": "uint32"},
+    "PlayerListClass_end": {"rva": "0xA16FD8", "type": "pointer"},
+    "GameObjectTypeList_ptr": {"rva": "0xA172D0", "type": "pointer"},
+    "GameModeManagerClass_singleton": {"rva": "0xB153E0", "type": "pointer"},
+    "GameModeManager_active_mode": {"rva": "0xB15418", "type": "pointer"},
+    "PerceptionManager_ptr": {"rva": "0xB153E0", "type": "pointer"},
+    "FOW_GlobalToggle": {"rva": "0xA284C4", "type": "bool"},
+    "FOW_data": {"rva": "0xA573D0", "type": "pointer"},
+    "GameTickCounter_ptr": {"rva": "0xB0A340", "type": "float_or_int"},
+    "screen_aspect_ratio": {"rva": "0xA12550", "type": "float32"},
+    "galactic_camera_zoom_angle": {"rva": "0xB1599C", "type": "float32"},
+    "galactic_camera_target_zoom": {"rva": "0xB159A0", "type": "float32"},
+    "galactic_camera_distance": {"rva": "0xB159A4", "type": "float32"},
+    "galactic_camera_distance_scale": {"rva": "0xB159A8", "type": "float32"},
+    "galactic_camera_look_dir_x": {"rva": "0xB159AC", "type": "float32"},
+    "galactic_camera_look_dir_y": {"rva": "0xB159B0", "type": "float32"},
+    "galactic_camera_look_dir_z": {"rva": "0xB159B4", "type": "float32"},
+    "galactic_camera_mode_value": {"rva": "0xB159C8", "type": "float32"},
+    "game_speed_numerator": {"rva": "0xB0A320", "type": "int_or_float"},
+    "game_speed_denominator": {"rva": "0xB0A340", "type": "int_or_float"},
+    "build_time_global_scalar": {"rva": "0xB15920", "type": "float"},
+    "easy_hp_multiplier": {"rva": "0xB16DCC", "type": "float"},
+    "hard_hp_multiplier": {"rva": "0xB16DC8", "type": "float"},
+    "Default_Hero_Respawn_Time": {"rva": "0xB169F0", "type": "float", "verified": "Phase 2 RE"},
+    "TheCommandBar": {"rva": "0xB27F60", "type": "pointer", "verified": "FoCAPI"},
+    "TheGameText": {"rva": "0xA7BC58", "type": "pointer", "verified": "FoCAPI"},
+    "CRC32_lookup_table": {"rva": "0xA14D20", "type": "uint32[256]"},
+    "EventTypeTree": {"rva": "0xB30728", "type": "pointer", "note": "story/reward type string->int tree"},
+    "EventFactory_registry": {"rva": "0xB36BC1", "type": "DVec<BaseEventFactoryClass*>"},
+    "SaveGameEventFactory_singleton": {"rva": "0xB313E0", "type": "pointer"},
+    "damage_threshold_1": {"rva": "0x803514", "type": "float"},
+    "damage_threshold_2": {"rva": "0x8007C0", "type": "float"},
+    "script_id_counter": {"rva": "0xA15738", "type": "int32"}
+  },
+
+  "functions": {
+    "SetHP": {"rva": "0x3A89D0", "signature": "float SetHP(GameObjectClass* obj, float new_hp)", "aob": "40 53 48 83 EC 60 0F 29 74 24 50 0F 57 C0 F3 0F 10 71 5C", "verified": "Phase 1 RE + CT hook"},
+    "QueryInterface": {"rva": "0x395AC0", "signature": "void* QueryInterface(GameObjectClass* obj, int type)", "verified": "Phase 1 RE"},
+    "ResolveParentOwner": {"rva": "0x3956C0", "verified": "Phase 1 RE"},
+    "AddCredits": {"rva": "0x27F370", "signature": "void AddCredits(PlayerClass* player, float amount, bool track)", "verified": "Phase 2 RE AOB unique"},
+    "SetTechLevel": {"rva": "0x288980", "signature": "int SetTechLevel(PlayerClass* player, int level, bool apply, bool notify)", "verified": "Phase 2 RE AOB unique"},
+    "SetSpeedOverride": {"rva": "0x3A8C90", "verified": "Phase 2 RE AOB unique"},
+    "ClearSpeedOverride": {"rva": "0x38F8B0", "verified": "Phase 2 RE AOB unique"},
+    "SetPosition": {"rva": "0x3ABB80", "verified": "Phase 2 RE", "note": "IDA Hex-Rays correction 2026-04-05: this is SetPosition/Teleport with hardpoint propagation via QI(0x16), NOT invulnerability setter. Previously mislabeled Make_Invulnerable_Setter."},
+    "MakeInvulnerable_LuaWrapper": {"rva": "0x57D550", "verified": "CONFIRMED-RE IDA 2026-04-05", "note": "Full Lua binding for Make_Invulnerable. Creates/removes INVULNERABLE behavior. Propagates to hardpoints."},
+    "BehaviorAttach": {"rva": "0x38C570", "verified": "CONFIRMED-RE IDA 2026-04-05", "note": "Attaches behavior object to game object. Called by Make_Invulnerable Lua wrapper."},
+    "BehaviorRemoveDispatch": {"rva": "0x3A54C0", "verified": "CONFIRMED-RE IDA 2026-04-05", "note": "Removes behavior from game object. Called by Make_Invulnerable Lua wrapper via QI(75)."},
+    "HardpointGet": {"rva": "0x4052D0", "verified": "CONFIRMED-RE IDA 2026-04-05", "note": "Gets hardpoint object by index from hardpoint manager."},
+    "HardpointCount": {"rva": "0x405300", "verified": "CONFIRMED-RE IDA 2026-04-05", "note": "Returns hardpoint count from hardpoint manager."},
+    "PlayerList_FindByID": {"rva": "0x294BC0", "verified": "Phase 1 RE + FoCAPI"},
+    "Get_Owner_Lua": {"rva": "0x5792E0", "verified": "Phase 1 RE"},
+    "Change_Owner": {"rva": "0x574D0E", "verified": "Phase 2 RE"},
+    "ScheduleHeroRespawn": {"rva": "0x48EB10", "verified": "Phase 2 RE"},
+    "operator_new": {"rva": "0x769C58", "verified": "Phase 2 RE + FoCAPI"},
+    "GetMaxHealth": {"rva": "0x3727A0", "source": "Phase 3 combat RE"},
+    "GetMaxFrontShield": {"rva": "0x372320", "source": "Phase 3 combat RE"},
+    "GetMaxRearShield": {"rva": "0x3725F0", "source": "Phase 3 combat RE"},
+    "Take_Damage_Outer": {"rva": "0x38A350", "source": "Phase 3 combat RE"},
+    "Take_Damage_Impl": {"rva": "0x3AB890", "source": "Phase 3 combat RE"},
+    "Take_Damage_PropertyDispatch": {"rva": "0x3A97E0", "source": "Phase 3 combat RE"},
+    "FireControl_Dispatch": {"rva": "0x38D730", "source": "Phase 3 combat RE"},
+    "WeaponTick": {"rva": "0x387010", "source": "Phase 3 combat RE"},
+    "HardpointFire": {"rva": "0x387F50", "source": "Phase 3 combat RE"},
+    "SetFrontShield": {"rva": "0x3A8630", "source": "Phase 3 combat RE"},
+    "SetRearShield": {"rva": "0x3A91E0", "source": "Phase 3 combat RE"},
+    "AnimationDispatch": {"rva": "0x3A92F0", "source": "Phase 3 combat RE"},
+    "Death_Handler": {"rva": "0x39BDB0", "source": "Phase 3 combat RE"},
+    "DamageVisualLevel": {"rva": "0x3AC290", "source": "Phase 3 combat RE"},
+    "HardpointCount": {"rva": "0x405300", "source": "Phase 3 combat RE"},
+    "GetHardpoint": {"rva": "0x4052D0", "source": "Phase 3 combat RE"},
+    "HullRatio_ViaHardpoints": {"rva": "0x405230", "source": "Phase 3 combat RE"},
+    "CanProduce": {"rva": "0x2804D0", "source": "Phase 3 production RE"},
+    "ComputeBuildTime": {"rva": "0x400370", "source": "Phase 3 production RE"},
+    "GetAdjustedCost": {"rva": "0x400240", "source": "Phase 3 production RE"},
+    "CRC32_Hash": {"rva": "0x215A30", "source": "Phase 3 story RE"},
+    "StorySubPlot_FindEventByName": {"rva": "0x52EF90", "source": "Phase 3 story RE"},
+    "StoryEvent_Factory_Create": {"rva": "0x453310", "source": "Phase 3 story RE"},
+    "ResolveRewardTypeFromString": {"rva": "0x45C3F0", "source": "Phase 3 story RE"},
+    "LuaScriptClass_RegisterGlobals": {"rva": "0x2567B0", "source": "Phase 3 story RE"},
+    "GameModeManagerClass_GetModeByType": {"rva": "0x28A950", "source": "Phase 3 camera RE"},
+    "CameraClass_GetPosition": {"rva": "0x261A40", "source": "Phase 3 camera RE"},
+    "CameraClass_SetTransformMatrix": {"rva": "0x261BD0", "source": "Phase 3 camera RE"},
+    "CameraClass_SetFovAspect": {"rva": "0x261A80", "source": "Phase 3 camera RE"},
+    "GalacticCameraClass_Update": {"rva": "0x3C2C00", "source": "Phase 3 camera RE"},
+    "PlanetFactionChange_InitialSet": {"rva": "0x3FA160", "source": "Phase 3 galactic RE"},
+    "PlanetFactionChange_FullTransfer": {"rva": "0x3FB040", "source": "Phase 3 galactic RE"},
+    "Is_Ally": {"rva": "0x2823E0", "source": "Phase 2 RE"},
+    "Is_Enemy": {"rva": "0x2824F0", "source": "Phase 2 RE"},
+    "Make_Ally_Enemy": {"rva": "0x288800", "source": "Phase 2 RE"},
+    "Unlock_Tech": {"rva": "0x27F860", "source": "Phase 2 RE"},
+    "Lock_Tech": {"rva": "0x286150", "source": "Phase 2 RE"},
+    "ChunkWriterClass_Open_Chunk": {"rva": "0x21FE20", "source": "Phase 3 save RE"},
+    "ChunkWriterClass_Close_Chunk": {"rva": "0x21FEB0", "source": "Phase 3 save RE"},
+    "ChunkWriterClass_Write": {"rva": "0x2200B0", "source": "Phase 3 save RE"},
+    "ChunkReaderClass_Open_Chunk": {"rva": "0x2204A0", "source": "Phase 3 save RE"},
+    "ChunkReaderClass_Close_Chunk": {"rva": "0x220520", "source": "Phase 3 save RE"},
+    "Write_Int": {"rva": "0x2046F0", "source": "Phase 3 save RE"},
+    "Read_Int": {"rva": "0x2043B0", "source": "Phase 3 save RE"},
+    "LuaScriptClass_Get_Script_From_State": {"rva": "0x245790", "source": "FoCAPI"},
+    "PlayerWrapper_Create": {"rva": "0x6019F0", "source": "FoCAPI"},
+    "GameTextClass_Get": {"rva": "0x1FA680", "source": "FoCAPI"}
+  },
+
+  "lua_bindings": {
+    "lua_version": "5.0.2",
+    "total_confirmed_api_functions": 48,
+    "api_functions": {
+      "lua_open": "0x7B8930",
+      "lua_checkstack": "0x7B8BC0",
+      "lua_concat": "0x7B8C40",
+      "lua_cpcall": "0x7B8CD0",
+      "lua_error": "0x7B8D80",
+      "lua_getfenv": "0x7B8D90",
+      "lua_getmetatable": "0x7B8E10",
+      "lua_gettable": "0x7B8E90",
+      "lua_gettop": "0x7B8EF0",
+      "lua_insert": "0x7B8F00",
+      "lua_iscfunction": "0x7B8F60",
+      "lua_isnumber": "0x7B8FB0",
+      "lua_isstring": "0x7B9010",
+      "lua_equal": "0x7B9060",
+      "lua_load": "0x7B90F0",
+      "lua_newtable": "0x7B9140",
+      "lua_newthread": "0x7B9190",
+      "lua_newuserdata": "0x7B91D0",
+      "lua_next": "0x7B9220",
+      "lua_pcall": "0x7B9280",
+      "lua_pushboolean": "0x7B9320",
+      "lua_pushcclosure": "0x7B9340",
+      "lua_pushlightuserdata": "0x7B9480",
+      "lua_pushlstring": "0x7B94A0",
+      "lua_pushnil": "0x7B9510",
+      "lua_pushnumber": "0x7B9520",
+      "lua_pushstring": "0x7B9540",
+      "lua_pushvalue": "0x7B9600",
+      "lua_pushfstring": "0x7B9640",
+      "lua_lessthan": "0x7B9690",
+      "lua_rawseti": "0x7B9820",
+      "lua_settop": "0x7B99D0",
+      "lua_settable": "0x7B9A60",
+      "lua_tonumber": "0x7B9BC0",
+      "lua_type": "0x7B9E00"
+    },
+    "wrong_rvas_do_not_use": {
+      "0x7B94A0": "Was mislabeled lua_pushstring, is actually lua_pushlstring",
+      "0x7B97C0": "Was mislabeled lua_settable, crashes",
+      "0x7B9500": "Was guessed lua_pushnumber, crashes; real is 0x7B9520",
+      "0x7B8E10": "Was mislabeled lua_gettable, is actually lua_getmetatable"
+    },
+    "estimated_needing_verification": {},
+    "confirmed_corrections": {
+      "lua_close": {"rva": "0x7B8890", "status": "CONFIRMED-RE", "note": "Corrected from 0x7B8A70 (was UNVERIFIED)"}
+    }
+  },
+
+  "subsystems": {
+    "combat": {
+      "damage_pipeline_stages": ["Weapon Fire", "Invulnerability Gate", "Damage Routing", "HP Subtraction", "SetHP"],
+      "sethp_rva": "0x3A89D0",
+      "sethp_callers_count": 18,
+      "max_health_formula": "base_hp(type+0xDCC) * difficulty_mult * player_mult * (1.0 + ability_bonus)",
+      "shield_system": {
+        "front": {"qi_id": "0x0F", "set": "0x3A8630", "storage": "[obj+0xF0]+0xF8", "max_from": "type+0xDD0"},
+        "rear": {"qi_id": "0x10", "set": "0x3A91E0", "storage": "[obj+0xF0]+0xFC", "max_from": "type+0xDD4"}
+      },
+      "invulnerability_flag": "obj+0x3A7",
+      "invulnerability_system": {
+        "lua_wrapper_rva": "0x57D550",
+        "behavior_attach_rva": "0x38C570",
+        "behavior_remove_rva": "0x3A54C0",
+        "hardpoint_get_rva": "0x4052D0",
+        "hardpoint_count_rva": "0x405300",
+        "note": "No single C++ setter. Make_Invulnerable Lua wrapper at 0x57D550 creates/removes INVULNERABLE behavior via behavior system. Propagates to all hardpoints via QI(22). IDA verified 2026-04-05.",
+        "correction": "0x3ABB80 was mislabeled Make_Invulnerable_Setter; it is actually SetPosition/Teleport"
+      },
+      "prevent_death_flag": "obj+0x3A1 bit 7",
+      "damage_types": {"0x00": "Normal", "0x06": "Special(Berserker check)", "0x08": "Fire/Burn", "0x68": "Berserker/Eat", "0x74": "Construction"},
+      "special_abilities_count": 91,
+      "key_abilities": ["CombatBonus(8 stats)", "AbsorbBlaster", "Berserker", "DrainLife", "ConcentrateFire", "MaximumFirepower", "LuckyShot", "TractorBeam", "CableAttack", "EatAttack"]
+    },
+
+    "ai": {
+      "architecture": "hierarchical goal-driven with perception-planning-execution loop",
+      "singleton_rva": "0x4D9C80",
+      "per_player_class_rva": "0x4AF810",
+      "subsystem_count": 7,
+      "subsystems": ["Perception", "Planning(4.0s)", "Goal", "Execution", "Learning", "Template", "Budget"],
+      "build_task_states": 25,
+      "perception_modes": ["Galactic", "Land", "Space", "TacticalGrid"],
+      "enable_mechanism": "TheAIClass state_flags(+0x00) + active_flag(+0x04); per-player AIPlayerClass at PlayerClass+0x360"
+    },
+
+    "galactic_map": {
+      "planet_ownership_field": "PlanetaryDataPackClass+0x6C",
+      "planet_capture_progress": "PlanetaryDataPackClass+0x68",
+      "corruption_level": "PlanetaryDataPackClass+0x2F4",
+      "fow_per_player_array": "GameModeClass+0x198",
+      "fow_global_toggle": "0xA284C4",
+      "ownership_transfer_rvas": {"initial": "0x3FA160", "full": "0x3FB040"},
+      "planet_reachability_slots": 11
+    },
+
+    "production": {
+      "pipeline_stages": 8,
+      "validation_gates": 18,
+      "can_produce_rva": "0x2804D0",
+      "build_time_rva": "0x400370",
+      "build_time_formula": "(base_time * ability_mod * tech_factor * faction_mod * planet_mod) / concurrent_count",
+      "queue_entry_size": "0x38",
+      "event_id": 7
+    },
+
+    "story": {
+      "event_types_total": 61,
+      "unique_classes": 28,
+      "flag_storage": "CRC32 hash table in StorySubPlotClass+0x20",
+      "hash_algorithm": "CRC32(strupr(name)) XOR 0xDEADBEEF -> LCG(16807, 2^31-1)",
+      "reward_dispatch": "string->int via tree at 0xB30728, up to 14 params per event",
+      "factory_rva": "0x453310",
+      "lua_globals_registered": 14,
+      "flag_event_type_id": "0x2C"
+    },
+
+    "camera_selection": {
+      "camera_globals_base": "0xB1599C",
+      "camera_class_ctor": "0x261470",
+      "galactic_camera_update": "0x3C2C00",
+      "game_mode_manager": "0xB153E0",
+      "selection_event_id": 5,
+      "control_group_event_id": 30,
+      "select_all_event_id": 37
+    },
+
+    "network": {
+      "architecture": "peer-to-peer deterministic lockstep",
+      "transport": ["SteamAsyncSocket(0x6B370)", "WinsockAsyncSocket(0x227110)"],
+      "sync_events": {"FrameInfo": 0, "FrameSync": 17, "PerformanceMetrics": 18},
+      "total_event_types": 58,
+      "serialization": "BitStreamClass (bit-packed, not byte-aligned)",
+      "sentinel_values": {"0x3FFFFF": "null object ref", "0xFFFFFFFF": "unscheduled/invalid"}
+    },
+
+    "save_format": {
+      "file_extension": ".sav",
+      "encoding": "binary little-endian",
+      "chunk_format": "Westwood W3D-derived (8-byte header: id+size, bit31=sub-chunks)",
+      "micro_chunk_header": "2 bytes (id+size, max 255 data bytes)",
+      "compression": "zlib linked but usage unconfirmed for saves",
+      "chunk_writer_ctor": "0x21FCC0",
+      "chunk_reader_ctor": "0x220280"
+    }
+  }
+}

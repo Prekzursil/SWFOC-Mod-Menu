@@ -1,0 +1,7 @@
+{
+  "addr": "0x140049080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140049086        void* rdx = arg1[5]\n140049090        if (rdx != 0)\n140049099        sub_140260f10(&data_140b0a130, rdx)\n14004909e        arg1[5] = 0\n1400490aa        struct DynamicVectorClass<struct InGameMessageClass::MessageStruct>::VTable* result = sub_14004a610(&arg1[6])\n1400490af        int64_t rdx_1 = arg1[3]\n1400490b7        if (rdx_1 u>= 0x10)\n1400490b9        void* rcx_1 = *arg1\n1400490c6        if (rdx_1 + 1 u>= 0x1000)\n1400490c8        void* r8_1 = *(rcx_1 - 8)\n1400490db        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1400490fe        _invalid_parameter_noinfo_noreturn()\n1400490fe        noreturn\n1400490dd        rcx_1 = r8_1\n1400490e0        result = j_sub_1407864b8(rcx_1)\n1400490e5        arg1[2] = 0\n1400490ed        arg1[3] = 0xf\n1400490f5        *arg1 = 0\n1400490fd        return result",
+  "fetched_at": "2026-04-26T16:54:10Z"
+}

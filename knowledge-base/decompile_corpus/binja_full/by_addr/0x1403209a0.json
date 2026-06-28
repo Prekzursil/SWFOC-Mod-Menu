@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403209a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403209aa        int64_t lpMem = arg1[1]\n1403209ae        struct DynamicVectorClass<void (__cdecl*)(class SpeechEventClass const* __ptr64)>::VTable* const result = &DynamicVectorClass<void (__cdecl*)(class SpeechEventClass const* __ptr64)>::`vftable'\n1403209b5        *arg1 = &DynamicVectorClass<void (__cdecl*)(class SpeechEventClass const* __ptr64)>::`vftable'\n1403209be        if (lpMem != 0)\n1403209c7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1403209e2        j_sub_1407864b8(lpMem)\n1403209d7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1403209e7        result = nullptr\n1403209e9        *(arg1 + 0x14) &= 0x80000000\n1403209f0        arg1[1] = 0\n1403209f4        arg1[2].d = 0\n140320a01        return result",
+  "fetched_at": "2026-04-26T17:23:36Z"
+}

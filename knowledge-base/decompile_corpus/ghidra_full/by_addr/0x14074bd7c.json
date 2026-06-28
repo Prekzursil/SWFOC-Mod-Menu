@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074bd7c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ctype<unsigned_short> * __thiscall\nstd::ctype<unsigned_short>::scalar_deleting_destructor\n          (ctype<unsigned_short> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: std::ctype<unsigned_short>::~ctype<unsigned_short> */\n  this->vftablePtr = &vftable;\n  if (*(int *)&this[2].vftablePtr != 0) {\n    FUN_1407864b8(this[1]._Crt_new_delete);\n  }\n  FUN_1407864b8(this[2]._Crt_new_delete);\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr = (ctype<unsigned_short>_vftable *)&_Facet_base::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x60);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:06:21Z"
+}

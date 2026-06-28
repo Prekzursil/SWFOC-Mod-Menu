@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405af020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FleetManagementEventClass * __thiscall\nFleetManagementEventClass::FleetManagementEventClass(FleetManagementEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 8;\n  this->vftablePtr = &vftable;\n  (this->FleetManagementEventClass_data).offset_0x0 = 0x3fffff;\n  (this->FleetManagementEventClass_data).offset_0x4 = 0x3fffff;\n  (this->FleetManagementEventClass_data).offset_0x8 = 0x3fffff;\n  (this->FleetManagementEventClass_data).offset_0xc = 0x3fffff;\n  (this->FleetManagementEventClass_data).offset_0x14 = 0xfffffffe;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:31Z"
+}

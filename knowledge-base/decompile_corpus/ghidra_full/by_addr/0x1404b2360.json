@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b2360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall GalacticModeClass::vfunction10(GalacticModeClass *this)\n\n{\n  ulonglong in_RAX;\n  \n  if (DAT_140b1540c < 1) {\n    if ((DAT_140b154d0 != '\\0') || (in_RAX = DAT_140b2b368 - DAT_140b2b360 >> 3, (int)in_RAX != 0))\n    {\n      in_RAX = FUN_14028af60(&DAT_140b153e0);\n      if ((char)in_RAX == '\\0') {\n        in_RAX = FUN_1402b0350(*(undefined8 *)&(this->GalacticModeClass_data).field_0x10);\n        if ((char)in_RAX != '\\0') goto LAB_1404b23b6;\n      }\n    }\n    return in_RAX & 0xffffffffffffff00;\n  }\nLAB_1404b23b6:\n  return CONCAT71((int7)(in_RAX >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:06:58Z"
+}

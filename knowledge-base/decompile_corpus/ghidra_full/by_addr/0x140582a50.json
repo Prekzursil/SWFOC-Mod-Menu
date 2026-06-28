@@ -1,0 +1,7 @@
+{
+  "addr": "0x140582a50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nstd::codecvt<wchar_t,char,struct__Mbstatet>::vfunction9\n          (codecvt<wchar_t,char,struct__Mbstatet> *this,mbstate_t *param_1,longlong param_2,\n          longlong param_3,longlong *param_4)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  undefined8 uVar3;\n  longlong lVar4;\n  \n  plVar1 = param_4;\n  *param_4 = param_2;\n  uVar3 = *(undefined8 *)param_1;\n  iVar2 = _Wcrtomb((char *)&param_4,L'\\0',param_1,(_Cvtvec *)(this + 1));\n  if (iVar2 < 1) {\n    uVar3 = 2;\n  }\n  else {\n    lVar4 = (longlong)(iVar2 + -1);\n    if (param_3 - *plVar1 < lVar4) {\n      *(undefined8 *)param_1 = uVar3;\n      uVar3 = 1;\n    }\n    else {\n      if (0 < iVar2 + -1) {\n        FUN_14076bd80(*plVar1,&param_4,lVar4);\n        *plVar1 = *plVar1 + lVar4;\n      }\n      uVar3 = 0;\n    }\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T18:41:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d7540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceModeClass::vfunction6(SpaceModeClass *this)\n\n{\n  DAT_140b30391 = 0;\n  FUN_140306290(&DAT_140b27f60,0);\n  FUN_1401378d0(0);\n  FUN_14035cfc0(this);\n  FUN_14021d090(&DAT_140a7d0a0,DAT_1407ffaf8);\n  FUN_14021d0b0(&DAT_140a7d0a0,DAT_1407ffaf8);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:04Z"
+}

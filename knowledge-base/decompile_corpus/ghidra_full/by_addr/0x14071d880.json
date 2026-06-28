@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071d880",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall CorruptSystemsAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Corrupt_Systems_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:58:21Z"
+}

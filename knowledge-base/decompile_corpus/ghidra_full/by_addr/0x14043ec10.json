@@ -1,0 +1,7 @@
+{
+  "addr": "0x14043ec10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_14043ec10(undefined8 param_1,undefined8 *param_2,uint param_3)\n\n{\n  if (param_3 < 0x4d) {\n    (**(code **)(*DAT_140b310c0 + 0x28))();\n    return param_2;\n  }\n  param_2[3] = 0xf;\n  *param_2 = 0;\n  param_2[2] = 0;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:52:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nVehicleThiefDataPackClass::~VehicleThiefDataPackClass(VehicleThiefDataPackClass *this)\n\n{\n  (this->VehicleThiefDataPackClass_data).offset_0x0 = 0x3fffff;\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_VehicleThiefDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_VehicleThiefDataPackClass,20,class_EmptyLockerClass>)0x0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:01Z"
+}

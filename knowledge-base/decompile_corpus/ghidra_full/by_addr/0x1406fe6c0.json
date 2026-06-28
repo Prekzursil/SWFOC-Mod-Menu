@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fe6c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nForceTelekinesisAbilityClass::vfunction5_for_IXMLLoadableClass\n          (ForceTelekinesisAbilityClass *this,longlong param_1)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  \n  if ((param_1 != 0) && (iVar1 = (**(code **)(*DAT_140b15418 + 0xe0))(), iVar1 == 1)) {\n    iVar1 = FUN_1403956a0(param_1);\n    if (iVar1 == 0x21) {\n      iVar1 = FUN_140395660(param_1);\n      if (iVar1 != 2) {\n        return;\n      }\n      uVar2 = 0x22;\n      uVar3 = DAT_1408007b4;\n    }\n    else {\n      if (iVar1 != 0x23) {\n        return;\n      }\n      iVar1 = FUN_140395660(param_1);\n      if (iVar1 != 2) {\n        return;\n      }\n      FUN_14063f060(param_1,0,1);\n      uVar2 = 0;\n      uVar3 = DAT_1408007b8;\n    }\n    FUN_1403a92f0(param_1,uVar2,0xffff,1,uVar3,DAT_1407ffaf8,0,0,0,0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:50:28Z"
+}

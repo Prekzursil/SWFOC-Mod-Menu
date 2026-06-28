@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021c140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 * FUN_14021c140(undefined1 *param_1)\n\n{\n  *param_1 = 0;\n  *(undefined4 *)(param_1 + 4) = 0;\n  *(undefined4 *)(param_1 + 0xc) = 0;\n  FUN_14022bb60(param_1 + 0x10);\n  FUN_140227740(param_1 + 0x68);\n  FUN_140229320(param_1 + 0x490);\n  FUN_14022c3f0(param_1 + 0xf40);\n  *(undefined4 *)(param_1 + 4000) = 0x3f4ccccd;\n  *(undefined8 *)(param_1 + 0xfa4) = 0x3f4ccccd;\n  *(undefined4 *)(param_1 + 0xfb0) = 0;\n  *(undefined4 *)(param_1 + 0xfb4) = 0x3f4ccccd;\n  *(undefined8 *)(param_1 + 0xfb8) = 0x3f4ccccd;\n  *(undefined4 *)(param_1 + 0xfc4) = 0;\n  *(undefined4 *)(param_1 + 0xfc8) = 0x3f4ccccd;\n  *(undefined8 *)(param_1 + 0xfcc) = 0x3f4ccccd;\n  *(undefined4 *)(param_1 + 0xfd8) = 0;\n  *(undefined4 *)(param_1 + 0xfdc) = 0x3f4ccccd;\n  *(undefined8 *)(param_1 + 0xfe0) = 0x3f4ccccd;\n  *(undefined4 *)(param_1 + 0xfec) = 0;\n  *(undefined8 *)(param_1 + 0xff0) = 0;\n  *(undefined8 *)(param_1 + 0xff8) = 0;\n  *(undefined4 *)(param_1 + 0x1024) = 0x3f800000;\n  *(undefined4 *)(param_1 + 0x1028) = 0x3f800000;\n  FUN_14021d1b0(param_1);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:01:44Z"
+}

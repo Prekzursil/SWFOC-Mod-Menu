@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061bcf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061bd03        *arg1 = &GravityControlFieldBehaviorClass::`vftable'{for `BehaviorClass'}\n14061bd10        arg1[1] = &GravityControlFieldBehaviorClass::`vftable'{for `RefCountClass'}\n14061bd1b        arg1[3] = &GravityControlFieldBehaviorClass::`vftable'{for `SignalListenerClass'}\n14061bd1f        sub_1404c3310(arg1)\n14061bd27        if ((arg2 & 1) != 0)\n14061bd31        j_sub_1407864b8(arg1)\n14061bd43        return arg1",
+  "fetched_at": "2026-04-26T17:23:36Z"
+}

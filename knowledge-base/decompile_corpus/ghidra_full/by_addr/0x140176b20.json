@@ -1,0 +1,7 @@
+{
+  "addr": "0x140176b20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140176b20(ulonglong param_1)\n\n{\n  char cVar1;\n  undefined8 *puVar2;\n  undefined8 *puVar3;\n  undefined8 uVar4;\n  undefined8 *puVar5;\n  \n  if (param_1 != DAT_140a6e658) {\n    cVar1 = *(char *)((longlong)DAT_140a6e6d0[1] + 0x19);\n    puVar3 = (undefined8 *)DAT_140a6e6d0[1];\n    puVar2 = DAT_140a6e6d0;\n    while (puVar5 = puVar3, cVar1 == '\\0') {\n      if ((ulonglong)puVar5[4] < param_1) {\n        puVar3 = (undefined8 *)puVar5[2];\n        puVar5 = puVar2;\n      }\n      else {\n        puVar3 = (undefined8 *)*puVar5;\n      }\n      cVar1 = *(char *)((longlong)puVar3 + 0x19);\n      puVar2 = puVar5;\n    }\n    if (((*(char *)((longlong)puVar2 + 0x19) == '\\0') && ((ulonglong)puVar2[4] <= param_1)) &&\n       (puVar2 != DAT_140a6e6d0)) {\n      if ((longlong *)puVar2[0xb] != (longlong *)0x0) {\n        (**(code **)(*(longlong *)puVar2[0xb] + 0x10))();\n        puVar2[0xb] = 0;\n      }\n      uVar4 = FUN_140069ba0(&DAT_140a6e6d0,puVar2);\n      thunk_FUN_1407864b8(uVar4,0x60);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:10Z"
+}

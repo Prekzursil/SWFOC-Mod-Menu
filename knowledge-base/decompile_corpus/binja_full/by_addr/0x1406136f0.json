@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406136f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406136f4        void* rax = sub_140612bd0(arg1, arg2)\n1406136fc        if (rax != 0)\n140613716        return _mm_max_ss(*(rax + 0x30), 0)\n140613705        return (zx.o(0)).d",
+  "fetched_at": "2026-04-26T17:23:21Z"
+}

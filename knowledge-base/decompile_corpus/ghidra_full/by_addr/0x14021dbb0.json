@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021dbb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_14021dbb0(void)\n\n{\n  longlong lVar1;\n  char *pcVar2;\n  \n  lVar1 = FUN_140216870();\n  if (lVar1 != 0) {\n    pcVar2 = (char *)FUN_140216870();\n    return pcVar2;\n  }\n  return \"{0FC0F8BD-6DC5-48fa-B8FB-7B7B7B82AFB1} Insert version number here...\";\n}",
+  "fetched_at": "2026-04-26T18:02:24Z"
+}

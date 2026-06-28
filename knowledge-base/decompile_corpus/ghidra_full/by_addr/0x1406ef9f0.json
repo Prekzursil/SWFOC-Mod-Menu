@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ef9f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nBaseDestructionAbilityClass::vfunction30_for_IXMLLoadableClass(BaseDestructionAbilityClass *this)\n\n{\n  undefined ***pppuVar1;\n  undefined1 local_108 [256];\n  \n  CorruptionAbilityClass::vfunction30_for_IXMLLoadableClass((CorruptionAbilityClass *)this);\n  if ((*(char *)&(this->BaseDestructionAbilityClass_data).offset_0x0 == '\\0') &&\n     (*(char *)((longlong)&(this->BaseDestructionAbilityClass_data).offset_0x0 + 1) == '\\0')) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_108,\n                  \"Error: (%s) You should set either Destroy_Starbase or Destroy_Land_Base to \\\"Yes\\\"\\n otherwise this ability won\\'t do anything!\"\n                  ,pppuVar1);\n    FUN_1402149d0(local_108);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:47:09Z"
+}

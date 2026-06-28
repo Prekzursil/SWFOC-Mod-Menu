@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cc080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cc099        void* rdi = *arg1\n1407cc09f        int32_t r8 = arg1[6].d\n1407cc0c0        sub_1407ccef0(arg1, arg1[7].d, r8, 0xff, r8, 0xff, r8)\n1407cc0c5        int32_t rcx = arg1[6].d\n1407cc0cc        arg1[7].d = 0xffffffff\n1407cc0e0        if (rcx + 1 s> *(rdi + 0x50))\n1407cc102        *(rdi + 0x18) = sub_1407bf6f0(arg1[4], *(rdi + 0x18), rdi + 0x50, 4, 0x7ffffffd, \"code size overflow\")\n1407cc106        rcx = arg1[6].d\n1407cc114        *(*(rdi + 0x18) + (sx.q(rcx) << 2)) = arg2\n1407cc117        int32_t rcx_3 = arg1[6].d\n1407cc120        if (rcx_3 + 1 s> *(rdi + 0x54))\n1407cc142        *(rdi + 0x28) = sub_1407bf6f0(arg1[4], *(rdi + 0x28), rdi + 0x54, 4, 0x7ffffffd, \"code size overflow\")\n1407cc146        rcx_3 = arg1[6].d\n1407cc15a        *(*(rdi + 0x28) + (sx.q(rcx_3) << 2)) = arg3\n1407cc15d        int32_t result = arg1[6].d\n1407cc168        arg1[6].d = result + 1\n1407cc176        return result",
+  "fetched_at": "2026-04-26T17:33:50Z"
+}

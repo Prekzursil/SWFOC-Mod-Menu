@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad8e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ad8f3        arg1[1] = 0xffffffff\n1404ad8fa        arg1[3] = 0xffffffff\n1404ad903        *arg1 = 0\n1404ad908        arg1[2] = 0\n1404ad90e        void** rbx = *(arg1 + 0x10)\n1404ad915        sub_140084de0(&arg1[4], &arg1[4], rbx[1])\n1404ad91a        rbx[1] = rbx\n1404ad921        *rbx = rbx\n1404ad927        rbx[2] = rbx\n1404ad92b        *(arg1 + 0x18) = 0\n1404ad92f        void** rbx_1 = *(arg1 + 0x10)\n1404ad936        sub_140084de0(&arg1[4], &arg1[4], rbx_1[1])\n1404ad93b        rbx_1[1] = rbx_1\n1404ad942        *rbx_1 = rbx_1\n1404ad948        rbx_1[2] = rbx_1\n1404ad94c        __builtin_memset(&arg1[6], 0, 0x12)\n1404ad95f        sub_140084de0(&arg1[4], &arg1[4], *(*(arg1 + 0x10) + 8))\n1404ad979        return j_sub_1407864b8(*(arg1 + 0x10)) __tailcall",
+  "fetched_at": "2026-04-26T17:29:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f2250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f225c        sub_14048f2c0(arg1)\n1406f226b        char var_108[0x100]\n1406f226b        if (not(0f f<= *(arg1 + 0x178)))\n1406f2272        void* r8_1 = arg1 + 0x18\n1406f2276        if (*(arg1 + 0x30) u>= 0x10)\n1406f2278        r8_1 = *r8_1\n1406f2287        sscanf_s(&var_108, \"Error: (%s) Bounty_Percentage cannot be less than zero.\", r8_1)\n1406f2291        sub_1402149d0(&var_108)\n1406f2296        *(arg1 + 0x178) = 0\n1406f22a0        int64_t result = *(arg1 + 0x188)\n1406f22ae        if (*(arg1 + 0x180) != result)\n1406f22e1        return result\n1406f22b5        void* r8_2 = arg1 + 0x18\n1406f22b9        if (*(arg1 + 0x30) u>= 0x10)\n1406f22bb        r8_2 = *r8_2\n1406f22ca        sscanf_s(&var_108, \"Warning: (%s) You must specify at least one faction for Target_Factions.\", r8_2)\n1406f22d4        return sub_1402149d0(&var_108)",
+  "fetched_at": "2026-04-26T17:26:26Z"
+}

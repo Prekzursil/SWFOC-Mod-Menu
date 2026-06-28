@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022f9c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_14022f9c0(float param_1)\n\n{\n  if (0.0 <= param_1) {\n    return (int)(param_1 + DAT_1408007c0);\n  }\n  return (int)(param_1 - DAT_1408007c0);\n}",
+  "fetched_at": "2026-04-26T18:06:35Z"
+}

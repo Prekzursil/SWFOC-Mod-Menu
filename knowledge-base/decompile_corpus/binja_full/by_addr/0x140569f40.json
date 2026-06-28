@@ -1,0 +1,7 @@
+{
+  "addr": "0x140569f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140569f47        return \"FleetLocomotorBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:34:36Z"
+}

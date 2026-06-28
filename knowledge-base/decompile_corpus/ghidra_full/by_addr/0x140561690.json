@@ -1,0 +1,7 @@
+{
+  "addr": "0x140561690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nTacticalSellDataPackClass::vfunction2(TacticalSellDataPackClass *this,undefined8 param_1)\n\n{\n  char cVar1;\n  byte bVar2;\n  int iVar3;\n  byte bVar4;\n  \n  bVar4 = 1;\n  cVar1 = FUN_1402204a0(param_1);\n  while (cVar1 != '\\0') {\n    iVar3 = FUN_1402205a0(param_1);\n    if (iVar3 == 1) {\n      cVar1 = FUN_140220610(param_1);\n      while (cVar1 != '\\0') {\n        iVar3 = FUN_140220710(param_1);\n        if (iVar3 == 0) {\n          bVar2 = FUN_140220730(param_1,&this->\n                                         PooledObjectClass<class_TacticalSellDataPackClass,20,class_EmptyLockerClass>\n                                ,8,0);\n          bVar4 = bVar4 & bVar2;\n          if (this->PooledObjectClass<class_TacticalSellDataPackClass,20,class_EmptyLockerClass> !=\n              (PooledObjectClass<class_TacticalSellDataPackClass,20,class_EmptyLockerClass>)0x0) {\n            FUN_1401fe4a0(&this->\n                           PooledObjectClass<class_TacticalSellDataPackClass,20,class_EmptyLockerClass>\n                          ,this->\n                           PooledObjectClass<class_TacticalSellDataPackClass,20,class_EmptyLockerClass>\n                          ,0);\n          }\n        }\n        FUN_1402206a0(param_1);\n        cVar1 = FUN_140220610(param_1);\n      }\n    }\n    FUN_140220520(param_1);\n    cVar1 = FUN_1402204a0(param_1);\n  }\n  return bVar4;\n}",
+  "fetched_at": "2026-04-26T18:38:57Z"
+}

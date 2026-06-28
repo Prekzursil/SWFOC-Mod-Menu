@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078231c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _strlwr\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nchar * __cdecl _strlwr(char *_String)\n\n{\n  ulong *puVar1;\n  char cVar2;\n  char *pcVar3;\n  \n  if (DAT_140b3c49c == 0) {\n    if (_String == (char *)0x0) {\n      puVar1 = __doserrno();\n      *puVar1 = 0x16;\n      FUN_1407711ac();\n      _String = (char *)0x0;\n    }\n    else {\n      cVar2 = *_String;\n      pcVar3 = _String;\n      while (cVar2 != '\\0') {\n        if ((byte)(cVar2 + 0xbfU) < 0x1a) {\n          *pcVar3 = cVar2 + ' ';\n        }\n        pcVar3 = pcVar3 + 1;\n        cVar2 = *pcVar3;\n      }\n    }\n  }\n  else {\n    _strlwr_s_l(_String,0xffffffffffffffff,(_locale_t)0x0);\n  }\n  return _String;\n}",
+  "fetched_at": "2026-04-26T18:51:11Z"
+}

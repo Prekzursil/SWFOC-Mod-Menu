@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402047d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall BitStreamClass::vfunction1(BitStreamClass *this)\n\n{\n  FUN_14076c430((this->BitStreamClass_data).offset_0x0,0,\n                (longlong)((int)(this->BitStreamClass_data).offset_0x40 >> 3));\n  *(undefined4 *)&(this->BitStreamClass_data).offset_0x8 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:20Z"
+}

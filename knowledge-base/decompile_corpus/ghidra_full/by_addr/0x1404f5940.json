@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f5940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "UnitAIBehaviorClass * __thiscall\nUnitAIBehaviorClass::vfunction4(UnitAIBehaviorClass *this,int param_1)\n\n{\n  UnitAIBehaviorClass *pUVar1;\n  \n  pUVar1 = (UnitAIBehaviorClass *)0x0;\n  if (param_1 == 0x12) {\n    pUVar1 = this;\n  }\n  return pUVar1;\n}",
+  "fetched_at": "2026-04-26T18:18:47Z"
+}

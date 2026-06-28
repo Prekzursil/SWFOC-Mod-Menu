@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cf280",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cf292        int32_t rax = sub_1407b9e00(arg1, 2)\n1407cf2a5        sub_1407ce2c0(arg1, 1, 5)\n1407cf2b1        if (rax != 0 && rax != 5)\n1407cf2c2        sub_1407cdf80(arg1, 2)\n1407cf2c2        noreturn\n1407cf2d6        int32_t rax_1\n1407cf2d6        int64_t r8_1\n1407cf2d6        rax_1, r8_1 = sub_1407ce3c0(arg1, 1, \"__metatable\")\n1407cf2dd        if (rax_1 != 0)\n1407cf2e9        sub_1407ce300(arg1, \"cannot change a protected metatable\", r8_1)\n1407cf2e9        noreturn\n1407cf2f6        sub_1407b9ab0(arg1, 2)\n1407cf303        sub_1407b99d0(arg1, 1)\n1407cf317        return 1",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

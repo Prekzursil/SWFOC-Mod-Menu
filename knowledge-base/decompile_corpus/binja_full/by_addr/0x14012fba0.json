@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012fba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012fbb0        uint32_t result = GetCurrentThreadId()\n14012fbc5        if (result != data_140a155d0 || data_140a62740 == 0)\n14012fbc7        *(arg1 + 0x2c) = arg2\n14012fbd4        return result",
+  "fetched_at": "2026-04-26T17:10:34Z"
+}

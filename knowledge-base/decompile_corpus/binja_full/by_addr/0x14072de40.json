@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072de40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "# Binja has no standalone function at this address.\n# error: Function not found\n# nearest_parent: [{'name': 'sub_140011d20', 'address': '0x140011d20', 'delta': 7455008}]\n",
+  "fetched_at": "2026-04-26T17:28:52Z"
+}

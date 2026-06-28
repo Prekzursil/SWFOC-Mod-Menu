@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071d9e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpawnAbilityClass * __thiscall SpawnAbilityClass::SpawnAbilityClass(SpawnAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->SpawnAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1404c3df0(&(this->SpawnAbilityClass_data).field_0x8);\n  (this->SpawnAbilityClass_data).offset_0x18 = 0;\n  (this->SpawnAbilityClass_data).offset_0x1c = 0x3f800000;\n  (this->SpawnAbilityClass_data).offset_0x20 = 0;\n  (this->SpawnAbilityClass_data).offset_0x30 = 0;\n  (this->SpawnAbilityClass_data).offset_0x38 = 0xf;\n  (this->SpawnAbilityClass_data).offset_0x40 = 0x41200000;\n  FUN_1404c3df0(&(this->SpawnAbilityClass_data).field_0x48);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:58:24Z"
+}

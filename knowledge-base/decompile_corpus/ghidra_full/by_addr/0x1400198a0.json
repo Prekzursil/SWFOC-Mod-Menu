@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400198a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nEventFactoryClass<class_WithdrawlEventClass,49>::EventFactoryClass<class_WithdrawlEventClass,49>\n          (void)\n\n{\n  BaseEventFactoryClass::BaseEventFactoryClass((BaseEventFactoryClass *)&DAT_140b316a8);\n  DAT_140b316a8 = &vftable;\n  atexit((_func_5014 *)&LAB_1407f32e0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:57Z"
+}

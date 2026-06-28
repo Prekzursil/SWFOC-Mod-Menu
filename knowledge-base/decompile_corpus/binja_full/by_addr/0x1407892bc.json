@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407892bc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407892be        return _Getdays_l(nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:31:22Z"
+}

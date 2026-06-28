@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013eb30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013eb3e        struct alTerrainRender::alD3dTerrainRender::VTable** result = operator new(0x418)\n14013eb46        if (result == 0)\n14013eb5d        return result\n14013eb53        return sub_14018e060(result, arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:16:54Z"
+}

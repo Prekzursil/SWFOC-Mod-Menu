@@ -1,0 +1,7 @@
+{
+  "addr": "0x140474990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140474990(undefined8 *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  undefined8 uVar4;\n  longlong lVar5;\n  _FILETIME _Var6;\n  undefined1 local_res10 [8];\n  undefined1 local_d8 [16];\n  longlong local_c8 [3];\n  ulonglong local_b0;\n  _FILETIME local_a8;\n  FileClass local_98;\n  \n  lVar2 = FUN_14004fc30();\n  FileClass::FileClass(&local_98,param_1);\n  uVar3 = FileClass::vfunction2(&local_98,0,0);\n  if ((char)uVar3 != '\\0') {\n    lVar1 = lVar2 + 8;\n    uVar4 = FUN_14011f9c0(lVar1,param_1);\n    lVar5 = FUN_14011f570(lVar1,local_d8,param_1,uVar4);\n    lVar5 = *(longlong *)(lVar5 + 8);\n    if (lVar5 == 0) {\n      lVar5 = *(longlong *)(lVar2 + 0x10);\n    }\n    if (lVar5 != *(longlong *)(lVar2 + 0x10)) {\n      FUN_140474740(lVar1,local_res10);\n    }\n    _Var6 = FileClass::vfunction13(&local_98);\n    FileClass::vfunction5(&local_98);\n    FUN_14001e680(local_c8,param_1);\n    local_a8 = _Var6;\n    FUN_14023b240(lVar1,local_d8,local_c8);\n    if (0xf < local_b0) {\n      if (0xfff < local_b0 + 1) {\n        if (0x1f < (local_c8[0] - *(longlong *)(local_c8[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n          FUN_1407711cc(*(longlong *)(local_c8[0] + -8),local_b0 + 0x28);\n        }\n      }\n      thunk_FUN_1407864b8();\n    }\n  }\n  FileClass::~FileClass(&local_98);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:28Z"
+}

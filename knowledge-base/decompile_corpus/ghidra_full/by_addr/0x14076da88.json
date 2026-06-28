@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076da88",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: static void __cdecl __FrameHandler3::SetState(unsigned __int64 * __ptr64,struct\n   _s_FuncInfo const * __ptr64,int)\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl __FrameHandler3::SetState(__uint64 *param_1,_s_FuncInfo *param_2,int param_3)\n\n{\n  *(int *)((longlong)param_2->dispUnwindHelp + *param_1) = param_3;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405864c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405864d9        *arg1 = &AILearningSystemClass::`vftable'{for `ServicedAISystemClass'}\n1405864e5        arg1[7] = &AILearningSystemClass::`vftable'{for `SignalListenerClass'}\n1405864f0        sub_140586350(&arg1[0x55])\n1405864fc        sub_140586350(&arg1[0x52])\n140586508        sub_140586350(&arg1[0x4f])\n140586514        sub_140586290(&arg1[0x4c])\n140586520        sub_140586290(&arg1[0x49])\n14058652c        sub_14007b260(&arg1[0x41])\n140586538        sub_1405860c0(&arg1[0x39])\n140586544        sub_1405860c0(&arg1[0x31])\n140586550        sub_1405860c0(&arg1[0x29])\n14058655c        sub_14007b260(&arg1[0x21])\n140586568        sub_140586060(&arg1[0x19])\n140586574        sub_14007b260(&arg1[0x11])\n14058657d        sub_140586060(&arg1[9])\n14058658d        arg1[7] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140586591        sub_14020a820(&arg1[7])\n140586599        sub_14064c290(arg1)\n1405865a2        if ((arg2 & 1) != 0)\n1405865ac        j_sub_1407864b8(arg1)\n1405865c3        return arg1",
+  "fetched_at": "2026-04-26T17:36:04Z"
+}

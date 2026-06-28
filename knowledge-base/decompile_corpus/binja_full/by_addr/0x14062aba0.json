@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062aba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062abb3        *arg1 = &DebrisBehaviorClass::`vftable'{for `BehaviorClass'}\n14062abc0        arg1[1] = &DebrisBehaviorClass::`vftable'{for `RefCountClass'}\n14062abcb        arg1[3] = &DebrisBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062abcf        sub_1404c3310(arg1)\n14062abd7        if ((arg2 & 1) != 0)\n14062abe1        j_sub_1407864b8(arg1)\n14062abf3        return arg1",
+  "fetched_at": "2026-04-26T17:24:01Z"
+}

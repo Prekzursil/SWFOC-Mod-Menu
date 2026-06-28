@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077dedc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077dee6        char* rdx = *arg1\n14077deef        if (rdx == 0)\n14077defb        int64_t rax_1 = _calloc_base(0x2000, 1)\n14077df06        _free_base(*arg1)\n14077df0d        *arg1 = rax_1\n14077df10        arg3 = _free_base(0)\n14077df15        rdx = *arg1\n14077df18        void* result = &rdx[0x2000]\n14077df1f        char* rcx_1 = rdx\n14077df2b        uint64_t r8_2 = zx.q((not.q(sbb.q(arg3, arg3, result u< rdx))).d) & 0x2000\n14077df35        if (rdx u<= result)\n14077df37        *rcx_1 = not.b(*rcx_1)\n14077df39        rcx_1 = &rcx_1[1]\n14077df3f        result = rcx_1 - rdx\n14077df45        do while (result != r8_2)\n14077df51        return result",
+  "fetched_at": "2026-04-26T17:31:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078600c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140786018        if (arg1 == 0)\n140786022        ExitThread(GetLastError())\n140786022        noreturn\n140786029        void* rax_1\n140786029        int32_t rcx_1\n140786029        rax_1, rcx_1 = __acrt_getptd()\n14078602e        *(rax_1 + 0x3c0) = arg1\n140786035        int32_t rax_2 = __acrt_get_begin_thread_init_policy(rcx_1)\n14078603d        if (rax_2 == 2)\n140786049        int32_t rax_3\n140786049        rax_3.b = __acrt_RoInitialize(rax_2 - 1) == 0\n14078604c        arg1[4].b = rax_3.b\n14078605e        sub_14078620c((*arg1)(arg1[1]))\n14078605e        noreturn",
+  "fetched_at": "2026-04-26T17:31:16Z"
+}

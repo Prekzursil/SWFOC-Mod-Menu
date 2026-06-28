@@ -1,0 +1,7 @@
+{
+  "addr": "0x140795788",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n\nundefined8\nFUN_140795788(ulonglong param_1,undefined4 param_2,undefined8 param_3,undefined8 param_4,\n             undefined8 param_5)\n\n{\n  char cVar1;\n  int iVar2;\n  undefined8 uVar3;\n  undefined1 auStack_f8 [32];\n  undefined8 *local_d8;\n  undefined8 *local_d0;\n  undefined4 local_c8;\n  undefined8 local_b8;\n  undefined8 local_b0;\n  undefined1 local_a8 [64];\n  uint local_68;\n  ulonglong local_38;\n  \n  uVar3 = param_5;\n  local_38 = DAT_140a44b98 ^ (ulonglong)auStack_f8;\n  local_b8 = param_4;\n  local_b0 = param_3;\n  iVar2 = FUN_140795984(param_1,&local_b8,param_5);\n  if (iVar2 == 0) {\n    local_c8 = 0;\n    local_68 = local_68 & 0xfffffffe;\n    local_d0 = &local_b8;\n    local_d8 = &local_b0;\n    _raise_exc_ex(local_a8,&param_5,param_1 & 0xffffffff,param_2);\n    uVar3 = param_5;\n  }\n  iVar2 = _errcode(param_1 & 0xffffffff);\n  cVar1 = FUN_14078d028();\n  if ((cVar1 == '\\0') || (iVar2 == 0)) {\n    _set_errno_from_matherr(iVar2);\n    _ctrlfp(uVar3,0xffc0);\n  }\n  else {\n    local_d8 = (undefined8 *)local_b8;\n    local_d0 = (undefined8 *)uVar3;\n    local_b8 = FUN_140795f88(iVar2,param_2,(int)param_3,0);\n  }\n  return local_b8;\n}",
+  "fetched_at": "2026-04-26T18:53:15Z"
+}

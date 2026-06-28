@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403fdbc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403fdbce        void* rdx = arg1[5]\n1403fdbd2        void* result = *(rdx + 0xb8)\n1403fdbdc        if (result == 0)\n1403fdcac        return result\n1403fdbff        int64_t* rbx_1 = *(result + 0x1b8) + (sx.q(*(arg2 + 0x48)) << 3)\n1403fdc0b        void var_38\n1403fdc0b        int32_t* rax_1 = sub_1404ad4c0(&var_38, rdx, sx.q(arg3), 0)\n1403fdc10        int64_t* rsi_1 = *rbx_1\n1403fdc16        int64_t* rcx_1 = *rsi_1\n1403fdc19        int64_t* i_1 = *rcx_1\n1403fdc1f        if (i_1 != rcx_1)\n1403fdc75        int64_t* i\n1403fdc37        char rax_2 = sub_1404ad550(&i_1[4], rax_1)\n1403fdc3c        i = *i_1\n1403fdc41        if (rax_2 != 0)\n1403fdc47        *i_1[1] = i\n1403fdc51        *(*i_1 + 8) = i_1[1]\n1403fdc59        rsi_1[1] -= 1\n1403fdc5d        sub_1404ad530(&i_1[4])\n1403fdc6a        j_sub_1407864b8(i_1)\n1403fdc6f        i_1 = i\n1403fdc75        do while (i != *rsi_1)\n1403fdc81        sub_1404ad530(&var_38)\n1403fdc8f        return (*(*arg1 + 0xa8))(arg1, arg2)",
+  "fetched_at": "2026-04-26T17:25:36Z"
+}

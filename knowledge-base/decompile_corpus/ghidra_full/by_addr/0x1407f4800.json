@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f4800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid __thiscall RefCountClass::~RefCountClass(void)\n\n{\n  ulonglong uVar1;\n  \n  if (DAT_140b37278 != 0) {\n    uVar1 = DAT_140b37288 - DAT_140b37278 & 0xfffffffffffffffc;\n    if (0xfff < uVar1) {\n      if (0x1f < (DAT_140b37278 - *(longlong *)(DAT_140b37278 + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(DAT_140b37278 + -8),uVar1 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8();\n    DAT_140b37278 = 0;\n    _DAT_140b37280 = 0;\n    DAT_140b37288 = 0;\n  }\n  DynamicVectorClass<int>::~DynamicVectorClass<int>((DynamicVectorClass<int> *)&DAT_140b37260);\n  _DAT_140b37230 = &vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0288",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a028e        int32_t arg_10 = 0\n1407a0296        int32_t arg_14 = 0\n1407a02a0        fegetenv(&arg_10)\n1407a02a9        int64_t rax_1 = arg_10.q\n1407a02b3        arg_10 |= 0x1f\n1407a02b8        *arg1 = rax_1\n1407a02c2        if (fesetenv(&arg_10) != 0)\n1407a02cd        return 1\n1407a02c4        _clearfp()\n1407a02c9        return 0",
+  "fetched_at": "2026-04-26T17:32:19Z"
+}

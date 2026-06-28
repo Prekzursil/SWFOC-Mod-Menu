@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cf990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1407cf990(undefined8 param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  FUN_1407ce2c0(param_1,1,5);\n  iVar1 = FUN_1407ce440(param_1,1);\n  FUN_1407ce280(param_1,iVar1,\"table too big to unpack\");\n  iVar2 = 1;\n  if (0 < iVar1) {\n    do {\n      FUN_1407b9770(param_1,1,iVar2);\n      iVar2 = iVar2 + 1;\n    } while (iVar2 <= iVar1);\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:57:56Z"
+}

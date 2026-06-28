@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c7970",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_goal_system_ctor",
+  "body": "\nAIGoalSystemClass * __thiscall\nAIGoalSystemClass::AIGoalSystemClass(AIGoalSystemClass *this,undefined8 param_1)\n\n{\n  ServicedAISystemClass::ServicedAISystemClass((ServicedAISystemClass *)this,param_1);\n  this->vftablePtr = &vftable;\n  FUN_140721360(&this->AIGoalSystemClass_data);\n  FUN_140721360(&(this->AIGoalSystemClass_data).field_0xa0);\n  (this->AIGoalSystemClass_data).offset_0x140 = 0;\n  (this->AIGoalSystemClass_data).offset_0x148 = 0;\n  (this->AIGoalSystemClass_data).offset_0x14c = 0;\n  (this->AIGoalSystemClass_data).offset_0x150 = 0;\n  AIBudgetClass::AIBudgetClass((AIBudgetClass *)&(this->AIGoalSystemClass_data).field_0x158,param_1)\n  ;\n  FUN_14040cfc0(&(this->AIGoalSystemClass_data).field_0x1e8);\n  FUN_14040cfc0(&(this->AIGoalSystemClass_data).field_0x228);\n  (this->AIGoalSystemClass_data).offset_0x268 = 0;\n  (this->AIGoalSystemClass_data).offset_0x270 = 0;\n  (this->AIGoalSystemClass_data).offset_0x278 = 0;\n  (this->AIGoalSystemClass_data).offset_0x80 = this;\n  (this->AIGoalSystemClass_data).offset_0x120 = this;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793750",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793789        int64_t rax = try_get_function(8, \"GetDateFormatEx\", &data_1408d8238, \"GetDateFormatEx\")\n140793791        if (rax == 0)\n1407937eb        return GetDateFormatW(__acrt_LocaleNameToLCID(arg1, 0), arg2, arg3, arg4, arg5, arg6)\n140793805        return rax(arg1, zx.q(arg2), arg3, arg4, arg5, arg6, arg7)",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

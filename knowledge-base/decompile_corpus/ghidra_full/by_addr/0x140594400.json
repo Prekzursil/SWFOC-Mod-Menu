@@ -1,0 +1,7 @@
+{
+  "addr": "0x140594400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpawnSquadronBehaviorClass::vfunction14(SpawnSquadronBehaviorClass *this,longlong param_1)\n\n{\n  _guard_check_icall();\n  if (*(char *)(*(longlong *)(param_1 + 0x298) + 0xa0) != '\\0') {\n    FUN_140593960(this,param_1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:42:22Z"
+}

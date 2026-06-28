@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c82d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CubicInterpolator_vftable * __thiscall\nCubicInterpolator::vfunction4(CubicInterpolator *this,undefined4 *param_1,undefined4 *param_2)\n\n{\n  CubicInterpolator_vftable *pCVar1;\n  CubicInterpolator_vftable *pCVar2;\n  longlong lVar3;\n  \n  if (*(char *)&this[1].vftablePtr == '\\0') {\n    FUN_1402c8a30();\n  }\n  pCVar1 = this[2].vftablePtr;\n  lVar3 = (longlong)this[3].vftablePtr - (longlong)pCVar1;\n  pCVar2 = (CubicInterpolator_vftable *)(lVar3 * 0x2aaaaaaaaaaaaaab);\n  if (1 < (ulonglong)(lVar3 / 0xc)) {\n    *param_1 = *(undefined4 *)&pCVar1->deleting_destructor;\n    pCVar2 = this[2].vftablePtr;\n    *param_2 = *(undefined4 *)\n                ((longlong)pCVar2 +\n                (((longlong)this[3].vftablePtr - (longlong)pCVar1) / 0xc) * 0xc + -0xc);\n  }\n  return pCVar2;\n}",
+  "fetched_at": "2026-04-26T18:29:38Z"
+}

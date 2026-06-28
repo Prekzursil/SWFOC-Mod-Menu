@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad310",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1404ad310(int *param_1)\n\n{\n  int iVar1;\n  \n  if (DAT_140b15418 == 0) {\n    iVar1 = 0;\n  }\n  else {\n    iVar1 = *(int *)(DAT_140b15418 + 0x10);\n  }\n  iVar1 = (param_1[1] - iVar1) + *param_1;\n  if (iVar1 < 0) {\n    return 0.0;\n  }\n  return (float)iVar1 / (float)DAT_140b0a340;\n}",
+  "fetched_at": "2026-04-26T18:05:38Z"
+}

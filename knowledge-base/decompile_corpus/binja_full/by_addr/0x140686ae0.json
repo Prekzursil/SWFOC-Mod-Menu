@@ -1,0 +1,7 @@
+{
+  "addr": "0x140686ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140686aee        struct CollisionDiagnosticsNodeClass::StoppedVsStoppedCollisionDiagnosticsNodeClass::VTable** result = operator new(0x10)\n140686af6        if (result == 0)\n140686b15        return result\n140686aff        *result = &StoppedVsStoppedCollisionDiagnosticsNodeClass::`vftable'{for `CollisionDiagnosticsNodeClass'}\n140686b06        result[1] = arg1 - 0x10\n140686b0f        return result",
+  "fetched_at": "2026-04-26T17:14:43Z"
+}

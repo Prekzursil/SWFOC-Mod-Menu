@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall DemolitionBehaviorClass::vfunction9(void)\n\n{\n  return \"DemolitionBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:57Z"
+}

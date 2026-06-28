@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636ac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140636ac7        return \"InfectionBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:00:36Z"
+}

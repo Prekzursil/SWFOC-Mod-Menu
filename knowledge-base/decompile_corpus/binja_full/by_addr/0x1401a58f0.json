@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a58f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a58f0        int32_t zmm0 = *arg2\n1401a58f4        *(arg1 + 4) = zmm0\n1401a58fc        *(arg1 + 8) = arg2[1]\n1401a5902        *(arg1 + 0xc) = arg2[2]\n1401a5908        *(arg1 + 0x10) = *arg3\n1401a590f        *(arg1 + 0x14) = arg3[1]\n1401a5912        int32_t result = arg3[2]\n1401a5916        *(arg1 + 0x18) = result\n1401a591e        *(arg1 + 4) = __minss_xmmss_memss(zmm0, *arg3)\n1401a592e        *(arg1 + 8) = __minss_xmmss_memss(arg3[1], *(arg1 + 8))\n1401a593e        *(arg1 + 0xc) = __minss_xmmss_memss(arg3[2], *(arg1 + 0xc))\n1401a5948        int32_t temp0_3 = __maxss_xmmss_memss(*(arg1 + 0x10), *arg2)\n1401a594c        int32_t zmm1 = *(arg1 + 0x14)\n1401a5951        *(arg1 + 0x10) = temp0_3\n1401a5956        int32_t temp0_4 = __maxss_xmmss_memss(zmm1, arg2[1])\n1401a595b        zmm0 = *(arg1 + 0x18)\n1401a5960        *(arg1 + 0x14) = temp0_4\n1401a596a        *(arg1 + 0x18) = __maxss_xmmss_memss(zmm0, arg2[2])\n1401a596f        return result",
+  "fetched_at": "2026-04-26T17:25:06Z"
+}

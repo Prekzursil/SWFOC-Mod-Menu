@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f6550        *arg1 = &AIDiagnosticsClass::`vftable'\n1405f655e        int64_t result = sub_1404764d0(sub_14004faa0(), arg1)\n1405f6563        int64_t* rcx_1 = arg1[2]\n1405f656a        if (rcx_1 != 0)\n1405f6574        result = (*(*rcx_1 + 8))(rcx_1, 1)\n1405f6577        arg1[2] = 0\n1405f657f        int64_t* rcx_2 = arg1[3]\n1405f6586        if (rcx_2 == 0)\n1405f6599        return result\n1405f6590        jump(*(*rcx_2 + 8))",
+  "fetched_at": "2026-04-26T17:22:33Z"
+}

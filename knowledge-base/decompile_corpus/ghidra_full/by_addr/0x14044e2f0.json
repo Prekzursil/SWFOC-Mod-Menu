@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044e2f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14044e2f0(void)\n\n{\n  int iVar1;\n  char cVar2;\n  \n  if ((((DAT_140b306a0 != 0) && (DAT_140b306d0 != 0)) && (*(longlong *)(DAT_140b306d0 + 0xa0) != 0))\n     && (DAT_140b30690 != 0)) {\n    iVar1 = *(int *)(DAT_140b30690 + 0xc);\n    cVar2 = FUN_1405d9e00();\n    if (cVar2 == '\\0') {\n      if (((*(int *)(DAT_140b306d0 + 200) <= iVar1) && (*(longlong *)(DAT_140b306d0 + 0xa0) != 0))\n         && ((cVar2 = FUN_1405d9e00(), cVar2 == '\\0' && (*(longlong *)(DAT_140b306d0 + 0xa0) != 0)))\n         ) {\n        FUN_1405db390();\n        return;\n      }\n    }\n    else {\n      FUN_14013d030(0,1,1,0,0);\n      FUN_1405dc450(DAT_140b306d0,iVar1);\n      if (((-1 < *(int *)(DAT_140b306d0 + 0xcc)) && (*(int *)(DAT_140b306d0 + 0xcc) <= iVar1)) &&\n         ((*(longlong *)(DAT_140b306d0 + 0xa0) != 0 && (cVar2 = FUN_1405d9e00(), cVar2 != '\\0')))) {\n        FUN_1405dc490(DAT_140b306d0);\n        return;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:56Z"
+}

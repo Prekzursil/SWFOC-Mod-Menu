@@ -1,0 +1,7 @@
+{
+  "addr": "0x140162980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alParticles * __thiscall alParticles::clone(alParticles *this)\n\n{\n  longlong lVar1;\n  undefined4 uVar2;\n  alParticles *this_00;\n  alParticles *paVar3;\n  \n  this_00 = (alParticles *)FUN_140769c58(0x2d0);\n  paVar3 = (alParticles *)0x0;\n  if (this_00 != (alParticles *)0x0) {\n    paVar3 = alParticles(this_00,0,(this->alParticles_data).offset_0x48);\n  }\n  lVar1 = (this->alParticles_data).offset_0x48[0x222];\n  if (lVar1 == 0) {\n    uVar2 = 0xffffffff;\n  }\n  else {\n    uVar2 = *(undefined4 *)(lVar1 + 0x410);\n  }\n  *(undefined4 *)((longlong)&(paVar3->alParticles_data).offset_0x188 + 4) = uVar2;\n  lVar1 = (this->alParticles_data).offset_0x48[0x221];\n  if (lVar1 != 0) {\n    *(undefined4 *)&(paVar3->alParticles_data).offset_0x188 = *(undefined4 *)(lVar1 + 0x410);\n    return paVar3;\n  }\n  *(undefined4 *)&(paVar3->alParticles_data).offset_0x188 = 0xffffffff;\n  return paVar3;\n}",
+  "fetched_at": "2026-04-26T17:24:32Z"
+}

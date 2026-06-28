@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044d530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GameOptionsEventClass * __thiscall\nGameOptionsEventClass::GameOptionsEventClass(GameOptionsEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x27;\n  this->vftablePtr = &vftable;\n  (this->GameOptionsEventClass_data).offset_0x0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:54:47Z"
+}

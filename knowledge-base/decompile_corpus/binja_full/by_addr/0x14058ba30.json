@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058ba30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058ba37        return \"DamageTrackingBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:36:11Z"
+}

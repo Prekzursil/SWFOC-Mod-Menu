@@ -1,0 +1,7 @@
+{
+  "addr": "0x140081610",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14008161e        int128_t zmm6 = arg1\n140081621        float zmm4 = arg3 - arg2\n140081625        arg1 = zx.o(0)\n140081628        zmm4 - 0f\n14008162d        if (is_unordered.d(zmm4, 0f) || not(zmm4 == 0f))\n140081632        zmm6.d = zmm6.d f- arg2\n140081636        arg1.d = arg4.d f* 2f\n14008164d        arg4.d = arg4.d f/ (arg3 - arg2)\n140081660        arg1.d = float.s(int.d(((arg3 - arg2) f/ arg1.d f+ zmm6.d) f* arg4.d))\n140081664        arg1.d = arg1.d f/ arg4.d\n140081670        return arg1",
+  "fetched_at": "2026-04-26T16:57:21Z"
+}

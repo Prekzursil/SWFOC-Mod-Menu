@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014e540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014e558        int64_t* rdi = nullptr\n14014e55d        int64_t* var_38 = nullptr\n14014e562        int64_t* rbx = nullptr\n14014e564        int64_t var_28 = 0\n14014e572        if (arg4 != 0)\n14014e577        rbx = arg4\n14014e57d        int64_t* var_28_1 = rbx\n14014e582        (**arg4)(arg4)\n14014e584        int32_t var_30 = arg3\n14014e588        int64_t* r15 = nullptr\n14014e58e        if (arg2 != 0)\n14014e590        int64_t rax_2 = *arg2\n14014e596        rdi = arg2\n14014e599        var_38 = arg2\n14014e59e        (*rax_2)(arg2)\n14014e5a0        r15 = arg2\n14014e5a3        int64_t* r14_1 = arg1[1]\n14014e5ab        if (r14_1 == arg1[2])\n14014e5e4        sub_14014e890(arg1, r14_1, &var_38)\n14014e5ad        *r14_1 = rdi\n14014e5b3        if (rdi != 0)\n14014e5bb        (**rdi)(rdi)\n14014e5bd        r14_1[1].d = arg3\n14014e5c1        r14_1[2] = rbx\n14014e5c8        if (rbx != 0)\n14014e5d0        (**rbx)(rbx)\n14014e5d2        arg1[1] += 0x18\n14014e5fa        int64_t rax_5\n14014e5fa        int64_t rdx_1\n14014e5fa        rdx_1:rax_5 = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[1] - *arg1)\n14014e600        int64_t rdi_2 = rdx_1 s>> 2\n14014e612        sub_140136d00(rdi_2.d + (rdi_2 u>> 0x3f).d - 1)\n14014e61a        if (rbx != 0)\n14014e622        (*(*rbx + 8))(rbx)\n14014e628        if (r15 != 0)\n14014e630        (*(*r15 + 8))(r15)\n14014e64d        return zx.q(rdi_2.d + (rdi_2 u>> 0x3f).d - 1)",
+  "fetched_at": "2026-04-26T17:21:48Z"
+}

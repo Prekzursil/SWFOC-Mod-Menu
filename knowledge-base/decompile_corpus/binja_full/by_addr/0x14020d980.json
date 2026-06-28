@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020d980",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020d9b1        int128_t zmm0 = sub_14020d140(arg1, arg3)\n14020d9c0        uint32_t zmm0_1[0x4] = sub_14020d140(arg2, arg3)\n14020d9c5        uint32_t zmm7[0x4] = zmm0_1\n14020d9cb        zmm7[0] = zmm7[0] f+ zmm0.d\n14020d9d0        uint32_t zmm9[0x4] = zmm0_1\n14020d9d4        zmm7[0] f- 0f\n14020d9d9        if (is_unordered.d(zmm7[0], 0f) || not(zmm7[0] f== 0f))\n14020d9db        float zmm1_1[0x2] = arg2[5]\n14020d9e0        zmm1_1[0] = zmm1_1[0] f- arg1[5]\n14020d9e5        zmm0_1 = arg2[4]\n14020d9ea        zmm0_1[0] = zmm0_1[0] f- arg1[4]\n14020d9ef        zmm1_1[0] = zmm1_1[0] f* arg3[1]\n14020d9f4        zmm0_1[0] = zmm0_1[0] f* *arg3\n14020d9f8        zmm1_1[0] = zmm1_1[0] f+ zmm0_1[0]\n14020da0e        if (not(zmm1_1[0] f> zmm7[0]) && not((zmm7 ^ data_140800860)[0] f> zmm1_1[0]))\n14020da13        zmm0_1 = sub_1407760bc(_mm_cvtps_pd(zmm1_1))\n14020da18        zmm1_1 = (zx.o(0)).q\n14020da1b        int128_t zmm8 = _mm_min_ss(zmm0.d, zmm9[0])\n14020da20        zmm1_1[0] = fconvert.s(zmm0_1[0].q)\n14020da24        zmm7[0] = zmm7[0] f- zmm1_1[0]\n14020da28        zmm7[0] = zmm7[0] f/ zmm8.d\n14020da30        if (0f f> zmm7[0])\n14020da3e        return zx.o(0)\n14020da3a        return _mm_min_ss(0x3f800000, zmm7[0])\n14020da43        return zx.o(0)",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

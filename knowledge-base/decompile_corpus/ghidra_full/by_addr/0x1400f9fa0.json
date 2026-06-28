@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400f9fa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400f9fa0(void)\n\n{\n  longlong lVar1;\n  \n  if (-1 < DAT_140a11f2c) {\n    lVar1 = FUN_140320d20(&DAT_140b2b300);\n    if (lVar1 != 0) {\n      FUN_140321170(&DAT_140b2b300,lVar1);\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:22Z"
+}

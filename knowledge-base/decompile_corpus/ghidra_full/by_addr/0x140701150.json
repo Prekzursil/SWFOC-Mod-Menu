@@ -1,0 +1,7 @@
+{
+  "addr": "0x140701150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HackAbilityClass * __thiscall HackAbilityClass::HackAbilityClass(HackAbilityClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  puVar1 = &(this->HackAbilityClass_data).offset_0x8;\n  (this->HackAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  *puVar1 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->HackAbilityClass_data).offset_0x18 = 0;\n  (this->HackAbilityClass_data).offset_0x20 = 0xf;\n  FUN_140022730(puVar1,\"Hack_Electicity_Zaps\",0x14);\n  (this->HackAbilityClass_data).offset_0x28 = 0;\n  (this->HackAbilityClass_data).offset_0x40 = 0xf;\n  (this->HackAbilityClass_data).offset_0x38 = 0;\n  (this->HackAbilityClass_data).offset_0x60 = 0xf;\n  (this->HackAbilityClass_data).offset_0x58 = 8;\n  (this->HackAbilityClass_data).offset_0x48 = 0x7465727275545f42;\n  (this->HackAbilityClass_data).offset_0x50 = 0;\n  (this->HackAbilityClass_data).offset_0x68 = 1;\n  (this->HackAbilityClass_data).offset_0x6c = 0x3f800000;\n  FUN_1404c3df0(&(this->HackAbilityClass_data).field_0x70);\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 0xb;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:51:26Z"
+}

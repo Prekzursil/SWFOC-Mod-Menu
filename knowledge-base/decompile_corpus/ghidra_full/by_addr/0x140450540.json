@@ -1,0 +1,7 @@
+{
+  "addr": "0x140450540",
+  "tool": "ghidra",
+  "fact_id": "rva_story_event_hero_move_ctor",
+  "body": "\nStoryEventHeroMoveClass * __thiscall\nStoryEventHeroMoveClass::StoryEventHeroMoveClass(StoryEventHeroMoveClass *this)\n\n{\n  StoryEventClass::StoryEventClass((StoryEventClass *)this);\n  this->vftablePtr = &vftable;\n  (this->StoryEventHeroMoveClass_data).offset_0x8 = 0;\n  (this->StoryEventHeroMoveClass_data).offset_0x10 = 0;\n  (this->StoryEventHeroMoveClass_data).offset_0x18 = 0;\n  (this->StoryEventHeroMoveClass_data).offset_0x20 = 0;\n  (this->StoryEventHeroMoveClass_data).offset_0x28 = 0;\n  (this->StoryEventHeroMoveClass_data).offset_0x30 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:39Z"
+}

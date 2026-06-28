@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407030e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HeroProtectionAbilityClass * __thiscall\nHeroProtectionAbilityClass::scalar_deleting_destructor\n          (HeroProtectionAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: HeroProtectionAbilityClass::~HeroProtectionAbilityClass\n                        */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->HeroProtectionAbilityClass_data).offset_0x0 = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x180);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:51:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021d2f3        uint64_t result\n14021d2f3        if (arg2 u<= 3)\n14021d2f8        char r9 = 0\n14021d304        int64_t rdx = (sx.q(arg2) + 0xc8) * 5\n14021d30b        result = zx.q(arg3 - *(arg1 + (rdx << 2) + 0x10))\n14021d30f        float zmm0 = *(arg1 + (rdx << 2) + 8)\n14021d315        zmm0 - 0f\n14021d318        *(arg1 + (rdx << 2) + 0x10) = arg3\n14021d31f        if (is_unordered.d(zmm0, 0f) || not(zmm0 == 0f))\n14021d32c        float zmm1 = float.s(result) * zmm0\n14021d330        if (not(zmm0 <= 0f))\n14021d34f        *(arg1 + (rdx << 2)) = __minss_xmmss_memss(zmm1 f+ *(arg1 + (rdx << 2)), *(arg1 + (rdx << 2) + 4))\n14021d354        r9 = 1\n14021d342        if (not(0f <= zmm0))\n14021d34f        *(arg1 + (rdx << 2)) = __maxss_xmmss_memss(zmm1 f+ *(arg1 + (rdx << 2)), *(arg1 + (rdx << 2) + 4))\n14021d354        r9 = 1\n14021d357        zmm0 = *(arg1 + (rdx << 2))\n14021d35c        float temp0_3 = *(arg1 + (rdx << 2) + 4)\n14021d35c        zmm0 - temp0_3\n14021d363        if (not(is_unordered.d(zmm0, temp0_3)) && not(zmm0 != temp0_3))\n14021d365        *(arg1 + (rdx << 2) + 8) = 0\n14021d371        return zx.q(r9)\n14021d372        result.b = 0\n14021d374        return result",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

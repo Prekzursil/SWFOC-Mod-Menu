@@ -1,0 +1,7 @@
+{
+  "addr": "0x140523f10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140523f1b        struct ScheduledEventClass::ProductionEventClass::VTable** result = operator new(0x60)\n140523f26        if (result == 0)\n140523f4f        return result\n140523f2b        sub_140512c50(result)\n140523f37        result[4].d = 7\n140523f3e        *result = &ProductionEventClass::`vftable'{for `ScheduledEventClass'}\n140523f49        return result",
+  "fetched_at": "2026-04-26T17:33:03Z"
+}

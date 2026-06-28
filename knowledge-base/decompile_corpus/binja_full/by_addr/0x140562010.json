@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140562017        arg1[2].d = 0x3fffff\n14056201e        *arg1 = &VehicleThiefDataPackClass::`vftable'{for `BaseDataPackClass'}\n140562023        arg1[1] = 0\n14056202a        *(arg1 + 0x14) = 0xffffffff\n140562031        return arg1",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

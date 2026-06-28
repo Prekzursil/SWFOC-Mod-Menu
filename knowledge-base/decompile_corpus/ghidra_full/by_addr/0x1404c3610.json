@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c3610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1404c3610(int param_1)\n\n{\n  undefined *puVar1;\n  int iVar2;\n  ulonglong uVar3;\n  longlong lVar4;\n  undefined **ppuVar5;\n  int iVar6;\n  \n  ppuVar5 = &PTR_s_LAND_TEAM_CONTAINER_LOCOMOTOR_140a2ac90;\n  iVar6 = 0;\n  do {\n    puVar1 = *ppuVar5;\n    if (puVar1 != (undefined *)0x0) {\n      uVar3 = 0xffffffffffffffff;\n      do {\n        uVar3 = uVar3 + 1;\n      } while (puVar1[uVar3] != '\\0');\n      iVar2 = FUN_140215a30(puVar1,uVar3 & 0xffffffff,0);\n      if (iVar2 == param_1) {\n        lVar4 = (*(code *)(&PTR_FUN_140a2ac98)[(longlong)iVar6 * 4])();\n        RefCountClass::vfunction1((RefCountClass *)(lVar4 + 8));\n        *(int *)(lVar4 + 0x38) = param_1;\n        return lVar4;\n      }\n    }\n    iVar6 = iVar6 + 1;\n    ppuVar5 = ppuVar5 + 4;\n    if (0x140a2bb2f < (longlong)ppuVar5) {\n      return 0;\n    }\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:11:30Z"
+}

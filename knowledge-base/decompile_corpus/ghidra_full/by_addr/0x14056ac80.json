@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056ac80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall BaseShieldBehaviorClass::vfunction6(void)\n\n{\n  return DAT_140b0a340 / 2;\n}",
+  "fetched_at": "2026-04-26T18:39:55Z"
+}

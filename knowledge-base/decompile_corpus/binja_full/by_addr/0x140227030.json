@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227030",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022704a        struct PGNetAsyncSocketImpl::WinsockAsyncSocketImpl::VTable** rax = operator new(0x30)\n14022704f        struct PGNetAsyncSocketImpl::WinsockAsyncSocketImpl::VTable** rbx = rax\n140227055        if (rax == 0)\n140227093        rbx = nullptr\n140227057        rax[1].d = 0\n140227061        rbx[2] = -1\n140227070        *rbx = &WinsockAsyncSocketImpl::`vftable'{for `PGNetAsyncSocketImpl'}\n140227076        *(rbx + 0x18) = *arg2\n14022707f        rbx[5] = arg2[1].q\n140227084        sub_140227410(rbx)\n14022708f        (*rbx)->vFunc_0(rbx)\n140227095        int64_t rax_2 = rbx[2]\n140227099        struct PGNetAsyncSocketImpl::WinsockAsyncSocketImpl::VTable** rcx_2 = rbx\n14022709c        *arg1 = nullptr\n1402270a7        if (rax_2 != -1)\n1402270a9        *arg1 = rbx\n1402270af        (*rbx)->vFunc_0(rcx_2)\n1402270b1        rcx_2 = rbx\n1402270b7        (*rbx)->vFunc_1(rcx_2)\n1402270cc        return arg1",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

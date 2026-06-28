@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d0050(undefined8 param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  \n  uVar2 = FUN_1407b9190();\n  iVar1 = FUN_1407b9e00(param_1,1);\n  if (iVar1 == 6) {\n    iVar1 = FUN_1407b8f60(param_1,1);\n    if (iVar1 == 0) goto LAB_1407d009a;\n  }\n  FUN_1407cdf80(param_1,1,\"Lua function expected\");\nLAB_1407d009a:\n  FUN_1407b9600(param_1,1);\n  FUN_1407b9ed0(param_1,uVar2,1);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:57:58Z"
+}

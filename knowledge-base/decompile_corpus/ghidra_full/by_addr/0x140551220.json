@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<bool> * __thiscall\nDynamicVectorClass<bool>::scalar_deleting_destructor(DynamicVectorClass<bool> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<bool>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:02Z"
+}

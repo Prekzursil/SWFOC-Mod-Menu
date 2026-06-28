@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f2d80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f2d8a        int64_t* result = arg2[1]\n1404f2d90        *result = 0\n1404f2d93        int64_t* i_1 = *arg2\n1404f2d99        if (i_1 != 0)\n1404f2e18        int64_t* i\n1404f2dc0        int64_t lpMem = i_1[4]\n1404f2dc4        i = *i_1\n1404f2dc7        i_1[3] = &DynamicVectorClass<struct ObjectPersistenceClass::tPersistentUnit>::`vftable'\n1404f2dce        if (lpMem != 0)\n1404f2dd7        if ((*(i_1 + 0x2c) & 0x80000000) == 0)\n1404f2df2        j_sub_1407864b8(lpMem)\n1404f2de7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1404f2df7        *(i_1 + 0x2c) &= 0x80000000\n1404f2dfe        i_1[4] = 0\n1404f2e02        i_1[5].d = 0\n1404f2e0d        result = j_sub_1407864b8(i_1)\n1404f2e12        i_1 = i\n1404f2e18        do while (i != 0)\n1404f2e33        return result",
+  "fetched_at": "2026-04-26T17:31:37Z"
+}

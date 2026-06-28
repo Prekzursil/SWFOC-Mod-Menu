@@ -1,0 +1,7 @@
+{
+  "addr": "0x14008c530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nfloat FUN_14008c530(float param_1,float param_2,float param_3)\n\n{\n  if (param_1 < param_2) {\n    return param_2;\n  }\n  if (param_1 <= param_3) {\n    param_3 = param_1;\n  }\n  return param_3;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:46Z"
+}

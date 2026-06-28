@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277030",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027703a        int32_t r8 = *(arg1 + 0x98)\n140277041        int32_t rsi = 0\n140277043        *(arg1 + 0xa0) = 0\n140277050        if (r8 != 1)\n140277068        int64_t rdi_1 = sx.q(sub_1401ffb40(&data_140a13e24, 0, r8 - 1))\n140277072        *(arg1 + 0xa0) = rdi_1.d\n140277078        void** rcx_1 = rdi_1 * 0x198 + *(arg1 + 0x90)\n140277084        if (rcx_1[3] u>= 0x10)\n140277086        rcx_1 = *rcx_1\n140277097        if (strcmp(rcx_1, \"Cinematic\") == 0)\n140277099        rdi_1 = zx.q(rdi_1.d + 1)\n14027709b        int32_t rcx_2 = *(arg1 + 0x98)\n1402770a3        if (rdi_1.d s>= rcx_2)\n1402770a3        rdi_1 = 0\n1402770a8        if (rdi_1.d s>= 0)\n1402770a8        rsi = rdi_1.d\n1402770b0        int32_t rax_3 = rsi\n1402770b2        rsi = rcx_2 - 1\n1402770b7        if (rax_3 s< rcx_2)\n1402770b7        rsi = rax_3\n1402770bd        *(arg1 + 0xa0) = rsi\n1402770c3        sub_1402774f0(arg1)\n1402770d5        return sub_140277830(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

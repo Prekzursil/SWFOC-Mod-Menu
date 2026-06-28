@@ -1,0 +1,7 @@
+{
+  "addr": "0x140294be0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140294be0(longlong *param_1,int param_2)\n\n{\n  if ((-1 < param_2) && (param_2 < (int)(param_1[1] - *param_1 >> 3))) {\n    return *(undefined8 *)(*param_1 + (longlong)param_2 * 8);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:24:53Z"
+}

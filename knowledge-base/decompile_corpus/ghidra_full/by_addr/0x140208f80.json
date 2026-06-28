@@ -1,0 +1,7 @@
+{
+  "addr": "0x140208f80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDynamicVectorClass<class_IPAddressClass*___ptr64>::\n~DynamicVectorClass<class_IPAddressClass*___ptr64>\n          (DynamicVectorClass<class_IPAddressClass*___ptr64> *this)\n\n{\n  uint *puVar1;\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = (this->DynamicVectorClass<class_IPAddressClass*___ptr64>_data).offset_0x0;\n  this->vftablePtr = &vftable;\n  if (lpMem != (LPVOID)0x0) {\n    if (((this->DynamicVectorClass<class_IPAddressClass*___ptr64>_data).offset_0xc & 0x80000000) ==\n        0) {\n      thunk_FUN_1407864b8(lpMem);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    puVar1 = &(this->DynamicVectorClass<class_IPAddressClass*___ptr64>_data).offset_0xc;\n    *puVar1 = *puVar1 & 0x80000000;\n    (this->DynamicVectorClass<class_IPAddressClass*___ptr64>_data).offset_0x0 = (LPVOID)0x0;\n    (this->DynamicVectorClass<class_IPAddressClass*___ptr64>_data).offset_0x8 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:40Z"
+}

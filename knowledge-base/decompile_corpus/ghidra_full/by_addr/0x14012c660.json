@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012c660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall alHModel::vfunction11_for_RefCountClass(alHModel *this,undefined4 *param_1)\n\n{\n  *param_1 = (this->alHModel_data).offset_0x40;\n  param_1[1] = (this->alHModel_data).offset_0x44;\n  param_1[2] = (this->alHModel_data).offset_0x48;\n  param_1[3] = (this->alHModel_data).offset_0x4c;\n  param_1[4] = (this->alHModel_data).offset_0x50;\n  param_1[5] = (this->alHModel_data).offset_0x54;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:59Z"
+}

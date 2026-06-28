@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b826f        uint128_t* rsi = arg1[1]\n1407b8276        int64_t r11 = *arg1\n1407b827c        void* r8_1 = rsi - r11\n1407b828f        int64_t rax\n1407b828f        int64_t rdx\n1407b828f        rdx:rax = muls.dp.q(-0x7777777777777777, r8_1)\n1407b829d        uint64_t rax_2 = (r8_1 + rdx) s>> 5 u>> 0x3f\n1407b82a1        int64_t r10_2 = r8_1 s/ 0x3c\n1407b82a7        if (arg2 u< r10_2)\n1407b82ad        int64_t rax_4 = arg2 * 0x3c + r11\n1407b82b0        arg1[1] = rax_4\n1407b82c3        return rax_4\n1407b82c4        if (arg2 u> r10_2)\n1407b82cd        int64_t rcx_1 = arg1[2] - r11\n1407b82d0        int64_t rax_5\n1407b82d0        int64_t rdx_1\n1407b82d0        rdx_1:rax_5 = muls.dp.q(-0x7777777777777777, rcx_1)\n1407b82dd        rax_2 = (rdx_1 + rcx_1) s>> 5 u>> 0x3f\n1407b82e7        if (arg2 u> rcx_1 s/ 0x3c)\n1407b8308        return sub_1407b7b50(arg1, arg2)\n1407b830c        if (arg2 != r10_2)\n1407b830e        void* rbx_1 = (arg2 - r10_2) * 0x3c\n1407b831a        rax_2 = memset(rsi, 0, rbx_1)\n1407b831f        rsi += rbx_1\n1407b8322        arg1[1] = rsi\n1407b8335        return rax_2",
+  "fetched_at": "2026-04-26T17:33:04Z"
+}

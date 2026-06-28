@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061bea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061bea7        return \"GravityControlFieldBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:23:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198c00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140198c16        int64_t* rcx = *(arg1 + 0x38)\n140198c1e        if (rcx != 0)\n140198c23        (*(*rcx + 0x10))(rcx)\n140198c26        *(arg1 + 0x38) = 0\n140198c2c        if (*(arg1 + 0x48) == 0)\n140198c32        int64_t* arg_8 = nullptr\n140198c3a        int64_t* rax_2 = sub_1401771a0()\n140198c4a        int32_t var_58\n140198c4a        var_58.q = &arg_8\n140198c5a        (*(*rax_2 + 0x90))(rax_2, 0, 0, 0, var_58)\n140198c61        int64_t* rcx_2 = arg_8\n140198c71        void var_28\n140198c71        (*(*rcx_2 + 0x60))(rcx_2, &var_28)\n140198c74        int64_t* rcx_3 = arg_8\n140198c7f        (*(*rcx_3 + 0x10))(rcx_3)\n140198c9a        int32_t var_10\n140198c9a        *(arg1 + 0x4c) = int.d(float.s(zx.q(var_10)) f* *(arg1 + 0x54))\n140198caf        int32_t var_c\n140198caf        *(arg1 + 0x50) = int.d(float.s(zx.q(var_c)) f* *(arg1 + 0x58))\n140198cb2        int64_t* rax_9 = sub_1401771a0()\n140198ce7        if ((*(*rax_9 + 0xe8))(rax_9, zx.q(*(arg1 + 0x4c)), zx.q(*(arg1 + 0x50)), zx.q(*(arg1 + 0x5c)), 0, 0, 0, arg1 + 0x38, 0) s>= 0)\n140198d24        return 0\n140198ce9        int64_t* rcx_5 = *(arg1 + 0x38)\n140198cef        if (rcx_5 != 0)\n140198cf4        (*(*rcx_5 + 0x10))(rcx_5)\n140198cf7        *(arg1 + 0x38) = 0\n140198d10        return 0x80004005",
+  "fetched_at": "2026-04-26T17:24:38Z"
+}

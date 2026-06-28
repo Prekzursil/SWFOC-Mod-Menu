@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f1300",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetRadiobuttonClass * __thiscall\nGUIGadgetRadiobuttonClass::GUIGadgetRadiobuttonClass(GUIGadgetRadiobuttonClass *this)\n\n{\n  GUIGadgetClass::GUIGadgetClass((GUIGadgetClass *)this);\n  this->vftablePtr = &vftable;\n  TextureRectClass::TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetRadiobuttonClass_data).field_0x10);\n  DrawTextClass::DrawTextClass((DrawTextClass *)&(this->GUIGadgetRadiobuttonClass_data).field_0xa0);\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x168 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x170 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x178 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x180 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x188 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x190 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x198 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x1a0 = 0;\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetRadiobuttonClass_data).field_0xa0);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetRadiobuttonClass_data).field_0x10);\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x0 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x4 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x8 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:02Z"
+}

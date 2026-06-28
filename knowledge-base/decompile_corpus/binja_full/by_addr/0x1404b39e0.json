@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b39e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b39f0        *arg1 = &EventQueueClass::`vftable'\n1404b39f5        __builtin_memset(&arg1[1], 0, 0x14)\n1404b3a07        int64_t rdx = sx.q(data_140a16fb0)\n1404b3a13        uint64_t rax = 4 * rdx\n1404b3a16        if (mulu.dp.q(4, rdx) u>> 0x40 != zx.o(0))\n1404b3a16        rax = -1\n1404b3a1d        uint128_t* rax_1 = j_operator new(rax)\n1404b3a22        arg1[4] = rax_1\n1404b3a36        memset(rax_1, 0, sx.q(data_140a16fb0) << 2)\n1404b3a43        return arg1",
+  "fetched_at": "2026-04-26T17:29:50Z"
+}

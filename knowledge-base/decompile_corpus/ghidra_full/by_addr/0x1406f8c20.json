@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f8c20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nEliminateHeroAbilityClass::vfunction31_for_IXMLLoadableClass\n          (EliminateHeroAbilityClass *this,longlong param_1,longlong *param_2)\n\n{\n  ulonglong uVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  \n  uVar1 = (*this->vftablePtr->vfunction6_for_IXMLLoadableClass)(this,param_1,(longlong)param_2);\n  if ((char)uVar1 != '\\0') {\n    uVar1 = FUN_14039a600(param_2);\n    if ((char)uVar1 != '\\0') {\n      FUN_1403a01f0(param_2,param_1);\n      FUN_14039fe20(param_1,param_2);\n      FUN_14048eb10(param_2,0,0,0);\n      FUN_14048cf20(param_2);\nLAB_1406f8c86:\n      uVar2 = FUN_14048e4d0(this,param_1,param_2);\n      return CONCAT71((int7)((ulonglong)uVar2 >> 8),1);\n    }\n    if (*(char *)((longlong)param_2 + 0x335) != -1) {\n      lVar3 = (**(code **)(*param_2 + 0x10))(param_2,3);\n      uVar1 = 0;\n      if ((lVar3 != 0) && (uVar1 = FUN_1403fa0d0(lVar3), (char)uVar1 != '\\0')) {\n        FUN_1403fad70(lVar3,param_1);\n        FUN_1403a0500(param_1,param_2);\n        FUN_1403ff1f0(lVar3);\n        goto LAB_1406f8c86;\n      }\n    }\n  }\n  return uVar1 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:49:12Z"
+}

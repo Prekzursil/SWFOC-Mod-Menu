@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740fc8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: class std::_Yarn<char> & __ptr64 __cdecl std::_Yarn<char>::operator=(char const *\n   __ptr64) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\n_Yarn<char> * __thiscall std::_Yarn<char>::operator=(_Yarn<char> *this,char *param_1)\n\n{\n  char cVar1;\n  longlong lVar2;\n  char *pcVar3;\n  \n  if (*(char **)this != param_1) {\n    if (*(char **)this != (char *)0x0) {\n      FUN_1407864b8();\n    }\n    *(undefined8 *)this = 0;\n    if (param_1 != (char *)0x0) {\n      cVar1 = *param_1;\n      pcVar3 = param_1;\n      while (cVar1 != '\\0') {\n        pcVar3 = pcVar3 + 1;\n        cVar1 = *pcVar3;\n      }\n      lVar2 = _malloc_base(pcVar3 + (1 - (longlong)param_1));\n      *(longlong *)this = lVar2;\n      if (lVar2 != 0) {\n        FUN_14076bd80(lVar2,param_1,pcVar3 + (1 - (longlong)param_1));\n      }\n    }\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:04:08Z"
+}

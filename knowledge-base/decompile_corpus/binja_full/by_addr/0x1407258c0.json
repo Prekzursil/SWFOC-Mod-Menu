@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407258c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407258c3        *(arg1 + 0x34) = 1\n1407258ce        arg1[6].d = 0\n1407258d2        __builtin_memset(&arg1[2], 0, 0x18)\n1407258de        arg1[2] = &arg1[1]\n1407258e2        arg1[5] = 0\n1407258e6        arg1[1] = &arg1[1]\n1407258f0        *arg1 = &ReferenceListClass<class PlanBehaviorClass>::`vftable'{for `GenericMultiLinkedList'}\n1407258f6        arg1[7].d = 0xfffffc19\n1407258fd        arg1[8] = 0\n140725901        arg1[4] = 0\n140725905        arg1[3] = 0\n140725909        arg1[9] = arg2\n14072590d        return arg1",
+  "fetched_at": "2026-04-26T17:28:29Z"
+}

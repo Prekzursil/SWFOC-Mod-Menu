@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019ee50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019ee81        int64_t rax_1\n14019ee81        int64_t rdx\n14019ee81        rdx:rax_1 = mulu.dp.q(-0x5555555555555555, sx.q(sub_1402205c0(arg2)))\n14019ee8b        uint64_t rbx_1 = rdx u>> 3\n14019ee91        sub_14019f6a0(arg1 + 0x40, rbx_1.d, 1, 1)\n14019eeb7        return sub_140220730(arg2, *(arg1 + 0x48), (rbx_1 * 3).d << 2, nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:24:51Z"
+}

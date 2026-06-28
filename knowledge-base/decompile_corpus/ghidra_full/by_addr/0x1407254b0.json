@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407254b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nTacticalRegionAITargetLocationClass::vfunction11\n          (TacticalRegionAITargetLocationClass *this,undefined8 param_1)\n\n{\n  (**(code **)(*DAT_140b310a8 + 0x28))\n            (DAT_140b310a8,param_1,*(undefined4 *)&(this->RefCountClass_data).offset_0x10);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:00:10Z"
+}

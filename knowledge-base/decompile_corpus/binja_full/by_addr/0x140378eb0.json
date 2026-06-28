@@ -1,0 +1,7 @@
+{
+  "addr": "0x140378eb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140378eba        int64_t rdi = 0x1fffffffffffffff\n140378ec7        void** rbx = arg1\n140378ecd        if (arg2 u> 0x1fffffffffffffff)\n140378f68        sub_140022630()\n140378f68        noreturn\n140378ed3        void* rcx = *arg1\n140378ee0        int64_t rdx_2 = (rbx[2] - rcx) s>> 3\n140378ee7        uint64_t r9_1 = rdx_2 u>> 1\n140378ef0        if (rdx_2 u<= 0x1fffffffffffffff - r9_1)\n140378ef2        rdi = r9_1 + rdx_2\n140378ef9        if (rdi u< arg2)\n140378ef9        rdi = arg2\n140378f00        if (rcx != 0)\n140378f11        if (rdx_2 << 3 u>= 0x1000)\n140378f13        void* r8_1 = *(rcx - 8)\n140378f26        if (rcx - r8_1 - 8 u> 0x1f)\n140378f62        _invalid_parameter_noinfo_noreturn()\n140378f62        noreturn\n140378f28        rcx = r8_1\n140378f2b        j_sub_1407864b8(rcx)\n140378f32        __builtin_memset(rbx, 0, 0x18)\n140378f43        void* rax_2 = sub_140022650(rbx, rdi)\n140378f48        *rbx = rax_2\n140378f4b        rbx[1] = rax_2\n140378f4f        void* result = rax_2 + (rdi << 3)\n140378f53        rbx[2] = result\n140378f61        return result",
+  "fetched_at": "2026-04-26T17:17:14Z"
+}

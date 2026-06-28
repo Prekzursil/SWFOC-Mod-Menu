@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bde60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401bde63        int64_t arg_8 = arg1\n1401bde67        int64_t arg_10 = arg2\n1401bde6b        int64_t r8\n1401bde6b        int64_t arg_18 = r8\n1401bde6f        int64_t r9\n1401bde6f        int64_t arg_20 = r9\n1401bdea9        void buffer\n1401bdea9        j_sub_140771450(data_140a60d90 | 1, &buffer, 0x400, arg1, nullptr, &arg_10)\n1401bdeae        PSTR lpFileName = data_140a13500\n1401bdecd        int64_t* var_440\n1401bdecd        var_440.d = 0x80\n1401bded5        HANDLE result\n1401bded5        if (data_140a78500 != 0)\n1401bdef6        result = CreateFileA(lpFileName, 0x40000000, FILE_SHARE_READ, nullptr, OPEN_ALWAYS, var_440.d, nullptr)\n1401bdedf        result = CreateFileA(lpFileName, 0x40000000, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, var_440.d, nullptr)\n1401bdee5        data_140a78500 = 1\n1401bdf03        if (result == -1)\n1401bdf69        return result\n1401bdf0b        uint32_t numberOfBytesWritten[0x4]\n1401bdf0b        numberOfBytesWritten[0] = 0\n1401bdf17        SetFilePointer(result, 0, nullptr, FILE_END)\n1401bdf22        int64_t rax = -1\n1401bdf39        bool cond:1_1\n1401bdf30        char var_417[0x407]\n1401bdf30        cond:1_1 = var_417[rax] != 0\n1401bdf35        rax += 1\n1401bdf39        do while (cond:1_1)\n1401bdf51        WriteFile(result, &buffer, (rax + 1).d, &numberOfBytesWritten, nullptr)\n1401bdf5a        return CloseHandle(result)",
+  "fetched_at": "2026-04-26T17:26:02Z"
+}

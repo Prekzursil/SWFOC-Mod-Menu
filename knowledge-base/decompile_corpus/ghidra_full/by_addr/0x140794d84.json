@@ -1,0 +1,7 @@
+{
+  "addr": "0x140794d84",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_get_begin_thread_init_policy\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __acrt_get_begin_thread_init_policy(void)\n\n{\n  int iVar1;\n  int local_res8 [8];\n  \n  if (DAT_140b3ca98 == 0) {\n    local_res8[0] = 0;\n    iVar1 = 1;\n    if (-1 < *(int *)(*(longlong *)((longlong)ProcessEnvironmentBlock + 0x20) + 8)) {\n      __acrt_AppPolicyGetThreadInitializationTypeInternal(local_res8);\n      if (local_res8[0] == 1) {\n        iVar1 = 2;\n      }\n    }\n    LOCK();\n    UNLOCK();\n    DAT_140b3ca98 = iVar1;\n  }\n  return DAT_140b3ca98;\n}",
+  "fetched_at": "2026-04-26T18:53:11Z"
+}

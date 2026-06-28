@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640ef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nJetPackLocomotorBehaviorClass::vfunction10(JetPackLocomotorBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  (*this->vftablePtr->vfunction96)(this,(undefined4 *)(this->offset_0x18 + 0xf));\n  puVar1 = this->offset_0x18[0x15];\n  if (puVar1 != (undefined *)0x0) {\n    FUN_140559250(puVar1,0);\n    puVar1[0x28d] = 1;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:10Z"
+}

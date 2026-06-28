@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cbb30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SquadronCombatantClass::vfunction29(SquadronCombatantClass *this,char param_1)\n\n{\n  SquadronCombatantClass_vftable0 *pSVar1;\n  bool bVar2;\n  \n  *(char *)(*(longlong *)&this->field_0x40 + 0x3a5) = param_1;\n  if ((param_1 == '\\x01') && (*(char *)((longlong)&this->offset_0x48 + 4) == '\\0')) {\n    bVar2 = (*this->vftablePtr->vfunction27)(this);\n    if (!bVar2) {\n      pSVar1 = this->vftablePtr;\n      *(undefined1 *)((longlong)&this->offset_0x48 + 4) = 1;\n                    /* WARNING: Could not recover jumptable at 0x0001406cbb6a. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (*pSVar1->vfunction38)(this);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:48Z"
+}

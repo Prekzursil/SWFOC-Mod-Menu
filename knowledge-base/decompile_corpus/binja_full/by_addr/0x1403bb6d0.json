@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bb6d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403bb702        if (arg2 == 0 || *(arg1 + 0x338) == 0)\n1403bb702        return \n1403bb719        sub_1403b7e60(&data_140b36b90, arg2)\n1403bb71e        float zmm6[0x4] = data_140b2c398\n1403bb722        float zmm7[0x4] = data_140b2c39c\n1403bb72a        int32_t rdi_5\n1403bb72a        if (arg4 == 0)\n1403bb78d        rdi_5 = sub_1403b8090(arg1, zx.d(*(arg2 + 0x18)), zx.d(*(arg2 + 0x1a)))\n1403bb778        rdi_5 = (int.q(arg4[2] * 255f)).d | (int.q(arg4[1] * 255f)).d << 8 | (int.q(*arg4 * 255f)).d << 0x10 | (int.q(arg4[3] * 255f)).d << 0x18\n1403bb78f        zmm7[0] = zmm7[0] + 0.5f\n1403bb797        zmm6[0] = zmm6[0] + 0.5f\n1403bb7cf        int32_t var_38[0x4]\n1403bb7cf        int32_t arg_10\n1403bb7cf        if (sub_140136000(*(arg1 + 0x338), zmm6, zmm7, &var_38, &arg_10) == 0)\n1403bb7cf        return \n1403bb7e7        sub_140136120(*(arg1 + 0x338), var_38[0], arg_10, rdi_5)\n1403bb7ef        if (arg3 == 0)\n1403bb7ef        return \n1403bb7f1        int32_t rdx_2 = var_38[0]\n1403bb7f8        int32_t r8_2 = arg_10\n1403bb816        int32_t* var_58_1\n1403bb816        var_58_1.d = r8_2\n1403bb81b        sub_140133bf0(*(arg1 + 0x338), rdx_2, r8_2, rdx_2, var_58_1.d, 0, 0, 1)\n1403bb835        return ",
+  "fetched_at": "2026-04-26T17:24:30Z"
+}

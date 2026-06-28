@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061e440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WalkLocomotorBehaviorClass::vfunction45(WalkLocomotorBehaviorClass *this)\n\n{\n  int iVar1;\n  undefined *puVar2;\n  undefined8 uVar3;\n  int in_EDX;\n  \n  uVar3 = (*this->vftablePtr->vfunction47)(this,in_EDX);\n  if (((char)uVar3 == '\\0') || (puVar2 = this->offset_0x18[0x15], puVar2 == (undefined *)0x0)) {\n    return;\n  }\n  iVar1 = *(int *)(puVar2 + 0x48);\n  if ((((iVar1 != 0x18) && (iVar1 != 0x19)) && (iVar1 != 0x1a)) && (puVar2[0x2b3] == '\\0')) {\n    FUN_140559250(puVar2,0x16);\n    return;\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014061e49d. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction36)(this,'\\0');\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:36Z"
+}

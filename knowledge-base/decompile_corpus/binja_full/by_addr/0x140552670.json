@@ -1,0 +1,7 @@
+{
+  "addr": "0x140552670",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140552677        *arg1 = &DebrisDataPackClass::`vftable'{for `BaseDataPackClass'}\n14055267c        arg1[1].d = 0\n14055267f        arg1[2] = 0\n140552683        return 0",
+  "fetched_at": "2026-04-26T17:34:18Z"
+}

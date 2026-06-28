@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d6a60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TauntEventClass * __thiscall TauntEventClass::TauntEventClass(TauntEventClass *this)\n\n{\n  EventClass::EventClass((EventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x32;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:13:56Z"
+}

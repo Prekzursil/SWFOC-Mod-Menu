@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140703ef4        *arg1 = &IncomeStreamModAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140703f00        arg1[1] = &IncomeStreamModAbilityClass::`vftable'{for `RefCountClass'}\n140703f06        arg1[0x2f] = 0\n140703f0d        arg1[0x30] = 0\n140703f14        arg1[0x33].w = 0\n140703f22        sub_1404c4770(&arg1[0x31])\n140703f2a        sub_14048c8d0(arg1)\n140703f32        if ((arg2 & 1) != 0)\n140703f3c        j_sub_1407864b8(arg1)\n140703f4e        return arg1",
+  "fetched_at": "2026-04-26T17:27:10Z"
+}

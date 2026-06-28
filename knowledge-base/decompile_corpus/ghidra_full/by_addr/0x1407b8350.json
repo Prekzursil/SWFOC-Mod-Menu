@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407b8350(longlong param_1)\n\n{\n  undefined8 uVar1;\n  \n  FUN_1407b9f90(param_1,*(undefined8 *)(param_1 + 0x68));\n  if (*(longlong *)(param_1 + 0x20) != 0) {\n    FUN_1407bcb20(param_1,1);\n    FUN_1407bf8b0(param_1);\n    uVar1 = FUN_1407bf7e0(param_1,*(undefined8 *)(*(longlong *)(param_1 + 0x20) + 0x28),\n                          *(undefined4 *)(*(longlong *)(param_1 + 0x20) + 0x30),0);\n    *(undefined8 *)(*(longlong *)(param_1 + 0x20) + 0x28) = uVar1;\n    *(undefined8 *)(*(longlong *)(param_1 + 0x20) + 0x30) = 0;\n    FUN_1407c30c0(param_1);\n  }\n  FUN_1407c3030(param_1);\n  FUN_1407bf7e0(param_1,*(undefined8 *)(param_1 + 0x80),\n                ((uint)*(ushort *)(param_1 + 0x88) + (uint)*(ushort *)(param_1 + 0x88) * 2) * 0x10,0\n               );\n  FUN_1407bf7e0(param_1,*(undefined8 *)(param_1 + 0x68),*(int *)(param_1 + 0x70) << 4,0);\n  if (*(longlong *)(param_1 + 0x20) != 0) {\n    FUN_1407bf7e0(0,*(longlong *)(param_1 + 0x20),0x188,0);\n  }\n  FUN_1407bf7e0(0,param_1,0xd0,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:59Z"
+}

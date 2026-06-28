@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390190(longlong param_1)\n\n{\n  AbilityCountdownDataPackClass *pAVar1;\n  \n  if (*(longlong *)(param_1 + 0x1e8) == 0) {\n    pAVar1 = (AbilityCountdownDataPackClass *)FUN_140769c58(0x2c8);\n    if (pAVar1 != (AbilityCountdownDataPackClass *)0x0) {\n      pAVar1 = AbilityCountdownDataPackClass::AbilityCountdownDataPackClass(pAVar1);\n      *(AbilityCountdownDataPackClass **)(param_1 + 0x1e8) = pAVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x1e8) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:30Z"
+}

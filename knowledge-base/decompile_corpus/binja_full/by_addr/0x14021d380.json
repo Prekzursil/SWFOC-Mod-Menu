@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021d38b        int32_t* rax = operator new(0x20)\n14021d3a3        __builtin_strncpy(rax, \"Miles Fast 2D Positional Audio\", 0x1f)\n14021d3d2        sub_140022730(&data_140a7c378, rax, 0x1e)\n14021d3df        j_sub_1407864b8(rax)\n14021d3f0        return sub_140203330(&data_140a7c230) __tailcall",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

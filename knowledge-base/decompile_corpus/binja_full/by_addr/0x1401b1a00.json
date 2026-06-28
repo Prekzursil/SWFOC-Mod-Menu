@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b1a00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b1a0c        int128_t var_318\n1401b1a0c        sub_140140100(&var_318)\n1401b1a26        int32_t var_2e8 = 0x3dcccccd\n1401b1a2f        int32_t var_2e4 = 0x3f8ccccd\n1401b1a38        sub_140141260(&var_318)\n1401b1a42        sub_1401417c0(&var_318)\n1401b1a62        __builtin_memcpy(&var_318, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\", 0x30)\n1401b1a78        void var_294\n1401b1a78        sub_14022d390(&var_318, &var_294)\n1401b1a82        sub_1401417c0(&var_318)\n1401b1a93        int128_t var_2c8 = data_14081b020\n1401b1a9b        int32_t var_2d4 = 1\n1401b1aa6        sub_140141260(&var_318)\n1401b1ab0        int64_t rdx_1\n1401b1ab0        int64_t r8\n1401b1ab0        int512_t zmm3\n1401b1ab0        rdx_1, r8, zmm3 = sub_1401417c0(&var_318)\n1401b1aba        int64_t result = sub_14013d820(&var_318, rdx_1, r8, zmm3)\n1401b1ad2        int128_t var_348\n1401b1ad2        __builtin_memcpy(&var_348, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\", 0x30)\n1401b1ae8        wWinMainCRTStartup(&var_348)\n1401b1afe        return result",
+  "fetched_at": "2026-04-26T17:25:39Z"
+}

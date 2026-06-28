@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_140227030(undefined8 *param_1,undefined4 *param_2)\n\n{\n  longlong lVar1;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  undefined4 uVar4;\n  longlong *plVar5;\n  \n  plVar5 = (longlong *)FUN_140769c58(0x30);\n  if (plVar5 == (longlong *)0x0) {\n    plVar5 = (longlong *)0x0;\n  }\n  else {\n    *(undefined4 *)(plVar5 + 1) = 0;\n    plVar5[2] = -1;\n                    /* inlined constructor: WinsockAsyncSocketImpl::WinsockAsyncSocketImpl */\n    *plVar5 = (longlong)&WinsockAsyncSocketImpl::vftable;\n    uVar2 = param_2[1];\n    uVar3 = param_2[2];\n    uVar4 = param_2[3];\n    *(undefined4 *)(plVar5 + 3) = *param_2;\n    *(undefined4 *)((longlong)plVar5 + 0x1c) = uVar2;\n    *(undefined4 *)(plVar5 + 4) = uVar3;\n    *(undefined4 *)((longlong)plVar5 + 0x24) = uVar4;\n    plVar5[5] = *(longlong *)(param_2 + 4);\n    FUN_140227410(plVar5);\n    (**(code **)*plVar5)(plVar5);\n  }\n  lVar1 = plVar5[2];\n  *param_1 = 0;\n  if (lVar1 != -1) {\n    *param_1 = plVar5;\n    (**(code **)*plVar5)(plVar5);\n  }\n  (**(code **)(*plVar5 + 8))(plVar5);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:04:47Z"
+}

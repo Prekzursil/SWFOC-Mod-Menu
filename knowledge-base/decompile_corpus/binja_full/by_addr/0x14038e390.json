@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038e390",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14038e3a3        int32_t result\n14038e3a3        bool cond:1\n14038e3a3        if (arg3 != 0)\n14038e3c7        int32_t rsi_1 = *(*(arg3 + 0x298) + 0x1688)\n14038e3cd        if (data_140a10980 == 0)\n14038e3d4        struct TheMovementClassManagerClass::VTable** rax_2 = operator new(0x48)\n14038e3dc        if (rax_2 == 0)\n14038e3ef        data_140a10980 = 0\n14038e3e6        data_140a10980 = sub_140477900(rax_2)\n14038e3fa        int32_t* rdx = data_140a7bc10\n14038e408        bool cond:2_1 = rdx == data_140a7bc18\n14038e40f        void** arg_18 = &data_140a10978\n14038e414        if (cond:2_1)\n14038e42f        sub_14001ded0(&data_140a7bc08, rdx, &arg_18)\n14038e416        *rdx = &data_140a10978\n14038e419        data_140a7bc10 += 8\n14038e43d        result = sub_140477b70(data_140a10980, rsi_1)\n14038e44c        cond:1 = (*(arg1 + 0x14) & result) != *(arg1 + 0x14)\n14038e3ab        cond:1 = (*(arg1 + 0x14) & 1) != *(arg1 + 0x14)\n14038e44f        if (cond:1)\n14038e469        result.b = 0\n14038e470        return result\n14038e451        *arg2 = 1\n14038e457        result.b = 1\n14038e463        return result",
+  "fetched_at": "2026-04-26T17:21:14Z"
+}

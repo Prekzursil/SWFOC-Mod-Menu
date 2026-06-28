@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d028",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nbool FUN_14078d028(void)\n\n{\n  byte bVar1;\n  \n  bVar1 = (byte)DAT_140a44b98 & 0x3f;\n  return (DAT_140a44b98 ^ _DAT_140b3c490) >> bVar1 != 0 ||\n         (DAT_140a44b98 ^ _DAT_140b3c490) << 0x40 - bVar1 != 0;\n}",
+  "fetched_at": "2026-04-26T18:52:12Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14040e070",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FormationClass * __thiscall\nFormationClass::scalar_deleting_destructor(FormationClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: FormationClass::~FormationClass */\n  this->vftablePtr = &vftable;\n  FUN_140410b80();\n  FUN_140410d80(&this->SignalListenerClass_data);\n  FUN_140410c60(&this->SignalListenerClass_data);\n  FUN_14040d940(&this->SignalListenerClass_data);\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (FormationClass_vftable *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x290);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:45:30Z"
+}

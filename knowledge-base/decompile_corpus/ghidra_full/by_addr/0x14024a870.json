@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nLuaMemberFunctionWrapper<class_LuaUserVar>::vfunction18\n          (LuaMemberFunctionWrapper<class_LuaUserVar> *this)\n\n{\n  return (this->RefCountClass_data).field_0x30;\n}",
+  "fetched_at": "2026-04-26T18:11:14Z"
+}

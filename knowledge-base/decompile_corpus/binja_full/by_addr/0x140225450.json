@@ -1,0 +1,7 @@
+{
+  "addr": "0x140225450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140225476        VariantInit(arg4)\n1402254b0        int32_t result\n14022547c        int32_t i = 0xa\n1402254b0        while (i s> 0)\n14022548d        result = (*(*arg2 + 0x38))(arg2, arg3, arg4)\n140225494        if (result == 0)\n140225494        break\n14022549b        if (result != 0x80040212)\n14022549b        break\n14022549f        if (i == 0)\n14022549f        break\n1402254a6        i -= 1\n1402254a8        Sleep(0x64)\n1402254c3        result.b = result == 0\n1402254d1        return result",
+  "fetched_at": "2026-04-26T17:29:18Z"
+}

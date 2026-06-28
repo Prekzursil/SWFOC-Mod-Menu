@@ -1,0 +1,7 @@
+{
+  "addr": "0x140206470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020647f        int64_t rax = sx.q(*(arg1 + 0x38))\n14020648e        int64_t result\n14020648e        if (rax.d s> 0)\n140206497        result = 0\n1402064ae        if (*(*(arg1 + 0x30) + (result << 3)) == arg2 && *(*(arg1 + 0x48) + (result << 3)) == arg3)\n140206575        return result\n1402064b4        result += 1\n1402064ba        do while (result s< rax)\n1402064bf        int32_t rax_1 = *(arg1 + 0x38)\n1402064c4        int32_t rcx_3 = (*(arg1 + 0x3c) * 2) s>> 1\n1402064d8        if (rax_1 s>= rcx_3)\n1402064ec        int32_t rdx_3 = rcx_3 s/ 0xa\n1402064f1        if (rdx_3 s< 0xa)\n1402064f1        rdx_3 = 0xa\n1402064fe        sub_140047aa0(arg1 + 0x28, rdx_3 + rcx_3, 0, 1)\n140206503        rax_1 = *(arg1 + 0x38)\n140206512        *(*(arg1 + 0x30) + (sx.q(rax_1) << 3)) = arg2\n140206516        *(arg1 + 0x38) += 1\n14020651c        int32_t rdx_5 = *(arg1 + 0x50)\n140206521        int32_t rcx_8 = (*(arg1 + 0x54) * 2) s>> 1\n140206525        if (rdx_5 s>= rcx_8)\n140206539        int32_t rdx_8 = rcx_8 s/ 0xa\n14020653e        if (rdx_8 s< 0xa)\n14020653e        rdx_8 = 0xa\n14020654b        sub_140047aa0(arg1 + 0x40, rdx_8 + rcx_8, 0, 1)\n140206550        rdx_5 = *(arg1 + 0x50)\n140206553        result = *(arg1 + 0x48)\n14020655f        *(result + (sx.q(rdx_5) << 3)) = arg3\n140206563        *(arg1 + 0x50) += 1\n140206575        return result",
+  "fetched_at": "2026-04-26T17:27:54Z"
+}

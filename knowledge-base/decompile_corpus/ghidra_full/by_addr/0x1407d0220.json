@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1407d0220(undefined8 param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  \n  iVar1 = FUN_1407b8bc0(param_2,param_3);\n  if (iVar1 == 0) {\n    FUN_1407ce300(param_1,\"too many arguments to resume\");\n  }\n  FUN_1407b9ed0(param_1,param_2,param_3);\n  iVar1 = FUN_1407b9920(param_2,param_3);\n  if (iVar1 == 0) {\n    uVar2 = FUN_1407b8ef0();\n    iVar1 = FUN_1407b8bc0(param_1,uVar2);\n    if (iVar1 == 0) {\n      FUN_1407ce300(param_1,\"too many results to resume\");\n    }\n    FUN_1407b9ed0(param_2,param_1,uVar2);\n    return uVar2;\n  }\n  FUN_1407b9ed0(param_2,param_1,1);\n  return 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T18:58:00Z"
+}

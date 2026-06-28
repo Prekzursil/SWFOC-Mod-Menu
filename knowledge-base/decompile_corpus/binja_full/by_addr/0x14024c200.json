@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024c200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024c220        int64_t* rax = sub_1407b9da0(arg1, 1)\n14024c230        int64_t* i = sub_1407b9da0(arg1, 2)\n14024c235        int64_t* rdi = *rax\n14024c23f        int64_t* i_1 = i\n14024c245        if (rdi != 0)\n14024c24d        i = (*(*rdi + 0x20))(rdi)\n14024c253        if (rdi == 0 || i == 0)\n14024c267        label_14024c267:\n14024c267        i.b = 0\n14024c258        while (i != &data_140a157a0)\n14024c25e        i = i[1]\n14024c265        if (i == 0)\n14024c265        goto label_14024c267\n14024c2eb        i.b = 1\n14024c269        int64_t* rbx_1 = *i_1\n14024c271        if (i.b == 0)\n14024c271        rdi = nullptr\n14024c278        if (rbx_1 != 0)\n14024c280        i = (*(*rbx_1 + 0x20))(rbx_1)\n14024c286        if (rbx_1 == 0 || i == 0)\n14024c296        label_14024c296:\n14024c296        i.b = 0\n14024c28b        while (i != &data_140a157a0)\n14024c28d        i = i[1]\n14024c294        if (i == 0)\n14024c294        goto label_14024c296\n14024c2f2        i.b = 1\n14024c29f        int32_t var_30 = 0\n14024c2a4        struct LuaVar::LuaValue<bool, 5>::VTable* const var_38 = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n14024c2ab        int64_t r8 = *rdi\n14024c2b1        if (i.b == 0)\n14024c2b1        rbx_1 = nullptr\n14024c2c4        char var_28 = (*(r8 + 0x48))(rdi, rbx_1, r8)\n14024c2c8        sub_140247700(arg1, &var_38)\n14024c2ea        return 1",
+  "fetched_at": "2026-04-26T17:30:29Z"
+}

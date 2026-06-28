@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bf6f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bf70e        int32_t rdi = *arg3\n1407bf71d        int32_t rsi = rdi * 2\n1407bf723        if (rsi s>= 4)\n1407bf732        int32_t temp0_1\n1407bf732        int32_t temp1_1\n1407bf732        temp0_1:temp1_1 = sx.q(arg5)\n1407bf739        if (rdi s>= (temp1_1 - temp0_1) s>> 1)\n1407bf740        if (rdi s>= arg5 - 4)\n1407bf74e        sub_1407bad30(arg1, arg6, arg3)\n1407bf74e        noreturn\n1407bf742        rsi = arg5\n1407bf725        rsi = 4\n1407bf75d        int32_t r15_1 = rsi * arg4\n1407bf764        int64_t result\n1407bf764        if (r15_1 != 0)\n1407bf7b8        int64_t result_1 = realloc(arg2, zx.q(r15_1))\n1407bf7bd        result = result_1\n1407bf7c3        if (result_1 != 0)\n1407bf7c3        goto label_1407bf775\n1407bf7c8        if (arg1 != 0)\n1407bf7d0        sub_1407bc470(arg1, (result_1 + 4).d)\n1407bf7d0        noreturn\n1407bf7ae        result = 0\n1407bf769        if (arg2 == 0)\n1407bf7ae        result = 0\n1407bf76e        free(arg2)\n1407bf773        result = 0\n1407bf775        label_1407bf775:\n1407bf778        if (arg1 != 0)\n1407bf77a        void* rcx_3 = arg1[4]\n1407bf77e        *(rcx_3 + 0x74) -= rdi * arg4\n1407bf781        void* rcx_4 = arg1[4]\n1407bf785        *(rcx_4 + 0x74) += r15_1\n1407bf79b        *arg3 = rsi\n1407bf7ad        return result",
+  "fetched_at": "2026-04-26T17:33:31Z"
+}

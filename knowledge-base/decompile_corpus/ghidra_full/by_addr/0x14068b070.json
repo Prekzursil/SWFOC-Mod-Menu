@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b070",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b070(void)\n\n{\n  StunAbilityClass *this;\n  \n  this = (StunAbilityClass *)FUN_140769c58(0x1a0);\n  if (this != (StunAbilityClass *)0x0) {\n    StunAbilityClass::StunAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:37Z"
+}

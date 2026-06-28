@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014a840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014a846        bool cond:0 = arg1[0x24] == 0\n14014a855        *arg1 = &alLightSource::`vftable'{for `alRenderable'}\n14014a862        arg1[2] = &alLightSource::`vftable'{for `MultiLinkedListMember'}\n14014a86d        arg1[4] = &alLightSource::`vftable'{for `CullObjectClass'}\n14014a871        if (not(cond:0))\n14014a873        int64_t* rax_1 = sub_14013fe60(arg1)\n14014a87b        if (rax_1 != 0)\n14014a880        void* rax_2 = sub_140199c20(rax_1)\n14014a888        if (rax_2 != 0)\n14014a894        sub_140136ba0(rax_2, arg1[0x24])\n14014a899        int64_t* rcx_2 = arg1[0x24]\n14014a8a3        if (rcx_2 != 0)\n14014a8a8        (*(*rcx_2 + 8))(rcx_2)\n14014a8ab        arg1[0x24] = 0\n14014a8b6        int64_t rdx_2 = arg1[0x1c]\n14014a8c1        if (rdx_2 u>= 0x10)\n14014a8c3        void* rcx_3 = arg1[0x19]\n14014a8d4        if (rdx_2 + 1 u>= 0x1000)\n14014a8d6        void* r8_1 = *(rcx_3 - 8)\n14014a8e9        if (rcx_3 - r8_1 - 8 u> 0x1f)\n14014a91d        _invalid_parameter_noinfo_noreturn()\n14014a91d        noreturn\n14014a8eb        rcx_3 = r8_1\n14014a8ee        j_sub_1407864b8(rcx_3)\n14014a8f6        arg1[0x1b] = 0\n14014a901        arg1[0x1c] = 0xf\n14014a90c        arg1[0x19].b = 0\n14014a918        return sub_14013f770(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:20:58Z"
+}

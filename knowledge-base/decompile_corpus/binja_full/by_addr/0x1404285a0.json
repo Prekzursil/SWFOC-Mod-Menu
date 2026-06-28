@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404285a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404285aa        struct alRenderable::WaypointLineSubClass::VTable** result = arg1\n1404285ad        sub_14013f590(arg1)\n1404285c1        *result = &WaypointLineSubClass::`vftable'{for `alRenderable'}\n1404285d3        result[0x19] = 0\n1404285e1        result[2] = &WaypointLineSubClass::`vftable'{for `MultiLinkedListMember'}\n1404285e8        result[0x1a] = 0\n1404285f6        result[4] = &WaypointLineSubClass::`vftable'{for `CullObjectClass'}\n1404285fd        result[0x1b] = 0\n140428607        result[0x1c] = 0x3f800000\n140428612        result[0x1d] = 0\n140428619        result[0x1e].d = 0\n14042861f        *(result + 0xf4) = 0x3f800000\n14042862a        *(result + 0xfc) = 0\n140428631        *(result + 0x104) = 0\n140428637        result[0x21] = 0x3f800000\n140428642        sub_1401f9340(&result[0x22], (zx.o(0)).d, (zx.o(0)).d, (zx.o(0)).d, 0x3f800000)\n140428647        result[0x24] = 0\n140428651        result[0x25].d = 1\n14042865b        __builtin_memset(&result[0x26], 0, 0x18)\n14042867a        return result",
+  "fetched_at": "2026-04-26T17:26:32Z"
+}

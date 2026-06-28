@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f42a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetIMEEditboxClass::vfunction27(GUIGadgetIMEEditboxClass *this)\n\n{\n  undefined1 *puVar1;\n  undefined1 auStack_18 [12];\n  undefined4 uStack_c;\n  \n  (this->GUIGadgetIMEEditboxClass_data).offset_0x31 = '\\0';\n  if ((this->GUIGadgetIMEEditboxClass_data).field_0x30 != '\\0') {\n    (this->GUIGadgetEditboxClass_data).offset_0x84 = 0xf;\n    (this->GUIGadgetEditboxClass_data).offset_0x80 = 0;\n    FUN_1401f5340(this,1);\n    return;\n  }\n  (this->GUIGadgetEditboxClass_data).offset_0x84 = 0xf;\n  (this->GUIGadgetEditboxClass_data).offset_0x80 = 0;\n  FUN_1401f92f0(auStack_18);\n  puVar1 = &(this->GUIGadgetEditboxClass_data).field_0x1a8;\n  uStack_c = 0;\n  (**(code **)(*(longlong *)puVar1 + 0x28))(puVar1,auStack_18);\n  FUN_1401f9440(auStack_18);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:29Z"
+}

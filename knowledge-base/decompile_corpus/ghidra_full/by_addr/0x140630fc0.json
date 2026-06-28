@@ -1,0 +1,7 @@
+{
+  "addr": "0x140630fc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall LandingBehaviorClass::vfunction9(void)\n\n{\n  return \"LandingBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:33:41Z"
+}

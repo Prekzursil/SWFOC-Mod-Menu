@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405cb420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nFighterLocomotorBehaviorClass::vfunction41(FighterLocomotorBehaviorClass *this,int param_1)\n\n{\n  undefined *puVar1;\n  undefined **ppuVar2;\n  undefined8 uVar3;\n  \n  LocomotorCommonClass::vfunction41((LocomotorCommonClass *)this,param_1);\n  uVar3 = (*this->vftablePtr->vfunction47)(this,param_1);\n  if ((char)uVar3 != '\\0') {\n    puVar1 = this->offset_0x18[0x15];\n    FUN_140559250(puVar1,0x1f);\n    ppuVar2 = this->offset_0x18;\n    *(undefined4 *)(puVar1 + 0x38) = *(undefined4 *)((longlong)ppuVar2 + 0x84);\n    *(undefined4 *)(puVar1 + 0x3c) = *(undefined4 *)(ppuVar2 + 0x11);\n    *(undefined4 *)(puVar1 + 0x40) = *(undefined4 *)((longlong)ppuVar2 + 0x8c);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:09Z"
+}

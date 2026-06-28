@@ -1,0 +1,7 @@
+{
+  "addr": "0x140267af0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_140267af0(longlong param_1,undefined8 param_2)\n\n{\n  char cVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  int iVar5;\n  longlong lVar6;\n  byte bVar7;\n  \n  bVar7 = 1;\n  cVar1 = FUN_1402204a0(param_2);\n  do {\n    if (cVar1 == '\\0') {\n      return bVar7;\n    }\n    iVar5 = FUN_1402205a0(param_2);\n    if (iVar5 == 0) {\n      cVar1 = FUN_140220610(param_2);\n      while (cVar1 != '\\0') {\n        iVar5 = FUN_140220710(param_2);\n        if (iVar5 == 0) {\n          bVar2 = FUN_140220730(param_2,param_1 + 0x68,4);\n          bVar3 = FUN_140220730(param_2,param_1 + 0x6c,4);\n          bVar4 = FUN_140220730(param_2,param_1 + 0x70,4);\n          bVar7 = bVar7 & bVar2 & bVar3 & bVar4;\n        }\n        else if (iVar5 == 1) {\n          FUN_140220730(param_2,param_1 + 0x74,1);\n        }\n        else {\n          if (iVar5 == 2) {\n            lVar6 = param_1 + 0x60;\n          }\n          else {\n            if (iVar5 != 3) goto LAB_140267bc5;\n            lVar6 = param_1 + 100;\n          }\n          FUN_140220730(param_2,lVar6,4);\n        }\nLAB_140267bc5:\n        FUN_1402206a0(param_2);\n        cVar1 = FUN_140220610(param_2);\n      }\n    }\n    FUN_140220520(param_2);\n    cVar1 = FUN_1402204a0(param_2);\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:17:29Z"
+}

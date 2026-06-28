@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b21f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall GalacticModeClass::vfunction2(GalacticModeClass *this,int param_1,int param_2)\n\n{\n  int *piVar1;\n  undefined4 uVar2;\n  undefined8 uVar3;\n  undefined4 local_28;\n  undefined8 local_24;\n  \n  FUN_1404b1d60();\n  GameModeClass::vfunction2((GameModeClass *)this,param_1,param_2);\n  local_28 = DAT_14086769c;\n  local_24 = 0;\n  FUN_140261c90(*(undefined8 *)&(this->GalacticModeClass_data).field_0x88,&local_28);\n  FUN_140261ab0(*(undefined8 *)&(this->GalacticModeClass_data).field_0x88,DAT_1408054ec,\n                DAT_1408054d0,DAT_1408181ec,DAT_1408181f0,DAT_140805898,DAT_1408007fc);\n  FUN_140261e00(*(undefined8 *)&(this->GalacticModeClass_data).field_0x88,0,DAT_1407ffaf8,\n                DAT_1407ffaf8,0);\n  FUN_140306290(&DAT_140b27f60,1);\n  FUN_1403d3200(&DAT_140b27f60);\n  FUN_1404c0420(&DAT_140a2aba0);\n  uVar2 = *(undefined4 *)((longlong)&(this->GalacticModeClass_data).offset_0x360 + 4);\n  *(undefined4 *)&(this->GalacticModeClass_data).field_0x22c = DAT_140b16dbc;\n  *(undefined4 *)&(this->GalacticModeClass_data).offset_0x360 = uVar2;\n  uVar3 = FUN_14027c9a0(&DAT_140b0a320,DAT_140b15980);\n  piVar1 = (int *)((longlong)&(this->GalacticModeClass_data).offset_0x360 + 4);\n  *piVar1 = *piVar1 + (int)uVar3;\n  return CONCAT71((int7)((ulonglong)uVar3 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:06:56Z"
+}

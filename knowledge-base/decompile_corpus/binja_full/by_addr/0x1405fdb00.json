@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fdb00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405fdb0f        int64_t* rbx = *(arg3 + 0x10)\n1405fdb20        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1405fdb28        if (r8_2 != 1)\n1405fdb34        sub_140248190(arg2, \"Release_Forces - Invalid number of parameters.  Expected 1, got %d.\", r8_2)\n1405fdb4a        return 0\n1405fdb4b        int64_t* rbx_1 = *rbx\n1405fdb51        void* i\n1405fdb51        if (rbx_1 != 0)\n1405fdb59        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1405fdb5f        if (rbx_1 == 0 || i == 0)\n1405fdb76        label_1405fdb76:\n1405fdb76        rbx_1 = nullptr\n1405fdb82        sub_140248190(arg2, \"Release_Forces - Invalid type for parameter 1.  Expected number between 0 and 1.\", r8_2)\n1405fdb6b        while (i != &data_140a157c0)\n1405fdb6d        i = *(i + 8)\n1405fdb74        if (i == 0)\n1405fdb74        goto label_1405fdb76\n1405fdbc5        if (0.0 f> rbx_1[2] || not(rbx_1[2] f<= 1.0))\n1405fdb82        sub_140248190(arg2, \"Release_Forces - Invalid type for parameter 1.  Expected number between 0 and 1.\", r8_2)\n1405fdb96        (*(*arg1 + 0xb0))(arg1, _mm_cvtpd_ps(zx.o(rbx_1[2])))\n1405fdbad        return 0",
+  "fetched_at": "2026-04-26T17:22:45Z"
+}

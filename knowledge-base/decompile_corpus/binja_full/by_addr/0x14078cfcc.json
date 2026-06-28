@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cfcc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078cfda        return __acrt_execute_initializers(&data_1408d6520, &data_1408d6620) __tailcall",
+  "fetched_at": "2026-04-26T17:31:32Z"
+}

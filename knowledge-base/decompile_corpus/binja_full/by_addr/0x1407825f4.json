@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407825f4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407825f8        void* rax = __acrt_getptd()\n140782604        int32_t rcx_1 = *(rax + 0x28) * 0x343fd + 0x269ec3\n14078260a        *(rax + 0x28) = rcx_1\n14078261c        return zx.q(rcx_1 u>> 0x10) & 0x7fff",
+  "fetched_at": "2026-04-26T17:31:10Z"
+}

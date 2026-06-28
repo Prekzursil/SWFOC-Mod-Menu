@@ -1,0 +1,7 @@
+{
+  "addr": "0x140202020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140202029        void* result = *(arg1 + 0x10)\n140202030        uint64_t rbp = zx.q(arg3)\n140202039        if (result == 0)\n140202043        return result\n140202047        int32_t r9 = 0\n140202054        if (*(result + 0x14) + rbp.d u<= **(arg1 + 0x10))\n14020205a        void* rax_1 = *(arg1 + 0x10)\n14020206f        void* r9_2 = zx.q(*(rax_1 + 0x10)) + rax_1 + 0x18\n140202082        if (*(*(arg1 + 0x10) + 0x10) + rbp.d u<= **(arg1 + 0x10))\n1402020d7        memcpy(r9_2, arg2, rbp)\n1402020e9        *(*(arg1 + 0x10) + 0x10) += rbp.d\n14020209e        void* r8_1 = zx.q(**(arg1 + 0x10) - *(*(arg1 + 0x10) + 0x10))\n1402020a4        int32_t rsi_2 = rbp.d - r8_1.d\n1402020aa        memcpy(r9_2, arg2, r8_1)\n1402020b9        memcpy(rax_1 + 0x18, zx.q(r8_1.d) + arg2, zx.q(rsi_2))\n1402020c7        *(*(arg1 + 0x10) + 0x10) = rsi_2\n1402020f1        r9 = rbp.d\n1402020f6        if (rbp.d != 0)\n14020211b        int32_t rax_9\n14020211b        int32_t r8_4\n140202104        r8_4 = *(*(arg1 + 0x10) + 0x14)\n140202108        rax_9 = r8_4\n14020210b        void* rcx_5 = *(arg1 + 0x10)\n140202113        if (rax_9 == *(rcx_5 + 0x14))\n140202113        *(rcx_5 + 0x14) = r8_4 + rbp.d\n140202113        rax_9 = *(rcx_5 + 0x14)\n14020211b        do while (r8_4 != rax_9)\n140202128        return zx.q(r9)",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

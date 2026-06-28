@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524a80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140524a80(undefined8 param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  TacticalSellEventClass *pTVar3;\n  \n  if (param_2 != 0) {\n    if (DAT_140b153d0 == '\\x01') {\n      lVar1 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_2 + 0x58));\n      lVar2 = FUN_140294a40(&DAT_140a16fd0);\n      if (lVar1 == lVar2) {\n        FUN_1402d5290(&DAT_140b27e60,DAT_140b301c8,0,0,0);\n        return;\n      }\n    }\n    else {\n      pTVar3 = (TacticalSellEventClass *)FUN_140769c58(0x50);\n      if (pTVar3 == (TacticalSellEventClass *)0x0) {\n        pTVar3 = (TacticalSellEventClass *)0x0;\n      }\n      else {\n        pTVar3 = TacticalSellEventClass::TacticalSellEventClass(pTVar3);\n      }\n      FUN_140559250(pTVar3,*(undefined4 *)(param_2 + 0x50));\n      OutgoingEventQueueClass::vfunction2\n                ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pTVar3);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:27:00Z"
+}

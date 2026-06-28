@@ -1,0 +1,7 @@
+{
+  "addr": "0x140530b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140530b43        *arg1 = &AILogWindow::`vftable'{for `LogWindowItem'}\n140530b4b        arg1[1].d = 0\n140530b4e        data_140b39088 = 0\n140530b55        sub_140530aa0(arg1)\n140530b5d        if ((arg2 & 1) != 0)\n140530b67        j_sub_1407864b8(arg1)\n140530b79        return arg1",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

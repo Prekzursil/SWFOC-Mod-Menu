@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770dd4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770dfd        int64_t rax = try_get_function(3, \"FlsSetValue\", &data_1408d1cf8, \"FlsSetValue\")\n140770e0a        if (rax == 0)\n140770e14        return TlsSetValue(arg1, arg2)\n140770e24        return rax(arg1, arg2)",
+  "fetched_at": "2026-04-26T17:30:40Z"
+}

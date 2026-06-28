@@ -1,0 +1,7 @@
+{
+  "addr": "0x140708dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall PoliticalControlBonusAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Political_Control_Bonus_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:53:21Z"
+}

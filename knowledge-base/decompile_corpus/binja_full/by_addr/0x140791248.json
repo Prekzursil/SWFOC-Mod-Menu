@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791248",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140791255        return _sincosf_special(arg1, \"sinf\", 0x1e) __tailcall",
+  "fetched_at": "2026-04-26T17:31:44Z"
+}

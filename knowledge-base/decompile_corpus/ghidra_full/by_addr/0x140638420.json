@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall CombatantBehaviorClass::vfunction29(CombatantBehaviorClass *this,undefined1 param_1)\n\n{\n  *(undefined1 *)((longlong)this->offset_0x18 + 0x3a5) = param_1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:18Z"
+}

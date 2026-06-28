@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401584a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alTerrainTrack * __thiscall\nalTerrainTrack::scalar_deleting_destructor(alTerrainTrack *this,uint param_1)\n\n{\n  ~alTerrainTrack(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x278);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:23:02Z"
+}

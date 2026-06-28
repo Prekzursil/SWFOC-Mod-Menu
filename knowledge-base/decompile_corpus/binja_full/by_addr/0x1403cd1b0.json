@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403cd1b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403cd1c7        if (*(arg1 + 0x2a33) != 0)\n1403cd1c7        return \n1403cd1d7        void* rax = sub_14034c770(arg2, 0)\n1403cd1e2        if (rax == 0 || sub_14034c770(arg2, 1).d != 0)\n1403cd1f7        return \n1403cd20e        rax = sub_1402a87d0(*(data_140b15418 + 0x18), rax, nullptr)\n1403cd217        if (*(rax + 0x10) s<= 0)\n1403cd217        return \n1403cd221        void* rbx_1 = **(rax + 8)\n1403cd227        if (rbx_1 == 0)\n1403cd227        return \n1403cd22d        char* rbx_2 = *(rbx_1 + 0x2b0)\n1403cd237        if (rbx_2 == 0)\n1403cd237        return \n1403cd247        while (rbx_2[0x335] == 0xff)\n1403cd249        rbx_2 = *(rbx_2 + 0x2b0)\n1403cd253        if (rbx_2 == 0)\n1403cd264        return \n1403cd26f        int32_t zmm1 = *(rbx_2 + 0x7c)\n1403cd27b        int32_t var_18 = *(rbx_2 + 0x78)\n1403cd289        int32_t var_10_1 = *(rbx_2 + 0x80)\n1403cd28f        int32_t var_14_1 = zmm1\n1403cd295        sub_140448c20(&data_140b30350, &var_18)\n1403cd2a3        sub_1403de570(arg1, rbx_2, 0)\n1403cd2b9        if (*(arg1 + 0x2038) == 0 || *(arg1 + 0x2150) == 0)\n1403cd2b9        return \n1403cd2cc        if ((*(data_140b2eea0 + 0x44) & 0xfffffffd) != 0)\n1403cd2ce        sub_1403e48a0(arg1)\n1403cd2e2        return \n1403cd2e3        sub_1403e4660(arg1)\n1403cd2f7        return ",
+  "fetched_at": "2026-04-26T17:24:51Z"
+}

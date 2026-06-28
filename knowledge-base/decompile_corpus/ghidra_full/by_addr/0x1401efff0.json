@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401efff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetPushbuttonClass::vfunction25(GUIGadgetPushbuttonClass *this)\n\n{\n  longlong *plVar1;\n  \n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetPushbuttonClass_data).field_0x8);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetPushbuttonClass_data).field_0x128);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetPushbuttonClass_data).field_0x98);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetPushbuttonClass_data).field_0x298);\n  plVar1 = (this->GUIGadgetPushbuttonClass_data).offset_0x278;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->GUIGadgetPushbuttonClass_data).offset_0x278 = (longlong *)0x0;\n  }\n  plVar1 = (this->GUIGadgetPushbuttonClass_data).offset_0x280;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->GUIGadgetPushbuttonClass_data).offset_0x280 = (longlong *)0x0;\n  }\n  plVar1 = (this->GUIGadgetPushbuttonClass_data).offset_0x288;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->GUIGadgetPushbuttonClass_data).offset_0x288 = (longlong *)0x0;\n  }\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  (this->GUIGadgetPushbuttonClass_data).offset_0x380 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140540140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140540140(longlong param_1,longlong param_2)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  undefined8 *puVar3;\n  \n  if (param_2 != 0) {\n    lVar2 = FUN_1403973b0(param_2);\n    if (lVar2 != 0) {\n      lVar2 = FUN_1403973b0(param_2);\n      uVar1 = *(ulonglong *)(lVar2 + 0x1648);\n      if (uVar1 == 0) {\n        lVar2 = FUN_1403973b0(param_2);\n        puVar3 = (undefined8 *)(lVar2 + 0xf8);\n        if (0xf < *(ulonglong *)(lVar2 + 0x110)) {\n          puVar3 = (undefined8 *)*puVar3;\n        }\n        FUN_140025760(\"Error: Object type %s has no XML category mask assigned to it.\\n\",puVar3);\n      }\n      if ((*(ulonglong *)(param_1 + 0x408) & uVar1) == 0) {\n        return 0;\n      }\n    }\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:35:02Z"
+}

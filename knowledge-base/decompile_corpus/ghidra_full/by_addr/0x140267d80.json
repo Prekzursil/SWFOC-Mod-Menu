@@ -1,0 +1,7 @@
+{
+  "addr": "0x140267d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* SceneClass member function inherited by SimpleSceneClass\n   SceneClass member function inherited by RtsSceneClass */\n\nvoid __thiscall SceneClass::vfunction8(SceneClass *this,undefined4 param_2)\n\n{\n  undefined4 uVar1;\n  undefined4 extraout_var;\n  longlong *plVar2;\n  \n  uVar1 = (*this->vftablePtr->vfunction2)(this);\n  plVar2 = (longlong *)CONCAT44(extraout_var,uVar1);\n  if (plVar2 != (longlong *)0x0) {\n    (**(code **)(*plVar2 + 0x38))(plVar2,param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:04Z"
+}

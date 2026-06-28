@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d448",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d452        int32_t* arg_20 = arg4\n14078d461        __vcrt_unlock(*arg2)\n14078d467        int64_t* rbx = &data_140b3c4c8\n14078d475        while (true)\n14078d475        int64_t* var_18_1 = rbx\n14078d484        if (rbx == &data_140b3c4d0)\n14078d484        break\n14078d489        if (*rbx != &data_140a44dc0)\n14078d496        *rbx = _updatetlocinfoEx_nolock(rbx, &data_140a44dc0)\n14078d499        rbx = &rbx[1]\n14078d4b5        return __vcrt_lock(*arg4)",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

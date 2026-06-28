@@ -1,0 +1,7 @@
+{
+  "addr": "0x140742ac4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: static unsigned __int64 __cdecl std::codecvt<char,char,struct _Mbstatet>::_Getcat(class\n   std::locale::facet const * __ptr64 * __ptr64,class std::locale const * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\n__uint64 __cdecl std::codecvt<char,char,struct__Mbstatet>::_Getcat(facet **param_1,locale *param_2)\n\n{\n  longlong lVar1;\n  facet *pfVar2;\n  undefined **ppuVar3;\n  bool bVar4;\n  _Locinfo local_78 [112];\n  \n  bVar4 = false;\n  if ((param_1 != (facet **)0x0) && (*param_1 == (facet *)0x0)) {\n    pfVar2 = (facet *)FUN_140769c58(0x10);\n    if (pfVar2 == (facet *)0x0) {\n      pfVar2 = (facet *)0x0;\n    }\n    else {\n      lVar1 = *(longlong *)(param_2 + 8);\n      if (lVar1 == 0) {\n        ppuVar3 = &PTR_1407ff8a8;\n      }\n      else {\n        ppuVar3 = *(undefined ***)(lVar1 + 0x28);\n        if (ppuVar3 == (undefined **)0x0) {\n          ppuVar3 = (undefined **)(lVar1 + 0x30);\n        }\n      }\n      _Locinfo::_Locinfo(local_78,(char *)ppuVar3);\n      bVar4 = true;\n      *(undefined4 *)(pfVar2 + 8) = 0;\n      *(codecvt<char,char,struct__Mbstatet>_vftable **)pfVar2 = &vftable;\n    }\n    *param_1 = pfVar2;\n    if (bVar4) {\n      _Locinfo::~_Locinfo(local_78);\n    }\n  }\n  return 2;\n}",
+  "fetched_at": "2026-04-26T18:04:39Z"
+}

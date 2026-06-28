@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784abc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140784ac1        int64_t* arg_20 = arg4\n140784ad4        sub_140784aa4(*arg2)\n140784add        uint64_t result = <lambda_532e024f4337e6fc7ad266c2bef9f4ed>::operator()(arg3)\n140784ae8        sub_140784ab0(*arg4)\n140784afa        return result",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

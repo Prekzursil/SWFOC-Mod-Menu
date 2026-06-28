@@ -1,0 +1,7 @@
+{
+  "addr": "0x140785d98",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    tolower\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl tolower(int _C)\n\n{\n  if (DAT_140b3c49c == 0) {\n    if (_C - 0x41U < 0x1a) {\n      _C = _C + 0x20;\n    }\n  }\n  else {\n    _C = _tolower_l(_C,(_locale_t)0x0);\n  }\n  return _C;\n}",
+  "fetched_at": "2026-04-26T18:51:31Z"
+}

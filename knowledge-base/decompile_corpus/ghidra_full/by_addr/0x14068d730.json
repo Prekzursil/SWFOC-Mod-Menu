@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068d730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WeightedTypeListClass::~WeightedTypeListClass(WeightedTypeListClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  FUN_14068d670(&(this->RefCountClass_data).field_0x20);\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:50Z"
+}

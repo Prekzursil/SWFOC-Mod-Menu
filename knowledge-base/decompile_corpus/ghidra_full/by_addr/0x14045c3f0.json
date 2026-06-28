@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045c3f0",
+  "tool": "ghidra",
+  "fact_id": "rva_resolve_reward_type_from_string",
+  "body": "\nundefined4 FUN_14045c3f0(longlong param_1)\n\n{\n  char cVar1;\n  undefined8 *puVar2;\n  uint uVar3;\n  ulonglong uVar4;\n  undefined8 *puVar5;\n  undefined8 *puVar6;\n  \n  if (param_1 != 0) {\n    uVar4 = 0xffffffffffffffff;\n    do {\n      uVar4 = uVar4 + 1;\n    } while (*(char *)(param_1 + uVar4) != '\\0');\n    uVar3 = FUN_140215a30(param_1,uVar4 & 0xffffffff,0);\n    cVar1 = *(char *)((longlong)DAT_140b30728[1] + 0x19);\n    puVar6 = (undefined8 *)DAT_140b30728[1];\n    puVar2 = DAT_140b30728;\n    while (puVar5 = puVar6, cVar1 == '\\0') {\n      if (*(uint *)((longlong)puVar5 + 0x1c) < uVar3) {\n        puVar6 = (undefined8 *)puVar5[2];\n        puVar5 = puVar2;\n      }\n      else {\n        puVar6 = (undefined8 *)*puVar5;\n      }\n      cVar1 = *(char *)((longlong)puVar6 + 0x19);\n      puVar2 = puVar5;\n    }\n    if (((*(char *)((longlong)puVar2 + 0x19) == '\\0') &&\n        (*(uint *)((longlong)puVar2 + 0x1c) <= uVar3)) && (puVar2 != DAT_140b30728)) {\n      return *(undefined4 *)(puVar2 + 4);\n    }\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:41Z"
+}

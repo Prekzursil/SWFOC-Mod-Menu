@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc4c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "InfectionAbilityClass * __thiscall\nInfectionAbilityClass::InfectionAbilityClass(InfectionAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->InfectionAbilityClass_data).offset_0x8 = 0xffffffff;\n  (this->InfectionAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->InfectionAbilityClass_data).offset_0xc = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->InfectionAbilityClass_data).offset_0x10 = 0;\n  (this->InfectionAbilityClass_data).offset_0x20 = 0;\n  (this->InfectionAbilityClass_data).offset_0x28 = 0xf;\n  (this->InfectionAbilityClass_data).offset_0x30 = 0;\n  FUN_1404c3df0(&(this->InfectionAbilityClass_data).field_0x38);\n  (this->InfectionAbilityClass_data).offset_0x48 = 0;\n  (this->InfectionAbilityClass_data).offset_0x50 = 0;\n  (this->InfectionAbilityClass_data).offset_0x58 = 0;\n  FUN_1404c3df0(&(this->InfectionAbilityClass_data).field_0x60);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:41:13Z"
+}

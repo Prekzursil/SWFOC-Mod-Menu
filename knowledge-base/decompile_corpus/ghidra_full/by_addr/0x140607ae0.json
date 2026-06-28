@@ -1,0 +1,7 @@
+{
+  "addr": "0x140607ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_140607ae0(ulonglong param_1)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  \n  uVar1 = (param_1 >> 1 & 0x5555555555555555) + (param_1 & 0x5555555555555555);\n  uVar1 = (uVar1 >> 2 & 0x3333333333333333) + (uVar1 & 0x3333333333333333);\n  uVar1 = (uVar1 >> 4 & 0xf0f0f0f0f0f0f0f) + (uVar1 & 0xf0f0f0f0f0f0f0f);\n  uVar1 = (uVar1 >> 8 & 0xff00ff00ff00ff) + (uVar1 & 0xff00ff00ff00ff);\n  lVar2 = (uVar1 >> 0x10 & 0xffff0000ffff) + (uVar1 & 0xffff0000ffff);\n  return (int)((ulonglong)lVar2 >> 0x20) + (int)lVar2;\n}",
+  "fetched_at": "2026-04-26T17:25:54Z"
+}

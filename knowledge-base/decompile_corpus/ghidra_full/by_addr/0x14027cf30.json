@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027cf30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_14027cf30(uint *param_1)\n\n{\n  uint uVar1;\n  uint uVar2;\n  int iVar3;\n  uint uVar4;\n  \n  uVar2 = param_1[3];\n  iVar3 = uVar2 - 1;\n  uVar1 = *param_1 + 1;\n  if (iVar3 < 1) {\n    iVar3 = 1;\n  }\n  uVar4 = param_1[2] + iVar3 + uVar1;\n  if (uVar2 != 0) {\n    uVar4 = (uVar4 / uVar2) * uVar2;\n  }\n  if ((param_1[2] == 0) && (uVar4 == *param_1)) {\n    uVar4 = uVar1;\n  }\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T18:21:33Z"
+}

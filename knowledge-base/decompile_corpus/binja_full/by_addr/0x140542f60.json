@@ -1,0 +1,7 @@
+{
+  "addr": "0x140542f60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140542f6a        int64_t* rbx = *(arg3 + 0x10)\n140542f80        if ((*(arg3 + 0x18) - rbx) s>> 3 u< 1)\n140542f8c        sub_140248190(arg2, \"LuaLetterBoxOut -- Expected float parameter 1\", arg3)\n140542f9d        return 0\n140542f9e        int64_t* rbx_1 = *rbx\n140542fa9        void* i\n140542fa9        if (rbx_1 != 0)\n140542fb1        (**rbx_1)(rbx_1)\n140542fb9        i, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n140542fbf        int64_t* rdi\n140542fbf        if (rbx_1 == 0 || i == 0)\n140542fd6        label_140542fd6:\n140542fd6        rdi = nullptr\n140542fdb        if (rbx_1 != 0)\n140542fe3        arg3 = (*(*rbx_1 + 8))(rbx_1)\n140542fcb        while (i != &data_140a157c0)\n140542fcd        i = *(i + 8)\n140542fd4        if (i == 0)\n140542fd4        goto label_140542fd6\n140543026        (**rbx_1)(rbx_1)\n140543028        rdi = rbx_1\n140542fe3        arg3 = (*(*rbx_1 + 8))(rbx_1)\n140542fe9        if (rdi == 0)\n140543009        sub_14044b6f0(&data_140a28c10, 0x3f000000, sub_140248190(arg2, \"LuaLetterBoxOut -- Invalid parameter 1, expected a float\", arg3))\n14054301f        return 0\n14054303d        sub_14044b6f0(&data_140a28c10, _mm_cvtpd_ps(zx.o(rdi[2])), arg1)\n140543048        (*(*rdi + 8))(rdi)\n14054305c        return 0",
+  "fetched_at": "2026-04-26T17:33:59Z"
+}

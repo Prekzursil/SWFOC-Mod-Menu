@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c3ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c3af0        void* rcx = *(arg1 + 0x20)\n1403c3af7        if (rcx != 0)\n1403c3b05        *(sub_1402648b0(*(rcx + 0x2a0)) + 0xc4) = 0\n1403c3b0f        *(arg1 + 0x20) = arg2\n1403c3b1a        int64_t* result = sub_1402648b0(*(arg2 + 0x2a0))\n1403c3b1f        *(result + 0xc4) = 1\n1403c3b2e        int32_t zmm1 = *(arg2 + 0x7c)\n1403c3b33        int32_t zmm2 = *(arg2 + 0x80)\n1403c3b3b        void* rdi_1 = *(arg1 + 0x20)\n1403c3b3f        *(arg1 + 0x28) = *(arg2 + 0x78)\n1403c3b44        *(arg1 + 0x2c) = zmm1\n1403c3b49        *(arg1 + 0x30) = zmm2\n1403c3b51        float zmm0\n1403c3b51        if (rdi_1 == 0)\n1403c3b82        zmm0 = (zx.o(0)).d\n1403c3b53        void* rcx_3 = *(rdi_1 + 0x2a0)\n1403c3b5d        if (rcx_3 == 0)\n1403c3b82        zmm0 = (zx.o(0)).d\n1403c3b5f        result = sub_140264a30(rcx_3)\n1403c3b67        if (result == 0)\n1403c3b82        zmm0 = (zx.o(0)).d\n1403c3b69        result = *(rdi_1 + 0x298)\n1403c3b78        zmm0 = result[0xcb].d f* 4.92000008f\n1403c3b85        *(arg1 + 0x34) = zmm0\n1403c3b8a        *(arg1 + 0x44) = 3\n1403c3b91        *(arg1 + 0x3c) = 0x3f800000\n1403c3ba2        return result",
+  "fetched_at": "2026-04-26T17:24:42Z"
+}

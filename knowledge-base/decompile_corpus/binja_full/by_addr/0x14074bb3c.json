@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074bb3c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074bb68        void* r15 = arg5 * 2\n14074bb6f        memcpy(arg2, arg3, r15)\n14074bb80        int64_t rcx_2\n14074bb80        int64_t rdi_1\n14074bb80        if (arg6 != 0)\n14074bb8a        rdi_1, rcx_2 = __memfill_u16(r15 + arg2, arg7, arg6)\n14074bbbc        return memcpy(arg2 + ((arg5 + arg6) << 1), r15 + arg3, ((arg4 - arg5) << 1) + 2) __tailcall",
+  "fetched_at": "2026-04-26T17:29:38Z"
+}

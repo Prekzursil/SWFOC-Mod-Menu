@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027f1f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float __thiscall Plus<float>::vfunction1(Plus<float> *this,float *param_1,float *param_2)\n\n{\n  return *param_1 + *param_2;\n}",
+  "fetched_at": "2026-04-26T18:21:55Z"
+}

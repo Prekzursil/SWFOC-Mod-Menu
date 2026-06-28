@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2467        return \"DestroyAfterPlanetaryBombardDummyBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

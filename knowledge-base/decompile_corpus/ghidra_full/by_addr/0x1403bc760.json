@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bc760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandModeClass::vfunction58(LandModeClass *this,char param_1)\n\n{\n  if (param_1 == '\\0') {\n    (this->LandModeClass_data).offset_0x338 = 0;\n    FUN_140133aa0((this->LandModeClass_data).offset_0x330,0);\n    return;\n  }\n  FUN_1403bb870(this,5);\n                    /* WARNING: Could not recover jumptable at 0x0001403bc79f. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction54)(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:35:46Z"
+}

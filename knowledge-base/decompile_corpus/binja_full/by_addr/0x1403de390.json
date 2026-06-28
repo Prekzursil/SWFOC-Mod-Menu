@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403de390",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403de3a4        int64_t rdi = sx.q(arg2)\n1403de3c8        if (*(arg1 + 0x2b58) == 0 || *(arg1 + 0x2b44) != 0 || arg2 s< 0 || rdi.d s>= *(arg1 + 0x2b38))\n1403de3c8        return \n1403de3d4        struct RefCountClass::EventClass::VTable** rax_1 = operator new(0x158)\n1403de3dc        struct RefCountClass::EventClass::VTable** rsi_1\n1403de3dc        if (rax_1 == 0)\n1403de3eb        rsi_1 = nullptr\n1403de3e6        rsi_1 = sub_1404b4210(rax_1)\n1403de409        sub_1404b5450(rsi_1, rdi * 0x68 + *(arg1 + 0x2b30), *(arg1 + 0x2b40), *(arg1 + 0x2b48))\n1403de418        sub_1403b01f0(&data_140b2ed18, rsi_1)\n1403de420        sub_1403ceab0(arg1)\n1403de43a        sub_14032edd0(data_140b15418 + 0xa0, \"choose_corruption_option\")\n1403de44e        return ",
+  "fetched_at": "2026-04-26T17:25:05Z"
+}

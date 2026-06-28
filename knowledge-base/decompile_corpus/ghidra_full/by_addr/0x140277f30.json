@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawLineSegmentClass::vfunction10(DrawLineSegmentClass *this)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  \n  fVar2 = *(float *)((longlong)&(this->RefCountClass_data).offset_0x10 + 4) -\n          *(float *)((longlong)&(this->RefCountClass_data).offset_0x8 + 4);\n  fVar1 = (float)((uint)(*(float *)&(this->RefCountClass_data).offset_0x18 -\n                        *(float *)&(this->RefCountClass_data).offset_0x10) ^ DAT_140800860);\n  *(float *)((longlong)&(this->RefCountClass_data).offset_0x18 + 4) = fVar1;\n  *(float *)&(this->RefCountClass_data).field_0x20 = fVar2;\n  fVar3 = SQRT(fVar1 * fVar1 + fVar2 * fVar2);\n  if (0.0 < fVar3) {\n    fVar3 = DAT_1407ffaf8 / fVar3;\n    fVar1 = fVar1 * fVar3;\n    fVar2 = fVar2 * fVar3;\n    *(float *)((longlong)&(this->RefCountClass_data).offset_0x18 + 4) = fVar1;\n    *(float *)&(this->RefCountClass_data).field_0x20 = fVar2;\n  }\n  if (SQRT(fVar1 * fVar1 + fVar2 * fVar2) == 0.0) {\n    *(undefined4 *)((longlong)&(this->RefCountClass_data).offset_0x18 + 4) = 0x3f800000;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:48Z"
+}

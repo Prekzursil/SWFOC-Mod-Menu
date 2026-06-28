@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b5cf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b5d0a        sub_140177df0(0, arg1[4], 0, *(arg1 + 0x14))\n1401b5d12        sub_140177db0(zx.q(arg1[3].d))\n1401b5d33        sub_1401b0200(*(arg1[1] + 0xf8), \"blendTexOffset\", &arg1[0xa], 8)\n1401b5d54        sub_1401b0200(*(arg1[1] + 0xf8), \"blendTexScale\", &arg1[0xb], 8)\n1401b5d59        int32_t rdx_1 = arg1[0x12].d\n1401b5d5f        int32_t rdi = 0\n1401b5d63        if (rdx_1 s> 0)\n1401b5d6a        int64_t rsi_1 = 0\n1401b5d7e        sub_1401b9770(arg1, *(arg1[0x11] + rsi_1))\n1401b5d83        rdx_1 = arg1[0x12].d\n1401b5d89        rsi_1 += 8\n1401b5d8d        rdi += 1\n1401b5d91        do while (rdi s< rdx_1)\n1401b5daf        int64_t rcx_7 = sx.q(data_140a6e740) * 6\n1401b5db9        uint128_t zmm0\n1401b5db9        zmm0.d = _mm_cvtepi32_ps(zx.o(rdx_1)).d f+ (&data_140a6e778)[rcx_7].d\n1401b5dbe        (&data_140a6e778)[rcx_7].d = zmm0.d\n1401b5dc8        return &data_140a6e778",
+  "fetched_at": "2026-04-26T17:25:50Z"
+}

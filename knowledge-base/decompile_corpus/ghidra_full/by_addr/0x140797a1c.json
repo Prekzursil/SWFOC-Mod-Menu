@@ -1,0 +1,7 @@
+{
+  "addr": "0x140797a1c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl setSBCS(struct __crt_multibyte_data * __ptr64)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl setSBCS(__crt_multibyte_data *param_1)\n\n{\n  longlong lVar1;\n  __crt_multibyte_data *p_Var2;\n  longlong lVar3;\n  __crt_multibyte_data *p_Var4;\n  \n  p_Var2 = param_1 + 0x18;\n  lVar3 = 0x101;\n  FUN_14076c430(p_Var2,0,0x101);\n  *(undefined8 *)(param_1 + 4) = 0;\n  *(undefined8 *)(param_1 + 0x220) = 0;\n  p_Var4 = param_1 + 0xc;\n  for (lVar1 = 6; lVar1 != 0; lVar1 = lVar1 + -1) {\n    *(undefined2 *)p_Var4 = 0;\n    p_Var4 = p_Var4 + 2;\n  }\n  do {\n    *p_Var2 = p_Var2[(longlong)&DAT_140a45160 - (longlong)param_1];\n    p_Var2 = p_Var2 + 1;\n    lVar3 = lVar3 + -1;\n  } while (lVar3 != 0);\n  p_Var2 = param_1 + 0x119;\n  lVar1 = 0x100;\n  do {\n    *p_Var2 = p_Var2[(longlong)&DAT_140a45160 - (longlong)param_1];\n    p_Var2 = p_Var2 + 1;\n    lVar1 = lVar1 + -1;\n  } while (lVar1 != 0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222be0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall RAMFileClass::vfunction9(RAMFileClass *this)\n\n{\n  return *(undefined4 *)&(this->RAMFileClass_data).offset_0x8;\n}",
+  "fetched_at": "2026-04-26T18:04:01Z"
+}

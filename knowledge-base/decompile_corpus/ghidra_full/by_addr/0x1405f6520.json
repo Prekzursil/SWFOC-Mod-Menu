@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6520",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIDiagnosticsClass * __thiscall AIDiagnosticsClass::AIDiagnosticsClass(AIDiagnosticsClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  (this->AIDiagnosticsClass_data).offset_0x0 = 0;\n  (this->AIDiagnosticsClass_data).offset_0x8 = (longlong *)0x0;\n  (this->AIDiagnosticsClass_data).offset_0x10 = (longlong *)0x0;\n  (this->AIDiagnosticsClass_data).offset_0x18 = 1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:23:26Z"
+}

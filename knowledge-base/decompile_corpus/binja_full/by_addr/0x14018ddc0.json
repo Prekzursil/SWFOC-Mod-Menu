@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ddc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018ddc3        if (arg2 == 0)\n14018ddc3        return \n14018dddb        int64_t* rcx = *(arg1 + 0x78)\n14018ddef        void var_28\n14018ddef        if ((*(*rcx + 0x88))(rcx, 0, &var_28) != 0)\n14018ddef        return \n14018ddf5        int64_t* rcx_1 = *(arg1 + 0x78)\n14018de23        if ((*(*rcx_1 + 0x98))(rcx_1, 0, arg1 + 0x88, 0, 0) == 0)\n14018de25        *(arg1 + 0x80) = 1\n14018de37        label_14018de37:\n14018de37        int64_t* rcx_2 = *(arg1 + 0x78)\n14018de40        int64_t* arg_10 = nullptr\n14018de52        if ((*(*rcx_2 + 0x90))(rcx_2, 0, &arg_10) == 0)\n14018de54        int64_t* rcx_3 = arg_10\n14018de5c        if (rcx_3 != 0)\n14018de61        (*(*rcx_3 + 0x10))(rcx_3)\n14018de8a        int32_t var_c\n14018de8a        BinkCopyToBuffer(arg2, *(arg1 + 0x90), zx.q(*(arg1 + 0x88)), zx.q(var_c), 0, 0, 5)\n14018de90        int64_t* rcx_5 = *(arg1 + 0x78)\n14018de99        (*(*rcx_5 + 0xa0))(rcx_5, 0)\n14018de9f        *(arg1 + 0x80) = 0\n14018de35        if (*(arg1 + 0x80) != 0)\n14018de35        goto label_14018de37\n14018dec0        return ",
+  "fetched_at": "2026-04-26T17:24:15Z"
+}

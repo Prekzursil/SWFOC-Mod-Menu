@@ -1,0 +1,7 @@
+{
+  "addr": "0x140085240",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140085256        int32_t rax = sub_1401c1e90(&data_140a78510, data_140a11030)\n14008525d        if (rax.b != 0)\n140085263        int32_t rcx = *arg1\n140085267        if (rcx == 0)\n14008533d        if (data_140a61c28 != 0)\n14008534f        int64_t rax_2 = sub_1401c1d20(&data_140a78510, data_140a11030, 1)\n140085354        data_140a11030 = 0xffffffff\n14008535e        data_140a61c28 = 0\n14008536a        return rax_2\n140085270        if (rcx == 1)\n14008527b        void* rbx_1 = &arg1[2]\n140085284        void* rcx_1 = rbx_1\n140085287        int64_t rbp_1 = *(rbx_1 + 0x18)\n140085294        if (rbp_1 u>= 0x10)\n140085296        rcx_1 = *rbx_1\n140085299        int64_t rsi_1 = *(rbx_1 + 0x10)\n1400852a1        if (rsi_1 == 0x13)\n1400852ad        rax = memcmp(rcx_1, \"IDC_CONTINUE_BUTTON\", rsi_1)\n1400852b4        if (rax == 0)\n1400852b6        rax = sub_140085200()\n1400852bb        rbp_1 = *(arg1 + 0x20)\n1400852bf        rsi_1 = *(arg1 + 0x18)\n1400852cc        if (rbp_1 u>= 0x10)\n1400852ce        rbx_1 = *rbx_1\n1400852da        if (rsi_1 == 0x16)\n1400852ec        rax = memcmp(rbx_1, \"IDC_GOTO_PLANET_BUTTON\", 0x16)\n1400852f3        if (rax == 0)\n14008530a        void* rax_1 = sub_1402a87d0(*(data_140b15418 + 0x18), data_140a61c30, nullptr)\n140085318        if (rax_1 != 0 && *(rax_1 + 0x10) s> 0)\n140085321        sub_1402b04b0(**(rax_1 + 8))\n140085326        return sub_140085200()\n140085335        return rax",
+  "fetched_at": "2026-04-26T16:57:31Z"
+}

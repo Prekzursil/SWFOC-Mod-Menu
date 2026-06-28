@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405309a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405309ae        struct DebugTreeItem::LogWindowItem::VTable** result = arg1\n1405309b1        sub_1405f5e70(arg1)\n1405309b9        result[0xb].b = 1\n1405309bd        result[0xc] = 0\n1405309c8        *result = &LogWindowItem::`vftable'{for `DebugTreeItem'}\n1405309cf        __builtin_memset(&result[0xd], 0, 0x20)\n1405309e4        result[0x12] = 0\n1405309eb        result[0x13] = 0xf\n1405309f6        *(result + 0x5c) = 0x1388\n1405309fd        sub_140253a40(&result[0xd], 0)\n140530a0a        sub_140253a40(&result[0xd], sx.q(*(result + 0x5c)))\n140530a0f        int32_t rax = *(result + 0x5c)\n140530a12        int32_t rbp = 0\n140530a17        if (rax s> 0)\n140530a23        int64_t rdi_1 = 0\n140530a34        int64_t* rbx_2 = result[0xd] + rdi_1\n140530a37        int64_t r14_1 = rbx_2[2]\n140530a46        if (r14_1 u<= 0x50 && rbx_2[3] u<= 0x4f)\n140530a56        sub_140530850(rbx_2, 0x50 - r14_1)\n140530a5b        rbx_2[2] = r14_1\n140530a5f        rax = *(result + 0x5c)\n140530a62        rbp += 1\n140530a64        rdi_1 += 0x20\n140530a6a        do while (rbp s< rax)\n140530a82        *(result + 0x64) = rax - 1\n140530a88        result[0xc].d = 0\n140530a95        return result",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c02c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl exit_or_terminate_process(unsigned int)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl exit_or_terminate_process(uint param_1)\n\n{\n  int iVar1;\n  HANDLE hProcess;\n  \n  iVar1 = __acrt_get_process_end_policy();\n  if ((iVar1 != 1) && ((*(uint *)((longlong)ProcessEnvironmentBlock + 0xbc) >> 8 & 1) == 0)) {\n    hProcess = GetCurrentProcess();\n    TerminateProcess(hProcess,param_1);\n  }\n  try_cor_exit_process(param_1);\n                    /* WARNING: Subroutine does not return */\n  ExitProcess(param_1);\n}",
+  "fetched_at": "2026-04-26T18:51:58Z"
+}

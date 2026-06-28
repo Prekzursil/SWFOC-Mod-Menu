@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140227690(longlong param_1)\n\n{\n  if (*(SOCKET *)(param_1 + 0x10) != 0xffffffffffffffff) {\n    closesocket(*(SOCKET *)(param_1 + 0x10));\n    *(undefined8 *)(param_1 + 0x10) = 0xffffffffffffffff;\n    DAT_140a7e308 = DAT_140a7e308 + -1;\n    if (DAT_140a7e308 == 0) {\n                    /* WARNING: Could not recover jumptable at 0x0001402276bf. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      WSACleanup();\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:56Z"
+}

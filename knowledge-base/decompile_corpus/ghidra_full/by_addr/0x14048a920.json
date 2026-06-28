@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048a920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nOcclusionRenderPassClass::vfunction5_for_RefCountClass\n          (OcclusionRenderPassClass *this,undefined8 *param_1,longlong *param_2)\n\n{\n  undefined *in_RAX;\n  undefined *puVar1;\n  \n  if ((this->field_0x34 != '\\0') && (param_2 != (longlong *)0x0)) {\n    for (puVar1 = (undefined *)(**(code **)(*param_2 + 0x20))(param_2); in_RAX = (undefined *)0x0,\n        puVar1 != (undefined *)0x0; puVar1 = *(undefined **)(puVar1 + 8)) {\n      if (puVar1 == &DAT_140a12370) {\n        in_RAX = &DAT_140a12370;\n        if (((((longlong *)param_2[0x17] != (longlong *)0x0) &&\n             (in_RAX = (undefined *)(**(code **)(*(longlong *)param_2[0x17] + 0x50))(),\n             DAT_140b15418 != (longlong *)0x0)) && (in_RAX != (undefined *)0x0)) &&\n           (in_RAX = (undefined *)\n                     (**(code **)(*DAT_140b15418 + 0x290))(DAT_140b15418,in_RAX,*param_1),\n           (char)in_RAX != '\\0')) {\n          return CONCAT71((int7)((ulonglong)in_RAX >> 8),1);\n        }\n        break;\n      }\n    }\n  }\n  return (ulonglong)in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:01:21Z"
+}

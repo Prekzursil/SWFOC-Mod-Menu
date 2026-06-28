@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a3910",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a391f        void* rbx = *(arg1 + 0x28)\n1407a3929        uint64_t result = j_bi_flush(rbx)\n1407a392e        int32_t result_1 = *(arg1 + 0x18)\n1407a3934        if (*(rbx + 0x28) u<= result_1)\n1407a3934        result_1 = *(rbx + 0x28)\n1407a393a        if (result_1 != 0)\n1407a3947        memcpy(*(arg1 + 0x10), *(rbx + 0x20), zx.q(result_1))\n1407a394c        result = zx.q(result_1)\n1407a394e        *(arg1 + 0x10) += result\n1407a3952        *(rbx + 0x20) += result\n1407a3956        *(arg1 + 0x1c) += result_1\n1407a3959        *(arg1 + 0x18) -= result_1\n1407a395c        int32_t temp0_1 = *(rbx + 0x28)\n1407a395c        *(rbx + 0x28) -= result_1\n1407a395f        if (temp0_1 == result_1)\n1407a3961        result = *(rbx + 0x10)\n1407a3965        *(rbx + 0x20) = result\n1407a3978        return result",
+  "fetched_at": "2026-04-26T17:32:24Z"
+}

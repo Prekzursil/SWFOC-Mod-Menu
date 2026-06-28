@@ -1,0 +1,7 @@
+{
+  "addr": "0x140208a00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140208a0e        struct ThreadClass::VTable** rax = operator new(0x118)\n140208a16        if (rax == 0)\n140208a81        return rax\n140208a27        struct ThreadClass::PacketHandlerClass::VTable** rax_1\n140208a27        struct PGNetAsyncSocketImpl::WinsockAsyncSocketImpl::VTable** r9\n140208a27        rax_1, r9 = sub_1402053b0(rax, \"PacketHandler Thread\")\n140208a32        if (rax_1 == 0)\n140208a61        return rax_1\n140208a44        if (sub_1402056d0(rax_1, arg2, 0, r9) == 0)\n140208a6d        (*rax_1)->__offset(0x0).q(rax_1, 1)\n140208a7b        return 0\n140208a4d        rax_1[0x1c] = &data_140a7c4a0\n140208a54        return rax_1",
+  "fetched_at": "2026-04-26T17:28:01Z"
+}

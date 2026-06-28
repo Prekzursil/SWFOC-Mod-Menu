@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cb8e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406cb8e6        double zmm2 = _mm_cvtps_pd(0)\n1406cb8e9        zmm2 - 0.0\n1406cb8ef        int64_t result\n1406cb8ef        if (not(is_unordered.q(zmm2, 0.0)) && not(zmm2 != 0.0))\n1406cb8f1        result.b = 0\n1406cb8f3        return result\n1406cb8f4        result.b = 1\n1406cb8f6        return result",
+  "fetched_at": "2026-04-26T17:25:24Z"
+}

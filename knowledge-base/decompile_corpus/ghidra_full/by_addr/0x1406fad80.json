@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fad80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall EnhanceDefenseAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Enhance_Defense_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:49:42Z"
+}

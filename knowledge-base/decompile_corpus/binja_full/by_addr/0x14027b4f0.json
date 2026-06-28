@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027b4f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027b4f2        uint64_t result = zx.q(*arg1 - 5)\n14027b4f8        if (result.d u<= 0x3b)\n14027b515        switch (&__dos_header.e_magic[zx.q(jump_table_14027b520[zx.q(lookup_table_14027b528[sx.q(result.d)])])])\n14027b517        case 0x14027b517\n14027b517        result.b = 1\n14027b519        return result\n14027b51a        result.b = 0\n14027b51c        return result",
+  "fetched_at": "2026-04-26T17:32:00Z"
+}

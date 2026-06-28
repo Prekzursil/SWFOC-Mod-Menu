@@ -1,0 +1,7 @@
+{
+  "addr": "0x140425990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140425999        int64_t rcx = *(arg1 + 0x10)\n1404259a0        if (rcx == 0)\n1404259a0        return \n1404259a6        int64_t* rdx_1 = *(arg1 + 8)\n1404259ba        if (*(arg1 + 0x38) u>> 3 u> rcx)\n1404259cf        return sub_140425690(arg1, *rdx_1, rdx_1) __tailcall\n1404259d7        sub_140221940(arg1 + 8, rdx_1)\n1404259dc        int64_t* rax_4 = *(arg1 + 8)\n1404259e2        *rax_4 = rax_4\n1404259e5        void* rax = *(arg1 + 8)\n1404259e8        *(rax + 8) = rax\n1404259ec        *(arg1 + 0x10) = 0\n1404259f0        int64_t rdx_4 = *(arg1 + 0x18)\n1404259ff        uint64_t rcx_7 = (*(arg1 + 0x20) - rdx_4 + 7) u>> 3\n140425a07        if (rdx_4 u> *(arg1 + 0x20))\n140425a07        rcx_7 = 0\n140425a0e        int64_t rcx_8\n140425a0e        int64_t rdi_2\n140425a0e        if (rcx_7 != 0)\n140425a16        rdi_2, rcx_8 = __memfill_u64(rdx_4, *(arg1 + 8), rcx_7)\n140425a23        return ",
+  "fetched_at": "2026-04-26T17:26:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140022b00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140022b00        char* result = *(arg1 + 8)\n140022b0e        if (result != 0)\n140022b0e        return result\n140022b12        return \"Unknown exception\"",
+  "fetched_at": "2026-04-26T16:51:57Z"
+}

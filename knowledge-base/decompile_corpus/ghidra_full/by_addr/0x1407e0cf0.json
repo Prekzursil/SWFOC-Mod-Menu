@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e0cf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalLightningBolt::vfunction10_for_RefCountClass(alLightningBolt *this,undefined8 param_1)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  char *local_28 [2];\n  undefined8 local_18;\n  ulonglong local_10;\n  \n  local_28[0] = (char *)FUN_140769c58(0x20);\n  uVar3 = s_lightning_default_tga_140873e48._12_4_;\n  uVar2 = s_lightning_default_tga_140873e48._8_4_;\n  uVar1 = s_lightning_default_tga_140873e48._4_4_;\n  local_18 = 0x15;\n  local_10 = 0x1f;\n  *(undefined4 *)local_28[0] = s_lightning_default_tga_140873e48._0_4_;\n  *(undefined4 *)(local_28[0] + 4) = uVar1;\n  *(undefined4 *)(local_28[0] + 8) = uVar2;\n  *(undefined4 *)(local_28[0] + 0xc) = uVar3;\n  *(undefined4 *)(local_28[0] + 0x10) = s_lightning_default_tga_140873e48._16_4_;\n  local_28[0][0x14] = s_lightning_default_tga_140873e48[0x14];\n  local_28[0][0x15] = '\\0';\n  FUN_1407b43b0(&this->alLightningBolt_data,local_28);\n  if (0xf < local_10) {\n    if (0xfff < local_10 + 1) {\n      if ((char *)0x1f < local_28[0] + (-8 - *(longlong *)(local_28[0] + -8))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28[0] + -8),local_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  FUN_1407b3b10(&this->alLightningBolt_data,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:21Z"
+}

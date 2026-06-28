@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006b370",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nSteamAsyncSocketImpl * __thiscall\nSteamAsyncSocketImpl::SteamAsyncSocketImpl(SteamAsyncSocketImpl *this)\n\n{\n  undefined **ppuVar1;\n  \n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  (this->RefCountClass_data).offset_0x8 = (undefined **)0x0;\n  (this->RefCountClass_data).offset_0x10 = 0;\n  ppuVar1 = (undefined **)FUN_140769c58(0x30);\n  *ppuVar1 = (undefined *)ppuVar1;\n  ppuVar1[1] = (undefined *)ppuVar1;\n  ppuVar1[2] = (undefined *)ppuVar1;\n  *(undefined2 *)(ppuVar1 + 3) = 0x101;\n  (this->RefCountClass_data).offset_0x8 = ppuVar1;\n  (this->RefCountClass_data).offset_0x18 = (undefined **)0x0;\n  *(undefined8 *)&(this->RefCountClass_data).field_0x20 = 0xffffffffffffffff;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x28 = 0;\n  *(undefined8 *)&(this->RefCountClass_data).field_0x30 = 0;\n  (this->RefCountClass_data).field_0x38 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:58Z"
+}

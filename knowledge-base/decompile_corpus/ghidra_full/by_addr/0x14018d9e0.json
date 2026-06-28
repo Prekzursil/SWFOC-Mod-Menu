@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018d9e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall alD3dTexture2D::vfunction8(alD3dTexture2D *this)\n\n{\n  return this->offset_0x70;\n}",
+  "fetched_at": "2026-04-26T17:33:58Z"
+}

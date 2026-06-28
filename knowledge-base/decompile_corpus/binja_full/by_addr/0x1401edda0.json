@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401edda0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401eddaf        struct GUIGadgetClass::GUIGadgetTextClass::VTable** result = arg1\n1401eddb2        sub_1401e3c30(arg1)\n1401eddc0        *result = &GUIGadgetTextClass::`vftable'{for `GUIGadgetClass'}\n1401eddc3        int32_t i = 0\n1401eddc5        result[0x14] = 0\n1401eddd3        result[0x13] = &DynamicVectorClass<class DrawTextClass* __ptr64>::`vftable'\n1401eddda        result[0x15] = 0\n1401edde1        result[0x17] = 0\n1401edde8        result[0x19] = 0\n1401eddef        result[0x1a] = 7\n1401eddfa        result[0x16].b = 1\n1401ede07        if (result[0x15].d s> 0)\n1401ede0e        int64_t* rdi_1 = nullptr\n1401ede17        int64_t* rcx = *(rdi_1 + result[0x14])\n1401ede1e        if (rcx != 0)\n1401ede28        (**rcx)(rcx, 1)\n1401ede2a        i += 1\n1401ede2c        rdi_1 = &rdi_1[1]\n1401ede36        do while (i s< result[0x15].d)\n1401ede40        result[0x15].d = 0\n1401ede46        sub_1401e3ed0(result)\n1401ede5d        return result",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

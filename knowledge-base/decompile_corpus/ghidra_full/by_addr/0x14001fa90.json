@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001fa90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall _guard_check_icall(void)\n\n{\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:45Z"
+}

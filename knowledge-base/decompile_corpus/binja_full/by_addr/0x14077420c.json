@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077420c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140774216        *(arg1 + 0x20) += 8\n140774222        int64_t* rdi = *(*(arg1 + 0x20) - 8)\n14077422d        int64_t result\n14077422d        if (_get_printf_count_output() != 0)\n140774246        int64_t rax_3 = __crt_stdio_output::to_integer_size(*(arg1 + 0x3c))\n14077424f        if (rax_3 == 1)\n14077427c        result.b = *(arg1 + 0x28)\n14077427f        *rdi = result.b\n140774281        *(arg1 + 0x40) = 1\n140774285        result.b = 1\n140774255        if (rax_3 == 2)\n140774277        *rdi = *(arg1 + 0x28)\n140774281        *(arg1 + 0x40) = 1\n140774285        result.b = 1\n14077425b        if (rax_3 == 4)\n14077426f        *rdi = *(arg1 + 0x28)\n140774281        *(arg1 + 0x40) = 1\n140774285        result.b = 1\n140774261        if (rax_3 != 8)\n140774261        goto label_140774234\n140774267        *rdi = sx.q(*(arg1 + 0x28))\n140774281        *(arg1 + 0x40) = 1\n140774285        result.b = 1\n140774234        label_140774234:\n140774234        *_errno() = 0x16\n14077423a        _invalid_parameter_noinfo()\n14077423f        result.b = 0\n140774291        return result",
+  "fetched_at": "2026-04-26T17:30:48Z"
+}

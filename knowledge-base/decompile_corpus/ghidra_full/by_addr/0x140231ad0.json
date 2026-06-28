@@ -1,0 +1,7 @@
+{
+  "addr": "0x140231ad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SplineClass * __thiscall SplineClass::scalar_deleting_destructor(SplineClass *this,uint param_1)\n\n{\n  ~SplineClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,200);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:06:54Z"
+}

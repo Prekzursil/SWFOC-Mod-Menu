@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024a256        int64_t* rax = data_140b09e10\n14024a262        if (rax[1] != 0)\n14024a26f        int64_t* rbx_1 = *(**rax + 0x10)\n14024a279        (**rbx_1)(rbx_1)\n14024a27b        int64_t* rcx_3 = data_140b09e10\n14024a285        int64_t* rdi_1 = **rcx_3\n14024a288        void* rdx_1 = *rdi_1\n14024a28b        rcx_3[1] -= 1\n14024a293        *rdi_1[1] = rdx_1\n14024a29a        *(rdx_1 + 8) = rdi_1[1]\n14024a29e        int64_t* rcx_4 = rdi_1[2]\n14024a2a5        if (rcx_4 != 0)\n14024a2a7        int64_t rdx_2 = *rcx_4\n14024a2aa        (*(rdx_2 + 8))(rcx_4, rdx_2)\n14024a2b5        j_sub_1407864b8(rdi_1)\n14024a2c3        if (rbx_1[1].d == 1)\n14024a2ca        rbx_1[1].d = 0\n14024a2d2        return rbx_1\n14024a2d9        (*(*rbx_1 + 8))(rbx_1)\n14024a2e1        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** rax_8 = operator new(0x28)\n14024a2eb        if (rax_8 == 0)\n14024a314        return 0\n14024a2f4        rax_8[1].d = 0\n14024a2f7        *rax_8 = &LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::`vftable'{for `LuaVar'}\n14024a2fa        __builtin_memset(&rax_8[2], 0, 0x18)\n14024a30b        return rax_8",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

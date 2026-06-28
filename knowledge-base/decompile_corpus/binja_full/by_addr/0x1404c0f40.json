@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c0f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c0f53        if (arg2 s< 0 || arg2 s>= arg1[4].d)\n1404c0f53        return \n1404c0f62        int64_t rbx_1 = sx.q(arg2)\n1404c0f6a        if (*(arg1[1] + (rbx_1 << 1)) == 0)\n1404c0f6c        int64_t rcx = *arg1\n1404c0f6f        uint32_t rax_2 = zx.d(*(rbx_1 + rcx))\n1404c0f75        if (rax_2.b u< 0xef)\n1404c0f79        if (rax_2.b u< 0x10)\n1404c0f8b        if (rax_2.b != 0)\n1404c0fa2        uint128_t zmm0\n1404c0fa2        zmm0.d = _mm_cvtepi32_ps(zx.o(rax_2)).d f/ 16f\n1404c0fbc        *(rbx_1 + rcx) = (int.d((1f f- zmm0.d) * 16f)).b - 0x11\n1404c0f8d        *(rbx_1 + rcx) = 0xef\n1404c0fcb        *(rbx_1 + arg1[2]) = sub_1404c0dc0(arg1)\n1404c0f7b        *(rbx_1 + rcx) = 0xff\n1404c0f83        *(rbx_1 + arg1[2]) = 0\n1404c0fce        int64_t rcx_3 = arg1[1]\n1404c0fd7        int16_t rax = *(rcx_3 + (rbx_1 << 1))\n1404c0fde        if (rax u< 0xffff)\n1404c0fe3        *(rcx_3 + (rbx_1 << 1)) = rax + 1\n1404c0ff1        return ",
+  "fetched_at": "2026-04-26T17:30:09Z"
+}

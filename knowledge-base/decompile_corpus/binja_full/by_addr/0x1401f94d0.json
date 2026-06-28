@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f94d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f94e4        *arg2 = (int.d(*arg1 * 255f)).b\n1401f94f3        *arg3 = (int.d(arg1[1] f* 255f)).b\n1401f9503        *arg4 = (int.d(arg1[2] f* 255f)).b\n1401f9510        float result = arg1[3] f* 255f\n1401f9518        *arg5 = (int.d(result)).b\n1401f951a        return result",
+  "fetched_at": "2026-04-26T17:27:28Z"
+}

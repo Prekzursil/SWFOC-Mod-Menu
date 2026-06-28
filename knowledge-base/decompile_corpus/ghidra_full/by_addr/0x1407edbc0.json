@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407edbc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void ThreadClass::ThreadClass_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a155b0 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:34Z"
+}

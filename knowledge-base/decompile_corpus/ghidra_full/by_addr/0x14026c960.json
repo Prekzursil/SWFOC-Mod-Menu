@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026c960",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawRectClass::vfunction12(DrawRectClass *this)\n\n{\n  (**(code **)(*(this->RefCountClass_data).offset_0x8 + 0x58))();\n  (**(code **)(*(longlong *)(this->RefCountClass_data).offset_0x10 + 0x58))();\n  (**(code **)(*(this->RefCountClass_data).offset_0x18 + 0x58))();\n                    /* WARNING: Could not recover jumptable at 0x00014026c993. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(**(longlong **)&(this->RefCountClass_data).field_0x20 + 0x58))();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:50Z"
+}

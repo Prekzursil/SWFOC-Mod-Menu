@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400baec0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400baec4        int32_t rdx = *arg1\n1400baec8        if (rdx == 0)\n1400baefd        label_1400baefd:\n1400baf04        if (data_140a61f5c != 0)\n1400baf16        sub_1401c1d20(&data_140a78510, data_140a117f8, 1)\n1400baf1b        data_140a61f5c = 0\n1400baf22        data_140a117f8 = 0xffffffff\n1400baecd        if (rdx == 1)\n1400baed8        void* rcx = &arg1[2]\n1400baedb        if (*(arg1 + 0x20) u>= 0x10)\n1400baedd        rcx = *(arg1 + 8)\n1400baee5        if (*(arg1 + 0x18) == 0x1f && memcmp(rcx, \"IDC_LICENSE_AGREE_CANCEL_BUTTON\", 0x1f).d == 0)\n1400baefb        goto label_1400baefd\n1400baf30        return ",
+  "fetched_at": "2026-04-26T17:00:05Z"
+}

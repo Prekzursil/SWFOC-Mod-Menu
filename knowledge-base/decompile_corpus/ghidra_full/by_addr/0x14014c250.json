@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014c250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alRenderableMesh_data * __thiscall\nalRenderableMesh::vfunction7_for_RefCountClass(alRenderableMesh *this)\n\n{\n  alRenderableMesh_data *paVar1;\n  \n  paVar1 = &this->alRenderableMesh_data;\n  if (0xf < (ulonglong)(this->alRenderableMesh_data).offset_0x18) {\n    paVar1 = (alRenderableMesh_data *)paVar1->offset_0x0;\n  }\n  return paVar1;\n}",
+  "fetched_at": "2026-04-26T17:21:23Z"
+}

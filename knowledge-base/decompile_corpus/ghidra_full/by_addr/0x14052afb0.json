@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052afb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_PlanetaryBombardEventClass,54>::vfunction2(void)\n\n{\n  return 0x36;\n}",
+  "fetched_at": "2026-04-26T18:27:57Z"
+}

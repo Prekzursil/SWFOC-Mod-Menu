@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402fce50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402fce61        uint64_t result = zx.q(*(arg1 + 0x211c) - 2)\n1402fce67        if (result.d u<= 1)\n1402fce6d        result = *(arg1 + 0x20b8)\n1402fce77        if (result != 0)\n1402fce86        void* rcx = data_140b15418\n1402fce91        int32_t var_48 = *(result + 0x78)\n1402fcea0        int32_t var_44_1 = *(result + 0x7c)\n1402fceae        int32_t var_40_1 = *(result + 0x80)\n1402fceb4        int64_t arg_8 = 0\n1402fcecb        sub_140261e40(*(rcx + 0x90), &var_48, &arg_8, &arg_8:4, nullptr)\n1402fceec        float zmm2_1 = arg_8.d f* *(arg1 + 0x1008)\n1402fcef4        void* rcx_2 = *(arg1 + 0xfc0)\n1402fcefb        float zmm1_1 = arg2 f* *(arg1 + 0x100c)\n1402fcf03        int32_t var_38 = 0x3f800000\n1402fcf0f        int32_t var_34_1 = 0x3f800000\n1402fcf17        int32_t var_30_1 = 0x3f800000\n1402fcf29        arg_8.d = zmm2_1\n1402fcf32        arg2 = zmm1_1\n1402fcf3b        int32_t var_28\n1402fcf3b        sub_140261a70(rcx_2, zx.q(int.d(zmm2_1)), zx.q(int.d(zmm1_1)), &var_28)\n1402fcf45        int32_t var_20_1 = 0\n1402fcf4d        int64_t* rax_1 = sub_140347b50(0x210)\n1402fcf5f        int64_t r9_3 = *rax_1\n1402fcf62        void var_18\n1402fcf62        return (*(r9_3 + 0xc8))(rax_1, &var_28, &var_38, r9_3, &var_18)\n1402fcf6e        return result",
+  "fetched_at": "2026-04-26T17:23:09Z"
+}

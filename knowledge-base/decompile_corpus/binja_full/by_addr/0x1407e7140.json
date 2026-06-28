@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e7140",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e7147        data_140a10b48 = &SingletonInstance<class SignalDispatcherClass>::`vftable'{for `SingletonManager'}\n1407e714e        return &SingletonInstance<class SignalDispatcherClass>::`vftable'{for `SingletonManager'}",
+  "fetched_at": "2026-04-26T17:34:53Z"
+}

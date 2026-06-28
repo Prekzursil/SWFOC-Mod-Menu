@@ -1,0 +1,7 @@
+{
+  "addr": "0x14010fcb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14010fcb0(void)\n\n{\n  if (DAT_140a62558 != '\\0') {\n    FUN_1401c1d20(&DAT_140a78510,DAT_140a12228,1);\n    DAT_140a12228 = 0xffffffff;\n    DAT_140a62558 = '\\0';\n    if (*(int *)(DAT_140b15418 + 0xc) == 0) {\n      if (DAT_140b153d0 == '\\x01') {\n        DAT_140b153d0 = '\\0';\n        DAT_140b153d5 = 0;\n      }\n      FUN_14022a220(&DAT_140a7d530);\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:43Z"
+}

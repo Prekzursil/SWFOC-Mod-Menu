@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007d040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14007d040(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)\n\n{\n  ulonglong *puVar1;\n  undefined8 local_res18;\n  undefined8 local_res20;\n  \n  local_res18 = param_3;\n  local_res20 = param_4;\n  puVar1 = (ulonglong *)FUN_140058a00();\n  __stdio_common_vsscanf(*puVar1 | 1,param_1,0xffffffffffffffff,param_2,0,&local_res18);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:08Z"
+}

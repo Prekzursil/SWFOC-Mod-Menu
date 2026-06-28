@@ -1,0 +1,7 @@
+{
+  "addr": "0x140704650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nIncomeStreamModAbilityClass::vfunction32_for_IXMLLoadableClass\n          (IncomeStreamModAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  byte bVar1;\n  ulonglong in_RAX;\n  \n  if ((param_1 != 0) && (param_2 == param_1)) {\n    if (*(char *)((longlong)&(this->IncomeStreamModAbilityClass_data).offset_0x20 + 1) == '\\0') {\n      bVar1 = FUN_1407046e0();\n    }\n    else {\n      bVar1 = FUN_140703fe0();\n      FUN_14048e4d0(this,param_1,0);\n    }\n    FUN_14048e920(this,param_1,param_2,0);\n    return (ulonglong)bVar1;\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:52:09Z"
+}

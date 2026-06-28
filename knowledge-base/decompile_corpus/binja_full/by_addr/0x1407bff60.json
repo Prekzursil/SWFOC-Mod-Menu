@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bff60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bff83        int32_t* i = *(arg1 + 0x20) + ((sx.q(1 << *(arg1 + 0xb)) - 1) & sx.q(*(arg2 + 0xc))) * 0x28\n1407bff90        if (*i == 4 && *(i + 8) == arg2)\n1407bffa7        return &i[4]\n1407bff92        i = *(i + 0x20)\n1407bff99        do while (i != 0)\n1407bffa2        return &data_1408fd750",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

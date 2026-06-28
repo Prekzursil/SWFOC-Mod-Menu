@@ -1,0 +1,7 @@
+{
+  "addr": "0x140698f00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140698f06        struct BlockingStatus::ForeverBlockStatus::VTable** result = arg1\n140698f09        sub_1407d8d80(arg1)\n140698f15        *result = &ForeverBlockStatus::`vftable'{for `BlockingStatus'}\n140698f20        return result",
+  "fetched_at": "2026-04-26T17:20:23Z"
+}

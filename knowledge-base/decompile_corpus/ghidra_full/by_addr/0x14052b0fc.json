@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052b0fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCorruptionAbilityClass::vfunction3_for_RefCountClass(CorruptionAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((CorruptionAbilityClass *)&this[-1].SpecialAbilityClass_data.offset_0xd0,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:28:01Z"
+}

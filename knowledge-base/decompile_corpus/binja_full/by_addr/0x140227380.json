@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402273ab        void to\n1402273ab        sub_1402023e0(arg5, &to)\n1402273d5        int64_t rcx_2 = sx.q(sendto(*(arg1 + 0x10), arg2, arg3, 0, &to, 0x10))\n1402273db        int32_t result\n1402273db        result.b = rcx_2.d != 0xffffffff\n1402273de        if (rcx_2.d != 0xffffffff)\n1402273e0        *arg4 = rcx_2\n1402273f8        return result",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

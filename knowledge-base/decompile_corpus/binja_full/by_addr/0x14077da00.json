@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077da00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077da0a        char r9 = arg2[1].b\n14077da14        uint64_t i = 0\n14077da25        void* r8 = arg1 + 8\n14077da2d        void* r11_1 = arg1 + 8 + zx.q(*(arg1 + 4))\n14077da34        int32_t r10_3 = (sbb.d(arg3, arg3, r9 != 0) & 0x1d) + 0x17 + *arg1\n14077da3a        uint64_t rax_1\n14077da3a        if (r8 != r11_1)\n14077da59        while (i u<= (sbb.q(arg2, arg2, r9 != 0) & 0x1fffffff000000) + 0xffffff)\n14077da5b        rax_1 = zx.q(*r8)\n14077da5f        r10_3 -= 4\n14077da67        r8 += 1\n14077da6a        i = (i << 4) + rax_1\n14077da70        if (r8 == r11_1)\n14077da70        break\n14077da72        r9 = 1\n14077da8b        while (r8 != r11_1)\n14077da7a        if (r9 == 0)\n14077da7a        break\n14077da7c        rax_1.b = *r8\n14077da7f        r8 += 1\n14077da84        r9 = rax_1.b == 0\n14077da8d        r8.b = *(arg1 + 0x308)\n14077daab        int64_t r14\n14077daab        return __crt_strtox::assemble_floating_point_value(i, r10_3, r8.d, r9, r14, arg2)",
+  "fetched_at": "2026-04-26T17:30:59Z"
+}

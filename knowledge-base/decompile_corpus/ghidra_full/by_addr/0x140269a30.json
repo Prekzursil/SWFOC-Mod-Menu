@@ -1,0 +1,7 @@
+{
+  "addr": "0x140269a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140269a30(longlong param_1)\n\n{\n  char cVar1;\n  DWORD DVar2;\n  undefined8 uVar3;\n  \n  DVar2 = GetCurrentThreadId();\n  if ((DVar2 != DAT_140a155d0) || (DAT_140a62740 == '\\0')) {\n    cVar1 = FUN_14026c1e0(param_1,*(undefined4 *)(param_1 + 0xe8),*(undefined4 *)(param_1 + 0xec),0)\n    ;\n    if (cVar1 == '\\0') {\n      *(undefined1 *)(param_1 + 0x4b5) = 1;\n      if (*(longlong *)(param_1 + 0x4b8) != 0) {\n        thunk_FUN_1407864b8();\n      }\n      uVar3 = thunk_FUN_140769c58((longlong)\n                                  (*(int *)(param_1 + 0xec) * *(int *)(param_1 + 0xe8) * 4));\n      *(undefined8 *)(param_1 + 0x4b8) = uVar3;\n      FUN_14076c430(uVar3,0,(longlong)(*(int *)(param_1 + 0xec) * *(int *)(param_1 + 0xe8) * 4));\n      return;\n    }\n    FUN_14013e3e0(*(undefined8 *)(param_1 + 0xd0),0,param_1 + 0x470);\n    if (*(longlong *)(param_1 + 0x470) != 0) {\n      FUN_14076c430(*(undefined8 *)(*(longlong *)(param_1 + 0x470) + 8),0,\n                    (longlong)(*(int *)(param_1 + 0xec) * *(int *)(param_1 + 0xe8) * 4));\n      FUN_14013e5c0(*(undefined8 *)(param_1 + 0xd0));\n      *(undefined8 *)(param_1 + 0x470) = 0;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:28Z"
+}

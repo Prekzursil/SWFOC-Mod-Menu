@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070e8b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SiphonCreditsAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Siphon_Credits_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:54:47Z"
+}

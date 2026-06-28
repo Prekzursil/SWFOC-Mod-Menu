@@ -1,0 +1,7 @@
+{
+  "addr": "0x140713d20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140713d23        if (arg2 == 0)\n140713d23        return \n140713d36        void* rdi_1 = *(arg2 + 0x100)\n140713d40        if (rdi_1 == 0)\n140713d40        return \n140713d4d        *(rdi_1 + 0x2d0) = 0\n140713d5f        if (data_140a10b50 == 0)\n140713d64        struct SignalDispatcherClass::VTable** rax_1 = operator new(0x78)\n140713d6c        if (rax_1 == 0)\n140713d7f        data_140a10b50 = 0\n140713d76        data_140a10b50 = sub_140221820(rax_1)\n140713d86        int32_t* rdx = data_140a7bc10\n140713d94        bool cond:2_1 = rdx == data_140a7bc18\n140713d9b        void** arg_10 = &data_140a10b48\n140713da0        if (cond:2_1)\n140713dbb        sub_14001ded0(&data_140a7bc08, rdx, &arg_10)\n140713da2        *rdx = &data_140a10b48\n140713da5        data_140a7bc10 += 8\n140713dd2        sub_140220ed0(data_140a10b50, arg2 + 0x38, 0x29, 0)\n140713e15        int512_t zmm2_1 = sub_1403a92f0(arg2, 0x6b, 0xffff, 0, 0x3f000000, 0x3f800000, 0, 0, 0, 0)\n140713e2b        if (*(rdi_1 + 0x2d4) == 1)\n140713e37        sub_1403657c0(data_140b15418, *(arg2 + 0x58))\n140713e3c        *(rdi_1 + 0x2d4) = 0\n140713e4b        void* rax = sub_140397d90(arg2, 0x34)\n140713e53        if (rax == 0)\n140713e53        return \n140713e55        int64_t* r8_2 = *(rax + 0x1a0)\n140713e5f        if (r8_2 != 0)\n140713e66        sub_1403a7f70(arg2, 0, r8_2, zmm2_1)\n140713e75        return ",
+  "fetched_at": "2026-04-26T17:27:50Z"
+}

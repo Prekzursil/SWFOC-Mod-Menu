@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b8410",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1404b8410(longlong param_1)\n\n{\n  int iVar1;\n  ulonglong uVar2;\n  longlong *plVar3;\n  longlong lVar4;\n  longlong lVar5;\n  \n  lVar4 = 0;\n  if (0 < *(int *)(param_1 + 0x160)) {\n    plVar3 = *(longlong **)(param_1 + 0x158);\n    lVar5 = lVar4;\n    do {\n      if ((*plVar3 != 0) &&\n         (uVar2 = *(ulonglong *)(*plVar3 + 0x298), *(char *)(uVar2 + 99) == '\\x01'))\n      goto LAB_1404b848a;\n      lVar5 = lVar5 + 1;\n      plVar3 = plVar3 + 1;\n    } while (lVar5 < *(int *)(param_1 + 0x160));\n  }\n  iVar1 = *(int *)(param_1 + 0x178);\n  uVar2 = (longlong)iVar1;\n  if (0 < iVar1) {\n    plVar3 = *(longlong **)(param_1 + 0x170);\n    do {\n      uVar2 = 0;\n      if ((*plVar3 != 0) &&\n         (uVar2 = *(ulonglong *)(*plVar3 + 0x298), *(char *)(uVar2 + 99) == '\\x01')) {\nLAB_1404b848a:\n        return CONCAT71((int7)(uVar2 >> 8),1);\n      }\n      lVar4 = lVar4 + 1;\n      plVar3 = plVar3 + 1;\n    } while (lVar4 < iVar1);\n  }\n  return uVar2 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:08:23Z"
+}

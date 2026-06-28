@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354af0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140354af0        int32_t zmm0 = *arg2\n140354af7        if (arg3 == 0)\n140354b0b        *(arg1 + 0x7bc) = zmm0\n140354b13        int32_t rax_1 = arg2[1]\n140354b16        *(arg1 + 0x7c0) = rax_1\n140354b1c        return rax_1\n140354af9        *(arg1 + 0x7b4) = zmm0\n140354b01        int32_t rax = arg2[1]\n140354b04        *(arg1 + 0x7b8) = rax\n140354b0a        return rax",
+  "fetched_at": "2026-04-26T17:10:52Z"
+}

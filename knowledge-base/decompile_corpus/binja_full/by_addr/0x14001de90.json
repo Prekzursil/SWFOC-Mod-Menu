@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001de90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001de9b        if (arg1 + 0x27 u<= arg1)\n14001dec4        stdext::threads::_Throw_lock_error()\n14001dec4        noreturn\n14001dea0        int64_t rax_1 = operator new(arg1 + 0x27)\n14001deab        if (rax_1 == 0)\n14001debe        _invalid_parameter_noinfo_noreturn()\n14001debe        noreturn\n14001deb1        void* result = (rax_1 + 0x27) & 0xffffffffffffffe0\n14001deb5        *(result - 8) = rax_1\n14001debd        return result",
+  "fetched_at": "2026-04-26T16:51:30Z"
+}

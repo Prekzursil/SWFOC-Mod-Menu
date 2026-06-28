@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058bc70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058bc78        void**** result = *(arg1 + 0x28)\n14058bc7c        void* rsi = arg3\n14058bc8a        void* rbx = result[0x34]\n14058bc94        if (rbx != 0)\n14058bca2        *(rbx + 8) = arg2.d f+ *(rbx + 8)\n14058bca7        result = data_140b15418\n14058bcb1        *(rbx + 0x50) = result[2].d\n14058bcb7        if (arg3 != 0)\n14058bcbd        result = *(arg3 + 0x298)\n14058bcdb        if (result != 0 && *(result + 0x6b) != 0 && *(result + 0x41) != 0)\n14058bcf0        if (sub_14039b1a0(arg3) != 0)\n14058bcf2        rsi = *(rsi + 0x2b0)\n14058bd06        int32_t arg_8 = *(rsi + 0x50)\n14058bd0e        void**** result_1\n14058bd0e        sub_1401cacb0(rbx + 0x10, &result_1, &arg_8)\n14058bd13        result = result_1\n14058bd1c        if (result == *(rbx + 0x18))\n14058bd34        sub_140220e90(sub_140058570(), rsi + 0x38, arg1 + 0x18, 0x28)\n14058bd46        arg_8 = *(rsi + 0x50)\n14058bd4e        int32_t arg_c = arg2.d\n14058bd54        void*** var_38\n14058bd54        return sub_14040bd20(rbx + 0x10, &var_38, &arg_8)\n14058bd5b        int128_t zmm6\n14058bd5b        zmm6.d = arg2.d f+ *(result + 0x14)\n14058bd60        *(result + 0x14) = zmm6.d\n14058bd76        return result",
+  "fetched_at": "2026-04-26T17:36:11Z"
+}

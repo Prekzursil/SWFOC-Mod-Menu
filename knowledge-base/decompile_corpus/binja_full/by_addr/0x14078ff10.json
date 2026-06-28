@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ff10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ff30        int64_t rcx = *arg1\n14078ff48        int128_t var_18 = zx.o(0)\n14078ff4d        int32_t rax_1 = sub_14079be44(rcx, arg6, &var_18, arg4, arg5)\n14078ff6c        void* r8_1\n14078ff6c        r8_1.b = var_18.d == 0x2d\n14078ff74        void* rdx_2 = arg3 - r8_1\n14078ff77        int64_t var_38\n14078ff77        var_38.d = rax_1\n14078ff7c        int32_t r14_1 = var_18:4.d - 1\n14078ff88        char* rbx = r8_1 + arg2\n14078ff94        if (arg3 == -1)\n14078ff94        rdx_2 = arg3\n14078ff9b        int32_t result = __acrt_fp_strflt_to_string(rbx, rdx_2, arg6, &var_18, var_38.d, arg9)\n14078ffa2        if (result != 0)\n14078ffa4        *arg2 = 0\n140790054        return result\n14078ffbe        int32_t var_30\n14078ffbe        if (var_18:4.d - 1 s< 0xfffffffc || var_18:4.d - 1 s>= arg6)\n14079002a        var_30.q = &var_18\n140790036        var_38.d = arg8\n14079003a        return fp_format_e_internal(arg2, arg3, arg6, arg7, var_38.d, var_30, 1, arg10)\n14078ffc3        if (r14_1 s< var_18:4.d - 1)\n14078ffcc        int32_t rax_4\n14078ffc5        rax_4.b = *rbx\n14078ffc7        rbx = &rbx[1]\n14078ffcc        do while (rax_4.b != 0)\n14078ffce        rbx[-2] = rax_4.b\n14078ffe9        var_30.q = arg10\n14078fff6        return fp_format_f_internal(arg2, arg3, arg6, &var_18, 1, var_30)",
+  "fetched_at": "2026-04-26T17:31:41Z"
+}

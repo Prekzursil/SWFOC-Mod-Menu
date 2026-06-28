@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d68e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float * FUN_1407d68e0(undefined8 param_1,float *param_2,code *param_3,float param_4,float param_5,\n                     float param_6,int param_7)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  \n  fVar2 = 0.0;\n  param_2[1] = 0.0;\n  fVar3 = (float)(*param_3)(param_5);\n  fVar5 = param_4 - param_5;\n  do {\n    fVar1 = param_4;\n    if (ABS(fVar5) < param_6) {\nLAB_1407d69eb:\n      if (param_7 <= (int)fVar2) {\nLAB_1407d69ef:\n        param_2[1] = 4.2039e-45;\n      }\n      *param_2 = fVar1;\n      param_2[2] = fVar2;\n      return param_2;\n    }\n    if (param_7 <= (int)fVar2) goto LAB_1407d69ef;\n    fVar2 = (float)((int)fVar2 + 1);\n    fVar4 = (float)(*param_3)(fVar1);\n    if (fVar4 - fVar3 == 0.0) {\n      param_2[1] = 2.8026e-45;\n      goto LAB_1407d69eb;\n    }\n    param_4 = fVar1 - ((fVar1 - param_5) * fVar4) / (fVar4 - fVar3);\n    fVar5 = param_4 - fVar1;\n    fVar3 = fVar4;\n    param_5 = fVar1;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:58:33Z"
+}

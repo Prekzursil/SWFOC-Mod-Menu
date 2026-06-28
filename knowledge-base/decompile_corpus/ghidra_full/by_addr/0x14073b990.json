@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073b990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalBuildBlockStatus::vfunction2(TacticalBuildBlockStatus *this,longlong param_1)\n\n{\n  TacticalBuildBlockStatus *pTVar1;\n  undefined8 uVar2;\n  TacticalBuildBlockStatus *pTVar3;\n  TacticalBuildBlockStatus *pTVar4;\n  \n  if (this->offset_0x8 != (undefined **)0x0) {\n    pTVar4 = (TacticalBuildBlockStatus *)0x0;\n    pTVar1 = (TacticalBuildBlockStatus *)(param_1 + -0x38);\n    if (param_1 == 0) {\n      pTVar1 = pTVar4;\n    }\n    pTVar3 = (TacticalBuildBlockStatus *)&pTVar1->offset_0x10;\n    if (pTVar1 == (TacticalBuildBlockStatus *)0x0) {\n      pTVar3 = pTVar4;\n    }\n    FUN_14020abe0(this->offset_0x8,pTVar3);\n    if (this == (TacticalBuildBlockStatus *)0x30) {\n      this = pTVar4;\n    }\n    uVar2 = FUN_140058570();\n    FUN_140220eb0(uVar2,param_1,this,0x22);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:07Z"
+}

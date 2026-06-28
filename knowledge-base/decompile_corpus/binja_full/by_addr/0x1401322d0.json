@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401322d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401322fb        float zmm2 = *(arg1 + 0x110) * arg2 f+ *(arg1 + 0x11c)\n140132303        float zmm3 = *(arg1 + 0x114) * arg2 f+ *(arg1 + 0x120)\n14013230b        *(arg1 + 0x118) = arg2 f* *(arg1 + 0x10c) f+ *(arg1 + 0x118)\n140132316        float zmm0 = arg2 f+ *(arg1 + 0x2e0)\n14013231e        *(arg1 + 0x11c) = zmm2\n140132326        *(arg1 + 0x120) = zmm3\n14013232e        *(arg1 + 0x2e0) = zmm0\n140132340        jump(*(**(arg1 + 0xd8) + 8))",
+  "fetched_at": "2026-04-26T17:10:54Z"
+}

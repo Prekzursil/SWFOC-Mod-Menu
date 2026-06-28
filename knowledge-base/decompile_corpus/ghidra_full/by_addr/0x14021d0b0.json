@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d0b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14021d0b0(char *param_1,undefined4 param_2)\n\n{\n  if (*param_1 != '\\0') {\n    AIL_set_3D_rolloff_factor(*(undefined8 *)(param_1 + 0xff8));\n    *(undefined4 *)(param_1 + 0x1028) = param_2;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:01:58Z"
+}

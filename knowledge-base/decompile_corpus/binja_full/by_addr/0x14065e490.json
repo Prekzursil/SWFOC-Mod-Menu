@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065e490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065e496        void* rcx = *(arg1 + 0x98)\n14065e4a3        if (rcx == 0)\n14065e4a5        int64_t rax\n14065e4a5        rax.b = 0\n14065e4ac        return rax\n14065e4c4        double zmm1 = float.d(zx.q(sub_140372780(*(rcx + 0x298), rcx)))\n14065e4c9        *arg3 = zmm1\n14065e4d8        int64_t rax_3\n14065e4d8        rax_3.b = 1\n14065e4de        *arg3 = zmm1 f/ float.d(zx.q(data_140b158f4))\n14065e4e7        return rax_3",
+  "fetched_at": "2026-04-26T17:08:06Z"
+}

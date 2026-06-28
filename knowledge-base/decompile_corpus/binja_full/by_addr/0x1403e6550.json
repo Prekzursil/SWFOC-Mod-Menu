@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403e6550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403e655d        int32_t i = 0x50\n1403e6564        if (arg2 == 0)\n1403e6590        int64_t result\n1403e6568        int64_t* rax_1 = sub_140347b50(i)\n1403e6575        int64_t r8_1 = *rax_1\n1403e6578        (*(r8_1 + 0x78))(rax_1, 1, r8_1)\n1403e6586        result = sub_140353ad0(rax_1, -1, 0)\n1403e658b        i += 1\n1403e6590        do while (i s<= 0x59)\n1403e659c        return result\n1403e659f        int32_t rax_2 = sub_140347af0(0x50)\n1403e65bc        void* rdx_1 = *(*(arg1 + 0x2150) + 0xd0) + 0x20\n1403e65c0        int32_t r8_2 = *(rdx_1 + 0x10)\n1403e65c7        *(arg1 + 0x21b8) = r8_2\n1403e65ce        if (rax_2 s< r8_2)\n1403e65ce        r8_2 = rax_2\n1403e65d2        sub_1403e6220(arg1, rdx_1, r8_2, rax_2, 0x50)\n1403e65dc        int32_t rax_3 = sub_140347af0(0x55)\n1403e65fd        void* rdx_3 = *(*(arg1 + 0x2150) + 0xd0) + 8\n1403e6601        int32_t r8_3 = *(rdx_3 + 0x10)\n1403e6608        *(arg1 + 0x21bc) = r8_3\n1403e660f        if (rax_3 s< r8_3)\n1403e660f        r8_3 = rax_3\n1403e6622        return sub_1403e6220(arg1, rdx_3, r8_3, rax_3, 0x55)",
+  "fetched_at": "2026-04-26T17:25:13Z"
+}

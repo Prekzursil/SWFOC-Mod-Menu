@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024a3ed        int32_t rbp = 0\n14024a3ef        int64_t rcx = data_140b09e18\n14024a3f9        int32_t result = ((data_140b09e20 - rcx) s>> 5).d\n14024a3ff        if (result s> 0)\n14024a419        int64_t* r14_1 = nullptr\n14024a425        void* rdi_1 = r14_1 + rcx\n14024a42d        struct LuaVar::LuaValue<void (__cdecl*)(),8>::VTable** rax_2 = sub_1402456a0(*(r14_1 + rcx), *(r14_1 + rcx + 8))\n14024a432        int64_t* rsi_1 = *(rdi_1 + 0x10)\n14024a43c        if (rsi_1 == 0)\n14024a463        struct LuaVar::LuaValue<void (__cdecl*)(),8>::VTable*** rax_5 = *(rdi_1 + 0x18)\n14024a46a        if (rax_5 != 0)\n14024a46c        *rax_5 = rax_2\n14024a43e        int64_t* rcx_2 = *rsi_1\n14024a444        if (rcx_2 != rax_2)\n14024a449        if (rcx_2 != 0)\n14024a44e        (*(*rcx_2 + 8))(rcx_2)\n14024a451        *rsi_1 = rax_2\n14024a457        if (rax_2 != 0)\n14024a45f        (*rax_2)->vFunc_0(rax_2)\n14024a476        rbp += 1\n14024a478        rcx = data_140b09e18\n14024a47f        r14_1 = &r14_1[4]\n14024a486        result = ((data_140b09e20 - rcx) s>> 5).d\n14024a48c        do while (rbp s< result)\n14024a4a2        data_140b09e20 = rcx\n14024a4ae        return result",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

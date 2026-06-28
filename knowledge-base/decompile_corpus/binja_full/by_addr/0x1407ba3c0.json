@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ba3c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ba3e9        int64_t* result = sub_1407bf7e0(arg1, 0, 0, ((arg2 << 3) + 0x30).d)\n1407ba3fa        sub_1407bca30(arg1, result, 6)\n1407ba407        *(result + 0xa) = 0\n1407ba40b        int128_t zmm0 = *arg3\n1407ba413        *(result + 0xb) = arg2.b\n1407ba41c        *(result + 0x20) = zmm0\n1407ba425        return result",
+  "fetched_at": "2026-04-26T17:33:13Z"
+}

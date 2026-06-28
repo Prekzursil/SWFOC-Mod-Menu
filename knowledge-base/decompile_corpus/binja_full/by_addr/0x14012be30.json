@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012be30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012be30        void** result = arg1 + 0xc8\n14012be3c        if (result[3] u< 0x10)\n14012be41        return result\n14012be3e        return *result",
+  "fetched_at": "2026-04-26T17:07:57Z"
+}

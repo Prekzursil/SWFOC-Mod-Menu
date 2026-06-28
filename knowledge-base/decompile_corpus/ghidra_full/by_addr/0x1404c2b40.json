@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2b40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ReinforcementPointBehaviorClass * __thiscall\nReinforcementPointBehaviorClass::vfunction4(ReinforcementPointBehaviorClass *this,int param_1)\n\n{\n  ReinforcementPointBehaviorClass *pRVar1;\n  \n  pRVar1 = (ReinforcementPointBehaviorClass *)0x0;\n  if (param_1 == 0x49) {\n    pRVar1 = this;\n  }\n  return pRVar1;\n}",
+  "fetched_at": "2026-04-26T18:10:41Z"
+}

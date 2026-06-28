@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006d900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14006d900(undefined8 param_1,undefined8 param_2,undefined8 *param_3,undefined8 param_4)\n\n{\n  longlong lVar1;\n  undefined8 ****ppppuVar2;\n  undefined8 ***local_28 [2];\n  undefined8 local_18;\n  ulonglong local_10;\n  \n  local_10 = 0xf;\n  local_28[0] = (undefined8 ****)0x0;\n  local_18 = 0;\n  FUN_140200cd0(local_28,&DAT_140803a5c,param_4);\n  lVar1 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  ppppuVar2 = local_28;\n  if (0xf < local_10) {\n    ppppuVar2 = (undefined8 ****)local_28[0];\n  }\n  if (0xf < (ulonglong)param_3[3]) {\n    param_3 = (undefined8 *)*param_3;\n  }\n  (**(code **)(**(longlong **)(lVar1 + 0x20) + 0xa0))\n            (*(longlong **)(lVar1 + 0x20),param_2,param_3,ppppuVar2);\n  if (0xf < local_10) {\n    if (0xfff < local_10 + 1) {\n      if (0x1f < (ulonglong)((longlong)local_28[0] + (-8 - (longlong)local_28[0][-1]))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(local_28[0][-1],local_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:12Z"
+}

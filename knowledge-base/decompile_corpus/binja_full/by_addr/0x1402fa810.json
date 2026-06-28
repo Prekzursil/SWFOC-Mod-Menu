@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402fa810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402fa826        struct RefCountClass::ModelClass::VTable** rax = sub_14025ec10(\"data/art/models/i_tactical_corrupt.alo\", nullptr)\n1402fa82b        int64_t* r8 = *(arg1 + 0x27a0)\n1402fa838        if (r8 != rax)\n1402fa83d        if (r8 != 0)\n1402fa83f        int64_t rdx_1 = *r8\n1402fa845        (*(rdx_1 + 8))(r8, rdx_1)\n1402fa848        *(arg1 + 0x27a0) = rax\n1402fa855        if (rax != 0)\n1402fa85d        (*rax)->__offset(0x0).q(rax)\n1402fa85f        *(arg1 + 0x27a0)\n1402fa87d        jump(*(**(arg1 + 0xfb8) + 0x28))",
+  "fetched_at": "2026-04-26T17:23:07Z"
+}

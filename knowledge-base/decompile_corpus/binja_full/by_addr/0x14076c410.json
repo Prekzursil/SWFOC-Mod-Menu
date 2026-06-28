@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076c410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076c419        int64_t rcx_1\n14076c419        int64_t rdi_1\n14076c419        rdi_1, rcx_1 = __memfill_u8(arg1, arg2, arg3)\n14076c41f        return arg4",
+  "fetched_at": "2026-04-26T17:30:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790058",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140790085        int32_t r14 = sx.d(arg3)\n140790095        uint16_t rbx_3 = ((*arg1 & arg2 & 0xfffffffffffff) u>> r14.b).w\n14079009e        void* const* result\n14079009e        if (arg4 != 0)\n1407900ac        result = __scrt_wide_argv_policy::configure_argv()\n1407900b3        if (result.d == 0)\n1407900b5        uint64_t r8 = *arg1\n1407900b8        char rcx_1 = r14.b\n1407900c4        result = (r8 & arg2 & 0xfffffffffffff) u>> rcx_1\n1407900cb        if (result.w u> 8)\n140790123        result.b = 1\n1407900d4        if (result.w u>= 8)\n1407900db        char rdx = 1\n1407900ee        if ((0xfffffffffffff & ((1 << rcx_1) - 1) & r8) == 0)\n1407900f4        if (r14 == 0x30)\n14079011c        r8.b = (0x7ff0000000000000 & r8) != 0\n14079010a        r8 = (r8 u>> 4 & arg2 & 0xffffffffffff) u>> rcx_1\n140790120        rdx = 1 & r8.b\n140790123        result.b = rdx\n140790123        result.b = 0\n14079012c        if (result.d != 0x200)\n14079013f        if (result.d != 0x100)\n14079014d        result.b = 0\n140790149        if (rbx_3 == 0 || *arg1 s>= 0)\n140790123        result.b = 0\n140790123        result.b = 1\n140790136        if (rbx_3 == 0 || *arg1 s< 0)\n140790123        result.b = 0\n140790123        result.b = 1\n1407900a4        result.b = rbx_3 u>= 8\n14079016d        return result",
+  "fetched_at": "2026-04-26T17:31:41Z"
+}

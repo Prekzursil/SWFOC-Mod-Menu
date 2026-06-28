@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c2b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c2b25        void** i\n1401c2b25        if (*(arg1 + 0x98) != 0)\n1401c2b27        int64_t* r9_1 = *(arg1 + 0x90)\n1401c2b2e        i = *r9_1\n1401c2b34        while (i != r9_1)\n1401c2b40        int32_t* rcx = i[2]\n1401c2b4f        if (rcx[0x38].b == 0 && *rcx == arg2)\n1401c2b69        if (rcx != 0)\n1401c2b6b        void*** rbx_1 = *(rcx + 0xc8)\n1401c2b72        i = *rbx_1\n1401c2b78        if (i != rbx_1)\n1401c2b80        void* r10_1 = i[2]\n1401c2b84        int64_t* r9_2 = arg3\n1401c2b8b        if (arg3[3] u>= 0x10)\n1401c2b8d        r9_2 = *arg3\n1401c2b95        void* rcx_1 = r10_1 + 0x10\n1401c2b99        if (*(r10_1 + 0x28) u>= 0x10)\n1401c2b9b        rcx_1 = *rcx_1\n1401c2b9e        void* r9_3 = r9_2 - rcx_1\n1401c2bb4        uint32_t j\n1401c2bb4        uint32_t r8\n1401c2ba1        r8 = zx.d(*rcx_1)\n1401c2ba5        j = zx.d(*(rcx_1 + r9_3))\n1401c2bad        if (r8 != j)\n1401c2bad        break\n1401c2baf        rcx_1 += 1\n1401c2bb4        do while (j != 0)\n1401c2bb9        if (r8 - j == 0)\n1401c2be2        return zx.q(*(r10_1 + 0x92))\n1401c2bbb        i = *i\n1401c2bc1        do while (i != rbx_1)\n1401c2bc3        i.b = 0\n1401c2bcf        return i\n1401c2b69        break\n1401c2b51        i = *i\n1401c2b59        i.b = 0\n1401c2b65        return i",
+  "fetched_at": "2026-04-26T17:26:15Z"
+}

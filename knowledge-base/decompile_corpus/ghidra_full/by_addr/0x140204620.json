@@ -1,0 +1,7 @@
+{
+  "addr": "0x140204620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140204620(undefined8 param_1,undefined4 *param_2,uint param_3)\n\n{\n  char cVar1;\n  int iVar2;\n  int iVar3;\n  uint uVar4;\n  int iVar5;\n  undefined1 *puVar6;\n  undefined4 *puVar7;\n  \n  iVar2 = 0;\n  iVar3 = (int)param_3 >> 5;\n  uVar4 = (int)param_3 >> 3 & 3;\n  iVar5 = 0;\n  puVar7 = param_2;\n  if (0 < iVar3) {\n    do {\n      cVar1 = FUN_1402046f0(param_1,*puVar7,0x20);\n      puVar7 = puVar7 + 1;\n      if (cVar1 == '\\0') {\n        return 0;\n      }\n      iVar5 = iVar5 + 1;\n    } while (iVar5 < iVar3);\n  }\n  puVar6 = (undefined1 *)((longlong)(iVar3 * 4) + (longlong)param_2);\n  if (uVar4 != 0) {\n    do {\n      cVar1 = FUN_1402046f0(param_1,*puVar6,8);\n      puVar6 = puVar6 + 1;\n      if (cVar1 == '\\0') {\n        return 0;\n      }\n      iVar2 = iVar2 + 1;\n    } while (iVar2 < (int)uVar4);\n  }\n  if (((param_3 & 7) != 0) && (cVar1 = FUN_1402046f0(param_1,*puVar6,param_3 & 7), cVar1 == '\\0')) {\n    return 0;\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:56:18Z"
+}

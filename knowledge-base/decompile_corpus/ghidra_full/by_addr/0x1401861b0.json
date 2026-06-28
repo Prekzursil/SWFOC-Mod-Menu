@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401861b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alD3dTexture member function inherited by alD3dTexture2D\n   alD3dTexture member function inherited by alD3dTextureCube */\n\nbool __thiscall alD3dTexture::vfunction10(alD3dTexture *this,undefined8 param_1)\n\n{\n  undefined4 uVar1;\n  int iVar2;\n  undefined4 extraout_var;\n  \n  uVar1 = (*this->vftablePtr->vfunction2)(this);\n  if (CONCAT44(extraout_var,uVar1) != 0) {\n    uVar1 = (*this->vftablePtr->vfunction2)(this);\n    iVar2 = D3DXSaveTextureToFileA(param_1,4,uVar1);\n    return -1 < iVar2;\n  }\n  return SUB41(uVar1,0);\n}",
+  "fetched_at": "2026-04-26T17:31:58Z"
+}

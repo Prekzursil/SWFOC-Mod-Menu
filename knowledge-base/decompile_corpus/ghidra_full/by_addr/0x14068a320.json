@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a320(void)\n\n{\n  CorruptPlanetAbilityClass *this;\n  \n  this = (CorruptPlanetAbilityClass *)FUN_140769c58(0x180);\n  if (this != (CorruptPlanetAbilityClass *)0x0) {\n    CorruptPlanetAbilityClass::CorruptPlanetAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb740",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fb74c        int64_t result = sub_14048f2c0(arg1)\n1406fb75c        char var_108[0x100]\n1406fb75c        if (*(arg1 + 0x60) == 0 && *(arg1 + 0x78) s<= 0)\n1406fb763        void* r8_1 = arg1 + 0x18\n1406fb767        if (*(arg1 + 0x30) u>= 0x10)\n1406fb769        r8_1 = *r8_1\n1406fb778        sscanf_s(&var_108, \"Warning: (%s) You should really specify a value for either Applicable_Unit_Categories\\nor Applicable_Unit_Types, otherwise this ability won't affect any units at all.\", r8_1)\n1406fb782        result = sub_1402149d0(&var_108)\n1406fb791        if (not((zx.o(0)).d f<= *(arg1 + 0x178)))\n1406fb798        void* r8_2 = arg1 + 0x18\n1406fb79c        if (*(arg1 + 0x30) u>= 0x10)\n1406fb79e        r8_2 = *r8_2\n1406fb7ad        sscanf_s(&var_108, \"Error: (%s) Damage_Bonus_Percentage cannot be less than zero.\", r8_2)\n1406fb7b7        result = sub_1402149d0(&var_108)\n1406fb7bc        *(arg1 + 0x178) = 0\n1406fb7ce        return result",
+  "fetched_at": "2026-04-26T17:26:48Z"
+}

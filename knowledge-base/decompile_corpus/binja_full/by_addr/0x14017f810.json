@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017f810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017f81d        if (data_140a6eb68 == 0)\n14017f858        return &data_140a6f49c\n14017f837        D3DXMatrixMultiply(&data_140a6f49c, &data_140a6eee4, &data_140a6ef24)\n14017f83f        data_140a6eb68 = 0\n14017f84b        return &data_140a6f49c",
+  "fetched_at": "2026-04-26T17:23:47Z"
+}

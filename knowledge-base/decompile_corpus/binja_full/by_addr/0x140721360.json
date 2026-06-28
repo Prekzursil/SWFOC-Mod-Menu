@@ -1,0 +1,7 @@
+{
+  "addr": "0x140721360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14072136e        *arg1 = 0\n140721373        __builtin_memset(&arg1[4], 0, 0x14)\n140721381        int64_t* rax = operator new(0x20)\n14072138d        *rax = rax\n140721390        rax[1] = rax\n140721394        *(arg1 + 8) = rax\n140721398        int64_t r8 = *(arg1 + 8)\n14072139c        __builtin_memset(&arg1[0x18], 0, 0x18)\n1407213a7        *(arg1 + 0x30) = 7\n1407213af        *(arg1 + 0x38) = 8\n1407213b7        *(arg1 + 4) = 0x3f800000\n1407213be        sub_140048250(&arg1[0x18], 0x10, r8)\n1407213c3        __builtin_memset(&arg1[0x44], 0, 0x14)\n1407213cb        arg1[0x40] = 0\n1407213d6        int64_t* rax_1 = operator new(0x20)\n1407213e2        *rax_1 = rax_1\n1407213e5        rax_1[1] = rax_1\n1407213e9        *(arg1 + 0x48) = rax_1\n1407213ed        int64_t r8_1 = *(arg1 + 0x48)\n1407213f1        __builtin_memset(&arg1[0x58], 0, 0x18)\n1407213fc        *(arg1 + 0x70) = 7\n140721404        *(arg1 + 0x78) = 8\n14072140c        *(arg1 + 0x44) = 0x3f800000\n140721413        sub_140048250(&arg1[0x58], 0x10, r8_1)\n14072141b        __builtin_memset(&arg1[0x80], 0, 0x20)\n140721441        return arg1",
+  "fetched_at": "2026-04-26T17:28:17Z"
+}

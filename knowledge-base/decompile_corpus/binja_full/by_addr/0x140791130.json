@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791130",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140791134        int128_t zmm4 = data_1408d7080\n14079113c        double zmm2[0x2] = data_1408d70a0\n14079114d        double zmm1[0x2] = __vfmadd132sd_xmmdq_xmmq_memq(arg1, zmm2[0], 0.63661977236758138) f- zmm2[0]\n140791155        int64_t rax = __vcvttpd2dq_xmmdq_xmmdq(zmm1)[0].q\n14079115e        double temp0_2[0x2] = __vfnmadd132sd_xmmdq_xmmq_memq(zmm1, arg1[0], 1.5707963267948966)\n140791167        double zmm3 = zmm1 f* zmm4.q\n14079116f        double temp0_3[0x2] = _mm_fmsub_sd(zmm1, zmm4.q, zmm3)\n140791174        int32_t zmm5[0x4] = temp0_2 f- zmm3\n140791199        __vfnmadd132sd_xmmdq_xmmq_memq(zmm1, (zmm5 f- __vfnmadd231sd_xmmdq_xmmq_memq(temp0_2, zmm1[0], 6.1232339957367574e-17)[0] f+ (temp0_2 f- zmm5[0].q f- zmm3).q f- temp0_3[0])[0].q, 8.4784276603688985e-32)\n1407911a6        return rax & 3",
+  "fetched_at": "2026-04-26T17:31:44Z"
+}

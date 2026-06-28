@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017d1c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall alD3dVertexType<class_alD3dVertRSkinNU2C>::vfunction5(void)\n\n{\n  return \"alD3dVertRSkinNU2C\";\n}",
+  "fetched_at": "2026-04-26T17:29:49Z"
+}

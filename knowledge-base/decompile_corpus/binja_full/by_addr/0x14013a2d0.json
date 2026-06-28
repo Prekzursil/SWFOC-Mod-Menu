@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013a2d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013a2da        struct alRenderable::alBlob::VTable** result = arg1\n14013a2dd        sub_14013f590(arg1)\n14013a2e9        *result = &alBlob::`vftable'{for `alRenderable'}\n14013a2fa        result[0x20] = 0\n14013a305        result[2] = &alBlob::`vftable'{for `MultiLinkedListMember'}\n14013a310        result[4] = &alBlob::`vftable'{for `CullObjectClass'}\n14013a314        sub_1401f92f0(result + 0x11c)\n14013a31e        *(result + 0x12c) = 0\n14013a348        int64_t var_18\n14013a348        *(result + 0x11c) = *sub_1401f93e0(&var_18, 0xff, 0xff, 0xff, 0xff)\n14013a36f        *(result + 0xcc) = 0x101\n14013a37b        int32_t arg_8 = 0x3f800000\n14013a383        int32_t arg_c = 0x3f800000\n14013a38b        var_18 = 0\n14013a394        int32_t var_10 = 0\n14013a39c        sub_14013a460(result, &var_18, zx.o(0), &arg_8, 0x3f800000)\n14013a3ae        return result",
+  "fetched_at": "2026-04-26T17:14:33Z"
+}

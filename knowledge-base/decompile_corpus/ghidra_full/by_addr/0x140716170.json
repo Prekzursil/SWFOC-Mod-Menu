@@ -1,0 +1,7 @@
+{
+  "addr": "0x140716170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LaserDefenseAbilityClass * __thiscall\nLaserDefenseAbilityClass::scalar_deleting_destructor(LaserDefenseAbilityClass *this,uint param_1)\n\n{\n  ~LaserDefenseAbilityClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x240);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:56:38Z"
+}

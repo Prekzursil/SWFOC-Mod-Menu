@@ -1,0 +1,7 @@
+{
+  "addr": "0x140340920",
+  "tool": "binary_ninja",
+  "fact_id": "rva_retreat_engine",
+  "body": "14034093a        if (arg3 != 1)\n14034095c        if (arg2 != sub_140294a70(&data_140a16fd0))\n14034095e        label_14034095e:\n140340961        if (arg2 != 0xffffffff)\n14034096b        int32_t result = (*(*arg1 + 0x48))(arg1, zx.q(arg2))\n140340970        if (result != 0)\n140340954        return result\n140340975        if (arg1[5].d s> result)\n140340986        return 2\n140340997        if (*(arg1 + 0x7e) == 1 || *(arg1 + 0x1c) != 0xffffffff || arg1[3].d != 0)\n1403409ef        return 5\n14034099e        struct RefCountClass::EventClass::VTable** rax_4 = operator new(0x50)\n1403409a6        struct ScheduledEventClass::RetreatEventClass::VTable** rbx_1\n1403409a6        if (rax_4 == 0)\n1403409b5        rbx_1 = nullptr\n1403409b0        rbx_1 = sub_140532570(rax_4)\n1403409bf        sub_140532620(rbx_1, arg2, 0)\n1403409ce        sub_1403b01f0(&data_140b2ed18, rbx_1)\n1403409df        return 0\n140340943        if (arg2 == sub_140294a70(&data_140a16fd0))\n140340943        goto label_14034095e\n140340945        return 1",
+  "fetched_at": "2026-04-26T16:43:15Z"
+}

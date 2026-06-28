@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406043c0",
+  "tool": "ghidra",
+  "fact_id": "rva_lua_set_sabotage_tutorial",
+  "body": "\nundefined8 FUN_1406043c0(longlong param_1,undefined8 param_2,longlong param_3)\n\n{\n  longlong *plVar1;\n  undefined *puVar2;\n  char *pcVar3;\n  \n  if ((param_3 == 0) ||\n     ((*(longlong *)(param_3 + 0x18) - (longlong)*(longlong **)(param_3 + 0x10) &\n      0xfffffffffffffff8U) == 0)) {\n    pcVar3 = \"PlayerWrapper::Lua_Set_Sabotage_Tutorial -- Missing required parameter.\";\n  }\n  else {\n    plVar1 = (longlong *)**(longlong **)(param_3 + 0x10);\n    if (plVar1 != (longlong *)0x0) {\n      for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n          puVar2 = *(undefined **)(puVar2 + 8)) {\n        if (puVar2 == &DAT_140a157b0) {\n          (**(code **)*plVar1)(plVar1);\n          *(char *)(*(longlong *)(param_1 + 0x28) + 0x449) = (char)plVar1[2];\n          (**(code **)(*plVar1 + 8))(plVar1);\n          return 0;\n        }\n      }\n    }\n    pcVar3 = \n    \"PlayerWrapper::Lua_Set_Sabotage_Tutorial -- invalid type for parameter 1.  Expected boolean.\";\n  }\n  FUN_140248190(param_2,pcVar3);\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:03Z"
+}

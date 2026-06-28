@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d0440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1405d0440(undefined8 param_1,longlong *param_2,longlong *param_3)\n\n{\n  float fVar1;\n  double dVar2;\n  double dVar3;\n  double dVar4;\n  float fVar5;\n  longlong lVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  \n  fVar5 = DAT_1408a65c0;\n  dVar4 = DAT_1408a3568;\n  dVar3 = DAT_14086b828;\n  dVar2 = DAT_140854f38;\n  fVar1 = DAT_1408007d4;\n  fVar10 = 0.0;\n  if (param_2 == param_3) {\n    fVar10 = 0.0;\n  }\n  else {\n    do {\n      if ((*param_2 != 0) && (lVar6 = FUN_14041b450(*param_2,0), lVar6 != 0)) {\n        fVar7 = (float)FUN_1403969f0(lVar6);\n        fVar7 = fVar7 * DAT_140b16c30;\n        fVar8 = (float)FUN_140372560(*(undefined8 *)(lVar6 + 0x298));\n        fVar9 = (float)FUN_140370f00(*(undefined8 *)(lVar6 + 0x298));\n        fVar10 = fVar10 + (fVar7 + (float)((dVar4 / (dVar3 * dVar2)) * (double)(fVar9 / fVar8) *\n                                          (double)DAT_140b16c44)) * fVar1 * fVar5;\n      }\n      param_2 = param_2 + 1;\n    } while (param_2 != param_3);\n  }\n  return fVar10;\n}",
+  "fetched_at": "2026-04-26T18:45:20Z"
+}

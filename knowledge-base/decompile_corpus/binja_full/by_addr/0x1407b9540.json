@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9540",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_pushstring",
+  "body": "1407b9553        if (arg2 == 0)\n1407b9555        int32_t* rax = arg1[2]\n1407b9559        *rax = arg2.d\n1407b955b        arg1[2] += 0x10\n1407b956a        return rax\n1407b9575        char* rdi = -ffffffffffffffff\n1407b9580        rdi = &rdi[1]\n1407b9587        do while (*(rdi + arg2) != 0)\n1407b9589        void* rcx = arg1[4]\n1407b9593        if (*(rcx + 0x74) u>= *(rcx + 0x70))\n1407b9598        sub_1407bc850(arg1)\n1407b959d        int32_t* rbx = arg1[2]\n1407b95aa        *rbx = 4\n1407b95b0        void** rax_2 = sub_1407bf8f0(arg1, arg2, rdi)\n1407b95bf        *(rbx + 8) = rax_2\n1407b95c3        arg1[2] += 0x10\n1407b95d2        return rax_2",
+  "fetched_at": "2026-04-26T16:44:31Z"
+}

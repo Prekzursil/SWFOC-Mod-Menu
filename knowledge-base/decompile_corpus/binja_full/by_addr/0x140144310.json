@@ -1,0 +1,7 @@
+{
+  "addr": "0x140144310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014432a        struct RefCountClass::alRenderable::VTable** rax = operator new(0x1f8)\n140144332        struct alRenderable::alHModel::VTable** rbx\n140144332        if (rax == 0)\n140144341        rbx = nullptr\n14014433c        rbx = sub_14012b080(rax)\n140144353        if (sub_14012b920(rbx, arg2, arg3) != 0)\n14014435b        sub_140149e40(arg3, rbx)\n140144360        int64_t result\n140144360        result.b = 1\n140144371        return result\n140144375        if (rbx != 0)\n140144382        (*rbx)->`scalar deleting destructor'(rbx, 1)\n140144396        return 0",
+  "fetched_at": "2026-04-26T17:19:52Z"
+}

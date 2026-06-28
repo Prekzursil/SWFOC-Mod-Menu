@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068dba0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall WeightedTypeListClass::vfunction5(void)\n\n{\n  return &DAT_140a44448;\n}",
+  "fetched_at": "2026-04-26T17:16:56Z"
+}

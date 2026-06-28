@@ -1,0 +1,7 @@
+{
+  "addr": "0x140696580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nProduceObjectClass::vfunction15(ProduceObjectClass *this,undefined8 param_1,undefined8 param_2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  \n  bVar1 = FUN_14021ffa0(param_2,7);\n  bVar2 = FUN_1402200b0(param_2,&DAT_140a44488,4);\n  bVar3 = FUN_140220030(param_2);\n  return bVar3 & bVar1 & 1 & bVar2;\n}",
+  "fetched_at": "2026-04-26T17:20:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a2d40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a2d50        if (deflateStateCheck(arg1) != 0)\n1407a2d5c        return 0xfffffffe\n1407a2d5d        void* rdx = *(arg1 + 0x28)\n1407a2d66        int64_t rax_2 = *(rdx + 0x10)\n1407a2d6a        int32_t rdi = *(rdx + 8)\n1407a2d70        if (rax_2 != 0)\n1407a2d79        (*(arg1 + 0x38))(*(arg1 + 0x40), rax_2)\n1407a2d7c        rdx = *(arg1 + 0x28)\n1407a2d80        int64_t rax_3 = *(rdx + 0x68)\n1407a2d87        if (rax_3 != 0)\n1407a2d90        (*(arg1 + 0x38))(*(arg1 + 0x40), rax_3)\n1407a2d93        rdx = *(arg1 + 0x28)\n1407a2d97        int64_t rax_4 = *(rdx + 0x60)\n1407a2d9e        if (rax_4 != 0)\n1407a2da7        (*(arg1 + 0x38))(*(arg1 + 0x40), rax_4)\n1407a2daa        rdx = *(arg1 + 0x28)\n1407a2dae        int64_t rax_5 = *(rdx + 0x50)\n1407a2db5        if (rax_5 != 0)\n1407a2dbe        (*(arg1 + 0x38))(*(arg1 + 0x40), rax_5)\n1407a2dc1        rdx = *(arg1 + 0x28)\n1407a2dc9        (*(arg1 + 0x38))(*(arg1 + 0x40), rdx)\n1407a2dd6        *(arg1 + 0x28) = 0\n1407a2ddf        if (rdi == 0x71)\n1407a2ddf        return 0xfffffffd\n1407a2de7        return 0",
+  "fetched_at": "2026-04-26T17:32:23Z"
+}

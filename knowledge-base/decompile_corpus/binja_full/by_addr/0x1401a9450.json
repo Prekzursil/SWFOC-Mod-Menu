@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a9450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a946a        int128_t var_68\n1401a946a        int128_t* rdi = &var_68\n1401a9479        __builtin_memcpy(&var_68, \"\\x00\\x00\\x00\\x00\\x01\\x00\\x00\\x00\\x02\\x00\\x00\\x00\\x03\\x00\\x00\\x00\\x04\\x00\\x00\\x00\\x05\\x00\\x00\\x00\\x06\\x00\\x00\\x00\\x07\\x00\\x00\\x00\\x08\\x00\\x00\\x00\\x09\\x00\\x00\\x00\\x0a\\x00\\x00\\x00\\x0b\\x00\\x00\\x00\\x0c\\x00\\x00\\x00\\x0d\\x00\\x00\\x00\\x0e\\x00\\x00\\x00\\x0f\\x00\\x00\\x00\\x10\\x00\\x00\\x00\", 0x44)\n1401a9489        int64_t i_1 = 0x11\n1401a9514        int32_t result\n1401a9514        int64_t i\n1401a94b0        int32_t rdx = *rdi\n1401a94ba        int64_t* rcx = *arg1\n1401a94bd        uint32_t rax_1 = zx.d(arg2[4].b)\n1401a94c1        uint64_t r9_1 = zx.q(arg2[3])\n1401a94ca        uint64_t r8_1 = zx.q(arg2[1])\n1401a94ce        int32_t arg_18 = rdx\n1401a94e2        void arg_20\n1401a94e2        result = (*(*rcx + 0x58))(rcx, zx.q(*arg2), r8_1, r9_1, rax_1, rdx, &arg_20)\n1401a94e8        if (result s>= 0)\n1401a94f6        sub_1401a82e0(*(arg2 + 0x20), &arg_18)\n1401a9507        result = sub_1401a82e0(*(arg2 + 0x28), &arg_20)\n1401a950c        rdi += 4\n1401a9510        i = i_1\n1401a9510        i_1 -= 1\n1401a9514        do while (i != 1)\n1401a9529        return result",
+  "fetched_at": "2026-04-26T17:25:19Z"
+}

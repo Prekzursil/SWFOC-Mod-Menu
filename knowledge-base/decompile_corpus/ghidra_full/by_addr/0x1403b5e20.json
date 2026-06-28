@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b5e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandModeClass::vfunction44\n          (LandModeClass *this,float *param_1,undefined8 *param_2,undefined4 *param_3)\n\n{\n  longlong lVar1;\n  char cVar2;\n  longlong lVar3;\n  float extraout_XMM0_Da;\n  float local_18;\n  float local_14;\n  float local_10;\n  \n  lVar1 = *(longlong *)&(this->LandModeClass_data).field_0x88;\n  if (lVar1 == 0) {\n    param_1[0] = 0.0;\n    param_1[1] = 0.0;\n    param_1[2] = 0.0;\n    *param_2 = 0;\n    *(undefined4 *)(param_2 + 1) = 0x3f800000;\n    *param_3 = 0;\n    *(undefined8 *)(param_3 + 1) = 0x3f800000;\n  }\n  else {\n    cVar2 = FUN_1402cd0c0(&DAT_140b27a10);\n    if (cVar2 == '\\x01') {\n      FUN_140261a40(lVar1,&local_18);\n      *param_1 = local_18;\n      param_1[2] = local_10;\n    }\n    else {\n      lVar3 = (*this->vftablePtr->vfunction62)(this);\n      *param_1 = *(float *)(lVar3 + 0x18);\n      param_1[1] = *(float *)(lVar3 + 0x1c);\n      param_1[2] = *(float *)(lVar3 + 0x20);\n      FUN_1402616d0(lVar1,&local_18);\n      (*this->vftablePtr->vfunction43)(this);\n      local_14 = param_1[1] - local_14 * extraout_XMM0_Da;\n      param_1[2] = param_1[2] - extraout_XMM0_Da * local_10;\n      *param_1 = *param_1 - local_18 * extraout_XMM0_Da;\n    }\n    param_1[1] = local_14;\n    FUN_140261690(lVar1,param_2,param_3);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:43Z"
+}

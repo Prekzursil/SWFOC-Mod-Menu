@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ae8e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ae8eb        struct ScheduledEventClass::MoveToRayFacingEventClass::VTable** result = operator new(0x68)\n1403ae8f6        if (result == 0)\n1403ae931        return result\n1403ae8fb        sub_140512c50(result)\n1403ae907        result[4].d = 0x13\n1403ae90e        *result = &MoveToRayFacingEventClass::`vftable'{for `ScheduledEventClass'}\n1403ae913        __builtin_memset(&result[9], 0, 0x20)\n1403ae92b        return result",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

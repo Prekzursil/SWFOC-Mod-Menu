@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215a30",
+  "tool": "binary_ninja",
+  "fact_id": "rva_crc32_hash",
+  "body": "140215a30        int32_t r8 = not.d(arg3)\n140215a35        if (arg2 s> 0)\n140215a37        uint64_t i_1 = zx.q(arg2)\n140215a5d        uint64_t i\n140215a41        char rdx = *arg1\n140215a44        arg1 = &arg1[1]\n140215a55        r8 = r8 u>> 8 ^ *(&data_140a14d20 + ((zx.q(rdx) ^ zx.q(r8.b)) << 2))\n140215a59        i = i_1\n140215a59        i_1 -= 1\n140215a5d        do while (i != 1)\n140215a65        return zx.q(not.d(r8))",
+  "fetched_at": "2026-04-26T16:42:55Z"
+}

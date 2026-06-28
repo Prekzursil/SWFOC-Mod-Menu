@@ -1,0 +1,7 @@
+{
+  "addr": "0x140633700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140633708        if (arg2 == 0 || arg3 == 0)\n140633708        return \n14063370a        void* rcx = *(arg2 + 0x168)\n140633714        if (rcx == 0)\n140633714        return \n14063371c        *(rcx + 0x44) = arg5\n140633721        *(rcx + 0x40) = arg4\n14063372a        *(rcx + 0x4c) = *(arg3 + 0x50)\n14063372d        return ",
+  "fetched_at": "2026-04-26T17:24:20Z"
+}

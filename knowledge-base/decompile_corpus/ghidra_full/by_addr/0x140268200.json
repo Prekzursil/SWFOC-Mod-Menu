@@ -1,0 +1,7 @@
+{
+  "addr": "0x140268200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FillRectClass * __thiscall\nFillRectClass::FillRectClass\n          (FillRectClass *this,undefined4 param_2,undefined4 param_3,undefined4 param_4,\n          undefined4 param_5,undefined4 *param_6)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  \n  DrawPrimitiveClass::DrawPrimitiveClass((DrawPrimitiveClass *)this);\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x10 + 4) = param_2;\n  *(undefined4 *)&(this->DrawPrimitiveClass_data).offset_0x18 = param_3;\n  *(undefined4 *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x18 + 4) = param_4;\n  (this->DrawPrimitiveClass_data).offset_0x20 = param_5;\n  uVar1 = param_6[1];\n  uVar2 = param_6[2];\n  uVar3 = param_6[3];\n  *(undefined4 *)&this->DrawPrimitiveClass_data = *param_6;\n  *(undefined4 *)&(this->DrawPrimitiveClass_data).field_0x4 = uVar1;\n  *(undefined4 *)&(this->DrawPrimitiveClass_data).field_0x8 = uVar2;\n  *(undefined4 *)&(this->DrawPrimitiveClass_data).field_0xc = uVar3;\n  FUN_1401f9440();\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:18:13Z"
+}

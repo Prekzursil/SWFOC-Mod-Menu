@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405635a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall BaseShieldDataPackClass::~BaseShieldDataPackClass(BaseShieldDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:11Z"
+}

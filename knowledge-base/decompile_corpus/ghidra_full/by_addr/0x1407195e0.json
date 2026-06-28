@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407195e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SensorJammingAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Sensor_Jamming_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:57:16Z"
+}

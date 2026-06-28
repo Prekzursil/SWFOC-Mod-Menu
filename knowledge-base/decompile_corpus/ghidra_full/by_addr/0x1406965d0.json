@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406965d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall\nProduceObjectClass::vfunction16(ProduceObjectClass *this,undefined8 param_1,undefined8 param_2)\n\n{\n  char cVar1;\n  undefined4 uVar2;\n  int iVar3;\n  \n  uVar2 = FUN_140220610(param_2);\n  cVar1 = (char)uVar2;\n  while (cVar1 != '\\0') {\n    iVar3 = FUN_140220710(param_2);\n    if (iVar3 == 7) {\n      FUN_140220730(param_2,&DAT_140a44488,4,0);\n    }\n    FUN_1402206a0(param_2);\n    uVar2 = FUN_140220610(param_2);\n    cVar1 = (char)uVar2;\n  }\n  return CONCAT31((int3)((uint)uVar2 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:20:03Z"
+}

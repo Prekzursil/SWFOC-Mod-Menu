@@ -1,0 +1,7 @@
+{
+  "addr": "0x140391010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140391010(longlong param_1)\n\n{\n  TacticalSellDataPackClass *pTVar1;\n  \n  if (*(longlong *)(param_1 + 0x140) == 0) {\n    pTVar1 = (TacticalSellDataPackClass *)FUN_140769c58(0x10);\n    if (pTVar1 != (TacticalSellDataPackClass *)0x0) {\n      pTVar1 = TacticalSellDataPackClass::TacticalSellDataPackClass(pTVar1);\n      *(TacticalSellDataPackClass **)(param_1 + 0x140) = pTVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x140) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022bab0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14022bab0(longlong param_1,ulonglong param_2)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  ulonglong uVar3;\n  int iVar4;\n  ulonglong uVar5;\n  int iVar6;\n  ulonglong *puVar7;\n  uint uVar8;\n  \n  uVar8 = ((uint)param_2 ^ 0xdeadbeef) & 0x7fffffff;\n  uVar2 = *(ulonglong *)(param_1 + 0x50);\n  iVar6 = (uVar8 % 0x1f31d) * 0x41a7 + (uVar8 / 0x1f31d) * -0xb14;\n  iVar4 = iVar6 + 0x7fffffff;\n  if (-1 < iVar6) {\n    iVar4 = iVar6;\n  }\n  puVar7 = (ulonglong *)\n           (((longlong)iVar4 & *(ulonglong *)(param_1 + 0x78)) * 0x10 +\n           *(longlong *)(param_1 + 0x60));\n  uVar5 = puVar7[1];\n  if (uVar5 != uVar2) {\n    uVar3 = *(ulonglong *)(uVar5 + 0x10);\n    if (param_2 < uVar3) {\n      do {\n        if (uVar5 == *puVar7) goto LAB_14022bb59;\n        uVar5 = *(ulonglong *)(uVar5 + 8);\n      } while (param_2 < *(ulonglong *)(uVar5 + 0x10));\n      uVar3 = *(ulonglong *)(uVar5 + 0x10);\n    }\n    if (param_2 <= uVar3) {\n      if (uVar5 == 0) {\n        uVar5 = uVar2;\n      }\n      if (uVar5 != uVar2) {\n        plVar1 = (longlong *)(uVar5 + 0x18);\n        uVar8 = *(uint *)(*plVar1 + 0x10);\n        uVar5 = (ulonglong)uVar8;\n        if (0 < (int)uVar8) {\n          *(uint *)(*plVar1 + 0x10) = uVar8 - 1;\n          return CONCAT71((uint7)(uint3)(uVar8 - 1 >> 8),1);\n        }\n      }\n    }\n  }\nLAB_14022bb59:\n  return uVar5 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:05:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a784",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __GSHandlerCheck\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8\n__GSHandlerCheck(undefined8 param_1,undefined8 param_2,undefined8 param_3,longlong param_4)\n\n{\n  __GSHandlerCheckCommon(param_2,param_4,*(undefined8 *)(param_4 + 0x38));\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:10:06Z"
+}

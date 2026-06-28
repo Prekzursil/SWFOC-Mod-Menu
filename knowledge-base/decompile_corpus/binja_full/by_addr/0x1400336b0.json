@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400336b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400336bf        int64_t* rsi = nullptr\n1400336c1        *(arg1 + 0x68) = arg2\n1400336c5        *(arg1 + 0x78) = 0\n1400336cc        *(arg1 + 0x50) = 0\n1400336d2        *(arg1 + 0xe4) = 1\n1400336e0        if (*(arg2 + 0x335) != 0xff)\n1400336e2        *(arg1 + 0x70) = arg2\n1400336f5        return \n140033702        *(arg1 + 0x70) = *(arg2 + 0x2b0)\n140033706        int32_t rax_1 = 0\n14003370d        int32_t rcx_2 = (*(arg1 + 0x54) * 2) s>> 1\n140033711        if (0 s>= rcx_2)\n140033725        int32_t rdx_2 = rcx_2 s/ 0xa\n14003372e        if (rdx_2 s< 0xa)\n14003372e        rdx_2 = 0xa\n14003373a        sub_140047aa0(arg1 + 0x40, rdx_2 + rcx_2, 0, 1)\n14003373f        rax_1 = *(arg1 + 0x50)\n140033749        *(*(arg1 + 0x48) + (sx.q(rax_1) << 3)) = arg2\n14003374d        *(arg1 + 0x50) += 1\n140033753        if (*(arg1 + 0x50) s<= 0)\n140033753        return \n14003375a        struct RefCountClass::EventClass::VTable** rax_5 = operator new(0x248)\n140033762        if (rax_5 != 0)\n14003376c        rsi = sub_1403ac9d0(rax_5)\n140033776        sub_1403acdd0(rsi, arg1 + 0x40)\n140033785        sub_1403b01f0(&data_140b2ed18, rsi)\n14003379e        return ",
+  "fetched_at": "2026-04-26T16:52:42Z"
+}

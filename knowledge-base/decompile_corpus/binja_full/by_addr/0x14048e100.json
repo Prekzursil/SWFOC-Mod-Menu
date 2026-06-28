@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048e100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048e10d        if (arg2 == 0)\n14048e10f        int64_t rax\n14048e10f        rax.b = 1\n14048e115        return rax\n14048e119        if (arg3 == 0)\n14048e11f        return arg3\n14048e125        void* rbx = arg2[0x1e]\n14048e13b        int64_t rdi = 0\n14048e142        int32_t rsi = 0\n14048e144        int64_t r14\n14048e144        r14.b = 0\n14048e14a        int32_t rcx\n14048e14a        if (rbx != 0)\n14048e14c        rdi = *(rbx + 0x148)\n14048e156        if (rdi != arg3)\n14048e158        r14.b = 1\n14048e15b        *(rbx + 0x148) = arg3\n14048e162        rsi = *(rbx + 0x150)\n14048e168        rcx = *(arg1 + 0x38)\n14048e16d        int64_t* rax_1\n14048e16d        int64_t rbp\n14048e16d        if (rbx == 0 || rsi == rcx)\n14048e191        rax_1 = sub_140568340(arg2, arg3, arg4)\n14048e196        rbp.b = 0\n14048e19c        if (rbx != 0)\n14048e19c        goto label_14048e1a1\n14048e16f        *(rbx + 0x150) = rcx\n14048e17e        rbp.b = 1\n14048e181        rax_1 = sub_140568340(arg2, arg3, arg4)\n14048e1a1        label_14048e1a1:\n14048e1a1        if (r14.b != 0)\n14048e1a3        *(rbx + 0x148) = rdi\n14048e1ad        if (rbp.b != 0)\n14048e1af        *(rbx + 0x150) = rsi\n14048e1d2        return rax_1",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

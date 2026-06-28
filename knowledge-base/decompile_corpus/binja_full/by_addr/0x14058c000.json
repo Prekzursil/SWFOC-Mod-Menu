@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058c000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058c006        struct BaseDataPackClass::DeathDataPackClass::VTable* const result = &DeathDataPackClass::`vftable'{for `BaseDataPackClass'}\n14058c010        *arg1 = &DeathDataPackClass::`vftable'{for `BaseDataPackClass'}\n14058c013        int64_t* rcx = arg1[4]\n14058c01a        if (rcx != 0)\n14058c01f        result = (*(*rcx + 8))(rcx)\n14058c022        arg1[4] = 0\n14058c02f        return result",
+  "fetched_at": "2026-04-26T17:36:11Z"
+}

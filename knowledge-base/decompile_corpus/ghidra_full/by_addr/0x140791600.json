@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    fgetc\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl fgetc(FILE *_File)\n\n{\n  uint uVar1;\n  int iVar2;\n  ulong *puVar3;\n  undefined *puVar4;\n  undefined *puVar5;\n  undefined1 auStack_38 [32];\n  undefined1 *local_18;\n  \n  local_18 = auStack_38;\n  if (_File == (FILE *)0x0) {\n    local_18 = auStack_38;\n    puVar3 = __doserrno();\n    *puVar3 = 0x16;\n    FUN_1407711ac();\n    return -1;\n  }\n  FUN_140784aa4();\n  if ((*(uint *)((longlong)&_File->_base + 4) >> 0xc & 1) == 0) {\n    uVar1 = _fileno(_File);\n    if (uVar1 + 2 < 2) {\n      puVar5 = &DAT_140a44f30;\n    }\n    else {\n      puVar5 = (undefined *)\n               ((&DAT_140b3c4d0)[(longlong)(int)uVar1 >> 6] + (ulonglong)(uVar1 & 0x3f) * 0x48);\n    }\n    puVar4 = &DAT_140a44f30;\n    if (puVar5[0x39] == '\\0') {\n      if (1 < uVar1 + 2) {\n        puVar4 = (undefined *)\n                 ((&DAT_140b3c4d0)[(longlong)(int)uVar1 >> 6] + (ulonglong)(uVar1 & 0x3f) * 0x48);\n      }\n      if ((puVar4[0x3d] & 1) == 0) goto LAB_1407916ef;\n    }\n    puVar3 = __doserrno();\n    *puVar3 = 0x16;\n    FUN_1407711ac();\n    _local_unwind(local_18,0x1407916e7);\n    iVar2 = -1;\n  }\n  else {\nLAB_1407916ef:\n    iVar2 = _fgetc_nolock(_File);\n    FUN_140784ab0(_File);\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:52:46Z"
+}

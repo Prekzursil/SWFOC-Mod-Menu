@@ -1,0 +1,7 @@
+{
+  "addr": "0x140559350",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140559359        int32_t* result = arg2\n14055935c        *arg2 = *arg3\n140559362        arg2[1] = arg3[1]\n14055936e        double zmm6[0x2] = *(arg1 + 0x150)\n140559376        arg2[2] = arg3[2]\n140559392        double zmm7[0x2]\n140559392        if ((zmm6[0].d & 0x7f800000) u<= 0x1d000000)\n1405593a1        zmm7 = 0x3f800000\n140559397        double zmm0[0x2]\n140559397        zmm0, arg2, arg4, zmm6 = cosf(zmm6, arg2, arg4)\n14055939c        zmm7 = zmm0\n1405593bd        if ((zmm6[0].d & 0x7f800000) u> 0x1d000000)\n1405593c7        zmm6 = sinf(zmm6, arg2, arg4)\n1405593d0        zmm6[0].d = zmm6[0].d f* *result\n1405593d7        zmm7[0].d = zmm7[0].d f* result[1]\n1405593e0        zmm6[0].d = zmm6[0].d f* result[1]\n1405593e5        zmm6[0].d = zmm6[0].d f+ zmm7[0].d\n1405593ee        float zmm1 = zmm7[0].d f* *result f- zmm6[0].d\n1405593f2        result[1] = zmm6[0].d\n1405593fc        *result = zmm1\n140559405        return result",
+  "fetched_at": "2026-04-26T17:34:21Z"
+}

@@ -1,0 +1,444 @@
+{
+  "title": "SWFOC Alamo Engine - Lua Binding Surface Map",
+  "description": "Complete mapping of Lua-exposed functions in StarWarsG.exe (Forces of Corruption). Derived from Ghidra static analysis of string references, RTTI type descriptors, and decompiled LuaMemberFunctionWrapper constructors.",
+  "_meta": {
+    "engine": "Alamo",
+    "game": "Star Wars: Empire at War - Forces of Corruption (Thrawns Revenge 3.5)",
+    "module": "StarWarsG.exe",
+    "architecture": "x86_64",
+    "image_base": "0x140000000",
+    "lua_version": "Lua 5.0.2",
+    "lua_version_string_addr": "0x1408FD020",
+    "lua_copyright_addr": "0x1408FCF80",
+    "analysis_date": "2026-04-04",
+    "analysis_method": "Ghidra 12.0.3 MCP + string xref + RTTI + decompilation"
+  },
+
+  "wrapper_classes": {
+    "description": "LuaMemberFunctionWrapper<T> classes register member functions on Lua userdata objects. Each wrapper class corresponds to a Lua-accessible object type.",
+    "classes": [
+      {"name": "GameObjectWrapper", "registration_ctor_rva": "0x56D4C0", "rtti_addr": "0x140A56A40", "description": "Wraps GameObjectClass - units, buildings, projectiles, hardpoints"},
+      {"name": "PlayerWrapper", "registration_ctor_rva": "0x600D00", "rtti_addr": "0x140A58980", "description": "Wraps player instances - credits, tech, diplomacy"},
+      {"name": "TaskForceClass", "registration_ctor_rva": "0x5F8760", "rtti_addr": "0x140A588B0", "description": "Base task force operations"},
+      {"name": "GalacticTaskForceClass", "registration_ctor_rva": "0x6CCE20", "rtti_addr": "0x140A5D180", "description": "Galactic-mode task force"},
+      {"name": "SpaceTaskForceClass", "registration_ctor_rva": "0x6E4810", "rtti_addr": "0x140A5DF30", "description": "Space tactical task force"},
+      {"name": "LandTaskForceClass", "registration_ctor_rva": "0x6E8B80", "rtti_addr": "0x140A5DFE0", "description": "Land tactical task force"},
+      {"name": "GameObjectTypeWrapper", "registration_ctor_rva": "0x604A10", "rtti_addr": "0x140A58A60", "description": "Wraps game object type definitions"},
+      {"name": "GalacticFreeStoreClass", "registration_ctor_rva": "0x68EAF0", "rtti_addr": "0x140A5C1E0", "description": "Galactic free store (reserve pool)"},
+      {"name": "LuaScriptClass", "registration_ctor_rva": "0x242570", "rtti_addr": "0x140A4AE70", "description": "Lua script management"},
+      {"name": "LuaScriptWrapper", "registration_ctor_rva": "0x257D00", "rtti_addr": "0x140A4B400", "description": "Lua script instance wrapper"},
+      {"name": "LuaUserVar", "registration_ctor_rva": "0x249C20", "rtti_addr": "0x140A4AFE8", "description": "Base class for all Lua userdata"},
+      {"name": "LuaCreateThread", "registration_ctor_rva": "0x2545A0", "rtti_addr": "0x140A4B150", "description": "Lua coroutine/thread creation"},
+      {"name": "GetEvent", "registration_ctor_rva": "0x259E90", "rtti_addr": "0x140A4B500", "description": "Event system access"},
+      {"name": "AIFreeStoreClass", "registration_ctor_rva": "0x4D22B0", "rtti_addr": "0x140A52000", "description": "AI free store management"},
+      {"name": "BudgetWrapper", "registration_ctor_rva": "0x6BC8B0", "rtti_addr": "0x140A5CBF0", "description": "AI budget system"},
+      {"name": "FindPlanetClass", "registration_ctor_rva": "0x697010", "rtti_addr": "0x140A5C390", "description": "Planet finder utility"},
+      {"name": "FindTargetClass", "registration_ctor_rva": "0x697370", "rtti_addr": "0x140A5C400", "description": "Target finder utility"},
+      {"name": "WeightedTypeListClass", "registration_ctor_rva": "0x68D580", "rtti_addr": "0x140A5C160", "description": "Weighted type list for AI"},
+      {"name": "LuaDiscreteDistributionClass", "registration_ctor_rva": "0x6A36A0", "rtti_addr": "0x140A5C560", "description": "Discrete probability distribution"},
+      {"name": "LuaFOWRevealCommandClass", "registration_ctor_rva": "0x6A51B0", "rtti_addr": "0x140A5C660", "description": "Fog of war reveal commands"},
+      {"name": "LuaSFXCommandsClassClass", "registration_ctor_rva": "0x6A9D40", "rtti_addr": "0x140A5C720", "description": "Sound effect commands"},
+      {"name": "StoryPlotWrapper", "registration_ctor_rva": "0x724120", "rtti_addr": "0x140A5F1B0", "description": "Story plot system"},
+      {"name": "StoryEventWrapper", "registration_ctor_rva": "0x73DC80", "rtti_addr": "0x140A5F830", "description": "Story event system"},
+      {"name": "BlockingStatus", "registration_ctor_rva": "0x7D8D80", "description": "Blocking status for async operations"},
+      {"name": "LuaGetTime", "rtti_addr": "0x140A54CB8", "description": "Game time access"},
+      {"name": "LuaGameRandom", "rtti_addr": "0x140A54D20", "description": "Game random number generator"}
+    ]
+  },
+
+  "global_lua_functions": {
+    "description": "Functions registered globally in the Lua state (not bound to a wrapper class). Registered in FUN_140546c70 via FUN_140247000(state, obj, name).",
+    "registration_function_rva": "0x546C70",
+    "registration_helper_rva": "0x247000",
+    "functions": [
+      {"name": "_ProduceObject", "string_addr": "0x140898A18", "backing_class": "ProduceObjectClass", "category": "AI"},
+      {"name": "FindPlanet", "string_addr": "0x140898A28", "backing_class": "FindPlanetClass", "category": "galactic"},
+      {"name": "FindTarget", "string_addr": "0x140898A38", "backing_class": "FindTargetClass", "category": "AI"},
+      {"name": "BlockForever", "string_addr": "0x140898A48", "backing_class": "ForeverBlockStatus", "category": "AI"},
+      {"name": "_FindStageArea", "backing_class": "FindStageAreaClass", "category": "AI"},
+      {"name": "EvaluatePerception", "string_addr": "0x140898A68", "backing_class": "EvaluatePerceptionClass", "category": "AI"},
+      {"name": "GiveDesireBonus", "string_addr": "0x140898A80", "backing_class": "GiveDesireBonusClass", "category": "AI"},
+      {"name": "GetNextStarbaseType", "string_addr": "0x140898A90", "backing_class": "GetNextStarbaseTypeClass", "category": "AI"},
+      {"name": "GetNextGroundbaseType", "backing_class": "GetNextGroundbaseTypeClass", "category": "AI"},
+      {"name": "WaitForGroundbase", "string_addr": "0x140898AC0", "backing_class": "WaitForGroundbaseClass", "category": "AI"},
+      {"name": "WaitForStarbase", "string_addr": "0x140898AD8", "backing_class": "WaitForStarbaseClass", "category": "AI"},
+      {"name": "EvaluateTypeList", "string_addr": "0x140898AE8", "backing_class": "EvaluateTypeListClass", "category": "AI"},
+      {"name": "Find_First_Object", "string_addr": "0x140898B28", "category": "query"},
+      {"name": "Find_Path", "string_addr": "0x140898B60", "category": "galactic"},
+      {"name": "Story_Event", "string_addr": "0x140898B70", "category": "story"},
+      {"name": "Evaluate_In_Galactic_Context", "string_addr": "0x140898B80", "category": "AI"},
+      {"name": "Find_Nearest", "string_addr": "0x140898BB8", "category": "query"},
+      {"name": "Reinforce_Unit", "string_addr": "0x140898C00", "xref_function": "0x140547367 in FUN_140546c70", "backing_class": "LuaReinforceCommandClass", "category": "tactical_spawn"},
+      {"name": "Find_Object_Type", "string_addr": "0x140898C10", "category": "query"},
+      {"name": "Spawn_Unit", "string_addr": "0x140898C28", "xref_function": "0x140547405 in FUN_140546c70", "backing_class": "LuaSpawnUnitCommandClass", "category": "tactical_spawn"},
+      {"name": "Find_Hint", "string_addr": "0x140898C38", "category": "query"},
+      {"name": "Point_Camera_At", "string_addr": "0x140898C48", "category": "cinematic"},
+      {"name": "Letter_Box_On", "string_addr": "0x140898CF8", "category": "cinematic"},
+      {"name": "Fade_Screen_In", "string_addr": "0x140898D38", "category": "cinematic"},
+      {"name": "Scroll_Camera_To", "string_addr": "0x140898D58", "category": "cinematic"},
+      {"name": "Zoom_Camera", "string_addr": "0x140898D88", "category": "cinematic"},
+      {"name": "Rotate_Camera_By", "string_addr": "0x140898D98", "category": "cinematic"},
+      {"name": "Suspend_AI", "string_addr": "0x140898DD8", "category": "cinematic"},
+      {"name": "Find_All_Objects_Of_Type", "string_addr": "0x140898DE8", "category": "query"},
+      {"name": "Assemble_Fleet", "string_addr": "0x140898E90", "category": "galactic"},
+      {"name": "Story_Event_Trigger", "string_addr": "0x140890AF0", "category": "story"},
+      {"name": "Get_Game_Mode", "string_addr": "0x140899160", "category": "query"},
+      {"name": "Play_Music", "string_addr": "0x140899058", "category": "audio"},
+      {"name": "Stop_All_Music", "string_addr": "0x140899068", "category": "audio"},
+      {"name": "Resume_Mode_Based_Music", "string_addr": "0x140899078", "category": "audio"},
+      {"name": "Create_Generic_Object", "string_addr": "0x1408991D8", "backing_class": "LuaCreateGenericObjectClass", "category": "spawn"},
+      {"name": "Spawn_From_Reinforcement_Pool", "string_addr": "0x1408992D8", "backing_class": "SpawnFromReinforcePoolClass", "category": "tactical_spawn"},
+      {"name": "Add_Objective", "string_addr": "0x140899278", "category": "story"},
+      {"name": "Create_Position", "string_addr": "0x140899328", "category": "utility"},
+      {"name": "Play_SFX_Event", "string_addr": "0x14089AF30", "category": "audio"}
+    ]
+  },
+
+  "gameobject_wrapper_lua_functions": {
+    "description": "Methods on GameObjectWrapper userdata. Registered in LuaMemberFunctionWrapper<GameObjectWrapper> constructor at RVA 0x56D4C0.",
+    "wrapper_class": "GameObjectWrapper",
+    "registration_function_rva": "0x56D4C0",
+    "rtti_addr": "0x140A56A40",
+    "functions": [
+      {"name": "Get_Hull", "string_addr": "0x14089A858", "xref_in": "0x14056D61E", "category": "health"},
+      {"name": "Get_Health", "string_addr": "0x14089A868", "category": "health"},
+      {"name": "Get_Shield", "string_addr": "0x14089A878", "category": "health"},
+      {"name": "Is_Category", "string_addr": "0x14089A898", "category": "query"},
+      {"name": "Get_Parent_Object", "string_addr": "0x14089A8B8", "category": "query"},
+      {"name": "Attack_Target", "string_addr": "0x14089A908", "category": "command"},
+      {"name": "Get_Type", "string_addr": "0x14089A918", "category": "query"},
+      {"name": "Move_To", "string_addr": "0x14089A9E0", "category": "command"},
+      {"name": "Guard_Target", "string_addr": "0x14089A9E8", "category": "command"},
+      {"name": "Get_Owner", "string_addr": "0x14089AA90", "xref_in": "0x14056DF9B", "known_backing_rva": "0x5792E0", "category": "query"},
+      {"name": "Fire_Special_Weapon", "string_addr": "0x14089AA08", "category": "command"},
+      {"name": "Are_Engines_Online", "string_addr": "0x14089AA48", "category": "query"},
+      {"name": "Get_Distance", "string_addr": "0x14089AA60", "category": "query"},
+      {"name": "Get_Position", "string_addr": "0x14089AB30", "category": "query"},
+      {"name": "Prevent_AI_Usage", "string_addr": "0x14089AB40", "category": "control"},
+      {"name": "Set_Selectable", "string_addr": "0x14089ABA8", "category": "control"},
+      {"name": "Divert", "string_addr": "0x14089ABD0", "category": "command"},
+      {"name": "Activate_Ability", "string_addr": "0x14089AC88", "category": "command"},
+      {"name": "Has_Property", "string_addr": "0x14089ACE0", "category": "query"},
+      {"name": "Is_Ability_Active", "string_addr": "0x14089AD70", "category": "query"},
+      {"name": "Make_Invulnerable", "string_addr": "0x14089ADE0", "category": "control"},
+      {"name": "Teleport", "string_addr": "0x14089ADF8", "category": "command"},
+      {"name": "Teleport_And_Face", "string_addr": "0x14089AE08", "category": "command"},
+      {"name": "Cancel_Hyperspace", "string_addr": "0x14089AE48", "category": "command"},
+      {"name": "Get_Bone_Position", "string_addr": "0x14089AE78", "category": "query"},
+      {"name": "Set_Cannot_Be_Killed", "string_addr": "0x14089AF18", "category": "control"},
+      {"name": "Override_Max_Speed", "string_addr": "0x14089B030", "category": "control"},
+      {"name": "Has_Attack_Target", "string_addr": "0x14089B010", "category": "query"},
+      {"name": "In_End_Cinematic", "string_addr": "0x14089B078", "category": "cinematic"},
+      {"name": "Get_Attack_Target", "string_addr": "0x14089B130", "category": "query"},
+      {"name": "Change_Owner", "string_addr": "0x1408658E8", "xref_in": "0x14056E4B4", "category": "ownership"},
+      {"name": "Play_SFX_Event", "string_addr": "0x14089AF30", "category": "audio"}
+    ]
+  },
+
+  "player_wrapper_lua_functions": {
+    "description": "Methods on PlayerWrapper userdata. Registered in LuaMemberFunctionWrapper<PlayerWrapper> constructor at RVA 0x600D00.",
+    "wrapper_class": "PlayerWrapper",
+    "registration_function_rva": "0x600D00",
+    "rtti_addr": "0x140A58980",
+    "functions": [
+      {"name": "Give_Money", "string_addr": "0x1408AA358", "xref_in": "0x140600EE6", "category": "economy"},
+      {"name": "Set_Tech_Level", "string_addr": "0x1408AA368", "category": "tech"},
+      {"name": "Release_Credits_For_Tactical", "string_addr": "0x1408AA378", "xref_in": "0x140600F94", "category": "economy"},
+      {"name": "Get_Credits", "string_addr": "0x1408AA398", "xref_in": "0x140600FEB", "category": "economy"},
+      {"name": "Unlock_Tech", "string_addr": "0x1408AA428", "category": "tech"},
+      {"name": "Lock_Tech", "string_addr": "0x1408AA438", "category": "tech"},
+      {"name": "Is_Enemy", "string_addr": "0x1408AA468", "category": "diplomacy"},
+      {"name": "Is_Ally", "string_addr": "0x1408AA478", "category": "diplomacy"},
+      {"name": "Select_Object", "string_addr": "0x1408AA480", "category": "UI"},
+      {"name": "Set_Black_Market_Tutorial", "string_addr": "0x1408AA4D0", "category": "tutorial"},
+      {"name": "Set_Sabotage_Tutorial", "string_addr": "0x1408AA4F0", "category": "tutorial"},
+      {"name": "Enable_As_Actor", "category": "AI", "notes": "Enables AI actor mode for player"}
+    ]
+  },
+
+  "taskforce_lua_functions": {
+    "description": "Methods on TaskForce wrappers (TaskForceClass, GalacticTaskForceClass, SpaceTaskForceClass, LandTaskForceClass).",
+    "functions": [
+      {"name": "Move_To", "wrapper": "all subtypes", "category": "command"},
+      {"name": "Attack_Target", "wrapper": "Space/LandTaskForceClass", "category": "command"},
+      {"name": "Guard_Target", "wrapper": "SpaceTaskForceClass", "category": "command"},
+      {"name": "Set_As_Goal_System_Removable", "string_addr": "0x1408A9160", "wrapper": "TaskForceClass", "category": "AI"},
+      {"name": "Get_Type_Of_Unit", "string_addr": "0x1408A9108", "wrapper": "TaskForceClass", "category": "query"},
+      {"name": "Move_To_Target", "string_addr": "0x1408A8520", "wrapper": "TaskForceClass", "category": "command"},
+      {"name": "Reinforce", "string_addr": "0x1408C1F08", "wrapper": "Space/LandTaskForceClass", "category": "spawn"},
+      {"name": "Release_Reinforcements", "string_addr": "0x1408C1F18", "wrapper": "SpaceTaskForceClass", "category": "spawn"},
+      {"name": "Launch_Units", "string_addr": "0x1408C0138", "wrapper": "GalacticTaskForceClass", "category": "galactic"},
+      {"name": "Land_Units", "string_addr": "0x1408C0128", "wrapper": "GalacticTaskForceClass", "category": "galactic"}
+    ]
+  },
+
+  "lua_state_candidates": {
+    "description": "Locations related to the lua_State* pointer. Engine uses Lua 5.0.2 embedded. The actual lua_State* is stored in a singleton (TheEvaluatorScriptManagerClass or LuaScriptClass). FUN_14024bfb0 takes lua_State* as param_1.",
+    "candidates": [
+      {
+        "type": "lua_state_setup_function",
+        "function_rva": "0x24BFB0",
+        "description": "FUN_14024bfb0: Sets up LuaWrapperMetaTable. param_1 = lua_State*. Calls Lua C API wrappers for lua_pushstring, lua_newtable, lua_settable, lua_pushcfunction.",
+        "lua_c_api_wrappers_called": {
+          "lua_gettable": "0x7B8E10",
+          "lua_pushstring": "0x7B94A0",
+          "lua_setglobal": "0x7B8E90",
+          "lua_type": "0x7B9E00",
+          "lua_remove": "0x7B9AB0",
+          "lua_newtable": "0x7B9140",
+          "lua_pushcclosure": "0x7B9340",
+          "lua_settable": "0x7B97C0",
+          "lua_rawset": "0x7B9A60",
+          "lua_settop": "0x7B99D0"
+        }
+      },
+      {
+        "type": "main_state_string_ref",
+        "string_addr": "0x140855CD0",
+        "string_value": "LuaScriptThread: Main State",
+        "xref_functions": ["0x248190 (LuaScriptThread ctor)", "0x248620 (LuaScriptThread named ctor)"],
+        "description": "LuaScriptThread constructors access the main lua_State*. FUN_140248190 and FUN_140248620."
+      },
+      {
+        "type": "lua_thread_table",
+        "string_addr": "0x140855E60",
+        "string_value": "LuaThreadTable",
+        "description": "Global Lua table for coroutine/thread references. Used by the script pool management system."
+      },
+      {
+        "type": "script_manager_singleton",
+        "class": "TheEvaluatorScriptManagerClass",
+        "function_rva": "0x5E77E0",
+        "rtti_addr": "0x140A584A8",
+        "description": "Singleton managing all Lua scripts. Likely holds the master lua_State* pointer as a member field. Also see DatabaseObjectManagerClass<LuaScriptClass> at RVA 0x5E7870."
+      },
+      {
+        "type": "lua_path_init",
+        "string_addr": "0x140855D80",
+        "string_value": "LUA_PATH",
+        "description": "Standard Lua path environment variable. Set during lua_State initialization along with './?.lua;./?.lc' at 0x140855A30."
+      }
+    ]
+  },
+
+  "trainer_critical_bindings": {
+    "description": "Subset of Lua bindings most relevant for the SWFOC Editor helper layer: unit spawning, ownership changes, credit manipulation, hull modification, tech control, invulnerability.",
+    "bindings": [
+      {
+        "name": "Spawn_Unit",
+        "string_addr": "0x140898C28",
+        "xref": "0x140547405 in FUN_140546c70",
+        "backing_class": "LuaSpawnUnitCommandClass",
+        "rtti_addr": "0x140A53CC8",
+        "params": "player, type_name, position",
+        "scope": "tactical",
+        "error_strings": ["LuaSpawnUnitCommandClass -- Invalid number of parameters.", "LuaSpawnUnitCommandClass -- Invalid parameter for player.", "LuaSpawnUnitCommandClass -- Invalid parameter for type.", "LuaSpawnUnitCommandClass -- Invalid position parameter."]
+      },
+      {
+        "name": "Reinforce_Unit",
+        "string_addr": "0x140898C00",
+        "xref": "0x140547367 in FUN_140546c70",
+        "backing_class": "LuaReinforceCommandClass",
+        "rtti_addr": "0x140A53C98",
+        "params": "player, type_name, position",
+        "scope": "tactical",
+        "error_strings": ["LuaReinforceCommandClass::Reinforce -- Command only valid in a tactical game.", "LuaReinforceCommandClass::Reinforce -- Invalid number of parameters."]
+      },
+      {
+        "name": "Galactic_Spawn_Unit",
+        "error_prefix_addr": "0x1408B9CD8",
+        "params": "player, type_name, planet",
+        "scope": "galactic",
+        "error_strings": ["Galactic_Spawn_Unit -- Invalid number of parameters.", "Galactic_Spawn_Unit -- Invalid parameter for player.", "Galactic_Spawn_Unit -- Invalid parameter for type.", "Galactic_Spawn_Unit -- Invalid planet parameter.", "Galactic_Spawn_Unit -- Create returned NULL for %s at planet: %s."]
+      },
+      {
+        "name": "Create_Generic_Object",
+        "string_addr": "0x1408991D8",
+        "backing_class": "LuaCreateGenericObjectClass",
+        "rtti_addr": "0x140A53CF8",
+        "params": "type_name, position, player",
+        "scope": "tactical"
+      },
+      {
+        "name": "Spawn_From_Reinforcement_Pool",
+        "string_addr": "0x1408992D8",
+        "backing_class": "SpawnFromReinforcePoolClass",
+        "rtti_addr": "0x140A54348",
+        "params": "player, type_name, position",
+        "scope": "tactical"
+      },
+      {
+        "name": "Change_Owner",
+        "string_addr": "0x1408658E8",
+        "xref": "0x14056E4B4 in LuaMemberFunctionWrapper<GameObjectWrapper>",
+        "wrapper_class": "GameObjectWrapper",
+        "params": "player_wrapper",
+        "scope": "any",
+        "error_strings": ["GameObjectWrapper::Change_Owner -- invalid number of parameters.  Expected 1, got %d.", "GameObjectWrapper::Change_Owner -- this object is dead!", "GameObjectWrapper::Change_Owner -- invalid type for parameter 1.  Expected PlayerWrapper."]
+      },
+      {
+        "name": "Get_Owner",
+        "string_addr": "0x14089AA90",
+        "xref": "0x14056DF9B",
+        "known_backing_rva": "0x5792E0",
+        "wrapper_class": "GameObjectWrapper",
+        "params": "none",
+        "scope": "any"
+      },
+      {
+        "name": "Give_Money",
+        "string_addr": "0x1408AA358",
+        "xref": "0x140600EE6 in LuaMemberFunctionWrapper<PlayerWrapper>",
+        "wrapper_class": "PlayerWrapper",
+        "params": "amount (number)",
+        "scope": "any",
+        "error_strings": ["PlayerWrapper::Lua_Give_Money -- Missing required parameter.", "PlayerWrapper::Lua_Give_Money -- Parameter 1 must be a number."]
+      },
+      {
+        "name": "Get_Credits",
+        "string_addr": "0x1408AA398",
+        "xref": "0x140600FEB",
+        "wrapper_class": "PlayerWrapper",
+        "params": "none",
+        "scope": "any"
+      },
+      {
+        "name": "Set_Tech_Level",
+        "string_addr": "0x1408AA368",
+        "wrapper_class": "PlayerWrapper",
+        "params": "level (number)",
+        "scope": "any",
+        "error_strings": ["PlayerWrapper::Lua_Set_Tech_Level -- Missing required parameter.", "PlayerWrapper::Lua_Set_Tech_Level -- Parameter 1 must be a number."]
+      },
+      {
+        "name": "Get_Hull",
+        "string_addr": "0x14089A858",
+        "xref": "0x14056D61E",
+        "wrapper_class": "GameObjectWrapper",
+        "params": "none",
+        "scope": "tactical",
+        "related_rvas": {"SetHP": "0x3A89D0", "hp_field_offset": "0x5C"},
+        "error_strings": ["GameObjectWrapper::Get_Hull -- this command is only supported in tactical modes."]
+      },
+      {
+        "name": "Make_Invulnerable",
+        "string_addr": "0x14089ADE0",
+        "wrapper_class": "GameObjectWrapper",
+        "params": "boolean",
+        "scope": "tactical"
+      },
+      {
+        "name": "Set_Cannot_Be_Killed",
+        "string_addr": "0x14089AF18",
+        "wrapper_class": "GameObjectWrapper",
+        "params": "boolean",
+        "scope": "tactical"
+      },
+      {
+        "name": "Teleport",
+        "string_addr": "0x14089ADF8",
+        "wrapper_class": "GameObjectWrapper",
+        "params": "position",
+        "scope": "tactical"
+      },
+      {
+        "name": "Unlock_Tech",
+        "string_addr": "0x1408AA428",
+        "wrapper_class": "PlayerWrapper",
+        "params": "game_object_type",
+        "scope": "any",
+        "error_strings": ["PlayerWrapper::Lua_Unlock_Tech -- invalid number of parameters.  Expected 1, got %d.", "PlayerWrapper::Lua_Unlock_Tech -- invalid type for parameter 1.  Expected game object type."]
+      },
+      {
+        "name": "Lock_Tech",
+        "string_addr": "0x1408AA438",
+        "wrapper_class": "PlayerWrapper",
+        "params": "game_object_type",
+        "scope": "any"
+      },
+      {
+        "name": "Release_Credits_For_Tactical",
+        "string_addr": "0x1408AA378",
+        "xref": "0x140600F94",
+        "wrapper_class": "PlayerWrapper",
+        "params": "optional amount (number)",
+        "scope": "land_tactical"
+      },
+      {
+        "name": "Is_Enemy",
+        "string_addr": "0x1408AA468",
+        "wrapper_class": "PlayerWrapper",
+        "params": "player_wrapper",
+        "scope": "any"
+      },
+      {
+        "name": "Is_Ally",
+        "string_addr": "0x1408AA478",
+        "wrapper_class": "PlayerWrapper",
+        "params": "player_wrapper",
+        "scope": "any"
+      },
+      {
+        "name": "SWITCH_SIDES",
+        "string_addr": "0x14086C290",
+        "scope": "story",
+        "notes": "Story reward command. Resolved via dynamic command dispatch table. See also PlayerListClass::Switch_Sides log string at 0x14085B300."
+      }
+    ]
+  },
+
+  "lua_c_api_wrappers": {
+    "description": "Lua 5.0.2 C API functions compiled into StarWarsG.exe. Identified from FUN_14024bfb0 (LuaWrapperMetaTable setup) call targets.",
+    "functions": [
+      {"name": "lua_gettable / lua_getfield", "rva": "0x7B8E10"},
+      {"name": "lua_settop / lua_setglobal", "rva": "0x7B8E90"},
+      {"name": "lua_newtable", "rva": "0x7B9140"},
+      {"name": "lua_pushcclosure / lua_pushcfunction", "rva": "0x7B9340"},
+      {"name": "lua_pushstring / lua_pushlstring", "rva": "0x7B94A0"},
+      {"name": "lua_settable", "rva": "0x7B97C0"},
+      {"name": "lua_settop (pop)", "rva": "0x7B99D0"},
+      {"name": "lua_rawset", "rva": "0x7B9A60"},
+      {"name": "lua_remove", "rva": "0x7B9AB0"},
+      {"name": "lua_type", "rva": "0x7B9E00"}
+    ]
+  },
+
+  "known_backing_functions": {
+    "description": "Previously identified C++ backing functions from alamo_engine_kb.json and this analysis.",
+    "functions": [
+      {"name": "SetHP", "rva": "0x3A89D0", "description": "Writes hp field at GameObjectClass+0x5C. Clamped to [0, max_hp]."},
+      {"name": "QueryInterface", "rva": "0x395AC0", "description": "Component system interface resolver."},
+      {"name": "Get_Owner_Lua", "rva": "0x5792E0", "description": "Lua wrapper for Get_Owner. Uses QueryInterface(3)."},
+      {"name": "PlayerList_FindByID", "rva": "0x294BC0", "description": "Looks up player by index in global PlayerListClass."},
+      {"name": "LuaWrapperMetaTable_Setup", "rva": "0x24BFB0", "description": "Sets up shared metatable (__index, __call, __tostring, __eq, __gc) for all Lua userdata."},
+      {"name": "Global_Lua_Register", "rva": "0x546C70", "description": "Registers global Lua functions: Spawn_Unit, Reinforce_Unit, FindPlanet, etc."},
+      {"name": "Global_Register_Helper", "rva": "0x247000", "description": "FUN_140247000: inserts a LuaUserVar into the global Lua namespace by name."},
+      {"name": "LuaMember_Register_Helper", "rva": "0x24BE40", "description": "FUN_14024be40: registers a member function on a wrapper class."},
+      {"name": "LuaScriptThread_Ctor_Main", "rva": "0x248190", "description": "LuaScriptThread constructor for the main Lua state."},
+      {"name": "LuaScriptThread_Ctor_Named", "rva": "0x248620", "description": "LuaScriptThread constructor for named coroutine threads."},
+      {"name": "Memory_Alloc", "rva": "0x769C58", "description": "FUN_140769c58: memory allocator used for LuaMemberFunctionWrapper objects (0x48 bytes each)."}
+    ]
+  },
+
+  "stats": {
+    "total_wrapper_classes": 26,
+    "gameobject_wrapper_functions": 32,
+    "player_wrapper_functions": 12,
+    "taskforce_functions": 10,
+    "global_lua_functions": 40,
+    "trainer_critical_bindings": 20,
+    "lua_c_api_wrappers_identified": 10,
+    "known_backing_function_rvas": 11,
+    "lua_version": "5.0.2",
+    "lua_state_candidate_locations": 5,
+    "total_lua_binding_entries": 134,
+    "notes": [
+      "All addresses are absolute (image base 0x140000000). Subtract 0x140000000 to get RVAs.",
+      "The decompiled wrapper constructors store function pointers as 32-bit values in field_0x20 of each LuaMemberFunctionWrapper node, then call FUN_14024be40 to register them.",
+      "The 177 LuaUserVar RTTI children (from rtti_class_hierarchy.json) include all Lua-accessible types. The 26 wrapper classes listed here are the primary ones with explicit LuaMemberFunctionWrapper<T> constructors.",
+      "SWITCH_SIDES and CHANGE_OWNER appear as both Lua function names and story reward command strings. The story reward system uses a string dispatch table.",
+      "String addresses in the 0x140898xxx-0x14089Bxxx range form a contiguous block of Lua function name strings, suggesting a registration table region in .rdata.",
+      "Set_Hull was NOT found as a string in the binary. Hull modification goes through SetHP (RVA 0x3A89D0) at the C++ level, exposed via Get_Hull at the Lua level."
+    ]
+  }
+}

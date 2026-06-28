@@ -1,0 +1,7 @@
+{
+  "addr": "0x140717530",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_leech_shields",
+  "body": "14071753a        struct SpecialAbilityClass::LeechShieldsAbilityClass::VTable** result = arg1\n14071753d        sub_14048c780(arg1)\n140717553        result[0x2f] = 0\n14071755a        *result = &LeechShieldsAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071756b        result[0x30] = 0\n140717575        result[1] = &LeechShieldsAbilityClass::`vftable'{for `RefCountClass'}\n14071757c        result[0x31].d = 0\n140717584        sub_1401f93e0(result + 0x18c, 0, 0, 0, 0xff)\n140717590        result[0x34] = 0\n140717597        result[0x36] = 0\n14071759e        result[0x37] = 0xf\n1407175a9        result[0x38] = 0\n1407175b0        result[0x39] = 0\n1407175b7        result[0x3b] = 0\n1407175be        result[0x3c] = 0xf\n1407175c9        result[0x3d] = 0\n1407175d0        result[0x3f] = 0\n1407175d7        result[0x40] = 0xf\n1407175e2        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x41])\n1407175ea        result[8].w = 1\n1407175f0        *(result + 0x3c) = 9\n140717601        return result",
+  "fetched_at": "2026-04-26T16:44:20Z"
+}

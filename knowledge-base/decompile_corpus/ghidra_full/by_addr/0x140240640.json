@@ -1,0 +1,7 @@
+{
+  "addr": "0x140240640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SignalGeneratorClass::~SignalGeneratorClass(SignalGeneratorClass *this)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  \n  this->vftablePtr = &vftable;\n  FUN_140240940(this,0,0);\n  lVar2 = (this->SignalGeneratorClass_data).offset_0x8;\n  if (lVar2 != 0) {\n    if (DAT_140a10b50 != 0) {\n      uVar1 = FUN_140058570();\n      FUN_140221440(uVar1,this);\n      lVar2 = (this->SignalGeneratorClass_data).offset_0x8;\n      if (lVar2 == 0) goto LAB_1402406a2;\n    }\n    FUN_140241580(lVar2);\n    thunk_FUN_1407864b8(lVar2,0x40);\n  }\nLAB_1402406a2:\n  (this->SignalGeneratorClass_data).offset_0x8 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:34Z"
+}

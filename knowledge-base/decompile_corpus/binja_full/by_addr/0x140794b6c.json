@@ -1,0 +1,7 @@
+{
+  "addr": "0x140794b6c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140794b76        char arg_8 = arg1\n140794b8d        int64_t r9 = sx.q(_fileno(arg2))\n140794b93        uint64_t result\n140794b93        if (((arg2[5]).b & 0xc0) == 0)\n140794c3d        result.b = _write(r9.d, &arg_8, 1).d == 1\n140794b9b        int32_t rsi_1 = 0\n140794b9d        int16_t* rdx = *(arg2 + 8)\n140794ba1        int32_t rdi_2 = *arg2 - arg2[2]\n140794ba8        *arg2 = rdx + 1\n140794bb0        arg2[4] = arg2[8] - 1\n140794bb5        if (rdi_2 s<= 0)\n140794bd9        int64_t rdx_1\n140794bd9        if ((r9 + 2).d u<= 1)\n140794bfd        rdx_1 = &data_140a44f30\n140794bf7        rdx_1 = (&data_140b3c4d0)[r9 s>> 6] + (zx.q(r9.d) & 0x3f) * 0x48\n140794c08        if ((*(rdx_1 + 0x38) & 0x20) == 0)\n140794c08        goto label_140794bc8\n140794c1c        if (_lseeki64(r9.d, 0, FILE_END) != -1)\n140794c1c        goto label_140794bc8\n140794c1e        arg2[5] |= 0x10\n140794c23        result.b = 1\n140794bc2        rsi_1 = _write(r9.d, rdx, rdi_2).d\n140794bc8        label_140794bc8:\n140794bca        result.b = arg_8\n140794bce        **(arg2 + 8) = result.b\n140794c3d        result.b = rsi_1 == rdi_2\n140794c4f        return result",
+  "fetched_at": "2026-04-26T17:31:55Z"
+}

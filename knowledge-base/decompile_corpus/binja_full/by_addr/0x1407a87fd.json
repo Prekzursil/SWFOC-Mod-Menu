@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a87fd",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a87fd        return D3DXFilterTexture() __tailcall",
+  "fetched_at": "2026-04-26T17:32:34Z"
+}

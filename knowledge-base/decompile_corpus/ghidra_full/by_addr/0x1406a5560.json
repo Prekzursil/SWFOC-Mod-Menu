@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a5560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LuaFOWCellsClass::vfunction11(LuaFOWCellsClass *this)\n\n{\n  undefined1 *puVar1;\n  \n  puVar1 = &(this->RefCountClass_data).field_0x20;\n  FUN_140365760(DAT_140b15418,*(undefined4 *)&(this->RefCountClass_data).field_0x38,puVar1);\n  *(undefined8 *)&(this->RefCountClass_data).field_0x28 = *(undefined8 *)puVar1;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:21:48Z"
+}

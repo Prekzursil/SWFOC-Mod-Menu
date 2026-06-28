@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635ca0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ParticleBehaviorClass * __thiscall\nParticleBehaviorClass::vfunction4(ParticleBehaviorClass *this,int param_1)\n\n{\n  ParticleBehaviorClass *pPVar1;\n  \n  pPVar1 = (ParticleBehaviorClass *)0x0;\n  if (param_1 == 0xc) {\n    pPVar1 = this;\n  }\n  return pPVar1;\n}",
+  "fetched_at": "2026-04-26T17:34:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140351a90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140351a9e        float zmm6[0x4] = zx.o(0)\n140351aa4        if (not(0f f> arg2))\n140351aae        zmm6 = _mm_min_ss(0x3f800000, arg2)\n140351ab2        void* rax = *(arg1 + 0x80)\n140351abc        int32_t rax_3\n140351abc        uint128_t zmm0\n140351abc        if (rax == 0)\n140351b59        *(arg1 + 0x2e0) = *(arg1 + 0x2dc)\n140351b65        rax_3 = *(arg1 + 0x2e4) - 1\n140351ac2        char rcx = *(rax + 0x3e4)\n140351acf        *(arg1 + 0x2e0) = *(arg1 + 0x2dc)\n140351adb        rax_3 = *(arg1 + 0x2e4) - 1\n140351ae0        if ((rcx & 0x20) != 0)\n140351aed        zmm0.d = _mm_cvtepi32_ps(zx.o(rax_3)).d f* zmm6[0]\n140351af6        int32_t rax_4 = int.d(ceilf(zmm0.d))\n140351afa        float zmm0_1 = *(arg1 + 0x2f8)\n140351b02        *(arg1 + 0x2dc) = rax_4\n140351b08        *(arg1 + 0x2f0) = zmm6[0]\n140351b10        zmm6[0] = zmm6[0] f* *(arg1 + 0x2f8)\n140351b22        int64_t rax_6 = *(arg1 + 0xe0)\n140351b29        int64_t rcx_2 = sx.q(rax_4) * 0xa\n140351b3a        *(arg1 + 0x2f4) = (zmm0_1 - zmm6[0]) f* *(rax_6 + (rcx_2 << 3) + 0x30) / 2f\n140351b42        *(rax_6 + (rcx_2 << 3) + 0x14) = zmm6[0]\n140351b52        return rax_6\n140351b6e        zmm0.d = _mm_cvtepi32_ps(zx.o(rax_3)).d f* zmm6[0]\n140351b7c        int32_t rax_9 = int.d(ceilf(zmm0.d))\n140351b80        *(arg1 + 0x2dc) = rax_9\n140351b8b        return rax_9",
+  "fetched_at": "2026-04-26T17:10:09Z"
+}

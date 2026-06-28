@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405047a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CollisionSystemClass * __thiscall\nCollisionSystemClass::scalar_deleting_destructor(CollisionSystemClass *this,ulonglong param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n                    /* inlined destructor: CollisionSystemClass::~CollisionSystemClass */\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  FUN_140506f00();\n  lVar1 = this->offset_0xb0;\n  if (lVar1 != 0) {\n    uVar3 = this->offset_0xc0 - lVar1 & 0xfffffffffffffff8;\n    lVar2 = lVar1;\n    if (0xfff < uVar3) {\n      lVar2 = *(longlong *)(lVar1 + -8);\n      if (0x1f < (lVar1 - lVar2) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1 - lVar2,uVar3 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(lVar2);\n    this->offset_0xb0 = 0;\n    this->offset_0xb8 = 0;\n    this->offset_0xc0 = 0;\n  }\n  FUN_140504720(&this->offset_0x68);\n  FUN_14007b260(&this->offset_0x28);\n  AIDiagnosticsClass::~AIDiagnosticsClass((AIDiagnosticsClass *)&this->vftablePtr);\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr =\n       (CollisionSystemClass_vftable_for_SignalListenerClass *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xe8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:20:48Z"
+}

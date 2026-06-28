@@ -1,0 +1,7 @@
+{
+  "addr": "0x14009f250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14009f250(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  for (; param_2 != param_3; param_2 = param_2 + 0x30) {\n    FUN_1401f9440(param_2 + 0x20);\n    FID_conflict__Tidy_deallocate(param_2);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:45Z"
+}

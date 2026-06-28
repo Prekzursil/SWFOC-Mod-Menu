@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d43c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1407d43c0(longlong param_1,char *param_2,char *param_3,longlong param_4)\n\n{\n  char cVar1;\n  char cVar2;\n  uint uVar3;\n  longlong lVar4;\n  int iVar5;\n  char *pcVar6;\n  \n  iVar5 = 0;\n  pcVar6 = param_2;\n  if (param_2 < *(char **)(param_1 + 8)) {\n    do {\n      cVar1 = *param_3;\n      cVar2 = *pcVar6;\n      if (cVar1 == '%') {\n        uVar3 = FUN_1407d4090(cVar2,(int)param_3[1]);\nLAB_1407d4434:\n        if (uVar3 == 0) break;\n      }\n      else if (cVar1 != '.') {\n        if (cVar1 == '[') {\n          uVar3 = FUN_1407d41e0(cVar2,param_3,param_4 + -1);\n        }\n        else {\n          uVar3 = (uint)(cVar1 == cVar2);\n        }\n        goto LAB_1407d4434;\n      }\n      iVar5 = iVar5 + 1;\n      pcVar6 = pcVar6 + 1;\n    } while (param_2 + iVar5 < *(char **)(param_1 + 8));\n    if (iVar5 < 0) {\n      return 0;\n    }\n  }\n  do {\n    lVar4 = FUN_1407d3c60(param_1,param_2 + iVar5,param_4 + 1);\n    if (lVar4 != 0) {\n      return lVar4;\n    }\n    iVar5 = iVar5 + -1;\n  } while (-1 < iVar5);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:58:20Z"
+}

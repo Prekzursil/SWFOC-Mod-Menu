@@ -1,0 +1,7 @@
+{
+  "addr": "0x140498c90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140498c95        return 0x2a",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

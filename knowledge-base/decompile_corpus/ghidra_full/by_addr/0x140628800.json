@@ -1,0 +1,7 @@
+{
+  "addr": "0x140628800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall HuntBehaviorClass::vfunction10(HuntBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n                    /* WARNING: Could not recover jumptable at 0x000140628819. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction25)(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:31:21Z"
+}

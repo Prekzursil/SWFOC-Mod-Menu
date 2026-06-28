@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e7080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DatabaseObjectManagerClass<class_PlanDefinitionClass> * __thiscall\nDatabaseObjectManagerClass<class_PlanDefinitionClass>::scalar_deleting_destructor\n          (DatabaseObjectManagerClass<class_PlanDefinitionClass> *this,uint param_1)\n\n{\n  ~DatabaseObjectManagerClass<class_PlanDefinitionClass>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:16:31Z"
+}

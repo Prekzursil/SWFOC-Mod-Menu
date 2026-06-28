@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022fa30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SplineClass * __thiscall SplineClass::SplineClass(SplineClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  (this->RefCountClass_data).offset_0x8 = (undefined **)0x0;\n  (this->RefCountClass_data).offset_0x10 = 0;\n  (this->RefCountClass_data).offset_0x18 = (undefined **)0x0;\n  *(undefined8 *)&(this->RefCountClass_data).field_0x20 = 0;\n  *(undefined8 *)&(this->RefCountClass_data).field_0x28 = 0;\n  *(undefined8 *)&(this->RefCountClass_data).field_0x30 = 0;\n  *(undefined8 *)&(this->RefCountClass_data).field_0x38 = 0;\n  (this->RefCountClass_data).offset_0x40 = 0;\n  (this->RefCountClass_data).offset_0x48 = 0;\n  (this->RefCountClass_data).offset_0x50 = (longlong *)0x0;\n  (this->RefCountClass_data).offset_0x58 = 0;\n  (this->RefCountClass_data).offset_0x60 = 0;\n  (this->RefCountClass_data).offset_0x68 = 0;\n  (this->RefCountClass_data).offset_0x70 = 0;\n  (this->RefCountClass_data).offset_0x78 = 0;\n  (this->RefCountClass_data).offset_0x88 = 0;\n  (this->SplineClass_data).offset_0x0 = 0;\n  (this->SplineClass_data).offset_0x8 = 0;\n  (this->SplineClass_data).offset_0x18 = 0;\n  (this->SplineClass_data).offset_0x20 = 0;\n  (this->SplineClass_data).offset_0x28 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:06:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063b900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nFlyingLocomotorBehaviorClass::vfunction17\n          (FlyingLocomotorBehaviorClass *this,longlong param_1,longlong param_2)\n\n{\n  if (*(longlong *)(*(longlong *)(param_1 + 0xa8) + 0x278) == param_2) {\n                    /* WARNING: Could not recover jumptable at 0x00014063b913. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*this->vftablePtr->vfunction81)(this);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:59Z"
+}

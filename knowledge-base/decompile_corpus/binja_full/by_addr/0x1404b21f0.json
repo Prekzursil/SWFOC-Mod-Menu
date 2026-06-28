@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b21f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b220c        sub_1404b1d60(arg1)\n1404b2219        sub_14035e560(arg1, arg2, arg3)\n1404b222b        void* rcx_1 = arg1[0x12]\n1404b2232        int512_t zmm6\n1404b2232        zmm6.o = zx.o(0)\n1404b2235        int32_t var_28 = 0xc2700000\n1404b223b        int64_t var_24 = 0\n1404b2244        sub_140261c90(rcx_1, &var_28)\n1404b2292        float zmm6_1 = sub_140261ab0(arg1[0x12], -0.25f, 0x3e800000, 0.1875f, -0.1875f, 0x41200000, 0x461c4000)\n1404b22b2        sub_140261e00(arg1[0x12], (zx.o(0)).d, 0x3f800000, 1f, zmm6_1)\n1404b22c3        sub_140306290(&data_140b27f60, 1)\n1404b22cf        sub_1403d3200(&data_140b27f60)\n1404b22db        sub_1404c0420(&data_140a2aba0)\n1404b22ef        int32_t rax = *(arg1 + 0x36c)\n1404b22f5        *(arg1 + 0x234) = data_140b16dbc\n1404b22fd        arg1[0x6d].d = rax\n1404b230b        int32_t result = sub_14027c9a0(&data_140b0a320, data_140b15980)\n1404b2310        *(arg1 + 0x36c) += result\n1404b2316        result.b = 1\n1404b232c        return result",
+  "fetched_at": "2026-04-26T17:29:46Z"
+}

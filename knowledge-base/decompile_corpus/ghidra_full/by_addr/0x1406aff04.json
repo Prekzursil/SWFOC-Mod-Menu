@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406aff04",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ExploreAreaBlockStatus::vfunction1(ExploreAreaBlockStatus *this,uint param_1)\n\n{\n  scalar_deleting_destructor((ExploreAreaBlockStatus *)&this[-1].offset_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:19Z"
+}

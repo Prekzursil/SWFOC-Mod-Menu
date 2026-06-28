@@ -1,0 +1,7 @@
+{
+  "addr": "0x140327b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140327b10        char* arg_8 = arg1\n140327b15        int64_t arg_10 = arg2\n140327b1a        int64_t r8\n140327b1a        int64_t arg_18 = r8\n140327b1f        int64_t r9\n140327b1f        int64_t arg_20 = r9\n140327b3a        if (data_140b304c0 == 0)\n140327b3a        return \n140327b40        int64_t rbx_1 = -1\n140327b47        void* rdi_1 = &data_140b2b620\n140327b4e        int64_t rax = -1\n140327b51        rax += 1\n140327b58        do while (arg1[rax] != 0)\n140327b5f        if (rax.d s> 0x100)\n140327b61        int32_t rax_1 = (rax * 3).d\n140327b64        int32_t rcx = 0x10000\n140327b6b        if (rax_1 s< 0x10000)\n140327b6b        rcx = rax_1\n140327b6e        int64_t rax_2 = sx.q(rcx)\n140327b71        int64_t rcx_1 = rax_2 + 0xf\n140327b78        if (rcx_1 u<= rax_2)\n140327b7a        rcx_1 = 0xffffffffffffff0\n140327b84        int64_t rcx_2 = rcx_1 & 0xfffffffffffffff0\n140327b8b        __chkstk(rcx_2)\n140327b93        void var_38\n140327b93        rdi_1 = &var_38 - rcx_2 + 0x20\n140327b9b        if (arg1 == 0)\n140327b9b        return \n140327ba4        sub_14032f990(rdi_1, arg1, &arg_10)\n140327bb1        if (data_140b39098 == 0)\n140327bb1        return \n140327bb3        rbx_1 += 1\n140327bba        do while (*(rdi_1 + rbx_1) != 0)\n140327bc2        sub_140530cc0(rdi_1, rbx_1.d)\n140327bcd        return ",
+  "fetched_at": "2026-04-26T17:01:26Z"
+}

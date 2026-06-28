@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fd600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall ForceLightningAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Force_Lightning_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:50:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a890",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: This is an inlined function */\n\nvoid __cdecl __security_check_cookie(uintptr_t _StackCookie)\n\n{\n  if ((_StackCookie == DAT_140a44b98) && ((short)(_StackCookie >> 0x30) == 0)) {\n    return;\n  }\n  FUN_14076acc4(_StackCookie);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:08Z"
+}

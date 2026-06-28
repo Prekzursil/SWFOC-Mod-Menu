@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d9640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EnumConversionClass<enum_GUIGadgetType> * __thiscall\nEnumConversionClass<enum_GUIGadgetType>::vfunction1\n          (EnumConversionClass<enum_GUIGadgetType> *this,ulonglong param_1)\n\n{\n  FUN_1401450b0(this + 9);\n  FUN_1401d95c0(this + 1);\n  DatabaseUIntConversionClass::~DatabaseUIntConversionClass((DatabaseUIntConversionClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x90);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:50:18Z"
+}

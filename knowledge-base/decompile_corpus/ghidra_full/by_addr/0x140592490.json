@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandObstacleDataPackClass * __thiscall\nLandObstacleDataPackClass::LandObstacleDataPackClass(LandObstacleDataPackClass *this)\n\n{\n  *(undefined1 *)&this->PooledObjectClass<class_LandObstacleDataPackClass,20,class_EmptyLockerClass>\n       = 0;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:42:13Z"
+}

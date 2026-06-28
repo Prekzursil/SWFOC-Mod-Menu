@@ -1,0 +1,7 @@
+{
+  "addr": "0x140362c30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GameModeClass::vfunction22(GameModeClass *this)\n\n{\n  if (this[3].vftablePtr != (GameModeClass_vftable *)0x0) {\n    FUN_1402b6aa0();\n  }\n  FUN_14025c8c0(this[9].vftablePtr);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:21Z"
+}

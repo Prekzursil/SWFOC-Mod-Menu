@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405a3f70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405a3f7c        int64_t var_28 = *arg2\n1405a3f89        int64_t var_20 = *arg3\n1405a3f94        char var_14 = 0\n1405a3f99        int32_t rax_2 = (*(arg1 + 0xd0))(&var_28)\n1405a3fa7        int32_t rax_3 = *(arg1 + 0xd8)\n1405a3fb4        int32_t* r8_2 = (zx.q(modu.dp.d(0:rax_2, *(arg1 + 0xe0))) << 4) + *(arg1 + 0xa0)\n1405a3fbe        if (*r8_2 != rax_3)\n1405a3fc0        *r8_2 = rax_3\n1405a3fc3        *(r8_2 + 8) = 0\n1405a3fcb        int32_t r9 = *(arg1 + 0xdc)\n1405a3fd2        int64_t rdx_1 = *(arg1 + 0xb8)\n1405a3ff1        if (zx.q(r9 + 1) u< (*(arg1 + 0xc0) - rdx_1) s>> 5)\n1405a3ff6        *(arg1 + 0xdc) = r9 + 1\n1405a3ffd        uint64_t rcx_5 = zx.q(r9) << 5\n1405a4001        int128_t* rcx_6 = rcx_5 + rdx_1\n1405a4004        if (rcx_5 != neg.q(rdx_1))\n1405a400b        *rcx_6 = var_28.o\n1405a4014        rcx_6[1].q = arg4.q\n1405a401d        *(rcx_6 + 0x18) = *(r8_2 + 8)\n1405a4021        int64_t rax_5\n1405a4021        rax_5.b = 1\n1405a4023        *(r8_2 + 8) = rcx_6\n1405a4027        *(arg1 + 0xe8) += 1\n1405a4032        return rax_5\n1405a4033        uint64_t rax_4\n1405a4033        rax_4.b = 0\n1405a403a        return rax_4",
+  "fetched_at": "2026-04-26T17:36:54Z"
+}

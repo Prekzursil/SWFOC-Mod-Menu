@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400caa60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400caa6b        int32_t result = sub_14028af60(&data_140b153e0)\n1400caa72        if (result.b != 0)\n1400caa9d        int64_t* rdi_1 = &data_140a16fd0\n1400caaa4        if (((data_140a62048 - data_140a62040) s>> 3).d != 0)\n1400caaa4        rdi_1 = &data_140a62040\n1400caaa8        int32_t rsi_1 = 0\n1400caab1        result = ((rdi_1[1] - *rdi_1) s>> 3).d\n1400caab7        if (result s> 0)\n1400caac7        void* rax_5 = sub_140294bc0(rdi_1, rsi_1)\n1400caad5        if (rax_5 != 0 && *(rax_5 + 0x62) != 0)\n1400caad7        int32_t rbx_1 = *(rax_5 + 0x4c)\n1400caae4        if (rbx_1 != sub_140294a70(rdi_1))\n1400caaef        int32_t* rax_7 = sub_140208290(&data_140a7c4e0, rbx_1)\n1400caafa        if (rax_7 != 0)\n1400cab0a        while (true)\n1400cab0a        void* rax_8 = sub_140209f40(rax_7, &data_140b31778)\n1400cab12        if (rax_8 == 0)\n1400cab1e        rax_8 = sub_14020a020(rax_7, &data_140b31778)\n1400cab26        if (rax_8 == 0)\n1400cab26        break\n1400cab32        sub_140209540(&data_140a14b80, rax_8)\n1400cab3d        rsi_1 += 1\n1400cab42        result = ((rdi_1[1] - *rdi_1) s>> 3).d\n1400cab48        do while (rsi_1 s< result)\n1400cab61        return result",
+  "fetched_at": "2026-04-26T17:01:09Z"
+}

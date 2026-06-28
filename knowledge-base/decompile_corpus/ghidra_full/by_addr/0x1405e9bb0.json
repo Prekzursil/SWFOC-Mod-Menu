@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e9bb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MoveActionClass * __thiscall\nMoveActionClass::scalar_deleting_destructor(MoveActionClass *this,uint param_1)\n\n{\n                    /* inlined destructor: MoveActionClass::~MoveActionClass */\n  *(undefined4 *)((longlong)&(this->MoveActionClass_data).offset_0x4 + 4) = 0xffffffff;\n  this->vftablePtr = &vftable;\n  *(undefined8 *)&(this->MoveActionClass_data).offset_0xc = 0xffff;\n  *(undefined8 *)&this->MoveActionClass_data = 0;\n  *(undefined8 *)((longlong)&(this->MoveActionClass_data).offset_0x10 + 4) = 0;\n  (this->MoveActionClass_data).offset_0x20 = 0;\n  (this->MoveActionClass_data).offset_0x24 = 0;\n  *(undefined4 *)((longlong)&(this->MoveActionClass_data).offset_0x18 + 4) = 0x1000000;\n  ActionClass::~ActionClass((ActionClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xf8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:46:21Z"
+}

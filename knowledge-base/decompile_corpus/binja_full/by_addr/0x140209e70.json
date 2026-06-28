@@ -1,0 +1,7 @@
+{
+  "addr": "0x140209e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140209e8f        if (arg2 == 0 || *arg1 != 4 || *(arg1 + 0x28) == 0)\n140209edb        int64_t result\n140209edb        result.b = 0\n140209ee2        return result\n140209e91        int64_t rax = *(arg1 + 0x40)\n140209ea1        char arg_10 = 0\n140209ea6        int64_t arg_18 = rax\n140209eab        public: __cdecl std::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0>::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0><class <lambda_508dc996854572947a45292d62928d80> &>(class <lambda_508dc996854572947a45292d62928d80> &)(arg2 + 0x98, &arg_18)\n140209eb0        *(arg2 + 0x78) = 1\n140209ed5        return sub_140206120(*(arg1 + 0x28), arg2, &arg_10, 0)",
+  "fetched_at": "2026-04-26T17:28:05Z"
+}

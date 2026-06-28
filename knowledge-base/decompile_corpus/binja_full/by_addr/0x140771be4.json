@@ -1,0 +1,7 @@
+{
+  "addr": "0x140771be4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140771be7        if (arg3 s<= 0)\n140771be7        return \n140771c13        int32_t rdi_1 = 0\n140771c2b        int32_t rax_3\n140771c2b        if (((*(*arg1 + 0x14) u>> 0xc).b & 1) == 0 || *(*arg1 + 8) != 0)\n140771c33        rax_3 = _fputc_nolock_internal(arg2, *arg1)\n140771c3b        int32_t rax\n140771c3b        if ((((*(*arg1 + 0x14) u>> 0xc).b & 1) == 0 || *(*arg1 + 8) != 0) && rax_3 == 0xffffffff)\n140771c43        *arg4 = 0xffffffff\n140771c46        rax = -1\n140771c3d        *arg4 += 1\n140771c3f        rax = *arg4\n140771c4c        if (rax == 0xffffffff)\n140771c4c        break\n140771c4e        rdi_1 += 1\n140771c52        do while (rdi_1 s< arg3)\n140771c6e        return ",
+  "fetched_at": "2026-04-26T17:30:42Z"
+}

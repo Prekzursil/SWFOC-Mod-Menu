@@ -1,0 +1,7 @@
+{
+  "addr": "0x140012680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140012689        int64_t rax = operator new(0x20)\n140012695        data_140a10cd0 = 0x10\n1400126a7        data_140a10cd8 = 0x1f\n1400126b2        __builtin_strncpy(rax, \".\\\\Data\\\\Art\\\\Maps\\\\\", 0x11)\n1400126b9        data_140a10cc0 = rax\n1400126c4        return atexit(sub_1407e76f0) __tailcall",
+  "fetched_at": "2026-04-26T16:49:34Z"
+}

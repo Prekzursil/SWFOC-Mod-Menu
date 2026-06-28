@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022e440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14022e440(longlong param_1)\n\n{\n  DWORD DVar1;\n  HANDLE pvVar2;\n  \n  pvVar2 = GetCurrentThread();\n  *(HANDLE *)(param_1 + 0x18) = pvVar2;\n  DVar1 = GetCurrentThreadId();\n  *(DWORD *)(param_1 + 0x20) = DVar1;\n  *(undefined1 *)(param_1 + 8) = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:06:20Z"
+}

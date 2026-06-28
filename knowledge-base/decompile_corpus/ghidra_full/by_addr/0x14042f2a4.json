@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042f2a4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAbilityCountdownBehaviorClass::vfunction3(AbilityCountdownBehaviorClass *this,uint param_1)\n\n{\n  ~AbilityCountdownBehaviorClass\n            ((AbilityCountdownBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:50:05Z"
+}

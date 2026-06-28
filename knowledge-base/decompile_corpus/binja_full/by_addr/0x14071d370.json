@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071d370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071d394        if (arg2 != 0 && arg3 != 0 && sub_14048d820(arg1, arg2, arg3, 0) != 0 && sub_14048e100(arg1, arg2, arg3, 0) == 0)\n14071d3cb        void* rcx_1 = data_140b15418\n14071d3d2        int32_t zmm1 = *(arg3 + 0x7c)\n14071d3d7        int32_t var_28 = arg3[0xf].d\n14071d3e5        int32_t var_20 = arg3[0x10].d\n14071d3eb        int32_t var_24 = zmm1\n14071d3f5        sub_1402a64f0(*(rcx_1 + 0x18), arg3)\n14071d402        sub_1403a9840(arg2, 0x4a)\n14071d40a        sub_1403a9880(arg2)\n14071d40f        void* rcx_5 = data_140b15418\n14071d41b        int32_t r8_1 = arg2[0xb].d\n14071d424        int64_t* rdx_2 = *(arg1 + 0x100)\n14071d42b        int64_t var_18 = 0\n14071d434        int32_t var_10 = 0\n14071d44f        int512_t zmm2 = sub_14029f810(*(rcx_5 + 0x18), rdx_2, r8_1, &var_28, &var_18, 1, 0)\n14071d454        int64_t* r8_2 = *(arg1 + 0x148)\n14071d45e        if (r8_2 != 0)\n14071d466        sub_14048e810(arg1, arg2, r8_2, zmm2)\n14071d476        sub_14071d4a0(arg1, arg2, &var_28)\n14071d47b        struct DynamicVectorClass<class PlayerClass* __ptr64>::VTable* result\n14071d47b        result.b = 1\n14071d48c        return result\n14071d49e        return 0",
+  "fetched_at": "2026-04-26T17:28:11Z"
+}

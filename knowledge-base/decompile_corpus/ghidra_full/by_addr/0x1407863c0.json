@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407863c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    strncmp\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl strncmp(char *_Str1,char *_Str2,size_t _MaxCount)\n\n{\n  byte bVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  bool bVar4;\n  \n  lVar3 = (longlong)_Str2 - (longlong)_Str1;\n  if (_MaxCount != 0) {\n    do {\n      if (((ulonglong)_Str1 & 7) == 0) {\n        while ((((int)lVar3 + (int)_Str1 & 0xfffU) < 0xff9 &&\n               (uVar2 = *(ulonglong *)_Str1, uVar2 == *(ulonglong *)(lVar3 + (longlong)_Str1)))) {\n          _Str1 = (char *)((longlong)_Str1 + 8);\n          bVar4 = _MaxCount < 8;\n          _MaxCount = _MaxCount - 8;\n          if (bVar4 || _MaxCount == 0) {\n            return 0;\n          }\n          if ((~uVar2 & uVar2 + 0xfefefefefefefeff & 0x8080808080808080) != 0) {\n            return 0;\n          }\n        }\n      }\n      bVar1 = (byte)*(ulonglong *)_Str1;\n      if (bVar1 != *(byte *)(lVar3 + (longlong)_Str1)) {\n        return -(uint)(bVar1 < *(byte *)(lVar3 + (longlong)_Str1)) | 1;\n      }\n      _Str1 = (char *)((longlong)_Str1 + 1);\n      _MaxCount = _MaxCount - 1;\n    } while ((_MaxCount != 0) && (bVar1 != 0));\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:51:35Z"
+}

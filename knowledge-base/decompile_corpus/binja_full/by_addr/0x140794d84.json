@@ -1,0 +1,7 @@
+{
+  "addr": "0x140794d84",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140794d8a        int32_t rbx = data_140b3ca98\n140794d92        if (rbx == 0)\n140794d94        arg1 &= rbx\n140794d98        rbx = 1\n140794dae        TEB* gsbase\n140794dae        if (gsbase->ProcessEnvironmentBlock->ProcessParameters->Flags s>= 0)\n140794db5        __acrt_AppPolicyGetThreadInitializationTypeInternal(&arg1)\n140794dbe        if (arg1 == 1)\n140794dc0        rbx = 2\n140794dc7        data_140b3ca98\n140794dc7        data_140b3ca98 = rbx\n140794dd4        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

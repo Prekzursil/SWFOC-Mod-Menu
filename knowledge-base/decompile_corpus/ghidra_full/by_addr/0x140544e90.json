@@ -1,0 +1,7 @@
+{
+  "addr": "0x140544e90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LuaStopBinkMovie::vfunction11(void)\n\n{\n  if (DAT_140b30690 != 0) {\n    FUN_14044f130(&DAT_140b306dd);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:28Z"
+}

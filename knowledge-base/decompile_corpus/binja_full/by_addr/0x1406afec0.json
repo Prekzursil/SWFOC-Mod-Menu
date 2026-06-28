@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406afec0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406afec6        struct BlockingStatus::ExploreAreaBlockStatus::VTable** result = arg1\n1406afec9        sub_1407d8d80(arg1)\n1406afed7        *result = &ExploreAreaBlockStatus::`vftable'{for `BlockingStatus'}\n1406afee1        result[6] = &ExploreAreaBlockStatus::`vftable'{for `SignalListenerClass'}\n1406afee8        __builtin_memset(&result[7], 0, 0x1a)\n1406afef8        *(result + 0x54) = 0\n1406aff00        return result",
+  "fetched_at": "2026-04-26T17:24:37Z"
+}

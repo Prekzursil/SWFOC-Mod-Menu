@@ -1,0 +1,7 @@
+{
+  "addr": "0x140207a80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140207a87        *arg1 = &DynamicVectorClass<class ConnectionClass* __ptr64>::`vftable'\n140207a8c        __builtin_memset(&arg1[1], 0, 0x21)\n140207a9f        arg1[6] = 0\n140207aa3        arg1[7].w = 0\n140207aaa        return arg1",
+  "fetched_at": "2026-04-26T17:27:57Z"
+}

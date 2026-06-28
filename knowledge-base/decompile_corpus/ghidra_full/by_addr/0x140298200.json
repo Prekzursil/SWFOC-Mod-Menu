@@ -1,0 +1,7 @@
+{
+  "addr": "0x140298200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSingletonInstance<class_TheFighterCellOccupationManagerClass>::vfunction1\n          (SingletonInstance<class_TheFighterCellOccupationManagerClass> *this)\n\n{\n  SingletonInstance<class_TheFighterCellOccupationManagerClass>_vftable *pSVar1;\n  \n  if (this[1].vftablePtr !=\n      (SingletonInstance<class_TheFighterCellOccupationManagerClass>_vftable *)0x0) {\n    SingletonInstance<class_DatabaseConversionSystemClass>::\n    ~SingletonInstance<class_DatabaseConversionSystemClass>\n              ((SingletonInstance<class_DatabaseConversionSystemClass> *)this);\n    pSVar1 = this[1].vftablePtr;\n    if (pSVar1 != (SingletonInstance<class_TheFighterCellOccupationManagerClass>_vftable *)0x0) {\n      FUN_1404f9c40(pSVar1);\n      thunk_FUN_1407864b8(pSVar1,0x70);\n    }\n    this[1].vftablePtr =\n         (SingletonInstance<class_TheFighterCellOccupationManagerClass>_vftable *)0x0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:25:13Z"
+}

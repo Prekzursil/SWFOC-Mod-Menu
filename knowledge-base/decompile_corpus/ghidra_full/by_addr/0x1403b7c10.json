@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b7c10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nLandModeClass::vfunction56(LandModeClass *this,undefined4 param_1,undefined4 param_2)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  int iVar3;\n  longlong lVar4;\n  longlong lVar5;\n  \n  lVar5 = (this->LandModeClass_data).offset_0x398;\n  iVar3 = 0;\n  if (0 < (int)((this->LandModeClass_data).offset_0x3a0 - lVar5 >> 3)) {\n    lVar4 = 0;\n    do {\n      uVar1 = *(undefined8 *)(lVar4 + lVar5);\n      cVar2 = FUN_1405a9a30(uVar1,param_1,param_2);\n      if (cVar2 != '\\0') {\n        return uVar1;\n      }\n      lVar5 = (this->LandModeClass_data).offset_0x398;\n      iVar3 = iVar3 + 1;\n      lVar4 = lVar4 + 8;\n    } while (iVar3 < (int)((this->LandModeClass_data).offset_0x3a0 - lVar5 >> 3));\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:34:52Z"
+}

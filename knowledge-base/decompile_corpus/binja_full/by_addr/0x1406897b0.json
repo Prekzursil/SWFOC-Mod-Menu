@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406897b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406897bb        struct ScheduledEventClass::TacticalSellEventClass::VTable** result = operator new(0x50)\n1406897c6        if (result == 0)\n1406897f6        return result\n1406897cb        sub_140512c50(result)\n1406897d7        result[4].d = 0x22\n1406897de        *result = &TacticalSellEventClass::`vftable'{for `ScheduledEventClass'}\n1406897e4        result[9].d = 0x3fffff\n1406897f0        return result",
+  "fetched_at": "2026-04-26T17:15:15Z"
+}

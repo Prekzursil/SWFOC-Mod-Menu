@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2350",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d2360        *arg3 = arg2\n1401d236f        uint64_t result\n1401d236f        if (arg1[3].b != 0)\n1401d2371        result = sub_1401d2210(arg1)\n1401d2378        if (arg1[3].b == 0 || result.d s>= 0)\n1401d2387        result = data_140a13630(arg1[4])\n1401d238d        uint64_t result_1 = result\n1401d2393        if (result != 0)\n1401d2399        result = data_140a13638(arg1[4])\n1401d23a2        if (result != 0)\n1401d23a8        int32_t* rax_1 = data_140a13638(arg1[4])\n1401d23b2        int32_t rdi_1 = arg2 + 1\n1401d23b6        if (rdi_1 s>= *rax_1)\n1401d23b6        rdi_1 = *rax_1\n1401d23c5        if (rdi_1 s< *data_140a13638(arg1[4]) - 1)\n1401d23ca        int64_t rbx_1 = result_1 + sx.q(rdi_1)\n1401d23f6        int32_t rcx_8\n1401d23d0        result = zx.q(*rbx_1)\n1401d23d5        if ((result.b & 8) != 0)\n1401d2427        *arg3 = rdi_1\n1401d241e        return result\n1401d23df        if ((result.b & 2) != 0 && (*(rbx_1 + 1) & 2) == 0)\n1401d241f        result = zx.q(rdi_1 + 1)\n1401d2422        *arg3 = result.d\n1401d241e        return result\n1401d23e5        rdi_1 += 1\n1401d23e7        rbx_1 += 1\n1401d23f2        rcx_8 = *data_140a13638(arg1[4]) - 1\n1401d23f6        do while (rdi_1 s< rcx_8)\n1401d23fc        result = data_140a13638(arg1[4])\n1401d2406        *arg3 = *result - 1\n1401d241e        return result",
+  "fetched_at": "2026-04-26T17:26:42Z"
+}

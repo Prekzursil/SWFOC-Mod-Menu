@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034bf90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* IconComponentClass member function inherited by ButtonComponentClass\n   IconComponentClass member function inherited by TextButtonComponentClass */\n\nfloat * __thiscall IconComponentClass::vfunction87(IconComponentClass *this,float *param_1)\n\n{\n  float fVar1;\n  int iVar2;\n  int iVar3;\n  \n  if ((this->IconComponentClass_data).offset_0xc0 != 0) {\n    iVar2 = FUN_140271c80();\n    fVar1 = *(float *)&(this->IconComponentClass_data).offset_0xb0;\n    iVar3 = FUN_140271cd0((this->IconComponentClass_data).offset_0xc0);\n    param_1[1] = (float)iVar2 * fVar1;\n    *param_1 = (float)iVar3 * *(float *)&(this->IconComponentClass_data).offset_0xb0;\n    return param_1;\n  }\n  param_1[0] = 0.0;\n  param_1[1] = 0.0;\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2997        return \"GroundStructureDummyBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:30:21Z"
+}

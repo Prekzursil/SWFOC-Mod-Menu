@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb7d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fb7d6        struct SpecialAbilityClass::ForceHealingAbilityClass::VTable** result = arg1\n1406fb7d9        sub_14048c780(arg1)\n1406fb7e5        *result = &ForceHealingAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fb7f6        result[0x35] = 0xf\n1406fb801        result[1] = &ForceHealingAbilityClass::`vftable'{for `RefCountClass'}\n1406fb807        __builtin_memset(&result[0x2f], 0, 0x11)\n1406fb81b        result[0x32] = 0\n1406fb822        result[0x34] = 0\n1406fb829        sub_1401f92f0(&result[0x36])\n1406fb831        result[8].w = 1\n1406fb837        *(result + 0x3c) = 5\n1406fb843        return result",
+  "fetched_at": "2026-04-26T17:26:48Z"
+}

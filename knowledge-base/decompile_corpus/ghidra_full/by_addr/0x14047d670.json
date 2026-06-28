@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047d670",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<struct_StoryDialogGoal> * __thiscall\nDynamicVectorClass<struct_StoryDialogGoal>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_StoryDialogGoal> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<struct_StoryDialogGoal>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:40Z"
+}

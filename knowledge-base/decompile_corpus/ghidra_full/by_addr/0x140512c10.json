@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512c10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_140512c10(int param_1)\n\n{\n  int *piVar1;\n  int iVar2;\n  \n  iVar2 = 0;\n  piVar1 = &DAT_14087bdb0;\n  do {\n    if (*piVar1 == param_1) {\n      return (&PTR_s_INVALID_EVENT_TYPE_14087bdb8)[(longlong)iVar2 * 2];\n    }\n    iVar2 = iVar2 + 1;\n    piVar1 = piVar1 + 4;\n  } while ((longlong)piVar1 < 0x14087c180);\n  return \"UNKNOWN EVENT TYPE\";\n}",
+  "fetched_at": "2026-04-26T18:22:41Z"
+}

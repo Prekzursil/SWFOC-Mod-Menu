@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a2d40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407a2d40(longlong param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  \n  iVar1 = FUN_1407a31a0();\n  if (iVar1 != 0) {\n    return 0xfffffffe;\n  }\n  lVar3 = *(longlong *)(param_1 + 0x28);\n  iVar1 = *(int *)(lVar3 + 8);\n  if (*(longlong *)(lVar3 + 0x10) != 0) {\n    (**(code **)(param_1 + 0x38))(*(undefined8 *)(param_1 + 0x40),*(longlong *)(lVar3 + 0x10));\n    lVar3 = *(longlong *)(param_1 + 0x28);\n  }\n  if (*(longlong *)(lVar3 + 0x68) != 0) {\n    (**(code **)(param_1 + 0x38))(*(undefined8 *)(param_1 + 0x40),*(longlong *)(lVar3 + 0x68));\n    lVar3 = *(longlong *)(param_1 + 0x28);\n  }\n  if (*(longlong *)(lVar3 + 0x60) != 0) {\n    (**(code **)(param_1 + 0x38))(*(undefined8 *)(param_1 + 0x40),*(longlong *)(lVar3 + 0x60));\n    lVar3 = *(longlong *)(param_1 + 0x28);\n  }\n  if (*(longlong *)(lVar3 + 0x50) != 0) {\n    (**(code **)(param_1 + 0x38))(*(undefined8 *)(param_1 + 0x40),*(longlong *)(lVar3 + 0x50));\n    lVar3 = *(longlong *)(param_1 + 0x28);\n  }\n  (**(code **)(param_1 + 0x38))(*(undefined8 *)(param_1 + 0x40),lVar3);\n  uVar2 = 0;\n  *(undefined8 *)(param_1 + 0x28) = 0;\n  if (iVar1 == 0x71) {\n    uVar2 = 0xfffffffd;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:54:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401790c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401790cd        uint128_t result = zx.o(0)\n1401790dd        if (not(arg2[0] f!= 0f))\n1401790df        arg2 = 0x3a83126f\n1401790e7        int64_t* rsi = data_140a6d480\n1401790ee        uint32_t zmm6[0x4] = 0x3f800000\n1401790f6        zmm6[0] = 1f f/ arg2[0]\n1401790fd        if (rsi != 0)\n14017910b        void var_438\n14017910b        void* rbx_1 = &var_438\n14017911b        int32_t i = 0\n140179125        int128_t zmm7 = 0x3b800000\n14017914a        result.d = _mm_cvtepi32_ps(zx.o(i)).d f* zmm7.d\n14017914e        int32_t mxcsr\n14017914e        mxcsr, result, zmm6, zmm7 = powf(result, zmm6, mxcsr, zmm6)\n140179153        result.d = result.d f* 65535f\n140179158        rbx_1 += 2\n14017915c        i += 1\n14017915e        int16_t rax_1 = (int.d(result.d)).w\n140179162        *(rbx_1 - 0x202) = rax_1\n140179169        *(rbx_1 - 2) = rax_1\n14017916d        *(rbx_1 + 0x1fe) = rax_1\n14017917a        do while (i s< 0x100)\n14017918c        void var_638\n14017918c        (*(*rsi + 0xa8))(rsi, zx.q(arg1), 0, &var_638)\n1401791cb        return result",
+  "fetched_at": "2026-04-26T17:23:24Z"
+}

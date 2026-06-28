@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a080(void)\n\n{\n  AttackActionClass *this;\n  \n  this = (AttackActionClass *)FUN_140769c58(0x130);\n  if (this != (AttackActionClass *)0x0) {\n    AttackActionClass::AttackActionClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:31Z"
+}

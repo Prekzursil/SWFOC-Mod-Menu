@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400cc8d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400cc8d2        arg1[3] = 0xf\n1400cc8e1        *arg1 = 0\n1400cc8e4        arg1[0x19] = &DynamicVectorClass<class Vector2>::`vftable'\n1400cc8ee        arg1[2] = 0\n1400cc8f2        arg1[4] = 0\n1400cc8f6        arg1[6] = 0\n1400cc8fa        arg1[8] = 0\n1400cc8fe        arg1[0xa] = 0\n1400cc902        arg1[0xc] = 0\n1400cc906        arg1[0xe] = 0\n1400cc90a        arg1[0x10] = 0\n1400cc911        arg1[0x12] = 0\n1400cc918        arg1[0x18].d = 0\n1400cc91e        __builtin_memset(&arg1[0x1a], 0, 0x1c)\n1400cc92c        arg1[7] = 7\n1400cc934        arg1[0xb] = 7\n1400cc93c        arg1[0xf] = 7\n1400cc944        arg1[0x13] = 7\n1400cc95c        arg1[0x14] = -1\n1400cc967        arg1[0x15].d = 0xffffffff\n1400cc971        *(arg1 + 0xac) = 0\n1400cc978        *(arg1 + 0xb4) = 0\n1400cc97f        arg1[0x17] = 0\n1400cc986        return arg1",
+  "fetched_at": "2026-04-26T17:01:18Z"
+}

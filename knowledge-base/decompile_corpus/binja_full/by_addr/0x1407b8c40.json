@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8c40",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_concat",
+  "body": "1407b8c4a        void* r8 = arg1[4]\n1407b8c51        int64_t rbx = sx.q(arg2)\n1407b8c54        uint64_t result = zx.q(*(r8 + 0x70))\n1407b8c5c        if (*(r8 + 0x74) u>= result.d)\n1407b8c5e        result = sub_1407bc850(arg1)\n1407b8c66        if (rbx.d s>= 2)\n1407b8c7c        sub_1407c63c0(arg1, rbx.d, ((arg1[2] - arg1[3]) s>> 4).d - 1)\n1407b8c90        arg1[2] += 0x10 - (rbx << 4)\n1407b8c9e        return 0x10 - (rbx << 4)\n1407b8ca1        if (rbx.d == 0)\n1407b8ca3        int32_t* rbx_1 = arg1[2]\n1407b8caf        *rbx_1 = 4\n1407b8cb5        result = sub_1407bf8f0(arg1, nullptr, nullptr)\n1407b8cba        *(rbx_1 + 8) = result\n1407b8cbe        arg1[2] += 0x10\n1407b8ccd        return result",
+  "fetched_at": "2026-04-26T16:44:23Z"
+}

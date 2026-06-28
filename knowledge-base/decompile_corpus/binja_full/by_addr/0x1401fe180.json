@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fe180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401fe198        int64_t r14 = arg1[3]\n1401fe19c        char const (** i)[0xb] = &data_140a13bf8\n1401fe1a3        int64_t rbp = arg1[2]\n1401fe1b1        int32_t rdi = 0\n1401fe1b3        char const (* rdx_1)[0xb] = *i\n1401fe1b6        int64_t rax_1 = -1\n1401fe1c0        rax_1 += 1\n1401fe1c7        do while ((*rdx_1)[rax_1] != 0)\n1401fe1c9        int64_t* rcx = arg1\n1401fe1d0        if (r14 u>= 0x10)\n1401fe1d2        rcx = *arg1\n1401fe1d8        if (rbp == rax_1 && memcmp(rcx, rdx_1, rbp) == 0)\n1401fe20f        return zx.q(rdi - 1)\n1401fe1e6        rdi += 1\n1401fe1e8        i = &i[2]\n1401fe1ef        do while (i s< &data_140a13db8)\n1401fe1f1        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

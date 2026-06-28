@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045b550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14045b561        int64_t rsi\n14045b561        rsi.b = 1\n14045b56b        if (sub_1402204a0(arg2) != 0)\n14045b646        char i\n14045b583        int32_t rax_1 = sub_1402205a0(arg2)\n14045b58d        if (rax_1 == 0x19)\n14045b631        rsi.b &= sub_14045ac40(arg1, arg2)\n14045b596        if (rax_1 == 0x1a)\n14045b5a3        int64_t rcx_4 = *(arg1 + 0x390)\n14045b5b4        if ((*(arg1 + 0x398) - rcx_4) s>> 2 != 0)\n14045b5b6        *(arg1 + 0x398) = rcx_4\n14045b5c4        if (sub_140220610(arg2) != 0)\n14045b622        char j\n14045b5c9        int32_t rax_6 = sub_140220710(arg2)\n14045b5d1        if (rax_6 == 0x1f)\n14045b5d6        int32_t arg_18 = 0\n14045b5e7        sub_140220730(arg2, &arg_18, rax_6 - 0x1b, nullptr)\n14045b5ec        int32_t* rdx_1 = *(arg1 + 0x398)\n14045b5f4        if (rdx_1 == *(arg1 + 0x3a0))\n14045b60b        std::vector<uint64_t const& __ptr64,uint64_t,class std::allocator<uint64_t> >::_Emplace_reallocate<uint64_t const& __ptr64>(arg1 + 0x390, rdx_1, &arg_18)\n14045b5fa        *rdx_1 = arg_18\n14045b5fc        *(arg1 + 0x398) += 4\n14045b613        sub_1402206a0(arg2)\n14045b61b        j = sub_140220610(arg2)\n14045b622        do while (j != 0)\n14045b637        sub_140220520(arg2)\n14045b63f        i = sub_1402204a0(arg2)\n14045b646        do while (i != 0)\n14045b661        return zx.q(rsi.b)",
+  "fetched_at": "2026-04-26T17:27:48Z"
+}

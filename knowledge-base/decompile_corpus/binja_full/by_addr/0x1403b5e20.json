@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b5e20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403b5e3a        void* rbp = arg1[0x12]\n1403b5e47        int32_t* rbx = arg2\n1403b5e50        if (rbp == 0)\n1403b5f1d        *arg2 = 0\n1403b5f20        arg2[1].d = 0\n1403b5f23        *arg3 = 0\n1403b5f26        arg3[2] = 0x3f800000\n1403b5f2e        *arg4 = 0\n1403b5f31        *(arg4 + 4) = 0x3f800000\n1403b5e64        float zmm1_1\n1403b5e64        float var_18\n1403b5e64        float var_14\n1403b5e64        float var_10\n1403b5e64        if (sub_1402cd0c0(&data_140b27a10) != 1)\n1403b5e96        void* rax_3 = (*(*arg1 + 0x1e8))(arg1)\n1403b5ea4        *rbx = *(rax_3 + 0x18)\n1403b5ea9        rbx[1] = *(rax_3 + 0x1c)\n1403b5eb2        rbx[2] = *(rax_3 + 0x20)\n1403b5eb5        float zmm0_2 = sub_1402616d0(rbp, &var_18)\n1403b5ec0        (*(*arg1 + 0x150))(arg1)\n1403b5ee0        float zmm2_1 = var_14 * zmm0_2\n1403b5ee4        float zmm4_1 = rbx[2] f- zmm0_2 * var_10\n1403b5eed        float zmm3_1 = var_18 * zmm0_2\n1403b5ef1        zmm0_2 = *rbx\n1403b5ef5        zmm1_1 = rbx[1] f- zmm2_1\n1403b5ef9        rbx[2] = zmm4_1\n1403b5f02        *rbx = zmm0_2 - zmm3_1\n1403b5e6e        sub_140261a40(rbp, &var_18)\n1403b5e79        zmm1_1 = var_14\n1403b5e7f        *rbx = var_18\n1403b5e89        rbx[2] = var_10\n1403b5f09        rbx[1] = zmm1_1\n1403b5f14        sub_140261690(rbp, arg3, arg4)\n1403b5f53        return 0",
+  "fetched_at": "2026-04-26T17:24:23Z"
+}

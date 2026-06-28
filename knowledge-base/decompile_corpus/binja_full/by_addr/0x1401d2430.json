@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d243f        *arg3 = arg2\n1401d244e        int64_t result\n1401d244e        if (arg1[3].b != 0)\n1401d2450        result = sub_1401d2210(arg1)\n1401d2457        if (arg1[3].b == 0 || result.d s>= 0)\n1401d2462        result = data_140a13630(arg1[4])\n1401d2468        int64_t result_2 = result\n1401d246e        if (result != 0)\n1401d2474        result = data_140a13638(arg1[4])\n1401d247d        if (result != 0)\n1401d2483        int32_t* rax_1 = data_140a13638(arg1[4])\n1401d2489        int32_t result_1 = arg2 - 1\n1401d248e        if (result_1 s>= *rax_1)\n1401d248e        result_1 = *rax_1\n1401d2491        result = sx.q(result_1)\n1401d2496        if (result_1 s<= 0)\n1401d24c3        label_1401d24c3:\n1401d24c3        *arg3 = 0\n1401d2498        result += result_2\n1401d24a0        while (true)\n1401d24a0        char rcx_3 = *result\n1401d24b1        if ((rcx_3 & 8) != 0 || ((rcx_3 & 2) == 0 && (*(result - 1) & 2) != 0))\n1401d24de        *arg3 = result_1\n1401d24e0        break\n1401d24b3        result -= 1\n1401d24b6        result_1 -= 1\n1401d24c1        if (result - result_2 s<= 0)\n1401d24c1        goto label_1401d24c3\n1401d24c1        continue\n1401d24dd        return result",
+  "fetched_at": "2026-04-26T17:26:42Z"
+}

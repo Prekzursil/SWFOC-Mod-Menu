@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403aba90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403aba99        uint64_t zmm6[0x2] = data_140b2c384\n1403abaac        uint64_t zmm8[0x2] = arg1\n1403abab0        arg1 = data_140b2c380\n1403abab8        zmm6[0].d = zmm6[0].d f/ arg1[0].d\n1403ababc        zmm6[0].d = zmm6[0].d f* zmm8[0].d\n1403abad5        float zmm1\n1403abad5        if ((zmm6[0].d & 0x7f800000) u<= 0x1d000000)\n1403abaec        zmm1 = 1f\n1403abada        arg1, arg2, arg3, zmm6 = cosf(zmm6, arg2, arg3)\n1403abadf        zmm1 = arg1[0].d\n1403abae2        arg1 = data_140b2c380\n1403abafa        uint64_t zmm7[0x2] = arg1\n1403abb06        zmm7[0].d = zmm7[0].d f* zmm1\n1403abb0f        if ((zmm6[0].d & 0x7f800000) u> 0x1d000000)\n1403abb19        zmm6 = sinf(zmm6, arg2, arg3)\n1403abb1c        arg1 = data_140b2c380\n1403abb24        zmm7[0].d = zmm7[0].d f- data_140b2c388\n1403abb2c        zmm1 = data_140b2c390\n1403abb34        arg1[0].d = arg1[0].d f* zmm6[0].d\n1403abb3c        arg1[0].d = arg1[0].d f- data_140b2c38c\n1403abb44        zmm7[0].d = zmm7[0].d f* zmm7[0].d\n1403abb48        arg1[0].d = arg1[0].d f* arg1[0].d\n1403abb4c        arg1[0].d = arg1[0].d f+ zmm7[0].d\n1403abb50        arg1[0].d = arg1[0].d f+ zmm1 * zmm1\n1403abb7e        return sqrtf(arg1[0].d) - data_140b2c394 f* zmm8[0].d",
+  "fetched_at": "2026-04-26T17:24:10Z"
+}

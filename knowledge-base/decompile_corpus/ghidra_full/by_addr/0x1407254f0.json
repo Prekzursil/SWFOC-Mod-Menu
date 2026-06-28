@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407254f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float * __thiscall\nTacticalRegionAITargetLocationClass::vfunction15\n          (TacticalRegionAITargetLocationClass *this,float *param_1)\n\n{\n  float fVar1;\n  int iVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  \n  iVar2 = DAT_140b153fc;\n  if (DAT_140b15418 != (longlong *)0x0) {\n    iVar2 = (**(code **)(*DAT_140b15418 + 0xe0))();\n  }\n  fVar5 = DAT_140b168d4;\n  if (iVar2 == 2) {\n    fVar5 = DAT_140b168d0;\n  }\n  fVar1 = *(float *)&(this->RefCountClass_data).offset_0x18;\n  fVar3 = fVar5 / DAT_1408007d4;\n  param_1[2] = fVar5;\n  fVar4 = fVar5 / DAT_1408007d4;\n  param_1[3] = fVar5;\n  fVar5 = *(float *)((longlong)&(this->RefCountClass_data).offset_0x10 + 4);\n  param_1[1] = fVar1 - fVar3;\n  *param_1 = fVar5 - fVar4;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:00:12Z"
+}

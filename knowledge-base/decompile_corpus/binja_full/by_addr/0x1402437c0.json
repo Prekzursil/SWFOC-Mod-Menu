@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402437c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402437d4        void** rbx = *(arg1 + 0x58)\n1402437e7        int512_t zmm0\n1402437e7        int512_t zmm1\n1402437e7        zmm0, zmm1 = sub_1407b9540(rbx, arg3)\n1402437f4        sub_1407b8e90(rbx, 0xffffd8ef, zmm0, zmm1)\n140243804        struct LuaVar::LuaValue<void* __ptr64,10>::VTable** rax = sub_1402473e0(rbx, 0, 1, 0)\n14024380f        void* i\n14024380f        if (rax != 0)\n140243817        i = (*rax)->vFunc_4()\n14024381d        if (rax == 0 || i == 0)\n140243834        label_140243834:\n140243834        *arg2 = 0\n140243829        while (i != &data_140a15820)\n14024382b        i = *(i + 8)\n140243832        if (i == 0)\n140243832        goto label_140243834\n140243859        (*rax)->vFunc_0(rax)\n140243870        sub_140243640(arg1, arg2, rax, arg4, arg5)\n14024387b        (*rax)->vFunc_1(rax)\n140243852        return arg2",
+  "fetched_at": "2026-04-26T17:30:16Z"
+}

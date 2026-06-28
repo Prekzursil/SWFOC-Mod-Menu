@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076aa18",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076aa2a        void startupInfo\n14076aa2a        memset(&startupInfo, 0, 0x68)\n14076aa34        GetStartupInfoW(&startupInfo)\n14076aa3f        int64_t result = 0xa\n14076aa44        char var_3c\n14076aa44        int16_t var_38\n14076aa44        if ((var_3c & 1) != 0)\n14076aa44        result.w = var_38\n14076aa51        return result",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

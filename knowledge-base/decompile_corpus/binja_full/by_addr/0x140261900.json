@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140261915        void* rbx = *(arg1 + 0x40)\n14026192a        if (arg6 != 0)\n14026192f        *arg6 = *(rbx + 0x30)\n140261939        if (arg7 != 0)\n14026193e        *arg7 = *(rbx + 0x34)\n140261944        if (*(rbx + 0x44) != 0)\n1402619ad        if (arg2 != 0)\n1402619b2        *arg2 = *(rbx + 0x50)\n1402619b7        if (arg3 != 0)\n1402619bc        *arg3 = *(rbx + 0x54)\n1402619c7        if (arg5 != 0)\n1402619cc        *arg5 = *(rbx + 0x58)\n1402619d1        if (arg4 != 0)\n1402619d6        *arg4 = *(rbx + 0x5c)\n14026194b        int128_t zmm0_1 = tanf(*(rbx + 0x48))\n14026195b        int128_t zmm2_1\n14026195b        zmm2_1.d = zmm0_1.d f/ *(rbx + 0x4c)\n140261963        if (arg2 != 0)\n14026196c        *arg2 = zmm0_1.d * -0.5f\n14026197c        if (arg3 != 0)\n14026197e        zmm0_1.d = zmm0_1.d f* 0.5f\n140261982        *arg3 = zmm0_1.d\n140261989        if (arg4 != 0)\n14026198e        zmm0_1.d = zmm2_1.d f* 0.5f\n140261992        *arg4 = zmm0_1.d\n14026199e        if (arg5 != 0)\n1402619a0        zmm2_1.d = zmm2_1.d f* -0.5f\n1402619a4        *arg5 = zmm2_1.d\n1402619ee        return ",
+  "fetched_at": "2026-04-26T17:31:16Z"
+}

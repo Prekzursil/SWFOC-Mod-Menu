@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025ba60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DrawTextClass member function inherited by TeletypeTextClass */\n\nvoid __thiscall DrawTextClass::vfunction4(DrawTextClass *this,float param_1,float param_2)\n\n{\n  longlong *plVar1;\n  \n  DrawPrimitiveClass::vfunction4((DrawPrimitiveClass *)this,param_1,param_2);\n  plVar1 = (this->DrawTextClass_data).offset_0x68;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 0x18))(plVar1,param_1,param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:16Z"
+}

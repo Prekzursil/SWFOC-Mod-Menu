@@ -1,0 +1,7 @@
+{
+  "addr": "0x140761ee8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    protected: virtual unsigned short __cdecl std::ctype<unsigned short>::do_toupper(unsigned\n   short)const __ptr64\n    protected: virtual wchar_t __cdecl std::ctype<wchar_t>::do_toupper(wchar_t)const __ptr64\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __thiscall do_toupper(void *this,wchar_t param_1)\n\n{\n  _Towupper(param_1,(_Ctypevec *)((longlong)this + 0x10));\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:40Z"
+}

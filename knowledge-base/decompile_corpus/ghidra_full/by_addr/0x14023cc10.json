@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023cc10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_14023cc10(longlong param_1)\n\n{\n  char cVar1;\n  longlong lVar2;\n  \n  EnterCriticalSection((LPCRITICAL_SECTION)(param_1 + 0x90));\n  if (*(longlong *)(param_1 + 0x28) != 0) {\n    lVar2 = *(longlong *)(**(longlong **)(param_1 + 0x20) + 0x10);\n    if ((lVar2 != 0) && (*(int *)(lVar2 + 0x80) == *(int *)(param_1 + 0x6c))) {\n      cVar1 = FUN_1402074d0(&DAT_140b09d08);\n      if (cVar1 != '\\0') {\n        cVar1 = FUN_14023d9a0(param_1);\n        if (cVar1 != '\\0') {\n          lVar2 = FUN_14023dab0(param_1,1);\n          goto LAB_14023cc99;\n        }\n      }\n    }\n    lVar2 = *(longlong *)(**(longlong **)(param_1 + 0x20) + 0x10);\n    if ((lVar2 != 0) && (*(int *)(lVar2 + 0x80) == *(int *)(param_1 + 0x6c))) goto LAB_14023cc99;\n  }\n  lVar2 = 0;\nLAB_14023cc99:\n  LeaveCriticalSection((LPCRITICAL_SECTION)(param_1 + 0x90));\n  return lVar2;\n}",
+  "fetched_at": "2026-04-26T18:08:54Z"
+}

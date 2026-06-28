@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl initialize_environment_by_cloning_nolock<wchar_t>(void)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl initialize_environment_by_cloning_nolock<wchar_t>(void)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  \n  plVar3 = DAT_140b3c438;\n  if (DAT_140b3c438 == (longlong *)0x0) {\nLAB_14078c91b:\n    iVar1 = -1;\n  }\n  else {\n    for (; *plVar3 != 0; plVar3 = plVar3 + 1) {\n      iVar1 = __acrt_MultiByteToWideChar(0,0,*plVar3,0xffffffff,0,0);\n      if (iVar1 == 0) goto LAB_14078c91b;\n      lVar2 = _calloc_base((longlong)iVar1);\n      if (lVar2 == 0) {\nLAB_14078c9a4:\n        _free_base(lVar2);\n        goto LAB_14078c91b;\n      }\n      iVar1 = __acrt_MultiByteToWideChar(0,0,*plVar3,0xffffffff,lVar2,iVar1);\n      if (iVar1 == 0) goto LAB_14078c9a4;\n      thunk_FUN_14079872c();\n      _free_base();\n    }\n    iVar1 = 0;\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:04Z"
+}

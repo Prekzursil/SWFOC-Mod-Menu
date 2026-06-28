@@ -1,0 +1,7 @@
+{
+  "addr": "0x140708210",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140708223        *arg1 = &PlanetIncomeGamblingAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140708230        arg1[1] = &PlanetIncomeGamblingAbilityClass::`vftable'{for `RefCountClass'}\n140708236        arg1[0x2f] = 0\n14070823d        arg1[0x30] = 0\n140708244        sub_14048c8d0(arg1)\n14070824c        if ((arg2 & 1) != 0)\n140708256        j_sub_1407864b8(arg1)\n140708268        return arg1",
+  "fetched_at": "2026-04-26T17:27:22Z"
+}

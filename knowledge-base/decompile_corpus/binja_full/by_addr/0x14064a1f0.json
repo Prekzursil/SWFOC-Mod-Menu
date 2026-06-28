@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064a1f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064a1f6        void* rax = *(arg1 + 0x68)\n14064a1fd        int64_t* rcx = *(rax + 0x2b0)\n14064a207        if (rcx != 0)\n14064a210        uint32_t rax_2\n14064a210        if (*(rcx + 0x336) == 0xff)\n14064a24b        if (*(rax + 0x337) != 0xff)\n14064a24d        *(arg1 + 0xc) = 4\n14064a254        *(arg1 + 0x28) = 1\n14064a25d        return rax\n14064a25e        rax_2 = zx.d(*(rax + 0x336))\n14064a265        *(arg1 + 0x28) = 1\n14064a26b        if (rax_2.b == 0xff)\n14064a26d        *(arg1 + 0xc) = 7\n14064a279        return rax_2\n14064a27a        *(arg1 + 0xc) = 6\n14064a286        return rax_2\n14064a21a        rax = (*(*rcx + 0x10))(rcx, 4)\n14064a220        if (rax != 0)\n14064a229        rax_2 = sub_140432730(rax, *(rax + 0x28))\n14064a22e        *(arg1 + 0x28) = 1\n14064a235        if (rax_2 u> 1)\n14064a237        *(arg1 + 0xc) = 0xe\n14064a243        return rax_2\n14064a27a        *(arg1 + 0xc) = 6\n14064a286        return rax_2\n14064a287        *(arg1 + 0xc) = 7\n14064a28e        *(arg1 + 0x28) = 1\n14064a297        return rax",
+  "fetched_at": "2026-04-26T17:04:45Z"
+}

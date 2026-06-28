@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063bed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nFlyingLocomotorBehaviorClass::vfunction10(FlyingLocomotorBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  (*this->vftablePtr->vfunction96)(this,(undefined4 *)(this->offset_0x18 + 0xf));\n  if (this->offset_0x18[0x15] != (undefined *)0x0) {\n    FUN_140559250(this->offset_0x18[0x15],0x16);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:03Z"
+}

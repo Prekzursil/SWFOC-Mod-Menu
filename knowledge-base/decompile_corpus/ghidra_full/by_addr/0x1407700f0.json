@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407700f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl ExFilterRethrow(struct _EXCEPTION_POINTERS * __ptr64,struct EHExceptionRecord *\n   __ptr64,int * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl ExFilterRethrow(_EXCEPTION_POINTERS *param_1,EHExceptionRecord *param_2,int *param_3)\n\n{\n  PEXCEPTION_RECORD pEVar1;\n  int iVar2;\n  longlong lVar3;\n  \n  pEVar1 = param_1->ExceptionRecord;\n  *param_3 = 0;\n  if (((((pEVar1->ExceptionCode == 0xe06d7363) && (pEVar1->NumberParameters == 4)) &&\n       ((2 < (int)pEVar1->ExceptionInformation[0] + 0xe66cfae0U ||\n        ((pEVar1->ExceptionInformation[1] != *(ULONG_PTR *)(param_2 + 0x28) ||\n         (*param_3 = 1, pEVar1->ExceptionCode == 0xe06d7363)))))) && (pEVar1->NumberParameters == 4)\n      ) && (((int)pEVar1->ExceptionInformation[0] + 0xe66cfae0U < 3 &&\n            (pEVar1->ExceptionInformation[2] == 0)))) {\n    lVar3 = FUN_14076d8ec();\n    *(undefined4 *)(lVar3 + 0x40) = 1;\n    iVar2 = 1;\n    *param_3 = 1;\n  }\n  else {\n    iVar2 = 0;\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:11:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fa860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fa866        struct SpecialAbilityClass::EnhanceDefenseAbilityClass::VTable** result = arg1\n1406fa869        sub_14048c780(arg1)\n1406fa875        result[8].w = 1\n1406fa87b        *result = &EnhanceDefenseAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fa885        result[1] = &EnhanceDefenseAbilityClass::`vftable'{for `RefCountClass'}\n1406fa88b        result[0x2f] = 0\n1406fa892        result[0x30].b = 0\n1406fa89b        *(result + 0x3c) = 2\n1406fa8a7        return result",
+  "fetched_at": "2026-04-26T17:26:46Z"
+}

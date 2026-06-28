@@ -1,0 +1,7 @@
+{
+  "addr": "0x140733400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TacticalUnitPerceptualEvaluatorClass member function inherited by\n   LandUnitPerceptualEvaluatorClass\n   TacticalUnitPerceptualEvaluatorClass member function inherited by\n   SpaceShipPerceptualEvaluatorClass */\n\nundefined1 __thiscall\nTacticalUnitPerceptualEvaluatorClass::vfunction12\n          (TacticalUnitPerceptualEvaluatorClass *this,undefined8 param_1,double *param_2)\n\n{\n  double dVar1;\n  longlong lVar2;\n  float fVar3;\n  ulonglong local_res8;\n  double local_res20;\n  \n  if ((this->SignalListenerClass_data).offset_0x0 != (undefined **)0x0) {\n    dVar1 = 0.0;\n    local_res20 = 0.0;\n    FUN_1405f3ff0(param_1,DAT_140a43c64,&local_res20);\n    local_res8 = 0xffffffffffffffff;\n    FUN_1405f4780(param_1,DAT_140a43c60,&local_res8);\n    lVar2 = FUN_140396380((this->SignalListenerClass_data).offset_0x0);\n    if (lVar2 != 0) {\n      if ((local_res8 & *(ulonglong *)(lVar2 + 0x1648)) != 0) {\n        fVar3 = (float)FUN_140396df0((this->SignalListenerClass_data).offset_0x0);\n        dVar1 = DAT_140854f30 - (double)(DAT_1407ffaf8 - fVar3) * local_res20;\n        fVar3 = (float)FUN_140370e60(lVar2);\n        dVar1 = (double)fVar3 * dVar1;\n      }\n      *param_2 = dVar1;\n      return 1;\n    }\n  }\n  *param_2 = 0.0;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:02:03Z"
+}

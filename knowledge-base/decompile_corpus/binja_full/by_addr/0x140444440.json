@@ -1,0 +1,7 @@
+{
+  "addr": "0x140444440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140444446        void* rcx = *(arg1 + 0x28)\n14044444a        void* rbx = *(rcx + 0x210)\n140444454        if (rbx == 0)\n140444454        return \n140444456        sub_14038f7b0(rcx)\n14044446b        *(rbx + 8) = 5\n140444472        *(rbx + 0x1c) = 0x3f800000\n14044447a        *(rbx + 0x28) = 0x3cf5c28f\n140444481        *(rbx + 0x2c) = 1f / 0.0299999993f\n14044448b        return ",
+  "fetched_at": "2026-04-26T17:27:20Z"
+}

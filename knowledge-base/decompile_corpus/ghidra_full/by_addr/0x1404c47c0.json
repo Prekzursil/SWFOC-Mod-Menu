@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c47c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404c47c0(longlong param_1)\n\n{\n  longlong local_res8 [4];\n  \n  local_res8[0] = param_1;\n  FUN_1400474a0(&PTR_vftable_140a2bb30,local_res8);\n  if (*(longlong *)(param_1 + 8) != 0) {\n    thunk_FUN_1407864b8();\n    *(undefined8 *)(param_1 + 8) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:54Z"
+}

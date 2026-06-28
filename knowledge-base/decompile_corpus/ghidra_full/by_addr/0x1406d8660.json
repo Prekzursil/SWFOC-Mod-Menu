@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d8660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "VisiblePerceptualEvaluatorClass<class_PlanetForcePerceptualEvaluatorClass> * __thiscall\nVisiblePerceptualEvaluatorClass<class_PlanetForcePerceptualEvaluatorClass>::\nscalar_deleting_destructor\n          (VisiblePerceptualEvaluatorClass<class_PlanetForcePerceptualEvaluatorClass> *this,\n          uint param_1)\n\n{\n  ~VisiblePerceptualEvaluatorClass<class_PlanetForcePerceptualEvaluatorClass>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xb0);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:43:53Z"
+}

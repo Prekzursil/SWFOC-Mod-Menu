@@ -1,0 +1,7 @@
+{
+  "addr": "0x140294a40",
+  "tool": "ghidra",
+  "fact_id": "rva_player_list_get_current_player",
+  "body": "\nundefined8 FUN_140294a40(longlong *param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  lVar2 = *param_1;\n  if (lVar2 != param_1[1]) {\n    iVar1 = (int)param_1[6];\n    if ((-1 < iVar1) && (iVar1 < (int)(param_1[1] - lVar2 >> 3))) {\n      return *(undefined8 *)(lVar2 + (longlong)iVar1 * 8);\n    }\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064caa8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* PerceptualEvaluatorClass member function inherited by GalacticGamePerceptualEvaluatorClass\n   PerceptualEvaluatorClass member function inherited by SpaceGamePerceptualEvaluatorClass\n   PerceptualEvaluatorClass member function inherited by LandGamePerceptualEvaluatorClass */\n\nvoid __thiscall\nPerceptualEvaluatorClass::vfunction1_for_AIDiagnosticsClass\n          (PerceptualEvaluatorClass *this,uint param_1)\n\n{\n  LandGamePerceptualEvaluatorClass::scalar_deleting_destructor\n            ((LandGamePerceptualEvaluatorClass *)&this[-1].PerceptualEvaluatorClass_data.offset_0x30\n             ,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:29Z"
+}

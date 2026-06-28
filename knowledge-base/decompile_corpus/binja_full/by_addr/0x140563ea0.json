@@ -1,0 +1,7 @@
+{
+  "addr": "0x140563ea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140563ea7        *(arg1 + 0x34) = 0x3fffff\n140563eae        *arg1 = &InfectionDataPackClass::`vftable'{for `BaseDataPackClass'}\n140563eb3        arg1[1].d = 0\n140563eb6        __builtin_memset(&arg1[2], 0, 0x14)\n140563ec1        arg1[5] = 0\n140563ec5        arg1[6].d = 0\n140563ecb        return arg1",
+  "fetched_at": "2026-04-26T17:34:29Z"
+}

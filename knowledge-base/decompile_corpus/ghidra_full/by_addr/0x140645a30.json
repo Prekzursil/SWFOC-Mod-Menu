@@ -1,0 +1,7 @@
+{
+  "addr": "0x140645a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nLandBomberLocomotorBehaviorClass::vfunction10\n          (LandBomberLocomotorBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  if (this->offset_0x18[0x15] != (undefined *)0x0) {\n    FUN_140559250(this->offset_0x18[0x15],0x13);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:51Z"
+}

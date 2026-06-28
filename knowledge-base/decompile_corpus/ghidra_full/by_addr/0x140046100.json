@@ -1,0 +1,7 @@
+{
+  "addr": "0x140046100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140046100(undefined8 *param_1,undefined8 *param_2,undefined8 *param_3)\n\n{\n  undefined8 uVar1;\n  ulonglong uVar2;\n  ulonglong uVar3;\n  undefined8 *puVar4;\n  \n  uVar3 = (ulonglong)((longlong)param_2 + (7 - (longlong)param_1)) >> 3;\n  if (param_2 < param_1) {\n    uVar3 = 0;\n  }\n  if ((uVar3 != 0) && (1 < uVar3)) {\n    uVar1 = *param_3;\n    if ((param_3 < param_1) || (param_1 + (uVar3 - 1) < param_3)) {\n      puVar4 = param_1;\n      for (uVar2 = uVar3 & 0x1ffffffffffffffe; uVar2 != 0; uVar2 = uVar2 - 1) {\n        *puVar4 = uVar1;\n        puVar4 = puVar4 + 1;\n      }\n      param_1 = param_1 + (uVar3 & 0xfffffffffffffffe);\n    }\n  }\n  for (; param_1 != param_2; param_1 = param_1 + 1) {\n    *param_1 = *param_3;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:41Z"
+}

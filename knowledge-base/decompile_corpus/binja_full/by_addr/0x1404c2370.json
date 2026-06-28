@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2379        struct BehaviorClass::UpgradeDummyBehaviorClass::VTable** result = operator new(0x40)\n1404c2383        if (result == 0)\n1404c23c9        return 0\n1404c2385        result[2].d = 0\n1404c2388        __builtin_memset(&result[4], 0, 0x14)\n1404c2393        *(result + 0x3c) = 0\n1404c239d        *result = &UpgradeDummyBehaviorClass::`vftable'{for `BehaviorClass'}\n1404c23a7        result[1] = &UpgradeDummyBehaviorClass::`vftable'{for `RefCountClass'}\n1404c23b2        result[3] = &UpgradeDummyBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404c23b6        *(result + 0x34) = 1\n1404c23c1        return result",
+  "fetched_at": "2026-04-26T17:30:17Z"
+}

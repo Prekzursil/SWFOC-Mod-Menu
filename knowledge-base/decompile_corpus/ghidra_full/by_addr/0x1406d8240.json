@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d8240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGameObjectPerceptualEvaluatorClass::vfunction2(GameObjectPerceptualEvaluatorClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = &this[-1].SignalListenerClass_data.offset_0x50;\n                    /* WARNING: Could not recover jumptable at 0x0001406d824c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*puVar1 + 0x48))(puVar1,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:40Z"
+}

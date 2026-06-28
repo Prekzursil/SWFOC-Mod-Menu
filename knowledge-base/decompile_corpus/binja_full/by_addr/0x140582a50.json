@@ -1,0 +1,7 @@
+{
+  "addr": "0x140582a50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140582a65        int64_t* rsi = arg5\n140582a79        *rsi = arg3\n140582a7f        int64_t rbx = *arg2\n140582a84        int32_t rax = _Wcrtomb(&arg5, 0, arg2, arg1 + 0x10)\n140582a8b        if (rax s<= 0)\n140582a8d        return 2\n140582a94        int32_t* rcx_1 = *rsi\n140582aa1        void* rdi_1 = sx.q(rax - 1)\n140582aa7        if (arg4 - rcx_1 s< rdi_1)\n140582aa9        *arg2 = rbx\n140582aac        return 1\n140582ab5        if (rax - 1 s> 0)\n140582abf        memcpy(rcx_1, &arg5, rdi_1)\n140582ac4        *rsi += rdi_1\n140582ac7        return 0",
+  "fetched_at": "2026-04-26T17:35:44Z"
+}

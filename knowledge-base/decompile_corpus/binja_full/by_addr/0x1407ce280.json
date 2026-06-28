@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ce280",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ce290        int32_t result = sub_1407b8bc0(arg1, arg2)\n1407ce297        if (result != 0)\n1407ce2b5        return result\n1407ce2a6        sub_1407ce300(arg1, \"stack overflow (%s)\", arg3)\n1407ce2a6        noreturn",
+  "fetched_at": "2026-04-26T17:33:54Z"
+}

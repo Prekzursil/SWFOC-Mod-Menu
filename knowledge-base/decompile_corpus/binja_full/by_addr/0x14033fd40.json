@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033fd40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033fd5c        if (*(arg1 + 0x7c) == 1 && *(arg1 + 0x7d) == 1 && *(arg2 + 0x394) != 0xff)\n14033fd5e        *(arg1 + 0x84) -= 1\n14033fd68        if (*(arg1 + 0x1c) == 0xffffffff)\n14033fd68        return \n14033fd6e        int64_t rcx = sx.q(arg1[8].d)\n14033fd74        if (rcx.d == 0)\n14033fd74        return \n14033fd7a        int64_t* rax = arg1[7]\n14033fd86        if (rax == 0)\n14033fd86        return \n14033fd91        int32_t rdi_1 = 0\n14033fd95        if (rcx.d s<= 0)\n14033fd95        return \n14033fd9a        int64_t rcx_1 = 0\n14033fda3        while (*rax != arg2)\n14033fda5        rdi_1 += 1\n14033fda7        rcx_1 += 1\n14033fdaa        rax = &rax[1]\n14033fdb1        if (rcx_1 s>= rcx)\n14033fdc2        return \n14033fdc5        if (rdi_1 s< 0)\n14033fdc5        return \n14033fdce        int64_t* rdx_1 = *(arg2 + 0x298) + 0xf8\n14033fdda        if (rdx_1[3] u>= 0x10)\n14033fddc        *rdx_1\n14033fdf4        sub_1400475e0(&arg1[6], rdi_1)\n14033fdfd        if (arg1[8].d s< 1)\n14033fe0b        (*(*arg1 + 0x78))(arg1, zx.q(*(arg1 + 0x1c)), 0)\n14033fe1d        return ",
+  "fetched_at": "2026-04-26T17:05:29Z"
+}

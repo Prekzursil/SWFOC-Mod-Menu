@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001d940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001d94e        if (*(arg1 + 8) == 0)\n14001d94e        return \n14001d955        sub_140022470(arg1)\n14001d95a        struct CCallbackBase::CCallbackImpl<24>::VTable** rdi_1 = *(arg1 + 8)\n14001d961        if (rdi_1 != 0)\n14001d966        sub_14006cdf0(rdi_1)\n14001d973        j_sub_1407864b8(rdi_1)\n14001d97d        *(arg1 + 8) = 0\n14001d98a        return ",
+  "fetched_at": "2026-04-26T16:51:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140379c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140379c44        *arg1 = &FlagshipDataPackClass::`vftable'{for `BaseDataPackClass'}\n140379c53        arg1[1] = &FlagshipDataPackClass::`vftable'{for `SignalListenerClass'}\n140379c57        int64_t lpMem = arg1[4]\n140379c5e        if (lpMem != 0)\n140379c67        if ((*(arg1 + 0x2c) & 0x80000000) == 0)\n140379c82        j_sub_1407864b8(lpMem)\n140379c77        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140379c87        *(arg1 + 0x2c) &= 0x80000000\n140379c8e        arg1[4] = 0\n140379c92        arg1[5].d = 0\n140379c96        arg1[6].w = 0\n140379ca2        int64_t lpMem_1 = arg1[4]\n140379ca6        arg1[3] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n140379cad        if (lpMem_1 != 0)\n140379cb6        if ((*(arg1 + 0x2c) & 0x80000000) == 0)\n140379cd1        j_sub_1407864b8(lpMem_1)\n140379cc6        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem_1)\n140379cd6        *(arg1 + 0x2c) &= 0x80000000\n140379cdd        arg1[4] = 0\n140379ce1        arg1[5].d = 0\n140379cf0        arg1[1] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140379cf4        sub_14020a820(&arg1[1])\n140379cfd        if ((arg2 & 1) != 0)\n140379d07        j_sub_1407864b8(arg1)\n140379d29        return arg1",
+  "fetched_at": "2026-04-26T17:17:25Z"
+}

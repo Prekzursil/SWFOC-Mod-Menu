@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalSuperWeaponTargetDummyBehaviorClass * __thiscall\nTacticalSuperWeaponTargetDummyBehaviorClass::vfunction4\n          (TacticalSuperWeaponTargetDummyBehaviorClass *this,int param_1)\n\n{\n  TacticalSuperWeaponTargetDummyBehaviorClass *pTVar1;\n  \n  pTVar1 = (TacticalSuperWeaponTargetDummyBehaviorClass *)0x0;\n  if (param_1 == 100) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T18:09:47Z"
+}

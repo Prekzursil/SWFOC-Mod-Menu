@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c3620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c3636        arg1[3] = 0xf\n1405c363e        *arg1 = 0\n1405c3644        arg1[2] = 0\n1405c364b        arg1[4].d = 0\n1405c3652        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&arg1[5])\n1405c365b        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&arg1[7])\n1405c3660        arg1[9].d = 0\n1405c3667        *(arg1 + 0x4c) = 0x3f800000\n1405c3675        arg1[0xa] = 0x3f800000\n1405c3681        arg1[0xb] = 0\n1405c3685        arg1[0xe] = 0xf\n1405c368d        arg1[0xd] = 7\n1405c3695        memcpy(&arg1[0xb], \"DEFAULT\", 7)\n1405c369a        *(arg1 + 0x5f) = 0\n1405c369e        int64_t* rax = arg1\n1405c36a1        arg1[2] = 0\n1405c36aa        if (arg1[3] u>= 0x10)\n1405c36ac        rax = *arg1\n1405c36af        *rax = 0\n1405c36b5        if (arg2 != 0)\n1405c36bd        sub_1405c3840(arg1, arg2)\n1405c36dc        arg1[0xf] = sub_140467640(&data_140a29f20, &arg1[0xb])\n1405c36ed        return arg1",
+  "fetched_at": "2026-04-26T17:37:34Z"
+}

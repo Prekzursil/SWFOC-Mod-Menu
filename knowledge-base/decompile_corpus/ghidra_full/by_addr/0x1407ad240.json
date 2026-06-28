@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ad240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall alLensFlare::vfunction5_for_RefCountClass(void)\n\n{\n  return &DAT_140a45828;\n}",
+  "fetched_at": "2026-04-26T18:55:17Z"
+}

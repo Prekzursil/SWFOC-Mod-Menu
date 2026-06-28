@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001e800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001e807        arg1[2] = 0\n14001e80f        arg1[1] = \"bad array new length\"\n14001e81a        *arg1 = &std::bad_array_new_length::`vftable'{for `std::bad_alloc'}\n14001e820        return arg1",
+  "fetched_at": "2026-04-26T16:51:33Z"
+}

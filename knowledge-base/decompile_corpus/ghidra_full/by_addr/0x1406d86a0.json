@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d86a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlanetForcePerceptualEvaluatorClass * __thiscall\nPlanetFriendlyForcePerceptualEvaluatorClass::scalar_deleting_destructor\n          (PlanetFriendlyForcePerceptualEvaluatorClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       PlanetForcePerceptualEvaluatorClass::~PlanetForcePerceptualEvaluatorClass */\n  this->vftablePtr =\n       (PlanetFriendlyForcePerceptualEvaluatorClass_vftable0 *)\n       &PlanetForcePerceptualEvaluatorClass::vftable;\n  this->vftablePtr =\n       (PlanetFriendlyForcePerceptualEvaluatorClass_vftable1 *)\n       &PlanetForcePerceptualEvaluatorClass::vftable;\n  this->vftablePtr =\n       (PlanetFriendlyForcePerceptualEvaluatorClass_vftable2 *)\n       &PlanetForcePerceptualEvaluatorClass::vftable;\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &(this->SignalListenerClass_data).offset_0x10);\n  GameObjectPerceptualEvaluatorClass::~GameObjectPerceptualEvaluatorClass\n            ((GameObjectPerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xc0);\n  }\n  return (PlanetForcePerceptualEvaluatorClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:43:54Z"
+}

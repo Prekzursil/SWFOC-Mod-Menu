@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079deb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079debf        int64_t rbx = sx.q(arg1)\n14079dede        char rcx = *((&data_140b3c4d0)[rbx s>> 6] + (zx.q(rbx.d) & 0x3f) * 0x48 + 0x38)\n14079deeb        if ((rcx & 0x48) == 0 && rcx s< 0)\n14079def7        int64_t rax_3 = _lseeki64_nolock(rbx.d, -1, FILE_END)\n14079df03        if (rax_3 != -1)\n14079df21        int16_t arg_8 = 0\n14079df3c        if (_read_nolock(rbx.d, &arg_8, 1) == 0 && arg_8 == 0x1a && _chsize_nolock(rbx.d, rax_3) == 0xffffffff)\n14079df17        return zx.q(*_errno())\n14079df5d        if (_lseeki64_nolock(rbx.d, 0, FILE_BEGIN) == -1)\n14079df17        return zx.q(*_errno())\n14079df10        if (*__doserrno() != 0x83)\n14079df17        return zx.q(*_errno())\n14079df5f        return 0",
+  "fetched_at": "2026-04-26T17:32:15Z"
+}

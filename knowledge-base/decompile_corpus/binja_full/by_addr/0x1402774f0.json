@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402774f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402774ff        int32_t i = 0\n140277504        int64_t rsi = 0\n140277553        int64_t result\n14027751d        int64_t rax_2 = *(arg1 + 0x90)\n140277527        int64_t r8_2 = sx.q(*(arg1 + 0xa0)) * 0x66 + rsi\n140277546        result = sub_140276d80(arg1, zx.q(i), *(rax_2 + (r8_2 << 2) + 0xa8), *(rax_2 + (r8_2 << 2) + 0xb4), 0xffffffff)\n14027754b        i += 1\n14027754d        rsi += 1\n140277553        do while (i s< 3)\n140277564        return result",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

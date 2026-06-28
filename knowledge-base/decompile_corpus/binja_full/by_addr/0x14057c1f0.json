@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057c1f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057c1f6        void* rax = *(arg1 + 0x60)\n14057c203        if (rax != 0)\n14057c20c        if (*(rax + 0x333) != 0xff)\n14057c236        void* rsi = *(*(rax + 0xa8) + 0x1f0)\n14057c240        if (rsi == 0)\n14057c242        struct LuaVar::LuaValue<bool, 5>::VTable** rax_3 = operator new(0x18)\n14057c24a        if (rax_3 == 0)\n14057c282        return sub_140256d40(arg1, rax_3) __tailcall\n14057c253        rax_3[1].d = rsi.d\n14057c256        *rax_3 = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n14057c25f        rax_3[2].b = rsi.b\n14057c26d        return sub_140256d40(arg1, rax_3) __tailcall\n14057c28c        int64_t* rax_6 = operator new(0x18)\n14057c291        int64_t* rbx = rax_6\n14057c297        if (rax_6 == 0)\n14057c2c0        rbx = nullptr\n14057c2ae        uint8_t rcx_7 = (*(sub_14041af10(rsi) + 0x48) u>> 6).b & 1\n14057c2b1        rbx[1].d = 0\n14057c2b8        rbx[2].b = rcx_7\n14057c2bb        *rbx = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n14057c2d7        return sub_140256d40(arg1, rbx) __tailcall\n14057c218        sub_140248190(arg2, \"GameObjectWrapper::Is_On_Diversion -- this object cannot move\", arg2)\n14057c224        return 0",
+  "fetched_at": "2026-04-26T17:35:14Z"
+}

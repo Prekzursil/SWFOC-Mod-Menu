@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029b4c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14029b4cf        if ((arg2 & 2) == 0)\n14029b591        sub_14029a9d0(arg1)\n14029b59a        if ((arg2 & 1) != 0)\n14029b5a4        j_sub_1407864b8(arg1)\n14029b5b2        return arg1\n14029b4e3        int64_t i = arg1[-1]\n14029b4ea        void* rbx_1 = &arg1[i * 9]\n14029b4f1        while (i != 0)\n14029b500        rbx_1 -= 0x48\n14029b504        i -= 1\n14029b50a        *rbx_1 = &ReferenceListClass<class GameObjectClass>::`vftable'{for `GenericMultiLinkedList'}\n14029b515        if (sub_1402ac2f0(rbx_1) != 0)\n14029b54c        int64_t j\n14029b528        void arg_18\n14029b528        void* rax_2 = sub_14020ac80(rbx_1, &arg_18)\n14029b539        if (rax_2 != 0 && rax_2 != 0x18)\n14029b53e        (*(*(rax_2 - 0x18) + 8))(rax_2 - 0x18)\n14029b544        j = sub_1402ac2f0(rbx_1)\n14029b54c        do while (j != 0)\n14029b551        sub_14020a960(rbx_1)\n14029b569        if ((arg2 & 1) != 0)\n14029b57d        j_sub_1407864b8(&arg1[-1])\n14029b590        return &arg1[-1]",
+  "fetched_at": "2026-04-26T17:32:44Z"
+}

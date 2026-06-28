@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c9c80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nFighterLocomotorBehaviorClass::vfunction17\n          (FighterLocomotorBehaviorClass *this,longlong param_1,longlong param_2)\n\n{\n  if (*(longlong *)(*(longlong *)(param_1 + 0xa8) + 0x1e0) == param_2) {\n    *(undefined8 *)(*(longlong *)(param_1 + 0xa8) + 0x1e0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:04Z"
+}

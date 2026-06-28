@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c3ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1403c3ae0(longlong param_1,longlong param_2)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  longlong lVar3;\n  longlong lVar4;\n  float fVar5;\n  \n  if (*(longlong *)(param_1 + 0x20) != 0) {\n    lVar3 = FUN_1402648b0(*(undefined8 *)(*(longlong *)(param_1 + 0x20) + 0x2a0));\n    *(undefined4 *)(lVar3 + 0xc4) = 0;\n  }\n  *(longlong *)(param_1 + 0x20) = param_2;\n  lVar3 = FUN_1402648b0(*(undefined8 *)(param_2 + 0x2a0));\n  *(undefined4 *)(lVar3 + 0xc4) = 1;\n  uVar1 = *(undefined4 *)(param_2 + 0x7c);\n  uVar2 = *(undefined4 *)(param_2 + 0x80);\n  lVar3 = *(longlong *)(param_1 + 0x20);\n  *(undefined4 *)(param_1 + 0x28) = *(undefined4 *)(param_2 + 0x78);\n  *(undefined4 *)(param_1 + 0x2c) = uVar1;\n  *(undefined4 *)(param_1 + 0x30) = uVar2;\n  if ((lVar3 != 0) &&\n     (*(ActionDrivenHeroClashClass **)(lVar3 + 0x2a0) != (ActionDrivenHeroClashClass *)0x0)) {\n    lVar4 = ActionDrivenHeroClashClass::vfunction5(*(ActionDrivenHeroClashClass **)(lVar3 + 0x2a0));\n    if (lVar4 != 0) {\n      fVar5 = *(float *)(*(longlong *)(lVar3 + 0x298) + 0x658) * _DAT_1408678cc;\n      goto LAB_1403c3b85;\n    }\n  }\n  fVar5 = 0.0;\nLAB_1403c3b85:\n  *(float *)(param_1 + 0x34) = fVar5;\n  *(undefined4 *)(param_1 + 0x44) = 3;\n  *(undefined4 *)(param_1 + 0x3c) = 0x3f800000;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:50Z"
+}

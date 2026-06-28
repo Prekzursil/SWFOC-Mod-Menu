@@ -1,0 +1,7 @@
+{
+  "addr": "0x140561270",
+  "tool": "ghidra",
+  "fact_id": "rva_tactical_build_datapack_ctor",
+  "body": "\nTacticalBuildObjectsDataPackClass * __thiscall\nTacticalBuildObjectsDataPackClass::TacticalBuildObjectsDataPackClass\n          (TacticalBuildObjectsDataPackClass *this)\n\n{\n  (this->TacticalBuildObjectsDataPackClass_data).offset_0x10 = 0xffffffff;\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_TacticalBuildObjectsDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_TacticalBuildObjectsDataPackClass,20,class_EmptyLockerClass>)0x0;\n  (this->TacticalBuildObjectsDataPackClass_data).offset_0x0 = 0;\n  (this->TacticalBuildObjectsDataPackClass_data).offset_0x8 = 0;\n  (this->TacticalBuildObjectsDataPackClass_data).offset_0x14 = 0;\n  (this->TacticalBuildObjectsDataPackClass_data).offset_0x1c = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140508e30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140508e34        int64_t result = data_140a2be10\n140508e3e        if (result != 0)\n140508eba        return result\n140508e45        struct DynamicLandPathFinderClass::VTable** rax = operator new(0x198)\n140508e4d        if (rax == 0)\n140508e60        data_140a2be10 = 0\n140508e57        data_140a2be10 = sub_140673b10(rax)\n140508e6b        int32_t* rdx_1 = data_140a7bc10\n140508e79        bool cond:0_1 = rdx_1 == data_140a7bc18\n140508e80        void** arg_8 = &data_140a2be08\n140508e85        if (cond:0_1)\n140508eaa        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n140508eaf        return data_140a2be10\n140508e87        *rdx_1 = &data_140a2be08\n140508e8a        data_140a7bc10 += 8\n140508e9d        return data_140a2be10",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

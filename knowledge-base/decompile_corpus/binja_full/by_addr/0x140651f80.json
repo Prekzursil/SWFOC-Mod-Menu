@@ -1,0 +1,7 @@
+{
+  "addr": "0x140651f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140651f93        *arg1 = &ScriptPerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n140651fa0        arg1[3] = &ScriptPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n140651fa4        sub_14064c9a0(arg1)\n140651fac        if ((arg2 & 1) != 0)\n140651fb6        j_sub_1407864b8(arg1)\n140651fc8        return arg1",
+  "fetched_at": "2026-04-26T17:06:19Z"
+}

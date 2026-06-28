@@ -29,6 +29,7 @@ exclude: |-
     vendor/|
     packages/|
     TestResults/|
+    knowledge-base/|
     .*\.egg-info/
   )
 

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071cc50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nShieldFlareAbilityClass::vfunction30_for_IXMLLoadableClass(ShieldFlareAbilityClass *this)\n\n{\n  undefined ***pppuVar1;\n  undefined1 local_118 [272];\n  \n  CorruptionAbilityClass::vfunction30_for_IXMLLoadableClass((CorruptionAbilityClass *)this);\n  if (*(float *)&(this->ShieldFlareAbilityClass_data).offset_0x0 <= 0.0) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_118,\"Error: (%s) Max_Damage_Per_Victim must be greater than zero.\",pppuVar1)\n    ;\n    FUN_1402149d0(local_118);\n    *(undefined4 *)&(this->ShieldFlareAbilityClass_data).offset_0x0 = 0x42c80000;\n  }\n  if (*(float *)((longlong)&(this->ShieldFlareAbilityClass_data).offset_0x0 + 4) <= 0.0) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_118,\"Error: (%s) Damage_Radius must be greater than zero.\",pppuVar1);\n    FUN_1402149d0(local_118);\n    *(undefined4 *)((longlong)&(this->ShieldFlareAbilityClass_data).offset_0x0 + 4) = 0x42c80000;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048c780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048c78c        arg1[6] = 0xf\n14048c79b        arg1[2].d = 0\n14048c79e        *arg1 = &SpecialAbilityClass::`vftable'{for `IXMLLoadableClass'}\n14048c7ab        arg1[3] = 0\n14048c7af        arg1[1] = &SpecialAbilityClass::`vftable'{for `RefCountClass'}\n14048c7b3        arg1[5] = 0\n14048c7b7        arg1[7] = 0\n14048c7bb        arg1[8].w = 1\n14048c7c1        *(arg1 + 0x42) = 0\n14048c7c5        __builtin_memset(&arg1[9], 0, 0x14)\n14048c7d0        arg1[0xc] = 0\n14048c7d8        sub_1404c3ad0(&arg1[0xd])\n14048c7e4        arg1[0x11] = 0\n14048c7eb        sub_1404c3ad0(&arg1[0x12])\n14048c7f7        __builtin_memset(&arg1[0x16], 0, 0x48)\n14048c836        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&arg1[0x1f])\n14048c842        __builtin_memset(&arg1[0x21], 0, 0x18)\n14048c857        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&arg1[0x24])\n14048c863        __builtin_memset(&arg1[0x26], 0, 0x18)\n14048c878        sub_1404c3ee0(&arg1[0x29])\n14048c884        sub_1404c3ee0(&arg1[0x2b])\n14048c88c        arg1[0x2d].w = 0\n14048c893        *(arg1 + 0x16a) = 0\n14048c89a        arg1[0x2e] = 0\n14048c8ab        return arg1",
+  "fetched_at": "2026-04-26T17:28:46Z"
+}

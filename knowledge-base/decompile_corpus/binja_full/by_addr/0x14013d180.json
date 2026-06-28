@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013d198        struct RefCountClass::alDepthBuffer::VTable** rax = operator new(0x60)\n14013d1a0        struct alDepthBuffer::alD3dDepthBuffer::VTable** result\n14013d1a0        if (rax == 0)\n14013d1af        result = nullptr\n14013d1aa        result = sub_140198890(rax)\n14013d1bf        sub_140198aa0(result, arg1, arg2, 0x4b)\n14013d1d6        return result",
+  "fetched_at": "2026-04-26T17:15:32Z"
+}

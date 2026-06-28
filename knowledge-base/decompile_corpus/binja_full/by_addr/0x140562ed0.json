@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140562ed7        arg1[1].d = 0x3fffff\n140562ede        *arg1 = &BarrageAreaDataPackClass::`vftable'{for `BaseDataPackClass'}\n140562ee1        *(arg1 + 0xc) = 0\n140562ee5        return &BarrageAreaDataPackClass::`vftable'{for `BaseDataPackClass'}",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

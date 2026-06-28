@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f37a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f37a4        return Concurrency::details::_Condition_variable::`scalar deleting destructor'(arg1 - 8, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:25:25Z"
+}

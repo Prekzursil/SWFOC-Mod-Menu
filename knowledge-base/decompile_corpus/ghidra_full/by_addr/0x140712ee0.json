@@ -1,0 +1,7 @@
+{
+  "addr": "0x140712ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall BerserkerAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Berserker_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:55:53Z"
+}

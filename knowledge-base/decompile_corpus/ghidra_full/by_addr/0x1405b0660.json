@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b0660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SetMarkerIDEventClass::vfunction5(SetMarkerIDEventClass *this)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  longlong lVar3;\n  \n  plVar1 = DAT_140b15418;\n  if (DAT_140b15418 != (longlong *)0x0) {\n    iVar2 = (**(code **)(*DAT_140b15418 + 0xe0))(DAT_140b15418);\n    if (iVar2 == 0) {\n      lVar3 = FUN_1402aca60(plVar1[3],*(undefined4 *)&(this->SetMarkerIDEventClass_data).offset_0x0)\n      ;\n      if (lVar3 != 0) {\n        *(undefined4 *)(lVar3 + 0x3b0) =\n             *(undefined4 *)((longlong)&(this->SetMarkerIDEventClass_data).offset_0x0 + 4);\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:43:37Z"
+}

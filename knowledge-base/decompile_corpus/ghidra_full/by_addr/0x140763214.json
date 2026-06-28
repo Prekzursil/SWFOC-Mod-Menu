@@ -1,0 +1,7 @@
+{
+  "addr": "0x140763214",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "time_put<char,class_std::ostreambuf_iterator<char,struct_std::char_traits<char>_>_> * __thiscall\nstd::time_put<char,class_std::ostreambuf_iterator<char,struct_std::char_traits<char>_>_>::\nscalar_deleting_destructor\n          (time_put<char,class_std::ostreambuf_iterator<char,struct_std::char_traits<char>_>_> *this\n          ,ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       std::time_put<char,class_std::ostreambuf_iterator<char,struct_std::char_traits<char>_>_>::~time_put<char,class_std::ostreambuf_iterator<char,struct_std::char_traits<char>_>_>\n                        */\n  this->vftablePtr = &vftable;\n  FUN_1407864b8(this[1].vftablePtr);\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr =\n       (time_put<char,class_std::ostreambuf_iterator<char,struct_std::char_traits<char>_>_>_vftable\n        *)&_Facet_base::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:09:04Z"
+}

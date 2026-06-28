@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fdd50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass */\n\nundefined8 __thiscall TaskForceClass::vfunction27(TaskForceClass *this)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  lVar1 = *DAT_140b31400;\n  lVar2 = FUN_1405f7020(this[1].offset_0x50);\n  (**(code **)(lVar1 + 0x28))(DAT_140b31400,*(undefined4 *)(lVar2 + 0x4c));\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:24:41Z"
+}

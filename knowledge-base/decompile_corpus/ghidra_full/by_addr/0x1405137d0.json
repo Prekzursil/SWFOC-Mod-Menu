@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405137d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl std::_Deallocate<16,0>(void * __ptr64,unsigned __int64)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl std::_Deallocate<16,0>(void *param_1,__uint64 param_2)\n\n{\n  void *pvVar1;\n  \n  pvVar1 = param_1;\n  if (0xfff < param_2) {\n    pvVar1 = *(void **)((longlong)param_1 + -8);\n    if (0x1f < ((longlong)param_1 - (longlong)pvVar1) - 8U) {\n                    /* WARNING: Subroutine does not return */\n      FUN_1407711cc((longlong)param_1 - (longlong)pvVar1,param_2 + 0x27);\n    }\n  }\n  thunk_FUN_1407864b8(pvVar1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:23:12Z"
+}

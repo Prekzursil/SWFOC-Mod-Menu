@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e2e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e2e53        *arg1 = &GameForcePerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n1406e2e60        arg1[3] = &GameForcePerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n1406e2e64        sub_14064c9a0(arg1)\n1406e2e6c        if ((arg2 & 1) != 0)\n1406e2e76        j_sub_1407864b8(arg1)\n1406e2e88        return arg1",
+  "fetched_at": "2026-04-26T17:26:01Z"
+}

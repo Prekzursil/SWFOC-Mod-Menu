@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072c560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14072c56a        struct PerceptualEvaluatorClass::TacticalLocationPerceptualEvaluatorClass::VTable** result = arg1\n14072c56d        sub_14064c900(arg1)\n14072c57b        *result = &TacticalLocationPerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n14072c585        result[3] = &TacticalLocationPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n14072c590        result[0x11] = &TacticalLocationPerceptualEvaluatorClass::`vftable'{for `SignalListenerClass'}\n14072c599        __builtin_memset(&result[0x12], 0, 0x21)\n14072c5be        __builtin_memset(result + 0xb4, 0, 0x14)\n14072c5d2        int64_t* rax = operator new(0x18)\n14072c5e1        *rax = rax\n14072c5e4        rax[1] = rax\n14072c5e8        result[0x17] = rax\n14072c5ef        int64_t r8 = result[0x17]\n14072c5f6        __builtin_memset(&result[0x19], 0, 0x18)\n14072c601        result[0x1c] = 7\n14072c60c        result[0x1d] = 8\n14072c617        *(result + 0xb4) = 0x3f800000\n14072c621        sub_140048250(&result[0x19], 0x10, r8)\n14072c629        result[0x1e] = 0\n14072c630        result[0x1f].d = 0x5d5e0b6b\n14072c63a        *(result + 0xfc) = 0x5d5e0b6b\n14072c644        result[0x20].d = 0x5d5e0b6b\n14072c658        return result",
+  "fetched_at": "2026-04-26T17:28:43Z"
+}

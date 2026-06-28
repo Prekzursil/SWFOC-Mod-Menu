@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140647cfe        *arg1 = &AIBuildTaskClass::`vftable'{for `FiniteStateMachineClass<enum BuildTaskStates>'}\n140647d0a        arg1[6] = &AIBuildTaskClass::`vftable'{for `RefCountClass'}\n140647d15        arg1[8] = &AIBuildTaskClass::`vftable'{for `SignalListenerClass'}\n140647d20        arg1[0xa] = &AIBuildTaskClass::`vftable'{for `SignalGeneratorClass'}\n140647d24        int64_t* rcx = arg1[0x18]\n140647d2e        if (rcx != 0)\n140647d38        (*(*rcx + 8))(rcx, 1)\n140647d3b        void* rcx_1 = arg1[0x19]\n140647d45        if (rcx_1 != 0)\n140647d47        sub_140695560(rcx_1)\n140647d4c        void* rcx_2 = arg1[0x19]\n140647d56        if (rcx_2 != 0)\n140647d60        (*(*(rcx_2 + 0x10) + 8))(rcx_2 + 0x10)\n140647d63        arg1[0x19] = 0\n140647d6e        int64_t* rcx_4 = arg1[0x17]\n140647d78        if (rcx_4 != 0)\n140647d7d        (*(*rcx_4 + 8))(rcx_4)\n140647d80        int64_t* rcx_5 = arg1[0x16]\n140647d8a        if (rcx_5 != 0)\n140647d8f        (*(*rcx_5 + 8))(rcx_5)\n140647d96        sub_140240640(&arg1[0xa])\n140647da6        arg1[8] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140647daa        sub_14020a820(&arg1[8])\n140647db6        arg1[6] = &RefCountClass::`vftable'{for `IRefCountClass'}\n140647dc1        *arg1 = &FiniteStateMachineClass<enum BuildTaskStates>::`vftable'\n140647dc8        if ((arg2 & 1) != 0)\n140647dd2        j_sub_1407864b8(arg1)\n140647dee        return arg1",
+  "fetched_at": "2026-04-26T17:04:25Z"
+}

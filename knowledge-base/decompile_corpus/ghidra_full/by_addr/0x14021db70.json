@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021db70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14021db70(void)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  \n  lVar1 = FUN_140216870();\n  if (lVar1 != 0) {\n    uVar2 = FUN_140216870();\n    FUN_140216860(uVar2);\n    return;\n  }\n  FUN_140216860(\"{0FC0F8BD-6DC5-48fa-B8FB-7B7B7B82AFB1} Insert version number here...\");\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:23Z"
+}

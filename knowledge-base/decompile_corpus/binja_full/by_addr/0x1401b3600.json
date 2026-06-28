@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b3600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b360e        struct alSceneIterator::alSimpleSceneIterator::VTable** result = operator new(0x20)\n1401b3616        if (result == 0)\n1401b3644        return result\n1401b361f        result[1] = arg1\n1401b3623        *result = &alSimpleSceneIterator::`vftable'{for `alSceneIterator'}\n1401b362d        result[2] = arg1 + 0x220\n1401b3635        result[3] = *(arg1 + 0x230)\n1401b363e        return result",
+  "fetched_at": "2026-04-26T17:25:42Z"
+}

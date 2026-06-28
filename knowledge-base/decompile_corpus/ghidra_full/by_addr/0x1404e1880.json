@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e1880",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_galactic_perception_ctor",
+  "body": "\nGalacticPerceptionSystemClass * __thiscall\nGalacticPerceptionSystemClass::GalacticPerceptionSystemClass\n          (GalacticPerceptionSystemClass *this,undefined8 param_1)\n\n{\n  AIPerceptionSystemClass::AIPerceptionSystemClass((AIPerceptionSystemClass *)this,param_1);\n  this->vftablePtr = &vftable;\n  (this->GalacticPerceptionSystemClass_data).offset_0x0 = 0;\n  (this->GalacticPerceptionSystemClass_data).offset_0x8 = 0;\n  (this->GalacticPerceptionSystemClass_data).offset_0x10 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:46Z"
+}

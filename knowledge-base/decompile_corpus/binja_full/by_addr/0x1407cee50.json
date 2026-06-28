@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cee50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cee6a        if (feof(*arg2) != 0)\n1407cee78        return 0\n1407cee8c        void* result = &arg2[1]\n1407cee93        uint64_t rax_2 = fread(result, 1, 0x200, *arg2)\n1407cee9a        *arg3 = rax_2\n1407ceea5        if (rax_2 == 0)\n1407ceea5        return nullptr\n1407ceeb6        return result",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

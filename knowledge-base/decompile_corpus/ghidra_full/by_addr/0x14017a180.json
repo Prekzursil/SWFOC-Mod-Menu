@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017a180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14017a180(void)\n\n{\n  if (DAT_140a6d420 == '\\0') {\n    SetWindowLongA(DAT_140a6e658,-0x10,-0x6ff80000);\n    if (DAT_140a6d470 == (HMENU)0x0) {\n      DAT_140a6d470 = GetMenu(DAT_140a6e658);\n      SetMenu(DAT_140a6e658,(HMENU)0x0);\n    }\n  }\n  else {\n    SetWindowLongA(DAT_140a6e658,-0x10,DAT_140a6d488);\n    if (DAT_140a6d470 != (HMENU)0x0) {\n      SetMenu(DAT_140a6e658,DAT_140a6d470);\n      DAT_140a6d470 = (HMENU)0x0;\n      return 0;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:28:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ushort FUN_14020e350(int param_1)\n\n{\n  ushort uVar1;\n  \n  uVar1 = GetKeyState(param_1);\n  return uVar1 >> 0xf;\n}",
+  "fetched_at": "2026-04-26T17:59:12Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b5720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b5731        struct IRefCountClass::RefCountClass::VTable** result = arg1\n1401b5734        *arg1 = &alShaderInstance::`vftable'{for `RefCountClass'}\n1401b5744        arg1[2] = &alShaderInstance::`vftable'{for `MultiLinkedListMember'}\n1401b5747        sub_14020a820(&arg1[2])\n1401b5753        *result = &RefCountClass::`vftable'{for `IRefCountClass'}\n1401b5759        if ((arg2 & 1) != 0)\n1401b5763        j_sub_1407864b8(result)\n1401b5775        return result",
+  "fetched_at": "2026-04-26T17:25:49Z"
+}

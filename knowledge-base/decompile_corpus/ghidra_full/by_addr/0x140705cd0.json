@@ -1,0 +1,7 @@
+{
+  "addr": "0x140705cd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nPersonalFlameThrowerAbilityClass::vfunction6_for_IXMLLoadableClass\n          (PersonalFlameThrowerAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  ulonglong in_RAX;\n  \n  if ((param_1 != 0) && (param_2 != 0)) {\n    in_RAX = FUN_14039a450(param_2,*(undefined4 *)(param_1 + 0x58),0);\n    if ((char)in_RAX != '\\0') {\n      in_RAX = FUN_14048e290(this,param_2);\n      if (((char)in_RAX != '\\0') &&\n         (in_RAX = *(ulonglong *)(param_2 + 0x298), *(char *)(in_RAX + 0x41) != '\\0')) {\n        if ((*(char *)(param_1 + 0x3b4) == '\\x01') || (*(char *)(param_2 + 0x3b4) == '\\x01')) {\n          in_RAX = FUN_14039a540(param_1,param_2);\n          if ((char)in_RAX == '\\0') goto LAB_140705d5d;\n        }\n        if (*(longlong *)(param_2 + 0x2a0) != 0) {\n          return CONCAT71((int7)(in_RAX >> 8),1);\n        }\n      }\n    }\n  }\nLAB_140705d5d:\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:52:29Z"
+}

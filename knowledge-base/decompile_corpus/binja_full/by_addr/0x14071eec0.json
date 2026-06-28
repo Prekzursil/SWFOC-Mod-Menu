@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071eec0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071eed2        if (*(arg1 + 0xa0) != 0 && *(arg1 + 0xa8) != 0)\n14071eedb        return zx.q(*(arg1 + 0x120))\n14071eedc        int64_t result\n14071eedc        result.b = 1\n14071eede        return result",
+  "fetched_at": "2026-04-26T17:28:14Z"
+}

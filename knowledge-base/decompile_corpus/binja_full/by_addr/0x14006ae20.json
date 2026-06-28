@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006ae20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006ae29        void* rax = *arg1\n14006ae2f        void** result = arg2\n14006ae32        arg2[1].d = 0\n14006ae39        arg2[2] = rax\n14006ae3d        void** rbx = *(rax + 8)\n14006ae41        *arg2 = rbx\n14006ae48        if (*(rbx + 0x19) == 0)\n14006ae4f        int64_t rbp_1 = arg3[2]\n14006ae5d        int64_t r15_1 = arg3[3]\n14006ae61        *result = rbx\n14006ae64        int64_t* rdx = arg3\n14006ae6b        if (r15_1 u>= 0x10)\n14006ae6d        rdx = *arg3\n14006ae75        char* rcx = &rbx[4]\n14006ae79        if (rbx[7] u>= 0x10)\n14006ae7b        rcx = rbx[4]\n14006ae7f        int64_t rsi_1 = rbx[6]\n14006ae86        int64_t r8 = rsi_1\n14006ae89        if (rbp_1 u< rsi_1)\n14006ae89        r8 = rbp_1\n14006ae8d        int32_t rax_1 = memcmp(rcx, rdx, r8)\n14006ae94        int32_t rax_2\n14006ae94        if (rax_1 != 0)\n14006ae96        if (rax_1 s>= 0)\n14006ae96        goto label_14006ae98\n14006aecd        rbx = rbx[2]\n14006aed1        rax_2 = 0\n14006aecb        if (rsi_1 u>= rbp_1)\n14006ae98        label_14006ae98:\n14006ae98        result[2] = rbx\n14006ae9c        rax_2 = 1\n14006aea1        rbx = *rbx\n14006aecd        rbx = rbx[2]\n14006aed1        rax_2 = 0\n14006aea4        result[1].d = rax_2\n14006aeab        do while (*(rbx + 0x19) == 0)\n14006aec7        return result",
+  "fetched_at": "2026-04-26T16:55:57Z"
+}

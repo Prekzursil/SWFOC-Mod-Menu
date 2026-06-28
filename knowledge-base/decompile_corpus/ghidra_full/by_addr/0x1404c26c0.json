@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c26c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SquadronDummyBehaviorClass * __thiscall\nSquadronDummyBehaviorClass::vfunction4(SquadronDummyBehaviorClass *this,int param_1)\n\n{\n  SquadronDummyBehaviorClass *pSVar1;\n  \n  pSVar1 = (SquadronDummyBehaviorClass *)0x0;\n  if (param_1 == 0x5e) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T18:10:18Z"
+}

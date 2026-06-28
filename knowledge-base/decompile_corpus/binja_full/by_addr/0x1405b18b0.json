@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b18b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b18c1        arg1[0x2f].d = 0\n1405b18cb        *arg1 = &GalacticSabotageAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1405b18d7        *(arg1 + 0x17c) = 0\n1405b18de        arg1[1] = &GalacticSabotageAbilityClass::`vftable'{for `RefCountClass'}\n1405b18e5        arg1[0x30].d = 0\n1405b18ef        sub_14048c8d0(arg1)\n1405b18f7        if ((arg2 & 1) != 0)\n1405b1901        j_sub_1407864b8(arg1)\n1405b1913        return arg1",
+  "fetched_at": "2026-04-26T17:37:22Z"
+}

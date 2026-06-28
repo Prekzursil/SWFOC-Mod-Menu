@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407356f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TacticalPlayerPerceptualEvaluatorClass member function inherited by\n   SpacePlayerPerceptualEvaluatorClass */\n\nundefined1 __thiscall\nTacticalPlayerPerceptualEvaluatorClass::vfunction14\n          (TacticalPlayerPerceptualEvaluatorClass *this,undefined8 param_1,double *param_2,\n          undefined1 param_3)\n\n{\n  undefined1 uVar1;\n  float fVar2;\n  double local_res8;\n  undefined8 local_18 [2];\n  \n  if ((this->SignalListenerClass_data).offset_0x0 == (undefined **)0x0) {\n    uVar1 = 0;\n  }\n  else {\n    *param_2 = 0.0;\n    local_18[0] = 0xffffffffffffffff;\n    FUN_1405f4780(param_1,DAT_140a43c60,local_18);\n    local_res8 = 0.0;\n    FUN_1405f3ff0(param_1,DAT_140a43c64,&local_res8);\n    if (DAT_140b31900 != 0) {\n      fVar2 = (float)FUN_140656400(DAT_140b31900,local_18[0],\n                                   (this->SignalListenerClass_data).offset_0x0,param_3,\n                                   (float)local_res8);\n      *param_2 = (double)fVar2;\n    }\n    uVar1 = 1;\n  }\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:02:22Z"
+}

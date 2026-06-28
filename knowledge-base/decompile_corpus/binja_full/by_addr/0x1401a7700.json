@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a7700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a770a        int64_t rbx = sx.q(arg3)\n1401a771d        if (arg1 == 0 || arg2 == 0 || rbx.d s< 1)\n1401a7768        return 0x80070057\n1401a773b        int32_t rdx = 0\n1401a7742        bool cond:0 = MultiByteToWideChar(0, 0, arg2, 0xffffffff, arg1, rbx.d) == 0\n1401a7744        arg1[rbx - 1] = 0\n1401a7749        if (cond:0)\n1401a7749        rdx = -0x7fffbffb\n1401a7758        return zx.q(rdx)",
+  "fetched_at": "2026-04-26T17:25:12Z"
+}

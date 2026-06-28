@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bde60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401bde60(char *param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)\n\n{\n  longlong lVar1;\n  ulonglong *puVar2;\n  HANDLE hFile;\n  longlong lVar3;\n  undefined8 local_res10;\n  undefined8 local_res18;\n  undefined8 local_res20;\n  DWORD local_428 [4];\n  char local_418 [1032];\n  \n  local_res10 = param_2;\n  local_res18 = param_3;\n  local_res20 = param_4;\n  puVar2 = (ulonglong *)FUN_140022b20();\n  common_vsprintf<class___crt_stdio_output::standard_base,char>\n            (*puVar2 | 1,local_418,0x400,param_1,(__crt_locale_pointers *)0x0,(char *)&local_res10);\n  if (DAT_140a78500 == '\\0') {\n    hFile = CreateFileA(PTR_s__ArtProcessLog_txt_140a13500,0x40000000,1,(LPSECURITY_ATTRIBUTES)0x0,2\n                        ,0x80,(HANDLE)0x0);\n    DAT_140a78500 = '\\x01';\n  }\n  else {\n    hFile = CreateFileA(PTR_s__ArtProcessLog_txt_140a13500,0x40000000,1,(LPSECURITY_ATTRIBUTES)0x0,4\n                        ,0x80,(HANDLE)0x0);\n  }\n  if (hFile != (HANDLE)0xffffffffffffffff) {\n    local_428[0] = 0;\n    SetFilePointer(hFile,0,(PLONG)0x0,2);\n    lVar3 = -1;\n    do {\n      lVar1 = lVar3 + 1;\n      lVar3 = lVar3 + 1;\n    } while (local_418[lVar1] != '\\0');\n    WriteFile(hFile,local_418,(int)lVar3 + 1,local_428,(LPOVERLAPPED)0x0);\n    CloseHandle(hFile);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d9210",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: virtual void * __ptr64 __cdecl Concurrency::details::UMSFreeThreadProxyFactory::`scalar\n   deleting destructor'(unsigned int) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release\n   ***** Removed Bad FID Symbol ***** */\n\nvoid * __thiscall\nCameraEffectClass::scalar_deleting_destructor(CameraEffectClass *this,uint param_1)\n\n{\n                    /* inlined destructor: CameraEffectClass::~CameraEffectClass */\n  this->vftablePtr = &vftable;\n  DynamicVectorRefClass<class_ParameterClass*___ptr64>::\n  ~DynamicVectorRefClass<class_ParameterClass*___ptr64>\n            ((DynamicVectorRefClass<class_ParameterClass*___ptr64> *)\n             &(this->RefCountClass_data).offset_0x8);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (CameraEffectClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x38);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:58:43Z"
+}

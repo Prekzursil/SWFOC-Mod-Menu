@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eff30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nBasePowerAbilityClass::vfunction25_for_IXMLLoadableClass\n          (BasePowerAbilityClass *this,longlong *param_1)\n\n{\n  (*this->vftablePtr->vfunction32_for_IXMLLoadableClass)(this,(longlong)param_1,0);\n                    /* WARNING: Could not recover jumptable at 0x0001406eff62. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction31_for_IXMLLoadableClass)(this,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:47:16Z"
+}

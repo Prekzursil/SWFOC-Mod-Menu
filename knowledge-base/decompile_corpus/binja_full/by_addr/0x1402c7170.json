@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c7170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402c7180        *arg1 = &LinearInterpolator::`vftable'{for `Interpolator'}\n1402c7183        void* rcx = arg1[2]\n1402c718a        if (rcx != 0)\n1402c719e        if (((arg1[4] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n1402c71a0        void* r8_1 = *(rcx - 8)\n1402c71b3        if (rcx - r8_1 - 8 u> 0x1f)\n1402c71db        _invalid_parameter_noinfo_noreturn()\n1402c71db        noreturn\n1402c71b5        rcx = r8_1\n1402c71b8        j_sub_1407864b8(rcx)\n1402c71bf        __builtin_memset(&arg1[2], 0, 0x18)\n1402c71d2        *arg1 = &Interpolator::`vftable'\n1402c71da        return &Interpolator::`vftable'",
+  "fetched_at": "2026-04-26T17:33:31Z"
+}

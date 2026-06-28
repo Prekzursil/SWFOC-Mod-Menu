@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222690",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140222693        if (arg2 == arg3)\n140222693        return \n14022269c        int64_t* arg_8 = arg1\n1402226a9        void* rdx = arg2 - arg4\n1402226b7        int64_t* rsi_1 = arg4 + 0x10\n1402226c5        int64_t* rbx_1 = rdx + 0x28\n1402226cd        void* rdi_1 = rdx + 8\n1402226dd        int64_t* arg_10 = rbx_1\n1402226eb        void* arg_18 = rdi_1\n140222704        rsi_1[-2] = *(rdx - 0x10 + rsi_1)\n140222708        rsi_1[-1] = 0\n14022270c        *rsi_1 = 0\n140222714        int64_t* rax_3 = operator new(0x30)\n140222722        *rax_3 = rax_3\n140222725        rax_3[1] = rax_3\n140222729        rsi_1[-1] = rax_3\n14022272d        rsi_1[1] = 0\n140222730        rsi_1[2] = 0\n140222734        rsi_1[3] = 0\n14022273c        rsi_1[4] = *(rsi_1 + rdx + 0x20)\n140222744        rsi_1[5] = *(rbx_1 + rsi_1)\n140222754        sub_140048250(&rsi_1[1], (*(rdx + 0x10 + rsi_1) - *(rdi_1 + rsi_1)) s>> 3, rax_3)\n14022275e        int64_t* rdi_2 = *(rdx - 8 + rsi_1)\n140222762        void** j = *rdi_2\n140222768        while (j != rdi_2)\n14022277d        void** var_48\n14022277d        sub_140221d20(&rsi_1[-2], &var_48, &j[2])\n140222782        j = *j\n14022278a        rbx_1 = arg_10\n14022278f        rsi_1 = &rsi_1[8]\n140222793        rdi_1 = arg_18\n1402227a7        do while (rdx - 0x10 + rsi_1 != arg3)\n1402227d8        return ",
+  "fetched_at": "2026-04-26T17:29:13Z"
+}

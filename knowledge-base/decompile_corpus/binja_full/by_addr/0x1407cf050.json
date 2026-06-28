@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cf050",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cf06f        int32_t rdi = int.d(sub_1407ce9b0(arg1, 2, 0x4024000000000000))\n1407cf07e        if (rdi != 0xa)\n1407cf0c4        int64_t rax_2 = sub_1407ce170(arg1, 1, nullptr)\n1407cf0d2        if (rdi - 2 u> 0x22)\n1407cf0e3        sub_1407cdf80(arg1, 2)\n1407cf0e3        noreturn\n1407cf0f3        char* arg_10\n1407cf0f3        int32_t rax_3 = strtoul(rax_2, &arg_10, rdi)\n1407cf0f8        char* rcx_7 = arg_10\n1407cf107        if (rax_2 != rcx_7)\n1407cf113        if (isspace(zx.d(*rcx_7)) != 0)\n1407cf137        int32_t i\n1407cf125        void* rcx_10 = &arg_10[1]\n1407cf128        arg_10 = rcx_10\n1407cf130        i = isspace(zx.d(*rcx_10))\n1407cf137        do while (i != 0)\n1407cf141        if (*arg_10 == 0)\n1407cf14e        sub_1407b9520(arg1, float.d(zx.q(rax_3)))\n1407cf162        return 1\n1407cf080        sub_1407ce130(arg1, 1)\n1407cf092        if (sub_1407b8fb0(arg1, rdi - 9) != 0)\n1407cf0a9        sub_1407b9520(arg1, sub_1407b9bc0(arg1, rdi - 9))\n1407cf0bb        return zx.q(rdi - 9)\n1407cf166        sub_1407b9510(arg1)\n1407cf17a        return 1",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

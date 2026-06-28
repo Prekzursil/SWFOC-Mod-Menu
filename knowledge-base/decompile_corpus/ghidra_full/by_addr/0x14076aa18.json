@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076aa18",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __scrt_get_show_window_mode\n   \n   Library: Visual Studio 2019 Release */\n\nWORD __scrt_get_show_window_mode(void)\n\n{\n  WORD WVar1;\n  _STARTUPINFOW local_78;\n  \n  FUN_14076c430(&local_78,0,0x68);\n  GetStartupInfoW(&local_78);\n  WVar1 = 10;\n  if (((byte)local_78.dwFlags & 1) != 0) {\n    WVar1 = local_78.wShowWindow;\n  }\n  return WVar1;\n}",
+  "fetched_at": "2026-04-26T18:10:11Z"
+}

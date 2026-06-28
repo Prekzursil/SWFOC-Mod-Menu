@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403527d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ButtonComponentClass::vfunction18(ButtonComponentClass *this,char param_1)\n\n{\n  byte bVar1;\n  char cVar2;\n  char cVar3;\n  char cVar4;\n  \n  bVar1 = (this->BaseComponentClass_data).offset_0xb8;\n  cVar2 = '\\0';\n  if (*(int *)&(this->ButtonComponentClass_data).offset_0x378 != 4) {\n    cVar2 = param_1;\n  }\n  if ((bVar1 & 2) == 0) {\n    cVar3 = '\\0';\n    if ((this->BaseComponentClass_data).offset_0x80 != 0) {\n      cVar3 = FUN_14034ce60();\n    }\n    cVar4 = '\\0';\n    if (cVar3 == '\\0') {\n      cVar4 = cVar2;\n    }\n    (this->BaseComponentClass_data).offset_0xb8 = cVar4 << 3 | bVar1 & 0xf7;\n    if (cVar4 != '\\0') {\n      *(undefined4 *)&(this->ButtonComponentClass_data).offset_0x378 = 5;\n      return;\n    }\n  }\n  else {\n    (this->BaseComponentClass_data).offset_0xb8 = bVar1 & 0xf7;\n  }\n  if (*(int *)&(this->ButtonComponentClass_data).offset_0x378 == 5) {\n    *(undefined4 *)&(this->ButtonComponentClass_data).offset_0x378 = 1;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:15Z"
+}

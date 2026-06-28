@@ -1,0 +1,7 @@
+{
+  "addr": "0x140775fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __ascii_stricmp\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl __ascii_stricmp(char *_Str1,char *_Str2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  uint uVar3;\n  uint uVar4;\n  \n  do {\n    bVar1 = *_Str1;\n    bVar2 = *_Str2;\n    uVar3 = bVar1 + 0x20;\n    if (0x19 < bVar1 - 0x41) {\n      uVar3 = (uint)bVar1;\n    }\n    uVar4 = bVar2 + 0x20;\n    _Str1 = _Str1 + 1;\n    _Str2 = _Str2 + 1;\n    if (0x19 < bVar2 - 0x41) {\n      uVar4 = (uint)bVar2;\n    }\n  } while ((uVar3 - uVar4 == 0) && (uVar3 != 0));\n  return uVar3 - uVar4;\n}",
+  "fetched_at": "2026-04-26T18:50:24Z"
+}

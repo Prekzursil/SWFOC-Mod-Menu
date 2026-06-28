@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034aed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14034aee0        *arg1 = &IconComponentClass::`vftable'{for `BaseComponentClass'}\n14034aee3        int64_t* rcx = arg1[0x45]\n14034aeed        if (rcx != 0)\n14034aef2        (*(*rcx + 8))(rcx)\n14034aef5        int64_t* rcx_1 = arg1[0x3b]\n14034aeff        if (rcx_1 != 0)\n14034af04        (*(*rcx_1 + 8))(rcx_1)\n14034af07        int64_t* rcx_2 = arg1[0x31]\n14034af11        if (rcx_2 != 0)\n14034af16        (*(*rcx_2 + 8))(rcx_2)\n14034af24        *arg1 = &BaseComponentClass::`vftable'\n14034af2c        return sub_1401f9440() __tailcall",
+  "fetched_at": "2026-04-26T17:07:40Z"
+}

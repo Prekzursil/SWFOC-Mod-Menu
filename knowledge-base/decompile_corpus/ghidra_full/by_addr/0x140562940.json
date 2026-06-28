@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CapturePointDataPackClass * __thiscall\nCapturePointDataPackClass::CapturePointDataPackClass(CapturePointDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_CapturePointDataPackClass,8,class_EmptyLockerClass>\n       = 0xffffffff;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)\n   &(this->PooledObjectClass<class_CapturePointDataPackClass,8,class_EmptyLockerClass>).field_0x4 =\n       0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407284f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nBudgetInstantiationMarshallerClass::vfunction3\n          (BudgetInstantiationMarshallerClass *this,int param_1,longlong param_2)\n\n{\n  undefined8 uVar1;\n  int iVar2;\n  \n  if (*(char *)(*(longlong *)(param_2 + 0x50) + 0xa8) == '\\0') {\n    uVar1 = *(undefined8 *)(*(longlong *)(param_2 + 0xd0) + (longlong)param_1 * 8);\n    iVar2 = FUN_1403711c0(uVar1,0);\n    *(float *)(param_2 + 0x40) = (float)iVar2 + *(float *)(param_2 + 0x40);\n    iVar2 = FUN_1403711c0(uVar1,0);\n    *(float *)(param_2 + 0x44) = (float)iVar2 + *(float *)(param_2 + 0x44);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:36Z"
+}

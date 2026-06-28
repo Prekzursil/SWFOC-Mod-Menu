@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001d7a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001d7a0(void)\n\n{\n  std::_Init_locks::_Init_locks((_Init_locks *)&DAT_140b3b6b0);\n  atexit((_func_5014 *)&LAB_1407fc1b0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:27Z"
+}

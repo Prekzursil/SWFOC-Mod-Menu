@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d4d50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nPerceptualEvaluatorClass * __thiscall\nLandGamePerceptualEvaluatorClass::~LandGamePerceptualEvaluatorClass(void)\n\n{\n  PerceptualEvaluatorClass *this;\n  \n  this = (PerceptualEvaluatorClass *)FUN_140769c58(0x88);\n  if (this != (PerceptualEvaluatorClass *)0x0) {\n    PerceptualEvaluatorClass::~PerceptualEvaluatorClass(this);\n    this->vftablePtr = (PerceptualEvaluatorClass_vftable_for_SignalGeneratorClass *)&vftable;\n    this->vftablePtr = (PerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)&vftable;\n    (*this->vftablePtr->vfunction9_for_SignalGeneratorClass)(this);\n    return this;\n  }\n  (**(code **)(_DAT_00000000 + 0x40))(0);\n  return (PerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:42:57Z"
+}

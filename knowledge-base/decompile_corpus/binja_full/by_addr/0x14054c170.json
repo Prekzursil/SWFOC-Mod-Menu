@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054c170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054c177        return \"WeaponBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:34:11Z"
+}

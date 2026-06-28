@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402716c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402716d9        struct RefCountClass::ModelClass::VTable** result = sub_14025ec10(arg2, nullptr)\n1402716e1        if (result == 0)\n1402716fc        return result\n1402716ed        return sub_1402713b0(arg1, result, arg3)",
+  "fetched_at": "2026-04-26T17:31:47Z"
+}

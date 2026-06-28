@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f5f53        *arg1 = &DebugTreeItem::`vftable'{for `RefCountClass'}\n1405f5f59        int64_t rdx = arg1[0xa]\n1405f5f61        if (rdx u>= 0x10)\n1405f5f63        void* rcx = arg1[7]\n1405f5f71        if (rdx + 1 u>= 0x1000)\n1405f5f73        void* r8_1 = *(rcx - 8)\n1405f5f86        if (rcx - r8_1 - 8 u> 0x1f)\n1405f5fe7        _invalid_parameter_noinfo_noreturn()\n1405f5fe7        noreturn\n1405f5f88        rcx = r8_1\n1405f5f8b        j_sub_1407864b8(rcx)\n1405f5f94        arg1[9] = 0\n1405f5f9c        arg1[0xa] = 0xf\n1405f5fa4        arg1[7].b = 0\n1405f5fa8        sub_1400466c0(&arg1[3])\n1405f5fad        int64_t* rcx_3 = arg1[2]\n1405f5fb4        if (rcx_3 != 0)\n1405f5fb9        (*(*rcx_3 + 8))(rcx_3)\n1405f5fc3        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1405f5fca        if ((arg2 & 1) != 0)\n1405f5fd4        j_sub_1407864b8(arg1)\n1405f5fe6        return arg1",
+  "fetched_at": "2026-04-26T17:22:32Z"
+}

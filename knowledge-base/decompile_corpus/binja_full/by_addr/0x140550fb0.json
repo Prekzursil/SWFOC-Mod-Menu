@@ -1,0 +1,7 @@
+{
+  "addr": "0x140550fb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140550fba        int64_t lpMem = arg1[1]\n140550fbe        struct DynamicVectorClass<class PerceptionGridEntryClass* __ptr64>::VTable* const result = &DynamicVectorClass<class PerceptionGridEntryClass* __ptr64>::`vftable'\n140550fc5        *arg1 = &DynamicVectorClass<class PerceptionGridEntryClass* __ptr64>::`vftable'\n140550fce        if (lpMem != 0)\n140550fd7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n140550ff2        j_sub_1407864b8(lpMem)\n140550fe7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140550ff7        result = nullptr\n140550ff9        *(arg1 + 0x14) &= 0x80000000\n140551000        arg1[1] = 0\n140551004        arg1[2].d = 0\n140551011        return result",
+  "fetched_at": "2026-04-26T17:34:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140471470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140471478        if (*(arg1 + 0x30) != 0)\n14047147e        int64_t* r11_1 = *(arg1 + 0x28)\n140471482        int64_t* i = *r11_1\n140471488        if (i != r11_1)\n14047148e        int64_t r9_1 = *(arg2 + 0x298)\n1404714a0        void* result = i[5]\n1404714a4        int64_t r8 = *(result + 0x30)\n1404714b8        if (r8 == r9_1 && *(result + 0x40) == *(arg3 + 0x298))\n14047152e        return result\n1404714c7        if (r8 == *(arg3 + 0x298) && *(result + 0x40) == r9_1)\n14047152e        return result\n1404714c9        int64_t* i_1 = i[2]\n1404714d1        if (*(i_1 + 0x19) == 0)\n1404714f8        int64_t* i_3 = *i_1\n1404714fb        i = i_1\n140471502        if (*(i_3 + 0x19) == 0)\n14047151d        int64_t* i_4\n140471510        i_4 = *i_3\n140471513        i = i_3\n140471516        i_3 = i_4\n14047151d        do while (*(i_4 + 0x19) == 0)\n1404714d3        int64_t* i_2 = i[1]\n1404714db        if (*(i_2 + 0x19) == 0)\n1404714e4        while (i == i_2[2])\n1404714e6        i = i_2\n1404714e9        i_2 = i_2[1]\n1404714f1        if (*(i_2 + 0x19) != 0)\n1404714f1        break\n1404714f3        i = i_2\n140471522        do while (i != r11_1)\n14047152a        return 0",
+  "fetched_at": "2026-04-26T17:28:09Z"
+}

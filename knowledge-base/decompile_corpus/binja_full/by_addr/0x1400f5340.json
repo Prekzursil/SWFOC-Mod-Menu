@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400f5340",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400f534b        if (data_140a62230 == 0)\n1400f534b        return \n1400f536b        sub_1401c1d20(&data_140a78510, data_140a11f20, 1)\n1400f5370        int64_t rdi_1 = data_140a62248\n1400f537a        int64_t* rbx_1 = data_140a62240\n1400f5381        data_140a62234 = 0\n1400f5389        data_140a11f20 = 0xffffffff\n1400f5393        data_140a62230 = 0\n1400f539a        data_140a11f24 = 0x3fffff\n1400f53a7        if (rbx_1 != rdi_1)\n1400f53b3        LCRec::`default constructor closure'(rbx_1)\n1400f53b8        rbx_1 = &rbx_1[2]\n1400f53bf        do while (rbx_1 != rdi_1)\n1400f53c1        rbx_1 = data_140a62240\n1400f53cd        data_140a62248 = rbx_1\n1400f53dd        return ",
+  "fetched_at": "2026-04-26T17:04:07Z"
+}

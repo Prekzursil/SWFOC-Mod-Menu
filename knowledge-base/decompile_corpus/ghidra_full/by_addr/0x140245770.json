@@ -1,0 +1,7 @@
+{
+  "addr": "0x140245770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaScriptClass::vfunction5(void)\n\n{\n  return &DAT_140a15740;\n}",
+  "fetched_at": "2026-04-26T18:10:21Z"
+}

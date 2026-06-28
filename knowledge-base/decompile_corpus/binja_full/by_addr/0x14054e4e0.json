@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054e4e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054e504        __builtin_memset(arg1, 0, 0x18)\n14054e512        void* rdi = *arg2\n14054e515        int64_t rbp = arg2[1]\n14054e51c        if (rdi != rbp)\n14054e53f        int64_t rbx_3 = (rbp - rdi) s/ 0x34\n14054e545        int32_t* rax_4 = sub_140425920(arg1, rbx_3)\n14054e54a        *arg1 = rax_4\n14054e550        arg1[1] = rax_4\n14054e564        arg1[2] = rbx_3 * 0x34 + rax_4\n14054e56d        arg1[1] = sub_14054e130(rdi, rbp, rax_4)\n14054e571        __builtin_memset(&arg1[3], 0, 0x18)\n14054e57d        int32_t* r12 = arg2[3]\n14054e581        int64_t rbp_1 = arg2[4]\n14054e588        if (r12 != rbp_1)\n14054e58a        void* rbp_2 = rbp_1 - r12\n14054e594        int64_t rdi_2 = rbp_2 s>> 2\n14054e59b        void* rax_8 = sub_140048c40(&arg1[3], rdi_2)\n14054e5a0        arg1[3] = rax_8\n14054e5a7        arg1[4] = rax_8\n14054e5b2        arg1[5] = rax_8 + (rdi_2 << 2)\n14054e5b6        int32_t* rbx_4 = arg1[3]\n14054e5bd        memcpy(rbx_4, r12, rbp_2)\n14054e5c6        arg1[4] = &rbx_4[rdi_2]\n14054e5dd        arg1[6].d = arg2[6].d\n14054e5e4        *(arg1 + 0x34) = *(arg2 + 0x34)\n14054e5eb        arg1[7].d = arg2[7].d\n14054e5f2        *(arg1 + 0x3c) = *(arg2 + 0x3c)\n14054e5f9        arg1[8].d = arg2[8].d\n14054e601        *(arg1 + 0x44) = *(arg2 + 0x44)\n14054e616        return arg1",
+  "fetched_at": "2026-04-26T17:34:13Z"
+}

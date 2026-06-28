@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ddf10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* PlanetForcePerceptualEvaluatorClass member function inherited by\n   PlanetEnemyForcePerceptualEvaluatorClass\n   PlanetForcePerceptualEvaluatorClass member function inherited by\n   PlanetFriendlyForcePerceptualEvaluatorClass */\n\nvoid __thiscall\nPlanetForcePerceptualEvaluatorClass::vfunction2\n          (PlanetForcePerceptualEvaluatorClass *this,undefined8 param_1,int param_2,\n          undefined8 *param_3)\n\n{\n  undefined *puVar1;\n  undefined8 uVar2;\n  \n  if (param_2 == 0xe) {\n    if ((param_3 != (undefined8 *)0x0) &&\n       (puVar1 = (undefined *)(**(code **)*param_3)(param_3), puVar1 != (undefined *)0x0)) {\n      while (puVar1 != &DAT_140a2bee0) {\n        puVar1 = *(undefined **)(puVar1 + 8);\n        if (puVar1 == (undefined *)0x0) {\n          return;\n        }\n      }\n      if (param_3[2] ==\n          *(longlong *)\n           (*(longlong *)(this->vftablePtr[2].vfunction2_for_AIDiagnosticsClass + 0x28) + 0x28)) {\n        uVar2 = FUN_140058570();\n        FUN_140220ed0(uVar2,&this[-1].SignalListenerClass_data.offset_0x50,0xe,param_3);\n        return;\n      }\n    }\n  }\n  else {\n    GameObjectPerceptualEvaluatorClass::vfunction2((GameObjectPerceptualEvaluatorClass *)this);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:44:32Z"
+}

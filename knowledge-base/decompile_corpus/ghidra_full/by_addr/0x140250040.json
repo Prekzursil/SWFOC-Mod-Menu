@@ -1,0 +1,7 @@
+{
+  "addr": "0x140250040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140250040(undefined8 *param_1,undefined4 param_2)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  \n  if ((((DAT_140b09e40 != 0) && (*(char *)(DAT_140b09e40 + 0x28) != '\\0')) &&\n      (*(int *)(DAT_140b09e40 + 0x2c) <\n       (int)(*(longlong *)(DAT_140b09e40 + 0x18) - *(longlong *)(DAT_140b09e40 + 0x10) >> 5))) &&\n     (-1 < *(int *)(DAT_140b09e40 + 0x2c))) {\n    puVar1 = param_1;\n    if (0xf < (ulonglong)param_1[3]) {\n      puVar1 = (undefined8 *)*param_1;\n    }\n    FUN_140025760(\"LuaNetworkDebuggerClass::Send_Output_To_Debugger -- Message: %s\\n\",puVar1);\n    lVar2 = (longlong)*(int *)(DAT_140b09e40 + 0x2c) * 0x20 + *(longlong *)(DAT_140b09e40 + 0x10);\n    if ((*(char *)(lVar2 + 0x14) != '\\0') &&\n       (puVar1 = (undefined8 *)FUN_1402093c0(&DAT_140a14b80,0), puVar1 != (undefined8 *)0x0)) {\n      (**(code **)*puVar1)(puVar1);\n      FUN_1402075b0(&DAT_140b09e48,puVar1);\n      FUN_1402046f0(puVar1,0x21,0x20);\n      FUN_1402046f0(puVar1,param_2,0x20);\n      FUN_140204e20(puVar1,param_1);\n      FUN_140209ef0(*(undefined8 *)(lVar2 + 8),puVar1,0);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:50Z"
+}

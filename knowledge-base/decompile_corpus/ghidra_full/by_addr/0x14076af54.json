@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076af54",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __std_exception_copy\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __std_exception_copy(longlong *param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  char *_Dst;\n  longlong lVar2;\n  \n  if (((char)param_1[1] == '\\0') || (*param_1 == 0)) {\n    *param_2 = *param_1;\n    *(undefined1 *)(param_2 + 1) = 0;\n  }\n  else {\n    lVar1 = -1;\n    do {\n      lVar2 = lVar1;\n      lVar1 = lVar2 + 1;\n    } while (*(char *)(*param_1 + lVar2 + 1) != '\\0');\n    _Dst = (char *)_malloc_base(lVar2 + 2);\n    if (_Dst != (char *)0x0) {\n      strcpy_s(_Dst,lVar2 + 2,(char *)*param_1);\n      *(undefined1 *)(param_2 + 1) = 1;\n      *param_2 = (longlong)_Dst;\n    }\n    FUN_1407864b8(0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:29Z"
+}

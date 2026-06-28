@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054f030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14054f030(longlong *param_1,float param_2)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  int iVar3;\n  longlong lVar4;\n  longlong lVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  \n  fVar7 = 0.0;\n  if (0.0 <= param_2) {\n    lVar1 = *param_1;\n    uVar2 = (param_1[1] - lVar1) / 0x34;\n    if (1 < uVar2) {\n      iVar3 = (int)uVar2;\n      lVar4 = (ulonglong)(iVar3 - 2) * 0x34;\n      lVar5 = (ulonglong)(iVar3 - 1) * 0x34;\n      fVar8 = *(float *)(lVar5 + 4 + lVar1) - *(float *)(lVar4 + 4 + lVar1);\n      fVar9 = *(float *)(lVar5 + lVar1) - *(float *)(lVar4 + lVar1);\n      fVar6 = (float)FUN_140776d48(fVar9 * fVar9 + fVar8 * fVar8 + 0.0);\n      if (0.0 < fVar6) {\n        fVar6 = DAT_1407ffaf8 / fVar6;\n        fVar9 = fVar9 * fVar6;\n        fVar8 = fVar6 * fVar8;\n        fVar7 = fVar6 * 0.0;\n      }\n      lVar1 = *param_1;\n      *(float *)(lVar5 + 4 + lVar1) = fVar8 * param_2 + *(float *)(lVar5 + 4 + lVar1);\n      *(float *)(lVar5 + lVar1) = fVar9 * param_2 + *(float *)(lVar5 + lVar1);\n      *(float *)(lVar5 + 8 + lVar1) = fVar7 * param_2 + *(float *)(lVar5 + 8 + lVar1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:37:49Z"
+}

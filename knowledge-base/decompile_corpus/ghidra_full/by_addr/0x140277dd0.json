@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277dd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DrawLineSegmentClass * __thiscall\nDrawLineSegmentClass::scalar_deleting_destructor(DrawLineSegmentClass *this,uint param_1)\n\n{\n  longlong lVar1;\n  \n                    /* inlined destructor: DrawLineSegmentClass::~DrawLineSegmentClass */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  lVar1 = (this->DrawPrimitiveClass_data).offset_0x30;\n  if (lVar1 != 0) {\n    FUN_14025c490(lVar1,this);\n  }\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (DrawLineSegmentClass_vftable1 *)&RefCountClass::vftable;\n  DrawPrimitiveClass::~DrawPrimitiveClass((DrawPrimitiveClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x70);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:20:46Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d6540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandLocationPerceptualEvaluatorClass::vfunction15(LandLocationPerceptualEvaluatorClass *this)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  \n  if ((((*(float *)&(this->SignalListenerClass_data).offset_0x60 != DAT_140800804) ||\n       (*(float *)((longlong)&(this->SignalListenerClass_data).offset_0x60 + 4) != DAT_140800804))\n      || (*(float *)&(this->SignalListenerClass_data).offset_0x68 != DAT_140800804)) &&\n     (plVar1 = (longlong *)FUN_14028a950(&DAT_140b153e0,1), plVar1 != (longlong *)0x0)) {\n    lVar2 = (**(code **)(*plVar1 + 0x180))(plVar1,&(this->SignalListenerClass_data).offset_0x60);\n    (*this->vftablePtr->vfunction14)(this,lVar2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:15Z"
+}

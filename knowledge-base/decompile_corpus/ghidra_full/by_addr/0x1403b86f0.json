@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b86f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandModeClass::vfunction74(LandModeClass *this)\n\n{\n  longlong lVar1;\n  undefined1 local_28 [8];\n  float local_20;\n  float local_14;\n  \n  DAT_140a284c4 = 1;\n  FUN_14013ecc0(1);\n  GameModeClass::vfunction74((GameModeClass *)this);\n  if ((*(longlong *)&(this->LandModeClass_data).field_0x198 != 0) &&\n     (lVar1 = (this->LandModeClass_data).offset_0x330, lVar1 != 0)) {\n    FUN_1401320d0(lVar1,local_28);\n    FUN_1407dae70(*(undefined8 *)&(this->LandModeClass_data).field_0x198,local_20 - local_14,\n                  (local_20 + local_14) - (local_20 - local_14));\n  }\n  if (DAT_140b15490 != '\\0') {\n    DAT_140a284c4 = 0;\n    FUN_14013ecc0(0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:35:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140794dd8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140794dde        int32_t rbx = 0\n140794de0        int32_t arg_8 = 0\n140794df4        TEB* gsbase\n140794df4        if (gsbase->ProcessEnvironmentBlock->ProcessParameters->Flags s>= 0)\n140794dfb        __acrt_AppPolicyGetProcessTerminationMethodInternal(&arg_8)\n140794e05        if (gsbase->ProcessEnvironmentBlock->ProcessParameters->Flags s< 0 || arg_8 != 1)\n140794e07        rbx = 1\n140794e13        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

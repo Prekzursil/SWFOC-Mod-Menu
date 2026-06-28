@@ -1,0 +1,7 @@
+{
+  "addr": "0x140396520",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039652a        float zmm0 = *(arg1 + 0x78) - *arg2\n14039652e        float zmm1 = *(arg1 + 0x7c) - arg2[1]\n14039653b        float zmm2 = *(arg1 + 0x80) - arg2[2]\n140396554        return sqrtf(zmm0 * zmm0 + zmm1 * zmm1 + zmm2 * zmm2) __tailcall",
+  "fetched_at": "2026-04-26T17:23:43Z"
+}

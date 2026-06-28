@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055c540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpawnSquadronDataPackClass * __thiscall\nSpawnSquadronDataPackClass::SpawnSquadronDataPackClass(SpawnSquadronDataPackClass *this)\n\n{\n  (this->SpawnSquadronDataPackClass_data).offset_0x50 = 0xffffffff;\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_SpawnSquadronDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_SpawnSquadronDataPackClass,20,class_EmptyLockerClass>)0x0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x0 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x8 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x10 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x18 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x20 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x28 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x30 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x38 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x40 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x48 = 0;\n  (this->SpawnSquadronDataPackClass_data).offset_0x54 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:41Z"
+}

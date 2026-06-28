@@ -1,0 +1,7 @@
+{
+  "addr": "0x140748750",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_140748750(short *param_1,short param_2)\n\n{\n  short *psVar1;\n  \n  for (psVar1 = param_1; (psVar1 != param_1 + 0xb && (*psVar1 != param_2)); psVar1 = psVar1 + 1) {\n  }\n  return (longlong)psVar1 - (longlong)param_1 >> 1;\n}",
+  "fetched_at": "2026-04-26T18:05:36Z"
+}

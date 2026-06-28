@@ -1,0 +1,7 @@
+{
+  "addr": "0x140624710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140624723        *arg1 = &WindDisturbanceBehaviorClass::`vftable'{for `BehaviorClass'}\n140624730        arg1[1] = &WindDisturbanceBehaviorClass::`vftable'{for `RefCountClass'}\n14062473b        arg1[3] = &WindDisturbanceBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062473f        sub_1404c3310(arg1)\n140624747        if ((arg2 & 1) != 0)\n140624751        j_sub_1407864b8(arg1)\n140624763        return arg1",
+  "fetched_at": "2026-04-26T17:23:51Z"
+}

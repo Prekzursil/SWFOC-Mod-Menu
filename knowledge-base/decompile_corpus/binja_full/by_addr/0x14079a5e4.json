@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a5e4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a605        if (arg1 != 0 && arg1 != &data_1408d68c0 && *(arg1 + 0x15c) == 0)\n14079a607        __acrt_locale_free_time(arg1)\n14079a60f        _free_base(arg1)\n14079a619        return ",
+  "fetched_at": "2026-04-26T17:32:07Z"
+}

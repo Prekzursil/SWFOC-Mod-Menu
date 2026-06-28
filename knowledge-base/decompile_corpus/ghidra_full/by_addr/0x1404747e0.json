@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404747e0",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_the_ai_data_mgr_ctor",
+  "body": "\nTheAIDataManagerClass * __thiscall\nTheAIDataManagerClass::TheAIDataManagerClass(TheAIDataManagerClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  FUN_140254520(&this->Singleton<class_TheAIDataManagerClass>);\n  (this->TheAIDataManagerClass_data).offset_0x38 = 0;\n  (this->TheAIDataManagerClass_data).offset_0x40 = 0;\n  (this->TheAIDataManagerClass_data).offset_0x48 = 0;\n  (this->TheAIDataManagerClass_data).offset_0x50 = 0;\n  (this->TheAIDataManagerClass_data).offset_0x58 = 0;\n  (this->TheAIDataManagerClass_data).offset_0x60 = 0;\n  (this->TheAIDataManagerClass_data).offset_0x68 = 0;\n  (this->TheAIDataManagerClass_data).offset_0x70 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:42Z"
+}

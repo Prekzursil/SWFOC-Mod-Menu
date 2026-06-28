@@ -1,0 +1,7 @@
+{
+  "addr": "0x140195430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140195441        arg1[3] = 0\n140195448        arg1[1].d = 0\n140195452        *arg1 = &alDrawPrimitive::`vftable'{for `RefCountClass'}\n14019545c        arg1[2] = &alDrawPrimitive::`vftable'{for `MultiLinkedListMember'}\n140195466        arg1[4].d = arg2\n140195469        *(arg1 + 0x24) = 0\n140195474        if (sub_14020aa60(&data_140a12ae0, &arg1[2], 1) == 1)\n14019547c        (*arg1)->__offset(0x0).q(arg1)\n140195486        return arg1",
+  "fetched_at": "2026-04-26T17:24:25Z"
+}

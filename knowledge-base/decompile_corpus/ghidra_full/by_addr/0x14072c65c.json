@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072c65c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "# Ghidra has no function at this address.\n# error: No function found for 0x14072C65C\n",
+  "fetched_at": "2026-04-26T18:01:07Z"
+}

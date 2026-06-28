@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406970a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406970af        int64_t* rbx = *(arg3 + 0x10)\n1406970c6        if (((*(arg3 + 0x18) - rbx) & 0xfffffffffffffff8) != 0)\n1406970d1        int64_t* rbx_1 = *rbx\n1406970d7        void* rax_3\n1406970d7        if (rbx_1 != 0)\n1406970df        rax_3, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n1406970e5        if (rbx_1 == 0 || rax_3 == 0)\n1406970fe        label_1406970fe:\n140697108        sub_140248190(arg2, \"FindPlanet -- Parameter 1 is not a valid string\", arg3)\n1406970f3        while (true)\n1406970f3        if (rax_3 == &data_140a157d0)\n140697124        void* rdx_1 = &rbx_1[2]\n140697128        if (rbx_1[5] u>= 0x10)\n14069712a        rdx_1 = *rdx_1\n140697134        int64_t rax_5 = sub_140407e00(&data_140b2f020, rdx_1)\n14069713c        if (rax_5 != 0)\n14069714f        void* rax_6 = sub_1402a9570(*(data_140b15418 + 0x18), rax_5, nullptr)\n140697158        if (*(rax_6 + 0x10) != 0)\n14069715e        int64_t* rcx_4 = **(rax_6 + 8)\n140697164        if (rcx_4 != 0)\n140697186        return sub_140256d40(arg1, sub_1405751d0(rcx_4, arg2, 1)) __tailcall\n14069713c        break\n1406970f5        rax_3 = *(rax_3 + 8)\n1406970fc        if (rax_3 == 0)\n1406970fc        goto label_1406970fe\n140697108        sub_140248190(arg2, \"FindPlanet -- No planet name set\", arg3)\n14069711e        return 0",
+  "fetched_at": "2026-04-26T17:20:14Z"
+}

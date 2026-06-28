@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405406b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall LuaGetTime::vfunction20(void)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  ulonglong uVar4;\n  float fVar5;\n  longlong *local_res20;\n  \n  plVar2 = (longlong *)FUN_140769c58(0x18);\n  if (plVar2 != (longlong *)0x0) {\n    uVar4 = (ulonglong)DAT_140b0a320;\n    fVar5 = (float)DAT_140b0a340;\n    *(undefined4 *)(plVar2 + 1) = 0;\n    *plVar2 = (longlong)&LuaValue<double,4>::vftable;\n    plVar2[2] = (longlong)(double)((float)uVar4 / fVar5);\n    plVar3 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n             ::\n             ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                       ();\n    local_res20 = plVar2;\n    (**(code **)*plVar2)(plVar2);\n    puVar1 = (undefined8 *)plVar3[3];\n    if (puVar1 == (undefined8 *)plVar3[4]) {\n      FUN_140144900(plVar3 + 2,puVar1,&local_res20);\n    }\n    else {\n      *puVar1 = plVar2;\n      (**(code **)*plVar2)(plVar2);\n      plVar3[3] = plVar3[3] + 8;\n    }\n    (**(code **)(*plVar2 + 8))(plVar2);\n    return plVar3;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:35:05Z"
+}

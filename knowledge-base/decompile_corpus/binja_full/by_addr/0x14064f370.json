@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064f370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064f380        if (arg1 != 0)\n14064f387        struct PerceptualEvaluatorClass::FunctionPerceptualEvaluatorClass::VTable** result = operator new(0x90)\n14064f392        if (result != 0)\n14064f397        sub_14064c900(result)\n14064f3a3        result[0x11] = arg1\n14064f3aa        *result = &FunctionPerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n14064f3b4        result[3] = &FunctionPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n14064f3c5        return result\n14064f3d2        return 0",
+  "fetched_at": "2026-04-26T17:05:53Z"
+}

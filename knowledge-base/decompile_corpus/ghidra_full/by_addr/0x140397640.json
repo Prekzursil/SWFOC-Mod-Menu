@@ -1,0 +1,7 @@
+{
+  "addr": "0x140397640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "double FUN_140397640(longlong param_1,float *param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  \n  fVar2 = *(float *)(param_1 + 0x7c) - param_2[1];\n  fVar1 = *(float *)(param_1 + 0x78) - *param_2;\n  fVar3 = *(float *)(param_1 + 0x80) - param_2[2];\n  return (double)(fVar1 * fVar1) + (double)(fVar2 * fVar2) + (double)(fVar3 * fVar3);\n}",
+  "fetched_at": "2026-04-26T17:30:23Z"
+}

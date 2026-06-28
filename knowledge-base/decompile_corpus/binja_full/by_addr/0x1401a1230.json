@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a1230",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a1230        uint64_t rax_10 = zx.q(*(arg2 + 0x40))\n1401a123f        if (rax_10.w == 0xffff)\n1401a1245        *arg4 = *(arg2 + 0x28)\n1401a1248        int32_t rax_1 = *(arg2 + 0x2c)\n1401a124c        arg4[1] = rax_1\n1401a1256        arg4[2] = (*(arg2 + 0x30)).d\n1401a125c        return rax_1\n1401a1265        int64_t rcx = *(arg1 + 0x68)\n1401a1269        int64_t rdx = sx.q(arg3 * *(arg1 + 0x9c))\n1401a1277        uint128_t zmm2 = _mm_cvtepi32_ps(zx.o(*(rcx + ((rax_10 + rdx) << 1))))\n1401a127a        *arg4 = zmm2.d\n1401a1290        uint128_t zmm1 = _mm_cvtepi32_ps(zx.o(*(rcx + ((zx.q(*(arg2 + 0x40)) + rdx) << 1) + 2)))\n1401a1293        arg4[1] = zmm1.d\n1401a12a1        uint32_t rax_9 = zx.d(*(rcx + ((zx.q(*(arg2 + 0x40)) + rdx) << 1) + 4))\n1401a12aa        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(rax_9))\n1401a12ad        arg4[2] = zmm0.d\n1401a12b3        zmm2.d = zmm2.d f* *(arg2 + 0x34)\n1401a12b9        *arg4 = zmm2.d\n1401a12be        zmm1.d = zmm1.d f* *(arg2 + 0x38)\n1401a12c4        arg4[1] = zmm1.d\n1401a12ca        zmm0.d = zmm0.d f* *(arg2 + 0x3c)\n1401a12d0        arg4[2] = zmm0.d\n1401a12d6        zmm2.d = zmm2.d f+ *(arg2 + 0x28)\n1401a12dc        *arg4 = zmm2.d\n1401a12e1        zmm1.d = zmm1.d f+ *(arg2 + 0x2c)\n1401a12e7        arg4[1] = zmm1.d\n1401a12ed        zmm0.d = zmm0.d f+ *(arg2 + 0x30)\n1401a12f3        arg4[2] = zmm0.d\n1401a12f9        return rax_9",
+  "fetched_at": "2026-04-26T17:24:56Z"
+}

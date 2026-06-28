@@ -1,0 +1,7 @@
+{
+  "addr": "0x140527f30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140527f48        *(arg1 + 0x18) = &DynamicVectorClass<class PlayerPlanetaryBombardClass>::`vftable'\n140527f4f        *(arg1 + 0x20) = 0\n140527f5a        *(arg1 + 0x28) = 0\n140527f5e        *(arg1 + 0x30) = &DynamicVectorClass<class PlanetaryBombardLightClass* __ptr64>::`vftable'\n140527f62        *(arg1 + 0x38) = 0\n140527f66        *(arg1 + 0x40) = 0\n140527f6a        *(arg1 + 8) = 0\n140527f6e        int64_t rdi = *(arg1 + 0x20)\n140527f75        if (rdi != 0)\n140527f7a        j_sub_1407864b8(rdi)\n140527f7f        *(arg1 + 0x2c) &= 0x80000000\n140527f86        *(arg1 + 0x20) = 0\n140527f8a        *(arg1 + 0x28) = 0\n140527f8d        *arg1 = 0\n140527f93        *(arg1 + 0x10) = 0\n140527f96        *(arg1 + 0x48) = 0\n140527f9a        *(arg1 + 0x50) = 0\n140527fac        return arg1",
+  "fetched_at": "2026-04-26T17:33:12Z"
+}

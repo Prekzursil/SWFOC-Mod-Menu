@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a53b0",
+  "tool": "ghidra",
+  "fact_id": "rva_fow_disable_rendering_impl",
+  "body": "\nundefined8 FUN_1406a53b0(undefined8 param_1,undefined8 param_2,longlong param_3)\n\n{\n  char cVar1;\n  undefined *puVar2;\n  longlong *plVar3;\n  bool bVar4;\n  \n  cVar1 = (**(code **)(*DAT_140b15418 + 0xf0))();\n  if (cVar1 == '\\0') {\n    FUN_140248190(param_2,\"LuaFOWRevealCommandClass -- Command only valid in a tactical game.\");\n    return 0;\n  }\n  bVar4 = false;\n  if ((*(longlong *)(param_3 + 0x18) - (longlong)*(longlong **)(param_3 + 0x10) &\n      0xfffffffffffffff8U) != 0) {\n    plVar3 = (longlong *)**(longlong **)(param_3 + 0x10);\n    if (plVar3 != (longlong *)0x0) {\n      for (puVar2 = (undefined *)(**(code **)(*plVar3 + 0x20))(plVar3); puVar2 != (undefined *)0x0;\n          puVar2 = *(undefined **)(puVar2 + 8)) {\n        if (puVar2 == &DAT_140a157b0) {\n          (**(code **)*plVar3)(plVar3);\n          goto LAB_1406a5438;\n        }\n      }\n    }\n    plVar3 = (longlong *)0x0;\nLAB_1406a5438:\n    bVar4 = (char)plVar3[2] == '\\0';\n    (**(code **)(*plVar3 + 8))(plVar3);\n  }\n  DAT_140a284c4 = bVar4;\n  FUN_14013ecc0(bVar4);\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:09Z"
+}

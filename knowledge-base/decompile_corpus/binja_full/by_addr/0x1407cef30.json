@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cef30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cef47        int32_t rax = sub_1407b8ef0(arg1)\n1407cef58        int512_t zmm0\n1407cef58        int512_t zmm1\n1407cef58        zmm0, zmm1 = sub_1407b9540(arg1, \"tostring\")\n1407cef65        sub_1407b8e90(arg1, 0xffffd8ef, zmm0, zmm1)\n1407cef6a        int32_t rbx = 1\n1407cef71        if (rax s>= 1)\n1407cef88        sub_1407b9600(arg1, 0xffffffff)\n1407cef92        sub_1407b9600(arg1, rbx)\n1407cefa2        sub_1407b8ba0(arg1, 1, 1)\n1407cefaf        char* rax_1\n1407cefaf        int64_t r8_1\n1407cefaf        rax_1, r8_1 = sub_1407b9cc0(arg1, 0xffffffff)\n1407cefba        if (rax_1 == 0)\n1407cf040        sub_1407ce300(arg1, \"`tostring' must return a string to `print'\", r8_1)\n1407cf040        noreturn\n1407cefbf        if (rbx s> 1)\n1407cefd5        fputs(&data_14085387c, sub_140784a34(1))\n1407cefea        fputs(rax_1, sub_140784a34(1))\n1407ceff7        sub_1407b9ab0(arg1, 0xfffffffe)\n1407ceffc        rbx += 1\n1407cf000        do while (rbx s<= rax)\n1407cf01a        fputs(&data_140819c5c, sub_140784a34(1))\n1407cf035        return 0",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

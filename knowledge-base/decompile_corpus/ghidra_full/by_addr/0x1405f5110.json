@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalAIManagerClass * FUN_1405f5110(longlong param_1)\n\n{\n  TacticalAIManagerClass *pTVar1;\n  \n  if (param_1 == 0) {\n    return (TacticalAIManagerClass *)0x0;\n  }\n  pTVar1 = (TacticalAIManagerClass *)FUN_140769c58(0x70);\n  if (pTVar1 != (TacticalAIManagerClass *)0x0) {\n    pTVar1 = TacticalAIManagerClass::TacticalAIManagerClass(pTVar1);\n    (pTVar1->TacticalAIManagerClass_data).offset_0x0 = param_1;\n    return pTVar1;\n  }\n  lRam0000000000000028 = param_1;\n  return (TacticalAIManagerClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:23:01Z"
+}

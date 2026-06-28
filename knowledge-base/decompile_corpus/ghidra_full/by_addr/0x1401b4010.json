@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b4010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_1401b4010(undefined8 param_1,undefined8 param_2,longlong param_3)\n\n{\n  longlong lVar1;\n  byte bVar2;\n  longlong lVar3;\n  ulonglong uVar4;\n  longlong *plVar5;\n  byte bVar6;\n  longlong *plVar7;\n  longlong lVar8;\n  longlong local_28;\n  longlong lStack_20;\n  longlong local_18;\n  \n  bVar6 = 0;\n  local_18 = 0;\n  local_28 = 0;\n  lStack_20 = 0;\n  FUN_14020ec90(param_2,param_3 + 0x18,&local_28);\n  lVar3 = local_28;\n  plVar5 = (longlong *)0x0;\n  lVar8 = lStack_20;\n  if (lStack_20 - local_28 >> 3 != 0) {\n    do {\n      lVar1 = *(longlong *)(lVar3 + (longlong)plVar5 * 8);\n      plVar7 = (longlong *)(lVar1 + -0x20);\n      if (lVar1 == 0) {\n        plVar7 = (longlong *)0x0;\n      }\n      if ((*(byte *)((longlong)plVar7 + 0x31) & 0x40) == 0) {\n        bVar2 = (**(code **)(*plVar7 + 0x80))(plVar7,param_3);\n        bVar6 = bVar6 | bVar2;\n        lVar3 = local_28;\n        lVar8 = lStack_20;\n      }\n      plVar5 = (longlong *)(ulonglong)((int)plVar5 + 1);\n    } while (plVar5 < (longlong *)(lVar8 - lVar3 >> 3));\n  }\n  if (lVar3 != 0) {\n    uVar4 = local_18 - lVar3 & 0xfffffffffffffff8;\n    if (0xfff < uVar4) {\n      if (0x1f < (lVar3 - *(longlong *)(lVar3 + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(lVar3 + -8),uVar4 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return bVar6;\n}",
+  "fetched_at": "2026-04-26T17:44:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fa8a8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nEnhanceDefenseAbilityClass::vfunction3_for_RefCountClass\n          (EnhanceDefenseAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((EnhanceDefenseAbilityClass *)&this[-1].EnhanceDefenseAbilityClass_data.offset_0x8,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:38Z"
+}

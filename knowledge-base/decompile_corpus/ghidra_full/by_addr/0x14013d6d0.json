@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d6d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_1401803f0(int param_1,longlong *param_2,undefined4 *param_3)\n\n{\n  longlong lVar1;\n  \n  lVar1 = DAT_140a6fe70;\n  *param_2 = *(longlong *)(DAT_140a6fe70 + 0x28) + (longlong)*(int *)(DAT_140a6fe70 + 0x3c) * 0x18;\n  *param_3 = *(undefined4 *)(lVar1 + 0x38);\n  *(int *)(lVar1 + 0x3c) = *(int *)(lVar1 + 0x3c) + param_1;\n  *(int *)(lVar1 + 0x38) = *(int *)(lVar1 + 0x38) + param_1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:48Z"
+}

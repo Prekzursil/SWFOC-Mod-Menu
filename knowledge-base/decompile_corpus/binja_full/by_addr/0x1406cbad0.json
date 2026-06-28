@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cbad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406cbae3        *arg1 = &SquadronCombatantClass::`vftable'{for `CombatantBehaviorClass'}\n1406cbaf0        arg1[1] = &SquadronCombatantClass::`vftable'{for `RefCountClass'}\n1406cbafb        arg1[3] = &SquadronCombatantClass::`vftable'{for `SignalListenerClass'}\n1406cbaff        sub_1404c3310(arg1)\n1406cbb07        if ((arg2 & 1) != 0)\n1406cbb11        j_sub_1407864b8(arg1)\n1406cbb23        return arg1",
+  "fetched_at": "2026-04-26T17:25:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140631d90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140631d9b        struct BehaviorClass::TurretBehaviorClass::VTable** result = operator new(0x40)\n140631da6        if (result == 0)\n140631dde        return result\n140631dab        sub_1404c32d0(result)\n140631db7        *result = &TurretBehaviorClass::`vftable'{for `BehaviorClass'}\n140631dc1        result[1] = &TurretBehaviorClass::`vftable'{for `RefCountClass'}\n140631dcc        result[3] = &TurretBehaviorClass::`vftable'{for `SignalListenerClass'}\n140631dd8        return result",
+  "fetched_at": "2026-04-26T17:24:15Z"
+}

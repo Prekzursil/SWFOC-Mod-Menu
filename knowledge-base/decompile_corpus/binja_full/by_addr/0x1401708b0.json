@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401708b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401708b0        int64_t arg_10 = arg2\n1401708b5        int64_t* arg_8 = arg1\n1401708c8        void** rbx = arg1\n1401708df        int64_t rax\n1401708df        int64_t rdx\n1401708df        rdx:rax = muls.dp.q(0x4924924924924925, arg1[1] - *arg1)\n1401708e5        int64_t rsi_1 = rdx s>> 3\n1401708f6        int16_t* rax_3 = sub_140170c20(arg1, arg2)\n1401708fe        int16_t* arg_18 = rax_3\n140170910        sub_14016ee00(*rbx, rbx[1], rax_3)\n140170916        void* r8_3 = *rbx\n14017091c        if (r8_3 != 0)\n140170928        int64_t rax_4\n140170928        int64_t rdx_3\n140170928        rdx_3:rax_4 = muls.dp.q(0x4924924924924925, rbx[2] - r8_3)\n14017092b        int64_t rdx_4 = rdx_3 s>> 3\n140170944        if ((rdx_4 + (rdx_4 u>> 0x3f)) * 0x1c u>= 0x1000)\n14017094a        void* rcx_3 = *(r8_3 - 8)\n140170959        if (r8_3 - rcx_3 - 8 u> 0x1f)\n14017098b        _invalid_parameter_noinfo_noreturn()\n14017098b        noreturn\n14017095b        r8_3 = rcx_3\n140170961        j_sub_1407864b8(r8_3)\n140170966        *rbx = rax_3\n140170970        rbx[1] = (rsi_1 + (rsi_1 u>> 0x3f)) * 0x1c + rax_3\n140170978        void* result = arg2 * 0x1c + rax_3\n14017097b        rbx[2] = result\n14017098a        return result",
+  "fetched_at": "2026-04-26T17:22:57Z"
+}

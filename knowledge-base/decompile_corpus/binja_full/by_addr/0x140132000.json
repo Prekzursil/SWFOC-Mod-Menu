@@ -1,0 +1,7 @@
+{
+  "addr": "0x140132000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140132006        bool cond:0 = *(arg1 + 0xd8) == 0\n140132019        float result = 1f / arg2\n14013201d        *(arg1 + 0x9c) = arg2\n140132025        *(arg1 + 0xa0) = result\n14013202d        if (cond:0)\n140132067        return result\n14013203f        sub_140137bf0(arg1, 0, *(arg1 + 0x10), 0, *(arg1 + 0x14))\n14013205e        jump(*(**(arg1 + 0xd8) + 0x28))",
+  "fetched_at": "2026-04-26T17:10:51Z"
+}

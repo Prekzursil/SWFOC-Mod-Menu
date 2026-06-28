@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056ac70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056ac77        return \"BaseShieldBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:34:50Z"
+}

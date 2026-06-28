@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dc450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404dc463        void* var_28 = nullptr\n1404dc471        __builtin_strncpy(&var_28, \"Planet_\", 8)\n1404dc48f        int64_t var_10 = 0xf\n1404dc498        int64_t var_18 = 7\n1404dc4a6        sub_14043e9e0(arg1, &var_28, arg2 + 0xf8)\n1404dc4b4        if (var_10 u>= 0x10)\n1404dc4b6        void* rcx = var_28\n1404dc4be        void* rax_1 = rcx\n1404dc4c8        if (var_10 + 1 u>= 0x1000)\n1404dc4ca        rcx = *(rcx - 8)\n1404dc4dd        if (rax_1 - rcx - 8 u> 0x1f)\n1404dc4ed        _invalid_parameter_noinfo_noreturn()\n1404dc4ed        noreturn\n1404dc4df        j_sub_1407864b8(rcx)\n1404dc4ec        return arg1",
+  "fetched_at": "2026-04-26T17:31:13Z"
+}

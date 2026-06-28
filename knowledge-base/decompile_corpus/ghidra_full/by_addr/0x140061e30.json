@@ -1,0 +1,7 @@
+{
+  "addr": "0x140061e30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140061e30(int param_1)\n\n{\n  int iVar1;\n  \n  FUN_140215250(0);\n  _DAT_00000000 = 1;\n  if ((param_1 != 1) || (DAT_140b15418 == (longlong *)0x0)) {\n    return;\n  }\n  iVar1 = (**(code **)(*DAT_140b15418 + 0xe0))();\n  if (iVar1 == 0) {\n    thunk_FUN_14003f220(&DAT_140a60df0);\n    FUN_14028d940(&DAT_140b153e0);\n    FUN_140297630(&DAT_140a16fd0,0);\n    DAT_140b155e8 = 0;\n    FUN_1400338e0(&DAT_140a60df0);\n    FUN_1401c1e00(&DAT_140a78510);\n    FUN_1403027d0(&DAT_140b27f60);\n    DAT_140a61b0d = 0;\n    FUN_140069890();\n    FUN_1400c58e0();\n    return;\n  }\n  iVar1 = FUN_140047860(&DAT_140b153e0);\n  if (1 < iVar1) {\n    FUN_1400338e0();\n    thunk_FUN_14003f220(&DAT_140a60df0);\n    FUN_14028f320(&DAT_140b153e0,1);\n    FUN_1403c2c00(DAT_140b2eea0,0);\n    FUN_1401c1e00(&DAT_140a78510);\n    return;\n  }\n  thunk_FUN_14003f220(&DAT_140a60df0);\n  FUN_14028d940(&DAT_140b153e0);\n  FUN_140297630(&DAT_140a16fd0,0);\n  DAT_140b155e8 = 0;\n  FUN_1400338e0(&DAT_140a60df0);\n  FUN_1401c1e00(&DAT_140a78510);\n  FUN_1403027d0(&DAT_140b27f60);\n  DAT_140a61b0d = 0;\n  FUN_1400c58e0();\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:34Z"
+}

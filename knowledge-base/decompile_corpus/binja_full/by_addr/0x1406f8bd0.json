@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f8bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f8be3        *arg1 = &EliminateHeroAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f8bf0        arg1[1] = &EliminateHeroAbilityClass::`vftable'{for `RefCountClass'}\n1406f8bf4        sub_14048c8d0(arg1)\n1406f8bfc        if ((arg2 & 1) != 0)\n1406f8c06        j_sub_1407864b8(arg1)\n1406f8c18        return arg1",
+  "fetched_at": "2026-04-26T17:26:43Z"
+}

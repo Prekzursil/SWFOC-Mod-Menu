@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eeba0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1407eeba0(void)\n\n{\n  uint uVar1;\n  longlong lVar2;\n  RAMFileClass *this;\n  ulonglong uVar3;\n  \n  while (DAT_140b0af90 != 0) {\n    thunk_FUN_1407864b8(*DAT_140b0af88,0xc08);\n    if (0 < DAT_140b0af90) {\n      uVar1 = DAT_140b0af90 - 1;\n      if (uVar1 != 0) {\n        if ((_DAT_140b0af94 & 0x80000000) == 0) {\n          if (0 < (int)uVar1) {\n            uVar3 = (ulonglong)uVar1;\n            lVar2 = 8;\n            do {\n              *(undefined8 *)(lVar2 + -8 + (longlong)DAT_140b0af88) =\n                   *(undefined8 *)(lVar2 + (longlong)DAT_140b0af88);\n              uVar3 = uVar3 - 1;\n              lVar2 = lVar2 + 8;\n            } while (uVar3 != 0);\n          }\n        }\n        else {\n          FUN_14076bd80(DAT_140b0af88,DAT_140b0af88 + 1,(longlong)(int)uVar1 << 3);\n        }\n      }\n      DAT_140b0af90 = DAT_140b0af90 + -1;\n    }\n  }\n  if (DAT_140b0af98 != 0) {\n    thunk_FUN_1407864b8();\n  }\n  lVar2 = 0x100;\n  this = (RAMFileClass *)&DAT_140b14fb0;\n  do {\n    this = this + -1;\n    RAMFileClass::~RAMFileClass(this);\n    lVar2 = lVar2 + -1;\n  } while (lVar2 != 0);\n  DynamicVectorClass<class_FrameHistoryClass*___ptr64>::\n  ~DynamicVectorClass<class_FrameHistoryClass*___ptr64>\n            ((DynamicVectorClass<class_FrameHistoryClass*___ptr64> *)&DAT_140b0af80);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:47Z"
+}

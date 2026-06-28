@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f7a8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14075f7c1        int16_t result\n14075f7c1        result.b = (arg2 & _Getwctype(arg3)) != 0\n14075f7c9        return result",
+  "fetched_at": "2026-04-26T17:30:00Z"
+}

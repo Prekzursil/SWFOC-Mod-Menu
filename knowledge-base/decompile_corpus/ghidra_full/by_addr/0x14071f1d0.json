@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f1d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpecialAbilityActionClass * __thiscall\nSpecialAbilityActionClass::SpecialAbilityActionClass(SpecialAbilityActionClass *this)\n\n{\n  ActionClass::ActionClass((ActionClass *)this);\n  this->vftablePtr = &vftable;\n  (this->SpecialAbilityActionClass_data).offset_0x0 = 0;\n  (this->SpecialAbilityActionClass_data).offset_0x10 = 0;\n  (this->SpecialAbilityActionClass_data).offset_0x18 = 0xf;\n  (this->SpecialAbilityActionClass_data).offset_0x20 = 0;\n  (this->SpecialAbilityActionClass_data).offset_0x28 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:58:50Z"
+}

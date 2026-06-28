@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407933d4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_AppPolicyGetProcessTerminationMethodInternal\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 __acrt_AppPolicyGetProcessTerminationMethodInternal(undefined8 param_1)\n\n{\n  void *pvVar1;\n  undefined8 uVar2;\n  \n  pvVar1 = try_get_function(0x1c,\"AppPolicyGetProcessTerminationMethod\",(module_id *)&DAT_1408d8350,\n                            (module_id *)&DAT_1408d8354);\n  if (pvVar1 != (void *)0x0) {\n    uVar2 = (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(0xfffffffffffffffa,param_1);\n    return uVar2;\n  }\n  return 0xc0000225;\n}",
+  "fetched_at": "2026-04-26T18:53:00Z"
+}

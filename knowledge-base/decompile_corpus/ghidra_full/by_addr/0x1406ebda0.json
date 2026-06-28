@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ebda0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall BombingBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a44b18;\n}",
+  "fetched_at": "2026-04-26T17:46:35Z"
+}

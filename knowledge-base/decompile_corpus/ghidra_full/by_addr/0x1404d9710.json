@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d9710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceModeClass::vfunction25(SpaceModeClass *this,GameModeClass_vftable *param_1)\n\n{\n  longlong *plVar1;\n  \n  GameModeClass::vfunction25((GameModeClass *)this,param_1);\n  plVar1 = (longlong *)(this->SpaceModeClass_data).offset_0x320;\n  (**(code **)(*plVar1 + 0x40))(plVar1,param_1);\n  plVar1 = (longlong *)(this->SpaceModeClass_data).offset_0x318;\n                    /* WARNING: Could not recover jumptable at 0x0001404d974c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*plVar1 + 0x40))(plVar1,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:25Z"
+}

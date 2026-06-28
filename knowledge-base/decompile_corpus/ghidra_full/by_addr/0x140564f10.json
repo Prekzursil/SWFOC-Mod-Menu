@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564f10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall GUIDataPackClass::vfunction2(GUIDataPackClass *this,undefined8 param_1)\n\n{\n  char cVar1;\n  undefined4 uVar2;\n  int iVar3;\n  PooledObjectClass<class_GUIDataPackClass,20,class_EmptyLockerClass> *pPVar4;\n  undefined8 uVar5;\n  \n  uVar2 = FUN_140220610(param_1);\n  cVar1 = (char)uVar2;\n  do {\n    if (cVar1 == '\\0') {\n      return CONCAT31((int3)((uint)uVar2 >> 8),1);\n    }\n    iVar3 = FUN_140220710(param_1);\n    if (iVar3 == 0) {\n      pPVar4 = &this->PooledObjectClass<class_GUIDataPackClass,20,class_EmptyLockerClass>;\n      uVar5 = 4;\nLAB_140564f54:\n      FUN_140220730(param_1,pPVar4,uVar5,0);\n    }\n    else if (iVar3 == 1) {\n      pPVar4 = (PooledObjectClass<class_GUIDataPackClass,20,class_EmptyLockerClass> *)\n               ((longlong)&(this->GUIDataPackClass_data).offset_0x20 + 2);\n      uVar5 = 1;\n      goto LAB_140564f54;\n    }\n    FUN_1402206a0(param_1);\n    uVar2 = FUN_140220610(param_1);\n    cVar1 = (char)uVar2;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:39:24Z"
+}

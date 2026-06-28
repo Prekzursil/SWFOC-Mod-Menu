@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DrawTextClass member function inherited by TeletypeTextClass */\n\nfloat __thiscall DrawTextClass::vfunction18(DrawTextClass *this)\n\n{\n  int iVar1;\n  int iVar2;\n  \n  iVar1 = (this->DrawTextClass_data).offset_0xc;\n  iVar2 = FUN_14025e930();\n  return (float)iVar1 / (float)iVar2;\n}",
+  "fetched_at": "2026-04-26T18:14:10Z"
+}

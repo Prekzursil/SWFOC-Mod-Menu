@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140592606        struct SpecialAbilityClass::StealthAbilityClass::VTable** result = arg1\n140592609        sub_14048c780(arg1)\n140592615        *result = &StealthAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140592626        result[1] = &StealthAbilityClass::`vftable'{for `RefCountClass'}\n14059262a        sub_1401f92f0(&result[0x2f])\n140592632        result[0x31].d = 0\n140592641        return result",
+  "fetched_at": "2026-04-26T17:36:22Z"
+}

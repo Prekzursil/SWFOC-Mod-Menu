@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402227e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RAMFileClass * __thiscall RAMFileClass::RAMFileClass(RAMFileClass *this)\n\n{\n  FileClass::FileClass((FileClass *)this);\n  this->vftablePtr = &vftable;\n  (this->RAMFileClass_data).offset_0x0 = (LPVOID)0x0;\n  (this->RAMFileClass_data).offset_0x8 = 0;\n  (this->RAMFileClass_data).offset_0x10 = 0;\n  (this->RAMFileClass_data).offset_0x14 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:03:52Z"
+}

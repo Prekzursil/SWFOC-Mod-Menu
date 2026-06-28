@@ -1,0 +1,7 @@
+{
+  "addr": "0x140730580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalObjectPerceptualEvaluatorClass * __thiscall\nTacticalObjectPerceptualEvaluatorClass::TacticalObjectPerceptualEvaluatorClass\n          (TacticalObjectPerceptualEvaluatorClass *this,undefined **param_1)\n\n{\n  GameObjectPerceptualEvaluatorClass::GameObjectPerceptualEvaluatorClass\n            ((GameObjectPerceptualEvaluatorClass *)this,param_1);\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  (this->SignalListenerClass_data).offset_0x10 = (undefined **)0x0;\n  *(undefined8 *)&(this->SignalListenerClass_data).field_0x18 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:01:41Z"
+}

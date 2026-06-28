@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b0920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nExploreAreaBlockStatus::vfunction2(ExploreAreaBlockStatus *this,longlong param_1,int param_2)\n\n{\n  undefined8 uVar1;\n  ExploreAreaBlockStatus *pEVar2;\n  ExploreAreaBlockStatus *pEVar3;\n  \n  if (param_2 != 10) {\n    if (((param_2 == 0xb) || (param_2 == 0x10)) || (param_2 == 0x1a)) {\n      pEVar3 = (ExploreAreaBlockStatus *)0x0;\n      pEVar2 = this;\n      if (this == (ExploreAreaBlockStatus *)0x30) {\n        pEVar2 = pEVar3;\n      }\n      uVar1 = FUN_140058570();\n      FUN_140220eb0(uVar1,param_1,pEVar2,10);\n      uVar1 = FUN_140058570();\n      FUN_140220eb0(uVar1,param_1,pEVar2,0xb);\n      uVar1 = FUN_140058570();\n      FUN_140220eb0(uVar1,param_1,pEVar2,0x10);\n      uVar1 = FUN_140058570();\n      FUN_140220eb0(uVar1,param_1,pEVar2,0x1a);\n      if (this->offset_0x8 != (undefined **)0x0) {\n        pEVar2 = (ExploreAreaBlockStatus *)(param_1 + -0x38);\n        if (param_1 == 0) {\n          pEVar2 = pEVar3;\n        }\n        if (pEVar2 != (ExploreAreaBlockStatus *)0x0) {\n          pEVar3 = (ExploreAreaBlockStatus *)&pEVar2->offset_0x10;\n        }\n        FUN_14020abe0(this->offset_0x8,pEVar3);\n      }\n    }\n    return;\n  }\n  *(undefined1 *)&this->offset_0x18 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:27Z"
+}

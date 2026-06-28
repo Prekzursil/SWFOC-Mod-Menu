@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d75e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405d75e0(undefined8 param_1,longlong param_2,char param_3)\n\n{\n  int iVar1;\n  int iVar2;\n  longlong lVar3;\n  longlong lVar4;\n  int iVar5;\n  float fVar6;\n  \n  if (((*(longlong *)(param_2 + 0x2a0) != 0) && (lVar3 = FUN_1402648b0(), lVar3 != 0)) &&\n     (iVar1 = FUN_14012dca0(lVar3), iVar1 != -1)) {\n    fVar6 = (float)FUN_140396df0(param_2);\n    iVar5 = 0;\n    iVar2 = (int)((float)(iVar1 + 1) * (DAT_1407ffaf8 - fVar6) + DAT_1408007c0);\n    if (iVar2 < 0) {\n      iVar2 = 0;\n    }\n    else if (iVar1 < iVar2) {\n      iVar2 = iVar1;\n    }\n    if (iVar2 != *(int *)(param_2 + 0x300)) {\n      *(int *)(param_2 + 0x300) = iVar2;\n      *(int *)(lVar3 + 0xc4) = iVar2;\n      if ((param_3 != '\\0') && (iVar1 = FUN_14012d6d0(lVar3), 0 < iVar1)) {\n        do {\n          lVar4 = FUN_14012d6f0(lVar3,iVar5);\n          if ((*(byte *)(lVar4 + 0x31) & 0x20) != 0) {\n            *(byte *)(lVar4 + 0x30) = *(byte *)(lVar4 + 0x30) | 1;\n          }\n          iVar5 = iVar5 + 1;\n          iVar1 = FUN_14012d6d0(lVar3);\n        } while (iVar5 < iVar1);\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:36Z"
+}

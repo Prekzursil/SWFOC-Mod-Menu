@@ -1,0 +1,7 @@
+{
+  "addr": "0x140322980",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032298a        int64_t* lpMem = arg1[1]\n14032298e        struct DynamicVectorClass<class AmbientSFXEventIntermittentEntryClass>::VTable* const result = &DynamicVectorClass<class AmbientSFXEventIntermittentEntryClass>::`vftable'\n140322995        *arg1 = &DynamicVectorClass<class AmbientSFXEventIntermittentEntryClass>::`vftable'\n14032299e        if (lpMem != 0)\n1403229a7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1403229c7        sub_140322bf0(lpMem, 3)\n1403229b7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1403229cc        result = nullptr\n1403229ce        *(arg1 + 0x14) &= 0x80000000\n1403229d5        arg1[1] = 0\n1403229d9        arg1[2].d = 0\n1403229e6        return result",
+  "fetched_at": "2026-04-26T17:00:21Z"
+}

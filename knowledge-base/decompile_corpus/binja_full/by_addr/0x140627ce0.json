@@ -1,0 +1,7 @@
+{
+  "addr": "0x140627ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140627ceb        struct BehaviorClass::HuntBehaviorClass::VTable** result = operator new(0x40)\n140627cf6        if (result == 0)\n140627d36        return result\n140627cfb        sub_1404c32d0(result)\n140627d0a        *result = &HuntBehaviorClass::`vftable'{for `BehaviorClass'}\n140627d14        result[1] = &HuntBehaviorClass::`vftable'{for `RefCountClass'}\n140627d1f        result[3] = &HuntBehaviorClass::`vftable'{for `SignalListenerClass'}\n140627d23        sub_1404c30b0(result)\n140627d30        return result",
+  "fetched_at": "2026-04-26T17:23:54Z"
+}

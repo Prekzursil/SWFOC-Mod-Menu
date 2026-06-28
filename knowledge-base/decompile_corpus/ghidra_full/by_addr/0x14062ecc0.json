@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062ecc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nTeamTargetingBehaviorClass::vfunction43(TeamTargetingBehaviorClass *this,int param_1)\n\n{\n  undefined **ppuVar1;\n  int iVar2;\n  longlong lVar3;\n  longlong lVar4;\n  undefined8 uVar5;\n  int iVar6;\n  \n  ppuVar1 = this->offset_0x18;\n  if ((ppuVar1 != (undefined **)0x0) &&\n     (lVar3 = (**(code **)(*ppuVar1 + 0x10))(ppuVar1,0x16), lVar3 != 0)) {\n    iVar2 = FUN_140405300(lVar3);\n    iVar6 = 0;\n    if (0 < iVar2) {\n      do {\n        lVar4 = FUN_1404052d0(lVar3,iVar6);\n        if ((lVar4 != 0) && (param_1 < *(int *)(*(longlong *)(lVar4 + 0x298) + 0xc48))) {\n          uVar5 = FUN_140373670(*(longlong *)(lVar4 + 0x298),param_1);\n          return uVar5;\n        }\n        iVar6 = iVar6 + 1;\n      } while (iVar6 < iVar2);\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:32:51Z"
+}

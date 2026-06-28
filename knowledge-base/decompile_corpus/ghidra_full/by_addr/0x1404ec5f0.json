@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ec5f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404ec5f0(longlong *param_1)\n\n{\n  if ((param_1[3] != 0) && (param_1[2] != 0)) {\n    DynamicVectorClass<class_Vector3>::DynamicVectorClass<class_Vector3>_Constructor_or_Destructor\n              (param_1);\n    param_1[3] = 0;\n    param_1[2] = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:09Z"
+}

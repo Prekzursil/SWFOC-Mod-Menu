@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d8cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14076d8cc(undefined *param_1)\n\n{\n  if ((param_1 != (undefined *)0x0) && (param_1 != &DAT_140b3bf50)) {\n    FUN_1407864b8();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:11Z"
+}

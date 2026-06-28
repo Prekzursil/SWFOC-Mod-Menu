@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ac9a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SingletonInstance<class_SpacePathFinderClass> * __thiscall\nSingletonInstance<class_SpacePathFinderClass>::scalar_deleting_destructor\n          (SingletonInstance<class_SpacePathFinderClass> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       SingletonInstance<class_SpacePathFinderClass>::~SingletonInstance<class_SpacePathFinderClass>\n                        */\n  this->vftablePtr = &vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x10);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:33:13Z"
+}

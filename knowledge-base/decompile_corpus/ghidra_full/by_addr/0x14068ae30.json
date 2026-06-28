@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ae30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ae30(void)\n\n{\n  RetreatProtectionAbilityClass *this;\n  \n  this = (RetreatProtectionAbilityClass *)FUN_140769c58(0x180);\n  if (this != (RetreatProtectionAbilityClass *)0x0) {\n    RetreatProtectionAbilityClass::RetreatProtectionAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:27Z"
+}

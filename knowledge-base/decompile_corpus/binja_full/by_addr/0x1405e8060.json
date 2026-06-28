@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e8060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e8075        void* rax = sub_140200ad0(arg2)\n1405e809d        void var_18\n1405e809d        int64_t* rbx_1 = sub_14011f570(&arg1[1], &var_18, rax, sub_14011f9c0(&arg1[1], rax))[1]\n1405e80a4        if (rbx_1 == 0)\n1405e80a6        rbx_1 = arg1[2]\n1405e80ae        if (rbx_1 == arg1[2])\n1405e814b        int64_t* rax_2\n1405e814b        rax_2.b = 0\n1405e8157        return rax_2\n1405e80b4        int64_t rdx_2 = rbx_1[6]\n1405e80bb        if (rdx_2 != 0)\n1405e80c3        (*(*arg1 + 0x18))(arg1, rdx_2)\n1405e80d3        int64_t rax_5 = sub_14011f9c0(&arg1[1], &rbx_1[2]) & arg1[7]\n1405e80df        int64_t* rdx_5 = arg1[4] + (rax_5 << 4)\n1405e80e2        int64_t rax_7 = *rdx_5\n1405e80e9        if (rdx_5[1] != rbx_1)\n1405e810a        if (rax_7 == rbx_1)\n1405e810f        *rdx_5 = *rbx_1\n1405e80ee        if (rax_7 != rbx_1)\n1405e8101        rdx_5[1] = rbx_1[1]\n1405e80f0        int64_t rax_8 = arg1[2]\n1405e80f4        *rdx_5 = rax_8\n1405e80f7        rdx_5[1] = rax_8\n1405e8112        void* rdx_6 = *rbx_1\n1405e8119        arg1[3] -= 1\n1405e8121        *rbx_1[1] = rdx_6\n1405e8128        *(rdx_6 + 8) = rbx_1[1]\n1405e812f        sub_140144c90(&arg1[2], rbx_1)\n1405e8134        int64_t rax_13\n1405e8134        rax_13.b = 1\n1405e8145        return rax_13",
+  "fetched_at": "2026-04-26T17:38:30Z"
+}

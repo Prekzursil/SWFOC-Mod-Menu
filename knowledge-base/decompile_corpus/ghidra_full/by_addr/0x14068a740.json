@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a740(void)\n\n{\n  GalacticStealthAbilityClass *this;\n  \n  this = (GalacticStealthAbilityClass *)FUN_140769c58(0x180);\n  if (this != (GalacticStealthAbilityClass *)0x0) {\n    GalacticStealthAbilityClass::GalacticStealthAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:00Z"
+}

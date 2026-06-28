@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e98a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e98aa        int64_t arg_18 = arg3\n1401e98d9        uint32_t rsi_1 = zx.d((sbb.d(arg3.d, arg3.d, arg2 != 0)).b)\n1401e98f6        int32_t var_18[0x4]\n1401e98f6        (*(*(arg1 + 0xf0) + 0x28))(arg1 + 0xf0, sub_1401f93e0(&var_18, 0xff, 0xff, 0xff, rsi_1))\n1401e992d        (*(*(arg1 + 0x180) + 0x28))(arg1 + 0x180, sub_1401f93e0(&var_18, 0xff, 0xff, 0xff, rsi_1))\n1401e9964        int64_t result = (*(*(arg1 + 0x210) + 0x28))(arg1 + 0x210, sub_1401f93e0(&var_18, 0xff, 0xff, 0xff, rsi_1))\n1401e9971        int64_t* rcx_6 = *(arg1 + 0xe0)\n1401e997b        if (rcx_6 != 0)\n1401e9984        result = (*(*rcx_6 + 0x50))(rcx_6, zx.q(arg2))\n1401e9994        if (arg2 != 0 || *(arg1 + 0xe0) == 0)\n1401e99de        return result\n1401e9996        void* rax_5 = arg1 + 0x98\n1401e999f        *(rax_5 + 0x10) = 0\n1401e99a8        if (*(rax_5 + 0x18) u>= 8)\n1401e99aa        rax_5 = *rax_5\n1401e99ad        *rax_5 = 0\n1401e99b9        *(arg1 + 0xd8) = 0xffffffff\n1401e99bf        return sub_1401e8520(arg1)",
+  "fetched_at": "2026-04-26T17:27:06Z"
+}

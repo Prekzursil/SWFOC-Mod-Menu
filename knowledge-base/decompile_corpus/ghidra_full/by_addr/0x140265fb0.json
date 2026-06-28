@@ -1,0 +1,7 @@
+{
+  "addr": "0x140265fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ModelClass::vfunction6_for_RefCountClass(ModelClass *this)\n\n{\n  if ((longlong *)this->offset_0x40 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x000140265fbc. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*(longlong *)this->offset_0x40 + 0x58))();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:17:03Z"
+}

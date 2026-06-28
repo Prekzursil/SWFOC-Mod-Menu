@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a140(void)\n\n{\n  BerserkerAbilityClass *this;\n  \n  this = (BerserkerAbilityClass *)FUN_140769c58(400);\n  if (this != (BerserkerAbilityClass *)0x0) {\n    BerserkerAbilityClass::BerserkerAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:34Z"
+}

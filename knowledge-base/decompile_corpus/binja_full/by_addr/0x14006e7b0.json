@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006e7b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006e7bb        if (*(arg1 + 0x344) == 0)\n14006e7bb        return \n14006e7bd        void* r11_1 = *(arg1 + 0x2b8)\n14006e7d5        void* r9_1 = nullptr\n14006e7d8        void* r10_2 = *(arg1 + 0x2c0) - r11_1\n14006e7db        int64_t rax_1\n14006e7db        void* rdx\n14006e7db        rdx:rax_1 = muls.dp.q(-0x75270d0456c797dd, r10_2)\n14006e7e1        int64_t rdx_2 = (rdx + r10_2) s>> 8\n14006e7ec        int64_t i_1 = r10_2 s/ 0x1d8\n14006e7ef        if (rdx_2 == neg.q(rdx_2 u>> 0x3f))\n14006e7ef        return \n14006e807        int64_t i\n14006e7f8        if (*(r11_1 + 0xa0) == arg2)\n14006e7f8        r9_1 = r11_1\n14006e7fc        r11_1 += 0x1d8\n14006e803        i = i_1\n14006e803        i_1 -= 1\n14006e807        do while (i != 1)\n14006e80c        if (r9_1 == 0)\n14006e80e        return \n14006e80e        *(r9_1 + 0x98) = arg3\n14006e815        *(r9_1 + 0xc1) = 1\n14006e81e        return sub_14006deb0(arg1) __tailcall\n14006e824        return ",
+  "fetched_at": "2026-04-26T16:56:19Z"
+}

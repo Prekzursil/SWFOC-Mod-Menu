@@ -1,0 +1,7 @@
+{
+  "addr": "0x140082580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140082580(void)\n\n{\n  int iVar1;\n  undefined4 *puVar2;\n  undefined4 uVar3;\n  \n  iVar1 = 0;\n  puVar2 = &DAT_140a61c00;\n  do {\n    uVar3 = FUN_14021cef0(&DAT_140a7d0a0,iVar1);\n    iVar1 = iVar1 + 1;\n    *puVar2 = uVar3;\n    puVar2 = puVar2 + 1;\n  } while (iVar1 < 4);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:23Z"
+}

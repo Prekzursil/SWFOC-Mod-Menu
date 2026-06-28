@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407967ac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407967d8        if (wcsncpy_s(arg2, 0x40, arg1, arg4) != 0)\n140796879        int64_t var_48_1 = 0\n140796887        _invoke_watson()\n140796887        noreturn\n1407967e3        void* var_28\n1407967e3        _LocaleUpdate::_LocaleUpdate(&var_28, nullptr)\n1407967ed        uint32_t rcx_2 = 0xfde9\n1407967f5        void* var_20\n1407967f5        char var_10\n1407967f5        if (*(var_20 + 0xc) != 0xfde9)\n14079680c        int32_t rax_3 = __acrt_AreFileApisANSI()\n140796813        if (rax_3 != 0)\n140796833        if (var_10 != 0)\n140796835        void* rax_5 = var_28\n14079683a        *(rax_5 + 0x3a8) &= 0xfffffffd\n140796841        rcx_2 = 0\n140796819        if (var_10 != rax_3.b)\n14079681b        void* rax_4 = var_28\n140796820        *(rax_4 + 0x3a8) &= 0xfffffffd\n140796827        rcx_2 = 1\n1407967fc        if (var_10 != 0)\n1407967fe        void* rax_2 = var_28\n140796803        *(rax_2 + 0x3a8) &= 0xfffffffd\n140796843        int64_t var_30 = 0\n14079684c        int64_t var_38 = 0\n140796878        return __acrt_WideCharToMultiByte(rcx_2, 0, arg2, arg4.d, arg3, 0x3f)",
+  "fetched_at": "2026-04-26T17:31:59Z"
+}

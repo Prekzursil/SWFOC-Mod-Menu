@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eeba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406eebb1        *(arg1 + 0x18c) = -1\n1406eebbc        *arg1 = &ArcSweepAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406eebc8        arg1[0x33].d = 0xffffffff\n1406eebd2        arg1[1] = &ArcSweepAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406eebdb        __builtin_memset(&arg1[0x2f], 0, 0x14)\n1406eebef        *(arg1 + 0x194) = 0\n1406eebf5        __builtin_memset(arg1 + 0x19c, 0, 0x15)\n1406eec0f        sub_14048c8d0(arg1)\n1406eec17        if ((arg2 & 1) != 0)\n1406eec21        j_sub_1407864b8(arg1)\n1406eec33        return arg1",
+  "fetched_at": "2026-04-26T17:26:19Z"
+}

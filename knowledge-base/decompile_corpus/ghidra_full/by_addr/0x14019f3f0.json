@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019f3f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined *** __thiscall alRawAnim::vfunction5(alRawAnim *this)\n\n{\n  undefined ***pppuVar1;\n  \n  pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n  if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n    pppuVar1 = (undefined ***)*pppuVar1;\n  }\n  return pppuVar1;\n}",
+  "fetched_at": "2026-04-26T17:38:04Z"
+}

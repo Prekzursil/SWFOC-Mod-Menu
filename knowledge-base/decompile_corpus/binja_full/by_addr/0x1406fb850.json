@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb850",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fb868        *arg1 = &ForceHealingAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fb875        arg1[0x2f] = 0\n1406fb87c        arg1[1] = &ForceHealingAbilityClass::`vftable'{for `RefCountClass'}\n1406fb882        arg1[0x30] = 0\n1406fb889        arg1[0x31].b = 0\n1406fb89c        int64_t rdx = arg1[0x35]\n1406fb8a7        if (rdx u>= 0x10)\n1406fb8a9        void* rcx_1 = arg1[0x32]\n1406fb8ba        if (rdx + 1 u>= 0x1000)\n1406fb8bc        void* r8_1 = *(rcx_1 - 8)\n1406fb8cf        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1406fb920        _invalid_parameter_noinfo_noreturn()\n1406fb920        noreturn\n1406fb8d1        rcx_1 = r8_1\n1406fb8d4        j_sub_1407864b8(rcx_1)\n1406fb8dc        arg1[0x34] = 0\n1406fb8e3        arg1[0x35] = 0xf\n1406fb8ee        arg1[0x32].b = 0\n1406fb8f5        sub_14048c8d0(arg1)\n1406fb8fe        if ((arg2 & 1) != 0)\n1406fb908        j_sub_1407864b8(arg1)\n1406fb91f        return arg1",
+  "fetched_at": "2026-04-26T17:26:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056bee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056bee6        float zmm6[0x4]\n14056bee6        float var_18[0x4] = zmm6\n14056befa        uint64_t result\n14056befa        if (arg2 != 0 && arg3 != 0)\n14056bf00        float zmm0[0x4] = *(arg3 + 0x4b8)\n14056bf09        zmm6 = zx.o(0)\n14056bf0f        if (zmm0[0] <= 0f)\n14056bf84        result.b = 1\n14056bf90        return result\n14056bf11        result = *(arg2 + 0xf0)\n14056bf1f        if (not(zmm0[0] f> *(result + 0xf8)))\n14056bf24        if (arg4 == 0)\n14056bf26        void* rcx = *(arg2 + 0x298)\n14056bf3a        int128_t zmm7\n14056bf3a        zmm7.d = (*(result + 0xf8)).d f- zmm0[0]\n14056bf41        if (rcx != 0)\n14056bf48        zmm0, zmm6 = sub_140372320(rcx, arg2)\n14056bf4d        result = *(arg2 + 0xf0)\n14056bf43        zmm0 = zx.o(0)\n14056bf57        if (not(zmm6[0] f> zmm7.d))\n14056bf5c        zmm6 = _mm_min_ss(zmm0[0], zmm7.d)\n14056bf68        if (result != 0)\n14056bf6a        *(result + 0xf8) = zmm6[0]\n14056bf7b        if (*(arg2 + 0x50) == data_140a286f0)\n14056bf7d        *(arg2 + 0x3a0) |= 1\n14056bf84        result.b = 1\n14056bf90        return result\n14056bf96        result.b = 0\n14056bf9d        return result",
+  "fetched_at": "2026-04-26T17:34:53Z"
+}

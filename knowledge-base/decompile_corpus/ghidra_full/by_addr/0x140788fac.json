@@ -1,0 +1,7 @@
+{
+  "addr": "0x140788fac",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "wchar_t * FUN_140788fac(wchar_t *param_1)\n\n{\n  errno_t eVar1;\n  wchar_t *_Dst;\n  longlong lVar2;\n  rsize_t _SizeInWords;\n  longlong lVar3;\n  \n  if (param_1 != (wchar_t *)0x0) {\n    lVar2 = -1;\n    do {\n      lVar3 = lVar2;\n      lVar2 = lVar3 + 1;\n    } while (param_1[lVar2] != L'\\0');\n    _SizeInWords = lVar3 + 2;\n    _Dst = (wchar_t *)_malloc_base(_SizeInWords * 2);\n    if (_Dst != (wchar_t *)0x0) {\n      eVar1 = wcscpy_s(_Dst,_SizeInWords,param_1);\n      if (eVar1 == 0) {\n        return _Dst;\n      }\n                    /* WARNING: Subroutine does not return */\n      _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n    }\n  }\n  return (wchar_t *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:51:47Z"
+}

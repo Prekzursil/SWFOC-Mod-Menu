@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e5100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e5109        *(arg1 + 0x11c) = 0xf\n1401e5113        *(arg1 + 0x118) = 0\n1401e511f        void var_18\n1401e511f        sub_1401f92f0(&var_18)\n1401e512b        int512_t zmm0\n1401e512b        zmm0.o = zx.o(0)\n1401e5136        int32_t var_c = 0\n1401e514e        return (*(*(arg1 + 0x240) + 0x28))(zmm0, &var_18)",
+  "fetched_at": "2026-04-26T17:26:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058ba30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall DamageTrackingBehaviorClass::vfunction9(void)\n\n{\n  return \"DamageTrackingBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:41:42Z"
+}

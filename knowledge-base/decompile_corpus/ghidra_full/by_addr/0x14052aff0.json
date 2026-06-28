@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052aff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall PlanetaryBombardEventClass::vfunction5(PlanetaryBombardEventClass *this)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  char cVar3;\n  undefined4 uVar4;\n  float fVar5;\n  double dVar6;\n  \n  uVar4 = FUN_14023bc10(&DAT_140b09c40,*(undefined4 *)&this[1].vftablePtr,1);\n  uVar1 = *(undefined4 *)((longlong)&this[1].vftablePtr + 4);\n  *(undefined4 *)&this[1].vftablePtr = uVar4;\n  uVar4 = FUN_14023bc10(&DAT_140b09c40,uVar1,2);\n  uVar1 = *(undefined4 *)&this[1].field_0x8;\n  *(undefined4 *)((longlong)&this[1].vftablePtr + 4) = uVar4;\n  fVar5 = (float)FUN_14023bc10(&DAT_140b09c40,uVar1,3);\n  *(float *)&this[1].field_0x8 = fVar5;\n  dVar6 = (double)FUN_1407760bc((double)fVar5);\n  if ((float)dVar6 < DAT_140815de4) {\n    *(undefined4 *)&this[1].field_0x8 = 0;\n  }\n  lVar2 = *(longlong *)(DAT_140b15418 + 0x40);\n  if (lVar2 != 0) {\n    cVar3 = FUN_140528a70(lVar2,(this->EventClass_data).offset_0xc,this + 1);\n    if (cVar3 == '\\x01') {\n      FUN_140528140(lVar2,(this->EventClass_data).offset_0xc,this + 1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:27:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c0ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _cexit\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl _cexit(void)\n\n{\n  common_exit(0,0,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006dd60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_14006dd60(void)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  undefined1 local_res10 [24];\n  \n  lVar1 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  puVar2 = (undefined8 *)\n           (**(code **)(**(longlong **)(lVar1 + 8) + 0x10))(*(longlong **)(lVar1 + 8),local_res10);\n  return *puVar2;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:14Z"
+}

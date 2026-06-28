@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d6dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalUnderConstructionBehaviorClass::vfunction8\n          (TacticalUnderConstructionBehaviorClass *this,longlong param_1)\n\n{\n  if (param_1 != 0) {\n    FUN_1403910b0(param_1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:33Z"
+}

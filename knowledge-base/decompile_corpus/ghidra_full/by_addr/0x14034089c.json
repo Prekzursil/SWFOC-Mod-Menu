@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034089c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* RootClass member function inherited by RetreatCoordinatorClass\n   RootClass member function inherited by GameObjectClass\n   RootClass member function inherited by SpaceRetreatCoordinatorClass\n   RootClass member function inherited by LandRetreatCoordinatorClass\n   RootClass member function inherited by BaseCombatantClass\n   RootClass member function inherited by SquadronCombatantClass\n   RootClass member function inherited by CompanyCombatantClass */\n\nvoid __thiscall RootClass::vfunction2(RootClass *this)\n\n{\n  vfunction2((RootClass *)&this[-1].RootClass_data.offset_0x338);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:42Z"
+}

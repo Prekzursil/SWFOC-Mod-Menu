@@ -1,0 +1,7 @@
+{
+  "addr": "0x140384bb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140384bcb        if ((*(*(arg1 + 0x10) + 0x3a0) & 0x80) != 0)\n140384bcd        void* result\n140384bcd        result.b = 0\n140384bd9        return result\n140384bef        void* var_28\n140384bef        sub_14001e680(&var_28, *(arg1 + 0x20) + 0x450)\n140384bfa        int64_t var_18\n140384bfa        uint64_t rdi\n140384bfa        if (var_18 == 0)\n140384ca6        rdi.b = 0\n140384c0e        void* rax_1 = sub_140294bc0(&data_140a16fd0, *(*(arg1 + 0x10) + 0x58))\n140384c16        if (rax_1 == 0)\n140384ca6        rdi.b = 0\n140384c37        char rax_2 = sub_140288890(rax_1, *(*(arg1 + 0x10) + 0x298), &var_28, arg2 ^ 1)\n140384c3c        rdi = zx.q(rax_2)\n140384c41        if (rax_2 == 0)\n140384c4e        void** rcx_3 = *(*(arg1 + 0x10) + 0x298) + 0xf8\n140384c5a        if (rcx_3[3] u>= 0x10)\n140384c5c        rcx_3 = *rcx_3\n140384c6a        int64_t* rdx_5 = *(arg1 + 0x20)\n140384c79        if (rdx_5[3] u>= 0x10)\n140384c7b        *rdx_5\n140384c81        void** var_38_1 = rcx_3\n140384cb2        int64_t var_10\n140384cb2        if (var_10 u>= 0x10)\n140384cb4        void* rcx_5 = var_28\n140384cbc        void* rax_4 = rcx_5\n140384cc6        if (var_10 + 1 u>= 0x1000)\n140384cc8        rcx_5 = *(rcx_5 - 8)\n140384cdb        if (rax_4 - rcx_5 - 8 u> 0x1f)\n140384cf6        _invalid_parameter_noinfo_noreturn()\n140384cf6        noreturn\n140384cdd        j_sub_1407864b8(rcx_5)\n140384cf5        return zx.q(rdi.b)",
+  "fetched_at": "2026-04-26T17:20:19Z"
+}

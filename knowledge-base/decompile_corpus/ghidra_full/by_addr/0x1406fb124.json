@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb124",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nFindWeaknessAbilityClass::vfunction3_for_RefCountClass(FindWeaknessAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((FindWeaknessAbilityClass *)&this[-1].FindWeaknessAbilityClass_data,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:48Z"
+}

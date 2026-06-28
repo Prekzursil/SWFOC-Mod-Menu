@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014c50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140014c50(void)\n\n{\n  DAT_140a7c7e8 = FUN_140769c58(0xb8);\n  *(longlong *)DAT_140a7c7e8 = DAT_140a7c7e8;\n  *(longlong *)(DAT_140a7c7e8 + 8) = DAT_140a7c7e8;\n  DAT_140a7c800 = 0;\n  uRam0000000140a7c808 = 0;\n  _DAT_140a7c7e0 = DAT_1407ffaf8;\n  DAT_140a7c7f8 = 0;\n  _DAT_140a7c810 = 7;\n  _DAT_140a7c818 = 8;\n  FUN_140048250(&DAT_140a7c7f8,0x10,DAT_140a7c7e8);\n  atexit(FUN_1407ed420);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:11Z"
+}

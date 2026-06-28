@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b34a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alSimpleScene::vfunction22(alSimpleScene *this,longlong *param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  char cVar3;\n  \n  if (param_1 != (longlong *)0x0) {\n    cVar3 = FUN_14020a9b0(&(this->alSimpleScene_data).offset_0x158,param_1 + 2,1);\n    if (cVar3 == '\\x01') {\n      (**(code **)*param_1)(param_1);\n    }\n    else if (cVar3 == '\\0') {\n      return;\n    }\n    param_1[0x16] = (longlong)this;\n    (**(code **)(*param_1 + 0x68))(param_1,this);\n    plVar1 = (longlong *)(this->alSimpleScene_data).offset_0x1a8;\n    if ((plVar1 != (longlong *)0x0) &&\n       (plVar2 = (longlong *)(this->alSimpleScene_data).offset_0x1b0, plVar2 != (longlong *)0x0)) {\n      if ((*(byte *)((longlong)param_1 + 0x32) & 1) != 0) {\n                    /* WARNING: Could not recover jumptable at 0x0001401b3520. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n        (**(code **)(*plVar2 + 8))();\n        return;\n      }\n      (**(code **)(*plVar1 + 8))(plVar1,param_1 + 4);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:50Z"
+}

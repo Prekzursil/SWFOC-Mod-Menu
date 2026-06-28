@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638030",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140638037        return \"DynamicTransformBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:01:15Z"
+}

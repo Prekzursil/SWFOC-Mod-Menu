@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c83c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c83d3        if (*arg2 != 3)\n1407c83e1        return 0\n1407c83f8        char var_28[0x20]\n1407c83f8        sscanf_s(&var_28, \"%.14g\", *(arg2 + 8))\n1407c8402        *arg2 = 4\n1407c8408        void* r8_1 = -ffffffffffffffff\n1407c8410        r8_1 += 1\n1407c8418        do while (*(&var_28 + r8_1) != 0)\n1407c8427        *(arg2 + 8) = sub_1407bf8f0(arg1, &var_28, r8_1)\n1407c843a        return 1",
+  "fetched_at": "2026-04-26T17:33:46Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025e400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_14025e400(void)\n\n{\n  char *pcVar1;\n  longlong lVar2;\n  int *piVar3;\n  uint uVar4;\n  int iVar5;\n  longlong lVar6;\n  \n  pcVar1 = (char *)thunk_FUN_140176550();\n  if (pcVar1 != (char *)0x0) {\n    if (*pcVar1 == '\\0') {\n      lVar6 = *(longlong *)(pcVar1 + 0x60);\n    }\n    else {\n      lVar6 = *(longlong *)(pcVar1 + 0x18);\n    }\n    if (lVar6 != 0) {\n      lVar2 = *(longlong *)(lVar6 + 0x20);\n      uVar4 = 0;\n      if (*(int *)(lVar2 + 0x14) != 0) {\n        do {\n          piVar3 = (int *)FUN_1401a83f0(lVar2,uVar4);\n          if (*piVar3 == 1) {\n            piVar3 = (int *)FUN_1401a83f0(*(undefined8 *)(lVar6 + 0x28),uVar4);\n            iVar5 = *piVar3;\n            if (*piVar3 < 2) {\n              iVar5 = 2;\n            }\n            uVar4 = thunk_FUN_1401791e0();\n            if (uVar4 < 100000000) {\n              iVar5 = 0;\n            }\n            return iVar5 + 1;\n          }\n          lVar2 = *(longlong *)(lVar6 + 0x20);\n          uVar4 = uVar4 + 1;\n        } while (uVar4 < *(uint *)(lVar2 + 0x14));\n      }\n    }\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:14:53Z"
+}

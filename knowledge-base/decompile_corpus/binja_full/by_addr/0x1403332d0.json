@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403332d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403332e1        int32_t rcx = *(arg1 + 0x10)\n1403332e7        int32_t r8_2 = (*(arg1 + 0x14) * 2) s>> 1\n1403332f0        if (rcx s>= r8_2)\n140333308        int32_t rdx_2 = r8_2 s/ 0xa\n140333311        if (rdx_2 s< 0xa)\n140333311        rdx_2 = 0xa\n14033331a        sub_140339350(arg1, rdx_2 + r8_2, 0, 1)\n14033331f        rcx = *(arg1 + 0x10)\n140333328        *(arg1 + 0x10) = rcx + 1\n140333336        public: __cdecl std::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0>::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0><class <lambda_508dc996854572947a45292d62928d80> &>(class <lambda_508dc996854572947a45292d62928d80> &)(*(arg1 + 8) + (sx.q(rcx) << 3), arg2)\n140333340        int64_t* result\n140333340        result.b = 1\n140333347        return result",
+  "fetched_at": "2026-04-26T17:03:07Z"
+}

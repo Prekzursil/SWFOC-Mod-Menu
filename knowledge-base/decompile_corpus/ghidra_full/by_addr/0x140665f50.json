@@ -1,0 +1,7 @@
+{
+  "addr": "0x140665f50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nVisiblePerceptualEvaluatorClass<class_GalacticPlayerPerceptualEvaluatorClass>::\nvfunction1_for_AIDiagnosticsClass\n          (VisiblePerceptualEvaluatorClass<class_GalacticPlayerPerceptualEvaluatorClass> *this,\n          uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((VisiblePerceptualEvaluatorClass<class_GalacticPlayerPerceptualEvaluatorClass> *)\n             &this[-1].\n              VisiblePerceptualEvaluatorClass<class_GalacticPlayerPerceptualEvaluatorClass>_data.\n              offset_0x10,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:32Z"
+}

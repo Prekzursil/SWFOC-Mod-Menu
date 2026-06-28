@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8950",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall SpaceGoalSystemClass::vfunction12(SpaceGoalSystemClass *this)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_1404b0500(*(undefined8 *)((this->ServicedAISystemClass_data).offset_0x0 + 0x28));\n  return (int)((float)DAT_140b0a340 * *(float *)(lVar1 + 0x44));\n}",
+  "fetched_at": "2026-04-26T17:37:27Z"
+}

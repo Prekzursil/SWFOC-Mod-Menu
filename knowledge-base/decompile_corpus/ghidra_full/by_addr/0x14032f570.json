@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032f570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14032f570(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  longlong lVar1;\n  char cVar2;\n  longlong *plVar3;\n  undefined4 local_res10 [2];\n  \n  plVar3 = *(longlong **)(param_3 + 0x68);\n  if (0xf < (ulonglong)plVar3[3]) {\n    plVar3 = (longlong *)*plVar3;\n  }\n  FUN_140327b10(\"STORY - %s WON SPACE BATTLE\\r\\n\",plVar3);\n  local_res10[0] = 1;\n  FUN_14032e5f0(param_1,0x13,param_3,local_res10,param_2);\n  if (param_2 != 0) {\n    lVar1 = FUN_140294a40(&DAT_140a16fd0);\n    if (param_3 == lVar1) {\n      cVar2 = FUN_14028af60(&DAT_140b153e0);\n      if (cVar2 == '\\0') {\n        FUN_140448cb0(&DAT_140b30350,param_2,0);\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:34Z"
+}

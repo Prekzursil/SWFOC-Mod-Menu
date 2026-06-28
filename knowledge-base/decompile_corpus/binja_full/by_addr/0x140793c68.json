@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793c68",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793c8e        int64_t result\n140793c8e        result.b = try_get_function(1, \"CompareStringEx\", &data_1408d81e0, \"CompareStringEx\") != 0\n140793c95        return result",
+  "fetched_at": "2026-04-26T17:31:52Z"
+}

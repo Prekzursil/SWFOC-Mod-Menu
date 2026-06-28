@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012ac10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012ac1e        void* rax = operator new(0x20)\n14012ac2a        int64_t var_38 = 0x10\n14012ac38        int64_t var_30 = 0x1f\n14012ac48        __builtin_strncpy(rax, \"IDC_GAMMA_SLIDER\", 0x11)\n14012ac4f        int32_t rdx = data_140a12318\n14012ac55        void* var_48 = rax\n14012ac5a        int64_t result\n14012ac5a        int128_t zmm0\n14012ac5a        zmm0, result = sub_1401c8fc0(&data_140a78510, rdx, &var_48)\n14012ac6b        if (var_30 u>= 0x10)\n14012ac6d        void* rcx_1 = var_48\n14012ac75        void* rax_1 = rcx_1\n14012ac7f        if (var_30 + 1 u>= 0x1000)\n14012ac81        rcx_1 = *(rcx_1 - 8)\n14012ac94        if (rax_1 - rcx_1 - 8 u> 0x1f)\n14012acdf        _invalid_parameter_noinfo_noreturn()\n14012acdf        noreturn\n14012ac96        result = j_sub_1407864b8(rcx_1)\n14012aca0        int32_t zmm6[0x4] = 0x3fe00000\n14012aca8        zmm6[0] = 1.75f - 0.25f\n14012acb0        zmm6[0] = zmm6[0] f* zmm0.d\n14012acb4        zmm6[0] = zmm6[0] f+ 0.25f\n14012acbc        int32_t zmm0_1[0x4] = sub_14025e730()\n14012acc1        zmm6[0] f- zmm0_1[0]\n14012acc6        if (not(is_unordered.d(zmm6[0], zmm0_1[0])) && zmm6[0] f== zmm0_1[0])\n14012acde        return result\n14012accb        return sub_14025fcc0(zmm6)",
+  "fetched_at": "2026-04-26T17:07:48Z"
+}

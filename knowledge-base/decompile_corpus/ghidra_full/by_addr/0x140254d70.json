@@ -1,0 +1,7 @@
+{
+  "addr": "0x140254d70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nGlobalValue::vfunction11(GlobalValue *this,undefined8 param_1,longlong param_2)\n\n{\n  undefined *puVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  undefined1 auStack_18 [16];\n  \n  if (*(longlong *)(param_2 + 0x18) - (longlong)*(longlong **)(param_2 + 0x10) >> 3 != 1) {\n    FUN_140248190(param_1,\"GlobalValue::Get -- Invalid number of parameters %d should be 1\");\n    return 0;\n  }\n  plVar4 = (longlong *)**(longlong **)(param_2 + 0x10);\n  if (plVar4 != (longlong *)0x0) {\n    for (puVar1 = (undefined *)(**(code **)(*plVar4 + 0x20))(plVar4); puVar1 != (undefined *)0x0;\n        puVar1 = *(undefined **)(puVar1 + 8)) {\n      if (puVar1 == &DAT_140a157d0) {\n        uVar2 = FUN_14011f9c0(&DAT_140b0a060,plVar4 + 2);\n        lVar3 = FUN_14011f570(&DAT_140b0a060,auStack_18,plVar4 + 2,uVar2);\n        lVar3 = *(longlong *)(lVar3 + 8);\n        if (lVar3 == 0) {\n          return 0;\n        }\n        if (lVar3 == DAT_140b0a068) {\n          return 0;\n        }\n        plVar4 = GetEvent::~GetEvent((GetEvent *)this,*(longlong **)(lVar3 + 0x30));\n        return plVar4;\n      }\n    }\n  }\n  FUN_140248190(param_1,\"GlobalValue::Get -- Invalid parameter 1, should be a string.\");\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:12:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140497510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140497510(longlong param_1,int param_2)\n\n{\n  if (param_2 - 2U < 2) {\n    return *(longlong *)(param_1 + 8 + ((longlong)param_2 + -2) * 0x18) -\n           *(longlong *)(param_1 + ((longlong)param_2 + -2) * 0x18) >> 3 & 0xffffffff;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:03:45Z"
+}

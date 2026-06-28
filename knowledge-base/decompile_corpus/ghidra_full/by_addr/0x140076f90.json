@@ -1,0 +1,7 @@
+{
+  "addr": "0x140076f90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140076f90(longlong param_1,int param_2)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong lVar4;\n  longlong lVar5;\n  \n  if ((*(char *)(param_1 + 0x344) == '\\0') &&\n     (*(undefined4 *)(param_1 + 0x340) = 0xffffffff, param_2 != -1)) {\n    lVar4 = *(longlong *)(param_1 + 0x2d0);\n    lVar5 = 0;\n    lVar2 = *(longlong *)(param_1 + 0x2d8) - lVar4;\n    lVar2 = SUB168(SEXT816(-0x75270d0456c797dd) * SEXT816(lVar2),8) + lVar2;\n    lVar3 = (lVar2 >> 8) - (lVar2 >> 0x3f);\n    lVar2 = lVar5;\n    if (lVar3 != 0) {\n      do {\n        if (*(char *)(lVar4 + 0xc4) != '\\0') {\n          lVar5 = lVar4;\n        }\n        if (*(char *)(lVar4 + 0xc3) != '\\0') {\n          lVar2 = lVar4;\n        }\n        lVar4 = lVar4 + 0x1d8;\n        lVar3 = lVar3 + -1;\n      } while (lVar3 != 0);\n      if (((lVar2 != 0) && (lVar5 != 0)) &&\n         (lVar4 = *(longlong *)(lVar5 + 0x140),\n         param_2 < (int)(*(longlong *)(lVar5 + 0x148) - lVar4 >> 4))) {\n        uVar1 = FUN_140055600(&PTR_vftable_140a10b18,\n                              *(undefined4 *)(lVar4 + (longlong)param_2 * 0x10),\n                              *(undefined4 *)(lVar4 + 4 + (longlong)param_2 * 0x10));\n        *(undefined4 *)(param_1 + 0x340) = uVar1;\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:43Z"
+}

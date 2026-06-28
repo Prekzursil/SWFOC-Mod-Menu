@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079efec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _read\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl _read(int _FileHandle,void *_DstBuf,uint _MaxCharCount)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  \n  if (_FileHandle == -2) {\n    puVar2 = __doserrno();\n    *puVar2 = 0;\n    puVar2 = __doserrno();\n    *puVar2 = 9;\n    return -1;\n  }\n  if ((-1 < _FileHandle) && ((uint)_FileHandle < DAT_140b3c8d0)) {\n    if ((*(byte *)((&DAT_140b3c4d0)[(longlong)_FileHandle >> 6] + 0x38 +\n                  (ulonglong)(_FileHandle & 0x3f) * 0x48) & 1) != 0) {\n      if (_MaxCharCount < 0x80000000) {\n        __acrt_lowio_lock_fh(_FileHandle);\n        iVar1 = -1;\n        if ((*(byte *)((&DAT_140b3c4d0)[(longlong)_FileHandle >> 6] + 0x38 +\n                      (ulonglong)(_FileHandle & 0x3f) * 0x48) & 1) == 0) {\n          puVar2 = __doserrno();\n          *puVar2 = 9;\n          puVar2 = __doserrno();\n          *puVar2 = 0;\n        }\n        else {\n          iVar1 = _read_nolock(_FileHandle,_DstBuf,_MaxCharCount);\n        }\n        __acrt_lowio_unlock_fh(_FileHandle);\n        return iVar1;\n      }\n      puVar2 = __doserrno();\n      *puVar2 = 0;\n      puVar2 = __doserrno();\n      *puVar2 = 0x16;\n      goto LAB_14079f0e3;\n    }\n  }\n  puVar2 = __doserrno();\n  *puVar2 = 0;\n  puVar2 = __doserrno();\n  *puVar2 = 9;\nLAB_14079f0e3:\n  FUN_1407711ac();\n  return -1;\n}",
+  "fetched_at": "2026-04-26T18:54:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140569f40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall FleetLocomotorBehaviorClass::vfunction9(void)\n\n{\n  return \"FleetLocomotorBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:39:49Z"
+}

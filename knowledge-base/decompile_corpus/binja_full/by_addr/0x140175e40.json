@@ -1,0 +1,7 @@
+{
+  "addr": "0x140175e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140175e49        int64_t* rdx = *(arg1 + 0x1f0)\n140175e53        if (rdx == 0)\n140175eb6        *arg2 = *(arg1 + 0x22c)\n140175ebe        arg2[1] = *(arg1 + 0x230)\n140175ec7        arg2[2] = *(arg1 + 0x234)\n140175ed0        arg2[3] = *(arg1 + 0x238)\n140175ed9        arg2[4] = *(arg1 + 0x23c)\n140175ee2        arg2[5] = *(arg1 + 0x240)\n140175eeb        arg2[6] = *(arg1 + 0x244)\n140175ef4        arg2[7] = *(arg1 + 0x248)\n140175efd        arg2[8] = *(arg1 + 0x24c)\n140175f06        arg2[9] = *(arg1 + 0x250)\n140175f0f        arg2[0xa] = *(arg1 + 0x254)\n140175f18        arg2[0xb] = *(arg1 + 0x258)\n140175f23        return arg2\n140175e5b        int32_t* rax_1 = (*(*rdx + 0x60))(rdx)\n140175e63        *arg2 = *rax_1\n140175e68        arg2[1] = rax_1[1]\n140175e6e        arg2[2] = rax_1[2]\n140175e74        arg2[3] = rax_1[3]\n140175e7a        arg2[4] = rax_1[4]\n140175e80        arg2[5] = rax_1[5]\n140175e86        arg2[6] = rax_1[6]\n140175e8c        arg2[7] = rax_1[7]\n140175e92        arg2[8] = rax_1[8]\n140175e98        arg2[9] = rax_1[9]\n140175e9e        arg2[0xa] = rax_1[0xa]\n140175ea4        arg2[0xb] = rax_1[0xb]\n140175eaf        return arg2",
+  "fetched_at": "2026-04-26T17:23:08Z"
+}

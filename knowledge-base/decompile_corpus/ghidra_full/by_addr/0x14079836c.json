@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079836c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __dcrt_get_wide_environment_from_os\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nlonglong __dcrt_get_wide_environment_from_os(void)\n\n{\n  WCHAR WVar1;\n  LPWCH pWVar2;\n  longlong lVar3;\n  longlong lVar4;\n  WCHAR *pWVar5;\n  longlong lVar6;\n  \n  pWVar2 = GetEnvironmentStringsW();\n  lVar6 = 0;\n  if (pWVar2 != (LPWCH)0x0) {\n    WVar1 = *pWVar2;\n    pWVar5 = pWVar2;\n    while (WVar1 != L'\\0') {\n      lVar3 = -1;\n      do {\n        lVar4 = lVar3;\n        lVar3 = lVar4 + 1;\n      } while (pWVar5[lVar3] != L'\\0');\n      pWVar5 = pWVar5 + lVar4 + 2;\n      WVar1 = *pWVar5;\n    }\n    lVar3 = ((longlong)pWVar5 + (2 - (longlong)pWVar2) >> 1) * 2;\n    lVar4 = _malloc_base(lVar3);\n    if (lVar4 != 0) {\n      FUN_14076bd80(lVar4,pWVar2,lVar3);\n      lVar6 = lVar4;\n    }\n    _free_base(0);\n    FreeEnvironmentStringsW(pWVar2);\n  }\n  return lVar6;\n}",
+  "fetched_at": "2026-04-26T18:53:33Z"
+}

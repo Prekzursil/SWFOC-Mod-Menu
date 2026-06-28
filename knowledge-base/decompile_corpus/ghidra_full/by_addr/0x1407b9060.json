@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9060",
+  "tool": "ghidra",
+  "fact_id": "api_lua_equal",
+  "body": "\nundefined8 FUN_1407b9060(longlong param_1,int param_2,int param_3)\n\n{\n  undefined8 uVar1;\n  ulonglong uVar2;\n  ulonglong uVar3;\n  \n  uVar3 = (ulonglong)param_3;\n  if (param_2 < 1) {\n    uVar2 = FUN_1407b9f20();\n  }\n  else {\n    uVar2 = *(longlong *)(param_1 + 0x18) + -0x10 + (longlong)param_2 * 0x10;\n    if (*(ulonglong *)(param_1 + 0x10) <= uVar2) {\n      uVar2 = 0;\n    }\n  }\n  if ((int)uVar3 < 1) {\n    uVar3 = FUN_1407b9f20(param_1,uVar3 & 0xffffffff);\n  }\n  else {\n    uVar3 = *(longlong *)(param_1 + 0x18) + -0x10 + uVar3 * 0x10;\n    if (*(ulonglong *)(param_1 + 0x10) <= uVar3) {\n      uVar3 = 0;\n    }\n  }\n  if ((uVar2 != 0) && (uVar3 != 0)) {\n    uVar1 = FUN_1407c80a0(param_1,uVar2,uVar3);\n    return uVar1;\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:27Z"
+}

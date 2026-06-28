@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b1600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGalacticModeClass::vfunction44\n          (GalacticModeClass *this,undefined8 *param_1,undefined8 *param_2,undefined4 *param_3)\n\n{\n  longlong lVar1;\n  char cVar2;\n  undefined4 extraout_XMM0_Da;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  \n  lVar1 = *(longlong *)&(this->GalacticModeClass_data).field_0x88;\n  if (lVar1 == 0) {\n    *param_1 = 0;\n    *(undefined4 *)(param_1 + 1) = 0;\n    *param_2 = 0;\n    *(undefined4 *)(param_2 + 1) = 0x3f800000;\n    *param_3 = 0;\n    *(undefined8 *)(param_3 + 1) = 0x3f800000;\n  }\n  else {\n    cVar2 = FUN_1402cd0c0(&DAT_140b27a10);\n    if (cVar2 == '\\x01') {\n      FUN_140261a40(lVar1,&local_18);\n      *(undefined4 *)param_1 = local_18;\n      *(undefined4 *)(param_1 + 1) = local_10;\n      *(undefined4 *)((longlong)param_1 + 4) = local_14;\n      FUN_140261690(lVar1,param_2,param_3);\n    }\n    else {\n      (*this->vftablePtr->vfunction43)(this);\n      FUN_140261710(lVar1,extraout_XMM0_Da,param_1);\n      FUN_140261690(lVar1,param_2,param_3);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:06:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140722dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceReinforceBlockStatus * __thiscall\nSpaceReinforceBlockStatus::scalar_deleting_destructor(SpaceReinforceBlockStatus *this,uint param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  lVar1 = this->offset_0x48;\n  if (lVar1 != 0) {\n    uVar3 = this->offset_0x58 - lVar1 & 0xfffffffffffffffc;\n    lVar2 = lVar1;\n    if (0xfff < uVar3) {\n      lVar2 = *(longlong *)(lVar1 + -8);\n      if (0x1f < (lVar1 - lVar2) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1 - lVar2,uVar3 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(lVar2);\n    this->offset_0x48 = 0;\n    this->offset_0x50 = (longlong *)0x0;\n    this->offset_0x58 = 0;\n  }\n  if (*(longlong **)&this->field_0x40 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x40 + 8))();\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (SpaceReinforceBlockStatus_vftable1 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  if (*(longlong **)&this->field_0x28 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x28 + 8))();\n  }\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x88);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:34Z"
+}

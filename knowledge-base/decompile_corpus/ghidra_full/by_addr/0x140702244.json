@@ -1,0 +1,7 @@
+{
+  "addr": "0x140702244",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nHeroAssassinAbilityClass::vfunction3_for_RefCountClass(HeroAssassinAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((HeroAssassinAbilityClass *)\n             ((longlong)&this[-1].HeroAssassinAbilityClass_data.offset_0x4 + 4),param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140613720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140613729        float zmm6[0x4] = arg3\n14061372c        void* rax = sub_140612bd0(arg1, arg2)\n140613739        float zmm0 = *(rax + 0x3c) f+ *(rax + 0x38)\n14061373e        zmm6[0] = zmm6[0] f+ *(rax + 0x40)\n140613743        float temp0 = __minss_xmmss_memss(zmm0, *(rax + 0x2c))\n140613748        zmm6[0] = zmm6[0] - temp0\n140613755        if (int.d(zmm6[0]) s<= 0)\n140613788        return (zx.o(0)).d\n140613757        arg3 = *(rax + 0x2c)\n14061375c        arg3[0] = arg3[0] f- *(rax + 0x3c)\n140613761        float zmm1 = *(rax + 0x30)\n140613769        arg3[0] = arg3[0] f- *(rax + 0x38)\n14061376e        float temp0_1[0x4] = _mm_max_ss(arg3[0], zmm6[0])\n140613772        if (not(zmm1 <= 0f))\n140613774        temp0_1[0] = temp0_1[0] / zmm1\n140613778        zmm6[0] = zmm6[0] / temp0_1[0]\n14061377c        return zmm6[0]",
+  "fetched_at": "2026-04-26T17:23:21Z"
+}

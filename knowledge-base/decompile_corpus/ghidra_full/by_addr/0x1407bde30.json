@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bde30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407bde30(uint *param_1)\n\n{\n  longlong lVar1;\n  byte *pbVar2;\n  uint uVar3;\n  undefined8 uVar4;\n  undefined *puVar5;\n  \n  lVar1 = **(longlong **)(param_1 + 0x10);\n  **(longlong **)(param_1 + 0x10) = lVar1 + -1;\n  if (lVar1 == 0) {\n    uVar3 = FUN_1407c37d0();\n  }\n  else {\n    pbVar2 = *(byte **)(*(longlong *)(param_1 + 0x10) + 8);\n    uVar3 = (uint)*pbVar2;\n    *(byte **)(*(longlong *)(param_1 + 0x10) + 8) = pbVar2 + 1;\n  }\n  param_1[1] = param_1[1] + 1;\n  *param_1 = uVar3;\n  if (0x7ffffffd < (int)param_1[1]) {\n    uVar4 = FUN_1407c33a0(*(undefined8 *)(param_1 + 0xe),\"too many %s (limit=%d)\",\"lines in a chunk\"\n                          ,0x7ffffffd);\n    uVar3 = param_1[4];\n    if (uVar3 == 0x116) {\n      puVar5 = (undefined *)(*(longlong *)(param_1 + 6) + 0x18);\n    }\n    else if ((uVar3 == 0x11d) || (uVar3 == 0x11e)) {\n      puVar5 = (undefined *)**(undefined8 **)(param_1 + 0x12);\n    }\n    else if ((int)uVar3 < 0x101) {\n      puVar5 = (undefined *)FUN_1407c33a0(*(undefined8 *)(param_1 + 0xe),&DAT_1408fd594);\n    }\n    else {\n      puVar5 = (&PTR_vfunction13_for_RefCountClass_1408fcbf8)[(int)uVar3];\n    }\n    FUN_1407bdfc0(param_1,uVar4,puVar5);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:34Z"
+}

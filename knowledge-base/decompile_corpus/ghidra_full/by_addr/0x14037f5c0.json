@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037f5c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall LineSubClass::vfunction7_for_RefCountClass(void)\n\n{\n  return \"LineSubClass\";\n}",
+  "fetched_at": "2026-04-26T17:19:41Z"
+}

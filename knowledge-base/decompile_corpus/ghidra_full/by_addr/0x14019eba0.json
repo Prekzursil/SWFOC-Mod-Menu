@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019eba0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall alRawAnim::vfunction15(alRawAnim *this,int param_1)\n\n{\n  longlong lVar1;\n  uint uVar2;\n  int iVar4;\n  longlong lVar5;\n  float fVar6;\n  ulonglong uVar3;\n  \n  lVar5 = (longlong)param_1;\n  if (*(int *)&(this->RefCountClass_data).field_0x28 < 2) {\n    iVar4 = 0;\n  }\n  else {\n    fVar6 = (float)FUN_14019f920(this,0);\n    iVar4 = (int)fVar6;\n  }\n  lVar1 = *(longlong *)&(this->RefCountClass_data).field_0x38;\n  uVar3 = lVar5 * 0x12;\n  if (*(int *)(lVar1 + 0x70 + lVar5 * 0x90) != 0) {\n    uVar2 = 1 << ((byte)iVar4 & 7);\n    uVar3 = (ulonglong)uVar2;\n    if (((byte)uVar2 &\n        *(byte *)(((longlong)iVar4 >> 3) + *(longlong *)(lVar1 + 0x78 + lVar5 * 0x90))) == 0) {\n      return (ulonglong)(uVar2 & 0xffffff00);\n    }\n  }\n  return CONCAT71((int7)(uVar3 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:37:44Z"
+}

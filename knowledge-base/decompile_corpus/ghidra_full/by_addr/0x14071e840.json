@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071e840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AttackActionClass * __thiscall AttackActionClass::AttackActionClass(AttackActionClass *this)\n\n{\n  ActionClass::ActionClass((ActionClass *)this);\n  this->vftablePtr = &vftable;\n  FUN_1404c3df0(&this->AttackActionClass_data);\n  (this->AttackActionClass_data).offset_0x10 = 0xffffffff;\n  (this->AttackActionClass_data).offset_0x14 = 0xffff;\n  (this->AttackActionClass_data).offset_0x18 = 0x3f800000;\n  (this->AttackActionClass_data).offset_0x1c = 1;\n  (this->AttackActionClass_data).offset_0x20 = 0x3f800000;\n  (this->AttackActionClass_data).offset_0x28 = 0;\n  (this->AttackActionClass_data).offset_0x2c = 0;\n  *(undefined3 *)&(this->AttackActionClass_data).field_0x2d = 0;\n  (this->AttackActionClass_data).offset_0x40 = 0xf;\n  (this->AttackActionClass_data).offset_0x38 = 4;\n  (this->AttackActionClass_data).offset_0x28 = 0x544f4f52;\n  (this->AttackActionClass_data).offset_0x2c = 0;\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>::\n  DynamicVectorClass<class_SFXEventReferenceClass*___ptr64>\n            ((DynamicVectorClass<class_SFXEventReferenceClass*___ptr64> *)\n             &(this->AttackActionClass_data).field_0x48);\n  (this->AttackActionClass_data).offset_0x58 = 0;\n  (this->AttackActionClass_data).offset_0x5c = 0;\n  (this->AttackActionClass_data).offset_0x60 = 0xffffffffffffffff;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:58:39Z"
+}

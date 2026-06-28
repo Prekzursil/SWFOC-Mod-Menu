@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c29e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c29ee        int32_t* result = operator new(0x3c8)\n1405c29f6        if (result == 0)\n1405c2a0d        return result\n1405c2a03        return sub_1405c1de0(result, arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

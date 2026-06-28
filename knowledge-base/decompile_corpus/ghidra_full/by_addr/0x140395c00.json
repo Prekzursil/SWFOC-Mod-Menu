@@ -1,0 +1,7 @@
+{
+  "addr": "0x140395c00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GameObjectClass::vfunction2(GameObjectClass *this)\n\n{\n  FUN_1403982b0(&this[-1].RootClass_data.offset_0x318);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:48Z"
+}

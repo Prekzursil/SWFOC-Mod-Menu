@@ -1,0 +1,7 @@
+{
+  "addr": "0x140694010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nint __thiscall\nLandExecutionPathFinderClass::vfunction3(LandExecutionPathFinderClass *this,int param_1,int param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  char cVar3;\n  int iVar4;\n  uint uVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  \n  lVar1 = (this->AIExecutionPathFinderClass_data).offset_0x0;\n  lVar2 = *(longlong *)(lVar1 + (longlong)param_1 * 0x10);\n  lVar1 = *(longlong *)(lVar1 + (longlong)param_2 * 0x10);\n  cVar3 = FUN_1405a9af0(lVar1,lVar2,0xffffffff);\n  iVar4 = DAT_1408b6c8c;\n  if (cVar3 != '\\0') {\n    fVar6 = *(float *)(lVar1 + 0x30) - *(float *)(lVar2 + 0x30);\n    fVar7 = *(float *)(lVar1 + 0x34) - *(float *)(lVar2 + 0x34);\n    fVar8 = *(float *)(lVar1 + 0x38) - *(float *)(lVar2 + 0x38);\n    fVar6 = (float)FUN_140776d48(fVar6 * fVar6 + fVar7 * fVar7 + fVar8 * fVar8);\n    uVar5 = (uint)(longlong)(fVar6 / _DAT_1408b6c98) & 0xffff;\n    iVar4 = *(int *)((this->AIExecutionPathFinderClass_data).offset_0x0 + 8 +\n                    (longlong)param_2 * 0x10);\n    if (iVar4 == 0) {\n      iVar4 = uVar5 + 0x10000;\n    }\n    else {\n      iVar4 = iVar4 * 0x10000 + uVar5;\n    }\n  }\n  return iVar4;\n}",
+  "fetched_at": "2026-04-26T17:19:37Z"
+}

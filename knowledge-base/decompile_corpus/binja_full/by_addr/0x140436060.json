@@ -1,0 +1,7 @@
+{
+  "addr": "0x140436060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140436066        struct ScheduledEventClass::ControlGroupEventClass::VTable** result = arg1\n140436069        sub_140512c50(arg1)\n140436075        result[9].d = 0\n14043607c        *result = &ControlGroupEventClass::`vftable'{for `ScheduledEventClass'}\n140436082        *(result + 0x4c) = 0\n140436088        result[4].d = 0x1e\n140436094        return result",
+  "fetched_at": "2026-04-26T17:27:03Z"
+}

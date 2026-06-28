@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405dbc40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405dbc71        if (arg2 s>= 0 && arg3 s>= 0 && *(arg1 + 0x90) != 0)\n1405dbc73        int64_t* rax_1 = *(arg1 + 0x88)\n1405dbc7a        void** i = *rax_1\n1405dbc80        if (i != rax_1)\n1405dbc8b        void* var_38\n1405dbc8b        sub_1405db3f0(&var_38, &i[2])\n1405dbc9e        int64_t var_20\n1405dbc9e        int32_t var_18\n1405dbc9e        if (var_18 s>= 0 && var_18 s> arg3 && var_18 s<= arg2)\n1405dbd09        int64_t result = sub_1402d1e50(&data_140b27dc0, &var_38)\n1405dbd1a        if (var_20 u< 0x10)\n1405dbd4a        return result\n1405dbd1c        void* rcx_2 = var_38\n1405dbd24        void* rax_8 = rcx_2\n1405dbd2e        if (var_20 + 1 u>= 0x1000)\n1405dbd30        rcx_2 = *(rcx_2 - 8)\n1405dbd43        if (var_20 + 1 u< 0x1000 || rax_8 - rcx_2 - 8 u<= 0x1f)\n1405dbd45        j_sub_1407864b8(rcx_2)\n1405dbd4a        return result\n1405dbd4f        _invalid_parameter_noinfo_noreturn()\n1405dbd4f        noreturn\n1405dbca9        if (var_20 u>= 0x10)\n1405dbcab        void* rcx_1 = var_38\n1405dbcb4        void* rax_4 = rcx_1\n1405dbcbe        if (var_20 + 1 u>= 0x1000)\n1405dbcc0        rcx_1 = *(rcx_1 - 8)\n1405dbcd3        if (var_20 + 1 u>= 0x1000 && rax_4 - rcx_1 - 8 u> 0x1f)\n1405dbd4f        _invalid_parameter_noinfo_noreturn()\n1405dbd4f        noreturn\n1405dbcd5        j_sub_1407864b8(rcx_1)\n1405dbcda        i = *i\n1405dbce4        do while (i != *(arg1 + 0x88))\n1405dbce6        return 0",
+  "fetched_at": "2026-04-26T17:38:23Z"
+}

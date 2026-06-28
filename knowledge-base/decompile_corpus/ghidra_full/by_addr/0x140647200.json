@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall\nStunnableBehaviorClass::vfunction7(StunnableBehaviorClass *this,undefined8 param_1,int param_2)\n\n{\n  byte bVar1;\n  longlong *plVar2;\n  undefined4 *puVar3;\n  \n  BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n  bVar1 = *(byte *)(this->offset_0x18 + 0x74);\n  if ((bVar1 & 0x10) != 0) {\n    puVar3 = &DAT_1408b38f0;\n    *(byte *)(this->offset_0x18 + 0x74) = bVar1 & 0xef;\n    do {\n      plVar2 = (longlong *)(**(code **)(*this->offset_0x18 + 0x10))(this->offset_0x18,*puVar3);\n      if (plVar2 != (longlong *)0x0) {\n        (**(code **)(*plVar2 + 0xb8))(plVar2);\n      }\n      puVar3 = puVar3 + 1;\n    } while ((longlong)puVar3 < 0x1408b3900);\n    (*this->vftablePtr->vfunction25)(this);\n  }\n  return 0x650000;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:07Z"
+}

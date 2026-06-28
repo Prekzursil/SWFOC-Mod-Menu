@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023e5f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14023e5f0(FileClass *param_1)\n\n{\n  undefined1 *puVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  FUN_14023f6c0();\n  DynamicVectorClass<void_const*___ptr64>::~DynamicVectorClass<void_const*___ptr64>\n            ((DynamicVectorClass<void_const*___ptr64> *)&param_1[1].FileClass_data.offset_0x70);\n  DynamicVectorClass<void_const*___ptr64>::~DynamicVectorClass<void_const*___ptr64>\n            ((DynamicVectorClass<void_const*___ptr64> *)\n             ((longlong)&param_1[1].FileClass_data.offset_0x54 + 4));\n  FUN_140066600(&param_1[1].FileClass_data.field_0x20);\n  puVar1 = param_1[1].FileClass_data.offset_0x18;\n  if ((undefined1 *)0xf < puVar1) {\n    lVar2 = *(longlong *)&param_1[1].FileClass_data;\n    lVar3 = lVar2;\n    if ((undefined1 *)0xfff < puVar1 + 1) {\n      lVar3 = *(longlong *)(lVar2 + -8);\n      if (0x1f < (lVar2 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar2 - lVar3,puVar1 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar3);\n  }\n  *(undefined8 *)&param_1[1].FileClass_data.offset_0x10 = 0;\n  param_1[1].FileClass_data.offset_0x18 = (undefined1 *)0xf;\n  *(undefined1 *)&param_1[1].FileClass_data.offset_0x0 = 0;\n  FileClass::~FileClass(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:12Z"
+}

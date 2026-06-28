@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261610",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026161f        int64_t rdi = arg1[8]\n14026162a        *arg1 = &CameraClass::`vftable'{for `RefCountClass'}\n140261635        if (rdi != 0)\n140261647        j_sub_1407864b8(rdi)\n14026164c        arg1[8] = 0\n14026165b        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n140261662        if ((arg2 & 1) != 0)\n14026166c        j_sub_1407864b8(arg1)\n140261683        return arg1",
+  "fetched_at": "2026-04-26T17:31:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400479f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined1 __thiscall\nLuaExternalFunction::vfunction3_for_SignalListenerClass(LuaExternalFunction *this)\n\n{\n  return *(undefined1 *)&this->vftablePtr;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:01Z"
+}

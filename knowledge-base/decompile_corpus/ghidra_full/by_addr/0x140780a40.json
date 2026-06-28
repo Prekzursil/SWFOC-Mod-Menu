@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780a40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __doserrno\n   \n   Library: Visual Studio 2019 Release */\n\nulong * __cdecl __doserrno(void)\n\n{\n  longlong lVar1;\n  ulong *puVar2;\n  \n  lVar1 = __acrt_getptd_noexit();\n  if (lVar1 == 0) {\n    puVar2 = (ulong *)&DAT_140a44bc0;\n  }\n  else {\n    puVar2 = (ulong *)(lVar1 + 0x20);\n  }\n  return puVar2;\n}",
+  "fetched_at": "2026-04-26T18:51:02Z"
+}

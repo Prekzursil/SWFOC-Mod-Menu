@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407820f8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407820fc        char rax = 0\n140782106        if (arg4 == 0xa && arg1 s< 0)\n140782108        rax = 1\n140782117        return common_xtox_s<unsigned long,wchar_t>(arg1, arg2, arg3, arg4, rax)",
+  "fetched_at": "2026-04-26T17:31:09Z"
+}

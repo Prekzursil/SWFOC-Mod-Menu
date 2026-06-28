@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f7afc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nEatAttackAbilityClass::vfunction3_for_RefCountClass(EatAttackAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((EatAttackAbilityClass *)&this[-1].EatAttackAbilityClass_data.offset_0x80,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:58Z"
+}

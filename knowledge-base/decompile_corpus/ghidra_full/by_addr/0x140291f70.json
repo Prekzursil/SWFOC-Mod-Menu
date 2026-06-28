@@ -1,0 +1,7 @@
+{
+  "addr": "0x140291f70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140291f70(longlong *param_1,undefined8 param_2,longlong param_3,int *param_4)\n\n{\n  uint uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  int iVar4;\n  longlong lVar5;\n  float fVar6;\n  \n  if (param_3 != 0) {\n    iVar4 = DAT_140b153fc;\n    if (DAT_140b15418 != (longlong *)0x0) {\n      iVar4 = (**(code **)(*DAT_140b15418 + 0xe0))();\n    }\n    if (iVar4 == 0) {\n      lVar3 = *param_1;\n      iVar4 = 0;\n      if (0 < (int)(param_1[1] - lVar3 >> 3)) {\n        lVar5 = 0;\n        do {\n          lVar2 = *(longlong *)(lVar5 + lVar3);\n          if (*(longlong *)(lVar2 + 0x68) != 0) {\n            if ((*(byte *)(param_4 + 8) & 0x20) == 0) {\n              uVar1 = FUN_1404af380(param_3);\n              fVar6 = (float)uVar1;\n              lVar2 = *(longlong *)(lVar5 + lVar3);\n            }\n            else {\n              fVar6 = (float)*param_4;\n            }\n            *(float *)(lVar2 + 0x70) = fVar6;\n          }\n          lVar3 = *param_1;\n          iVar4 = iVar4 + 1;\n          lVar5 = lVar5 + 8;\n        } while (iVar4 < (int)(param_1[1] - lVar3 >> 3));\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:24:36Z"
+}

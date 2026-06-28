@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407410dc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: static class std::locale::_Locimp * __ptr64 __cdecl std::locale::_Init(bool)\n   \n   Library: Visual Studio 2019 Release */\n\n_Locimp * __cdecl std::locale::_Init(bool param_1)\n\n{\n  _Locimp *p_Var1;\n  longlong lVar2;\n  char *pcVar3;\n  char *pcVar4;\n  _Lockit local_res8 [8];\n  \n  _Lockit::_Lockit(local_res8,0);\n  p_Var1 = DAT_140b3b618;\n  if (DAT_140b3b618 == (_Locimp *)0x0) {\n    p_Var1 = _Locimp::_New_Locimp(false);\n    _Setgloballocale(p_Var1);\n    *(undefined4 *)(p_Var1 + 0x20) = 0x3f;\n    if (*(undefined **)(p_Var1 + 0x28) != &DAT_140879944) {\n      if (*(undefined **)(p_Var1 + 0x28) != (undefined *)0x0) {\n        FUN_1407864b8();\n      }\n      *(undefined8 *)(p_Var1 + 0x28) = 0;\n      pcVar3 = \"C\";\n      do {\n        pcVar4 = pcVar3;\n        pcVar3 = pcVar4 + 1;\n      } while (*pcVar3 != '\\0');\n      pcVar4 = pcVar4 + -0x140879942;\n      lVar2 = _malloc_base(pcVar4);\n      *(longlong *)(p_Var1 + 0x28) = lVar2;\n      if (lVar2 != 0) {\n        FUN_14076bd80(lVar2,&DAT_140879944,pcVar4);\n      }\n    }\n    DAT_140b3b5c8 = p_Var1;\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(p_Var1);\n    DAT_140b3b5f8 = DAT_140b3b5c8;\n  }\n  if (param_1) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(p_Var1);\n  }\n  _Lockit::~_Lockit(local_res8);\n  return p_Var1;\n}",
+  "fetched_at": "2026-04-26T18:04:12Z"
+}

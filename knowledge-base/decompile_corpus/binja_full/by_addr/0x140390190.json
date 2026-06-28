@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140390196        struct BaseDataPackClass::AbilityCountdownDataPackClass::VTable** rax = *(arg1 + 0x1e8)\n1403901a3        if (rax == 0)\n1403901aa        rax = operator new(0x2c8)\n1403901b2        if (rax != 0)\n1403901b7        struct BaseDataPackClass::AbilityCountdownDataPackClass::VTable** rax_1 = sub_140562970(rax)\n1403901bc        *(arg1 + 0x1e8) = rax_1\n1403901c8        return rax_1\n1403901c9        *(arg1 + 0x1e8) = rax\n1403901d5        return rax",
+  "fetched_at": "2026-04-26T17:21:30Z"
+}

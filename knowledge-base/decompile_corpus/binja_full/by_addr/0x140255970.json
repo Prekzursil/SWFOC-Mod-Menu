@@ -1,0 +1,7 @@
+{
+  "addr": "0x140255970",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025597f        int64_t* rdi = *(arg3 + 0x10)\n140255990        int64_t r8_2 = (*(arg3 + 0x18) - rdi) s>> 3\n140255998        if (r8_2 != 1)\n1402559a4        sub_140248190(arg2, \"ThreadValue::Get -- Invalid number of parameters %d should be 1\", r8_2)\n1402559ba        return 0\n1402559bb        int64_t* rdi_1 = *rdi\n1402559c1        if (rdi_1 != 0)\n1402559c9        void* i\n1402559c9        i, r8_2 = (*(*rdi_1 + 0x20))(rdi_1)\n1402559cf        while (i != 0)\n1402559db        if (i == &data_140a157d0)\n140255a0c        int64_t rsi = sx.q(*(arg2 + 0x60))\n140255a12        if (rsi.d s>= 0)\n140255a18        int64_t rcx_3 = *(arg1 + 0x28)\n140255a1c        int32_t rdx = (rsi + 1).d\n140255a2c        if (rdx s> ((*(arg1 + 0x30) - rcx_3) s>> 6).d)\n140255a35        sub_140257710(arg1 + 0x28, sx.q(rdx))\n140255a3a        rcx_3 = *(arg1 + 0x28)\n140255a4c        void* rdi_4 = (rsi << 6) + rcx_3\n140255a6a        void var_18\n140255a6a        void* rdx_4 = sub_14011f570(rdi_4, &var_18, &rdi_1[2], sub_14011f9c0(rdi_4, &rdi_1[2]))[1]\n140255a77        if (rdx_4 != 0 && rdx_4 != *(rdi_4 + 8))\n140255a80        return sub_140256d40(arg1, *(rdx_4 + 0x30))\n140255a9a        return nullptr\n1402559dd        i = *(i + 8)\n1402559f0        sub_140248190(arg2, \"ThreadValue::Get -- Invalid parameter 1, should be a string.\", r8_2)\n140255a06        return 0",
+  "fetched_at": "2026-04-26T17:30:46Z"
+}

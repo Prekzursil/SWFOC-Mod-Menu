@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d654",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __vcrt_initialize\n   \n   Library: Visual Studio 2019 Release */\n\nundefined1 __vcrt_initialize(void)\n\n{\n  char cVar1;\n  \n  cVar1 = __vcrt_initialize_locks();\n  if (cVar1 != '\\0') {\n    cVar1 = __vcrt_initialize_ptd();\n    if (cVar1 != '\\0') {\n      return 1;\n    }\n    __vcrt_uninitialize_locks();\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:11:07Z"
+}

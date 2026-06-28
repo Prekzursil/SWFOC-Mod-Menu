@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5500",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a550b        if (inflateStateCheck(arg1) != 0)\n1407a5516        return 0xfffffffe\n1407a5517        void* rax_2 = *(arg1 + 0x28)\n1407a551d        *(rax_2 + 0x34) = 0\n1407a5521        *(rax_2 + 0x3c) = 0\n1407a5528        return sub_1407a55d0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:32:27Z"
+}

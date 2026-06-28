@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028c4c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14028c4c0(longlong param_1)\n\n{\n  if (*(longlong *)(param_1 + 0x38) != 0) {\n    DynamicVectorClass<class_GameObjectClass*___ptr64>::\n    DynamicVectorClass<class_GameObjectClass*___ptr64>_Constructor_or_Destructor\n              (*(longlong *)(*(longlong *)(param_1 + 0x38) + 0x18));\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:23:57Z"
+}

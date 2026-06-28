@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f2810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f2828        data_140a2a570 = &CubicInterpolator::`vftable'{for `Interpolator'}\n1407f282f        sub_1401415b0(&data_140a2a580)\n1407f283b        data_140a2a548 = &CubicInterpolator::`vftable'{for `Interpolator'}\n1407f2849        data_140a2a570 = &Interpolator::`vftable'\n1407f2850        int64_t result = sub_1401415b0(&data_140a2a558)\n1407f2855        data_140a2a548 = &Interpolator::`vftable'\n1407f2866        return result",
+  "fetched_at": "2026-04-26T17:37:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407915b4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407915be        if (arg1 == 0)\n1407915c5        *_errno() = 0x16\n1407915cb        _invalid_parameter_noinfo()\n1407915d0        return 0xffffffff\n1407915d5        arg1[2].d -= 1\n1407915d9        if (arg1[2].d - 1 s< 0)\n1407915df        return __acrt_stdio_refill_and_read_narrow_nolock(arg1) __tailcall\n1407915e4        char* rax_3 = *arg1\n1407915e7        uint32_t rcx_1 = zx.d(*rax_3)\n1407915ed        *arg1 = &rax_3[1]\n1407915f0        return zx.q(rcx_1)",
+  "fetched_at": "2026-04-26T17:31:45Z"
+}

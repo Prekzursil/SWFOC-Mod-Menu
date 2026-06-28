@@ -1,0 +1,7 @@
+{
+  "addr": "0x140282450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140282450(longlong *param_1)\n\n{\n  char cVar1;\n  undefined8 *puVar2;\n  undefined8 *puVar3;\n  undefined8 *puVar4;\n  \n  if (param_1[1] != 0) {\n    puVar2 = *(undefined8 **)*param_1;\n    while (puVar2 != (undefined8 *)*param_1) {\n      if (puVar2[5] != puVar2[6]) {\n        return 0;\n      }\n      puVar3 = (undefined8 *)puVar2[2];\n      if (*(char *)((longlong)puVar3 + 0x19) == '\\0') {\n        cVar1 = *(char *)((longlong)*puVar3 + 0x19);\n        puVar2 = puVar3;\n        puVar3 = (undefined8 *)*puVar3;\n        while (cVar1 == '\\0') {\n          cVar1 = *(char *)((longlong)*puVar3 + 0x19);\n          puVar2 = puVar3;\n          puVar3 = (undefined8 *)*puVar3;\n        }\n      }\n      else {\n        cVar1 = *(char *)((longlong)puVar2[1] + 0x19);\n        puVar4 = (undefined8 *)puVar2[1];\n        puVar3 = puVar2;\n        while ((puVar2 = puVar4, cVar1 == '\\0' && (puVar3 == (undefined8 *)puVar2[2]))) {\n          cVar1 = *(char *)((longlong)puVar2[1] + 0x19);\n          puVar4 = (undefined8 *)puVar2[1];\n          puVar3 = puVar2;\n        }\n      }\n    }\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:22:40Z"
+}

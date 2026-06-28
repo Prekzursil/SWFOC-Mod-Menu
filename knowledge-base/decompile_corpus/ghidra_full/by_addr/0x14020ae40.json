@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020ae40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14020ae40(float *param_1,float *param_2,float param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  \n  fVar2 = param_1[2] - param_2[2];\n  fVar3 = param_1[1] - param_2[1];\n  fVar1 = *param_1 - *param_2;\n  if (DAT_1408007ec <= param_3) {\n    param_3 = DAT_1408007a8;\n  }\n  for (; DAT_1408524f8 < fVar1; fVar1 = fVar1 - DAT_1408007f4) {\n  }\n  for (; fVar1 <= DAT_1408524fc; fVar1 = fVar1 + DAT_1408007f4) {\n  }\n  if (ABS(fVar1) <= param_3) {\n    for (; DAT_1408524f8 < fVar3; fVar3 = fVar3 - DAT_1408007f4) {\n    }\n    for (; fVar3 <= DAT_1408524fc; fVar3 = fVar3 + DAT_1408007f4) {\n    }\n    if (ABS(fVar3) <= param_3) {\n      for (; DAT_1408524f8 < fVar2; fVar2 = fVar2 - DAT_1408007f4) {\n      }\n      for (; fVar2 <= DAT_1408524fc; fVar2 = fVar2 + DAT_1408007f4) {\n      }\n      if (ABS(fVar2) <= param_3) {\n        return 1;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:58:15Z"
+}

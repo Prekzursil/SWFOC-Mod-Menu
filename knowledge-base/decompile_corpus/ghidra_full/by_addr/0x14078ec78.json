@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ec78",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    strcpy_s\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nerrno_t __cdecl strcpy_s(char *_Dst,rsize_t _SizeInBytes,char *_Src)\n\n{\n  char cVar1;\n  ulong *puVar2;\n  ulong uVar3;\n  char *pcVar4;\n  \n  if ((_Dst != (char *)0x0) && (_SizeInBytes != 0)) {\n    if (_Src != (char *)0x0) {\n      pcVar4 = _Dst;\n      do {\n        cVar1 = pcVar4[(longlong)_Src - (longlong)_Dst];\n        *pcVar4 = cVar1;\n        pcVar4 = pcVar4 + 1;\n        if (cVar1 == '\\0') break;\n        _SizeInBytes = _SizeInBytes - 1;\n      } while (_SizeInBytes != 0);\n      if (_SizeInBytes != 0) {\n        return 0;\n      }\n      *_Dst = '\\0';\n      puVar2 = __doserrno();\n      uVar3 = 0x22;\n      goto LAB_14078ec9b;\n    }\n    *_Dst = '\\0';\n  }\n  puVar2 = __doserrno();\n  uVar3 = 0x16;\nLAB_14078ec9b:\n  *puVar2 = uVar3;\n  FUN_1407711ac();\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T18:52:25Z"
+}

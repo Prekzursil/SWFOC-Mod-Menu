@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bcc80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bcc8f        int64_t* rbx = *(arg3 + 0x10)\n1406bcca0        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1406bcca8        if (r8_2 != 1)\n1406bccb4        sub_140248190(arg2, \"BudgetWrapper::Allocate_Resources -- Invalid number of parameters: %d should be 1.\\n\", r8_2)\n1406bccca        return 0\n1406bcccb        int64_t* rbx_1 = *rbx\n1406bccd1        if (rbx_1 != 0)\n1406bccd9        void* i\n1406bccd9        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1406bccdf        while (i != 0)\n1406bcceb        if (i == &data_140a157c0)\n1406bcd1c        void* rcx_3 = *(arg1 + 0x28)\n1406bcd20        uint128_t zmm1 = _mm_cvtpd_ps(zx.o(rbx_1[2]))\n1406bcd2b        sub_140691950(*(rcx_3 + 0x88), zmm1)\n1406bcd41        return 0\n1406bcced        i = *(i + 8)\n1406bcd00        sub_140248190(arg2, \"BudgetWrapper::Allocate_Resources -- Invalid parameter type for parameter 1.  Should be number.\\n\", r8_2)\n1406bcd16        return 0",
+  "fetched_at": "2026-04-26T17:24:56Z"
+}

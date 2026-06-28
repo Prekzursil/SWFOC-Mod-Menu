@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524f90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAIExecutionSystemDiagnosticsNodeClass::vfunction3(AIExecutionSystemDiagnosticsNodeClass *this)\n\n{\n  AIDiagnosticsManagerClass *pAVar1;\n  undefined8 *puVar2;\n  undefined **local_res8;\n  longlong local_28 [3];\n  ulonglong local_10;\n  \n  if (DAT_140a10970 == (AIDiagnosticsManagerClass *)0x0) {\n    pAVar1 = (AIDiagnosticsManagerClass *)FUN_140769c58(0xc0);\n    if (pAVar1 == (AIDiagnosticsManagerClass *)0x0) {\n      DAT_140a10970 = (AIDiagnosticsManagerClass *)0x0;\n    }\n    else {\n      DAT_140a10970 = AIDiagnosticsManagerClass::~AIDiagnosticsManagerClass(pAVar1);\n    }\n    local_res8 = &PTR_vftable_140a10968;\n    if (DAT_140a7bc10 == DAT_140a7bc18) {\n      FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,&local_res8);\n    }\n    else {\n      *DAT_140a7bc10 = &PTR_vftable_140a10968;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n    }\n  }\n  pAVar1 = DAT_140a10970;\n  puVar2 = (*this->vftablePtr->vfunction5)(this,local_28);\n  FUN_140475c90(pAVar1,puVar2);\n  if (0xf < local_10) {\n    if (0xfff < local_10 + 1) {\n      if (0x1f < (local_28[0] - *(longlong *)(local_28[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28[0] + -8),local_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:27:07Z"
+}

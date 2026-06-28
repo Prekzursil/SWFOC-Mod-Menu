@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e3200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402e3200(longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  longlong local_28 [3];\n  ulonglong local_10;\n  \n  if ((param_2 != 0) && (*(longlong *)(param_1 + 0x590) != param_2)) {\n    if (*(int *)(param_1 + 0x211c) == 1) {\n      if (*(char *)(param_1 + 0x26a4) == '\\0') {\n        return;\n      }\n    }\n    else if ((*(int *)(param_1 + 0x211c) - 2U < 2) && (0 < *(int *)(param_1 + 0x26a0))) {\n      return;\n    }\n    cVar1 = FUN_140305fd0();\n    if (cVar1 != '\\0') {\n      FUN_14007a960(local_28,param_2 + 0x140);\n      *(undefined1 *)(param_1 + 0x5d0) = 1;\n      *(undefined1 *)(param_1 + 0x5a1) = 1;\n      DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n      ::\n      DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>_Constructor_or_Destructor\n                (param_1,param_2,'\\0',0);\n      FUN_140308890(param_1,0);\n      if (7 < local_10) {\n        if (0xfff < local_10 * 2 + 2) {\n          if (0x1f < (local_28[0] - *(longlong *)(local_28[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n            FUN_1407711cc(*(longlong *)(local_28[0] + -8),local_10 * 2 + 0x29);\n          }\n        }\n        thunk_FUN_1407864b8();\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:24:41Z"
+}

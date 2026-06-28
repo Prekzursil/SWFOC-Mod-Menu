@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a87bb",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void D3DXVec4Transform(void)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x0001407a87bb. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  D3DXVec4Transform();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:46Z"
+}

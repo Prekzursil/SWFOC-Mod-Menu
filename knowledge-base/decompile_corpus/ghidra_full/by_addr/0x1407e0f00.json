@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e0f00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alLightningBolt::vfunction11_for_RefCountClass(alLightningBolt *this,float *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  \n  fVar2 = DAT_1408007c0;\n  fVar4 = (this->alLightningBolt_data).offset_0x164;\n  fVar1 = (this->alLightningBolt_data).offset_0x158;\n  fVar3 = ((this->alLightningBolt_data).offset_0x160 + (this->alLightningBolt_data).offset_0x154) *\n          DAT_1408007c0;\n  *param_1 = ((this->alLightningBolt_data).offset_0x15c + (this->alLightningBolt_data).offset_0x150)\n             * DAT_1408007c0;\n  param_1[1] = fVar3;\n  param_1[2] = (fVar4 + fVar1) * fVar2;\n  fVar4 = (this->alLightningBolt_data).offset_0x16c;\n  fVar1 = (float)(this->alLightningBolt_data).offset_0x168;\n  if (fVar4 <= fVar1) {\n    fVar4 = fVar1;\n  }\n  fVar4 = fVar4 * fVar2;\n  param_1[3] = fVar4;\n  param_1[4] = fVar4;\n  param_1[5] = fVar4;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:23Z"
+}

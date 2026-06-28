@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f6af8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDetectHeroAbilityClass::vfunction3_for_RefCountClass(DetectHeroAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((DetectHeroAbilityClass *)&this[-1].DetectHeroAbilityClass_data.offset_0x8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:40Z"
+}

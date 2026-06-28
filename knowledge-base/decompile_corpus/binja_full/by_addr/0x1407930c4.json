@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407930c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407930f5        if (arg1 == 0 || arg2 == 0)\n1407930de        *_errno() = 0x16\n1407930e4        _invalid_parameter_noinfo()\n1407930f5        if (arg1 u< arg2)\n1407930ff        void* var_28\n1407930ff        _LocaleUpdate::_LocaleUpdate(&var_28, arg3)\n140793109        char* result = arg2 - 1\n140793111        void* var_18\n140793111        if (*(var_18 + 8) != 0)\n140793113        result -= 1\n140793119        if (arg1 u> result)\n140793119        break\n140793123        do while ((*(zx.q(*result) + var_18 + 0x19) & 4) != 0)\n140793134        result = arg2 - (zx.q(arg2.d - result.d) & 1) - 1\n14079313c        char var_10\n14079313c        if (var_10 != 0)\n14079313e        void* rcx_5 = var_28\n140793143        *(rcx_5 + 0x3a8) &= 0xfffffffd\n14079314a        return result\n1407930e9        return nullptr",
+  "fetched_at": "2026-04-26T17:31:50Z"
+}

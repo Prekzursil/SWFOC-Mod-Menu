@@ -1,0 +1,7 @@
+{
+  "addr": "0x140392410",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140392416        void** result = *(arg1 + 0x298)\n140392425        int128_t zmm6 = arg2\n14039242d        int128_t zmm7 = zx.o(0)\n140392430        void* rdx = result[0x282]\n14039243a        int128_t zmm3\n14039243a        if (rdx != 0)\n14039243f        zmm3 = *(rdx + 0xc0)\n140392447        if (not(zmm6.d f< 0f))\n140392449        zmm3 = arg2\n140392456        zmm6, zmm7 = sub_1402d5c00(&data_140b27e60, rdx, arg1, zmm3)\n14039245b        result = *(arg1 + 0x298)\n140392462        *(arg1 + 0x3b5) = 0\n140392469        void* rdx_1 = result[0x280]\n140392473        if (rdx_1 != 0)\n140392478        zmm3 = *(rdx_1 + 0xc0)\n140392480        if (not(zmm6.d f< zmm7.d))\n140392482        zmm3 = zmm6\n14039248f        zmm6, zmm7 = sub_1402d5c00(&data_140b27e60, rdx_1, arg1, zmm3)\n140392494        result = *(arg1 + 0x298)\n14039249b        *(arg1 + 0x3b6) = 0\n1403924a2        void* rdx_2 = result[0x284]\n1403924ac        if (rdx_2 != 0)\n1403924b1        zmm3 = *(rdx_2 + 0xc0)\n1403924b9        if (not(zmm6.d f< zmm7.d))\n1403924bb        zmm3 = zmm6\n1403924c8        result = sub_1402d5c00(&data_140b27e60, rdx_2, arg1, zmm3)\n1403924d7        *(arg1 + 0x3b9) = 1\n1403924e3        return result",
+  "fetched_at": "2026-04-26T17:23:38Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd760",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd779        int32_t* r10 = arg4[7]\n1407dd796        void* rbx_2 = &r10[zx.q(*r10) * 4]\n1407dd79d        int32_t rdx_1 = __GSHandlerCheckCommon(arg2, arg4, rbx_2 + 4)\n1407dd7b7        if ((*(rbx_2 + 4) & (neg.d(sbb.d(rdx_1, rdx_1, ((arg1[1]).b & 0x66) != 0)) + 1)) == 0)\n1407dd7e4        return 1\n1407dd7c5        return __C_specific_handler(arg1, arg2, arg3, arg4)",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

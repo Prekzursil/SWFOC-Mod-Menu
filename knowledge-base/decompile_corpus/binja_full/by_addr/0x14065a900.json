@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065a900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065a913        if (arg2 != 0 && (*(*arg2 + 0x10))(arg2, 3) != 0)\n14065a92d        struct SignalGeneratorClass::VTable** rax_3 = operator new(0xe8)\n14065a935        if (rax_3 != 0)\n14065a93d        struct GameObjectPerceptualEvaluatorClass::PlanetPerceptualEvaluatorClass::VTable** result = sub_140659cf0(rax_3, arg1)\n14065a948        if (result != 0)\n14065a953        (*result)->vFunc_9(result, arg2)\n14065a95d        (*result)->vFunc_8(result)\n14065a96d        return result\n14065a97a        return 0",
+  "fetched_at": "2026-04-26T17:07:26Z"
+}

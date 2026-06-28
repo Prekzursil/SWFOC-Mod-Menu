@@ -1,0 +1,7 @@
+{
+  "addr": "0x140276b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140276b44        int64_t* rbx = arg2\n140276b4d        if (arg3 s< 0)\n140276b4f        arg3 = *(arg1 + 0xa0)\n140276b66        int64_t rsi = sx.q(arg3) * 0x198\n140276b6d        void** rcx_2 = *(arg1 + 0x90) + 0x20 + rsi\n140276b70        rcx_2[2] = 0\n140276b79        if (rcx_2[3] u>= 0x10)\n140276b7b        rcx_2 = *rcx_2\n140276b7e        *rcx_2 = nullptr\n140276b8c        int64_t* rcx_5 = *(arg1 + 0x90) + 0x20 + rsi\n140276b92        if (rcx_5 != rbx)\n140276b99        if (arg2[3] u>= 0x10)\n140276b9b        arg2 = *arg2\n140276ba2        sub_140022730(rcx_5, arg2, rbx[2])\n140276bab        if (rbx[2] == 0)\n140276bb4        *(*(arg1 + 0x90) + rsi + 0x120) = 0x3f800000\n140276bc6        *(*(arg1 + 0x90) + rsi + 0x124) = 0\n140276bd4        *(*(arg1 + 0x90) + rsi + 0x128) = 0\n140276bdb        int64_t rdx = rbx[3]\n140276be3        if (rdx u>= 0x10)\n140276be5        void* rcx_6 = *rbx\n140276bf2        if (rdx + 1 u>= 0x1000)\n140276bf4        void* r8_1 = *(rcx_6 - 8)\n140276c07        if (rcx_6 - r8_1 - 8 u> 0x1f)\n140276c37        _invalid_parameter_noinfo_noreturn()\n140276c37        noreturn\n140276c09        rcx_6 = r8_1\n140276c0c        j_sub_1407864b8(rcx_6)\n140276c16        int64_t result\n140276c16        result.b = 1\n140276c18        rbx[2] = 0\n140276c1c        *rbx = 0\n140276c24        rbx[3] = 0xf\n140276c36        return result",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

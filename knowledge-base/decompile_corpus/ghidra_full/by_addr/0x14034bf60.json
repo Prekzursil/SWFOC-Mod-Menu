@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034bf60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* ButtonComponentClass member function inherited by TextButtonComponentClass */\n\nundefined ** __thiscall ButtonComponentClass::vfunction33(ButtonComponentClass *this)\n\n{\n  undefined **ppuVar1;\n  undefined **ppuVar2;\n  \n  ppuVar1 = (undefined **)(this->ButtonComponentClass_data).offset_0x20;\n  ppuVar2 = &PTR_1407ff8a8;\n  if (ppuVar1 != (undefined **)0x0) {\n    ppuVar2 = ppuVar1;\n  }\n  return ppuVar2;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:19Z"
+}

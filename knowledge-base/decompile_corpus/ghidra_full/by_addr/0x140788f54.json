@@ -1,0 +1,7 @@
+{
+  "addr": "0x140788f54",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140788f54(void)\n\n{\n  code *pcVar1;\n  longlong lVar2;\n  BOOL BVar3;\n  undefined1 *puVar4;\n  undefined1 auStack_28 [8];\n  undefined1 auStack_20 [32];\n  \n  puVar4 = auStack_28;\n  lVar2 = __acrt_get_sigabrt_handler();\n  if (lVar2 != 0) {\n    FUN_140796388(0x16);\n  }\n  if ((DAT_140a44da0 & 2) != 0) {\n    BVar3 = IsProcessorFeaturePresent(0x17);\n    puVar4 = auStack_28;\n    if (BVar3 != 0) {\n      pcVar1 = (code *)swi(0x29);\n      (*pcVar1)(7);\n      puVar4 = auStack_20;\n    }\n    *(undefined8 *)(puVar4 + -8) = 0x140788f9f;\n    __acrt_call_reportfault(3,0x40000015);\n  }\n                    /* WARNING: Subroutine does not return */\n  *(undefined **)(puVar4 + -8) = &UNK_140788fa9;\n  FUN_14078c0fc(3);\n}",
+  "fetched_at": "2026-04-26T18:51:46Z"
+}

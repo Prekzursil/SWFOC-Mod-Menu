@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bcdb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bcdbd        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x30)\n1406bcdc5        if (rax == 0)\n1406bcdda        rax[4].d = arg1\n1406bcde2        return rax\n1406bcdcc        struct LuaUserVar::BudgetWrapper::VTable** rax_1 = sub_1406bc8b0(rax, 0)\n1406bcdd1        rax_1[4].d = arg1\n1406bcdd9        return rax_1",
+  "fetched_at": "2026-04-26T17:24:56Z"
+}

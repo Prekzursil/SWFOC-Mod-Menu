@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b1c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b1c0(void)\n\n{\n  WeatherproofAbilityClass *this;\n  \n  this = (WeatherproofAbilityClass *)FUN_140769c58(0x180);\n  if (this != (WeatherproofAbilityClass *)0x0) {\n    WeatherproofAbilityClass::WeatherproofAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:42Z"
+}

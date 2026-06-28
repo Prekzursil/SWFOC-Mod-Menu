@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2720",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1401d2720(longlong *param_1,int param_2,undefined2 param_3)\n\n{\n  uint uVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  \n  uVar1 = *(uint *)((longlong)param_1 + 0xc);\n  uVar2 = (ulonglong)uVar1;\n  if (param_2 <= (int)uVar1) {\n    uVar1 = uVar1 + 1;\n    uVar2 = (ulonglong)uVar1;\n    if ((int)uVar1 < 0xffff) {\n      if ((int)param_1[1] <= (int)uVar1) {\n        uVar2 = FUN_1401d24f0(param_1,0xffffffff);\n        if ((char)uVar2 == '\\0') goto LAB_1401d27a6;\n      }\n      lVar3 = *param_1 + (longlong)param_2 * 2;\n      FUN_14076bd80(lVar3 + 2,lVar3,\n                    (longlong)((*(int *)((longlong)param_1 + 0xc) - param_2) + 1) * 2);\n      lVar3 = *param_1;\n      *(undefined2 *)((longlong)param_2 * 2 + lVar3) = param_3;\n      *(int *)((longlong)param_1 + 0xc) = *(int *)((longlong)param_1 + 0xc) + 1;\n      *(undefined1 *)(param_1 + 3) = 1;\n      return CONCAT71((int7)((ulonglong)lVar3 >> 8),1);\n    }\n  }\nLAB_1401d27a6:\n  return uVar2 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:49:29Z"
+}

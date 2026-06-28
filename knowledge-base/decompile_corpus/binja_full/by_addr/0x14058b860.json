@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058b860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058b873        *arg1 = &DamageTrackingBehaviorClass::`vftable'{for `BehaviorClass'}\n14058b880        arg1[1] = &DamageTrackingBehaviorClass::`vftable'{for `RefCountClass'}\n14058b88b        arg1[3] = &DamageTrackingBehaviorClass::`vftable'{for `SignalListenerClass'}\n14058b88f        sub_1404c3310(arg1)\n14058b897        if ((arg2 & 1) != 0)\n14058b8a1        j_sub_1407864b8(arg1)\n14058b8b3        return arg1",
+  "fetched_at": "2026-04-26T17:36:11Z"
+}

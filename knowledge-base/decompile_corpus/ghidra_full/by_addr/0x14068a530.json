@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a530(void)\n\n{\n  EnergyWeaponAttackAbilityClass *this;\n  \n  this = (EnergyWeaponAttackAbilityClass *)FUN_140769c58(0x1c0);\n  if (this != (EnergyWeaponAttackAbilityClass *)0x0) {\n    EnergyWeaponAttackAbilityClass::EnergyWeaponAttackAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:50Z"
+}

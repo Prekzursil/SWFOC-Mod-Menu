@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2c60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2c67        return \"HintBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038ed10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14038ed20        if (*(arg1 + 0x3c9) != 0)\n14038ed20        return \n14038ed2b        int64_t* rsi_1 = data_140b15418\n14038ed35        if (rsi_1 == 0 || (*(*rsi_1 + 0xf0))(rsi_1).b == 0)\n14038ed49        return \n14038ed54        int32_t i = 0\n14038ed5d        if (arg1[0x51].b s> 0)\n14038ed6b        int64_t* rcx_2 = *(arg1[0x4f] + (sx.q(i.b) << 3))\n14038ed72        (*(*rcx_2 + 0xc0))(rcx_2)\n14038ed7f        i += 1\n14038ed83        do while (i s< sx.d(arg1[0x51].b))\n14038ed90        int64_t rax_6 = (*(*arg1 + 0x10))(arg1, 1)\n14038ed93        void* rcx_4 = arg1[0x54]\n14038eda0        if (rcx_4 != 0)\n14038eda4        sub_140264c80(rcx_4, 1)\n14038edb1        uint64_t entry_zmm2[0x2]\n14038edb1        if (rax_6 == 0)\n14038eddd        label_14038eddd:\n14038eddd        float zmm1 = (zx.o(0)).d\n14038ede0        int32_t var_18 = 0x3f800000\n14038eded        float var_10_1 = zmm1\n14038edf6        int32_t var_14_1 = 0x3f800000\n14038edfe        sub_1403abb80(arg1, &var_18, entry_zmm2, zmm1)\n14038edb9        void* rax = (*(*rsi_1 + 0x230))(rsi_1)\n14038edc2        if (rax != 0)\n14038edc7        void* rax_8\n14038edc7        rax_8, entry_zmm2 = sub_140508ec0(rax)\n14038edcf        if (rax_8 != 0)\n14038edd8        sub_14020abe0(rax_8, &arg1[3])\n14038edcf        goto label_14038eddd\n14038ee0d        return ",
+  "fetched_at": "2026-04-26T17:21:18Z"
+}

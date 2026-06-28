@@ -1,0 +1,7 @@
+{
+  "addr": "0x14049aa40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14049aa40(undefined8 param_1,float *param_2,float *param_3,float param_4,float *param_5)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  float fVar11;\n  \n  if ((param_2[0xb] == -NAN) && (param_3[0xb] == -NAN)) {\n    fVar7 = param_4 * param_4;\n    fVar10 = param_4 * param_4 * param_4;\n    fVar11 = fVar10 - fVar7;\n    fVar9 = (fVar10 * DAT_1408007d4 - fVar7 * DAT_1408007d8) + DAT_1407ffaf8;\n    fVar8 = fVar7 * DAT_1408007d8 - fVar10 * DAT_1408007d4;\n    fVar1 = param_3[3];\n    param_4 = (fVar10 - fVar7 * DAT_1408007d4) + param_4;\n    fVar7 = param_3[4];\n    fVar10 = *param_3;\n    fVar2 = param_3[1];\n    fVar3 = param_2[3];\n    fVar4 = param_2[1];\n    fVar5 = *param_2;\n    fVar6 = param_2[4];\n    param_5[2] = fVar9 * param_2[2] + fVar8 * param_3[2] + param_4 * param_2[5] +\n                 fVar11 * param_3[5];\n    param_5[1] = fVar9 * fVar4 + fVar8 * fVar2 + param_4 * fVar6 + fVar11 * fVar7;\n    *param_5 = fVar11 * fVar1 + param_4 * fVar3 + fVar8 * fVar10 + fVar9 * fVar5;\n    return;\n  }\n  FUN_14049a4b0();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:25Z"
+}

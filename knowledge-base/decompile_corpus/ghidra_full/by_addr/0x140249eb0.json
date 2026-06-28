@@ -1,0 +1,7 @@
+{
+  "addr": "0x140249eb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LuaUserVar::~LuaUserVar(LuaUserVar *this)\n\n{\n  undefined **ppuVar1;\n  \n  ppuVar1 = (this->RefCountClass_data).offset_0x8;\n  this->vftablePtr = &vftable;\n  if (ppuVar1 != (undefined **)0x0) {\n    FUN_140249cc0(ppuVar1);\n    thunk_FUN_1407864b8(ppuVar1,0x40);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n    this->vftablePtr = (LuaUserVar_vftable *)&RefCountClass::vftable;\n    return;\n  }\n  this->vftablePtr = (LuaUserVar_vftable *)&RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:03Z"
+}

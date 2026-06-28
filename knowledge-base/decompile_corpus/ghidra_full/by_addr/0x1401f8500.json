@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f8500",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGUIGadgetIMELocaleIndicatorClass::vfunction25(GUIGadgetIMELocaleIndicatorClass *this)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  longlong local_28 [2];\n  undefined8 local_18;\n  ulonglong local_10;\n  \n  GUIGadgetTextClass::vfunction25((GUIGadgetTextClass *)this);\n  lVar1 = FUN_1401d2fc0();\n  local_10 = 7;\n  local_28[0] = 0;\n  lVar2 = -1;\n  local_18 = 0;\n  do {\n    lVar2 = lVar2 + 1;\n  } while (*(short *)(lVar1 + lVar2 * 2) != 0);\n  FUN_1400228a0(local_28,lVar1);\n  GUIGadgetTextClass::vfunction21((GUIGadgetTextClass *)this,local_28);\n  if (7 < local_10) {\n    if (0xfff < local_10 * 2 + 2) {\n      if (0x1f < (local_28[0] - *(longlong *)(local_28[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28[0] + -8),local_10 * 2 + 0x29);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:56Z"
+}

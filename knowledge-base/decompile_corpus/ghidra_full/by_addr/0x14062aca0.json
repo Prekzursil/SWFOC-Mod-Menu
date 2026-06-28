@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062aca0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DebrisBehaviorClass::vfunction10(DebrisBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  int iVar2;\n  undefined8 uVar3;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  puVar1 = param_1[0x26];\n  iVar2 = FUN_1401ffb40(&DAT_140a13e24,*(undefined4 *)(param_1[0x53] + 0x1b90),\n                        *(undefined4 *)(param_1[0x53] + 0x1b94));\n  if (iVar2 < 1) {\n    iVar2 = 0;\n  }\n  else {\n    iVar2 = iVar2 * DAT_140b0a340 + *(int *)(*(longlong *)(param_1[0x57] + 0x20) + 0x10);\n  }\n  *(int *)(puVar1 + 8) = iVar2;\n  if ((((ulonglong)param_1[0x74] & 0x40) == 0) && (*(longlong *)(param_1[0x53] + 0x1ba0) != 0)) {\n    uVar3 = FUN_14038d190(param_1,*(longlong *)(param_1[0x53] + 0x1ba0),0);\n    *(undefined8 *)(puVar1 + 0x10) = uVar3;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

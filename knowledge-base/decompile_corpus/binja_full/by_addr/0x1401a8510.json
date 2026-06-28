@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a8510",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a8510        int64_t arg_10 = arg2\n1401a8515        int64_t arg_18 = arg3\n1401a851a        int64_t r9\n1401a851a        int64_t arg_20 = r9\n1401a8560        return __stdio_common_vsscanf(data_140a61a80, arg1, -ffffffffffffffff, arg2, nullptr, &arg_18)",
+  "fetched_at": "2026-04-26T17:25:18Z"
+}

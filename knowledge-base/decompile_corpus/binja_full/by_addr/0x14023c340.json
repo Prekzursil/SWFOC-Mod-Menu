@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023c340",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023c357        char rbx = arg3\n14023c361        EnterCriticalSection(&arg1[4])\n14023c372        if (rbx != 0 || arg1[1] - *arg1 u>= arg2)\n14023c374        *arg1 += arg2\n14023c376        rbx = 1\n14023c37c        LeaveCriticalSection(&arg1[4])\n14023c399        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:30:03Z"
+}

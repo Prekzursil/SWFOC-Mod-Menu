@@ -1,0 +1,7 @@
+{
+  "addr": "0x140212e60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140212e7c        sub_140211940(arg1)\n140212e93        int32_t result = sub_14021f840(arg2, \"KeySettingsCount\", 0x99)\n140212e9a        if (result s> 0x99)\n140212e9a        result = 0x99\n140212e9d        int32_t rdi = 0\n140212e9f        int64_t result_1 = sx.q(result)\n140212ea4        if (result s> 0)\n140212eb2        int64_t rsi_1 = 0\n140212eda        int32_t* rbx_1 = *(arg1 + 8) + (rsi_1 << 3)\n140212ede        void var_118\n140212ede        sscanf_s(&var_118, \"%s%d\", \"KeySettingKeycode\")\n140212ef9        *rbx_1 = sub_14021f840(arg2, &var_118, 0xffffffff)\n140212f0e        sscanf_s(&var_118, \"%s%d\", \"KeySettingModifier\")\n140212f1e        result = sub_14021f840(arg2, &var_118, 0)\n140212f23        rdi += 1\n140212f25        rbx_1[1] = result\n140212f28        rsi_1 += 1\n140212f2e        do while (rsi_1 s< result_1)\n140212f50        return result",
+  "fetched_at": "2026-04-26T17:28:24Z"
+}

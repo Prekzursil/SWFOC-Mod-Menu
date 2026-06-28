@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793e6c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793e76        int32_t var_18 = 0\n140793e80        __vcrt_unlock(8)\n140793e86        int32_t rbx = 3\n140793e8b        while (true)\n140793e8b        int32_t var_14_1 = rbx\n140793e95        if (rbx == data_140b3c0b0)\n140793e95        break\n140793e97        int64_t rdi_1 = sx.q(rbx)\n140793ea1        void* rcx_1 = *(data_140b3c0b8 + (rdi_1 << 3))\n140793ea8        if (rcx_1 != 0)\n140793eb4        if (((*(rcx_1 + 0x14) u>> 0xd).b & 1) != 0 && fclose(*(data_140b3c0b8 + (rdi_1 << 3))) != 0xffffffff)\n140793ecb        var_18 += 1\n140793ede        DeleteCriticalSection(*(data_140b3c0b8 + (rdi_1 << 3)) + 0x30)\n140793eef        _free_base(*(data_140b3c0b8 + (rdi_1 << 3)))\n140793efb        *(data_140b3c0b8 + (rdi_1 << 3)) = 0\n140793f00        rbx += 1\n140793f09        __vcrt_lock(8)\n140793f1c        return zx.q(var_18)",
+  "fetched_at": "2026-04-26T17:31:53Z"
+}

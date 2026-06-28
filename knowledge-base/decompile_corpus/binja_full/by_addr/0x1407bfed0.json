@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bfed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bfedb        if (arg2 s>= 1 && arg2 s<= *(arg1 + 0x38))\n1407bfeef        return *(arg1 + 0x18) - 0x10 + (sx.q(arg2) << 4)\n1407bff03        int32_t r8_1 = (1 << *(arg1 + 0xb)) - 1\n1407bff06        int64_t temp0 = _mm_cvtepi32_pd(zx.q(arg2))\n1407bff11        double zmm0 = temp0 + 1.0\n1407bff32        int32_t* i = *(arg1 + 0x20) + zx.q(modu.dp.d(0:(zmm0:4.d + zmm0.d), r8_1 | 1)) * 0x28\n1407bff39        if (*i == 3)\n1407bff3b        zmm0 = *(i + 8)\n1407bff40        zmm0 f- temp0\n1407bff46        if (not(is_unordered.q(zmm0, temp0)) && zmm0 f== temp0)\n1407bff5d        return &i[4]\n1407bff48        i = *(i + 0x20)\n1407bff4f        do while (i != 0)\n1407bff58        return &data_1408fd750",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

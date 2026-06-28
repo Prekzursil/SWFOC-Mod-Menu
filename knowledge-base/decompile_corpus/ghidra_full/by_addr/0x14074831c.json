@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074831c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __stdcall EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014074831c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  EnterCriticalSection(lpCriticalSection);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:05:31Z"
+}

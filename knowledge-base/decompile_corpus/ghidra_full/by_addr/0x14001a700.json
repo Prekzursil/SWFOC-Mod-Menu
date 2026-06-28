@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a700(void)\n\n{\n  RetreatEventClass::RetreatEventClass((RetreatEventClass *)&DAT_140b37e90);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059f330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14059f339        int64_t* rcx = arg1[1]\n14059f349        if (rcx == 0 || arg2 == 0)\n14059f349        return \n14059f35e        int32_t rbx_1 = 0\n14059f362        if (sub_14059ef20(rcx, arg2) != 0)\n14059f364        int64_t* rcx_1 = arg1[1]\n14059f36b        if (rcx_1[5].b == 0)\n14059f370        if (rcx_1 != 0)\n14059f375        sub_14059eda0(rcx_1, 1)\n14059f37a        arg1[1] = 0\n14059f37e        void* rax_2 = *arg1\n14059f381        int32_t rdi_1 = arg1[2].d\n14059f387        if (rax_2 != 0)\n14059f38e        int32_t rbp_1 = 0\n14059f395        int32_t r14_1 = sx.d(*(rax_2 + 0x28))\n14059f39d        if (r14_1 s> 0)\n14059f3b3        rdi_1 |= sub_140397350(*(**arg1 + (sx.q(rbp_1.b) << 3)))\n14059f3b5        rbp_1 += 1\n14059f3ba        do while (rbp_1 s< r14_1)\n14059f3c6        int64_t* r8_1 = arg1[1]\n14059f3cd        if (r8_1 != 0)\n14059f3cf        int32_t rdx_1 = sx.d(r8_1[5].b)\n14059f3d6        if (rdx_1 s> 0)\n14059f3e0        int64_t rax_5 = sx.q(rbx_1.b)\n14059f3e4        rbx_1 += 1\n14059f3f1        rdi_1 |= *(*(*(*r8_1 + (rax_5 << 3)) + 0x298) + 0x1694)\n14059f3f9        do while (rbx_1 s< rdx_1)\n14059f402        int32_t rax = rdi_1 & 0xfffffffe\n14059f405        if (rax == 0)\n14059f405        rax = rdi_1\n14059f410        if (rax != *(arg1 + 0x14))\n14059f412        *(arg1 + 0x14) = rax\n14059f415        data_140a2bed8 = 1\n14059f421        return ",
+  "fetched_at": "2026-04-26T17:36:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140191ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140191ef8        void* result = *(arg1 + 8)\n140191f08        int32_t rbx = 0\n140191f0b        int32_t rdi = *(result + 0x1e8)\n140191f13        if (rdi != 0)\n140191f20        void* r9_1 = *(arg1 + 8)\n140191f24        int32_t rax = *(r9_1 + 0x1f0)\n140191f30        if (rbx == rax + 1)\n140191f32        void* rax_1 = *(r9_1 + 0x1f8)\n140191f39        *(r9_1 + 0x1f0) = rax + 1\n140191f44        *(r9_1 + 0x1f8) = *(rax_1 + 8)\n140191f4f        if (rbx != rax)\n140191f51        void* rcx_2 = *(r9_1 + 0x1c8)\n140191f58        *(r9_1 + 0x1f8) = rcx_2\n140191f5f        *(r9_1 + 0x1f0) = 0\n140191f68        if (rbx s> 0)\n140191f6a        int32_t rax_2 = 0\n140191f70        rcx_2 = *(rcx_2 + 8)\n140191f74        rax_2 += 1\n140191f76        *(r9_1 + 0x1f8) = rcx_2\n140191f7d        *(r9_1 + 0x1f0) = rax_2\n140191f86        do while (rax_2 s< rbx)\n140191f88        result = *(r9_1 + 0x1f8)\n140191f8f        void* rdx = *(result + 0x18)\n140191f96        void* rcx_3 = rdx - 0x10\n140191f9a        if (rdx == 0)\n140191f9a        rcx_3 = nullptr\n140191fa5        if (*(rcx_3 + 0x140) != 0)\n140191fad        result = sub_140159100(rcx_3, arg2, arg3)\n140191fb2        rbx += 1\n140191fb6        do while (rbx u< rdi)\n140191fd4        return result",
+  "fetched_at": "2026-04-26T17:24:22Z"
+}

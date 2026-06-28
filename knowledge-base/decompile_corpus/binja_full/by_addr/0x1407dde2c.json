@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dde2c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dde41        int64_t* rsi = **arg1\n1407dde58        int64_t rdi\n1407dde58        rdi.b = __acrt_stdio_begin_temporary_buffering_nolock(rsi)\n1407dde77        int64_t* rcx_3\n1407dde77        rcx_3.b = rdi.b\n1407dde7d        int32_t rbx_1 = sbb.d(arg1.d, arg1.d, _fwrite_nolock(*arg1[1], 1, *arg1[2], **arg1) - *arg1[2] != 0)\n1407dde7f        __acrt_stdio_end_temporary_buffering_nolock(rcx_3.b, rsi)\n1407dde95        return zx.q(rbx_1)",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407720fc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140772111        void* rbx = *(arg1 + 0x10)\n14077211e        if (rbx == 0)\n140772120        void* rax_1 = _errno()\n140772125        rbx = rax_1\n140772128        *(arg1 + 0x10) = rax_1\n14077212c        int32_t rsi = *rbx\n140772133        *rbx = 0\n14077213c        int64_t rcx = *(arg1 + 0x18)\n140772140        void* result_1 = nullptr\n14077214f        *arg2 = wcstol(rcx - 2, &result_1, 0xa)\n140772152        void* result = *(arg1 + 0x10)\n140772159        if (result == 0)\n14077215b        result = _errno()\n140772160        *(arg1 + 0x10) = result\n140772167        if (*result == 0x22)\n14077217c        result.b = 0\n140772169        result = result_1\n140772172        if (result u< *(arg1 + 0x18))\n14077217c        result.b = 0\n140772174        *(arg1 + 0x18) = result\n140772178        result.b = 1\n140772185        if (*rbx == 0 && rsi != 0)\n140772187        *rbx = rsi\n14077219e        return result",
+  "fetched_at": "2026-04-26T17:30:44Z"
+}

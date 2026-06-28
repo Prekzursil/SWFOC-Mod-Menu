@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d0c90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404d0c90(longlong param_1)\n\n{\n  longlong lVar1;\n  int iVar2;\n  longlong lVar3;\n  undefined1 local_48 [16];\n  undefined8 local_38;\n  undefined1 local_30 [40];\n  \n  iVar2 = 0;\n  lVar1 = *(longlong *)(param_1 + 0x50);\n  if (0 < (int)(*(longlong *)(param_1 + 0x58) - lVar1 >> 3)) {\n    lVar3 = 0;\n    do {\n      local_38 = *(undefined8 *)(lVar3 + *(longlong *)(param_1 + 0x50));\n      FUN_1404d2570(local_30,(longlong)iVar2 * 0x20 + *(longlong *)(param_1 + 0x68));\n      FUN_1404d1eb0(*(undefined8 *)(param_1 + 0x40),local_48,&local_38);\n      FUN_1404d68c0(local_30);\n      lVar1 = *(longlong *)(param_1 + 0x50);\n      lVar3 = lVar3 + 8;\n      iVar2 = iVar2 + 1;\n    } while (iVar2 < (int)(*(longlong *)(param_1 + 0x58) - lVar1 >> 3));\n  }\n  *(longlong *)(param_1 + 0x58) = lVar1;\n  lVar1 = *(longlong *)(param_1 + 0x70);\n  lVar3 = *(longlong *)(param_1 + 0x68);\n  if (lVar3 != lVar1) {\n    do {\n      FUN_1404d68c0(lVar3);\n      lVar3 = lVar3 + 0x20;\n    } while (lVar3 != lVar1);\n    *(undefined8 *)(param_1 + 0x70) = *(undefined8 *)(param_1 + 0x68);\n    return;\n  }\n  *(longlong *)(param_1 + 0x70) = lVar3;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:12:59Z"
+}

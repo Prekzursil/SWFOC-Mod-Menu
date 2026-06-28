@@ -1,0 +1,7 @@
+{
+  "addr": "0x140684b10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nbool FUN_140684b10(longlong param_1,longlong param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  \n  if ((param_1 != 0) && (param_2 != 0)) {\n    fVar1 = *(float *)(param_1 + 0x78) - _DAT_140b3a1f8;\n    fVar2 = *(float *)(param_1 + 0x7c) - _DAT_140b3a1fc;\n    fVar3 = *(float *)(param_1 + 0x80) - _DAT_140b3a200;\n    fVar1 = (float)FUN_140776d48(fVar1 * fVar1 + fVar2 * fVar2 + fVar3 * fVar3);\n    fVar2 = *(float *)(param_2 + 0x78) - _DAT_140b3a1f8;\n    fVar3 = *(float *)(param_2 + 0x7c) - _DAT_140b3a1fc;\n    fVar4 = *(float *)(param_2 + 0x80) - _DAT_140b3a200;\n    fVar2 = (float)FUN_140776d48(fVar2 * fVar2 + fVar3 * fVar3 + fVar4 * fVar4);\n    return fVar1 < fVar2;\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:14:32Z"
+}

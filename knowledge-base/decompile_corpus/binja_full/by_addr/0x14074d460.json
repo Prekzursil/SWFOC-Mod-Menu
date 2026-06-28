@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074d460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074d47d        char rsi = 0\n14074d47f        int32_t arg_8 = 0\n14074d48e        if (arg1 != 0 && *arg1 == 0)\n14074d493        struct std::locale::facet::std::money_put<wchar_t>::VTable** rax_1 = operator new(0x10)\n14074d498        struct std::locale::facet::std::money_put<wchar_t>::VTable** rbx_1 = rax_1\n14074d49b        arg_8.q = rax_1\n14074d4a6        void var_78\n14074d4a6        if (rax_1 == 0)\n14074d4e6        rbx_1 = nullptr\n14074d4a8        void* rax_2 = *(arg2 + 8)\n14074d4af        void* rdx\n14074d4af        if (rax_2 == 0)\n14074d4c0        rdx = &data_1407ff8a8\n14074d4b1        rdx = *(rax_2 + 0x28)\n14074d4b8        if (rdx == 0)\n14074d4ba        rdx = rax_2 + 0x30\n14074d4cc        std::_Locinfo::_Locinfo(&var_78, rdx)\n14074d4d1        rsi = 1\n14074d4d6        rbx_1[1].d = 0\n14074d4e1        *rbx_1 = &std::money_put<wchar_t>::`vftable'{for `std::locale::facet'}\n14074d4e8        *arg1 = rbx_1\n14074d4ef        if ((rsi & 1) != 0)\n14074d4f6        std::_Locinfo::~_Locinfo(&var_78)\n14074d518        return 3",
+  "fetched_at": "2026-04-26T17:29:46Z"
+}

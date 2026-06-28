@@ -1,0 +1,7 @@
+{
+  "addr": "0x14039d6a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14039d6a0(longlong param_1)\n\n{\n  int *piVar1;\n  char cVar2;\n  longlong *plVar3;\n  longlong lVar4;\n  undefined8 uVar5;\n  \n  *(undefined1 *)(param_1 + 0x39f) = 0;\n  if (*(longlong *)(param_1 + 0x2a0) == 0) {\n    return;\n  }\n  plVar3 = (longlong *)FUN_140397680();\n  if (*(longlong *)(param_1 + 0x2a0) != 0) {\n    if (*(longlong *)(param_1 + 0x2e0) != 0) {\n      if ((*(longlong *)(*(longlong *)(param_1 + 0x2e0) + 0x2a0) != 0) &&\n         (lVar4 = FUN_1402648b0(), lVar4 != 0)) {\n        uVar5 = ActionDrivenHeroClashClass::vfunction5\n                          (*(ActionDrivenHeroClashClass **)(param_1 + 0x2a0));\n        cVar2 = FUN_14012d860(lVar4,uVar5);\n        if (cVar2 == '\\0') {\n          (**(code **)(*plVar3 + 0x30))(plVar3,*(undefined8 *)(param_1 + 0x2a0));\n        }\n      }\n      if ((*(longlong *)(param_1 + 0x2e0) != 0) &&\n         (0.0 < *(float *)(*(longlong *)(param_1 + 0x298) + 0x23ec))) {\n        piVar1 = (int *)(*(longlong *)(param_1 + 0x2e0) + 0x328);\n        *piVar1 = *piVar1 + -1;\n      }\n      *(undefined8 *)(param_1 + 0x2e0) = 0;\n      *(undefined8 *)(param_1 + 0x2f8) = 0;\n      return;\n    }\n    if (plVar3 != (longlong *)0x0) {\n      (**(code **)(*plVar3 + 0x30))(plVar3);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:31:27Z"
+}

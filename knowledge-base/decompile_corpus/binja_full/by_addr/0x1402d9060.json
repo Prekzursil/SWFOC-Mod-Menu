@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d9060",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402d9081        void* result = arg3 - 1\n1402d908d        int64_t rbp_1 = result s>> 1\n1402d9096        void* result_1 = arg2\n1402d909f        void* result_2 = arg2\n1402d90a5        if (arg2 s< rbp_1)\n1402d90b0        result_2 = (result_2 << 1) + 2\n1402d90bf        int64_t rcx_2 = (result_2 << 4) + arg1\n1402d90cb        if (arg5(rcx_2, rcx_2 - 0x10) != 0)\n1402d90cd        result_2 -= 1\n1402d90dd        *(arg1 + result_1 * 0x10) = *(arg1 + result_2 * 0x10)\n1402d90e1        result_1 = result_2\n1402d90e7        do while (result_2 s< rbp_1)\n1402d90f7        if (result_2 == rbp_1 && (arg3.b & 1) == 0)\n1402d9105        *(arg1 + result_1 * 0x10) = *(arg1 + arg3 * 0x10 - 0x10)\n1402d9109        result_1 = result\n1402d910f        if (arg2 s< result_1)\n1402d9140        int64_t result_3\n1402d9118        result_3 = (result_1 - 1) s>> 1\n1402d9122        int128_t* rbp_4 = (result_3 << 4) + arg1\n1402d9128        result = arg5(rbp_4, arg4)\n1402d912d        if (result.b == 0)\n1402d912d        break\n1402d9136        *(arg1 + result_1 * 0x10) = *rbp_4\n1402d913a        result_1 = result_3\n1402d9140        do while (arg2 s< result_3)\n1402d914f        *(arg1 + result_1 * 0x10) = *arg4\n1402d916a        return result",
+  "fetched_at": "2026-04-26T17:22:34Z"
+}

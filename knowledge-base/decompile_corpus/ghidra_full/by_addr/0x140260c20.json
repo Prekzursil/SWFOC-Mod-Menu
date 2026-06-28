@@ -1,0 +1,7 @@
+{
+  "addr": "0x140260c20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_140260c20(undefined8 param_1,undefined8 param_2,undefined4 param_3,undefined8 param_4,\n                      undefined8 param_5,undefined8 param_6)\n\n{\n  longlong lVar1;\n  \n  if (DAT_140b0a120 != (code *)0x0) {\n    lVar1 = (*DAT_140b0a120)(param_2,param_3,param_4,param_5);\n    if (lVar1 != 0) {\n      FUN_140260a00(param_1,param_6,0);\n    }\n    return lVar1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:15:36Z"
+}

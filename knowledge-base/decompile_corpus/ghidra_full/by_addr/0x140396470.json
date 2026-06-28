@@ -1,0 +1,7 @@
+{
+  "addr": "0x140396470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140396470(longlong param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  int iVar3;\n  longlong lVar4;\n  ulonglong uVar5;\n  ulonglong uVar6;\n  \n  uVar5 = FUN_140396df0();\n  lVar1 = *(longlong *)(param_1 + 0x2d0);\n  if (lVar1 != 0) {\n    lVar4 = (longlong)*(int *)(lVar1 + 0x10);\n    iVar3 = 0;\n    if (0 < lVar4) {\n      plVar2 = *(longlong **)(lVar1 + 8);\n      do {\n        if ((*plVar2 != 0) && (*(char *)(*(longlong *)(*plVar2 + 0x20) + 0x4d) == '\\x01')) {\n          iVar3 = iVar3 + 1;\n        }\n        plVar2 = plVar2 + 1;\n        lVar4 = lVar4 + -1;\n      } while (lVar4 != 0);\n      if ((0 < iVar3) && (*(char *)(*(longlong *)(param_1 + 0x298) + 0xa8) != '\\0')) {\n        uVar6 = FUN_140396070(param_1);\n        if ((float)uVar5 <= (float)uVar6) {\n          uVar6 = uVar5;\n        }\n        uVar5 = uVar6;\n        if (DAT_1407ffaf8 <= (float)uVar5) {\n          return (ulonglong)(uint)DAT_1407ffaf8;\n        }\n        if ((float)uVar5 <= 0.0) {\n          uVar5 = 0;\n        }\n      }\n    }\n  }\n  return uVar5;\n}",
+  "fetched_at": "2026-04-26T17:29:56Z"
+}

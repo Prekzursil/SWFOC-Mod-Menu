@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fdc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021fdd0        *arg1 = &ChunkWriterClass::`vftable'\n14021fdd7        j_sub_1407864b8(arg1[3])\n14021fddc        int64_t rcx_1 = arg1[4]\n14021fde0        arg1[3] = 0\n14021fde8        j_sub_1407864b8(rcx_1)\n14021fded        int64_t rcx_2 = arg1[6]\n14021fdf6        arg1[4] = 0\n14021fdfe        int64_t result = j_sub_1407864b8(rcx_2)\n14021fe03        arg1[6] = 0\n14021fe10        return result",
+  "fetched_at": "2026-04-26T17:29:05Z"
+}

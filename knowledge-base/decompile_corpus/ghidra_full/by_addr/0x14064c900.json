@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nPerceptualEvaluatorClass * __thiscall\nPerceptualEvaluatorClass::~PerceptualEvaluatorClass(PerceptualEvaluatorClass *this)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  \n  SignalGeneratorClass::SignalGeneratorClass((SignalGeneratorClass *)this);\n  AIDiagnosticsClass::AIDiagnosticsClass((AIDiagnosticsClass *)&this->vftablePtr);\n  this->vftablePtr = &vftable_for_SignalGeneratorClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  (this->PerceptualEvaluatorClass_data).offset_0x0 = 0;\n  (this->PerceptualEvaluatorClass_data).offset_0x4 = 0;\n  (this->PerceptualEvaluatorClass_data).offset_0x8 = (longlong *)0x0;\n  (this->PerceptualEvaluatorClass_data).offset_0x10 = 0;\n  plVar2 = (longlong *)FUN_140769c58(0x20);\n  puVar1 = &(this->PerceptualEvaluatorClass_data).offset_0x18;\n  *plVar2 = (longlong)plVar2;\n  plVar2[1] = (longlong)plVar2;\n  (this->PerceptualEvaluatorClass_data).offset_0x8 = plVar2;\n  *puVar1 = 0;\n  (this->PerceptualEvaluatorClass_data).offset_0x20 = 0;\n  (this->PerceptualEvaluatorClass_data).offset_0x28 = 0;\n  (this->PerceptualEvaluatorClass_data).offset_0x30 = 7;\n  (this->PerceptualEvaluatorClass_data).offset_0x38 = 8;\n  (this->PerceptualEvaluatorClass_data).offset_0x4 = 0x3f800000;\n  FUN_140048250(puVar1,0x10,(this->PerceptualEvaluatorClass_data).offset_0x8);\n  (this->PerceptualEvaluatorClass_data).offset_0x40 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:13Z"
+}

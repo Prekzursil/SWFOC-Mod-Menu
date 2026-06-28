@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798c30        return common_set_variable_in_environment_nolock<wchar_t>(arg1, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

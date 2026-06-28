@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062c3d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nfloat FUN_14062c3d0(longlong param_1)\n\n{\n  char cVar1;\n  float fVar2;\n  \n  fVar2 = (float)FUN_140372560(*(undefined8 *)(*(longlong *)(param_1 + 0x28) + 0x298));\n  cVar1 = FUN_14039a5b0(*(undefined8 *)(param_1 + 0x28));\n  if (cVar1 != '\\0') {\n    fVar2 = fVar2 * _DAT_140b16d0c;\n  }\n  return fVar2;\n}",
+  "fetched_at": "2026-04-26T17:32:27Z"
+}

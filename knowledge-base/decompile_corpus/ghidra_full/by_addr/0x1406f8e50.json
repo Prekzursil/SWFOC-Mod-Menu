@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f8e50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EnableAbilityAbilityClass * __thiscall\nEnableAbilityAbilityClass::EnableAbilityAbilityClass(EnableAbilityAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->EnableAbilityAbilityClass_data).offset_0x18 = 0xf;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->EnableAbilityAbilityClass_data).offset_0x0 = 0;\n  (this->EnableAbilityAbilityClass_data).offset_0x10 = 0;\n  (this->EnableAbilityAbilityClass_data).offset_0x20 = 0;\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 2;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:49:15Z"
+}

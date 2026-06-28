@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074ca5c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074ca79        char rsi = 0\n14074ca7b        int32_t arg_8 = 0\n14074ca8e        if (arg1 != 0 && *arg1 == 0)\n14074ca97        struct std::codecvt_base::std::codecvt<uint16_t, char, struct _Mbstatet>::VTable** rax_1 = operator new(0x40)\n14074ca9c        struct std::codecvt_base::std::codecvt<uint16_t, char, struct _Mbstatet>::VTable** rbx_1 = rax_1\n14074ca9f        arg_8.q = rax_1\n14074caaa        void var_78\n14074caaa        if (rax_1 == 0)\n14074cb13        rbx_1 = nullptr\n14074caac        void* rax_2 = *(arg2 + 8)\n14074cab3        void* rdx\n14074cab3        if (rax_2 == 0)\n14074cac4        rdx = &data_1407ff8a8\n14074cab5        rdx = *(rax_2 + 0x28)\n14074cabc        if (rdx == 0)\n14074cabe        rdx = rax_2 + 0x30\n14074cad0        std::_Locinfo::_Locinfo(&var_78, rdx)\n14074cad5        rsi = 1\n14074cada        rbx_1[1].d = 0\n14074cae5        *rbx_1 = &std::codecvt<uint16_t, char, struct _Mbstatet>::`vftable'{for `std::codecvt_base'}\n14074caed        void var_a8\n14074caed        int32_t* rax_3 = _Getcvt(&var_a8)\n14074caf5        *(rbx_1 + 0x10) = *rax_3\n14074cafd        *(rbx_1 + 0x20) = *(rax_3 + 0x10)\n14074cb06        rbx_1[6] = *(rax_3 + 0x20)\n14074cb0e        rbx_1[7].d = rax_3[0xa]\n14074cb15        *arg1 = rbx_1\n14074cb1c        if ((rsi & 1) != 0)\n14074cb23        std::_Locinfo::~_Locinfo(&var_78)\n14074cb45        return 2",
+  "fetched_at": "2026-04-26T17:29:44Z"
+}

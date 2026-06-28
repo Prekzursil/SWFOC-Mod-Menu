@@ -1,0 +1,7 @@
+{
+  "addr": "0x140613000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061300f        int64_t* rcx = data_140b31088\n140613031        int64_t r9 = *rcx\n140613044        void* rax = *(arg1 + 8)\n140613048        int64_t var_30 = 0xf\n140613051        int64_t var_38 = 0xf\n14061305a        void* var_48\n14061305a        __builtin_strncpy(&var_48, \"Goal category: \", 0x10)\n140613080        int32_t var_40\n140613080        void* var_28\n140613080        sub_140058010(arg2, zx.q(arg3), &var_48, (*(r9 + 0x28))(rcx, &var_28, zx.q(*(rax + 0x28)), r9, var_48, var_40, var_38, var_30))\n14061308e        if (var_30 u>= 0x10)\n140613090        void* rcx_2 = var_48\n140613098        void* rax_2 = rcx_2\n1406130a2        if (var_30 + 1 u>= 0x1000)\n1406130a4        rcx_2 = *(rcx_2 - 8)\n1406130b7        if (var_30 + 1 u>= 0x1000 && rax_2 - rcx_2 - 8 u> 0x1f)\n140613100        _invalid_parameter_noinfo_noreturn()\n140613100        noreturn\n1406130b9        j_sub_1407864b8(rcx_2)\n1406130c7        int64_t var_10\n1406130c7        if (var_10 u< 0x10)\n1406130ff        return arg2\n1406130c9        void* rcx_3 = var_28\n1406130d1        void* rax_5 = rcx_3\n1406130db        if (var_10 + 1 u>= 0x1000)\n1406130dd        rcx_3 = *(rcx_3 - 8)\n1406130f0        if (var_10 + 1 u>= 0x1000 && rax_5 - rcx_3 - 8 u> 0x1f)\n140613100        _invalid_parameter_noinfo_noreturn()\n140613100        noreturn\n1406130f2        j_sub_1407864b8(rcx_3)\n1406130ff        return arg2",
+  "fetched_at": "2026-04-26T17:23:19Z"
+}

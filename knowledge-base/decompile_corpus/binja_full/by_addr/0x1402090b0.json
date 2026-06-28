@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402090b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402090c0        DeleteCriticalSection(arg1 + 0xa0)\n1402090ca        sub_1402095d0(arg1 + 0x50)\n1402090d8        return sub_1402095d0(arg1 + 8) __tailcall",
+  "fetched_at": "2026-04-26T17:28:01Z"
+}

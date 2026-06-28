@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a6ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_update_thread_locale_data\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nlonglong __acrt_update_thread_locale_data(void)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  lVar1 = FUN_14078f07c();\n  if (((DAT_140a44f90 & *(uint *)(lVar1 + 0x3a8)) == 0) ||\n     (lVar2 = *(longlong *)(lVar1 + 0x90), lVar2 == 0)) {\n    __acrt_lock(4);\n    lVar2 = _updatetlocinfoEx_nolock((longlong *)(lVar1 + 0x90),DAT_140b3c4c8);\n    __acrt_unlock(4);\n    if (lVar2 == 0) {\n                    /* WARNING: Subroutine does not return */\n      FUN_140788f54();\n    }\n  }\n  return lVar2;\n}",
+  "fetched_at": "2026-04-26T18:53:46Z"
+}

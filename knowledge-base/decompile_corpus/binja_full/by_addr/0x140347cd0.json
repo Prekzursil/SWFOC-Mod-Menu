@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347cd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140347cd6        int64_t result = sx.q(arg1)\n140347ce4        void* rbx = *(&data_140a174e8 + result * 0x48)\n140347ceb        if (rbx == 0)\n140347d9b        return result\n140347d02        void* rbx_1 = *(rbx + 0xc8)\n140347d17        uint128_t zmm1\n140347d17        zmm1.d = float.s(zx.q(data_140b0a320))\n140347d1c        zmm1.d = zmm1.d f/ _mm_cvtepi32_ps(zx.o(data_140b0a340)).d\n140347d3d        sub_140265560(rbx_1, arg2, arg3, arg4, 0, 0x3f800000, zmm1.d, 0)\n140347d5b        int128_t zmm2\n140347d5b        zmm2.d = float.s(zx.q(data_140b0a320))\n140347d60        zmm2.d = zmm2.d f/ _mm_cvtepi32_ps(zx.o(data_140b0a340)).d\n140347d64        sub_140265490(rbx_1, 0, zmm2)\n140347d69        uint64_t rax_2 = zx.q(data_140b0a320)\n140347d7d        uint128_t zmm0_2 = _mm_cvtepi32_ps(zx.o(data_140b0a340))\n140347d83        zmm1.d = float.s(rax_2)\n140347d88        zmm1.d = zmm1.d f/ zmm0_2.d\n140347d91        return sub_140265280(rbx_1, zmm1, 1, zmm0_2) __tailcall",
+  "fetched_at": "2026-04-26T17:07:26Z"
+}

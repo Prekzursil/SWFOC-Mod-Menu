@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406511c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406511c6        void* rcx = *(arg1 + 0x88)\n1406511d3        if (rcx == 0)\n1406511d5        int64_t rax\n1406511d5        rax.b = 0\n1406511dc        return rax\n1406511e8        int32_t rax_1\n1406511e8        rax_1.b = 1\n1406511ee        *arg3 = _mm_cvtepi32_pd(zx.q(sub_1403733c0(rcx, nullptr)))\n1406511f7        return rax_1",
+  "fetched_at": "2026-04-26T17:06:16Z"
+}

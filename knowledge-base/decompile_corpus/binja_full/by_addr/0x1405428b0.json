@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405428b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405428bb        struct LuaVar::LuaValue<double, 4>::VTable** rax = operator new(0x18)\n1405428c6        if (rax == 0)\n14054296d        return rax\n1405428cc        uint64_t rax_1 = data_140b15418\n1405428e0        if (rax_1 != 0)\n1405428e2        rax_1 = zx.q(*(rax_1 + 0x10))\n1405428f3        uint128_t zmm0\n1405428f3        zmm0.d = _mm_cvtepi32_ps(zx.o(rax_1.d)).d f* data_140b0a344\n1405428fb        rax[1].d = 0\n140542902        *rax = &LuaValue<double, 4>::`vftable'{for `LuaVar'}\n140542908        rax[2] = _mm_cvtps_pd(zmm0.q)\n14054290d        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** rax_2 = sub_14024a250()\n140542915        struct LuaVar::LuaValue<double, 4>::VTable** arg_20 = rax\n140542920        (*rax)->vFunc_0(rax)\n140542922        struct LuaVar::LuaValue<double, 4>::VTable*** rdx = rax_2[3]\n14054292a        if (rdx == rax_2[4])\n140542947        sub_140144900(&rax_2[2], rdx, &arg_20)\n14054292c        *rdx = rax\n140542935        (*rax)->vFunc_0(rax)\n140542937        rax_2[3] = &rax_2[3]->vFunc_1\n140542952        (*rax)->vFunc_1(rax)\n140542967        return rax_2",
+  "fetched_at": "2026-04-26T17:33:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026cd80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026cd99        __builtin_memset(arg1, 0, 0x18)\n14026cdab        arg1[3] = arg3\n14026cdb3        sub_14007a960(&arg1[4], arg2)\n14026cdbd        *(arg1 + 0x41) = arg5\n14026cdc4        *(arg1 + 0x4c) = arg6\n14026cdc7        arg1[8].b = arg4\n14026cdca        *(arg1 + 0x42) = 0\n14026cdce        *(arg1 + 0x44) = 0\n14026cdd6        if (arg2[2] == 0)\n14026ce40        void* rax_7 = arg1[3]\n14026ce47        if (rax_7 != 0)\n14026ce4c        *(arg1 + 0x14) = *(rax_7 + 0xc)\n14026cddb        sub_14026d3c0(arg1)\n14026cde9        int32_t rax_3 = data_140a16cd0\n14026cdef        int32_t rcx_3 = (data_140a16cd4 * 2) s>> 1\n14026cdf3        if (rax_3 s>= rcx_3)\n14026ce07        int32_t rdx_2 = rcx_3 s/ 0xa\n14026ce10        if (rdx_2 s< 0xa)\n14026ce10        rdx_2 = 0xa\n14026ce1f        sub_1401399c0(&data_140a16cc0, rdx_2 + rcx_3, 0, 1)\n14026ce24        rax_3 = data_140a16cd0\n14026ce34        *(data_140a16cc8 + (sx.q(rax_3) << 3)) = arg1\n14026ce38        data_140a16cd0 += 1\n14026ce66        return arg1",
+  "fetched_at": "2026-04-26T17:31:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524a80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140524a83        if (arg2 == 0)\n140524a83        return \n140524a9d        if (data_140b153d0 != 1)\n140524af1        struct RefCountClass::EventClass::VTable** rax_3 = operator new(0x50)\n140524af9        struct ScheduledEventClass::TacticalSellEventClass::VTable** rbx_2\n140524af9        if (rax_3 == 0)\n140524b08        rbx_2 = nullptr\n140524b03        rbx_2 = sub_140689810(rax_3)\n140524b10        sub_140559250(rbx_2, *(arg2 + 0x50))\n140524b1f        sub_1403b01f0(&data_140b2ed18, rbx_2)\n140524ac0        if (sub_140294bc0(&data_140a16fd0, *(arg2 + 0x58)) == sub_140294a40(&data_140a16fd0))\n140524ad5        int512_t zmm2\n140524ad5        zmm2.o = zx.o(0)\n140524adc        sub_1402d5290(&data_140b27e60, data_140b301c8, zmm2, 0, 0)\n140524b2e        return ",
+  "fetched_at": "2026-04-26T17:33:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037e54c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LineSubClass::vfunction1_for_CullObjectClass(LineSubClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((LineSubClass *)&this[-1].LineSubClass_data.offset_0x8a8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:36Z"
+}

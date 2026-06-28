@@ -1,0 +1,7 @@
+{
+  "addr": "0x14010a170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14010a17a        void** rbx = arg2\n14010a183        if (arg1 != arg2)\n14010a18a        if (arg2[3] u>= 0x10)\n14010a18c        arg2 = *arg2\n14010a193        sub_140022730(arg1, arg2, rbx[2])\n14010a1a3        if (&arg1[4] != &rbx[4])\n14010a1aa        void* rdx = &rbx[4]\n14010a1ad        if (rbx[7] u>= 0x10)\n14010a1af        rdx = rbx[4]\n14010a1b6        sub_140022730(&arg1[4], rdx, rbx[6])\n14010a1c6        if (&arg1[8] != &rbx[8])\n14010a1cd        void* rdx_1 = &rbx[8]\n14010a1d0        if (rbx[0xb] u>= 0x10)\n14010a1d2        rdx_1 = rbx[8]\n14010a1d9        sub_140022730(&arg1[8], rdx_1, rbx[0xa])\n14010a1e2        arg1[0xc] = rbx[0xc]\n14010a1e9        arg1[0xd].d = rbx[0xd].d\n14010a1f0        *(arg1 + 0x6c) = *(rbx + 0x6c)\n14010a1f7        *(arg1 + 0x6d) = *(rbx + 0x6d)\n14010a1fe        *(arg1 + 0x6e) = *(rbx + 0x6e)\n14010a20a        *(arg1 + 0x6f) = *(rbx + 0x6f)\n14010a215        return arg1",
+  "fetched_at": "2026-04-26T17:06:05Z"
+}

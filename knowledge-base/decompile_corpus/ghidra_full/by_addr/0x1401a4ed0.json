@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a4ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_1401a4ed0(undefined4 *param_1,undefined8 param_2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  undefined4 local_48;\n  undefined4 local_44;\n  undefined4 local_40;\n  undefined4 local_3c;\n  undefined4 local_38;\n  undefined4 local_34;\n  undefined4 local_30;\n  undefined4 local_2c;\n  undefined4 local_28;\n  undefined1 local_24;\n  undefined4 local_20;\n  undefined1 local_1c;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  undefined4 local_c;\n  \n  local_1c = *(undefined1 *)(param_1 + 0xb);\n  local_2c = param_1[7];\n  local_18 = param_1[0xc];\n  local_20 = param_1[10];\n  local_10 = param_1[0xf];\n  local_14 = param_1[0xe];\n  local_38 = param_1[4];\n  local_c = param_1[0x10];\n  local_30 = param_1[6];\n  local_34 = param_1[5];\n  local_40 = param_1[2];\n  local_44 = param_1[1];\n  local_24 = *(undefined1 *)(param_1 + 9);\n  local_28 = param_1[8];\n  local_3c = param_1[3];\n  local_48 = *param_1;\n  bVar1 = FUN_14021fe20(param_2,0x1100);\n  bVar2 = FUN_14021fe20(param_2,0x1101);\n  FUN_1402200b0(param_2,&local_48,0x40);\n  bVar3 = FUN_14021feb0(param_2);\n  bVar4 = FUN_14021feb0(param_2);\n  return bVar4 & bVar1 & 1 & bVar2 & bVar3;\n}",
+  "fetched_at": "2026-04-26T17:39:12Z"
+}

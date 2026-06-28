@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d25b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401d25b0(void)\n\n{\n  UINT UVar1;\n  FARPROC pFVar2;\n  WCHAR local_218 [268];\n  \n  UVar1 = GetSystemDirectoryW(local_218,0x105);\n  if (UVar1 != 0) {\n    lstrcatW(local_218,L\"\\\\usp10.dll\");\n    DAT_140a7a0a0 = LoadLibraryW(local_218);\n    if (DAT_140a7a0a0 != (HMODULE)0x0) {\n      pFVar2 = GetProcAddress(DAT_140a7a0a0,\"ScriptApplyDigitSubstitution\");\n      if (pFVar2 != (FARPROC)0x0) {\n        PTR_FUN_140a13608 = pFVar2;\n      }\n      pFVar2 = GetProcAddress(DAT_140a7a0a0,\"ScriptStringAnalyse\");\n      if (pFVar2 != (FARPROC)0x0) {\n        PTR_FUN_140a13610 = pFVar2;\n      }\n      pFVar2 = GetProcAddress(DAT_140a7a0a0,\"ScriptStringCPtoX\");\n      if (pFVar2 != (FARPROC)0x0) {\n        PTR_FUN_140a13618 = pFVar2;\n      }\n      pFVar2 = GetProcAddress(DAT_140a7a0a0,\"ScriptStringXtoCP\");\n      if (pFVar2 != (FARPROC)0x0) {\n        PTR_FUN_140a13620 = pFVar2;\n      }\n      pFVar2 = GetProcAddress(DAT_140a7a0a0,\"ScriptStringFree\");\n      if (pFVar2 != (FARPROC)0x0) {\n        PTR_FUN_140a13628 = pFVar2;\n      }\n      pFVar2 = GetProcAddress(DAT_140a7a0a0,\"ScriptString_pLogAttr\");\n      if (pFVar2 != (FARPROC)0x0) {\n        PTR_vfunction19_140a13630 = pFVar2;\n      }\n      pFVar2 = GetProcAddress(DAT_140a7a0a0,\"ScriptString_pcOutChars\");\n      if (pFVar2 != (FARPROC)0x0) {\n        PTR_vfunction19_140a13638 = pFVar2;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:29Z"
+}

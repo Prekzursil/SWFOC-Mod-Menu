@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d8ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14076d8ec(void)\n\n{\n  longlong lVar1;\n  \n  lVar1 = __vcrt_getptd_noexit();\n  if (lVar1 != 0) {\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_140788f54();\n}",
+  "fetched_at": "2026-04-26T18:11:11Z"
+}

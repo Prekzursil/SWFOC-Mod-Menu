@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077a9a8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077a9b8        char arg_8 = 1\n14077a9bd        void* var_28 = arg1 + 8\n14077a9cd        int64_t var_20 = *(arg1 + 0x40)\n14077a9d4        int64_t* rcx = *(arg1 + 0x78)\n14077a9df        char* var_10 = &arg_8\n14077a9e3        char rbx = 0\n14077a9e5        int64_t arg_10 = (zx.o(0)).q\n14077a9eb        int64_t var_18 = 0\n14077a9ef        int64_t result = __crt_strtox::parse_floating_point<class __crt_strtox::input_adapter_character_source<class __crt_stdio_input::stream_input_adapter<char> >,float>(rcx, &var_28, &arg_10)\n14077a9fd        if (arg_8 == 0 || result.d == 1)\n14077aa40        result.b = 0\n14077aa02        if (*(arg1 + 0x3a) == 0)\n14077aa08        *(arg1 + 0x80) += 8\n14077aa17        int64_t* rcx_1 = *(*(arg1 + 0x80) - 8)\n14077aa1e        if (rcx_1 != 0)\n14077aa37        rbx = 1\n14077aa39        *rcx_1 = arg_10\n14077aa25        *_errno() = 0x16\n14077aa2b        _invalid_parameter_noinfo()\n14077aa3c        result.b = rbx\n14077aa04        result.b = 1\n14077aa4c        return result",
+  "fetched_at": "2026-04-26T17:30:57Z"
+}

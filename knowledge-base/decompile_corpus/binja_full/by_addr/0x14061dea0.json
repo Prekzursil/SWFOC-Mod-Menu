@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061dea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061deb0        sub_1404c2f90(arg1, arg2)\n14061debc        if ((*(arg2 + 0x3a0) & 0x80) == 0)\n14061decc        (*(*arg1 + 0x2f8))(arg1, arg1[5] + 0x78)\n14061ded2        void* result = arg1[5]\n14061ded6        void* rcx_1 = *(result + 0xa8)\n14061dee0        if (rcx_1 != 0)\n14061dee7        sub_140559250(rcx_1, 0x16)\n14061deec        result = arg1[5]\n14061def3        if (result != 0)\n14061def5        void* rcx_2 = *(result + 0xa8)\n14061df04        int32_t zmm1 = *(result + 0x88)\n14061df0c        int32_t zmm2 = *(result + 0x8c)\n14061df17        if (rcx_2 != 0)\n14061df19        *(rcx_2 + 0x268) = *(result + 0x84)\n14061df21        *(rcx_2 + 0x26c) = zmm1\n14061df29        *(rcx_2 + 0x270) = zmm2\n14061df3b        return result",
+  "fetched_at": "2026-04-26T17:23:40Z"
+}

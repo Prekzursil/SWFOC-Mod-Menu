@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018c7a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018c7b3        *arg1 = &alD3dEffectInstance::`vftable'{for `alShaderInstance'}\n14018c7c0        arg1[2] = &alD3dEffectInstance::`vftable'{for `MultiLinkedListMember'}\n14018c7c4        sub_14018bd80(arg1)\n14018c7c9        void* rcx = arg1[7]\n14018c7d0        if (rcx != 0)\n14018c7e4        if (((arg1[9] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n14018c7e6        void* r8_1 = *(rcx - 8)\n14018c7f9        if (rcx - r8_1 - 8 u> 0x1f)\n14018c849        _invalid_parameter_noinfo_noreturn()\n14018c849        noreturn\n14018c7fb        rcx = r8_1\n14018c7fe        j_sub_1407864b8(rcx)\n14018c805        __builtin_memset(&arg1[7], 0, 0x18)\n14018c811        int64_t* rcx_2 = arg1[6]\n14018c818        if (rcx_2 != 0)\n14018c81d        (*(*rcx_2 + 8))(rcx_2)\n14018c823        sub_1401b5600(arg1)\n14018c82c        if ((arg2 & 1) != 0)\n14018c836        j_sub_1407864b8(arg1)\n14018c848        return arg1",
+  "fetched_at": "2026-04-26T17:24:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402271b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402271b9        int32_t optlen = 4\n1402271c1        SOCKET s = *(arg1 + 0x10)\n1402271c9        if (s == -1)\n1402271c9        return \n1402271e5        int32_t optval\n1402271e5        getsockopt(s, 0xffff, 0x1007, &optval, &optlen)\n1402271f4        SOCKET s_1 = *(arg1 + 0x10)\n140227203        int32_t* var_18_1\n140227203        var_18_1.d = optlen\n140227207        optval = 0\n14022720f        setsockopt(s_1, 0xffff, 0x1007, &optval, var_18_1.d)\n14022721a        return ",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

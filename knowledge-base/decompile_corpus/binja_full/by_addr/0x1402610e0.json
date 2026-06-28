@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402610e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402610ec        int64_t var_18 = 0xf\n1402610f5        void* var_30 = nullptr\n1402610fd        int64_t var_20 = 0\n140261102        void* r8 = -ffffffffffffffff\n140261110        r8 += 1\n140261117        do while (*(arg2 + r8) != 0)\n14026111e        sub_140022730(&var_30, arg2, r8)\n140261128        void* rax = sub_140200ad0(&var_30)\n140261141        void var_48\n140261141        void* r8_2 = sub_14006ae20(arg1 + 0x18, &var_48, rax)[2]\n14026114a        char rax_2\n14026114a        if (*(r8_2 + 0x19) == 0)\n140261157        rax_2 = sub_14006aee0(arg1 + 0x18, rax, r8_2 + 0x20)\n14026115e        void* rbx\n14026115e        if (*(r8_2 + 0x19) != 0 || rax_2 != 0)\n140261164        rbx.b = 0\n140261160        rbx.b = 1\n14026116f        if (var_18 u>= 0x10)\n140261171        void* rcx_4 = var_30\n140261179        void* rax_3 = rcx_4\n140261183        if (var_18 + 1 u>= 0x1000)\n140261185        rcx_4 = *(rcx_4 - 8)\n140261198        if (rax_3 - rcx_4 - 8 u> 0x1f)\n1402611ad        _invalid_parameter_noinfo_noreturn()\n1402611ad        noreturn\n14026119a        j_sub_1407864b8(rcx_4)\n1402611ac        return zx.q(rbx.b)",
+  "fetched_at": "2026-04-26T17:31:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d33f4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TacticalPlayerPerceptualEvaluatorClass member function inherited by\n   LandPlayerPerceptualEvaluatorClass\n   TacticalPlayerPerceptualEvaluatorClass member function inherited by\n   SpacePlayerPerceptualEvaluatorClass */\n\nvoid __thiscall\nTacticalPlayerPerceptualEvaluatorClass::vfunction1\n          (TacticalPlayerPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  SpacePlayerPerceptualEvaluatorClass::scalar_deleting_destructor\n            ((SpacePlayerPerceptualEvaluatorClass *)&this[-1].SignalListenerClass_data.offset_0x50,\n             param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:32Z"
+}

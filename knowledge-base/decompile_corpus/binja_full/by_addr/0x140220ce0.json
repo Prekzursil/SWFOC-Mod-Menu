@@ -1,0 +1,7 @@
+{
+  "addr": "0x140220ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140220cea        int64_t r8 = sx.q(*(arg1 + 0x10))\n140220cee        int32_t rsi = arg2\n140220d0f        if (*(*(arg1 + 0x18) + (r8 << 2) - 4) + arg2 s<= (*(*(arg1 + 0x20) + (r8 << 3) - 4) & 0x7fffffff))\n140220d15        if (*(arg1 + 0x28) != 0)\n140220d1e        arg2 = *(arg1 + 0x2c) + rsi\n140220d26        if (*(arg1 + 0x28) == 0 || arg2 s<= zx.d(*(*(arg1 + 0x30) + 1)))\n140220d28        int64_t* rcx_1 = *(arg1 + 8)\n140220d34        int32_t rax_5 = (*(*rcx_1 + 0x40))(rcx_1, arg2)\n140220d37        int64_t* rcx_2 = *(arg1 + 8)\n140220d45        int64_t r9_2 = *rcx_2\n140220d55        if ((*(r9_2 + 0x38))(rcx_2, zx.q(rsi), 1, r9_2) - rax_5 == rsi)\n140220d57        int64_t rcx_3 = sx.q(*(arg1 + 0x10))\n140220d5b        int64_t rax_7 = *(arg1 + 0x18)\n140220d5f        *(rax_7 + (rcx_3 << 2) - 4) += rsi\n140220d67        if (*(arg1 + 0x28) != 0)\n140220d69        *(arg1 + 0x2c) += rsi\n140220d6c        rax_7.b = 1\n140220d78        return rax_7\n140220d7e        uint64_t rax_3\n140220d7e        rax_3.b = 0\n140220d85        return rax_3",
+  "fetched_at": "2026-04-26T17:29:09Z"
+}

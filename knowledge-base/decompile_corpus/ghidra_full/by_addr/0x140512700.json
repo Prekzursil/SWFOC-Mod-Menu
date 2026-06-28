@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EventClass * __thiscall EventClass::scalar_deleting_destructor(EventClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (EventClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x28);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:22:34Z"
+}

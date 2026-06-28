@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045c3f0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_resolve_reward_type_from_string",
+  "body": "14045c3f7        if (arg1 != 0)\n14045c3f9        int64_t rax_1 = -1\n14045c400        rax_1 += 1\n14045c407        do while (arg1[rax_1] != 0)\n14045c40e        int32_t rax_2 = sub_140215a30(arg1, rax_1.d, 0)\n14045c413        void** r8_1 = data_140b30728\n14045c41c        void** rax_3 = r8_1\n14045c41f        void** rcx = r8_1[1]\n14045c427        while (*(rcx + 0x19) == 0)\n14045c433        if (*(rcx + 0x1c) u>= rax_2)\n14045c43b        rax_3 = rcx\n14045c43e        rcx = *rcx\n14045c435        rcx = rcx[2]\n14045c455        if (*(rax_3 + 0x19) == 0 && rax_2 u>= *(rax_3 + 0x1c) && rax_3 != r8_1)\n14045c45e        return zx.q(rax_3[4].d)\n14045c465        return 0",
+  "fetched_at": "2026-04-26T16:43:41Z"
+}

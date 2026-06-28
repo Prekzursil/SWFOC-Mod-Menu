@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403905b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403905b6        struct BaseDataPackClass::DebrisDataPackClass::VTable** rax = *(arg1 + 0x130)\n1403905c3        if (rax == 0)\n1403905c8        rax = operator new(zx.q((&rax[3]).d))\n1403905d0        if (rax != 0)\n1403905d5        struct BaseDataPackClass::DebrisDataPackClass::VTable** rax_1 = CPDBErrorDefault::CPDBErrorDefault(rax)\n1403905da        *(arg1 + 0x130) = rax_1\n1403905e6        return rax_1\n1403905e7        *(arg1 + 0x130) = rax\n1403905f3        return rax",
+  "fetched_at": "2026-04-26T17:21:41Z"
+}

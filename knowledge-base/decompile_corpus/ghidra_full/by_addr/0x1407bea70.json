@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bea70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * FUN_1407bea70(longlong param_1,int param_2)\n\n{\n  undefined *puVar1;\n  \n  if (param_2 < 0x101) {\n    puVar1 = (undefined *)FUN_1407c33a0(*(undefined8 *)(param_1 + 0x38),&DAT_1408fd594,param_2);\n    return puVar1;\n  }\n  return (&PTR_vfunction13_for_RefCountClass_1408fcbf8)[param_2];\n}",
+  "fetched_at": "2026-04-26T18:56:36Z"
+}

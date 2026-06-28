@@ -1,0 +1,7 @@
+{
+  "addr": "0x14016ef40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14016ef5a        __builtin_memset(arg1, 0, 0x18)\n14016ef68        int64_t* rbx = *arg2\n14016ef6b        int64_t rbp = arg2[1]\n14016ef72        if (rbx != rbp)\n14016ef7f        int64_t rdi_3 = (rbp - rbx) s>> 3\n14016ef86        uint64_t* rax_1 = sub_140022650(arg1, rdi_3)\n14016ef8b        *arg1 = rax_1\n14016ef8e        arg1[1] = rax_1\n14016ef9b        arg1[2] = &rax_1[rdi_3]\n14016efa0        uint128_t zmm0 = zx.o(*rbx)\n14016efa4        rbx = &rbx[1]\n14016efa8        *rax_1 = zmm0.q\n14016efac        rax_1 = &rax_1[1]\n14016efb3        do while (rbx != rbp)\n14016efb5        arg1[1] = rax_1\n14016efc9        arg1[3] = arg2[3]\n14016efd4        arg1[4] = arg2[4]\n14016efdd        arg1[5].d = arg2[5].d\n14016efe8        *(arg1 + 0x2c) = *(arg2 + 0x2c)\n14016eff1        *(arg1 + 0x3c) = *(arg2 + 0x3c)\n14016effa        *(arg1 + 0x4c) = *(arg2 + 0x4c)\n14016f003        *(arg1 + 0x5c) = *(arg2 + 0x5c)\n14016f00c        *(arg1 + 0x6c) = *(arg2 + 0x6c)\n14016f015        *(arg1 + 0x7c) = *(arg2 + 0x7c)\n14016f021        *(arg1 + 0x8c) = *(arg2 + 0x8c)\n14016f030        *(arg1 + 0x9c) = *(arg2 + 0x9c)\n14016f042        return arg1",
+  "fetched_at": "2026-04-26T17:22:52Z"
+}

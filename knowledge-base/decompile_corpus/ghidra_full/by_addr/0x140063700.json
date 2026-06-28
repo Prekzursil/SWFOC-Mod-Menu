@@ -1,0 +1,7 @@
+{
+  "addr": "0x140063700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_140063700(undefined8 param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  uint uVar1;\n  byte bVar2;\n  ulonglong uVar3;\n  short sVar4;\n  undefined4 local_res18 [2];\n  float local_res20;\n  float local_res24;\n  undefined1 local_38 [48];\n  \n  local_res18[0] = param_3;\n  ReleaseCapture();\n  sVar4 = (short)local_res18[0];\n  uVar1 = (uint)local_res18[0] >> 0x10;\n  FUN_14026cb30(local_38,local_res18);\n  bVar2 = FUN_1401c3660(&DAT_140a78510,1,0,local_38,0);\n  if (bVar2 == 0) {\n    FUN_140065d00();\n    if ((DAT_140a60eec == '\\0') && (DAT_140a60edf == '\\0')) {\n      local_res20 = (float)(int)sVar4;\n      local_res24 = (float)(int)(short)uVar1;\n      bVar2 = FUN_1402f6c30(&DAT_140b27f60,1,&local_res20);\n      if (bVar2 != 0) goto LAB_1400637f7;\n    }\n    FUN_140307860(&DAT_140b27f60,0,0);\n  }\n  else if (DAT_140a61eb9 == '\\0') {\n    if (DAT_140a62320 != '\\0') {\n      FUN_1402e7260(&DAT_140b27f60);\n    }\n  }\n  else {\n    FUN_1402e7350(&DAT_140b27f60);\n  }\nLAB_1400637f7:\n  if (DAT_140a28c91 == '\\0') {\n    local_res20 = (float)(int)(short)local_res18[0];\n    local_res24 = (float)(int)(short)((uint)local_res18[0] >> 0x10);\n    uVar3 = FUN_140030fc0(&DAT_140a60df0,1,&local_res20,bVar2,0);\n    return uVar3;\n  }\n  return (ulonglong)bVar2;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:38Z"
+}

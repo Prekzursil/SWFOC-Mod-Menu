@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079674c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Different Base Names\n    _get_dstbias\n    _get_timezone\n   \n   Library: Visual Studio 2019 Release */\n\nerrno_t __cdecl FID_conflict__get_timezone(long *_Timezone)\n\n{\n  errno_t eVar1;\n  ulong *puVar2;\n  \n  if (_Timezone == (long *)0x0) {\n    puVar2 = __doserrno();\n    *puVar2 = 0x16;\n    FUN_1407711ac();\n    eVar1 = 0x16;\n  }\n  else {\n    *_Timezone = DAT_140b3cac8;\n    eVar1 = 0;\n  }\n  return eVar1;\n}",
+  "fetched_at": "2026-04-26T18:53:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ac9d0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_select_event_ctor",
+  "body": "1403ac9d6        struct ScheduledEventClass::SelectEventClass::VTable** result = arg1\n1403ac9d9        sub_140512c50(arg1)\n1403ac9e5        *(result + 0x244) = 0\n1403ac9f1        *result = &SelectEventClass::`vftable'{for `ScheduledEventClass'}\n1403ac9fb        result[4].d = 5\n1403aca02        sub_14028d930(&data_140b153e0, 0)\n1403aca0f        return result",
+  "fetched_at": "2026-04-26T16:43:31Z"
+}

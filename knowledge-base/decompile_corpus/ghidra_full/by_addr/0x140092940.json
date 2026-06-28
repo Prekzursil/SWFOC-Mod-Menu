@@ -1,0 +1,7 @@
+{
+  "addr": "0x140092940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall LoadingThreadClass::vfunction2(LoadingThreadClass *this)\n\n{\n  ulonglong in_stack_ffffffffffffffe8;\n  longlong *plVar1;\n  \n  if (((this->LoadingThreadClass_data).field_0x10 == '\\0') && (DAT_140a10b30 == '\\0')) {\n    if (DAT_140b313e8 == '\\0') {\n      FUN_140055690(&PTR_vftable_140a10b18);\n    }\n    DAT_140b313e8 = '\\0';\n  }\n  if ((this->LoadingThreadClass_data).field_0x10 == '\\0') {\n    if ((this->LoadingThreadClass_data).offset_0x28 == 0) {\n      plVar1 = (longlong *)0x0;\n    }\n    else {\n      plVar1 = &(this->LoadingThreadClass_data).offset_0x18;\n      if (0xf < (this->LoadingThreadClass_data).offset_0x30) {\n        plVar1 = (longlong *)*plVar1;\n      }\n    }\n    FUN_14028fda0(&DAT_140b153e0,*(undefined4 *)&(this->LoadingThreadClass_data).field_0xc,\n                  (this->LoadingThreadClass_data).offset_0x0,\n                  *(undefined4 *)&(this->LoadingThreadClass_data).field_0x8,plVar1,0);\n    DAT_140a10b30 = 0;\n    return;\n  }\n  FUN_140056480(&(this->LoadingThreadClass_data).offset_0x18,1,0xffffffff,\n                *(undefined4 *)&this[1].vftablePtr,in_stack_ffffffffffffffe8 & 0xffffffffffffff00);\n  DAT_140a10b30 = 0;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:14Z"
+}

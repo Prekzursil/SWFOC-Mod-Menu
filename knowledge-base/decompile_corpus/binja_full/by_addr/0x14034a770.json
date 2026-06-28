@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034a770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14034a777        *arg1 = &BaseComponentClass::`vftable'\n14034a77e        return sub_1401f9440() __tailcall",
+  "fetched_at": "2026-04-26T17:07:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140496640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14049664f        *arg1 = 0\n140496655        arg1[1] = 0\n14049665c        int64_t* rax = operator new(0x40)\n14049666d        *rax = rax\n140496670        rax[1] = rax\n140496674        rax[2] = rax\n140496678        rax[3].w = 0x101\n14049667e        *arg1 = rax\n140496690        *(*arg1 + 8) = sub_140084c10(arg1, *(*arg2 + 8), rax, arg3)\n140496694        int64_t* r8_1 = *arg1\n14049669b        arg1[1] = arg2[1]\n14049669f        int64_t* rdx_2 = r8_1[1]\n1404966a7        if (*(rdx_2 + 0x19) != 0)\n1404966f6        *r8_1 = r8_1\n1404966f9        void* rax_5 = *arg1\n1404966fc        *(rax_5 + 0x10) = rax_5\n1404966a9        int64_t* rcx_2 = *rdx_2\n1404966b0        if (*(rcx_2 + 0x19) == 0)\n1404966cd        int64_t* rax_3\n1404966c0        rax_3 = *rcx_2\n1404966c3        rdx_2 = rcx_2\n1404966c6        rcx_2 = rax_3\n1404966cd        do while (*(rax_3 + 0x19) == 0)\n1404966cf        *r8_1 = rdx_2\n1404966d2        void* rdx_3 = *arg1\n1404966d5        void* rcx_3 = *(rdx_3 + 8)\n1404966d9        void* rax_4 = *(rcx_3 + 0x10)\n1404966e1        while (*(rax_4 + 0x19) == 0)\n1404966e3        rcx_3 = rax_4\n1404966e6        rax_4 = *(rax_4 + 0x10)\n1404966f0        *(rdx_3 + 0x10) = rcx_3\n140496703        arg1[2].d = arg2[2].d\n140496709        *(arg1 + 0x14) = *(arg2 + 0x14)\n140496710        arg1[3].b = arg2[3].b\n140496717        *(arg1 + 0x19) = *(arg2 + 0x19)\n140496727        return arg1",
+  "fetched_at": "2026-04-26T17:29:11Z"
+}

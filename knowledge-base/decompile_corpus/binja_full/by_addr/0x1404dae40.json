@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dae40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404dae5d        *arg1 = &PerceptionParameterBindingsClass::`vftable'\n1404dae63        __builtin_memset(arg1 + 0xc, 0, 0x14)\n1404dae68        arg1[1].b = 0\n1404dae7c        int64_t* rax = operator new(0x20)\n1404dae88        *rax = rax\n1404dae8b        rax[1] = rax\n1404dae8f        arg1[2] = rax\n1404dae93        int64_t r8 = arg1[2]\n1404dae97        __builtin_memset(&arg1[4], 0, 0x18)\n1404daea2        arg1[7] = 7\n1404daeaa        arg1[8] = 8\n1404daeb2        *(arg1 + 0xc) = 0x3f800000\n1404daeb9        sub_140048250(&arg1[4], 0x10, r8)\n1404daebe        arg1[9] = 0\n1404daec2        arg1[0xa].d = 0\n1404daec5        arg1[0xb] = arg2\n1404daed1        arg1[0xc] = *arg3\n1404daed9        arg1[0xd] = arg3[1]\n1404daee0        arg1[0xe] = 0\n1404daef3        return arg1",
+  "fetched_at": "2026-04-26T17:31:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ad2e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alSplineRenderer * __thiscall\nalSplineRenderer::alSplineRenderer(alSplineRenderer *this,undefined8 *param_1)\n\n{\n  alRenderable::alRenderable((alRenderable *)this);\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  (this->alSplineRenderer_data).offset_0x0 = param_1;\n  if (param_1 != (undefined8 *)0x0) {\n    (**(code **)*param_1)(param_1);\n  }\n  (this->alSplineRenderer_data).offset_0x20 = 0xffffffff;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:55:18Z"
+}

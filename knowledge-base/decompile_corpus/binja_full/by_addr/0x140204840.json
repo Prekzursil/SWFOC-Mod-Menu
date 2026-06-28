@@ -1,0 +1,7 @@
+{
+  "addr": "0x140204840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020484a        int64_t rbx = sx.q(arg2)\n14020487e        return (fconvert.d(sub_14023bbf0(&data_140b09c40, sub_1402043b0(arg1, *(rbx * 0x10 + 0x140b09c4c)), rbx.d))).d",
+  "fetched_at": "2026-04-26T17:27:50Z"
+}

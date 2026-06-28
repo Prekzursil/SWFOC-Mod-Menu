@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404aceb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404acec9        void* result\n1404acec9        switch (arg2)\n1404aced8        case 1, 3\n1404aced8        result.b = 1\n1404aceda        return result\n1404aced6        case 2, 4\n1404aced6        if (*((sx.q(arg1) << 2) + &data_140875d70) != 0x14)\n1404aced8        result.b = 1\n1404aceda        return result\n1404acedb        result.b = 0\n1404acedd        return result",
+  "fetched_at": "2026-04-26T17:29:31Z"
+}

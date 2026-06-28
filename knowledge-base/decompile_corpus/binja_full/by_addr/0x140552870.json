@@ -1,0 +1,7 @@
+{
+  "addr": "0x140552870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140552877        arg1[2].d = 0x3fffff\n14055287e        *arg1 = &DemolitionDataPackClass::`vftable'{for `BaseDataPackClass'}\n140552883        arg1[1] = 0\n140552887        __builtin_memset(&arg1[3], 0, 0x14)\n14055288e        arg1[6] = 0\n140552892        arg1[8] = 0\n140552896        arg1[9] = 0\n14055289e        arg1[7].d = 1\n1405528a5        *(arg1 + 0x3c) = 0xffffffff\n1405528ac        return 0",
+  "fetched_at": "2026-04-26T17:34:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f3180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407f3180(void)\n\n{\n  DynamicVectorClass<class_BlackMarketItemClass*___ptr64>::\n  ~DynamicVectorClass<class_BlackMarketItemClass*___ptr64>\n            ((DynamicVectorClass<class_BlackMarketItemClass*___ptr64> *)&PTR_vftable_140a2aa78);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:37Z"
+}

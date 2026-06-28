@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403af410",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall MoveObjectToObjectEventClass::vfunction5(MoveObjectToObjectEventClass *this)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_1402aca60(*(undefined8 *)(DAT_140b15418 + 0x18),*(undefined4 *)&this[1].vftablePtr);\n  if (lVar1 != 0) {\n    FUN_14039f580(lVar1,*(undefined4 *)((longlong)&this[1].vftablePtr + 4),0,0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:59Z"
+}

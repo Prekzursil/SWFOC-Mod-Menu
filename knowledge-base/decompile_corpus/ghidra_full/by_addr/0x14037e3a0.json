@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037e3a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LineSubClass * __thiscall LineSubClass::LineSubClass(LineSubClass *this,undefined4 param_1)\n\n{\n  alRenderable::alRenderable((alRenderable *)this);\n  (this->LineSubClass_data).offset_0x4c = 0;\n  (this->LineSubClass_data).offset_0x50 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->LineSubClass_data).offset_0x54 = 2;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  (this->LineSubClass_data).offset_0x58 = 0;\n  FUN_1401f92f0(&(this->LineSubClass_data).offset_0x5c);\n  (this->LineSubClass_data).offset_0x70 = 0;\n  (this->LineSubClass_data).offset_0x78 = 0;\n  (this->LineSubClass_data).offset_0x888 = 0;\n  (this->LineSubClass_data).offset_0x890 = 0;\n  (this->LineSubClass_data).offset_0x898 = 0;\n  (this->LineSubClass_data).offset_0x8a0 = param_1;\n  (this->LineSubClass_data).offset_0x8a8 = 0;\n  (this->LineSubClass_data).offset_0x5c = 0;\n  (this->LineSubClass_data).offset_0x64 = 0;\n  (this->LineSubClass_data).offset_0x8b0 = 0;\n  (this->LineSubClass_data).offset_0x8b8 = 0;\n  (this->LineSubClass_data).offset_0x880 = 0;\n  (this->LineSubClass_data).offset_0x8c4 = 1;\n  (this->LineSubClass_data).offset_0x68 = 0x3f800000;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:19:33Z"
+}

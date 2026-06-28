@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d118",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _initterm\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _initterm(longlong *param_1,longlong *param_2)\n\n{\n  ulonglong uVar1;\n  ulonglong uVar2;\n  \n  uVar1 = 0;\n  uVar2 = (ulonglong)((longlong)param_2 + (7 - (longlong)param_1)) >> 3;\n  if (param_2 < param_1) {\n    uVar2 = uVar1;\n  }\n  if (uVar2 != 0) {\n    do {\n      if (*param_1 != 0) {\n        (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n      }\n      param_1 = param_1 + 1;\n      uVar1 = uVar1 + 1;\n    } while (uVar1 != uVar2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:14Z"
+}

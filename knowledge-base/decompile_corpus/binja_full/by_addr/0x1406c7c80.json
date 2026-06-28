@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c7c80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406c7c99        *arg1 = &AIGoalSystemDiagnosticsNodeClass::`vftable'{for `AIDiagnosticsNodeClass'}\n1406c7c9c        int32_t i_1 = 0\n1406c7c9e        int64_t rcx = arg1[1]\n1406c7cb2        if ((arg1[2] - rcx) s>> 3 != 0)\n1406c7cb4        uint64_t i = 0\n1406c7cb6        int64_t* rcx_1 = *(rcx + (i << 3))\n1406c7cbd        if (rcx_1 != 0)\n1406c7cc7        (**rcx_1)(rcx_1, 1)\n1406c7cc9        rcx = arg1[1]\n1406c7ccd        i_1 += 1\n1406c7cd6        i = zx.q(i_1)\n1406c7cdf        do while (i u< (arg1[2] - rcx) s>> 3)\n1406c7ce1        arg1[2] = rcx\n1406c7ce5        int64_t* rcx_2 = arg1[4]\n1406c7cec        if (rcx_2 != 0)\n1406c7cf6        (**rcx_2)(rcx_2, 1)\n1406c7cf8        void* rcx_4 = arg1[1]\n1406c7cff        if (rcx_4 != 0)\n1406c7d13        if (((arg1[3] - rcx_4) & 0xfffffffffffffff8) u>= 0x1000)\n1406c7d15        void* r8_1 = *(rcx_4 - 8)\n1406c7d28        if (rcx_4 - r8_1 - 8 u> 0x1f)\n1406c7d7a        _invalid_parameter_noinfo_noreturn()\n1406c7d7a        noreturn\n1406c7d2a        rcx_4 = r8_1\n1406c7d2d        j_sub_1407864b8(rcx_4)\n1406c7d32        __builtin_memset(&arg1[1], 0, 0x18)\n1406c7d51        *arg1 = &AIDiagnosticsNodeClass::`vftable'\n1406c7d58        if ((arg2 & 1) != 0)\n1406c7d62        j_sub_1407864b8(arg1)\n1406c7d79        return arg1",
+  "fetched_at": "2026-04-26T17:25:19Z"
+}

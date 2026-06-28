@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f5930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall UnitDamagedDataClass::vfunction1(void)\n\n{\n  return &DAT_140a2bf00;\n}",
+  "fetched_at": "2026-04-26T18:18:46Z"
+}

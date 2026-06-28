@@ -1,0 +1,7 @@
+{
+  "addr": "0x140371a10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140371a10(void)\n\n{\n  ulonglong uVar1;\n  \n  if (DAT_140b2c314 == 0) {\n    uVar1 = 0xffffffffffffffff;\n    do {\n      uVar1 = uVar1 + 1;\n    } while (PTR_s_Damage_Default_140a28560[uVar1] != '\\0');\n    DAT_140b2c314 = FUN_140215a30(PTR_s_Damage_Default_140a28560,uVar1 & 0xffffffff,0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:49Z"
+}

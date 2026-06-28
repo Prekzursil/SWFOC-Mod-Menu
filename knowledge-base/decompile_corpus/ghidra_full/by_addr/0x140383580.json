@@ -1,0 +1,7 @@
+{
+  "addr": "0x140383580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_140383580(longlong param_1,undefined8 *param_2)\n\n{\n  longlong lVar1;\n  char cVar2;\n  undefined8 uVar3;\n  undefined4 local_res8 [2];\n  undefined4 local_res10 [2];\n  undefined4 local_48;\n  undefined4 local_44;\n  undefined4 local_40;\n  undefined1 local_38 [12];\n  undefined4 local_2c;\n  undefined4 local_1c;\n  undefined4 local_c;\n  \n  lVar1 = *(longlong *)(param_1 + 0x10);\n  *param_2 = 0;\n  uVar3 = FUN_1402648b0(*(undefined8 *)(lVar1 + 0x2a0));\n  if (*(int *)(param_1 + 0x2c) != -1) {\n    cVar2 = FUN_14012d2c0(uVar3,*(int *)(param_1 + 0x2c),local_38);\n    if (cVar2 == '\\x01') {\n      local_48 = local_2c;\n      local_40 = local_c;\n      local_44 = local_1c;\n      FUN_140261e40(*(undefined8 *)\n                     (*(longlong *)(*(longlong *)(*(longlong *)(param_1 + 0x10) + 0x2b8) + 0x20) +\n                     0x90),&local_48,local_res8,local_res10,0);\n      *(undefined4 *)param_2 = local_res8[0];\n      *(undefined4 *)((longlong)param_2 + 4) = local_res10[0];\n    }\n  }\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:20:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065c110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nlonglong __thiscall\nFoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::vfunction12\n          (FoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this)\n\n{\n  return (longlong)(double)(this->SignalListenerClass_data).offset_0x8;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:45Z"
+}

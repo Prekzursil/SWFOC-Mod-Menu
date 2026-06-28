@@ -1,0 +1,7 @@
+{
+  "addr": "0x140271bb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TextureClass * __thiscall TextureClass::TextureClass(TextureClass *this,undefined **param_1)\n\n{\n  DWORD DVar1;\n  \n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  (this->RefCountClass_data).offset_0x8 = (undefined **)0x0;\n  if (param_1 != (undefined **)0x0) {\n    (this->RefCountClass_data).offset_0x8 = param_1;\n    (**(code **)*param_1)(param_1);\n  }\n  DVar1 = GetCurrentThreadId();\n  if (DVar1 == DAT_140a155d0) {\n    FUN_14013e360((this->RefCountClass_data).offset_0x8,&(this->RefCountClass_data).offset_0x10,\n                  (undefined1 *)((longlong)&(this->RefCountClass_data).offset_0x10 + 4));\n    return this;\n  }\n  (this->RefCountClass_data).offset_0x10 = 0xffffffffffffffff;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:19:50Z"
+}

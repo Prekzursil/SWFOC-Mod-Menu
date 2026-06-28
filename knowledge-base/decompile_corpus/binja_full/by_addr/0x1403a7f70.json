@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a7f70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a7f9e        if (arg3 == 0 || (*(arg1 + 0x3a0) & 2) != 0 || *(arg3 + 0xba) s> 0xff)\n1403a7f9e        return \n1403a7fa7        if (arg2 == 1)\n1403a7fad        char rax = *(arg1 + 0x3b8)\n1403a7fb6        if (rax != arg2)\n1403a7fb6        goto label_1403a7ffa\n1403a7fb8        void* rdx = *(arg1 + 0x3c0)\n1403a7fcb        if (rdx != arg3 && rdx != 0)\n1403a7fe3        arg4 = sub_1402d5c00(&data_140b27e60, rdx, arg1, *(rdx + 0xc0))\n1403a7fe8        rax = *(arg1 + 0x3b8)\n1403a7fef        *(arg1 + 0x3c0) = 0\n1403a7ffa        label_1403a7ffa:\n1403a7ffc        if (rax == 0)\n1403a8017        sub_1402d5320(&data_140b27e60, arg3, arg1, *(arg3 + 0xbc), arg4, rax)\n1403a801c        *(arg1 + 0x3b8) = 1\n1403a8023        *(arg1 + 0x3c0) = arg3\n1403a8040        if (arg2 == 0 && *(arg1 + 0x3b8) == 1)\n1403a8058        sub_1402d5c00(&data_140b27e60, arg3, arg1, arg3[0x18].d)\n1403a805d        *(arg1 + 0x3b8) = 0\n1403a8064        *(arg1 + 0x3c0) = 0\n1403a8079        return ",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

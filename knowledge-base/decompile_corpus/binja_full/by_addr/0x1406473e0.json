@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406473e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406473f1        arg1[8].d = 0xffffffff\n1406473f8        *arg1 = &BeaconBehaviorClass::`vftable'{for `BehaviorClass'}\n140647407        arg1[1] = &BeaconBehaviorClass::`vftable'{for `RefCountClass'}\n140647412        arg1[3] = &BeaconBehaviorClass::`vftable'{for `SignalListenerClass'}\n140647416        sub_1404c3310(arg1)\n14064741e        if ((arg2 & 1) != 0)\n140647428        j_sub_1407864b8(arg1)\n14064743a        return arg1",
+  "fetched_at": "2026-04-26T17:04:11Z"
+}

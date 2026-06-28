@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403e79b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403e79bb        if (*(arg1 + 0x2b70) == 0)\n1403e79bb        return \n1403e79d0        int64_t* rax_1 = sub_140347b50(0x3c3)\n1403e79dd        int64_t* rax_2 = sub_140347b50(0x3c2)\n1403e79ec        void* rax_3\n1403e79ec        int64_t r9_1\n1403e79ec        rax_3, r9_1 = sub_140294a40(&data_140a16fd0)\n1403e79fc        int64_t r10_1 = *rax_2\n1403e7a0d        char r9_2\n1403e7a0d        if (data_140b27940 f<= *(rax_3 + 0x70))\n1403e7a34        r9_1.b = 0xff\n1403e7a3f        (*(r10_1 + 0x128))(rax_2, 0xff, 0xff, r9_1, 0xff, 1)\n1403e7a4e        (*(*rax_1 + 0x80))(rax_1, 0)\n1403e7a54        r9_2 = 0xff\n1403e7a0f        r9_1.b = 0xa0\n1403e7a1a        (*(r10_1 + 0x128))(rax_2, 0xa0, 0xa0, r9_1, 0xff, 1)\n1403e7a24        int64_t rdx_1\n1403e7a24        rdx_1.b = 1\n1403e7a29        (*(*rax_1 + 0x80))(rax_1, rdx_1)\n1403e7a2f        r9_2 = 0x40\n1403e7a5e        char var_10_1 = 1\n1403e7a6a        char var_18_1 = 0xff\n1403e7a6f        (*(*rax_1 + 0x128))(rax_1, zx.q(r9_2), zx.q(r9_2))\n1403e7a83        return ",
+  "fetched_at": "2026-04-26T17:25:14Z"
+}

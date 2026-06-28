@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407fc170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407fc19c        int64_t result\n1407fc19c        while (true)\n1407fc19c        result = data_140a44b50\n1407fc1a7        if (result u>= 0xa)\n1407fc1a7        break\n1407fc17d        int64_t rcx_1 = *(&data_140b3b6c0 + (result << 3))\n1407fc184        data_140a44b50 = result + 1\n1407fc18b        int64_t rax_2 = DecodePointer(rcx_1)\n1407fc194        if (rax_2 != 0)\n1407fc196        rax_2()\n1407fc1ad        return result",
+  "fetched_at": "2026-04-26T17:38:37Z"
+}

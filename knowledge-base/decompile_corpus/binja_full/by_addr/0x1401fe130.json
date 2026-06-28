@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fe130",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401fe13a        if (arg1 + 1 u> 0x1a)\n1401fe163        sscanf_s(&data_140a7be40, \"UNKNOWN(%d)\", zx.q(arg1))\n1401fe173        return &data_140a7be40\n1401fe151        return (&data_140a13c08)[sx.q(arg1) * 2]",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

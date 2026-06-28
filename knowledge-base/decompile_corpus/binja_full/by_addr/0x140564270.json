@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140564277        *arg1 = &ProximityMineDataPackClass::`vftable'{for `BaseDataPackClass'}\n14056427e        return sub_1404c47c0(&arg1[2]) __tailcall",
+  "fetched_at": "2026-04-26T17:34:29Z"
+}

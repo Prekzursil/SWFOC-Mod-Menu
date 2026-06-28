@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a9e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a9e0(void)\n\n{\n  LeechShieldsAbilityClass *this;\n  \n  this = (LeechShieldsAbilityClass *)FUN_140769c58(0x218);\n  if (this != (LeechShieldsAbilityClass *)0x0) {\n    LeechShieldsAbilityClass::LeechShieldsAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:11Z"
+}

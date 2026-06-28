@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bffb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1407bffb0(longlong param_1,int *param_2)\n\n{\n  byte bVar1;\n  int iVar2;\n  int local_res10;\n  int iStackX_14;\n  \n  iVar2 = *param_2;\n  bVar1 = *(byte *)(param_1 + 0xb);\n  if (iVar2 == 1) {\n    return *(longlong *)(param_1 + 0x20) +\n           (longlong)(int)((1 << (bVar1 & 0x1f)) - 1U & param_2[2]) * 0x28;\n  }\n  if (iVar2 != 2) {\n    if (iVar2 == 3) {\n      iStackX_14 = (int)((ulonglong)(*(double *)(param_2 + 2) + DAT_140854f30) >> 0x20);\n      local_res10 = SUB84(*(double *)(param_2 + 2) + DAT_140854f30,0);\n      return *(longlong *)(param_1 + 0x20) +\n             ((ulonglong)(uint)(iStackX_14 + local_res10) %\n             (ulonglong)((1 << (bVar1 & 0x1f)) - 1U | 1)) * 0x28;\n    }\n    if (iVar2 == 4) {\n      return *(longlong *)(param_1 + 0x20) +\n             (longlong)\n             (int)((1 << (bVar1 & 0x1f)) - 1U & *(uint *)(*(longlong *)(param_2 + 2) + 0xc)) * 0x28;\n    }\n  }\n  return *(longlong *)(param_1 + 0x20) +\n         ((ulonglong)(uint)param_2[2] % (ulonglong)((1 << (bVar1 & 0x1f)) - 1U | 1)) * 0x28;\n}",
+  "fetched_at": "2026-04-26T18:56:44Z"
+}

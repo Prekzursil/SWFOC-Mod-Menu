@@ -1,0 +1,7 @@
+{
+  "addr": "0x140670be0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140670c04        class PerceptionContextClass var_78\n140670c04        sub_1403ef160(&var_78, *(arg2 + 0x38))\n140670c23        sub_1405b41c0(&var_78, data_140a43c4c, *(*(*(arg2 + 0x28) + 0x28) + 0x478))\n140670c33        if (sub_1405f55c0(arg2) != 0)\n140670c38        void* rax_2 = sub_1405f55c0(arg2)\n140670c4f        sub_1405b41c0(&var_78, data_140a43c50, *(rax_2 + 0x478))\n140670c5b        void* rax_3 = sub_140294a00(&data_140a16fd0)\n140670c63        if (rax_3 != 0)\n140670c77        sub_1405b41c0(&var_78, data_140a43c5c, *(rax_3 + 0x478))\n140670c94        int64_t var_28 = *(*(arg2 + 0x28) + 0x28)\n140670c99        PerceptionFunctionClass* rcx_7 = *(arg1 + 0x68)\n140670c9d        double arg_8 = (zx.o(0)).q\n140670ca6        PerceptionFunctionClass::Evaluate(rcx_7, &var_78, &arg_8)\n140670cbe        void* rbx\n140670cbe        rbx.b = arg_8 > 0.0\n140670cc1        sub_14007b260(&var_78)\n140670ce1        return zx.q(rbx.b)",
+  "fetched_at": "2026-04-26T17:10:51Z"
+}

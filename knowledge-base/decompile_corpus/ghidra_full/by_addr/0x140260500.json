@@ -1,0 +1,7 @@
+{
+  "addr": "0x140260500",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TextureRectClass::~TextureRectClass(TextureRectClass *this)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  undefined **ppuVar3;\n  undefined **ppuVar4;\n  \n  this->vftablePtr = &vftable_for_DrawPrimitiveClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  plVar1 = *(longlong **)&(this->RefCountClass_data).field_0x30;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    *(undefined8 *)&(this->RefCountClass_data).field_0x30 = 0;\n  }\n  uVar2 = *(ulonglong *)&(this->RefCountClass_data).field_0x20;\n  if (0xf < uVar2) {\n    ppuVar3 = (this->RefCountClass_data).offset_0x8;\n    ppuVar4 = ppuVar3;\n    if (0xfff < uVar2 + 1) {\n      ppuVar4 = (undefined **)ppuVar3[-1];\n      if (0x1f < ((longlong)ppuVar3 - (longlong)ppuVar4) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc((longlong)ppuVar3 - (longlong)ppuVar4,uVar2 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(ppuVar4);\n  }\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  (this->RefCountClass_data).offset_0x18 = (undefined **)0x0;\n  *(undefined8 *)&(this->RefCountClass_data).field_0x20 = 0xf;\n  *(undefined1 *)&(this->RefCountClass_data).offset_0x8 = 0;\n  this->vftablePtr = (TextureRectClass_vftable_for_RefCountClass *)&RefCountClass::vftable;\n  DrawPrimitiveClass::~DrawPrimitiveClass((DrawPrimitiveClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:26Z"
+}

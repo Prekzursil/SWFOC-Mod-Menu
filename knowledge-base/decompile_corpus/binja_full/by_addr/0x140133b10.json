@@ -1,0 +1,7 @@
+{
+  "addr": "0x140133b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140133b1b        int32_t r9 = *(arg1 + 0x10)\n140133b22        float zmm1[0x4] = *(arg1 + 0xa0)\n140133b2b        float zmm2[0x4] = zmm1\n140133b32        zmm2[0] = zmm2[0] f* *arg2\n140133b36        zmm2[0] = zmm2[0] + 0.5f\n140133b3a        int32_t r8 = int.d(zmm2[0])\n140133b46        if (r8 != 0x80000000 && not(_mm_cvtepi32_ps(zx.o(r8)).d f== zmm2[0]))\n140133b66        zmm2 = _mm_cvtepi32_ps(zx.o(r8 - (_mm_movemask_ps(_mm_unpacklo_ps(zmm2, zmm2[0].q)) & 1)))\n140133b69        int32_t r8_2 = int.d(zmm2[0])\n140133b6e        int32_t rdx = 0\n140133b73        if (r8_2 s< 0)\n140133b75        r8_2 = 0\n140133b7d        if (r8_2 s> r9 - 1)\n140133b7d        r8_2 = r9 - 1\n140133b81        zmm1[0] = zmm1[0] f* arg2[1]\n140133b87        zmm1[0] = zmm1[0] + 0.5f\n140133b8b        int32_t rcx_1 = int.d(zmm1[0])\n140133b95        if (rcx_1 != 0x80000000 && not(_mm_cvtepi32_ps(zx.o(rcx_1)).d f== zmm1[0]))\n140133bb2        zmm1 = _mm_cvtepi32_ps(zx.o(rcx_1 - (_mm_movemask_ps(_mm_unpacklo_ps(zmm1, zmm1[0].q)) & 1)))\n140133bb5        int32_t rcx_3 = int.d(zmm1[0])\n140133bbb        if (rcx_3 s>= 0)\n140133bc1        rdx = rcx_3\n140133bc3        int32_t rax_6 = *(arg1 + 0x14) - 1\n140133bc7        if (rcx_3 s> rax_6)\n140133bc7        rdx = rax_6\n140133bdc        return *(arg1 + 0x20) + (sx.q(r9 * rdx + r8_2) << 2)",
+  "fetched_at": "2026-04-26T17:11:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb7d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ForceHealingAbilityClass * __thiscall\nForceHealingAbilityClass::ForceHealingAbilityClass(ForceHealingAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->ForceHealingAbilityClass_data).offset_0x30 = 0xf;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->ForceHealingAbilityClass_data).offset_0x0 = 0;\n  (this->ForceHealingAbilityClass_data).offset_0x8 = 0;\n  (this->ForceHealingAbilityClass_data).offset_0x10 = 0;\n  (this->ForceHealingAbilityClass_data).offset_0x18 = 0;\n  (this->ForceHealingAbilityClass_data).offset_0x28 = 0;\n  FUN_1401f92f0(&(this->ForceHealingAbilityClass_data).field_0x38);\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 5;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:49:56Z"
+}

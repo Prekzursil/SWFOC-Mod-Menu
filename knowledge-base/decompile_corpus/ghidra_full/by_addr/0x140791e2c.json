@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791e2c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    class __crt_stdio_stream __cdecl __acrt_stdio_allocate_stream(void)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl __acrt_stdio_allocate_stream(void)\n\n{\n  undefined8 *puVar1;\n  undefined8 *in_RCX;\n  \n  *in_RCX = 0;\n  __acrt_lock(8);\n  puVar1 = (undefined8 *)find_or_allocate_unused_stream_nolock();\n  puVar1 = (undefined8 *)*puVar1;\n  *in_RCX = puVar1;\n  if (puVar1 != (undefined8 *)0x0) {\n    *(undefined4 *)(puVar1 + 2) = 0;\n    puVar1[5] = 0;\n    *puVar1 = 0;\n    puVar1[1] = 0;\n    *(undefined4 *)(puVar1 + 3) = 0xffffffff;\n  }\n  __acrt_unlock(8);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:50Z"
+}

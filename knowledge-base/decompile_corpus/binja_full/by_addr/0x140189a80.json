@@ -1,0 +1,7 @@
+{
+  "addr": "0x140189a80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140189a89        int64_t rdx = sx.q(arg2)\n140189a98        uint64_t rax = 2 * rdx\n140189a9b        if (mulu.dp.q(2, rdx) u>> 0x40 != zx.o(0))\n140189a9b        rax = -1\n140189aa2        int64_t result = j_operator new(rax)\n140189aa7        *arg1 = result\n140189aaf        return result",
+  "fetched_at": "2026-04-26T17:24:04Z"
+}

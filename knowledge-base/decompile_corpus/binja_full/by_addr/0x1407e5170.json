@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e5170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e5170        void* arg_10 = arg2\n1407e517f        int32_t* r9 = *(arg2 + 0x88)\n1407e5186        int64_t rax = *(arg2 + 0x38)\n1407e518a        int32_t* rdi = &r9[rax * 2]\n1407e518e        void* rbx = &r9[rax]\n1407e519f        std::vector<uint64_t,struct std::_Parallelism_allocator<uint64_t> >::_Umove(*(arg2 + 0x80), rbx, rdi, r9)\n1407e51a8        int64_t* rbx_1 = *(arg2 + 0x98)\n1407e51b5        std::_Uninitialized_move<uint64_t* __ptr64,class std::allocator<uint64_t> >(rdi, *rbx_1, rbx)\n1407e51be        *rbx_1 = *(arg2 + 0x20)\n1407e51c5        sub_14076b00c(nullptr, nullptr)\n1407e51c5        noreturn",
+  "fetched_at": "2026-04-26T17:34:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_14001a000(void)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  \n  puVar1 = (undefined8 *)thunk_FUN_140769c58();\n  if (puVar1 == (undefined8 *)0x0) {\n    DAT_140b31cd0 = (undefined8 *)0x0;\n  }\n  else {\n    DAT_140b31cd0 = puVar1 + 1;\n    *puVar1 = 50000;\n    lVar2 = 50000;\n    puVar1 = DAT_140b31cd0;\n    do {\n      *puVar1 = 0;\n      puVar1[1] = 0;\n      puVar1 = (undefined8 *)((longlong)puVar1 + 0x1c);\n      lVar2 = lVar2 + -1;\n    } while (lVar2 != 0);\n  }\n  _DAT_140b31cd8 = 50000;\n  atexit((_func_5014 *)&LAB_1407f4350);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:04Z"
+}

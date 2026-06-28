@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eed90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407eed97        data_140a16de8 = &SingletonInstance<class TheAIPlayerTypeManagerClass>::`vftable'{for `SingletonManager'}\n1407eed9e        return &SingletonInstance<class TheAIPlayerTypeManagerClass>::`vftable'{for `SingletonManager'}",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

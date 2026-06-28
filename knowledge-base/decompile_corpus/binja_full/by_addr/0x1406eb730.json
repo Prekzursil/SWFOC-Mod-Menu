@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eb730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406eb740        int64_t* rcx = *(arg3 + 0x10)\n1406eb74b        int64_t r8_2 = (*(arg3 + 0x18) - rcx) s>> 3\n1406eb753        if (r8_2 != 1)\n1406eb75f        sub_140248190(arg2, \"LandTaskForceClass::Fire_Orbital_Bombardment -- invalid number of parameters.  Expected 1, got %d.\", r8_2)\n1406eb770        return 0\n1406eb77c        void var_18\n1406eb77c        char rax_1\n1406eb77c        int64_t r8_3\n1406eb77c        rax_1, r8_3 = sub_1404990b0(*rcx, &var_18, nullptr)\n1406eb783        if (rax_1 == 0)\n1406eb78f        sub_140248190(arg2, \"LandTaskForceClass::Fire_Orbital_Bombardment -- could not extract a position from parameter 1.\", r8_3)\n1406eb7a0        return 0\n1406eb7b6        void* rbx_1 = *(sub_1405f55e0(*(sub_1405f6fb0(*(arg1 + 0xf0)) + 0x28)) + 0x40)\n1406eb7bd        if (rbx_1 != 0)\n1406eb7d6        sub_140528140(rbx_1, *(sub_1405f7020(*(arg1 + 0xf0)) + 0x4c), &var_18)\n1406eb7e7        return 0",
+  "fetched_at": "2026-04-26T17:26:14Z"
+}

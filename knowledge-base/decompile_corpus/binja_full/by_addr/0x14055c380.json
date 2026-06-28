@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055c380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14055c407        char r15 = sub_14021fe20(arg2, 1, arg3, arg4) & 1 & sub_14021ffa0(arg2, 0) & sub_1402200b0(arg2, arg1 + 0x20, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 1) & sub_1402200b0(arg2, arg1 + 0x24, 4, nullptr)\n14055c464        r15 = r15 & sub_140220030(arg2) & sub_14021ffa0(arg2, 2) & sub_1402200b0(arg2, arg1 + 0x28, 4, nullptr) & sub_1402200b0(arg2, arg1 + 0x2c, 4, nullptr) & sub_1402200b0(arg2, arg1 + 0x30, 4, nullptr)\n14055c4a0        r15 = r15 & sub_140220030(arg2) & sub_14021ffa0(arg2, 3) & sub_1402200b0(arg2, arg1 + 0x34, 4, nullptr) & sub_140220030(arg2)\n14055c4a3        char rax_15\n14055c4a3        int64_t r8\n14055c4a3        rax_15, r8 = sub_14021feb0(arg2)\n14055c4b0        char rax_16\n14055c4b0        int64_t r8_1\n14055c4b0        rax_16, r8_1 = sub_14021fe20(arg2, 0, r8, arg4)\n14055c4b5        int64_t i_1 = sx.q(*(arg1 + 0x18))\n14055c4c9        int32_t rbp = 0\n14055c4cb        char rbx = sub_14021fe20(arg2, 0, r8_1, arg4) & 1\n14055c4d1        if (i_1 s> 0)\n14055c50e        int64_t i\n14055c506        rbx = rbx & sub_14021ffa0(arg2, 4) & sub_1402200b0(arg2, *(arg1 + 0x10) + (sx.q(rbp) << 3), 8, nullptr) & sub_140220030(arg2)\n14055c508        rbp += 1\n14055c50a        i = i_1\n14055c50a        i_1 -= 1\n14055c50e        do while (i != 1)\n14055c51b        rbx &= sub_14021feb0(arg2)\n14055c53f        return sub_14021feb0(arg2) & rbx & r15 & rax_15 & rax_16",
+  "fetched_at": "2026-04-26T17:34:23Z"
+}

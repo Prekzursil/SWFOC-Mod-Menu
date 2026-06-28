@@ -1,0 +1,7 @@
+{
+  "addr": "0x140065480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140065489        uint64_t zmm6[0x2] = 0x40490fdb\n140065496        uint64_t zmm7[0x2] = 0x40490fdb\n140065499        zmm7[0].d = 3.14159274f * 2f\n1400654a1        zmm7[0].d = zmm7[0].d f/ 360f\n1400654a9        zmm7[0].d = zmm7[0].d f* 5f\n1400654c5        int64_t entry_rdx\n1400654c5        uint64_t entry_zmm2[0x2]\n1400654c5        if ((zmm7[0].d & 0x7f800000) u> 0x1d000000)\n1400654ca        entry_rdx, entry_zmm2, zmm6 = cosf(zmm7, entry_rdx, entry_zmm2)\n1400654e3        if ((zmm7[0].d & 0x7f800000) u> 0x1d000000)\n1400654e8        entry_rdx, entry_zmm2, zmm6 = sinf(zmm7, entry_rdx, entry_zmm2)\n1400654ed        zmm6[0].d = zmm6[0].d f* 2f\n1400654f5        zmm6[0].d = zmm6[0].d f/ 360f\n1400654fd        zmm6[0].d = zmm6[0].d f* 4f\n140065519        if ((zmm6[0].d & 0x7f800000) u> 0x1d000000)\n14006551e        entry_rdx, entry_zmm2, zmm6 = cosf(zmm6, entry_rdx, entry_zmm2)\n14006552d        int32_t result = zmm6[0].d & 0x7f800000\n140065537        if (result u<= 0x1d000000)\n14006554f        return result\n14006553c        return sinf(zmm6, entry_rdx, entry_zmm2)",
+  "fetched_at": "2026-04-26T16:55:41Z"
+}

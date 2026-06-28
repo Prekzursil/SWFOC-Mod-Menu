@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400eceb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400ecebe        void* rax = operator new(0x20)\n1400ececa        int64_t var_28 = 0x1e\n1400eced8        int64_t var_20 = 0x1f\n1400ecee1        __builtin_strncpy(rax, \"IDC_SKIRMISH_GAME_TIMER_SLIDER\", 0x1f)\n1400ecf10        int32_t rdx = data_140a11d60\n1400ecf16        void* var_38 = rax\n1400ecf1b        int128_t zmm0 = sub_1401c8fc0(&data_140a78510, rdx, &var_38)\n1400ecf2c        if (var_20 u>= 0x10)\n1400ecf2e        void* rcx_1 = var_38\n1400ecf36        void* rax_1 = rcx_1\n1400ecf40        if (var_20 + 1 u>= 0x1000)\n1400ecf42        rcx_1 = *(rcx_1 - 8)\n1400ecf55        if (rax_1 - rcx_1 - 8 u> 0x1f)\n1400ecf93        _invalid_parameter_noinfo_noreturn()\n1400ecf93        noreturn\n1400ecf57        j_sub_1407864b8(rcx_1)\n1400ecf5c        int128_t zmm6\n1400ecf5c        zmm6.d = zmm0.d f* 250f\n1400ecf69        zmm6.d = zmm6.d f+ 0.5f\n1400ecf92        return zx.q((int.d(zmm6.d) + 5) s/ 0xa * 0xa)",
+  "fetched_at": "2026-04-26T17:03:32Z"
+}

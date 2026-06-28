@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140562967        *arg1 = &CapturePointDataPackClass::`vftable'{for `BaseDataPackClass'}\n14056296a        return &CapturePointDataPackClass::`vftable'{for `BaseDataPackClass'}",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

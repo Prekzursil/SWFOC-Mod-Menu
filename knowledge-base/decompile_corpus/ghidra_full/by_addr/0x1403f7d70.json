@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f7d70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_1403f7d70(undefined8 param_1,longlong param_2,longlong *param_3,uint param_4)\n\n{\n  uint uVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  uint uVar4;\n  longlong lVar5;\n  longlong lVar6;\n  int iVar7;\n  longlong lVar8;\n  longlong lVar9;\n  uint local_38 [4];\n  \n  lVar2 = *(longlong *)(param_2 + 0xb8);\n  local_38[1] = 1;\n  lVar8 = 0;\n  local_38[2] = 2;\n  local_38[3] = 0;\n  local_38[0] = param_4;\n  while (uVar1 = local_38[lVar8], 2 < uVar1) {\nLAB_1403f7e39:\n    lVar8 = lVar8 + 1;\n    if (3 < lVar8) {\n      return 0;\n    }\n  }\n  iVar7 = 0;\n  if (*(int *)(lVar2 + 0xd0) < 1) {\n    return uVar1;\n  }\n  lVar9 = 0;\n  do {\n    plVar3 = *(longlong **)(lVar9 + *(longlong *)(lVar2 + 200));\n    if (plVar3 != param_3) {\n      lVar5 = (**(code **)(*plVar3 + 0x10))(plVar3,4);\n      uVar4 = FUN_1404327b0(lVar5,*(undefined8 *)(lVar5 + 0x28));\n      if (uVar4 == uVar1) {\n        lVar5 = FUN_140294bc0(&DAT_140a16fd0,(int)param_3[0xb]);\n        lVar6 = FUN_140294bc0(&DAT_140a16fd0,(int)plVar3[0xb]);\n        if (lVar5 == lVar6) goto LAB_1403f7e39;\n      }\n    }\n    iVar7 = iVar7 + 1;\n    lVar9 = lVar9 + 8;\n    if (*(int *)(lVar2 + 0xd0) <= iVar7) {\n      return uVar1;\n    }\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T17:41:23Z"
+}

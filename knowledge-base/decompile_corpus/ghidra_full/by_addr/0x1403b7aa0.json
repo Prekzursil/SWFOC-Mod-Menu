@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b7aa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandModeClass::vfunction6(LandModeClass *this)\n\n{\n  DAT_140b30391 = 0;\n  FUN_1401378d0(0);\n  FUN_14035cfc0(this);\n  FUN_14021d090(&DAT_140a7d0a0,DAT_1407ffaf8);\n  FUN_14021d0b0(&DAT_140a7d0a0,DAT_1407ffaf8);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:49Z"
+}

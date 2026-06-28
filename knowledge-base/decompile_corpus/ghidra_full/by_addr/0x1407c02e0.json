@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c02e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407c02e0(undefined8 param_1,longlong param_2,int *param_3)\n\n{\n  undefined4 *puVar1;\n  char *pcVar2;\n  \n  puVar1 = (undefined4 *)FUN_1407bfd90(param_2,param_3);\n  *(undefined1 *)(param_2 + 10) = 0;\n  if (puVar1 != &DAT_1408fd750) {\n    return;\n  }\n  if (*param_3 == 0) {\n    pcVar2 = \"table index is nil\";\n  }\n  else {\n    if ((*param_3 != 3) || (!NAN(*(double *)(param_3 + 2)))) goto LAB_1407c0341;\n    pcVar2 = \"table index is NaN\";\n  }\n  FUN_1407bad30(param_1,pcVar2);\nLAB_1407c0341:\n  FUN_1407c04f0(param_1,param_2,param_3);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:45Z"
+}

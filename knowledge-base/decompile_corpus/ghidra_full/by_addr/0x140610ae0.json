@@ -1,0 +1,7 @@
+{
+  "addr": "0x140610ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AIBudgetClass::~AIBudgetClass(AIBudgetClass *this)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  \n  this->vftablePtr = &vftable;\n  plVar2 = (longlong *)(this->AIBudgetClass_data).offset_0x8;\n  plVar3 = (longlong *)*plVar2;\n  if (plVar3 != plVar2) {\n    do {\n      puVar1 = (undefined8 *)plVar3[3];\n      plVar2 = (longlong *)puVar1[0xd];\n      if (plVar2 != (longlong *)puVar1[0xe]) {\n        do {\n          puVar1 = (undefined8 *)*plVar2;\n          if (puVar1 != (undefined8 *)0x0) {\n            (**(code **)*puVar1)(puVar1,1);\n          }\n          puVar1 = (undefined8 *)plVar3[3];\n          plVar2 = plVar2 + 1;\n        } while (plVar2 != (longlong *)puVar1[0xe]);\n      }\n      if (puVar1 != (undefined8 *)0x0) {\n        (**(code **)*puVar1)(puVar1,1);\n      }\n      plVar3 = (longlong *)*plVar3;\n    } while (plVar3 != (longlong *)(this->AIBudgetClass_data).offset_0x8);\n  }\n  FUN_1400db9f0(&this->AIBudgetClass_data);\n  FUN_14007b260(&this->AIBudgetClass_data);\n  AIDiagnosticsClass::~AIDiagnosticsClass((AIDiagnosticsClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

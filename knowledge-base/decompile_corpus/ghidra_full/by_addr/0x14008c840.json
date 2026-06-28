@@ -1,0 +1,7 @@
+{
+  "addr": "0x14008c840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nuint FUN_14008c840(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  ushort uVar1;\n  ulonglong uVar2;\n  ulonglong uVar3;\n  uint uVar4;\n  ushort *puVar5;\n  ulonglong uVar6;\n  longlong lVar7;\n  \n  puVar5 = (ushort *)(param_3 + 0x140);\n  if (7 < *(ulonglong *)(param_3 + 0x158)) {\n    puVar5 = *(ushort **)(param_3 + 0x140);\n  }\n  lVar7 = param_2 + 0x140;\n  if (7 < *(ulonglong *)(param_2 + 0x158)) {\n    lVar7 = *(longlong *)(param_2 + 0x140);\n  }\n  uVar2 = *(ulonglong *)(param_3 + 0x150);\n  uVar3 = *(ulonglong *)(param_2 + 0x150);\n  uVar6 = uVar3;\n  if (uVar2 < uVar3) {\n    uVar6 = uVar2;\n  }\n  if (uVar6 != 0) {\n    lVar7 = lVar7 - (longlong)puVar5;\n    do {\n      uVar1 = *(ushort *)(lVar7 + (longlong)puVar5);\n      if (uVar1 != *puVar5) {\n        uVar4 = 0;\n        if (uVar1 < *puVar5) {\n          uVar4 = 0xffffffff;\n        }\n        return uVar4 >> 0x1f;\n      }\n      puVar5 = puVar5 + 1;\n      uVar6 = uVar6 - 1;\n    } while (uVar6 != 0);\n  }\n  if (uVar3 < uVar2) {\n    return 1;\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:48Z"
+}

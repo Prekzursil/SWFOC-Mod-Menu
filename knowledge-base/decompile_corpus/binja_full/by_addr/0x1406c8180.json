@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c8180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406c819b        int64_t result = sub_140721f70(*(arg1 + 8) + 0xd8, *(arg1 + 0x10))\n1406c81a3        int32_t rsi = result.d\n1406c81a5        int32_t rbx = 0\n1406c81aa        if (result.d != 0)\n1406c81d8        int64_t* arg_8\n1406c81d8        result = sub_140721d90(*(arg1 + 8) + 0xd8, &arg_8, *(arg1 + 0x10), rbx)\n1406c81dd        int64_t* rcx_4 = arg_8\n1406c81e2        void* rdi_1 = *result\n1406c81e8        if (rcx_4 != 0)\n1406c81ed        result = (*(*rcx_4 + 8))(rcx_4)\n1406c81f3        if (rdi_1 != 0)\n1406c81fc        if (data_140a10970 == 0)\n1406c8203        struct AIDiagnosticsManagerClass::VTable** rax_1 = operator new(0xc0)\n1406c820b        if (rax_1 == 0)\n1406c821e        data_140a10970 = 0\n1406c8215        data_140a10970 = sub_140475660(rax_1)\n1406c8225        int32_t* rdx_2 = data_140a7bc10\n1406c822c        bool cond:0_1 = rdx_2 == data_140a7bc18\n1406c8233        void** arg_10 = &data_140a10968\n1406c8238        if (cond:0_1)\n1406c8253        sub_14001ded0(&data_140a7bc08, rdx_2, &arg_10)\n1406c823a        *rdx_2 = &data_140a10968\n1406c823d        data_140a7bc10 += 8\n1406c8263        result = sub_140475af0(data_140a10970, rdi_1 + 0x20)\n1406c8268        rbx += 1\n1406c826c        do while (rbx u< rsi)\n1406c8285        return result",
+  "fetched_at": "2026-04-26T17:25:19Z"
+}

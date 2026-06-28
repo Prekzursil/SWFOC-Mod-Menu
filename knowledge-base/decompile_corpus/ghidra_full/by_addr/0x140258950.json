@@ -1,0 +1,7 @@
+{
+  "addr": "0x140258950",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLuaScriptWrapper::vfunction13_for_LuaUserVar(LuaScriptWrapper *this,longlong param_1)\n\n{\n  LuaScriptClass::vfunction13\n            (*(LuaScriptClass **)&this->field_0x38,param_1,*(undefined1 *)&this->offset_0x40);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:13:24Z"
+}

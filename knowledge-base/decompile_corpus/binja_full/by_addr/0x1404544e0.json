@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404544e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404544e3        if (arg2 == 0)\n1404544e3        return \n1404544f0        uint64_t rax = zx.q(*arg3)\n1404544f6        int32_t r8 = arg1[0x6c].d\n140454503        if (rax.d == r8)\n14045451d        label_14045451d:\n14045451d        int32_t rbx_1 = 0\n140454530        int64_t r14_1 = arg1[0x6d]\n14045453a        int64_t rsi_3 = (arg1[0x6e] - r14_1) s>> 5\n140454541        if (rsi_3 != 0)\n14045454c        rax = 0\n14045454e        void* rdi_1 = arg2[0x53]\n14045455f        int64_t r12_1 = *(rdi_1 + 0x110)\n140454566        int64_t r15_1 = *(rdi_1 + 0x108)\n140454574        void* rdx = rdi_1 + 0xf8\n14045457b        char** rax_2 = (rax << 5) + r14_1\n140454582        if (r12_1 u>= 0x10)\n140454584        rdx = *(rdi_1 + 0xf8)\n140454590        char* rcx = rax_2\n140454593        if (rax_2[3] u>= 0x10)\n140454595        rcx = *rax_2\n140454598        int64_t r8_1 = rax_2[2]\n14045459f        if (r8_1 == r15_1 && memcmp(rcx, rdx, r8_1) == 0)\n1404545be        sub_140455db0(arg1, arg2, 0)\n1404545be        break\n1404545aa        rbx_1 += 1\n1404545ac        rax = zx.q(rbx_1)\n1404545b1        do while (rax u< rsi_3)\n140454512        if (r8 == 8 && rax.d != 0xffffffff)\n140454512        goto label_14045451d\n1404545e8        return ",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

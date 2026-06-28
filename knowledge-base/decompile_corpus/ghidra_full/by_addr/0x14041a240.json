@@ -1,0 +1,7 @@
+{
+  "addr": "0x14041a240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpacePathFinderClass * FUN_14041a240(void)\n\n{\n  SpacePathFinderClass *this;\n  undefined **local_res8 [4];\n  \n  if (DAT_140a286e0 == (SpacePathFinderClass *)0x0) {\n    this = (SpacePathFinderClass *)FUN_140769c58(0x200);\n    if (this == (SpacePathFinderClass *)0x0) {\n      DAT_140a286e0 = (SpacePathFinderClass *)0x0;\n    }\n    else {\n      DAT_140a286e0 = SpacePathFinderClass::SpacePathFinderClass(this);\n    }\n    local_res8[0] = &PTR_vftable_140a286d8;\n    if (DAT_140a7bc10 != DAT_140a7bc18) {\n      *DAT_140a7bc10 = &PTR_vftable_140a286d8;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      return DAT_140a286e0;\n    }\n    FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res8);\n  }\n  return DAT_140a286e0;\n}",
+  "fetched_at": "2026-04-26T17:46:16Z"
+}

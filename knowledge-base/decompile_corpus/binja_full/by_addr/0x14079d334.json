@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d334",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d34a        int16_t rax = arg1.w & 0x8040\n14079d355        int32_t r8\n14079d355        if (rax == 0x8000)\n14079d357        r8 = 0xc00\n14079d363        if (rax != 0x40)\n14079d371        r8 = 0\n14079d379        if (rax == 0x8040)\n14079d379        r8 = 0x400\n14079d365        r8 = 0x800\n14079d386        int32_t rax_2 = arg1 & 0x6000\n14079d389        int32_t rcx\n14079d389        if (rax_2 == 0)\n14079d3b4        rcx = 0\n14079d390        if (rax_2 == 0x2000)\n14079d3ad        rcx = 0x100\n14079d397        if (rax_2 == 0x4000)\n14079d3a6        rcx = 0x200\n14079d39c        rcx = 0x300\n14079d3a1        if (rax_2 != 0x6000)\n14079d3a1        rcx = 0\n14079d404        int32_t rdx_7 = (arg1 u>> 8 & 1) << 5 | (arg1 u>> 7 & 1) << 4 | (arg1 u>> 9 & 1) << 3 | (arg1 u>> 0xa & 1) << 2 | ((arg1 u>> 0xb & 1) * 2)\n14079d40b        int32_t rdx_10 = rdx_7 | (arg1 u>> 0xc & 1) | rcx | r8\n14079d424        return (zx.q(rdx_10 << 0x16) & 0xc0000000) | zx.q((rdx_10 & 0x3f) << 0x18) | zx.q(rdx_10)",
+  "fetched_at": "2026-04-26T17:32:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062c980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nLandTeamInfantryLocomotorBehaviorClass::vfunction57\n          (LandTeamInfantryLocomotorBehaviorClass *this,undefined4 param_1)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  undefined **ppuVar3;\n  \n  ppuVar3 = this->offset_0x18;\n  plVar1 = (longlong *)ppuVar3[0x56];\n  if (plVar1 != (longlong *)0x0) {\n    plVar1 = (longlong *)(**(code **)(*plVar1 + 0x10))(plVar1,1);\n    ppuVar3 = (undefined **)0x0;\n    if (plVar1 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x00014062c9b5. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      uVar2 = (**(code **)(*plVar1 + 0x1c0))(plVar1,param_1);\n      return uVar2;\n    }\n  }\n  return (ulonglong)ppuVar3 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:32:30Z"
+}

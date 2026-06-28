@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001fa10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001fa18        arg2[3] = 0xf\n14001fa23        *arg2 = 0\n14001fa26        arg2[2] = 0\n14001fa38        sub_140022730(arg2, \"Toggles player list display\", 0x1b)\n14001fa45        return arg2",
+  "fetched_at": "2026-04-26T16:51:45Z"
+}

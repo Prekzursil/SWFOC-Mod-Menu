@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347a40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140347a40        int32_t r8_2 = arg2[0x15].d\n140347a5d        if (r8_2 - 0x32f u> 9 && r8_2 - 0x2cb u> 0x13)\n140347a71        return r8_2 - 0x2cb\n140347a6c        return sub_1403dca30(&data_140b27f60, arg1, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:07:16Z"
+}

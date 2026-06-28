@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f8a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall PlanetaryBehaviorClass::vfunction9(void)\n\n{\n  return \"PlanetaryBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:41:41Z"
+}

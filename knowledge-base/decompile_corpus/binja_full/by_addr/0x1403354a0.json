@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403354a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403354bd        TEB* gsbase\n1403354bd        int64_t* rdx_1 = *(gsbase->ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))\n1403354ca        if (data_140b2bc70 s> *(0xd4 + rdx_1))\n140335599        rdx_1 = _Init_thread_header(&data_140b2bc70)\n1403355a5        if (data_140b2bc70 == 0xffffffff)\n1403355b2        atexit(sub_1407efb70)\n1403355be        rdx_1 = _Init_thread_footer(&data_140b2bc70)\n1403354d3        void* rax_2 = sub_1403355d0(arg1, rdx_1)\n1403354f5        if (rax_2 == 0 || *(rax_2 + 0xc4) != 0 || *(arg1 + 0x228) == 0)\n140335591        return 0\n140335502        data_140a17444 = 1\n140335516        data_140a1743c = *(arg1 + 0xc0)\n14033551f        if (&data_140a17338 != arg1)\n140335526        void* rdx_2 = arg1 + 0x98\n140335529        if (*(arg1 + 0xb0) u>= 8)\n14033552b        rdx_2 = *(arg1 + 0x98)\n140335532        sub_1400228a0(&data_140a173d0, rdx_2, *(arg1 + 0xa8))\n14033554b        data_140a17448 = *(arg1 + 0x220)\n140335551        data_140a17445 = 1\n140335558        sub_14002c5f0(&data_140a17458, arg1 + 0x230)\n14033556c        data_140a1744c = *(arg1 + 0x248)\n14033557c        data_140a17450 = *(arg1 + 0x24c)\n140335589        return &data_140a17390",
+  "fetched_at": "2026-04-26T17:03:36Z"
+}

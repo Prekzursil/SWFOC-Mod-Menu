@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403fff10",
+  "tool": "binary_ninja",
+  "fact_id": "rva_production_behavior_dtor",
+  "body": "1403fff23        *arg1 = &ProductionBehaviorClass::`vftable'{for `BehaviorClass'}\n1403fff30        arg1[1] = &ProductionBehaviorClass::`vftable'{for `RefCountClass'}\n1403fff3b        arg1[3] = &ProductionBehaviorClass::`vftable'{for `SignalListenerClass'}\n1403fff3f        sub_1404c3310(arg1)\n1403fff47        if ((arg2 & 1) != 0)\n1403fff51        j_sub_1407864b8(arg1)\n1403fff63        return arg1",
+  "fetched_at": "2026-04-26T16:43:35Z"
+}

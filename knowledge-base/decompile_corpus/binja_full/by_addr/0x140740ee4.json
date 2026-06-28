@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740ee4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140740ef3        __builtin_memset(&arg1[2], 0, 0x14)\n140740f12        *arg1 = &std::locale::_Locimp::`vftable'{for `std::locale::facet'}\n140740f15        int16_t* const rdi = &data_14080272c\n140740f18        arg1[1].d = 1\n140740f1f        *(arg1 + 0x24) = arg2\n140740f22        arg1[5] = 0\n140740f27        arg1[6].b = 0\n140740f2b        rdi += 1\n140740f31        do while (*rdi != 0)\n140740f3a        int32_t* rax = j_sub_14078f364(rdi - 0x14080272b)\n140740f3f        arg1[5] = rax\n140740f46        if (rax != 0)\n140740f52        memcpy(rax, &data_14080272c, rdi - 0x14080272b)\n140740f69        return arg1",
+  "fetched_at": "2026-04-26T17:29:17Z"
+}

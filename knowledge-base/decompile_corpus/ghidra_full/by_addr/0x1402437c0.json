@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402437c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 *\nFUN_1402437c0(longlong param_1,undefined8 *param_2,undefined8 param_3,undefined8 param_4,\n             undefined1 param_5)\n\n{\n  LuaValue<double,4> *this;\n  longlong *plVar1;\n  undefined *puVar2;\n  \n  this = *(LuaValue<double,4> **)(param_1 + 0x58);\n  FUN_1407b9540(this,param_3);\n  FUN_1407b8e90(this);\n  plVar1 = LuaValue<double,4>::~LuaValue<double,4>(this,'\\0','\\x01',0);\n  if (plVar1 != (longlong *)0x0) {\n    for (puVar2 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1); puVar2 != (undefined *)0x0;\n        puVar2 = *(undefined **)(puVar2 + 8)) {\n      if (puVar2 == &DAT_140a15820) {\n        (**(code **)*plVar1)(plVar1);\n        FUN_140243640(param_1,param_2,plVar1,param_4,param_5);\n        (**(code **)(*plVar1 + 8))(plVar1);\n        return param_2;\n      }\n    }\n  }\n  *param_2 = 0;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T18:10:05Z"
+}

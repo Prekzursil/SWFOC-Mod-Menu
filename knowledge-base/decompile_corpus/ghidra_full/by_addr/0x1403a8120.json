@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403a8120(longlong param_1,float param_2)\n\n{\n  if (*(longlong *)(param_1 + 0x2a0) == 0) {\n    return;\n  }\n  if (0.0 < param_2) {\n    *(float *)(*(longlong *)(param_1 + 0x2a0) + 0x104) = param_2;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:31Z"
+}

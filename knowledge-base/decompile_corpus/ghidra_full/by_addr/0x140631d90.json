@@ -1,0 +1,7 @@
+{
+  "addr": "0x140631d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BehaviorClass * FUN_140631d90(void)\n\n{\n  BehaviorClass *this;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x40);\n  if (this != (BehaviorClass *)0x0) {\n                    /* inlined constructor: TurretBehaviorClass::TurretBehaviorClass */\n    BehaviorClass::BehaviorClass(this);\n    this->vftablePtr = (BehaviorClass_vftable0 *)&TurretBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable1 *)&TurretBehaviorClass::vftable;\n    this->vftablePtr = (BehaviorClass_vftable2 *)&TurretBehaviorClass::vftable;\n    return this;\n  }\n  return (BehaviorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:33:50Z"
+}

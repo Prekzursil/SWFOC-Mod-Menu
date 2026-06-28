@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a2570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400a257e        void* rax = operator new(0x20)\n1400a258a        int64_t var_28 = 0x17\n1400a2598        int64_t var_20 = 0x1f\n1400a25a1        __builtin_strncpy(rax, \"IDC_SCROLL_SPEED_SLIDER\", 0x18)\n1400a25cd        int32_t rdx = data_140a113c0\n1400a25d3        void* var_38 = rax\n1400a25d8        uint128_t zmm0 = sub_1401c8fc0(&data_140a78510, rdx, &var_38)\n1400a25e9        if (var_20 u>= 0x10)\n1400a25eb        void* rcx_1 = var_38\n1400a25f3        void* rax_1 = rcx_1\n1400a25fd        if (var_20 + 1 u>= 0x1000)\n1400a25ff        rcx_1 = *(rcx_1 - 8)\n1400a2612        if (rax_1 - rcx_1 - 8 u> 0x1f)\n1400a263b        _invalid_parameter_noinfo_noreturn()\n1400a263b        noreturn\n1400a2614        j_sub_1407864b8(rcx_1)\n1400a2636        return sub_1401d5fd0(zmm0, (zx.o(0)).d, 3f, 0xa) __tailcall",
+  "fetched_at": "2026-04-26T16:58:51Z"
+}

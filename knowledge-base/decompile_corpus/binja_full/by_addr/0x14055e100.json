@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055e100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14055e113        if (arg3 == 0)\n14055e115        int64_t rax\n14055e115        rax.b = 0\n14055e121        return rax\n14055e127        int64_t* rcx = arg2\n14055e12f        if (arg2[3] u>= 0x10)\n14055e131        rcx = *arg2\n14055e143        int32_t arg_18 = sub_140215a30(rcx, arg2[2].d, 0)\n14055e151        void*** var_18\n14055e151        void**** rax_2 = sub_14055d020(arg1 + 0x48, &var_18, &arg_18)\n14055e156        int32_t rsi = *(arg3 + 0x50)\n14055e159        void*** rbx_1 = *rax_2\n14055e166        void* rdi_1 = rbx_1[3]\n14055e16e        if (rbx_1[4] == 0xaaaaaaaaaaaaaaa)\n14055e1ac        std::_Xruntime_error(\"list too long\")\n14055e1ac        noreturn\n14055e175        void** rax_3 = operator new(0x18)\n14055e17a        rax_3[2].d = rsi\n14055e17d        rbx_1[4] += 1\n14055e181        void*** rcx_2 = *(rdi_1 + 8)\n14055e18f        *rax_3 = rdi_1\n14055e192        rax_3[1] = rcx_2\n14055e196        *(rdi_1 + 8) = rax_3\n14055e19a        *rcx_2 = rax_3\n14055e19d        rax_3.b = 1\n14055e1a4        return rax_3",
+  "fetched_at": "2026-04-26T17:34:24Z"
+}

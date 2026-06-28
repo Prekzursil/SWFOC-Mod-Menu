@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780988",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140780988        uint64_t rax = 0\n140780991        void* const rdx = &data_1408d3420\n14078099a        if (arg1 == *rdx)\n1407809cc        return zx.q(*((rax << 3) + 0x1408d3424))\n14078099c        rax = zx.q(rax.d + 1)\n14078099e        rdx += 8\n1407809a4        do while (rax.d u< 0x2d)\n1407809ac        if (arg1 - 0x13 u<= 0x11)\n1407809b3        return 0xd\n1407809c2        if (arg1 - 0xbc u<= 0xe)\n1407809c2        return 8\n1407809c6        return 0x16",
+  "fetched_at": "2026-04-26T17:31:06Z"
+}

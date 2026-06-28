@@ -1,0 +1,7 @@
+{
+  "addr": "0x140756d04",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    private: void __cdecl std::istreambuf_iterator<unsigned short,struct std::char_traits<unsigned\n   short> >::_Inc(void) __ptr64\n    private: void __cdecl std::istreambuf_iterator<wchar_t,struct std::char_traits<wchar_t>\n   >::_Inc(void) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid Inc(longlong *param_1)\n\n{\n  longlong lVar1;\n  int *piVar2;\n  short *psVar3;\n  short sVar4;\n  undefined1 uVar5;\n  \n  uVar5 = 0;\n  lVar1 = *param_1;\n  if (lVar1 != 0) {\n    if ((**(longlong **)(lVar1 + 0x38) == 0) || (piVar2 = *(int **)(lVar1 + 0x50), *piVar2 < 1)) {\n      sVar4 = (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n    }\n    else {\n      *piVar2 = *piVar2 + -1;\n      psVar3 = (short *)**(longlong **)(lVar1 + 0x38);\n      **(longlong **)(lVar1 + 0x38) = (longlong)(psVar3 + 1);\n      sVar4 = *psVar3;\n    }\n    if (sVar4 != -1) goto LAB_140756d5d;\n  }\n  *param_1 = 0;\n  uVar5 = 1;\nLAB_140756d5d:\n  *(undefined1 *)(param_1 + 1) = uVar5;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:07:06Z"
+}

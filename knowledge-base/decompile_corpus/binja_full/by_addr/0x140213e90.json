@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213e90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140213e99        int64_t* rbx = arg1\n140213ea1        if ((*(*arg1 + 0x58))() != 0)\n140213ec1        char i\n140213ea3        int64_t result = rbx[2]\n140213eab        if (result != -1)\n140213ecf        return result\n140213ead        rbx = rbx[8]\n140213eb4        if (rbx == result)\n140213eb4        break\n140213ebc        i = (*(*rbx + 0x58))(rbx)\n140213ec1        do while (i != 0)\n140213ec3        return -1",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

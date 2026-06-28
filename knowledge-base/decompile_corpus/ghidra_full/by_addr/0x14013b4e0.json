@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b4e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14013b4e0(longlong param_1,longlong *param_2)\n\n{\n  undefined4 uVar1;\n  undefined4 *puVar2;\n  \n  if (*(char *)(param_1 + 0xcc) != '\\0') {\n    uVar1 = *(undefined4 *)(param_1 + 0x130);\n    puVar2 = (undefined4 *)*param_2;\n    *puVar2 = *(undefined4 *)(param_1 + 0x13c);\n    puVar2[1] = *(undefined4 *)(param_1 + 0x140);\n    puVar2[2] = *(undefined4 *)(param_1 + 0x144);\n    puVar2[3] = uVar1;\n    puVar2[4] = DAT_140a124a8;\n    puVar2[5] = DAT_140a124ac;\n    uVar1 = *(undefined4 *)(param_1 + 0x130);\n    puVar2[6] = *(undefined4 *)(param_1 + 0x148);\n    puVar2[7] = *(undefined4 *)(param_1 + 0x14c);\n    puVar2[8] = *(undefined4 *)(param_1 + 0x150);\n    puVar2[9] = uVar1;\n    puVar2[10] = DAT_140a124b0;\n    puVar2[0xb] = DAT_140a124b4;\n    uVar1 = *(undefined4 *)(param_1 + 0x130);\n    puVar2[0xc] = *(undefined4 *)(param_1 + 0x154);\n    puVar2[0xd] = *(undefined4 *)(param_1 + 0x158);\n    puVar2[0xe] = *(undefined4 *)(param_1 + 0x15c);\n    puVar2[0xf] = uVar1;\n    puVar2[0x10] = DAT_140a124b8;\n    puVar2[0x11] = DAT_140a124bc;\n    uVar1 = *(undefined4 *)(param_1 + 0x130);\n    puVar2[0x12] = *(undefined4 *)(param_1 + 0x160);\n    puVar2[0x13] = *(undefined4 *)(param_1 + 0x164);\n    puVar2[0x14] = *(undefined4 *)(param_1 + 0x168);\n    puVar2[0x15] = uVar1;\n    puVar2[0x16] = DAT_140a124c0;\n    puVar2[0x17] = DAT_140a124c4;\n    *param_2 = (longlong)(puVar2 + 0x18);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:42Z"
+}

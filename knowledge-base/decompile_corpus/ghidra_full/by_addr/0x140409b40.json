@@ -1,0 +1,7 @@
+{
+  "addr": "0x140409b40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FacingEventClass * __thiscall FacingEventClass::FacingEventClass(FacingEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x14;\n  this->vftablePtr = &vftable;\n  (this->FacingEventClass_data).offset_0x0 = 0;\n  (this->FacingEventClass_data).offset_0x200 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:44:51Z"
+}

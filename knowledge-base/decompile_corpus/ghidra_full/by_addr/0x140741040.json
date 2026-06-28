@@ -1,0 +1,7 @@
+{
+  "addr": "0x140741040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    protected: virtual void * __ptr64 __cdecl std::locale::_Locimp::`scalar deleting\n   destructor'(unsigned int) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid * __thiscall std::locale::_Locimp::scalar_deleting_destructor(_Locimp *this,uint param_1)\n\n{\n                    /* inlined destructor: std::locale::_Locimp::~_Locimp */\n  this->vftablePtr = &vftable;\n  _Locimp_dtor((_Locimp *)this);\n  if ((this->_Locimp_data).offset_0x18 != 0) {\n    FUN_1407864b8();\n  }\n  (this->_Locimp_data).offset_0x18 = 0;\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr = (_Locimp_vftable *)&_Facet_base::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x38);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:04:09Z"
+}

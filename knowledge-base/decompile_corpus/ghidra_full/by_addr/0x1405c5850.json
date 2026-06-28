@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c5850",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1405c5850(longlong param_1,int param_2,float *param_3)\n\n{\n  longlong *plVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float *pfVar6;\n  float *pfVar7;\n  \n  plVar1 = (longlong *)(param_1 + 0x18);\n  if (param_2 + 1U < (uint)((*(longlong *)(param_1 + 0x20) - *plVar1) / 0x34)) {\n    pfVar6 = (float *)FUN_14054fe50(plVar1,param_2);\n    pfVar7 = (float *)FUN_14054fe50(plVar1,param_2 + 1U);\n    fVar2 = pfVar7[1];\n    fVar3 = *pfVar7;\n    fVar4 = pfVar6[1];\n    fVar5 = *pfVar6;\n    param_3[2] = pfVar7[2] - pfVar6[2];\n    param_3[1] = fVar2 - fVar4;\n    *param_3 = fVar3 - fVar5;\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:44:45Z"
+}

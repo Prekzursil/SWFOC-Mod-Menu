@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e7920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e7938        *arg1 = &TheEvaluatorScriptManagerClass::`vftable'{for `DatabaseObjectManagerClass<class LuaScriptClass>'}\n1405e793e        int64_t* rax = arg1[2]\n1405e7942        void** i = *rax\n1405e7948        if (i != rax)\n1405e7950        int64_t rdx = i[6]\n1405e7957        if (rdx != 0)\n1405e795f        (*arg1)->__offset(0x18).q(arg1, rdx)\n1405e7962        i = *i\n1405e7969        do while (i != arg1[2])\n1405e796f        sub_140145610(&arg1[1])\n1405e7977        sub_1405e7870(arg1)\n1405e7980        if ((arg2 & 1) != 0)\n1405e798a        j_sub_1407864b8(arg1)\n1405e79a1        return arg1",
+  "fetched_at": "2026-04-26T17:38:30Z"
+}

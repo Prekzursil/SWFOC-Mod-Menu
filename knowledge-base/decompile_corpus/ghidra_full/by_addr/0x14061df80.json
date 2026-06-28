@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061df80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14061df80(undefined8 param_1,undefined4 param_2)\n\n{\n  switch(param_2) {\n  case 3:\n  case 4:\n  case 0x15:\n  case 0x16:\n  case 0x17:\n  case 0x18:\n    return 1;\n  default:\n    return 0;\n  }\n}",
+  "fetched_at": "2026-04-26T17:29:30Z"
+}

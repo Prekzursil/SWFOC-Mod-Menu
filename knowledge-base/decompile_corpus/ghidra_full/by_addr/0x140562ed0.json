@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall BarrageAreaDataPackClass::~BarrageAreaDataPackClass(BarrageAreaDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_BarrageAreaDataPackClass,20,class_EmptyLockerClass>\n       = 0x3fffff;\n  this->vftablePtr = &vftable;\n  (this->PooledObjectClass<class_BarrageAreaDataPackClass,20,class_EmptyLockerClass>).field_0x4 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e4e00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e4e00(undefined8 param_1,longlong param_2)\n\n{\n  undefined8 *puVar1;\n  undefined8 uVar2;\n  undefined8 uVar3;\n  \n  puVar1 = *(undefined8 **)(param_2 + 0x158);\n  uVar2 = *(undefined8 *)(param_2 + 0x160);\n  uVar3 = *(undefined8 *)(param_2 + 0x150);\n  FUN_1406523a0(uVar3,uVar2,*puVar1,*(undefined8 *)(param_2 + 0x168));\n  FUN_140048560(uVar3,uVar2,*puVar1);\n  *puVar1 = *(undefined8 *)(param_2 + 0x20);\n                    /* WARNING: Subroutine does not return */\n  _CxxThrowException((void *)0x0,(ThrowInfo *)0x0);\n}",
+  "fetched_at": "2026-04-26T19:00:23Z"
+}

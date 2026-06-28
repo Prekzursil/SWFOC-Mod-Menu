@@ -1,0 +1,7 @@
+{
+  "addr": "0x14066ec20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14066ec2c        arg1[0xb] = 0xf\n14066ec34        arg1[1].d = 0\n14066ec3e        *arg1 = &PlanDefinitionClass::`vftable'{for `RefCountClass'}\n14066ec44        __builtin_memset(&arg1[2], 0, 0x38)\n14066ec62        arg1[0xa] = 0\n14066ec66        arg1[0xc].b = 0\n14066ec69        __builtin_memset(arg1 + 0x64, 0, 0x14)\n14066ec77        int64_t* rax = operator new(0x20)\n14066ec83        *rax = rax\n14066ec86        rax[1] = rax\n14066ec8a        arg1[0xd] = rax\n14066ec8e        int64_t r8 = arg1[0xd]\n14066ec92        __builtin_memset(&arg1[0xf], 0, 0x18)\n14066ec9d        arg1[0x12] = 7\n14066eca8        arg1[0x13] = 8\n14066ecb3        *(arg1 + 0x64) = 0x3f800000\n14066ecba        sub_140048250(&arg1[0xf], 0x10, r8)\n14066ecc2        arg1[0x14] = 0\n14066ecc9        arg1[0x15].w = 0x100\n14066ecd2        *(arg1 + 0xaa) = 0\n14066ecd9        *(arg1 + 0xac) = 0\n14066ece0        *(arg1 + 0xb4) = 0\n14066ece7        __builtin_memset(&arg1[0x17], 0, 0x18)\n14066ecfc        arg1[0x1a].w = 0x101\n14066ed05        *(arg1 + 0xd4) = 0\n14066ed16        return arg1",
+  "fetched_at": "2026-04-26T17:10:32Z"
+}

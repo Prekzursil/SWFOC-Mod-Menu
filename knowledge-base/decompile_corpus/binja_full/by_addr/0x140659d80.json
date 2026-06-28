@@ -1,0 +1,7 @@
+{
+  "addr": "0x140659d80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140659d91        struct SignalGeneratorClass::PerceptualEvaluatorClass::VTable** rdi = arg1\n140659d94        *arg1 = &VisiblePerceptualEvaluatorClass<class PlanetPerceptualEvaluatorClass>::`vftable'{for `PerceptualEvaluatorClass'}\n140659da5        arg1[3] = &VisiblePerceptualEvaluatorClass<class PlanetPerceptualEvaluatorClass>::`vftable'{for `AIDiagnosticsClass'}\n140659dbb        sub_14064c540(&arg1[0x14], &arg1[0x14], arg1[0x14]->__offset(0x8).q)\n140659dcc        j_sub_1407864b8(rdi[0x14])\n140659dde        return sub_14064c9a0(rdi) __tailcall",
+  "fetched_at": "2026-04-26T17:07:13Z"
+}

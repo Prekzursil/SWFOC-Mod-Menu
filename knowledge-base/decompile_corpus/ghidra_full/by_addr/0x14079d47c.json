@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d47c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_fenv_set_control\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_fenv_set_control(uint param_1)\n\n{\n  ushort uVar1;\n  uint uVar2;\n  ushort uVar3;\n  ushort uVar4;\n  ushort uVar5;\n  ushort uVar6;\n  uint uVar7;\n  ushort uVar8;\n  ushort uVar9;\n  ushort uVar10;\n  \n  uVar7 = param_1 >> 2;\n  uVar6 = 0x400;\n  uVar2 = param_1 & 0xc00;\n  uVar10 = 0x800;\n  uVar5 = 0;\n  if (uVar2 == 0x400) {\n    uVar8 = 0x8040;\n  }\n  else if (uVar2 == 0x800) {\n    uVar8 = 0x40;\n  }\n  else {\n    uVar8 = uVar5;\n    if (uVar2 == 0xc00) {\n      uVar8 = 0x8000;\n    }\n  }\n  uVar4 = 0x100;\n  uVar9 = 0x200;\n  uVar2 = (param_1 & 0xc0000000) >> 0x16;\n  if (uVar2 != 0) {\n    if (uVar2 == 0x100) {\n      uVar5 = 0x2000;\n    }\n    else if (uVar2 == 0x200) {\n      uVar5 = 0x4000;\n    }\n    else if (uVar2 == 0x300) {\n      uVar5 = 0x6000;\n    }\n  }\n  uVar1 = 0;\n  uVar3 = uVar1;\n  if ((uVar7 & 0x400000) != 0) {\n    uVar3 = 0x1000;\n  }\n  if ((uVar7 & 0x800000) == 0) {\n    uVar10 = 0;\n  }\n  if ((uVar7 & 0x1000000) == 0) {\n    uVar6 = 0;\n  }\n  if ((uVar7 & 0x2000000) == 0) {\n    uVar9 = 0;\n  }\n  if ((uVar7 & 0x4000000) != 0) {\n    uVar1 = 0x80;\n  }\n  if ((uVar7 & 0x8000000) == 0) {\n    uVar4 = 0;\n  }\n  MXCSR = MXCSR & 0xffff003f |\n          (uint)(ushort)(uVar3 | uVar10 | uVar6 | uVar9 | uVar1 | uVar4 | uVar5 | uVar8);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:59Z"
+}

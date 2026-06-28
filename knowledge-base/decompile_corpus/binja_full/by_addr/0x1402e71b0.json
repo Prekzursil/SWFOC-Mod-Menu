@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e71b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402e71b4        int32_t rcx = *(arg2 + 0xa8)\n1402e71ba        int32_t result = rcx - 0x1d5\n1402e71c3        if (result u> 9)\n1402e725b        return result\n1402e71d9        int32_t rax = 0x1d5\n1402e71ea        if (rcx s> 0x1d9)\n1402e71ea        rax = 0x1da\n1402e71ed        struct ScheduledEventClass::ProductionEventClass::VTable** rbx_1 = nullptr\n1402e71f9        int32_t rdi_1\n1402e71f9        rdi_1.b = rcx s<= 0x1d9\n1402e7203        struct RefCountClass::EventClass::VTable** rax_1 = operator new(0x60)\n1402e720b        if (rax_1 != 0)\n1402e7215        rbx_1 = sub_140523f50(rax_1)\n1402e7234        sub_1405244e0(rbx_1, 0, 0x3fffff, 0xffffffff, 1, rdi_1 + 2, rcx - rax)\n1402e7243        return sub_1403b01f0(&data_140b2ed18, rbx_1)",
+  "fetched_at": "2026-04-26T17:22:50Z"
+}

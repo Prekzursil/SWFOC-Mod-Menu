@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405688f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTeamTargetingBehaviorClass::vfunction39\n          (TeamTargetingBehaviorClass *this,longlong param_1,undefined8 param_2,undefined4 param_3,\n          undefined4 param_4)\n\n{\n  undefined **ppuVar1;\n  undefined *puVar2;\n  undefined8 uVar3;\n  undefined **ppuVar4;\n  \n  ppuVar1 = this->offset_0x18;\n  puVar2 = ppuVar1[0x1e];\n  if ((puVar2 != (undefined *)0x0) && (ppuVar1[0x20] != (undefined *)0x0)) {\n    if ((*(longlong *)(puVar2 + 0x148) == 0) || (param_1 != 0)) {\n      *(longlong *)(puVar2 + 0x148) = param_1;\n      *(undefined4 *)(puVar2 + 0x150) = param_3;\n      *(undefined4 *)(puVar2 + 0x154) = param_4;\n      *(undefined8 *)(puVar2 + 0x10) = param_2;\n      if (param_1 != 0) {\n        uVar3 = FUN_140058570();\n        FUN_140220e90(uVar3,param_1 + 0x38,&this->vftablePtr,0x28);\n        uVar3 = FUN_140058570();\n        FUN_140220e90(uVar3,param_1 + 0x38,&this->vftablePtr,1);\n      }\n    }\n    else {\n      ppuVar4 = ppuVar1 + 7;\n      if (ppuVar1 == (undefined **)0x0) {\n        ppuVar4 = (undefined **)0x0;\n      }\n      uVar3 = FUN_140058570();\n      FUN_140220ed0(uVar3,ppuVar4,0x29,0);\n      *(undefined8 *)(puVar2 + 0x148) = 0;\n      *(undefined4 *)(puVar2 + 0x150) = param_3;\n      *(undefined4 *)(puVar2 + 0x154) = param_4;\n      *(undefined8 *)(puVar2 + 0x10) = param_2;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:42Z"
+}

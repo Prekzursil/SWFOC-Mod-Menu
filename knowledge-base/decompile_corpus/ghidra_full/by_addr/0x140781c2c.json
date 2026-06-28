@@ -1,0 +1,7 @@
+{
+  "addr": "0x140781c2c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _wcsupr\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nwchar_t * __cdecl _wcsupr(wchar_t *_Str)\n\n{\n  ulong *puVar1;\n  wchar_t wVar2;\n  wchar_t *pwVar3;\n  \n  if (DAT_140b3c49c == 0) {\n    if (_Str == (wchar_t *)0x0) {\n      puVar1 = __doserrno();\n      *puVar1 = 0x16;\n      FUN_1407711ac();\n      _Str = (wchar_t *)0x0;\n    }\n    else {\n      wVar2 = *_Str;\n      pwVar3 = _Str;\n      while (wVar2 != L'\\0') {\n        if ((ushort)(wVar2 + L'ﾟ') < 0x1a) {\n          *pwVar3 = wVar2 + L'￠';\n        }\n        pwVar3 = pwVar3 + 1;\n        wVar2 = *pwVar3;\n      }\n    }\n  }\n  else {\n    _wcsupr_s_l(_Str,0xffffffffffffffff,(_locale_t)0x0);\n  }\n  return _Str;\n}",
+  "fetched_at": "2026-04-26T18:51:07Z"
+}

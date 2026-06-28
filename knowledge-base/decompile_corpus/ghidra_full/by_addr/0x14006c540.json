@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006c540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* CCallbackImpl<9> member function inherited by\n   CCallback<class_SteamCallbacksImpl,struct_P2PSessionConnectFail_t,0> */\n\nundefined8 __thiscall CCallbackImpl<9>::vfunction3(void)\n\n{\n  return 9;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:06Z"
+}

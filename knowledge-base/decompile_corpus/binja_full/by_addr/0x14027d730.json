@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027d730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027d73f        int32_t result = sub_14027d570(arg1)\n14027d744        int32_t rcx = data_140b153f8\n14027d74c        if (rcx == 0)\n14027d74c        goto label_14027d777\n14027d751        if (rcx == 1)\n14027d762        label_14027d762:\n14027d762        *(arg1 + 0xc) = 1\n14027d769        arg1[2].d = 2\n14027d770        arg1[1].d = 2\n14027d777        label_14027d777:\n14027d777        arg1[3].d = 0x1e\n14027d77e        *(arg1 + 0x1c) = 0x1e\n14027d785        arg1[4].d = 0x1e\n14027d78c        arg1[0x1612].d = 2\n14027d796        *(arg1 + 0xb094) = 2\n14027d7a0        arg1[0x1613].d = 2\n14027d756        if (rcx == 2)\n14027d7d7        int32_t rax = 2\n14027d7e1        if (*(arg1 + 0xb0b4) == 0)\n14027d7e1        rax = 5\n14027d7e4        *(arg1 + 0xc) = rax\n14027d7e7        result = rax * 2\n14027d7e9        arg1[2].d = 2\n14027d7f0        arg1[1].d = result\n14027d7f3        goto label_14027d777\n14027d75b        if (rcx == 3)\n14027d75b        goto label_14027d777\n14027d760        if (rcx == 4)\n14027d760        goto label_14027d762\n14027d7b7        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(arg1[4].d))\n14027d7ba        *arg1 = arg2\n14027d7c0        *(arg1 + 0x24) = 1f f/ zmm0.d\n14027d7cf        return result",
+  "fetched_at": "2026-04-26T17:32:05Z"
+}

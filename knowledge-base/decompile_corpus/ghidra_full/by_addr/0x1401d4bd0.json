@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d4bd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetTrackbarSliderClass * __thiscall\nGUIGadgetTrackbarSliderClass::scalar_deleting_destructor\n          (GUIGadgetTrackbarSliderClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       GUIGadgetTrackbarSliderClass::~GUIGadgetTrackbarSliderClass */\n  this->vftablePtr = &vftable;\n  vfunction25(this);\n  (this->GUIGadgetTrackbarSliderClass_data).offset_0x4 = 0;\n  (this->GUIGadgetTrackbarSliderClass_data).offset_0x8 = 0x42c80000;\n  (this->GUIGadgetTrackbarSliderClass_data).offset_0x14 = 0;\n  TextureRectClass::~TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetTrackbarSliderClass_data).field_0x2a0);\n  TextureRectClass::~TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetTrackbarSliderClass_data).field_0x210);\n  TextureRectClass::~TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetTrackbarSliderClass_data).field_0x180);\n  TextureRectClass::~TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetTrackbarSliderClass_data).field_0xf0);\n  TextureRectClass::~TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetTrackbarSliderClass_data).field_0x60);\n  FUN_1401cb190(&(this->GUIGadgetTrackbarSliderClass_data).offset_0x48);\n  GUIGadgetClass::~GUIGadgetClass((GUIGadgetClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x508);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:49:56Z"
+}

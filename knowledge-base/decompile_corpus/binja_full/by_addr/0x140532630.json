@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532630",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053263b        struct ScheduledEventClass::GalacticSellEventClass::VTable** result = operator new(0x50)\n140532646        if (result == 0)\n140532676        return result\n14053264b        sub_140512c50(result)\n140532657        result[9].d = 0x3fffff\n14053265e        *result = &GalacticSellEventClass::`vftable'{for `ScheduledEventClass'}\n140532664        result[4].d = 0x2e\n140532670        return result",
+  "fetched_at": "2026-04-26T17:33:37Z"
+}

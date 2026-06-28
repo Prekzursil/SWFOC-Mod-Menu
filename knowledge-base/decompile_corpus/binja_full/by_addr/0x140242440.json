@@ -1,0 +1,7 @@
+{
+  "addr": "0x140242440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024246a        int64_t rdi = 0xf\n140242472        *arg1 = 0\n140242478        arg1[2] = 0\n14024247c        arg1[3] = 0\n140242480        int64_t* rbx = arg1\n140242483        void* rbp = arg5 + arg7\n14024248a        if (rbp u> 0xf)\n14024248f        int64_t rax_2 = rbp | 0xf\n140242492        rdi = 0x7fffffffffffffff\n14024249f        uint64_t rax_3\n14024249f        if (rax_2 u<= 0x7fffffffffffffff)\n1402424d3        rdi = rax_2\n1402424d9        if (rax_2 u< 0x16)\n1402424d9        rdi = 0x16\n1402424e8        if (rdi + 1 u>= 0x1000)\n1402424ea        rax_3 = rdi + 0x28\n1402424f1        if (rax_3 u> rdi + 1)\n1402424f1        goto label_1402424b2\n14024255d        stdext::threads::_Throw_lock_error()\n14024255d        noreturn\n1402424f8        if (rdi == -1)\n140242504        rbx = nullptr\n1402424ff        rbx = operator new(rdi + 1)\n1402424ab        rax_3 = -0x7fffffffffffffd9\n1402424b2        label_1402424b2:\n1402424b2        int64_t rax_4 = operator new(rax_3)\n1402424ba        if (rax_4 == 0)\n140242557        _invalid_parameter_noinfo_noreturn()\n140242557        noreturn\n1402424c4        rbx = (rax_4 + 0x27) & 0xffffffffffffffe0\n1402424c8        rbx[-1] = rax_4\n140242507        *arg1 = rbx\n14024250d        arg1[2] = rbp\n140242514        arg1[3] = rdi\n14024251b        memcpy(rbx, arg4, arg5)\n14024252c        memcpy(rbx + arg5, arg6, arg7)\n14024253e        *(rbx + rbp) = 0\n140242556        return arg1",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

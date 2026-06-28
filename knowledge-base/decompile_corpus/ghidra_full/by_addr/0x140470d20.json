@@ -1,0 +1,7 @@
+{
+  "addr": "0x140470d20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140470d20(char *param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  char *pcVar3;\n  ulonglong uVar4;\n  uint uVar5;\n  ulonglong uVar6;\n  \n  if (*param_1 == '\\x01') {\n    uVar4 = 0;\n    uVar6 = uVar4;\n    if (-1 < *(int *)(DAT_140b31060 + 0x88)) {\n      do {\n        lVar2 = *(longlong *)(param_1 + 0x30);\n        lVar1 = *(longlong *)(uVar4 + lVar2);\n        if (lVar1 != 0) {\n          FUN_1405ec050(lVar1);\n          thunk_FUN_1407864b8(lVar1,0x1298);\n          lVar2 = *(longlong *)(param_1 + 0x30);\n        }\n        *(undefined8 *)(uVar4 + lVar2) = 0;\n        uVar5 = (int)uVar6 + 1;\n        uVar4 = uVar4 + 8;\n        uVar6 = (ulonglong)uVar5;\n      } while ((int)uVar5 <= *(int *)(DAT_140b31060 + 0x88));\n    }\n    thunk_FUN_1407864b8(*(undefined8 *)(param_1 + 0x30),8);\n    pcVar3 = param_1 + 8;\n    param_1[0x18] = '\\0';\n    param_1[0x19] = '\\0';\n    param_1[0x1a] = '\\0';\n    param_1[0x1b] = '\\0';\n    param_1[0x1c] = '\\0';\n    param_1[0x1d] = '\\0';\n    param_1[0x1e] = '\\0';\n    param_1[0x1f] = '\\0';\n    if (0xf < *(ulonglong *)(param_1 + 0x20)) {\n      pcVar3 = *(char **)pcVar3;\n    }\n    *pcVar3 = '\\0';\n    *param_1 = '\\0';\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:13Z"
+}

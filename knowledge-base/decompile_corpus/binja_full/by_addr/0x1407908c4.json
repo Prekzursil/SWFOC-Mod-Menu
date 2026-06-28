@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407908c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407908d9        if (arg1 != 0xffff)\n1407908e3        if (arg1 u< 0x100)\n1407908f3        return zx.q((*data_140a44ce8)[zx.q(arg1)]) & zx.q(arg2)\n1407908f9        wchar16 srcStr = arg1\n140790903        uint16_t charType = 0\n14079091a        if (GetStringTypeW(1, &srcStr, 1, &charType) != 0)\n1407908f3        return zx.q(charType) & zx.q(arg2)\n140790923        return 0",
+  "fetched_at": "2026-04-26T17:31:43Z"
+}

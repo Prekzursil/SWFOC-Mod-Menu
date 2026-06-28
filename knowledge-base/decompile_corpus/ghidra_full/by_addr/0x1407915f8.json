@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407915f8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong _fgetc_nolock(undefined8 *param_1)\n\n{\n  int *piVar1;\n  ulong *puVar2;\n  ulonglong uVar3;\n  \n  if (param_1 == (undefined8 *)0x0) {\n    puVar2 = __doserrno();\n    *puVar2 = 0x16;\n    FUN_1407711ac();\n    uVar3 = 0xffffffff;\n  }\n  else {\n    piVar1 = (int *)(param_1 + 2);\n    *piVar1 = *piVar1 + -1;\n    if (*piVar1 < 0) {\n      uVar3 = __acrt_stdio_refill_and_read_narrow_nolock();\n      return uVar3;\n    }\n    uVar3 = (ulonglong)*(byte *)*param_1;\n    *param_1 = (byte *)*param_1 + 1;\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T18:52:46Z"
+}

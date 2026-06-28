@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b2020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall GalacticModeClass::vfunction43(void)\n\n{\n  char cVar1;\n  \n  cVar1 = FUN_1402cd0c0(&DAT_140b27a10);\n  if (cVar1 == '\\x01') {\n    return 0;\n  }\n  return DAT_140b301a8;\n}",
+  "fetched_at": "2026-04-26T18:06:50Z"
+}

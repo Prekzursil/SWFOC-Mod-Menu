@@ -1,0 +1,7 @@
+{
+  "addr": "0x140396df0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_get_hull_percentage",
+  "body": "140396e00        if (arg1[0x69].b == 0xff)\n140396e32        float zmm0_1 = sub_1403727a0(arg1[0x53], arg1)\n140396e3c        float temp0 = _mm_min_ss(*(arg1 + 0x5c), zmm0_1)\n140396e40        *(arg1 + 0x5c) = temp0\n140396e51        return temp0 / zmm0_1\n140396e0a        void* rax_1 = (*(*arg1 + 0x10))(arg1, 0x16)\n140396e10        if (rax_1 != 0)\n140396e23        return sub_140405230(rax_1) __tailcall\n140396e12        int512_t result\n140396e12        result.o = zx.o(0)\n140396e1a        return result",
+  "fetched_at": "2026-04-26T16:43:25Z"
+}

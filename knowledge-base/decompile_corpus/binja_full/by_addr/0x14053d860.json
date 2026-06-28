@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053d860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053d871        void* rcx = *(*(arg1 + 0x28) + 0x1a8)\n14053d87b        int32_t rdi\n14053d87b        if (rcx != 0)\n14053d881        rdi = *(rcx + 8)\n14053d87d        rdi = 0\n14053d88b        int32_t rax_1 = sub_140294a70(&data_140a16fd0)\n14053d8a0        int32_t rax_2\n14053d8a0        if (sub_14039a230(*(arg1 + 0x28), rax_1, 0).b == 0)\n14053d8d2        rax_2.b = 0\n14053d8b0        if (sub_1402f9c30().b != 0)\n14053d8ce        rax_2.b = 1\n14053d8b9        rax_2 = sub_140294a70(&data_140a16fd0)\n14053d8cc        if (*(*(data_140b15418 + 0x30) + 0x1c) != rax_2)\n14053d8d2        rax_2.b = 0\n14053d8ce        rax_2.b = 1\n14053d8d6        if (rdi == 0)\n14053d906        if (rax_2.b != 0)\n14053d911        sub_1403a8bd0(*(arg1 + 0x28), 5)\n14053d921        sub_1403a8b70(*(arg1 + 0x28), &data_140a436b8)\n14053d932        sub_1403a8ba0(*(arg1 + 0x28), 0x40400000)\n14053d93b        sub_14039f2a0(*(arg1 + 0x28))\n14053d959        int32_t rax_5 = sub_140427410(&data_140b2f170, *(*(arg1 + 0x28) + 0x298) + 0x1e00)\n14053d95e        void* rcx_10 = *(arg1 + 0x28)\n14053d973        sub_14038cd10(rcx_10, rax_5, *(*(rcx_10 + 0x298) + 0x1e20))\n14053d8da        if (rax_2.b == 0)\n14053d8e6        sub_1403a8bd0(*(arg1 + 0x28), 0)\n14053d8ef        sub_1403a5630(*(arg1 + 0x28))\n14053d987        return 0x650000",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

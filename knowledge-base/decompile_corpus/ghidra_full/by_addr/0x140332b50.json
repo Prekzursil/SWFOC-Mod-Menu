@@ -1,0 +1,7 @@
+{
+  "addr": "0x140332b50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* DatabaseObjectManagerClass<class_FactionClass> member function inherited by\n   FactionTypeConverterClass */\n\nundefined8 * __thiscall\nDatabaseObjectManagerClass<class_FactionClass>::vfunction3\n          (DatabaseObjectManagerClass<class_FactionClass> *this,undefined8 *param_1,longlong param_2\n          )\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  \n  plVar1 = (this->DatabaseObjectManagerClass<class_FactionClass>_data).offset_0x8;\n  plVar2 = (longlong *)*plVar1;\n  while( true ) {\n    if (plVar2 == plVar1) {\n      *param_1 = 0;\n      param_1[3] = 0xf;\n      param_1[2] = 0xb;\n      FUN_14076bd80(param_1,\"-BAD VALUE-\",0xb);\n      *(undefined1 *)((longlong)param_1 + 0xb) = 0;\n      return param_1;\n    }\n    if (plVar2[6] == param_2) break;\n    plVar2 = (longlong *)*plVar2;\n  }\n  FUN_14001e680(param_1,plVar2 + 2);\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140364ea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GameModeClass::vfunction25(GameModeClass *this,GameModeClass_vftable *param_1)\n\n{\n  GameModeClass_vftable *pGVar1;\n  \n  pGVar1 = this[0x12].vftablePtr;\n  if (pGVar1 != param_1) {\n    if (pGVar1 != (GameModeClass_vftable *)0x0) {\n      (**(code **)(pGVar1->deleting_destructor + 8))();\n    }\n    this[0x12].vftablePtr = param_1;\n    if (param_1 != (GameModeClass_vftable *)0x0) {\n      (**(code **)param_1->deleting_destructor)(param_1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:28Z"
+}

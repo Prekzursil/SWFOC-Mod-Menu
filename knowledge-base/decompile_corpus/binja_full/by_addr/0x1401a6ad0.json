@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a6ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a6ad8        int64_t rsi = sx.q(arg2)\n1401a6adb        uint8_t* rbx = arg1\n1401a6aea        if (arg1 != 0 && rsi.d s>= 1)\n1401a6af7        lstrcpyA(arg1, &data_1407ff8a8)\n1401a6b1e        HKEY phkResult\n1401a6b1e        enum WIN32_ERROR rax_1 = RegOpenKeyExA(-0xffffffff80000002, \"Software\\Microsoft\\DirectX SDK\", 0, KEY_READ, &phkResult)\n1401a6b26        enum WIN32_ERROR rax_2\n1401a6b26        if (rax_1 == NO_ERROR)\n1401a6b2c        HKEY hKey = phkResult\n1401a6b4f        uint32_t lpcbData[0x4]\n1401a6b4f        lpcbData[0] = rsi.d\n1401a6b53        enum REG_VALUE_TYPE type\n1401a6b53        rax_2 = RegQueryValueExA(hKey, \"DX9J3SDK Samples Path\", nullptr, &type, rbx, &lpcbData)\n1401a6b59        HKEY hKey_1 = phkResult\n1401a6b60        rbx[rsi - 1] = 0\n1401a6b65        RegCloseKey(hKey_1)\n1401a6b6d        if (rax_1 != NO_ERROR || rax_2 != NO_ERROR)\n1401a6bbc        return 0x80004005\n1401a6b76        int32_t rax_3 = lstrlenA(\"\\Media\\\")\n1401a6b8b        if (lstrlenA(rbx) + rax_3 s< rsi.d)\n1401a6b8d        void* rbx_1 = rbx - 1\n1401a6b98        bool cond:0_1\n1401a6b90        cond:0_1 = *(rbx_1 + 1) != 0\n1401a6b94        rbx_1 += 1\n1401a6b98        do while (cond:0_1)\n1401a6ba4        __builtin_strcpy(rbx_1, \"\\\\Media\\\\\")\n1401a6baf        return 0\n1401a6bc9        return 0x80070057",
+  "fetched_at": "2026-04-26T17:25:08Z"
+}

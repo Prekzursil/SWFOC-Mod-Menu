@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407388e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407388f9        *arg1 = &SpaceMovementBlockStatus::`vftable'{for `BlockingStatus'}\n140738905        arg1[6] = &SpaceMovementBlockStatus::`vftable'{for `SignalListenerClass'}\n140738909        int64_t* rcx = arg1[0xe]\n140738910        if (rcx != 0)\n14073891a        (*(*rcx + 8))(rcx, 1)\n14073891d        int64_t* rcx_1 = arg1[0xf]\n140738924        if (rcx_1 != 0)\n14073892e        (*(*rcx_1 + 8))(rcx_1, 1)\n140738931        int64_t* rcx_2 = arg1[0xa]\n140738938        if (rcx_2 != 0)\n14073893d        (*(*rcx_2 + 8))(rcx_2)\n140738940        int64_t* rcx_3 = arg1[9]\n140738947        if (rcx_3 != 0)\n14073894c        (*(*rcx_3 + 8))(rcx_3)\n14073895a        arg1[6] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14073895e        sub_14020a820(&arg1[6])\n140738963        int64_t* rcx_5 = arg1[5]\n14073896a        if (rcx_5 != 0)\n14073896f        (*(*rcx_5 + 8))(rcx_5)\n140738975        sub_140249eb0(arg1)\n14073897e        if ((arg2 & 1) != 0)\n140738988        j_sub_1407864b8(arg1)\n14073899f        return arg1",
+  "fetched_at": "2026-04-26T17:29:05Z"
+}

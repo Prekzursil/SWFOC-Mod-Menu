@@ -1,0 +1,7 @@
+{
+  "addr": "0x140270280",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140270298        if (*(arg1 + 0x10) != 0)\n1402702a2        SelectObject(*(arg1 + 0x20), *(arg1 + 0x28))\n1402702ac        DeleteObject(*(arg1 + 0x10))\n1402702b2        *(arg1 + 0x10) = 0\n1402702ba        if (*(arg1 + 0x18) != 0)\n1402702c4        SelectObject(*(arg1 + 0x20), *(arg1 + 0x30))\n1402702ce        DeleteObject(*(arg1 + 0x18))\n1402702d4        *(arg1 + 0x18) = 0\n1402702d8        HDC hdc = *(arg1 + 0x20)\n1402702df        if (hdc != 0)\n1402702e1        DeleteDC(hdc)\n1402702e7        *(arg1 + 0x20) = 0\n1402702eb        int32_t i = 0\n1402702f0        if (*(arg1 + 0x60) s<= 0)\n1402702f0        return \n1402702f7        int64_t rdi_1 = 0\n140270304        int64_t rcx_4 = *(*(arg1 + 0x58) + rdi_1 + 8)\n14027030c        if (rcx_4 != 0)\n14027030e        j_sub_1407864b8(rcx_4)\n140270317        *(*(arg1 + 0x58) + rdi_1 + 8) = 0\n14027031c        i += 1\n14027031e        rdi_1 += 0x10\n140270325        do while (i s< *(arg1 + 0x60))\n14027033b        return ",
+  "fetched_at": "2026-04-26T17:31:46Z"
+}

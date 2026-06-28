@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065abc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall\nVisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::\nvfunction2_for_SignalGeneratorClass\n          (VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this,\n          undefined8 param_1,undefined8 param_2)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  undefined8 uVar3;\n  \n  uVar2 = FUN_1405f3e60(param_1);\n  iVar1 = (this->VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_data).\n          offset_0x10;\n  if ((iVar1 != 0) && (uVar3 = FUN_14065a780(this,param_1,param_2,uVar2,iVar1), (char)uVar3 != '\\0')\n     ) {\n    return CONCAT71((int7)((ulonglong)uVar3 >> 8),1);\n  }\n  uVar3 = FUN_14064d990(this,param_1,param_2,uVar2);\n  return uVar3;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400154c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400154c6        char* rbx = data_140b09e08\n1400154cd        int32_t arg_8 = 0x41\n1400154d8        if (rbx == 0)\n1400154e2        char* rax_1 = operator new(zx.q((&rbx[0x40]).d))\n1400154e9        rbx = rax_1\n1400154ef        if (rax_1 == 0)\n140015547        rbx = nullptr\n1400154f1        __builtin_memset(&rbx[4], 0, 0x14)\n1400154f9        *rbx = 0\n140015503        int64_t* rax_2 = operator new(0x20)\n14001550f        *rax_2 = rax_2\n140015512        rax_2[1] = rax_2\n140015516        *(rbx + 8) = rax_2\n14001551a        int64_t r8_1 = *(rbx + 8)\n14001551e        __builtin_memset(&rbx[0x18], 0, 0x18)\n140015529        *(rbx + 0x30) = 7\n140015531        *(rbx + 0x38) = 8\n140015539        *(rbx + 4) = 0x3f800000\n140015540        sub_140048250(&rbx[0x18], 0x10, r8_1)\n14001554f        data_140b09e08 = rbx\n140015572        void*** var_18\n140015572        (*sub_140253fe0(rbx, &var_18, &arg_8))[3] = sub_140254b30\n140015582        return atexit(sub_1407ee200) __tailcall",
+  "fetched_at": "2026-04-26T16:50:17Z"
+}

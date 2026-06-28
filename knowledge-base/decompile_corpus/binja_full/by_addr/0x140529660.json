@@ -1,0 +1,7 @@
+{
+  "addr": "0x140529660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140529664        int64_t result = sx.q(*(arg2 + 0x2c))\n140529672        if (*(arg3 + 0x27b0) s<= result.d)\n1405296ca        return result\n14052967c        int64_t rax = *(arg3 + 0x27a8)\n14052968c        int64_t var_18 = 0\n140529695        int32_t var_10_1 = 0\n1405296c1        return sub_14038c730(sub_14029f810(*(data_140b15418 + 0x18), *(rax + (result << 3)), arg4, arg2 + 0x30, &var_18, 0, 0))",
+  "fetched_at": "2026-04-26T17:33:17Z"
+}

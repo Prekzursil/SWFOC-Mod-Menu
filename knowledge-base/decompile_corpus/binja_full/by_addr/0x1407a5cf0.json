@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5cf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a5cf0        int32_t rax = 0\n1407a5cf5        arg2 -= 1\n1407a5cf7        int32_t r8_2 = arg1 & 1\n1407a5cfb        arg1 u>>= 1\n1407a5d00        rax = (rax | r8_2) * 2\n1407a5d04        do while (arg2 s> 0)\n1407a5d08        return zx.q(rax u>> 1)",
+  "fetched_at": "2026-04-26T17:32:27Z"
+}

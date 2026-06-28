@@ -1,0 +1,7 @@
+{
+  "addr": "0x140395ac0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_query_interface",
+  "body": "140395ac5        if (arg2 == 0)\n140395aca        return arg1\n140395ace        int64_t rcx = sx.q(*(sx.q(arg2) + arg1 + 0x332))\n140395ada        if (rcx.b != 0xff)\n140395aea        return *(*(arg1 + 0x278) + (rcx << 3))\n140395ade        return 0",
+  "fetched_at": "2026-04-26T16:43:24Z"
+}

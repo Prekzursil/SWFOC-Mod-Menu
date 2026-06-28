@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636178",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nDisableForceAbilitiesBehaviorClass::vfunction1\n          (DisableForceAbilitiesBehaviorClass *this,uint param_1)\n\n{\n  ~DisableForceAbilitiesBehaviorClass\n            ((DisableForceAbilitiesBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:19Z"
+}

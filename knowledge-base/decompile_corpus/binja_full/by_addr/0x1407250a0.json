@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407250a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407250bf        char rax = sub_14021fe20(arg2, 0, arg3, arg4)\n1407250c7        void* arg_8 = arg1\n1407250f7        char rdi = rax & 1 & sub_14021ffa0(arg2, 1) & sub_1402200b0(arg2, &arg_8, 8, nullptr)\n1407250fa        char rax_3 = sub_140220030(arg2)\n140725107        sub_1401fec80(arg_8)\n14072510e        void* rax_4 = arg1 + 0x18\n140725115        if (arg1 == 0)\n140725115        rax_4 = nullptr\n14072511c        arg_8 = rax_4\n140725150        rdi = rdi & rax_3 & sub_14021ffa0(arg2, 3) & sub_1402200b0(arg2, &arg_8, 8, nullptr) & sub_140220030(arg2)\n140725153        sub_1401fec80(arg_8)\n14072515d        if (*(arg1 + 0x28) != 0)\n140725176        rdi &= sub_14021ffa0(arg2, 2)\n140725188        char rbx_1 = sub_1402200b0(arg2, arg1 + 0x28, 8, nullptr) & 1\n140725192        rdi &= sub_140220030(arg2) & rbx_1\n1407251c6        rdi = rdi & sub_14021ffa0(arg2, 4) & sub_1402200b0(arg2, arg1 + 0x30, 4, nullptr) & sub_140220030(arg2)\n1407251e5        return sub_14021feb0(arg2) & rdi",
+  "fetched_at": "2026-04-26T17:28:27Z"
+}

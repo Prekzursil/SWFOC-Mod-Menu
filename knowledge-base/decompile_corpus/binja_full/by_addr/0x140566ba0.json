@@ -1,0 +1,7 @@
+{
+  "addr": "0x140566ba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140566bb3        int512_t result\n140566bb3        if (arg2 != 0 && sub_1403751e0(*(*(arg1 + 0x28) + 0x298), *(arg2 + 0x1648)) == 0)\n140566bd8        void* rax_2 = *(arg1 + 0x28)\n140566bdc        void* rcx_2 = *(rax_2 + 0xf0)\n140566be6        if (rcx_2 != 0)\n140566be8        void* rcx_3 = *(rcx_2 + 0x160)\n140566bf2        if (rcx_3 != 0)\n140566c4a        return sub_14054dc00(rcx_3, arg2) __tailcall\n140566bfb        void* rcx_4 = *(rax_2 + 0x298)\n140566c02        if (*(rax_2 + 0x348) == 0xff)\n140566c02        goto label_140566c31\n140566c04        void* rcx_5 = *(rax_2 + 0x110)\n140566c0e        if (rcx_5 != 0 && sub_1404ec820(rcx_5) != 0)\n140566c2a        rcx_4 = *(sub_1404ec820(*(*(arg1 + 0x28) + 0x110)) + 0x298)\n140566c31        label_140566c31:\n140566c31        rcx_3 = *(rcx_4 + 0x520)\n140566c3b        if (rcx_3 != 0)\n140566c4a        return sub_14054dc00(rcx_3, arg2) __tailcall\n140566c4f        result.o = 0x3f800000\n140566c61        return result\n140566c62        result.o = 0xbf800000\n140566c74        return result",
+  "fetched_at": "2026-04-26T17:34:32Z"
+}

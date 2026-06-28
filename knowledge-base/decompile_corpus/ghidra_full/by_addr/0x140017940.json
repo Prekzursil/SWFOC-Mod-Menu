@@ -1,0 +1,7 @@
+{
+  "addr": "0x140017940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140017940(void)\n\n{\n  FUN_1403227b0(&DAT_140b2b3b0);\n  atexit(DynamicVectorClass<class_WeatherSFXEventClass>::\n         ~DynamicVectorClass<class_WeatherSFXEventClass>);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:28Z"
+}

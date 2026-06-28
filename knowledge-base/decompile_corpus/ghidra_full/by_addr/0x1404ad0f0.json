@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad0f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DebugEventClass * __thiscall DebugEventClass::DebugEventClass(DebugEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0xb;\n  this->vftablePtr = &vftable;\n  (this->DebugEventClass_data).offset_0x0 = 0;\n  (this->DebugEventClass_data).offset_0x10 = 0;\n  (this->DebugEventClass_data).offset_0x18 = 0xf;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:05:32Z"
+}

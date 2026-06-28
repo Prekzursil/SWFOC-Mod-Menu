@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400baec0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400baec0(int *param_1)\n\n{\n  int iVar1;\n  int *_Buf1;\n  \n  if (*param_1 != 0) {\n    if (*param_1 != 1) {\n      return;\n    }\n    _Buf1 = param_1 + 2;\n    if (0xf < *(ulonglong *)(param_1 + 8)) {\n      _Buf1 = *(int **)_Buf1;\n    }\n    if (*(longlong *)(param_1 + 6) != 0x1f) {\n      return;\n    }\n    iVar1 = memcmp(_Buf1,\"IDC_LICENSE_AGREE_CANCEL_BUTTON\",0x1f);\n    if (iVar1 != 0) {\n      return;\n    }\n  }\n  if (DAT_140a61f5c != '\\0') {\n    FUN_1401c1d20(&DAT_140a78510,DAT_140a117f8,1);\n    DAT_140a61f5c = '\\0';\n    DAT_140a117f8 = 0xffffffff;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401cec50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall TextureRectClass::vfunction19_for_DrawPrimitiveClass(TextureRectClass *this)\n\n{\n  return *(undefined8 *)&(this->RefCountClass_data).field_0x30;\n}",
+  "fetched_at": "2026-04-26T17:48:52Z"
+}

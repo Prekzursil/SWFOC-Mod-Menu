@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078013c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078013c(char *param_1,char *param_2)\n\n{\n  common_fsopen<char>(param_1,param_2,0x40);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:50:58Z"
+}

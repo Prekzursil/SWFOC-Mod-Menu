@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400225f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400225f0(void)\n\n{\n  bad_array_new_length local_28;\n  \n  std::bad_array_new_length::bad_array_new_length(&local_28);\n                    /* WARNING: Subroutine does not return */\n  _CxxThrowException(&local_28,(ThrowInfo *)&DAT_1409cad90);\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:54Z"
+}

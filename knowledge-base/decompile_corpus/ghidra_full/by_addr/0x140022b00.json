@@ -1,0 +1,7 @@
+{
+  "addr": "0x140022b00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* std::exception member function inherited by std::bad_alloc\n   std::exception member function inherited by std::bad_array_new_length\n   std::exception member function inherited by std::runtime_error\n   std::exception member function inherited by std::range_error\n   std::exception member function inherited by std::logic_error\n   std::exception member function inherited by std::length_error\n   std::exception member function inherited by std::out_of_range\n   std::exception member function inherited by std::bad_cast\n   std::exception member function inherited by std::bad_typeid\n   std::exception member function inherited by std::__non_rtti_object\n   std::exception member function inherited by std::bad_exception */\n\nchar * __thiscall std::exception::vfunction2(exception *this)\n\n{\n  char *pcVar1;\n  char *pcVar2;\n  \n  pcVar1 = (char *)(this->exception_data).offset_0x0;\n  pcVar2 = \"Unknown exception\";\n  if (pcVar1 != (char *)0x0) {\n    pcVar2 = pcVar1;\n  }\n  return pcVar2;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:57Z"
+}

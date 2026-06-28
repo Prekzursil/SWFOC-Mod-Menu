@@ -1,0 +1,7 @@
+{
+  "addr": "0x140385ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140385af8        int128_t zmm0 = sub_140540070(*(arg1 + 0x20))\n140385afd        void* result = *(arg1 + 0x10)\n140385b01        int128_t zmm6 = zmm0\n140385b07        if (result != 0)\n140385b1f        if (sub_140294bc0(&data_140a16fd0, *(result + 0x58)) != 0 && *(sub_140294bc0(&data_140a16fd0, *(*(arg1 + 0x10) + 0x58)) + 0x360) != 0)\n140385b5d        zmm6.d = zmm6.d f* *(sub_1404b0500(*(sub_140294bc0(&data_140a16fd0, *(*(arg1 + 0x10) + 0x58)) + 0x360)) + 0x50)\n140385b69        void var_178\n140385b69        sub_140535cb0(&var_178)\n140385b7e        if (sub_140395c70(*(arg1 + 0x10), &var_178) != 0)\n140385b87        struct ComparisonOp<float>::GreaterThan<float>::VTable* const arg_8 = &GreaterThan<float>::`vftable'{for `ComparisonOp<float>'}\n140385ba6        struct CalculationOp<float>::Plus<float>::VTable* const arg_10 = &Plus<float>::`vftable'{for `CalculationOp<float>'}\n140385bb8        void var_138\n140385bb8        int128_t zmm0_1\n140385bb8        zmm0_1.d = sub_14033fb70(&var_138, &arg_10, &arg_8).d f+ 1f\n140385bc0        zmm0_1.d = zmm0_1.d f* zmm6.d\n140385bc4        zmm6 = zmm0_1\n140385bcc        int512_t zmm0_2\n140385bcc        result, zmm0_2 = sub_140535fb0(&var_178)\n140385bd1        zmm0_2.o = zmm6\n140385be4        return result",
+  "fetched_at": "2026-04-26T17:20:29Z"
+}

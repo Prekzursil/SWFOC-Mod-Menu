@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f8bf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402f8bfa        int32_t i = 0\n1402f8c05        if (*(arg1 + 0x2a28) s> 0)\n1402f8c11        int64_t* rsi_1 = nullptr\n1402f8c27        struct ButtonComponentClass::TextButtonComponentClass::VTable** rbp_1 = *(rsi_1 + *(arg1 + 0x2a20))\n1402f8c2e        if (rbp_1 != 0)\n1402f8c33        sub_14034af40(rbp_1)\n1402f8c40        j_sub_1407864b8(rbp_1)\n1402f8c45        i += 1\n1402f8c47        rsi_1 = &rsi_1[1]\n1402f8c51        do while (i s< *(arg1 + 0x2a28))\n1402f8c5d        *(arg1 + 0x2a28) = 0\n1402f8c67        *(arg1 + 0x26b2) = 0\n1402f8c6e        *(arg1 + 0x2a10) = 0\n1402f8c78        *(arg1 + 0x2a30) = 0\n1402f8c89        return ",
+  "fetched_at": "2026-04-26T17:23:04Z"
+}

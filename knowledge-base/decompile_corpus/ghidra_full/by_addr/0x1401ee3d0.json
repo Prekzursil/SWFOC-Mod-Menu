@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ee3d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetTextClass member function inherited by GUIGadgetIMELocaleIndicatorClass */\n\nvoid __thiscall GUIGadgetTextClass::vfunction11(GUIGadgetTextClass *this,undefined1 param_1)\n\n{\n  GUIGadgetTextClass_vftable *pGVar1;\n  \n  pGVar1 = this->vftablePtr;\n  (this->GUIGadgetTextClass_data).offset_0x18 = param_1;\n                    /* WARNING: Could not recover jumptable at 0x0001401ee3e6. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*pGVar1->deleting_destructor)(this,(ulonglong)&(this->GUIGadgetTextClass_data).offset_0x20);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:38Z"
+}

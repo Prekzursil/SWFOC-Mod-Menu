@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013097c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nalTerrainShadowBlob::vfunction1_for_MultiLinkedListMember(alTerrainShadowBlob *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((alTerrainShadowBlob *)&this[-1].alTerrainShadowBlob_data.offset_0xa0,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:42Z"
+}

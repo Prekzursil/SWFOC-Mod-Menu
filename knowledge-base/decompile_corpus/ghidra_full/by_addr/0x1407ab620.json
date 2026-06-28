@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ab620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 * __thiscall alLaserKite::vfunction7(alLaserKite *this)\n\n{\n  return &this[1].field_0x28;\n}",
+  "fetched_at": "2026-04-26T18:55:09Z"
+}

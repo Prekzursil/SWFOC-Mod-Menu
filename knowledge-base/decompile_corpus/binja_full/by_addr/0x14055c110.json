@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055c110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14055c128        *arg1 = &SpawnIndigenousUnitsDataPackClass::`vftable'{for `BaseDataPackClass'}\n14055c12e        int64_t lpMem = arg1[2]\n14055c135        if (lpMem != 0)\n14055c13e        if ((*(arg1 + 0x1c) & 0x80000000) == 0)\n14055c159        j_sub_1407864b8(lpMem)\n14055c14e        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14055c15e        *(arg1 + 0x1c) &= 0x80000000\n14055c165        arg1[2] = 0\n14055c169        arg1[3].d = 0\n14055c16c        arg1[4].d = 0\n14055c16f        struct DynamicVectorClass<class GameObjectClass* __ptr64>::VTable* const result = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n14055c176        int64_t lpMem_1 = arg1[2]\n14055c17a        arg1[1] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n14055c181        if (lpMem_1 != 0)\n14055c18a        if ((*(arg1 + 0x1c) & 0x80000000) == 0)\n14055c1a5        result = j_sub_1407864b8(lpMem_1)\n14055c19a        result = HeapFree(GetProcessHeap(), HEAP_NONE, lpMem_1)\n14055c1aa        *(arg1 + 0x1c) &= 0x80000000\n14055c1b1        arg1[2] = 0\n14055c1b5        arg1[3].d = 0\n14055c1c7        return result",
+  "fetched_at": "2026-04-26T17:34:23Z"
+}

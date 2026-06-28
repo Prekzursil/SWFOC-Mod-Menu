@@ -1,0 +1,7 @@
+{
+  "addr": "0x140491f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_140491f30(undefined8 param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  uint uVar2;\n  float fVar3;\n  float fVar4;\n  \n  if ((param_2 == 0) || (lVar1 = *(longlong *)(param_2 + 0x158), lVar1 == 0)) {\n    return 0.0;\n  }\n  uVar2 = 0;\n  if (DAT_140b15418 != 0) {\n    uVar2 = *(uint *)(DAT_140b15418 + 0x10);\n  }\n  if (*(uint *)(lVar1 + 0xc) <= uVar2) {\n    return DAT_1407ffaf8;\n  }\n  fVar4 = (float)(uVar2 - *(int *)(lVar1 + 8)) /\n          (float)(*(uint *)(lVar1 + 0xc) - *(int *)(lVar1 + 8));\n  fVar3 = 0.0;\n  if (0.0 <= fVar4) {\n    fVar3 = fVar4;\n  }\n  fVar4 = DAT_1407ffaf8;\n  if (fVar3 <= DAT_1407ffaf8) {\n    fVar4 = fVar3;\n  }\n  return fVar4;\n}",
+  "fetched_at": "2026-04-26T18:03:00Z"
+}

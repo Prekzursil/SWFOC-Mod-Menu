@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403534a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403534a0        arg1[5] = arg2\n1403534a7        if (arg2 == 0)\n1403534b2        return \n1403534ac        arg2.b = 1\n1403534ae        jump(*(*arg1 + 0x78))",
+  "fetched_at": "2026-04-26T17:10:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ddc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14018ddc0(longlong param_1,longlong param_2)\n\n{\n  int iVar1;\n  longlong *local_res10;\n  undefined1 local_28 [28];\n  undefined4 local_c;\n  \n  if ((param_2 != 0) &&\n     (iVar1 = (**(code **)(**(longlong **)(param_1 + 0x78) + 0x88))\n                        (*(longlong **)(param_1 + 0x78),0,local_28), iVar1 == 0)) {\n    iVar1 = (**(code **)(**(longlong **)(param_1 + 0x78) + 0x98))\n                      (*(longlong **)(param_1 + 0x78),0,param_1 + 0x88,0,0);\n    if (iVar1 == 0) {\n      *(undefined1 *)(param_1 + 0x80) = 1;\n    }\n    else if (*(char *)(param_1 + 0x80) == '\\0') {\n      return;\n    }\n    local_res10 = (longlong *)0x0;\n    iVar1 = (**(code **)(**(longlong **)(param_1 + 0x78) + 0x90))\n                      (*(longlong **)(param_1 + 0x78),0,&local_res10);\n    if ((iVar1 == 0) && (local_res10 != (longlong *)0x0)) {\n      (**(code **)(*local_res10 + 0x10))();\n      BinkCopyToBuffer(param_2,*(undefined8 *)(param_1 + 0x90),*(undefined4 *)(param_1 + 0x88),\n                       local_c,0,0,5);\n    }\n    (**(code **)(**(longlong **)(param_1 + 0x78) + 0xa0))(*(longlong **)(param_1 + 0x78),0);\n    *(undefined1 *)(param_1 + 0x80) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:04Z"
+}

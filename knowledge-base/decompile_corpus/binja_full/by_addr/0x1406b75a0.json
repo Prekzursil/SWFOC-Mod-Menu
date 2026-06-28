@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b75a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b75b8        if (arg1 != 0)\n1406b75c3        struct DatabaseUIntConversionClass::DatabaseObjectManagerClass<class AIGoalProposalFunctionClass>::VTable** result = operator new(0x48)\n1406b75ce        if (result != 0)\n1406b75df        sub_14023ae90(result, arg2)\n1406b75ed        *result = &DatabaseObjectManagerClass<class AIGoalProposalFunctionClass>::`vftable'{for `DatabaseUIntConversionClass'}\n1406b75f2        result[1].b = 0\n1406b75f5        __builtin_memset(result + 0xc, 0, 0x14)\n1406b7603        int64_t* rax_1 = operator new(0x38)\n1406b760f        *rax_1 = rax_1\n1406b7612        rax_1[1] = rax_1\n1406b7616        result[2] = rax_1\n1406b761a        int64_t r8_1 = result[2]\n1406b761e        __builtin_memset(&result[4], 0, 0x18)\n1406b7629        result[7] = 7\n1406b7631        result[8] = 8\n1406b7639        *(result + 0xc) = 0x3f800000\n1406b7640        sub_140048250(&result[4], 0x10, r8_1)\n1406b7652        *result = &AIGoalProposalFunctionSetClass::`vftable'{for `DatabaseObjectManagerClass<class AIGoalProposalFunctionClass>'}\n1406b7667        if (sub_1406b76a0(result, arg1, arg2, 0) != 0)\n1406b769a        return result\n1406b7674        (*result)->__offset(0x0).q(result, 1)\n1406b7687        return 0",
+  "fetched_at": "2026-04-26T17:24:45Z"
+}

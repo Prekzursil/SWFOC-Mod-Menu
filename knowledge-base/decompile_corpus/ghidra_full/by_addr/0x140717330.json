@@ -1,0 +1,7 @@
+{
+  "addr": "0x140717330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nForceConfuseAbilityClass::vfunction5_for_IXMLLoadableClass\n          (ForceConfuseAbilityClass *this,longlong param_1,undefined8 param_2)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  float fVar3;\n  float fVar4;\n  \n  if (((param_1 != 0) && (lVar1 = *(longlong *)(param_1 + 0x100), lVar1 != 0)) &&\n     (*(char *)(lVar1 + 0x344) == '\\x01')) {\n    fVar3 = *(float *)(lVar1 + 0x33c) + *(float *)(lVar1 + 0x340);\n    fVar4 = *(float *)((longlong)&(this->ForceConfuseAbilityClass_data).offset_0x8 + 4);\n    if (fVar3 <= fVar4) {\n      fVar4 = fVar3;\n    }\n    uVar2 = ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n            ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n                      ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)this,param_1,param_2);\n    if (((char)uVar2 == '\\x01') &&\n       (fVar4 < *(float *)((longlong)&(this->ForceConfuseAbilityClass_data).offset_0x8 + 4))) {\n      *(float *)(lVar1 + 0x340) = fVar4;\n      return;\n    }\n    FUN_14055e1c0(lVar1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:53Z"
+}

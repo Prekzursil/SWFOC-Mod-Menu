@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021cf20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_14021cf20(longlong param_1,uint param_2)\n\n{\n  float fVar1;\n  \n  if (3 < param_2) {\n    return DAT_1407ffaf8;\n  }\n  fVar1 = *(float *)(param_1 + ((longlong)(int)param_2 + 200) * 0x14);\n  if (param_2 != 0) {\n    fVar1 = fVar1 * *(float *)(param_1 + 4000);\n  }\n  return fVar1;\n}",
+  "fetched_at": "2026-04-26T18:01:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140175d80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140175d93        *arg1 = &alParticleGroup::`vftable'{for `alRenderable'}\n140175da2        arg1[2] = &alParticleGroup::`vftable'{for `MultiLinkedListMember'}\n140175dad        arg1[4] = &alParticleGroup::`vftable'{for `CullObjectClass'}\n140175db1        sub_140172a60(arg1, 1)\n140175dbd        arg1[0x1d].d = 0xffffffff\n140175dc7        sub_1400466c0(&arg1[0x1a])\n140175dcf        sub_14013f770(arg1)\n140175dd7        if ((arg2 & 1) != 0)\n140175de1        j_sub_1407864b8(arg1)\n140175df3        return arg1",
+  "fetched_at": "2026-04-26T17:23:07Z"
+}

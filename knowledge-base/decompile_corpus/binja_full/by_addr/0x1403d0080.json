@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403d0080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403d01b0        void* result\n1403d0097        int32_t i = 0x79\n1403d01b0        while (i s<= 0xe0)\n1403d00a3        result = sub_140347b50(i)\n1403d00a8        void* result_1 = result\n1403d00ae        if (result != 0)\n1403d00b7        int64_t* rax_1 = sub_14034c630(result)\n1403d00bc        *(rax_1 + 3)\n1403d00c4        int32_t rbp_2 = sx.d(*(rax_1 + 1)) - 0x30\n1403d00cd        *(rax_1 + 4)\n1403d00d4        int32_t rcx_4 = sx.d(*(rax_1 + 5))\n1403d00e9        int32_t rdi_1 = sx.d(*(rax_1 + 6)) + ((rcx_4 + ((rcx_4 - 0x42) << 2)) << 1)\n1403d00f3        int32_t var_38_1 = rdi_1\n1403d00fc        char var_28[0x10]\n1403d00fc        sscanf_s(&var_28, \"q%d_%.2d%.2d\", zx.q(rbp_2))\n1403d0115        *(result_1 + 8) = sub_1402f5bf0(arg1, &var_28)\n1403d011c        int32_t var_38_2 = rdi_1\n1403d012c        sscanf_s(&var_28, \"q%d_%.2d%.2d\", zx.q(rbp_2))\n1403d013e        *(result_1 + 0x10) = sub_1402f5bf0(arg1, &var_28)\n1403d0156        int32_t var_38_3 = rdi_1 - 1\n1403d015f        sscanf_s(&var_28, \"q%d_%.2d%.2d\", zx.q(rbp_2))\n1403d0171        *(result_1 + 0x18) = sub_1402f5bf0(arg1, &var_28)\n1403d0189        int32_t var_38_4 = rdi_1 + 1\n1403d0192        sscanf_s(&var_28, \"q%d_%.2d%.2d\", zx.q(rbp_2))\n1403d019f        result = sub_1402f5bf0(arg1, &var_28)\n1403d01a4        *(result_1 + 0x20) = result\n1403d01a8        i += 1\n1403d01ce        return result",
+  "fetched_at": "2026-04-26T17:24:54Z"
+}

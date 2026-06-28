@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038e390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14038e390(longlong param_1,undefined4 *param_2,longlong param_3)\n\n{\n  undefined4 uVar1;\n  uint uVar2;\n  TheMovementClassManagerClass *this;\n  bool bVar3;\n  undefined **local_res18 [2];\n  \n  if (param_3 == 0) {\n    bVar3 = (*(uint *)(param_1 + 0x14) & 1) == *(uint *)(param_1 + 0x14);\n  }\n  else {\n    uVar1 = *(undefined4 *)(*(longlong *)(param_3 + 0x298) + 0x1688);\n    if (DAT_140a10980 == (TheMovementClassManagerClass *)0x0) {\n      this = (TheMovementClassManagerClass *)FUN_140769c58(0x48);\n      if (this == (TheMovementClassManagerClass *)0x0) {\n        DAT_140a10980 = (TheMovementClassManagerClass *)0x0;\n      }\n      else {\n        DAT_140a10980 = TheMovementClassManagerClass::TheMovementClassManagerClass(this);\n      }\n      local_res18[0] = &PTR_vftable_140a10978;\n      if (DAT_140a7bc10 == DAT_140a7bc18) {\n        FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res18);\n      }\n      else {\n        *DAT_140a7bc10 = &PTR_vftable_140a10978;\n        DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      }\n    }\n    uVar2 = FUN_140477b70(DAT_140a10980,uVar1);\n    bVar3 = (*(uint *)(param_1 + 0x14) & uVar2) == *(uint *)(param_1 + 0x14);\n  }\n  if (bVar3) {\n    *param_2 = 1;\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:21:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402b59b0",
+  "tool": "ghidra",
+  "fact_id": "rva_gamemode_refresh_local_player_subsystems",
+  "body": "\nvoid FUN_1402b59b0(longlong param_1)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  longlong lVar4;\n  \n  lVar4 = *(longlong *)(param_1 + 0x48);\n  if (lVar4 != param_1 + 0x40) {\n    do {\n      lVar1 = *(longlong *)(lVar4 + 0x18);\n      uVar2 = FUN_140294a40(&DAT_140a16fd0);\n      lVar3 = lVar1 + -0x18;\n      if (lVar1 == 0) {\n        lVar3 = 0;\n      }\n      FUN_1403a51e0(lVar3,uVar2);\n      lVar4 = *(longlong *)(lVar4 + 8);\n    } while (lVar4 != param_1 + 0x40);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:14Z"
+}

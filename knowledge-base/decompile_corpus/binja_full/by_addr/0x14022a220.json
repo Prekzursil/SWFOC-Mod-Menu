@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022a220",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022a22a        int32_t i = 0\n14022a232        if (*(arg1 + 0x14) s<= 0)\n14022a232        return \n14022a239        void* rbx_1 = arg1 + 0x29\n14022a249        if (*(rbx_1 - 1) == 1 && *rbx_1 != 0)\n14022a24b        bool cond:0_1 = *(rbx_1 + 0x33) != 0\n14022a24f        *rbx_1 = 0\n14022a252        if (not(cond:0_1))\n14022a258        sub_14021d550(*(rbx_1 - 9))\n14022a25d        i += 1\n14022a25f        rbx_1 += 0x50\n14022a266        do while (i s< *(arg1 + 0x14))\n14022a277        return ",
+  "fetched_at": "2026-04-26T17:29:30Z"
+}

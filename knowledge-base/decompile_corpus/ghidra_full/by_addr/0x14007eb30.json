@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007eb30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14007eb30(longlong param_1,short param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong lVar3;\n  undefined1 local_res18 [16];\n  \n  if (param_2 != 0) {\n    lVar2 = *(longlong *)(param_1 + 0x20);\n    if (((lVar2 - *(longlong *)(param_1 + 0x18) & 0xffffffffffffffe0U) == 0) ||\n       (*(char *)(param_1 + 0x10) != '\\0')) {\n      FUN_14007e6c0(param_1);\n      *(undefined1 *)(param_1 + 0x10) = 0;\n      lVar2 = *(longlong *)(param_1 + 0x20);\n    }\n    lVar2 = (lVar2 - *(longlong *)(param_1 + 0x18) & 0xffffffffffffffe0U) +\n            *(longlong *)(param_1 + 0x18);\n    iVar1 = isgraph((int)(char)param_2);\n    if ((iVar1 == 0) && (param_2 != 0x20)) {\n      if (param_2 == 10) {\n        FUN_14007e6c0(param_1);\n        return;\n      }\n    }\n    else {\n      lVar3 = lVar2 + -0x20;\n      if (7 < *(ulonglong *)(lVar2 + -8)) {\n        lVar3 = *(longlong *)(lVar2 + -0x20);\n      }\n      FUN_14007f7a0(lVar2 + -0x20,local_res18,lVar3 + *(longlong *)(lVar2 + -0x10) * 2,param_2);\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:14Z"
+}

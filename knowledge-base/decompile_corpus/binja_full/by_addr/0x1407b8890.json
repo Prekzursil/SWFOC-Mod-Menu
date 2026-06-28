@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8890",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_close",
+  "body": "1407b889e        void* rbx_1 = *(*(arg1 + 0x20) + 0xe0)\n1407b88ac        sub_1407b9f90(rbx_1, *(rbx_1 + 0x68))\n1407b88b4        sub_1407bca50(rbx_1)\n1407b88bb        *(rbx_1 + 0xc8) = 0\n1407b88f3        int32_t i\n1407b88c2        int64_t* rax_1 = *(rbx_1 + 0x80)\n1407b88d0        *(rbx_1 + 0x58) = rax_1\n1407b88d7        int64_t rcx_2 = *rax_1\n1407b88da        *(rbx_1 + 0x10) = rcx_2\n1407b88de        *(rbx_1 + 0x18) = rcx_2\n1407b88e5        *(rbx_1 + 0x8a) = 0\n1407b88ec        i = sub_1407bc0d0(rbx_1, j_sub_1407bc750, 0)\n1407b88f3        do while (i != 0)\n1407b8902        return sub_1407b8350(rbx_1) __tailcall",
+  "fetched_at": "2026-04-26T16:44:22Z"
+}

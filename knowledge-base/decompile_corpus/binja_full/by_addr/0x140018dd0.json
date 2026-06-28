@@ -1,0 +1,7 @@
+{
+  "addr": "0x140018dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140018ddf        int64_t* rax = operator new(0x30)\n140018de4        *rax = rax\n140018de7        rax[1] = rax\n140018deb        rax[2] = rax\n140018def        rax[3].w = 0x101\n140018df5        bool cond:0 = data_140a2a040 u>= 0x10\n140018dfd        data_140a2a050 = rax\n140018e04        int64_t* rax_1 = &data_140a2a028\n140018e0b        if (cond:0)\n140018e0b        rax_1 = data_140a2a028\n140018e13        data_140a2a020 = 0\n140018e1a        data_140a2a038 = 0\n140018e25        *rax_1 = 0\n140018e28        void** rdi = data_140a2a050\n140018e2f        void** rbx = rdi[1]\n140018e37        while (*(rbx + 0x19) == 0)\n140018e52        sub_14006c2e0(&data_140a2a050, &data_140a2a050, rbx[2])\n140018e57        void** rcx_1 = rbx\n140018e5f        rbx = *rbx\n140018e62        j_sub_1407864b8(rcx_1)\n140018e6d        rdi[1] = rdi\n140018e78        *rdi = rdi\n140018e7b        rdi[2] = rdi\n140018e7f        data_140a2a058 = 0\n140018e94        return atexit(sub_1407f1f90) __tailcall",
+  "fetched_at": "2026-04-26T16:50:50Z"
+}

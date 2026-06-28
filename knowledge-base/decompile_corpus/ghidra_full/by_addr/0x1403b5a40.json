@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b5a40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandModeClass::vfunction7(LandModeClass *this)\n\n{\n  GameModeClass::vfunction7((GameModeClass *)this);\n                    /* WARNING: Could not recover jumptable at 0x0001403b5a59. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction42)(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:40Z"
+}

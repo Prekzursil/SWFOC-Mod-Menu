@@ -1,0 +1,7 @@
+{
+  "addr": "0x140365540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140365554        int64_t rcx = *(arg1 + 0x198)\n140365562        if (rcx != 0)\n140365569        int32_t i = 0\n140365573        if (*(arg1 + 0x190) s> 0)\n14036557a        int64_t* rdi_1 = nullptr\n140365580        rcx = *(arg1 + 0x198)\n140365587        int64_t* rsi_1 = *(rdi_1 + rcx)\n14036558e        if (rsi_1 != 0)\n140365593        sub_1404c0ac0(rsi_1)\n1403655a0        j_sub_1407864b8(rsi_1)\n1403655a5        rcx = *(arg1 + 0x198)\n1403655ac        i += 1\n1403655ae        rdi_1 = &rdi_1[1]\n1403655b8        do while (i s< *(arg1 + 0x190))\n1403655bf        j_sub_1407864b8(rcx)\n1403655c9        *(arg1 + 0x198) = 0\n1403655d0        *(arg1 + 0x190) = 0\n1403655d7        int64_t rcx_3 = *(arg1 + 0x1b0)\n1403655e1        if (rcx_3 != 0)\n1403655e3        j_sub_1407864b8(rcx_3)\n1403655e8        *(arg1 + 0x1b0) = 0\n1403655ef        void* rdi_2 = *(arg1 + 0x1a0)\n1403655f9        if (rdi_2 != 0)\n1403655fe        sub_1407da9e0(rdi_2)\n14036560b        j_sub_1407864b8(rdi_2)\n140365610        *(arg1 + 0x1a0) = 0\n140365629        return sub_1404dd180(arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:14:33Z"
+}

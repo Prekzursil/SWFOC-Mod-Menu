@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b7e20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b7e43        int32_t rsi_1 = arg1[6].d + arg2\n1401b7e48        int32_t rdi_1 = *(arg1 + 0x34) + arg3\n1401b7e5d        int128_t zmm0 = sub_140135920(*arg1, rsi_1, rdi_1)\n1401b7e6b        int128_t zmm6 = zmm0\n1401b7e6e        int128_t zmm7 = zmm0\n1401b7e71        int128_t zmm0_1 = sub_140135920(*arg1, rsi_1 + 1, rdi_1)\n1401b7e76        zmm6.d f- zmm0_1.d\n1401b7e79        if (not(zmm6.d f< zmm0_1.d))\n1401b7e7b        zmm7 = zmm0_1\n1401b7e7e        if (zmm6.d f< zmm0_1.d || not(zmm6.d f> zmm0_1.d))\n1401b7e80        zmm6 = zmm0_1\n1401b7e8d        int128_t zmm0_2 = sub_140135920(*arg1, rsi_1 + 1, rdi_1 + 1)\n1401b7e95        if (not(zmm7.d f< zmm0_2.d))\n1401b7e97        zmm7 = zmm0_2\n1401b7e9d        if (not(zmm6.d f> zmm0_2.d))\n1401b7e9f        zmm6 = zmm0_2\n1401b7eab        int128_t zmm0_3 = sub_140135920(*arg1, rsi_1, rdi_1 + 1)\n1401b7eb3        if (not(zmm7.d f< zmm0_3.d))\n1401b7eb5        zmm7 = zmm0_3\n1401b7ebb        if (not(zmm6.d f> zmm0_3.d))\n1401b7ebd        zmm6 = zmm0_3\n1401b7ec5        zmm0_3 = zmm6\n1401b7ecd        zmm6.d = zmm6.d f- zmm7.d\n1401b7ed6        zmm0_3.d = zmm0_3.d f+ zmm7.d\n1401b7ee9        zmm6.d = zmm6.d f* 0.5f\n1401b7ef1        zmm0_3.d = zmm0_3.d f* 0.5f\n1401b7ef9        *arg4 = zmm0_3.d\n1401b7efe        *arg5 = zmm6.d\n1401b7f0d        return arg5",
+  "fetched_at": "2026-04-26T17:25:52Z"
+}

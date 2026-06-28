@@ -1,0 +1,7 @@
+{
+  "addr": "0x140228590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022859a        char* rbx = arg1 + 0x31\n14022859e        int64_t i_1 = 0x10\n1402285c3        int64_t i\n1402285ac        if (rbx[-1] == 1 && *rbx != 1)\n1402285b2        AIL_stop_sample(*(rbx - 9))\n1402285b8        *rbx = 1\n1402285bb        rbx = &rbx[0x40]\n1402285bf        i = i_1\n1402285bf        i_1 -= 1\n1402285c3        do while (i != 1)\n1402285cf        return ",
+  "fetched_at": "2026-04-26T17:29:26Z"
+}

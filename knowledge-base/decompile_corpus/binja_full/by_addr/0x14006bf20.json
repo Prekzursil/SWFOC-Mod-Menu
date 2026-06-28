@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006bf20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006bf2c        arg5 &= 0xff0fffff\n14006bf37        arg5:3.b = 0\n14006bf3f        arg5 &= 0xfff00000\n14006bf4a        int32_t arg_10 = 0\n14006bf55        int32_t arg_8 = 0\n14006bf5d        *(arg1 + 0x30) = 0x271e\n14006bf67        if (arg2 != 0)\n14006bf85        int64_t* rcx = *(SteamInternal_ContextInit(&data_140a10e00) + 0x40)\n14006bfa3        if ((*(*rcx + 0x10))(rcx, arg2, zx.q(arg3), &arg_8, &arg_10, *(arg1 + 0x2c)) != 0)\n14006bfa5        int64_t rbx_1 = arg_10.q\n14006bfb4        int64_t var_28\n14006bfb4        sub_140202370(&var_28, 0, 0)\n14006bfc6        var_28 = rbx_1\n14006bfcb        public: __cdecl std::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0>::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0><class <lambda_508dc996854572947a45292d62928d80> &>(class <lambda_508dc996854572947a45292d62928d80> &)(arg6, &var_28)\n14006bfd4        *arg4 = zx.q(arg_8)\n14006bfd7        uint64_t result\n14006bfd7        result.b = 1\n14006bfd9        *(arg1 + 0x30) = 0\n14006bfec        return result\n14006bfed        *(arg1 + 0x30) = 0x2733\n14006c002        return 0",
+  "fetched_at": "2026-04-26T16:56:03Z"
+}

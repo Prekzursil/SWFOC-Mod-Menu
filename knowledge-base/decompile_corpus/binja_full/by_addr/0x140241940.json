@@ -1,0 +1,7 @@
+{
+  "addr": "0x140241940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140241943        arg1[2] = 0x3f800000\n14024194f        *arg1 = 0\n140241954        arg1[3] = arg2\n14024195a        int32_t r8\n14024195a        r8.b = 0x20 - arg2 u< 0xffffffff\n140241966        arg1[1] = _mm_cvtepi32_ps(zx.o(r8)).d\n14024196b        return 0x20 - arg2",
+  "fetched_at": "2026-04-26T17:30:14Z"
+}

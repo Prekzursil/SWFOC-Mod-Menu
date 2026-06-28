@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d02e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407d02e0(undefined8 param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  double dVar3;\n  undefined1 local_88 [128];\n  \n  iVar1 = FUN_1407b9e00(param_1,1);\n  if (iVar1 == 6) {\n    FUN_1407b9600();\n    return;\n  }\n  dVar3 = (double)FUN_1407ce9b0(param_1,1,DAT_140854f30);\n  iVar1 = (int)dVar3;\n  if (iVar1 < 0) {\n    FUN_1407cdf80(param_1,1,\"level must be non-negative\");\n  }\n  iVar2 = FUN_1407bb5c0(param_1,iVar1,local_88);\n  if (iVar2 == 0) {\n    FUN_1407cdf80(param_1,1,\"invalid level\");\n  }\n  FUN_1407bb3a0(param_1,&DAT_1408fdf80,local_88);\n  iVar2 = FUN_1407b9e00(param_1,0xffffffff);\n  if (iVar2 == 0) {\n    FUN_1407ce300(param_1,\"no function environment for tail call at level %d\",iVar1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:58:00Z"
+}

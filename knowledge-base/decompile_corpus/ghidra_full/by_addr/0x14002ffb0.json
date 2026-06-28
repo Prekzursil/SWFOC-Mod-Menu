@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002ffb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14002ffb0(longlong param_1)\n\n{\n  char cVar1;\n  float local_res18;\n  float local_res1c;\n  \n  cVar1 = FUN_1402cd0c0(&DAT_140b27a10);\n  if (cVar1 == '\\x01') {\n    FUN_14003f220();\n    return;\n  }\n  local_res18 = (float)*(int *)(param_1 + 0xdc);\n  local_res1c = (float)*(int *)(param_1 + 0xe0);\n  FUN_14003f330(param_1,&local_res18);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:37Z"
+}

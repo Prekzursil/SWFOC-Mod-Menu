@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b14c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b14c9        int64_t result = GetCurrentThreadId()\n1407b14de        if (result.d != data_140a155d0 || data_140a62740 == 0)\n1407b14f2        int32_t rax_2 = ((*(arg1 + 0x110) - *(arg1 + 0x108)) s>> 3).d\n1407b150a        if (rax_2 s> 0)\n1407b1514        int64_t i = 0\n1407b1520        int64_t rax_3 = *(arg1 + 0x108)\n1407b1527        int64_t* rcx = *(rax_3 + (i << 3))\n1407b1532        if (rcx != 0)\n1407b1537        (*(*rcx + 8))(rcx)\n1407b153a        *(rax_3 + (i << 3)) = 0\n1407b153d        i += 1\n1407b1543        do while (i s< sx.q(rax_2))\n1407b154a        int64_t rdi_2 = *(arg1 + 0x110)\n1407b1551        int64_t* rbp_2 = *(arg1 + 0x108)\n1407b155e        result = (rdi_2 - rbp_2) s>> 3\n1407b1565        if (result != 0)\n1407b1567        int64_t* rbx_1 = rbp_2\n1407b156d        if (rbp_2 != rdi_2)\n1407b1570        int64_t* rcx_1 = *rbx_1\n1407b1576        if (rcx_1 != 0)\n1407b157b        result = (*(*rcx_1 + 8))(rcx_1)\n1407b157e        rbx_1 = &rbx_1[1]\n1407b1585        do while (rbx_1 != rdi_2)\n1407b1587        *(arg1 + 0x110) = rbp_2\n1407b15a5        return result",
+  "fetched_at": "2026-04-26T17:32:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026a6b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026a6ba        int64_t r9 = *(arg1 + 0x30)\n14026a6c8        int64_t r8_1 = *(arg1 + 0x38) - r9\n14026a6d8        int64_t rax\n14026a6d8        int64_t rdx\n14026a6d8        rdx:rax = muls.dp.q(-0x3cf3cf3cf3cf3cf3, r8_1)\n14026a6de        int64_t rdx_2 = (rdx + r8_1) s>> 6\n14026a6ec        if (rdx_2 != neg.q(rdx_2 u>> 0x3f))\n14026a6ee        *(arg1 + 0x38) = r9\n14026a6f2        int64_t r8_2 = *(arg1 + 0x18)\n14026a6fd        int64_t rcx_3 = *(arg1 + 0x20) - r8_2\n14026a700        int64_t rax_1\n14026a700        int64_t rdx_4\n14026a700        rdx_4:rax_1 = muls.dp.q(-0x3cf3cf3cf3cf3cf3, rcx_3)\n14026a706        int64_t rdx_6 = (rdx_4 + rcx_3) s>> 6\n14026a714        if (rdx_6 != neg.q(rdx_6 u>> 0x3f))\n14026a716        *(arg1 + 0x20) = r8_2\n14026a72f        uint32_t result\n14026a72f        if ((GetCurrentThreadId() != data_140a155d0 || data_140a62740 == 0) && sub_14026c1e0(arg1, *(arg1 + 0xe8), *(arg1 + 0xec), 0).b != 0)\n14026a751        int64_t* rcx_5 = *(arg1 + 0xb8)\n14026a766        *(arg1 + 0x470) = 0\n14026a771        sub_14013e3e0(rcx_5, 0, arg1 + 0x470)\n14026a776        void* rcx_6 = *(arg1 + 0x470)\n14026a785        if (rcx_6 != 0)\n14026a78a        if (arg2 != 0)\n14026a7a5        memset(*(rcx_6 + 8), 0, sx.q((*(arg1 + 0xec) * *(arg1 + 0xe8)) << 2))\n14026a7aa        result.b = 1\n14026a7b6        return result\n14026a7bc        result.b = 0\n14026a7c3        return result",
+  "fetched_at": "2026-04-26T17:31:38Z"
+}

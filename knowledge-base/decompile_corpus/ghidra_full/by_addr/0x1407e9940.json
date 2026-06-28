@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e9940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e9940(void)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  \n  lVar1 = DAT_140a620b8;\n  lVar3 = DAT_140a620b0;\n  if (DAT_140a620b0 != 0) {\n    for (; lVar3 != lVar1; lVar3 = lVar3 + 0x68) {\n      FUN_1404b3e40(lVar3);\n    }\n    uVar2 = ((DAT_140a620c0 - DAT_140a620b0) / 0x68) * 0x68;\n    lVar3 = DAT_140a620b0;\n    if (0xfff < uVar2) {\n      lVar3 = *(longlong *)(DAT_140a620b0 + -8);\n      if (0x1f < (DAT_140a620b0 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(DAT_140a620c0 - DAT_140a620b0,uVar2 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(lVar3);\n    DAT_140a620b0 = 0;\n    DAT_140a620b8 = 0;\n    DAT_140a620c0 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:01:34Z"
+}

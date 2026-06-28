@@ -1,0 +1,7 @@
+{
+  "addr": "0x140241790",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402417a8        arg1[9] = &RefCountClass::`vftable'{for `IRefCountClass'}\n1402417ba        *arg1 = &MultiLinkedListClass<class SignalListenerClass>::`vftable'{for `GenericMultiLinkedList'}\n1402417c1        while (arg1[2] != &arg1[1])\n1402417cb        int64_t* arg_8\n1402417cb        sub_14020ac80(arg1, &arg_8)\n1402417d9        sub_14020a960(arg1)\n1402417e2        if ((arg2 & 1) != 0)\n1402417ec        j_sub_1407864b8(arg1)\n140241803        return arg1",
+  "fetched_at": "2026-04-26T17:30:14Z"
+}

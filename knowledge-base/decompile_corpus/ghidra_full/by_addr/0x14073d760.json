@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073d760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall BombingBlockStatus::vfunction21(BombingBlockStatus *this)\n\n{\n  int iVar1;\n  int iVar2;\n  undefined8 *puVar3;\n  longlong *plVar4;\n  longlong *plVar5;\n  longlong *local_res20;\n  \n  plVar4 = (longlong *)FUN_140769c58(0x18);\n  if (plVar4 != (longlong *)0x0) {\n    iVar1 = *(int *)&this->field_0x44;\n    iVar2 = *(int *)&this->field_0x40;\n    *(undefined4 *)(plVar4 + 1) = 0;\n    *plVar4 = (longlong)&LuaValue<double,4>::vftable;\n    plVar4[2] = (longlong)(double)((float)iVar1 / (float)iVar2);\n    plVar5 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n             ::\n             ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                       ();\n    local_res20 = plVar4;\n    (**(code **)*plVar4)(plVar4);\n    puVar3 = (undefined8 *)plVar5[3];\n    if (puVar3 == (undefined8 *)plVar5[4]) {\n      FUN_140144900(plVar5 + 2,puVar3,&local_res20);\n    }\n    else {\n      *puVar3 = plVar4;\n      (**(code **)*plVar4)(plVar4);\n      plVar5[3] = plVar5[3] + 8;\n    }\n    (**(code **)(*plVar4 + 8))(plVar4);\n    return plVar5;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:03:24Z"
+}

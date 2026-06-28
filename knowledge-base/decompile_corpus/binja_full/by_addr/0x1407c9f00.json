@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c9f00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c9f14        int64_t* rbp = *(arg1 + 0x30)\n1407c9f21        sub_1407cc520(rbp, arg2)\n1407c9f26        bool cond:0 = arg1[8] == 0x11f\n1407c9f30        arg1[2] = arg1[1]\n1407c9f33        int128_t zmm0_1\n1407c9f33        if (cond:0)\n1407c9f52        arg1[4] = sub_1407be0c0(arg1, &arg1[6])\n1407c9f35        zmm0_1 = *(arg1 + 0x20)\n1407c9f39        arg1[8] = 0x11f\n1407c9f40        *(arg1 + 0x10) = zmm0_1\n1407c9f5c        if (arg1[4] != 0x116)\n1407c9f68        sub_1407be9e0(arg1)\n1407c9f68        noreturn\n1407c9f6d        bool cond:1 = arg1[8] == 0x11f\n1407c9f7b        int64_t rdi = *(arg1 + 0x18)\n1407c9f7e        arg1[2] = arg1[1]\n1407c9f81        if (cond:1)\n1407c9f9c        arg1[4] = sub_1407be0c0(arg1, &arg1[6])\n1407c9f83        zmm0_1 = *(arg1 + 0x20)\n1407c9f87        arg1[8] = 0x11f\n1407c9f8e        *(arg1 + 0x10) = zmm0_1\n1407c9fa6        int32_t rax_4 = sub_1407cd9a0(*(arg1 + 0x30), rdi)\n1407c9fb0        int64_t var_1c = -1\n1407c9fbc        int32_t var_28 = 4\n1407c9fc7        int32_t var_24 = rax_4\n1407c9fe4        return sub_1407ccab0(rbp, arg2, &var_28)",
+  "fetched_at": "2026-04-26T17:33:48Z"
+}

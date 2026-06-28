@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403af190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403af192        *(arg1 + 0x48) = arg2\n1403af19e        if (arg3 == 0)\n1403af1a0        *(arg1 + 0x248) = arg3.d\n1403af1a8        return \n1403af1a9        void* rax = zx.q(*(arg3 + 0x10))\n1403af1b5        int32_t rdi_1\n1403af1b5        if (rax.d s>= 0x7f)\n1403af1c5        *(arg1 + 0x248) = 0x7f\n1403af1d4        label_1403af1d4:\n1403af1d4        int64_t rdx = 0\n1403af1d6        int64_t r11_1 = 0\n1403af1de        rdi_1 = 0\n1403af1e0        void* rbx_1 = arg1 + 0x4c\n1403af1e4        int32_t i = 0\n1403af1f8        int32_t j = *(*(*(arg3 + 8) + r11_1) + 0x50)\n1403af1fc        int64_t rcx_1 = 0\n1403af201        if (rdx s<= 0)\n1403af218        label_1403af218:\n1403af218        rdi_1 += 1\n1403af21a        *rbx_1 = j\n1403af21d        rdx += 1\n1403af220        rbx_1 += 4\n1403af203        rax = arg1 + 0x4c\n1403af20a        while (*rax != j)\n1403af20c        rcx_1 += 1\n1403af20f        rax += 4\n1403af216        if (rcx_1 s>= rdx)\n1403af216        goto label_1403af218\n1403af224        i += 1\n1403af227        r11_1 += 8\n1403af232        do while (i s< *(arg1 + 0x248))\n1403af1b7        rdi_1 = 0\n1403af1b9        *(arg1 + 0x248) = rax.d\n1403af1c1        if (rax.d s> 0)\n1403af1c1        goto label_1403af1d4\n1403af23e        *(arg1 + 0x248) = rdi_1\n1403af24b        return ",
+  "fetched_at": "2026-04-26T17:24:15Z"
+}

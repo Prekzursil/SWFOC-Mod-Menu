@@ -1,0 +1,7 @@
+{
+  "addr": "0x140561670",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140561677        arg1[1] = 0\n14056167f        *arg1 = &TacticalSellDataPackClass::`vftable'{for `BaseDataPackClass'}\n140561682        return &TacticalSellDataPackClass::`vftable'{for `BaseDataPackClass'}",
+  "fetched_at": "2026-04-26T17:34:25Z"
+}

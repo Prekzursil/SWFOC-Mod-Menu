@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fda50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401fda6e        *arg1 = *arg2\n1401fda7b        sub_14001e680(&arg1[2], &arg2[2])\n1401fda89        sub_14001e680(&arg1[0xa], &arg2[0xa])\n1401fda91        void* rsi = &arg1[0x14]\n1401fda96        arg1[0x12] = arg2[0x12]\n1401fda9b        void* rbx = &arg2[0x14]\n1401fdaa2        int64_t i = 0xb\n1401fdaa8        arg1[0x13] = arg2[0x13]\n1401fdab0        void* rax_4 = arg1 - arg2\n1401fdac1        int64_t* rax_5 = rax_4 + 0x18\n1401fdac5        int64_t* arg_10 = rax_5\n1401fdad0        *rsi = 0\n1401fdad3        i -= 1\n1401fdad6        *(rbx + rax_4 + 0x10) = 0\n1401fdada        void* r14_1 = rbx\n1401fdadd        *(rax_5 + rbx) = 0\n1401fdae6        int64_t rbp_1 = *(rbx + 0x10)\n1401fdaea        if (*(rbx + 0x18) u>= 8)\n1401fdaec        r14_1 = *rbx\n1401fdaf3        int64_t rdi_1\n1401fdaf3        if (rbp_1 u>= 8)\n1401fdb09        rdi_1 = rbp_1 | 7\n1401fdb10        if (rdi_1 u> 0x7ffffffffffffffe)\n1401fdb10        rdi_1 = 0x7ffffffffffffffe\n1401fdb18        int32_t* rax_6 = sub_1400226c0(rsi, rdi_1 + 1)\n1401fdb25        *rsi = rax_6\n1401fdb2e        memcpy(rax_6, r14_1, (rbp_1 << 1) + 2)\n1401fdb33        rax_5 = arg_10\n1401fdaf9        rdi_1 = 7\n1401fdafe        *rsi = *r14_1\n1401fdb3a        *(rbx + rax_4 + 0x10) = rbp_1\n1401fdb3e        rsi += 0x20\n1401fdb42        *(rax_5 + rbx) = rdi_1\n1401fdb46        rbx += 0x20\n1401fdb4d        do while (i != 0)\n1401fdb68        return arg1",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

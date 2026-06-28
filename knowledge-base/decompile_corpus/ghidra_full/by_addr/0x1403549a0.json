@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403549a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ButtonComponentClass::vfunction5(ButtonComponentClass *this,undefined4 param_1)\n\n{\n  *(undefined4 *)((longlong)&(this->IconComponentClass_data).offset_0xb0 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x88 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0xd8 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x128 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x178 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x1c8 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x218 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x268 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x2b8 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x308 + 4) = param_1;\n  *(undefined4 *)((longlong)&(this->ButtonComponentClass_data).offset_0x358 + 4) = param_1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:43Z"
+}

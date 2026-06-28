@@ -1,0 +1,7 @@
+{
+  "addr": "0x140204360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BitStreamClass * __thiscall\nBitStreamClass::BitStreamClass(BitStreamClass *this,LPVOID param_1,undefined4 param_2)\n\n{\n  (this->BitStreamClass_data).offset_0x0 = param_1;\n                    /* inlined constructor: BitStreamClass::BitStreamClass */\n  this->vftablePtr = &vftable;\n  (this->BitStreamClass_data).offset_0x18 = 0;\n  (this->BitStreamClass_data).offset_0x10 = &DynamicVectorClass<int>::vftable.deleting_destructor;\n  (this->BitStreamClass_data).offset_0x20 = 0;\n  (this->BitStreamClass_data).offset_0x8 = 0;\n  (this->BitStreamClass_data).offset_0x28 = &DynamicVectorClass<int>::vftable.deleting_destructor;\n  (this->BitStreamClass_data).offset_0x30 = 0;\n  (this->BitStreamClass_data).offset_0x38 = 0;\n  (this->BitStreamClass_data).offset_0x40 = param_2;\n  (this->BitStreamClass_data).offset_0x44 = param_2;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:56:15Z"
+}

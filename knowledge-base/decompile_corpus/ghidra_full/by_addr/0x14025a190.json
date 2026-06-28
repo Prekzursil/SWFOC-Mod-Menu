@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025a190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall GetEvent::scalar_deleting_destructor(GetEvent *this,longlong param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  undefined8 *puVar5;\n  \n  iVar1 = *(int *)(param_1 + 0x60);\n  if (((iVar1 != -1) &&\n      (lVar2 = *(longlong *)&(this->RefCountClass_data).field_0x20,\n      iVar1 < (int)(*(longlong *)&(this->RefCountClass_data).field_0x28 - lVar2 >> 4))) &&\n     (puVar5 = (undefined8 *)((longlong)iVar1 * 0x10 + lVar2), puVar5[1] != 0)) {\n    plVar4 = ~GetEvent(this,*(longlong **)(*(longlong *)*puVar5 + 0x10));\n    plVar3 = *(longlong **)*puVar5;\n    lVar2 = *plVar3;\n    puVar5[1] = puVar5[1] + -1;\n    *(longlong *)plVar3[1] = lVar2;\n    *(longlong *)(lVar2 + 8) = plVar3[1];\n    if ((longlong *)plVar3[2] != (longlong *)0x0) {\n      (**(code **)(*(longlong *)plVar3[2] + 8))();\n    }\n    thunk_FUN_1407864b8(plVar3,0x18);\n    return plVar4;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:13:51Z"
+}

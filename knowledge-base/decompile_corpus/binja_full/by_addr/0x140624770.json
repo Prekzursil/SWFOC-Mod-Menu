@@ -1,0 +1,7 @@
+{
+  "addr": "0x140624770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062477b        struct BehaviorClass::WindDisturbanceBehaviorClass::VTable** result = operator new(0x40)\n140624786        if (result == 0)\n1406247be        return result\n14062478b        sub_1404c32d0(result)\n140624797        *result = &WindDisturbanceBehaviorClass::`vftable'{for `BehaviorClass'}\n1406247a1        result[1] = &WindDisturbanceBehaviorClass::`vftable'{for `RefCountClass'}\n1406247ac        result[3] = &WindDisturbanceBehaviorClass::`vftable'{for `SignalListenerClass'}\n1406247b8        return result",
+  "fetched_at": "2026-04-26T17:23:51Z"
+}

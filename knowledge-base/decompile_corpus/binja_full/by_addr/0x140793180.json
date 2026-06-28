@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793185        int32_t* arg_20 = arg4\n140793197        __vcrt_unlock(*arg2)\n1407931a3        uint64_t __security_cookie_1 = __security_cookie\n1407931bc        data_140b3ca90 = ror.q(**arg3, 0x40 - (__security_cookie_1.b & 0x3f)) ^ __security_cookie_1\n1407931cf        BOOL rax_3 = EnumSystemLocalesW(<lambda_795c6bd18aed400428efeb9a5f0e1479>::<lambda_invoker_cdecl>, 1)\n1407931de        data_140b3ca90 = __security_cookie\n1407931e7        __vcrt_lock(*arg4)\n1407931f8        return zx.q(rax_3)",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

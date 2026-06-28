@@ -1,0 +1,7 @@
+{
+  "addr": "0x140708330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140708350        if (arg2 != 0 && arg3 != 0 && *(arg3 + 0x335) != 0xff)\n140708356        void* rsi_1 = *(arg3 + 0xb8)\n140708360        if (rsi_1 != 0)\n140708380        void var_28\n140708380        int32_t* rax_1 = sub_14048e1e0(arg1, &var_28, arg2, 0)\n140708385        int64_t* rcx = *(rsi_1 + 0x268)\n14070838c        int32_t rbp = 0\n140708391        int64_t* i_1 = *rcx\n140708397        if (i_1 != rcx)\n1407083ee        int64_t* i\n1407083a7        char rax_2 = sub_1404ad550(&i_1[4], rax_1)\n1407083ac        i = *i_1\n1407083b1        if (rax_2 != 0)\n1407083b7        *i_1[1] = i\n1407083c1        *(*i_1 + 8) = i_1[1]\n1407083c9        *(rsi_1 + 0x270) -= 1\n1407083d0        sub_1404ad530(&i_1[4])\n1407083dd        j_sub_1407864b8(i_1)\n1407083e2        rbp += 1\n1407083e4        i_1 = i\n1407083ee        do while (i != *(rsi_1 + 0x268))\n1407083fa        sub_1404ad530(&var_28)\n140708410        int64_t rax_5\n140708410        rax_5.b = rbp s> 0\n140708418        return rax_5\n140708419        int64_t rax\n140708419        rax.b = 0\n140708420        return rax",
+  "fetched_at": "2026-04-26T17:27:22Z"
+}

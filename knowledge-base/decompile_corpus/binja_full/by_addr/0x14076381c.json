@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076381c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140763833        char rsi = 0\n140763835        int32_t arg_8 = 0\n140763844        if (arg1 != 0 && *arg1 == 0)\n14076384d        struct std::time_base::std::time_get<char>::VTable** rax_1 = operator new(0x58)\n140763852        struct std::time_base::std::time_get<char>::VTable** rbx_1 = rax_1\n140763855        struct std::time_base::std::time_get<char>::VTable** arg_18 = rax_1\n140763860        void var_88\n140763860        if (rax_1 == 0)\n1407638d4        rbx_1 = nullptr\n140763862        void* rax_2 = *(arg2 + 8)\n140763869        void* rdx\n140763869        if (rax_2 == 0)\n14076387a        rdx = &data_1407ff8a8\n14076386b        rdx = *(rax_2 + 0x28)\n140763872        if (rdx == 0)\n140763874        rdx = rax_2 + 0x30\n140763886        int32_t* rax_3 = std::_Locinfo::_Locinfo(&var_88, rdx)\n14076388c        rsi = 1\n140763891        arg_8 = 1\n140763898        rbx_1[1].d = 0\n1407638a3        *rbx_1 = &std::time_get<char>::`vftable'{for `std::time_base'}\n1407638a6        __builtin_memset(&rbx_1[2], 0, 0x18)\n1407638b5        struct std::time_base::std::time_get<char>::VTable** arg_20 = rbx_1\n1407638c5        sub_140762790(rbx_1, 0, rax_3)\n1407638cf        rbx_1[5].d = _Getdateorder()\n1407638d6        *arg1 = rbx_1\n1407638dd        if ((rsi & 1) != 0)\n1407638e4        std::_Locinfo::~_Locinfo(&var_88)\n140763900        return 5",
+  "fetched_at": "2026-04-26T17:30:11Z"
+}

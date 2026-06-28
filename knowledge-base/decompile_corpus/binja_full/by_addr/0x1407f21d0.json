@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f21d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f21dd        sub_140471530(&data_140a2a0b0)\n1407f21fb        sub_1402d36c0(&data_140a2a0e8, &data_140a2a0e8, *(data_140a2a0e8 + 8))\n1407f220c        j_sub_1407864b8(data_140a2a0e8)\n1407f2211        void* rcx_1 = data_140a2a0d8\n1407f2218        void** rbx = *(rcx_1 + 8)\n1407f2220        if (*(rbx + 0x19) == 0)\n1407f2234        sub_14006c2e0(&data_140a2a0d8, &data_140a2a0d8, rbx[2])\n1407f2239        void** rcx_2 = rbx\n1407f2241        rbx = *rbx\n1407f2244        j_sub_1407864b8(rcx_2)\n1407f224d        do while (*(rbx + 0x19) == 0)\n1407f224f        rcx_1 = data_140a2a0d8\n1407f225b        int64_t result = j_sub_1407864b8(rcx_1)\n1407f2260        int64_t rdx_3 = data_140a2a0d0\n1407f226b        if (rdx_3 u>= 0x10)\n1407f226d        void* rcx_3 = data_140a2a0b8\n1407f227e        if (rdx_3 + 1 u>= 0x1000)\n1407f2280        void* r8_3 = *(rcx_3 - 8)\n1407f2293        if (rcx_3 - r8_3 - 8 u> 0x1f)\n1407f22c0        _invalid_parameter_noinfo_noreturn()\n1407f22c0        noreturn\n1407f2295        rcx_3 = r8_3\n1407f2298        result = j_sub_1407864b8(rcx_3)\n1407f229d        data_140a2a0c8 = 0\n1407f22a8        data_140a2a0d0 = 0xf\n1407f22b3        data_140a2a0b8.b = 0\n1407f22bf        return result",
+  "fetched_at": "2026-04-26T17:37:05Z"
+}

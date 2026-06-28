@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405864ac",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AILearningSystemClass::vfunction1(AILearningSystemClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor\n            ((AILearningSystemClass *)&this[-1].AILearningSystemClass_data.offset_0x168,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:41:26Z"
+}

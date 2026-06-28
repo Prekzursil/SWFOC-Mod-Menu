@@ -1,0 +1,7 @@
+{
+  "addr": "0x140575b80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140575b9a        if (*(arg1 + 0x60) != 0)\n140575b9c        int64_t* rbx_1 = *(arg3 + 0x10)\n140575baf        char const* const rdx\n140575baf        if (((*(arg3 + 0x18) - rbx_1) & 0xfffffffffffffff8) == 8)\n140575bba        int64_t* rbx_2 = *rbx_1\n140575bc0        if (rbx_2 != 0)\n140575bc8        void* i\n140575bc8        i, arg3 = (*(*rbx_2 + 0x20))(rbx_2)\n140575bce        while (i != 0)\n140575bda        if (i == &data_140a157b0)\n140575c0c        (**rbx_2)(rbx_2)\n140575c12        void* rcx_3 = *(*(arg1 + 0x60) + 0x2a0)\n140575c1c        if (rcx_3 != 0)\n140575c22        sub_140264690(rcx_3, rbx_2[2].b)\n140575c2d        (*(*rbx_2 + 8))(rbx_2)\n140575c41        return 0\n140575bdc        i = *(i + 8)\n140575be5        rdx = \"GameObjectWrapper::Enable_Dynamic_LOD -- invalid type for parameter 1.  Expected boolean.\"\n140575bb1        rdx = \"GameObjectWrapper::Enable_Dynamic_LOD -- command takes a single boolean value.\"\n140575bef        sub_140248190(arg2, rdx, arg3)\n140575c05        return 0",
+  "fetched_at": "2026-04-26T17:35:04Z"
+}

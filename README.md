@@ -26,6 +26,10 @@ Excluded:
 - full Workshop/local mod content trees
 - large media/model assets
 - generated build artifacts
+- third-party upstream libraries (e.g. **PetroglyphTools**, the PG/SWFOC game
+  file-format library) — these are not vendored here; see
+  [`docs/EXTERNAL-TOOLS.md`](docs/EXTERNAL-TOOLS.md) for what they are and where
+  to obtain them.
 
 ## Core Capabilities
 

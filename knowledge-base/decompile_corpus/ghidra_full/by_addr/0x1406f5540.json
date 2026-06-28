@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f5540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall ConcentrateFireAttackAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Concentrate_Fire_Attack_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:48:16Z"
+}

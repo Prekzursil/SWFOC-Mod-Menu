@@ -1,0 +1,7 @@
+{
+  "addr": "0x140484b90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140484b9a        struct DatabaseUIntConversionClass::DatabaseObjectManagerClass<class DifficultyAdjustmentClass>::VTable** result = arg1\n140484b9d        sub_14023ae90(arg1, arg2)\n140484bab        *result = &DatabaseObjectManagerClass<class DifficultyAdjustmentClass>::`vftable'{for `DatabaseUIntConversionClass'}\n140484bb0        result[1].b = 0\n140484bb3        __builtin_memset(result + 0xc, 0, 0x14)\n140484bc1        int64_t* rax = operator new(0x38)\n140484bcd        *rax = rax\n140484bd0        rax[1] = rax\n140484bd4        result[2] = rax\n140484bd8        int64_t r8 = result[2]\n140484bdc        __builtin_memset(&result[4], 0, 0x18)\n140484be7        result[7] = 7\n140484bef        result[8] = 8\n140484bf7        *(result + 0xc) = 0x3f800000\n140484bfe        sub_140048250(&result[4], 0x10, r8)\n140484c0a        result[0xd] = 0\n140484c0e        *result = &DifficultyAdjustmentManagerClass::`vftable'{for `DatabaseObjectManagerClass<class DifficultyAdjustmentClass>'}\n140484c14        result[9] = 0\n140484c18        result[0xb] = 0\n140484c1c        result[0xc] = 0xf\n140484c2e        return result",
+  "fetched_at": "2026-04-26T17:28:31Z"
+}

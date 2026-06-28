@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784afc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: unsigned __int64 __cdecl\n   <lambda_5856287d7ecd2be6c9197bb4007c3f6e>::operator()(void)const __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\n__uint64 __thiscall\n<lambda_5856287d7ecd2be6c9197bb4007c3f6e>::operator()\n          (<lambda_5856287d7ecd2be6c9197bb4007c3f6e> *this)\n\n{\n  undefined8 uVar1;\n  undefined1 uVar2;\n  size_t sVar3;\n  \n  uVar1 = **(undefined8 **)this;\n  uVar2 = __acrt_stdio_begin_temporary_buffering_nolock(uVar1);\n  sVar3 = _fwrite_nolock((void *)**(undefined8 **)(this + 8),**(size_t **)(this + 0x10),\n                         **(size_t **)(this + 0x18),(FILE *)**(undefined8 **)this);\n  __acrt_stdio_end_temporary_buffering_nolock(uVar2,uVar1);\n  return sVar3;\n}",
+  "fetched_at": "2026-04-26T18:51:22Z"
+}

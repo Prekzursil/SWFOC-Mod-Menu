@@ -1,0 +1,7 @@
+{
+  "addr": "0x140188630",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018863c        int64_t rdi\n14018863c        rdi.b = 0\n14018863f        int32_t* rcx = *(arg1 + 0x98)\n14018864c        if (rcx != 0)\n140188674        return sub_1401a26f0(rcx, *(arg1 + 0xc0), 0xc, *(arg1 + 0xf0), arg2)\n14018867d        int32_t i = 0\n140188682        if (*(arg1 + 0x24) s> 0)\n140188690        int64_t rbp_1 = 0\n1401886a0        void* rdx_1 = *(arg1 + 0xf0)\n1401886a7        int64_t r8_1 = *(arg1 + 0xc0)\n1401886bc        int32_t* r9_2 = r8_1 + zx.q(*(rdx_1 + rbp_1 + 2)) * 0xc\n1401886c8        int32_t* var_40_1 = r9_2\n1401886cd        float* r10_1 = r8_1 + zx.q(*(rdx_1 + rbp_1 + 4)) * 0xc\n1401886d1        float* var_38_1 = r10_1\n1401886df        float* rax_5 = r8_1 + zx.q(*(rdx_1 + rbp_1)) * 0xc\n1401886e3        void* r8_2 = *arg2\n1401886e6        float* var_48 = rax_5\n1401886f8        float var_30_1 = *r9_2 - *rax_5\n140188709        float var_2c_1 = r9_2[1] f- rax_5[1]\n14018871a        float var_28_1 = r9_2[2] f- rax_5[2]\n140188729        float var_24_1 = *r10_1 - *rax_5\n14018873a        float var_20_1 = r10_1[1] - rax_5[1]\n14018874b        float var_1c_1 = r10_1[2] - rax_5[2]\n140188756        rdi.b |= sub_14020c410(&arg2[3], &var_48, r8_2)\n140188759        i += 1\n14018875b        rbp_1 += 6\n140188762        do while (i s< *(arg1 + 0x24))\n14018878c        return zx.q(rdi.b)",
+  "fetched_at": "2026-04-26T17:24:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054e130",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054e130        int32_t* result = arg3\n14054e136        if (arg1 != arg2)\n14054e13f        void* r8 = arg1 + 0x10\n14054e143        void* r9_2 = result - arg1\n14054e150        int32_t rax_1 = *(r8 - 0x10)\n14054e154        r8 += 0x34\n14054e158        *result = rax_1\n14054e15b        result = &result[0xd]\n14054e163        *(r9_2 + r8 - 0x40) = *(r8 - 0x40)\n14054e16c        *(r9_2 + r8 - 0x3c) = *(r8 - 0x3c)\n14054e175        *(r9_2 + r8 - 0x38) = *(r8 - 0x38)\n14054e17e        *(r9_2 + r8 - 0x34) = *(r8 - 0x34)\n14054e187        *(r9_2 + r8 - 0x30) = *(r8 - 0x30)\n14054e190        *(r8 + r9_2 - 0x2c) = *(r8 - 0x2c)\n14054e199        *(r8 + r9_2 - 0x28) = *(r8 - 0x28)\n14054e1a2        *(r9_2 + r8 - 0x24) = *(r8 - 0x24)\n14054e1ab        *(r9_2 + r8 - 0x20) = *(r8 - 0x20)\n14054e1b4        *(r9_2 + r8 - 0x1c) = *(r8 - 0x1c)\n14054e1bd        *(r8 + r9_2 - 0x18) = *(r8 - 0x18)\n14054e1c6        *(r8 + r9_2 - 0x14) = *(r8 - 0x14)\n14054e1d2        do while (r8 - 0x10 != arg2)\n14054e1db        return result",
+  "fetched_at": "2026-04-26T17:34:12Z"
+}

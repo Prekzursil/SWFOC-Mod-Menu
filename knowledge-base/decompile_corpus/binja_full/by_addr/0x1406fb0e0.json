@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb0e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fb0e6        struct SpecialAbilityClass::FindWeaknessAbilityClass::VTable** result = arg1\n1406fb0e9        sub_14048c780(arg1)\n1406fb0f5        result[8].w = 1\n1406fb0fb        *result = &FindWeaknessAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fb105        result[1] = &FindWeaknessAbilityClass::`vftable'{for `RefCountClass'}\n1406fb10b        result[0x2f] = 0\n1406fb115        *(result + 0x3c) = 2\n1406fb121        return result",
+  "fetched_at": "2026-04-26T17:26:47Z"
+}

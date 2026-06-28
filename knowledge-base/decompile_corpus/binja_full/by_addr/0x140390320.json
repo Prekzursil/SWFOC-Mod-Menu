@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140390326        int64_t rax = *(arg1 + 0x238)\n140390333        if (rax == 0)\n140390338        struct BaseDataPackClass::BoardableDataPackClass::VTable** rax_1 = operator new(zx.q((rax + 0x28).d))\n140390340        if (rax_1 != 0)\n140390349        *rax_1 = &BoardableDataPackClass::`vftable'{for `BaseDataPackClass'}\n14039034e        __builtin_memset(&rax_1[1], 0, 0x20)\n14039035e        *(arg1 + 0x238) = rax_1\n14039036a        return rax_1\n14039036d        rax = 0\n14039036f        *(arg1 + 0x238) = 0\n14039037b        return rax",
+  "fetched_at": "2026-04-26T17:21:34Z"
+}

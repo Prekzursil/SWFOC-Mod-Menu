@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f300",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_uninitialize_ptd\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined1 __acrt_uninitialize_ptd(void)\n\n{\n  if (DAT_140a44db0 != -1) {\n    __acrt_FlsFree();\n    DAT_140a44db0 = -1;\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:52:30Z"
+}

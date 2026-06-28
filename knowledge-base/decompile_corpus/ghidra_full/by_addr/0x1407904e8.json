@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407904e8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _get_printf_count_output\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl _get_printf_count_output(void)\n\n{\n  return (int)(DAT_140b3c4b0 == (DAT_140a44b98 | 1));\n}",
+  "fetched_at": "2026-04-26T18:52:36Z"
+}

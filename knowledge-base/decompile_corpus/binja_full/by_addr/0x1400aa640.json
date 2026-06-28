@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400aa640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400aa6f9        int64_t result\n1400aa658        int32_t i = 0\n1400aa6f9        while (i s< 0x18)\n1400aa663        void* r8_1 = -ffffffffffffffff\n1400aa671        void* var_28 = nullptr\n1400aa676        int64_t var_18_1 = 0\n1400aa67b        int64_t var_10_1 = 0xf\n1400aa684        r8_1 += 1\n1400aa68b        do while (*(&(*\"IDC_EDIT_GROUP_1_SELECT\")[sx.q(i) << 5] + r8_1) != 0)\n1400aa692        sub_140022730(&var_28, &(*\"IDC_EDIT_GROUP_1_SELECT\")[sx.q(i) << 5], r8_1)\n1400aa6a5        char var_30_1 = 1\n1400aa6b6        result = sub_1401c24e0(&data_140a78510, data_140a11520, &var_28, 1, 1)\n1400aa6c4        if (var_10_1 u>= 0x10)\n1400aa6c6        void* rcx_2 = var_28\n1400aa6ce        void* rax_1 = rcx_2\n1400aa6d8        if (var_10_1 + 1 u>= 0x1000)\n1400aa6da        rcx_2 = *(rcx_2 - 8)\n1400aa6ed        if (rax_1 - rcx_2 - 8 u> 0x1f)\n1400aa70f        _invalid_parameter_noinfo_noreturn()\n1400aa70f        noreturn\n1400aa6ef        result = j_sub_1407864b8(rcx_2)\n1400aa6f4        i += 1\n1400aa70e        return result",
+  "fetched_at": "2026-04-26T16:59:09Z"
+}

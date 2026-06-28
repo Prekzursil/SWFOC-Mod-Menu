@@ -1,0 +1,7 @@
+{
+  "addr": "0x140455710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140455713        if (arg2 == 0)\n140455713        return \n140455734        int64_t i\n140455734        int64_t r10_1\n140455734        if (arg3 != 0)\n14045573a        r10_1 = arg1[0x6c]\n14045574b        i = (arg1[0x6d] - r10_1) s>> 5\n140455752        if (arg3 == 0 || i == 0)\n14045582a        sub_140455db0(arg1, nullptr, 0)\n140455837        if (arg1[0x71] != 0)\n140455860        return sub_140329aa0(arg2, &arg1[0x6f], *(arg1[0x45] + 0x638)) __tailcall\n140455837        return \n14045575d        int32_t i_1 = 0\n140455762        if (i == 0)\n140455762        return \n140455768        i = 0\n140455770        void* r9_1 = arg3[0x53]\n14045577b        char** rax_3 = (i << 5) + r10_1\n140455786        void* rdx = r9_1 + 0xf8\n14045578d        if (*(r9_1 + 0x110) u>= 0x10)\n14045578f        rdx = *(r9_1 + 0xf8)\n14045579b        char* rcx = rax_3\n14045579e        if (rax_3[3] u>= 0x10)\n1404557a0        rcx = *rax_3\n1404557a3        int64_t r8 = rax_3[2]\n1404557ae        if (r8 == *(r9_1 + 0x108) && memcmp(rcx, rdx, r8) == 0)\n1404557c2        sub_140455db0(arg1, arg3, 0)\n1404557cf        if (arg1[0x71] != 0)\n1404557e9        sub_140329aa0(arg2, &arg1[0x6f], *(arg1[0x45] + 0x638))\n1404557ee        r10_1 = arg1[0x6c]\n1404557f5        i_1 += 1\n140455801        i = zx.q(i_1)\n14045580a        do while (i u< (arg1[0x6d] - r10_1) s>> 5)\n140455824        return ",
+  "fetched_at": "2026-04-26T17:27:45Z"
+}

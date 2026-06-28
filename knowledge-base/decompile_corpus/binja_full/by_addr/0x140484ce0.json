@@ -1,0 +1,7 @@
+{
+  "addr": "0x140484ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140484cf8        *arg1 = &DifficultyAdjustmentManagerClass::`vftable'{for `DatabaseObjectManagerClass<class DifficultyAdjustmentClass>'}\n140484cfe        int64_t* rax = arg1[2]\n140484d02        void** i = *rax\n140484d08        if (i != rax)\n140484d10        int64_t rdx = i[6]\n140484d17        if (rdx != 0)\n140484d1f        (*arg1)->__offset(0x18).q(arg1, rdx)\n140484d22        i = *i\n140484d29        do while (i != arg1[2])\n140484d2f        sub_140145610(&arg1[1])\n140484d36        arg1[0xd] = 0\n140484d3a        int64_t rdx_1 = arg1[0xc]\n140484d42        if (rdx_1 u>= 0x10)\n140484d44        void* rcx_2 = arg1[9]\n140484d52        if (rdx_1 + 1 u>= 0x1000)\n140484d54        void* r8_1 = *(rcx_2 - 8)\n140484d67        if (rcx_2 - r8_1 - 8 u> 0x1f)\n140484dae        _invalid_parameter_noinfo_noreturn()\n140484dae        noreturn\n140484d69        rcx_2 = r8_1\n140484d6c        j_sub_1407864b8(rcx_2)\n140484d74        arg1[0xb] = 0\n140484d78        arg1[0xc] = 0xf\n140484d80        arg1[9].b = 0\n140484d83        sub_140484c30(arg1)\n140484d8c        if ((arg2 & 1) != 0)\n140484d96        j_sub_1407864b8(arg1)\n140484dad        return arg1",
+  "fetched_at": "2026-04-26T17:28:32Z"
+}

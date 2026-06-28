@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400791b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400791c0        __chkstk(0x4020)\n1400791e0        sub_140079530(*(arg1 + 0x328), *(arg1 + 0x330))\n1400791f3        *(arg1 + 0x330) = *(arg1 + 0x328)\n14007920d        int64_t* rcx_1 = *(SteamInternal_ContextInit(&data_140a10e00) + 0x70)\n140079214        void var_4008\n140079214        int32_t rax_3 = (*(*rcx_1 + 0x1c8))(rcx_1, &var_4008, 0x800)\n140079223        int32_t rbx = rax_3\n140079225        if (rax_3 u> 0x800)\n140079225        rbx = 0x800\n140079236        int64_t* rcx_2 = *(SteamInternal_ContextInit(&data_140a10e00) + 0x70)\n14007923d        int64_t result = (*(*rcx_2 + 0x10))(rcx_2, &var_4008, zx.q(rbx))\n140079247        if (result != -1)\n140079259        int64_t* rcx_3 = *(SteamInternal_ContextInit(&data_140a10e00) + 0x70)\n14007925d        int64_t r8_2 = *rcx_3\n140079260        result = (*(r8_2 + 0x18))(rcx_3, result, r8_2)\n14007926a        if (result != 0)\n140079273        int64_t rdx_4 = *(arg1 + 0x148)\n14007927a        if (rdx_4 != 0)\n14007927f        SteamAPI_UnregisterCallResult(arg1 + 0x138, rdx_4)\n14007928c        *(arg1 + 0x148) = result\n140079293        *(arg1 + 0x158) = sub_140072c90\n14007929a        *(arg1 + 0x150) = arg1\n14007929e        return SteamAPI_RegisterCallResult(arg1 + 0x138, result)\n1400792b8        return result",
+  "fetched_at": "2026-04-26T16:56:49Z"
+}

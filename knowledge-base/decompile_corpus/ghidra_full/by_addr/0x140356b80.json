@@ -1,0 +1,7 @@
+{
+  "addr": "0x140356b80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140356b80(longlong *param_1)\n\n{\n  longlong lVar1;\n  DWORD DVar2;\n  \n  if (((int)param_1[0x9d] == 0) && (lVar1 = *param_1, lVar1 != 0)) {\n    DVar2 = GetCurrentThreadId();\n    if (((DVar2 != DAT_140a155d0) || (DAT_140a62740 == '\\0')) && (*(longlong *)(lVar1 + 0x470) != 0)\n       ) {\n      FUN_14013e5c0(*(undefined8 *)(lVar1 + 0xb8));\n      *(undefined8 *)(lVar1 + 0x470) = 0;\n    }\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:23Z"
+}

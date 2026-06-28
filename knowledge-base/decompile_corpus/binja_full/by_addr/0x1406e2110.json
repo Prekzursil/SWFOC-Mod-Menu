@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e2110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e2120        int32_t result\n1406e2120        result.b = 1\n1406e2125        uint128_t zmm0\n1406e2125        zmm0.d = _mm_cvtepi32_ps(zx.o(data_140b0a320 - data_140b311f0)).d f* data_140b0a344\n1406e2130        *arg3 = (_mm_cvtps_pd(zmm0.q)).q\n1406e2135        return result",
+  "fetched_at": "2026-04-26T17:26:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140025860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140025860(void)\n\n{\n  code *pcVar1;\n  \n  FUN_140740900(\"invalid vector subscript\");\n  pcVar1 = (code *)swi(3);\n  (*pcVar1)();\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:07Z"
+}

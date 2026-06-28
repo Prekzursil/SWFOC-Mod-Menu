@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406955a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406955ce        int64_t* r14 = *(*(*(*(*(arg1 + 0x38) + 0xa0) + 0xf0) + 0x88) + 0x58)\n1406955d5        int64_t result\n1406955d5        if (r14 == 0)\n1406955e2        result = 0\n1406955dd        result = (*(*r14 + 0x30))(r14)\n1406955ee        if (*(arg1 + 0x30) == 0 && result == 0)\n1406955f0        result.b = 1\n1406955ff        return result\n140695621        void* rax_4 = sub_1404b06d0(*(sub_140649110(*(arg1 + 0x38)) + 0x360), 0)\n140695626        int64_t* rcx_3 = *(arg1 + 0x30)\n140695630        int64_t* r15 = *(rax_4 + 0x38)\n140695637        if (rcx_3 != 0)\n14069564a        int64_t rbx_1 = sx.q(sub_1403f8500((*(*rcx_3 + 0x10))(rcx_3, 3)))\n140695659        r14 = *(*(*(*r15 + 0x40))(r15) + (rbx_1 << 3))\n14069566d        *(*(arg1 + 0x38) + 0xda)\n140695684        *(*(arg1 + 0x20) + 0x2b)\n140695692        void* rax_13 = (*(*arg2 + 0x10))(arg2, 3)\n140695695        int64_t rdx = *r14\n14069569e        int64_t* rax_14 = (*(rdx + 0x38))(r14, rdx)\n1406956a7        int32_t rax_15 = sub_1403f8500(rax_13)\n1406956ac        int64_t rdx_1 = *r15\n1406956c4        *(*(*(rdx_1 + 0x40))(r15, rdx_1) + (sx.q(rax_15) << 3))\n1406956e7        jump(*(*rax_14 + 0x28))",
+  "fetched_at": "2026-04-26T17:19:53Z"
+}

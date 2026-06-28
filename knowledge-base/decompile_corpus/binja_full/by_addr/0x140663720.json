@@ -1,0 +1,7 @@
+{
+  "addr": "0x140663720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14066373a        int64_t i_1 = 0xb\n14066373f        void* rdi = &arg1[0x3a]\n140663746        int64_t i_2 = 0xb\n140663760        int64_t i\n140663750        rdi -= 0x10\n140663757        sub_14020b8b0(rdi)\n14066375c        i = i_2\n14066375c        i_2 -= 1\n140663760        do while (i != 1)\n140663762        void* rbx = &arg1[0x24]\n140663770        void* rcx_3 = *(rbx - 0x18)\n140663774        rbx -= 0x18\n140663778        i_1 -= 1\n14066377e        if (rcx_3 != 0)\n140663792        if (((*(rbx + 0x10) - rcx_3) & 0xfffffffffffffff8) u>= 0x1000)\n140663794        void* rax_1 = *(rcx_3 - 8)\n1406637a7        if (rcx_3 - rax_1 - 8 u> 0x1f)\n1406637fc        _invalid_parameter_noinfo_noreturn()\n1406637fc        noreturn\n1406637a9        rcx_3 = rax_1\n1406637ac        j_sub_1407864b8(rcx_3)\n1406637b1        __builtin_memset(rbx, 0, 0x18)\n1406637bf        do while (i_1 != 0)\n1406637c8        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1406637cf        if ((arg2 & 1) != 0)\n1406637d9        j_sub_1407864b8(arg1)\n1406637fb        return arg1",
+  "fetched_at": "2026-04-26T17:09:12Z"
+}

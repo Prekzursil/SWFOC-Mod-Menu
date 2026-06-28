@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636090",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall GarrisonVehicleBehaviorClass::vfunction31(GarrisonVehicleBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  \n  puVar1 = this->offset_0x18[0x42];\n  if ((puVar1 != (undefined *)0x0) && (*(int *)(puVar1 + 0x34) != 0)) {\n    return;\n  }\n  FUN_1403ac100(this->offset_0x18,0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:12Z"
+}

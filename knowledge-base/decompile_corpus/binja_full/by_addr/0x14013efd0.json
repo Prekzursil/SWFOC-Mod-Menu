@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013efd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013efe0        int32_t result\n14013efe0        if (data_140a626b8 == 0)\n14013f017        if (sub_140176160(arg1, 0, 0, 0, 1, 0x320, 0x258, 0x3c, 0).b == 0)\n14013f0a7        result.b = 0\n14013f0ae        return result\n14013f01d        sub_14017b110()\n14013f022        sub_140195820()\n14013f027        data_140a626bd = 1\n14013f02e        data_140a626b8 = 1\n14013f03c        if (data_140a626b9 != 0)\n14013f0a2        return sub_140176bd0(arg1) __tailcall\n14013f045        if (sub_140176560() s< 0)\n14013f0a7        result.b = 0\n14013f0ae        return result\n14013f047        sub_14017ba90()\n14013f04c        bool cond:1_1 = data_140a626b0 != 0\n14013f054        data_140a626b9 = 1\n14013f05b        if (not(cond:1_1))\n14013f062        struct alD3dTexture::alD3dTexture2D::VTable** rax_1 = sub_140186210()\n14013f067        int64_t* rcx = data_140a626b0\n14013f074        if (rcx != rax_1)\n14013f079        if (rcx != 0)\n14013f07b        int64_t rdx_1 = *rcx\n14013f07e        (*(rdx_1 + 8))(rcx, rdx_1)\n14013f081        data_140a626b0 = rax_1\n14013f08b        if (rax_1 != 0)\n14013f093        (*rax_1)->__offset(0x0).q(rax_1)\n14013f0a2        return sub_140176bd0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:17:26Z"
+}

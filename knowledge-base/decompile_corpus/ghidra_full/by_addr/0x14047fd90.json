@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fd90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14047fd90(longlong param_1)\n\n{\n  HWND hWnd;\n  \n  *(undefined1 *)(param_1 + 0x38) = 0;\n  if (*(longlong *)(param_1 + 8) != 0) {\n    hWnd = *(HWND *)(*(longlong *)(param_1 + 8) + 0x30);\n    if (hWnd != (HWND)0x0) {\n      SendMessageA(hWnd,0x10,0,0);\n    }\n    if (*(longlong **)(param_1 + 8) != (longlong *)0x0) {\n      (**(code **)(**(longlong **)(param_1 + 8) + 8))();\n      *(undefined8 *)(param_1 + 8) = 0;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:02Z"
+}

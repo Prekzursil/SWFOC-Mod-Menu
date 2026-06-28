@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140592420(BehaviorClass *param_1)\n\n{\n  undefined *puVar1;\n  char cVar2;\n  longlong lVar3;\n  \n  cVar2 = FUN_1404c36f0();\n  if (cVar2 == '\\0') {\n    BehaviorClass::vfunction25(param_1);\n  }\n  puVar1 = param_1->offset_0x18[0x2f];\n  if ((puVar1 != (undefined *)0x0) && (*(int *)(puVar1 + 8) != 0x3fffff)) {\n    lVar3 = FUN_1402aca60(*(undefined8 *)(DAT_140b15418 + 0x18));\n    if (lVar3 != 0) {\n      FUN_1402a64f0(*(undefined8 *)(DAT_140b15418 + 0x18),lVar3);\n    }\n    *(undefined4 *)(puVar1 + 8) = 0x3fffff;\n    puVar1[0xc] = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:42:13Z"
+}

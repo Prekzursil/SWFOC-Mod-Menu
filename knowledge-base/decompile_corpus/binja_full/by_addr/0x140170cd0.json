@@ -1,0 +1,7 @@
+{
+  "addr": "0x140170cd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140170cda        uint128_t* rsi = arg1[1]\n140170ce1        int64_t r8 = *arg1\n140170cea        int64_t rcx_2 = (rsi - r8) s>> 1\n140170cf0        if (arg2 u< rcx_2)\n140170cf6        arg1[1] = r8 + (arg2 << 1)\n140170d04        return \n140170d05        if (arg2 u<= rcx_2)\n140170d05        return \n140170d14        if (arg2 u> (arg1[2] - r8) s>> 1)\n140170d1e        sub_140147ab0(arg1, arg2)\n140170d2d        return \n140170d39        int64_t rbx_1 = (arg2 - rcx_2) * 2\n140170d42        memset(rsi, 0, rbx_1)\n140170d50        arg1[1] = rbx_1 + rsi\n140170d5e        return ",
+  "fetched_at": "2026-04-26T17:22:58Z"
+}

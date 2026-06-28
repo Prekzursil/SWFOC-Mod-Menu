@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029ba80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14029ba91        int32_t rdx = *(arg1 + 0x10)\n14029ba97        int32_t r8_2 = (*(arg1 + 0x14) * 2) s>> 1\n14029baa0        if (rdx s>= r8_2)\n14029bab5        int32_t rdx_3 = r8_2 s/ 0xa\n14029babe        if (rdx_3 s< 0xa)\n14029babe        rdx_3 = 0xa\n14029bac7        sub_1402b7230(arg1, rdx_3 + r8_2, 0, 1)\n14029bacc        rdx = *(arg1 + 0x10)\n14029badd        int32_t* rcx_2 = sx.q(rdx) * 0x30 + *(arg1 + 8)\n14029bae1        *(arg1 + 0x10) = rdx + 1\n14029baeb        *rcx_2 = *arg2\n14029baf1        *(rcx_2 + 8) = *(arg2 + 8)\n14029baf8        rcx_2[4] = arg2[4]\n14029bafe        rcx_2[5] = arg2[5]\n14029bb04        rcx_2[6] = arg2[6]\n14029bb0a        rcx_2[7] = arg2[7]\n14029bb10        rcx_2[8] = arg2[8]\n14029bb16        rcx_2[9] = arg2[9]\n14029bb1c        rcx_2[0xa] = arg2[0xa]\n14029bb23        rcx_2[0xb].b = arg2[0xb].b\n14029bb2a        *(rcx_2 + 0x2d) = *(arg2 + 0x2d)\n14029bb31        *(rcx_2 + 0x2e) = *(arg2 + 0x2e)\n14029bb3b        return 1",
+  "fetched_at": "2026-04-26T17:32:45Z"
+}

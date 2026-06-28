@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400188b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400188bb        sub_1405960f0(&data_140b30680)\n1400188ce        data_140b30680 = &EventFactoryClass<class GameOptionsEventClass, 39>::`vftable'{for `BaseEventFactoryClass'}\n1400188d9        return atexit(&data_1407f1700) __tailcall",
+  "fetched_at": "2026-04-26T16:50:46Z"
+}

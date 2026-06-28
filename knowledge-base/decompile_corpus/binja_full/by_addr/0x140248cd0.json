@@ -1,0 +1,7 @@
+{
+  "addr": "0x140248cd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140248cd4        void** rax = arg1 + 0x68\n140248ce0        if (rax[3] u>= 0x10)\n140248ce2        rax = *rax\n140248ce8        void** var_18 = rax\n140248d07        return sub_140200cd0(arg2, \"%s:%p, Name: %s\", \"No-RTTI-In-Release\")",
+  "fetched_at": "2026-04-26T17:30:24Z"
+}

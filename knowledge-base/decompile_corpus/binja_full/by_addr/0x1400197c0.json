@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400197c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400197c4        int64_t rcx = sx.q(data_140a16fb0)\n1400197d0        uint64_t rax = 0xc * rcx\n1400197da        if (mulu.dp.q(0xc, rcx) u>> 0x40 != zx.o(0))\n1400197da        rax = -1\n1400197ed        data_140a2aab8 = j_operator new(rax)\n1400197f8        return atexit(sub_1407f31b0) __tailcall",
+  "fetched_at": "2026-04-26T16:50:56Z"
+}

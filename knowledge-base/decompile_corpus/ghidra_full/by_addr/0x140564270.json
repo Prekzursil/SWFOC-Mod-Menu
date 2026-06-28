@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nProximityMineDataPackClass::~ProximityMineDataPackClass(ProximityMineDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  FUN_1404c47c0(&this->ProximityMineDataPackClass_data);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059ef20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14059ef20(longlong *param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  char cVar2;\n  char cVar3;\n  char cVar4;\n  \n  lVar1 = *param_1;\n  if (lVar1 != 0) {\n    cVar4 = (char)param_1[5];\n    cVar2 = '\\0';\n    if ('\\0' < cVar4) {\n      do {\n        if (*(longlong *)(lVar1 + (longlong)cVar2 * 8) == param_2) {\n          if (cVar2 == -1) {\n            return 0;\n          }\n          if (cVar4 <= cVar2) {\n            return 0;\n          }\n          cVar3 = (cVar4 - cVar2) + -1;\n          if (cVar3 != '\\0') {\n            FUN_14076bd80(lVar1 + (longlong)cVar2 * 8,lVar1 + (longlong)(char)(cVar2 + '\\x01') * 8,\n                          (longlong)cVar3 << 3);\n            cVar4 = (char)param_1[5];\n          }\n          *(char *)(param_1 + 5) = cVar4 + -1;\n          return 1;\n        }\n        cVar2 = cVar2 + '\\x01';\n      } while (cVar2 < cVar4);\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:42:44Z"
+}

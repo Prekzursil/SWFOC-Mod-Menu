@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c3300",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_1407c3300(uint param_1)\n\n{\n  int iVar1;\n  \n  iVar1 = 0;\n  for (; 7 < param_1; param_1 = param_1 + 1 >> 1) {\n    iVar1 = iVar1 + 1;\n  }\n  return iVar1 * 8 | param_1;\n}",
+  "fetched_at": "2026-04-26T18:56:54Z"
+}

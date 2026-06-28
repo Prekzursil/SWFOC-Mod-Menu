@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407aa6a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407aa6a0        int64_t arg_8 = arg1\n1407aa6cb        if (data_140b3cc90 == data_140b3cc98)\n1407aa6db        struct MultiLinkedListMember::alRenderTask::VTable** rax_1 = operator new(0x88)\n1407aa6e0        struct alRenderTask::alLaserKiteFlushTask::VTable** rdi_1 = rax_1\n1407aa6e6        if (rax_1 == 0)\n1407aa73e        rdi_1 = nullptr\n1407aa702        sub_14015e020(rax_1, arg2, 0, 0, &rax_1[0xd])\n1407aa70e        rdi_1[0x10].d = 0xffffffff\n1407aa718        *rdi_1 = &alLaserKiteFlushTask::`vftable'{for `alRenderTask'}\n1407aa71b        rax_1[0xd] = 0\n1407aa71e        rax_1[0xe].d = 0\n1407aa727        *(rdi_1 + 0x74) = 0x3f000000\n1407aa72e        rdi_1[0xf].d = 0x3f000000\n1407aa735        *(rdi_1 + 0x7c) = 0x3f000000\n1407aa74d        sub_140149490(arg2, rdi_1, 8)\n1407aa752        data_140b3cc80 = rdi_1\n1407aa759        rdi_1[0xb].d = 0\n1407aa769        *(data_140b3cc80 + 0x5c) = 0\n1407aa76d        void* result = data_140b3cc80\n1407aa77c        if (result != 0)\n1407aa77e        *(result + 0x58) = 0\n1407aa782        result = data_140b3cc80\n1407aa789        *(result + 0x5c) += 4\n1407aa78d        int64_t* rdx_2 = data_140b3cc98\n1407aa7a0        if (rdx_2 == data_140b3cca0)\n1407aa7c9        return sub_140045580(&data_140b3cc90, rdx_2, &arg_8)\n1407aa7a2        *rdx_2 = arg1\n1407aa7a5        data_140b3cc98 += 8\n1407aa7b2        return result",
+  "fetched_at": "2026-04-26T17:32:38Z"
+}

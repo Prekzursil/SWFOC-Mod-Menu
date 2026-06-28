@@ -1,0 +1,7 @@
+{
+  "addr": "0x140565c90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "InvulnerableDataPackClass * __thiscall\nInvulnerableDataPackClass::InvulnerableDataPackClass(InvulnerableDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_InvulnerableDataPackClass,20,class_EmptyLockerClass>\n       = 0;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:27Z"
+}

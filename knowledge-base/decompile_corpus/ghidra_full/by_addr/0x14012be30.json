@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012be30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nalHModel_data * __thiscall alHModel::vfunction7_for_RefCountClass(alHModel *this)\n\n{\n  alHModel_data *paVar1;\n  \n  paVar1 = &this->alHModel_data;\n  if (0xf < (ulonglong)(this->alHModel_data).offset_0x18) {\n    paVar1 = (alHModel_data *)paVar1->offset_0x0;\n  }\n  return paVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:57Z"
+}

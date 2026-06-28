@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dc750",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402dc75f        if ((arg2 & 2) == 0)\n1402dc82a        sub_140046490(arg1 + 0x10)\n1402dc833        if ((arg2 & 1) != 0)\n1402dc83d        j_sub_1407864b8(arg1)\n1402dc84b        return arg1\n1402dc76a        int64_t i = *(arg1 - 8)\n1402dc782        if (i != 0)\n1402dc789        void* rbx_1 = arg1 + i * 0x38 + 0x24\n1402dc7a0        int64_t lpMem = *(rbx_1 - 0x44)\n1402dc7a4        rbx_1 -= 0x38\n1402dc7a8        i -= 1\n1402dc7ab        *(rbx_1 - 0x14) = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n1402dc7b2        if (lpMem != 0)\n1402dc7ba        if ((*rbx_1 & 0x80000000) == 0)\n1402dc7d5        j_sub_1407864b8(lpMem)\n1402dc7ca        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1402dc7da        *rbx_1 &= 0x80000000\n1402dc7e0        *(rbx_1 - 0xc) = 0\n1402dc7e4        *(rbx_1 - 4) = 0\n1402dc7eb        do while (i != 0)\n1402dc805        if ((arg2 & 1) != 0)\n1402dc807        *(arg1 - 8)\n1402dc812        j_sub_1407864b8(arg1 - 8)\n1402dc825        return arg1 - 8",
+  "fetched_at": "2026-04-26T17:22:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140176560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017656d        data_140a6d420 = data_140a6d390\n140176573        sub_140179d40()\n140176578        int32_t rax_1 = sub_1401797f0()\n14017657d        int32_t rbx = rax_1\n140176581        if (rax_1 s>= 0)\n140176609        return 0\n14017658e        if (rbx != 0x8876017c)\n14017658e        rbx = -0x7dfffff4\n140176598        if (data_140a6d420 == 0)\n14017659a        data_140a6d420 = 1\n1401765a1        data_140a6d390 = 1\n1401765a8        sub_14017a180()\n1401765b3        int32_t Y = data_140a6e66c\n1401765c3        int32_t X = data_140a6e668\n1401765eb        SetWindowPos(data_140a6e658, -fffffffffffffffe, X, Y, data_140a6e670 - X, data_140a6e674 - Y, SWP_SHOWWINDOW)\n1401765fd        return sub_14017a460(rbx, 1) __tailcall",
+  "fetched_at": "2026-04-26T17:23:09Z"
+}

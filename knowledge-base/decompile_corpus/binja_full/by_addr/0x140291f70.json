@@ -1,0 +1,7 @@
+{
+  "addr": "0x140291f70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140291f73        if (arg3 == 0)\n140291f73        return \n140291f88        int64_t* rcx = data_140b15418\n140291f95        int32_t rax\n140291f95        if (rcx != 0)\n140291fa2        rax = (*(*rcx + 0xe0))(rcx)\n140291f97        rax = data_140b153fc\n140291faa        if (rax != 0)\n140291faa        return \n140291fb9        int64_t rbx_1 = *arg1\n140291fc8        int32_t i = 0\n140291fcc        if (((arg1[1] - rbx_1) s>> 3).d s<= 0)\n140291fcc        return \n140291fd3        int64_t* rdi_1 = nullptr\n140291fe0        void* rax_6 = *(rdi_1 + rbx_1)\n140291fe4        int64_t* rdx = *(rax_6 + 0x68)\n140291feb        if (rdx != 0)\n140291ff1        uint128_t zmm0\n140291ff1        if ((arg4[8].b & 0x20) == 0)\n14029200a        zmm0.d = float.s(zx.q(sub_1404af380(arg3, rdx)))\n14029200f        rax_6 = *(rdi_1 + rbx_1)\n140291ff8        zmm0 = _mm_cvtepi32_ps(zx.o(*arg4))\n140292013        *(rax_6 + 0x70) = zmm0.d\n140292018        rbx_1 = *arg1\n14029201b        i += 1\n140292021        rdi_1 = &rdi_1[1]\n14029202e        do while (i s< ((arg1[1] - rbx_1) s>> 3).d)\n140292048        return ",
+  "fetched_at": "2026-04-26T17:32:36Z"
+}

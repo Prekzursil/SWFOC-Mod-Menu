@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b0010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EscortEventClass * __thiscall EscortEventClass::EscortEventClass(EscortEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x15;\n  this->vftablePtr = &vftable;\n  (this->EscortEventClass_data).offset_0x0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:34:09Z"
+}

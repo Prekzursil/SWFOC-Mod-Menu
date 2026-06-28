@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b1fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GalacticModeClass::vfunction6(void)\n\n{\n  FUN_14035cfc0();\n  FUN_14021d090(&DAT_140a7d0a0,DAT_1407ffaf8);\n  FUN_14021d0b0(&DAT_140a7d0a0,DAT_1407ffaf8);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:06:48Z"
+}

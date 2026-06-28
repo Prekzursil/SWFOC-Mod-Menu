@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5160",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f517c        if (arg1 != 0xffffffff && arg2 != 0)\n1405f5183        struct AIDiagnosticsClass::VTable** rax_1 = operator new(0x70)\n1405f518b        struct AIDiagnosticsClass::TacticalAIManagerClass::VTable** result\n1405f518b        if (rax_1 == 0)\n1405f519a        result = nullptr\n1405f5195        result = sub_1405f4be0(rax_1)\n1405f51ac        if ((*result)->vFunc_10(result, arg1, arg2) != 0)\n1405f51c0        return result\n1405f51d2        return 0",
+  "fetched_at": "2026-04-26T17:22:29Z"
+}

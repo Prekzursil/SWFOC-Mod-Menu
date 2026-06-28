@@ -1,0 +1,7 @@
+{
+  "addr": "0x140775fec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _stricmp\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl _stricmp(char *_Str1,char *_Str2)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  \n  if (DAT_140b3c49c != 0) {\n    iVar1 = _stricmp_l(_Str1,_Str2,(_locale_t)0x0);\n    return iVar1;\n  }\n  if ((_Str1 != (char *)0x0) && (_Str2 != (char *)0x0)) {\n    iVar1 = __ascii_stricmp(_Str1,_Str2);\n    return iVar1;\n  }\n  puVar2 = __doserrno();\n  *puVar2 = 0x16;\n  FUN_1407711ac();\n  return 0x7fffffff;\n}",
+  "fetched_at": "2026-04-26T18:50:25Z"
+}

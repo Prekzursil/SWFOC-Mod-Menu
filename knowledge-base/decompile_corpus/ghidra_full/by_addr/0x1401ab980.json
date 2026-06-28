@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ab980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1401ab980(void)\n\n{\n  if (DAT_140a70631 != '\\0') {\n    _DAT_140a70634 = _DAT_140a70634 + 1;\n    DAT_140a70631 = '\\0';\n  }\n  if (DAT_140a70630 != '\\0') {\n    DAT_140a70631 = '\\x01';\n    DAT_140a70630 = '\\0';\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:41Z"
+}

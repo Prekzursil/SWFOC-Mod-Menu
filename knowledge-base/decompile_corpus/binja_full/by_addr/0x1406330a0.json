@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406330a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406330ab        struct BehaviorClass::EarthquakeTargetBehaviorClass::VTable** result = operator new(0x40)\n1406330b6        if (result == 0)\n1406330ee        return result\n1406330bb        sub_1404c32d0(result)\n1406330c7        *result = &EarthquakeTargetBehaviorClass::`vftable'{for `BehaviorClass'}\n1406330d1        result[1] = &EarthquakeTargetBehaviorClass::`vftable'{for `RefCountClass'}\n1406330dc        result[3] = &EarthquakeTargetBehaviorClass::`vftable'{for `SignalListenerClass'}\n1406330e8        return result",
+  "fetched_at": "2026-04-26T17:24:18Z"
+}

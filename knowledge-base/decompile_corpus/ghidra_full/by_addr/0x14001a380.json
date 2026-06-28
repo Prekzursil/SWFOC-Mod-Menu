@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a380(void)\n\n{\n  AttackEventClass::AttackEventClass((AttackEventClass *)&DAT_140b36bd0);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:06Z"
+}

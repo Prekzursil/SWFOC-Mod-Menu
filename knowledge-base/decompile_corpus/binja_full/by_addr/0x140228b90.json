@@ -1,0 +1,7 @@
+{
+  "addr": "0x140228b90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140228b9d        void* rbx_2 = (sx.q(arg2) << 6) + arg1\n140228ba4        int64_t result\n140228ba4        if (*(rbx_2 + 0x31) == 0)\n140228ba6        result.b = 0\n140228bad        return result\n140228bb2        if (*(rbx_2 + 0x54) == 0)\n140228bb8        AIL_resume_sample(*(rbx_2 + 0x28))\n140228bbe        *(rbx_2 + 0x31) = 0\n140228bc2        result.b = 1\n140228bc9        return result",
+  "fetched_at": "2026-04-26T17:29:28Z"
+}

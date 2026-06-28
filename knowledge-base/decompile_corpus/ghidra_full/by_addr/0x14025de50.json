@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025de50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14025de50(void)\n\n{\n  char cVar1;\n  undefined1 uVar2;\n  \n  cVar1 = FUN_14013ed10();\n  if (cVar1 != '\\0') {\n    return 0;\n  }\n  uVar2 = thunk_FUN_14018acb0();\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:14:48Z"
+}

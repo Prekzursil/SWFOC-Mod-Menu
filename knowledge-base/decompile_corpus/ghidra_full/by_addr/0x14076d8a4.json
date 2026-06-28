@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d8a4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __std_type_info_compare\n   \n   Library: Visual Studio 2019 Release */\n\nuint __std_type_info_compare(longlong param_1,longlong param_2)\n\n{\n  byte bVar1;\n  byte *pbVar2;\n  longlong lVar3;\n  \n  if (param_1 != param_2) {\n    pbVar2 = (byte *)(param_1 + 9);\n    lVar3 = (param_2 + 9) - (longlong)pbVar2;\n    do {\n      bVar1 = *pbVar2;\n      if (bVar1 != pbVar2[lVar3]) {\n        return -(uint)(bVar1 < pbVar2[lVar3]) | 1;\n      }\n      pbVar2 = pbVar2 + 1;\n    } while (bVar1 != 0);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:11:10Z"
+}

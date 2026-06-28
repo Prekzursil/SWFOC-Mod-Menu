@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ab060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404ab060(undefined8 param_1,longlong *param_2,undefined4 param_3,undefined4 param_4,\n                  undefined4 param_5,undefined4 param_6,undefined4 param_7)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  longlong lVar3;\n  \n  if ((param_2 != (longlong *)0x0) && (iVar1 = (**(code **)(*param_2 + 0x28))(param_2), iVar1 == 0))\n  {\n    param_2 = param_2 + 2;\n    uVar2 = FUN_1407d6520(param_2,\"Frequency\");\n    lVar3 = FUN_1407d64f0(param_2,uVar2);\n    *(undefined4 *)(lVar3 + 0x20) = param_3;\n    uVar2 = FUN_1407d6520(param_2,\"XAmplitude\");\n    lVar3 = FUN_1407d64f0(param_2,uVar2);\n    *(undefined4 *)(lVar3 + 0x20) = param_4;\n    uVar2 = FUN_1407d6520(param_2,\"YAmplitude\");\n    lVar3 = FUN_1407d64f0(param_2,uVar2);\n    *(undefined4 *)(lVar3 + 0x20) = param_5;\n    uVar2 = FUN_1407d6520(param_2,\"EaseIn\");\n    lVar3 = FUN_1407d64f0(param_2,uVar2);\n    *(undefined4 *)(lVar3 + 0x20) = param_6;\n    uVar2 = FUN_1407d6520(param_2,\"EaseOut\");\n    lVar3 = FUN_1407d64f0(param_2,uVar2);\n    *(undefined4 *)(lVar3 + 0x20) = param_7;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:05:17Z"
+}

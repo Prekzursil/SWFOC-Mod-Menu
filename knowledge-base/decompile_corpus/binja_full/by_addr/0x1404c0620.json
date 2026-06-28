@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c0620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c063b        char var_28[0x20]\n1404c063b        sscanf_s(&var_28, \"Random_Plot_%d\", zx.q(*arg1 - 1))\n1404c0645        int64_t rax = -1\n1404c0650        rax += 1\n1404c0657        do while (var_28[rax] != 0)\n1404c0663        int32_t rax_1 = sub_140215a30(&var_28, rax.d, 0)\n1404c0678        sub_14032ab70(data_140b15418 + 0xa0, rax_1)\n1404c0682        sub_14047ee20(&var_28)\n1404c0697        sub_1401ffb40(&data_140a13e20, 1, 2)\n1404c06bc        return sscanf_s(&var_28, \"%s%d\", *(arg1 + 0xe0))",
+  "fetched_at": "2026-04-26T17:30:07Z"
+}

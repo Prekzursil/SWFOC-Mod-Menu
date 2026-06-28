@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403906f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403906f0(longlong param_1)\n\n{\n  EarthquakeDataPackClass *pEVar1;\n  \n  if (*(longlong *)(param_1 + 0x168) == 0) {\n    pEVar1 = (EarthquakeDataPackClass *)FUN_140769c58(0x58);\n    if (pEVar1 != (EarthquakeDataPackClass *)0x0) {\n      pEVar1 = EarthquakeDataPackClass::EarthquakeDataPackClass(pEVar1);\n      *(EarthquakeDataPackClass **)(param_1 + 0x168) = pEVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x168) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:44Z"
+}

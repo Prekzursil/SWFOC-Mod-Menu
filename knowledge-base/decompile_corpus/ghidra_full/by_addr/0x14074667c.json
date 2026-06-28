@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074667c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14074667c(void)\n\n{\n  bad_cast local_28;\n  \n  std::bad_cast::bad_cast(&local_28);\n                    /* WARNING: Subroutine does not return */\n  _CxxThrowException(&local_28,(ThrowInfo *)&DAT_1409cb040);\n}",
+  "fetched_at": "2026-04-26T18:04:57Z"
+}

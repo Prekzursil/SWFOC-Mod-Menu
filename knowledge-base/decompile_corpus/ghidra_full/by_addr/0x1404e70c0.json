@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e70c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlanDefinitionManagerClass * __thiscall\nPlanDefinitionManagerClass::scalar_deleting_destructor\n          (PlanDefinitionManagerClass *this,uint param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  \n                    /* inlined destructor: PlanDefinitionManagerClass::~PlanDefinitionManagerClass\n                        */\n  this->vftablePtr = &vftable;\n  plVar1 = (this->DatabaseObjectManagerClass<class_PlanDefinitionClass>_data).offset_0x8;\n  plVar2 = (longlong *)*plVar1;\n  if (plVar2 != plVar1) {\n    do {\n      if ((longlong *)plVar2[6] != (longlong *)0x0) {\n        (*this->vftablePtr->vfunction4)(this,(longlong *)plVar2[6]);\n      }\n      plVar2 = (longlong *)*plVar2;\n    } while (plVar2 != (this->DatabaseObjectManagerClass<class_PlanDefinitionClass>_data).offset_0x8\n            );\n  }\n  FUN_140145610(&this->DatabaseObjectManagerClass<class_PlanDefinitionClass>_data);\n  DatabaseObjectManagerClass<class_PlanDefinitionClass>::\n  ~DatabaseObjectManagerClass<class_PlanDefinitionClass>\n            ((DatabaseObjectManagerClass<class_PlanDefinitionClass> *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:16:32Z"
+}

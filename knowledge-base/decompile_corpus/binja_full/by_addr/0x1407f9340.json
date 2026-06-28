@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f9340",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f9347        data_140a449a0 = &InstantiationMarshallerClass::`vftable'\n1407f934e        return &InstantiationMarshallerClass::`vftable'",
+  "fetched_at": "2026-04-26T17:38:23Z"
+}

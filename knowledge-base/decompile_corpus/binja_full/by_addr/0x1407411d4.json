@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407411d4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407411e8        void arg_8\n1407411e8        std::_Lockit::_Lockit(&arg_8, 0)\n1407411ed        int64_t i = *(arg1 + 0x18)\n14074122f        while (i != 0)\n1407411f7        i -= 1\n1407411fa        int64_t* rcx_1 = *(*(arg1 + 0x10) + (i << 3))\n140741201        if (rcx_1 != 0)\n140741226        int64_t* rax_5 = (*(*rcx_1 + 0x10))()\n140741216        if (rax_5 != 0)\n140741226        (**rax_5)(rax_5, 1, rax_5)\n140741235        free(*(arg1 + 0x10))\n14074124e        return std::_Lockit::~_Lockit(&arg_8)",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

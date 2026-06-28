@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c4af0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * FUN_1405c4af0(longlong *param_1,uint param_2)\n\n{\n  undefined *puVar1;\n  \n  if (*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) + 0xd4\n              ) < DAT_140b395d8) {\n    _Init_thread_header(&DAT_140b395d8);\n    if (DAT_140b395d8 == -1) {\n      atexit((_func_5014 *)&DAT_1407f5870);\n      _Init_thread_footer(&DAT_140b395d8);\n    }\n  }\n  puVar1 = (undefined *)(*param_1 + (ulonglong)param_2 * 8);\n  if ((ulonglong)(param_1[1] - *param_1 >> 3) <= (ulonglong)param_2) {\n    puVar1 = &DAT_140a44100;\n  }\n  return puVar1;\n}",
+  "fetched_at": "2026-04-26T18:44:42Z"
+}

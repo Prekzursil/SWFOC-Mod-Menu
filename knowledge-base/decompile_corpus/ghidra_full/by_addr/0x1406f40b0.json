@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f40b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCancelSpecialAbilityClass::vfunction21_for_IXMLLoadableClass(CancelSpecialAbilityClass *this)\n\n{\n  longlong *in_RDX;\n  \n                    /* WARNING: Could not recover jumptable at 0x0001406f40b3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction31_for_IXMLLoadableClass)(this,in_RDX);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:01Z"
+}

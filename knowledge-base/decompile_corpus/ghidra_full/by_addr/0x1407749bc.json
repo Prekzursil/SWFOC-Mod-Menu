@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407749bc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Different Base Names\n    __stdio_common_vfprintf\n    __stdio_common_vfprintf_p\n    __stdio_common_vfprintf_s\n    __stdio_common_vfwprintf\n     6 names - too many to list\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8\nFID_conflict___stdio_common_vfwprintf\n          (undefined8 param_1,longlong param_2,longlong param_3,undefined8 param_4,\n          undefined8 param_5)\n\n{\n  ulong *puVar1;\n  undefined8 uVar2;\n  longlong local_res8;\n  undefined8 local_res10;\n  undefined8 local_res18;\n  longlong local_res20;\n  undefined8 local_48;\n  longlong local_40;\n  longlong local_38;\n  longlong *local_30;\n  undefined8 *local_28;\n  undefined8 *local_20;\n  longlong *local_18;\n  undefined8 *local_10;\n  \n  local_48 = param_5;\n  local_res8 = param_2;\n  local_res10 = param_4;\n  local_res18 = param_1;\n  local_res20 = param_3;\n  if ((param_2 == 0) || (param_3 == 0)) {\n    puVar1 = __doserrno();\n    *puVar1 = 0x16;\n    FUN_1407711ac();\n    uVar2 = 0xffffffff;\n  }\n  else {\n    local_30 = &local_res8;\n    local_28 = &local_res10;\n    local_20 = &local_res18;\n    local_18 = &local_res20;\n    local_10 = &local_48;\n    local_40 = param_2;\n    local_38 = param_2;\n    uVar2 = operator()<>(&param_5,&local_38,&local_30,&local_40);\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:50:19Z"
+}

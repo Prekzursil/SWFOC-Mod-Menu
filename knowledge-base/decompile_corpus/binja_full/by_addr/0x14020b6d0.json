@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020b6d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020b6e3        if (not(arg1 <= 180f))\n14020b6e5        arg1 = arg1 - 360f\n14020b6ec        do while (arg1 > 180f)\n14020b6f9        if (-180f < arg1)\n14020b6f9        return \n14020b700        arg1 = arg1 + 360f\n14020b707        do while (-180f >= arg1)\n14020b709        return ",
+  "fetched_at": "2026-04-26T17:28:08Z"
+}

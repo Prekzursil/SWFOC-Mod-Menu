@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dc410",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* AIPerceptionSystemClass member function inherited by GalacticPerceptionSystemClass\n   AIPerceptionSystemClass member function inherited by LandPerceptionSystemClass\n   AIPerceptionSystemClass member function inherited by SpacePerceptionSystemClass */\n\nvoid __thiscall AIPerceptionSystemClass::vfunction2(AIPerceptionSystemClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x18);\n  if (puVar1 != (undefined8 *)0x0) {\n    puVar1[1] = this;\n    *puVar1 = &AIPerceptionSystemDiagnosticsNodeClass::vftable;\n    puVar1[2] = 0;\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:08Z"
+}

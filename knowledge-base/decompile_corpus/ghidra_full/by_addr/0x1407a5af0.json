@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5af0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _tr_init\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _tr_init(longlong param_1)\n\n{\n  *(longlong *)(param_1 + 0xb40) = param_1 + 0xbc;\n  *(undefined ***)(param_1 + 0xb50) = &PTR_DAT_1408e0598;\n  *(longlong *)(param_1 + 0xb58) = param_1 + 0x9b0;\n  *(undefined ***)(param_1 + 0xb68) = &PTR_DAT_1408e05b8;\n  *(longlong *)(param_1 + 0xb70) = param_1 + 0xaa4;\n  *(undefined **)(param_1 + 0xb80) = &DAT_1408e05d8;\n  *(undefined2 *)(param_1 + 0x1710) = 0;\n  *(undefined4 *)(param_1 + 0x1714) = 0;\n  init_block();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:35Z"
+}

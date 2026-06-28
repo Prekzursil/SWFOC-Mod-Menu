@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076af38",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ThreadClass::vfunction2(void)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_14076af2c();\n  if (lVar1 != 0) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_140788f54();\n}",
+  "fetched_at": "2026-04-26T18:10:28Z"
+}

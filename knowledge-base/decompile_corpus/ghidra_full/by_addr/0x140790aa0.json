@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790aa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _exception_enabled\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nbool _exception_enabled(uint param_1,ulonglong param_2)\n\n{\n  uint uVar1;\n  \n  uVar1 = param_1 & 0x1f;\n  if (((param_1 & 8) == 0) || (-1 < (char)param_2)) {\n    if (((param_1 & 4) == 0) || ((param_2 >> 9 & 1) == 0)) {\n      if (((param_1 & 1) == 0) || ((param_2 >> 10 & 1) == 0)) {\n        if (((param_1 & 2) != 0) && ((param_2 >> 0xb & 1) != 0)) {\n          if ((param_1 & 0x10) != 0) {\n            _set_statfp(0x10);\n          }\n          uVar1 = param_1 & 0x1d;\n        }\n      }\n      else {\n        _set_statfp(8);\n        uVar1 = param_1 & 0x1e;\n      }\n    }\n    else {\n      _set_statfp();\n      uVar1 = param_1 & 0x1b;\n    }\n  }\n  else {\n    _set_statfp(1);\n    uVar1 = param_1 & 0x17;\n  }\n  if (((param_1 & 0x10) != 0) && ((param_2 >> 0xc & 1) != 0)) {\n    _set_statfp(0x20);\n    uVar1 = uVar1 & 0xffffffef;\n  }\n  return uVar1 == 0;\n}",
+  "fetched_at": "2026-04-26T18:52:40Z"
+}

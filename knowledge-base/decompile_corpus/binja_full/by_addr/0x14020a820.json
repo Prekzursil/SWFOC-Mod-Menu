@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020a830        *arg1 = &MultiLinkedListMember::`vftable'\n14020a83a        int64_t* i\n14020a833        i = arg1[1]\n14020a83a        while (i != 0)\n14020a841        void* rbx_1 = i[4]\n14020a845        int64_t* i_1 = nullptr\n14020a84c        if (i[4] == rbx_1)\n14020a863        *(*i + 8) = i[1]\n14020a86e        *i[1] = *i\n14020a871        int64_t rcx_2 = i[2]\n14020a878        if (i_1 == 0)\n14020a880        arg1[1] = rcx_2\n14020a87a        i_1[2] = rcx_2\n14020a88c        j_sub_1407864b8(i)\n14020a891        *(rbx_1 + 0x30) -= 1\n14020a894        *(rbx_1 + 0x38) = 0xfffffc19\n14020a894        break\n14020a84e        i_1 = i\n14020a851        i = i[2]\n14020a858        do while (i != 0)\n14020a89b        i = arg1[1]\n14020a8ae        return i",
+  "fetched_at": "2026-04-26T17:28:07Z"
+}

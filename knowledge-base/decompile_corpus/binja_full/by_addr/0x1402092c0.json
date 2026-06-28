@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402092c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402092d9        EnterCriticalSection(arg1 + 0xa0)\n1402092eb        int64_t* arg_8\n1402092eb        if (sub_140209670(arg1 + 8) != 0)\n140209323        int64_t i\n1402092f9        void* rax_1 = sub_14020ac80(arg1 + 8, &arg_8)\n14020930a        if (rax_1 != 0 && rax_1 != 0x50)\n140209314        (*(*(rax_1 + 0x10) + 8))(rax_1 + 0x10)\n14020931b        i = sub_140209670(arg1 + 8)\n140209323        do while (i != 0)\n140209331        if (sub_140209670(arg1 + 0x50) != 0)\n140209373        int64_t i_1\n140209349        void* rax_4 = sub_14020ac80(arg1 + 0x50, &arg_8)\n14020935a        if (rax_4 != 0 && rax_4 != 0x50)\n140209364        (*(*(rax_4 + 0x10) + 8))(rax_4 + 0x10)\n14020936b        i_1 = sub_140209670(arg1 + 0x50)\n140209373        do while (i_1 != 0)\n140209375        int64_t rcx_11 = *(arg1 + 0x98)\n14020937f        if (rcx_11 != 0)\n140209381        j_sub_1407864b8(rcx_11)\n140209386        *(arg1 + 0x98) = 0\n1402093a7        return LeaveCriticalSection(arg1 + 0xa0) __tailcall",
+  "fetched_at": "2026-04-26T17:28:01Z"
+}

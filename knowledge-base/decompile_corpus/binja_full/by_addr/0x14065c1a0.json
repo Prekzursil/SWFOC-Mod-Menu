@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065c1a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065c1b0        int64_t* rcx = *(arg1 + 0x98)\n14065c1ba        if (rcx == 0)\n14065c1bc        int64_t rax\n14065c1bc        rax.b = 0\n14065c1c8        return rax\n14065c1ef        double zmm1 = _mm_cvtepi32_pd(zx.q(sub_1403f8aa0((*(*rcx + 0x10))(rcx, 3), *(arg1 + 0x98))))\n14065c1f3        *arg3 = zmm1\n14065c202        uint64_t rax_4\n14065c202        rax_4.b = 1\n14065c208        *arg3 = zmm1 f/ float.d(zx.q(data_140b158f8))\n14065c211        return rax_4",
+  "fetched_at": "2026-04-26T17:07:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f2540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1407f2540(void)\n\n{\n  if (DAT_140b311a8 != (DynamicVectorClass<class_Vector2> *)0x0) {\n    DynamicVectorClass<class_Vector2>::DynamicVectorClass<class_Vector2>(DAT_140b311a8,3);\n    DAT_140b311a8 = (DynamicVectorClass<class_Vector2> *)0x0;\n    _DAT_140b311b0 = 0;\n    return;\n  }\n  _DAT_140b311b0 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:29Z"
+}

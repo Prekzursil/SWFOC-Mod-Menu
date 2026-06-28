@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035cd20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14035cd32        if (not(arg2.d f<= 0f))\n14035cd39        int32_t rax = sub_1404c2030()\n14035cd66        return zx.q((int.q(sub_1404c2050() f* arg2.d + 0.5f)).d + rax)\n14035cd67        arg2.d f- -1f\n14035cd70        if (not(is_unordered.d(arg2.d, -1f)) && not(arg2.d f!= -1f))\n14035cd80        return 0xffffffff\n14035cd8c        return 0",
+  "fetched_at": "2026-04-26T17:11:57Z"
+}

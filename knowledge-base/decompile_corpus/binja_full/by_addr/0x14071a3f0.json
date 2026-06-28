@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071a3f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071a3fa        struct SpecialAbilityClass::ProximityMinesAbilityClass::VTable** result = arg1\n14071a3fd        sub_14048c780(arg1)\n14071a40b        *result = &ProximityMinesAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071a41c        result[0x2f] = 0\n14071a423        result[1] = &ProximityMinesAbilityClass::`vftable'{for `RefCountClass'}\n14071a427        result[0x30].d = 0\n14071a42d        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x31])\n14071a439        result[0x33].d = 0\n14071a43f        sub_1404c3ee0(&result[0x34])\n14071a451        return result",
+  "fetched_at": "2026-04-26T17:28:01Z"
+}

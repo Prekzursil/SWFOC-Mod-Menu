@@ -1,0 +1,7 @@
+{
+  "addr": "0x140446140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<enum_ShipClassType> * __thiscall\nDynamicVectorClass<enum_ShipClassType>::scalar_deleting_destructor\n          (DynamicVectorClass<enum_ShipClassType> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<enum_ShipClassType>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:31Z"
+}

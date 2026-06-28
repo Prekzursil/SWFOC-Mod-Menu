@@ -1,0 +1,7 @@
+{
+  "addr": "0x140177540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140177540(void)\n\n{\n  BOOL BVar1;\n  tagPOINT local_res8 [4];\n  tagCURSORINFO local_28;\n  \n  if ((DAT_140a6d421 != '\\0') && (DAT_140a6d480 != (longlong *)0x0)) {\n    local_28.cbSize = 0x18;\n    local_28.flags = 0;\n    BVar1 = GetCursorInfo(&local_28);\n    if (BVar1 == 0) {\n      local_res8[0].x = 0;\n      local_res8[0].y = 0;\n    }\n    else {\n      local_res8[0].x = local_28.ptScreenPos.x;\n      local_res8[0].y = local_28.ptScreenPos.y;\n    }\n    if (DAT_140a6d420 == '\\0') {\n      ScreenToClient(DAT_140a6e658,local_res8);\n    }\n    (**(code **)(*DAT_140a6d480 + 0x58))\n              (DAT_140a6d480,(ulonglong)local_res8[0] & 0xffffffff,local_res8[0].y,0);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:27:25Z"
+}

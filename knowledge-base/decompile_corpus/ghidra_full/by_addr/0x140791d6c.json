@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791d6c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _close_nolock\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl _close_nolock(int _FileHandle)\n\n{\n  BOOL BVar1;\n  DWORD DVar2;\n  int iVar3;\n  intptr_t iVar4;\n  intptr_t iVar5;\n  HANDLE hObject;\n  \n  iVar4 = _get_osfhandle(_FileHandle);\n  if (iVar4 != -1) {\n    if (((_FileHandle == 1) && ((*(byte *)(DAT_140b3c4d0 + 200) & 1) != 0)) ||\n       ((_FileHandle == 2 && ((*(byte *)(DAT_140b3c4d0 + 0x80) & 1) != 0)))) {\n      iVar4 = _get_osfhandle(2);\n      iVar5 = _get_osfhandle(1);\n      if (iVar5 == iVar4) goto LAB_140791d86;\n    }\n    hObject = (HANDLE)_get_osfhandle(_FileHandle);\n    BVar1 = CloseHandle(hObject);\n    if (BVar1 == 0) {\n      DVar2 = GetLastError();\n      goto LAB_140791de4;\n    }\n  }\nLAB_140791d86:\n  DVar2 = 0;\nLAB_140791de4:\n  _free_osfhnd(_FileHandle);\n  *(undefined1 *)\n   ((&DAT_140b3c4d0)[(longlong)_FileHandle >> 6] + 0x38 + (ulonglong)(_FileHandle & 0x3f) * 0x48) =\n       0;\n  if (DVar2 == 0) {\n    iVar3 = 0;\n  }\n  else {\n    __acrt_errno_map_os_error(DVar2);\n    iVar3 = -1;\n  }\n  return iVar3;\n}",
+  "fetched_at": "2026-04-26T18:52:50Z"
+}

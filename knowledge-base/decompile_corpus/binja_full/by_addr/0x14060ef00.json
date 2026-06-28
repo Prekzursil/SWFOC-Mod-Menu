@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060ef00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14060ef13        void* i\n14060ef13        if (arg2 != 0)\n14060ef1b        i = (*(*arg2 + 0x20))(arg2)\n14060ef21        while (i != 0)\n14060ef33        if (i == &data_140a44290)\n14060ef51        (**arg2)(arg2)\n14060ef53        float zmm0 = arg2[5].d\n14060ef58        float temp0 = *(arg1 + 0x28)\n14060ef58        zmm0 - temp0\n14060ef5e        if (not(is_unordered.d(zmm0, temp0)) && not(zmm0 != temp0))\n14060ef60        zmm0 = *(arg2 + 0x2c)\n14060ef65        float temp1_1 = *(arg1 + 0x2c)\n14060ef65        zmm0 - temp1_1\n14060ef6b        if (not(is_unordered.d(zmm0, temp1_1)) && not(zmm0 != temp1_1))\n14060ef6d        zmm0 = arg2[6].d\n14060ef72        float temp2_1 = *(arg1 + 0x30)\n14060ef72        zmm0 - temp2_1\n14060ef78        if (not(is_unordered.d(zmm0, temp2_1)) && not(zmm0 != temp2_1))\n14060ef7a        int64_t rdx = *arg2\n14060ef83        (*(rdx + 8))(arg2, rdx)\n14060ef94        return 1\n14060ef95        int64_t rdx_1 = *arg2\n14060ef9e        (*(rdx_1 + 8))(arg2, rdx_1)\n14060efaf        return 0\n14060ef35        i = *(i + 8)\n14060ef3e        i.b = 0\n14060ef4a        return i",
+  "fetched_at": "2026-04-26T17:23:10Z"
+}

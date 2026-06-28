@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a59f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a59ff        int64_t lpMem = *arg1\n1403a5a0a        if (arg2 != 0)\n1403a5a5d        uint64_t dwBytes = sx.q(arg2) << 3\n1403a5a61        HANDLE hHeap = GetProcessHeap()\n1403a5a6f        if (lpMem != &arg1[1])\n1403a5a99        int32_t* rax = HeapReAlloc(hHeap, HEAP_NONE, lpMem, dwBytes)\n1403a5a9f        char rcx_3 = arg1[2].b\n1403a5aa3        char rdx_1 = arg2\n1403a5aa8        *arg1 = rax\n1403a5aab        if (rcx_3 s< arg2)\n1403a5aab        rdx_1 = rcx_3\n1403a5aae        arg1[2].b = rdx_1\n1403a5a74        int32_t* rax_2 = HeapAlloc(hHeap, HEAP_NONE, dwBytes)\n1403a5a82        int64_t r8_4 = sx.q(arg1[2].b) << 3\n1403a5a89        *arg1 = rax_2\n1403a5a8c        memcpy(rax_2, &arg1[1], r8_4)\n1403a5abb        *(arg1 + 0x11) = arg2\n1403a5a0f        if (lpMem != 0)\n1403a5a1c        if (lpMem != &arg1[1])\n1403a5a2c        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1403a5a32        *arg1 = &arg1[1]\n1403a5a35        arg1[2].w = 0x100\n1403a5ace        return ",
+  "fetched_at": "2026-04-26T17:24:03Z"
+}

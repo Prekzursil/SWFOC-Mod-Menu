@@ -1,0 +1,7 @@
+{
+  "addr": "0x140036da0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140036da6        int64_t* rsi = data_140b15418\n140036db0        if (rsi == 0)\n140036db0        return \n140036dc3        int32_t i_1 = 0\n140036dc5        int32_t i = 0\n140036e10        while (i s< 3)\n140036de4        void* rax_2 = sub_14035e4d0(rsi, sub_140294a70(&data_140a16fd0), i)\n140036dec        if (rax_2 != 0)\n140036dee        void* rax_3 = *(rax_2 + 0x158)\n140036dfe        if (rax_3 != 0 && *(rax_3 + 0x28) == 1)\n140036e00        *(rax_3 + 0x28) = 0\n140036e07        i += 1\n140036e21        if ((*(*rsi + 0xe0))(rsi).d != 2 || *(*(sub_140294a40(&data_140a16fd0) + 0x68) + 0x10b) != 1)\n140036e3e        return \n140036e44        void* rcx_6 = data_140b15418\n140036e61        double var_18 = 0.0\n140036e66        int32_t var_10_1 = 0\n140036e8e        void* rax = sub_1402a9ff0(*(rcx_6 + 0x18), 0x5c, 0xffffffff, 0xffffffff, &var_18, 0, 0x7fffffff, 0xffffffff)\n140036e9e        if (rax == 0 || *(rax + 0x10) s<= 0)\n140036e9e        return \n140036ea0        int64_t* rbx_1 = nullptr\n140036ea7        void* rsi_1 = *(rbx_1 + *(rax + 8))\n140036eae        if (rsi_1 != 0 && sub_14039a2c0(rsi_1, sub_140294a40(&data_140a16fd0), 0).b == 1)\n140036ede        rax = sub_140394e60(rsi_1)\n140036ee6        if (rax != 0)\n140036eed        sub_140387d20(rax, 0)\n140036ee6        break\n140036ece        i_1 += 1\n140036ed0        rbx_1 = &rbx_1[1]\n140036ed7        do while (i_1 s< *(rax + 0x10))\n140036f06        return ",
+  "fetched_at": "2026-04-26T16:52:52Z"
+}

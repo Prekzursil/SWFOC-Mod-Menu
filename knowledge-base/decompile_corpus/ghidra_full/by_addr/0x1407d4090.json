@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d4090",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_1407d4090(int param_1,int param_2)\n\n{\n  int iVar1;\n  uint uVar2;\n  \n  iVar1 = tolower(param_2);\n  switch(iVar1) {\n  case 0x61:\n    uVar2 = isalpha(param_1);\n    break;\n  default:\n    return (uint)(param_2 == param_1);\n  case 99:\n    uVar2 = iscntrl(param_1);\n    break;\n  case 100:\n    uVar2 = isdigit(param_1);\n    break;\n  case 0x6c:\n    uVar2 = islower(param_1);\n    break;\n  case 0x70:\n    uVar2 = ispunct(param_1);\n    break;\n  case 0x73:\n    uVar2 = isspace(param_1);\n    break;\n  case 0x75:\n    uVar2 = isupper(param_1);\n    break;\n  case 0x77:\n    uVar2 = isalnum(param_1);\n    break;\n  case 0x78:\n    uVar2 = isxdigit(param_1);\n    break;\n  case 0x7a:\n    uVar2 = (uint)(param_1 == 0);\n  }\n  iVar1 = islower(param_2);\n  if (iVar1 == 0) {\n    uVar2 = (uint)(uVar2 == 0);\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:58:19Z"
+}

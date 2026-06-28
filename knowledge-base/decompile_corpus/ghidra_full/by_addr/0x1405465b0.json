@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405465b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall ApplyMarkupClass::vfunction5(void)\n\n{\n  return &DAT_140a445a0;\n}",
+  "fetched_at": "2026-04-26T18:35:34Z"
+}

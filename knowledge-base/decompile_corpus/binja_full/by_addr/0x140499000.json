@@ -1,0 +1,7 @@
+{
+  "addr": "0x140499000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140499013        int64_t rax = sub_140294bc0(&data_140a16fd0, *(arg1 + 0x20))\n14049901b        if (rax == 0)\n140499025        return (zx.o(0)).d\n140499030        if (sub_140289050(rax) == 0)\n14049906b        return *(arg1 + 0x28)\n140499060        return _mm_max_ss(0, _mm_min_ss(0x3f800000, 1f - *(arg1 + 0x1c) f/ *(arg1 + 0x10))) f* *(arg1 + 0x28)",
+  "fetched_at": "2026-04-26T17:29:15Z"
+}

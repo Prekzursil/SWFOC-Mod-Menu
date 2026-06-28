@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014e810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14014e810(undefined8 param_1)\n\n{\n  undefined8 uVar1;\n  \n  uVar1 = FUN_1401427f0(DAT_140a62700,\"w_shadow_blob.tga\",1,0,0);\n  FUN_14014e540(param_1,uVar1,3);\n  uVar1 = FUN_1401427f0(DAT_140a62700,\"w_light_blob.tga\",1,0,0);\n  FUN_14014e540(param_1,uVar1,1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140372c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140372c27        char rax = sub_14028afb0(&data_140b153e0)\n140372c2e        void* rax_1\n140372c2e        if (rax != 1)\n140372c37        rax_1 = 0x9b8\n140372c3c        if (rax == 1 || data_140b15490 == 1)\n140372c3e        rax_1 = 0x9d0\n140372c43        int64_t rcx = *(rax_1 + arg1 + 8)\n140372c48        int64_t* rdx = rax_1 + arg1\n140372c59        if (arg2 == 0)\n140372c5e        int64_t rax_2\n140372c5e        int64_t rdx_1\n140372c5e        rdx_1:rax_2 = muls.dp.q(0x6666666666666667, rcx - *rdx)\n140372c61        int64_t rdx_2 = rdx_1 s>> 4\n140372c79        return (rdx_2 u>> 0x3f) + rdx_2\n140372c7a        int64_t* r9 = *rdx\n140372c7d        int32_t r8 = 0\n140372c91        int32_t rdx_5 = ((rcx - r9) s/ 0x28).d\n140372c96        if (rdx_5 s> 0)\n140372c98        int64_t* rax_9 = r9\n140372ca3        if (*rax_9 == arg2)\n140372cd4        return zx.q(r9[sx.q(r8) * 5 + 3].d)\n140372ca5        r8 += 1\n140372ca8        rax_9 = &rax_9[5]\n140372caf        do while (r8 s< rdx_5)\n140372cbd        return 0",
+  "fetched_at": "2026-04-26T17:16:15Z"
+}

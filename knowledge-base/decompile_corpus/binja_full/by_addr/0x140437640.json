@@ -1,0 +1,7 @@
+{
+  "addr": "0x140437640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140437653        *arg1 = &NebulaBehaviorClass::`vftable'{for `BehaviorClass'}\n140437660        arg1[1] = &NebulaBehaviorClass::`vftable'{for `RefCountClass'}\n14043766b        arg1[3] = &NebulaBehaviorClass::`vftable'{for `SignalListenerClass'}\n14043766f        sub_1404c3310(arg1)\n140437677        if ((arg2 & 1) != 0)\n140437681        j_sub_1407864b8(arg1)\n140437693        return arg1",
+  "fetched_at": "2026-04-26T17:27:08Z"
+}

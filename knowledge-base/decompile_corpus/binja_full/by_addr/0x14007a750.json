@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007a750",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007a75f        int32_t rdi = 0\n14007a768        *arg1 = &DynamicVectorClass<struct InternetPlayerStruct::ClanStruct>::`vftable'\n14007a76e        int32_t rax = *(arg1 + 0x14)\n14007a774        arg1[1] = 0\n14007a778        arg1[2].d = 0\n14007a782        *(arg1 + 0x14) ^= (rax ^ *(arg2 + 0x14)) & 0x7fffffff\n14007a78f        int32_t rax_6 = ((*(arg1 + 0x14) ^ *(arg2 + 0x14)) & 0x7fffffff) ^ *(arg2 + 0x14)\n14007a792        *(arg1 + 0x14) = rax_6\n14007a798        int32_t rdx_1 = (rax_6 * 2) s>> 1\n14007a79a        if (rdx_1 != 0)\n14007a7a2        sub_14002cc80(arg1, rdx_1, 0, 1)\n14007a7a7        int32_t rax_7 = *(arg2 + 0x10)\n14007a7ac        if (rax_7 s> 0)\n14007a7b3        int64_t rbx_1 = 0\n14007a7c8        int32_t* r8_2 = *(arg2 + 8) + rbx_1\n14007a7cb        int32_t* rcx_1 = arg1[1] + rbx_1\n14007a7d5        *rcx_1 = *r8_2\n14007a7de        if (&rcx_1[2] != &r8_2[2])\n14007a7e5        int32_t* rdx_2 = &r8_2[2]\n14007a7e8        if (*(r8_2 + 0x20) u>= 0x10)\n14007a7ea        rdx_2 = *(r8_2 + 8)\n14007a7f1        sub_140022730(&rcx_1[2], rdx_2, *(r8_2 + 0x18))\n14007a7f6        rax_7 = *(arg2 + 0x10)\n14007a7f9        rdi += 1\n14007a7fb        rbx_1 += 0x28\n14007a801        do while (rdi s< rax_7)\n14007a808        arg1[2].d = rax_7\n14007a81d        return arg1",
+  "fetched_at": "2026-04-26T16:56:53Z"
+}

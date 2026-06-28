@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403903d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403903d6        struct BaseDataPackClass::BuzzDroidsDataPackClass::VTable** rax = *(arg1 + 0x228)\n1403903e3        if (rax == 0)\n1403903e8        rax = operator new(zx.q((&rax[8]).d))\n1403903f0        if (rax != 0)\n1403903f5        struct BaseDataPackClass::BuzzDroidsDataPackClass::VTable** rax_1 = GSI1::GSI1(rax)\n1403903fa        *(arg1 + 0x228) = rax_1\n140390406        return rax_1\n140390407        *(arg1 + 0x228) = rax\n140390413        return rax",
+  "fetched_at": "2026-04-26T17:21:36Z"
+}

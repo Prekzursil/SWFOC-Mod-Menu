@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f83b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f83cc        if (arg2 == 0 || arg3 == 0)\n1403f84f0        int512_t result\n1403f84f0        result.o = zx.o(0)\n1403f84f8        return result\n1403f83d2        void* rcx = *(arg2 + 0x298)\n1403f83ee        uint128_t zmm7\n1403f83ee        if (rcx != 0)\n1403f83fe        zmm7 = _mm_cvtepi32_ps(zx.o(sub_1403733c0(rcx, arg2)))\n1403f83f0        zmm7 = zx.o(0)\n1403f8401        void* rax_2 = *(arg2 + 0xb8)\n1403f840b        if (rax_2 != 0)\n1403f840d        zmm7.d = zmm7.d f* *(rax_2 + 0x2a0)\n1403f8421        zmm7.d = zmm7.d f+ 0f\n1403f8428        float zmm0\n1403f8428        int512_t zmm1\n1403f8428        float zmm6\n1403f8428        float zmm7_1\n1403f8428        zmm0, zmm1, zmm6, zmm7_1 = sub_1403f4f90(arg1, arg2, nullptr)\n1403f842d        void* rcx_2 = *(arg2 + 0x298)\n1403f8438        int64_t rsi = *(arg2 + 0xb8)\n1403f8442        if (rcx_2 != 0)\n1403f8457        _mm_cvtepi32_ps(zx.o(sub_1403733c0(rcx_2, arg2)))\n1403f8476        int32_t rcx_3 = *(sub_140294d30(&data_140a16fd0, sub_140331cc0(&data_140a172d0)) + 0x4c)\n1403f8481        if (*(rsi + 0x6c) != rcx_3)\n1403f8490        zmm1.o = zx.o(0)\n1403f8493        zmm1.d = float.s(zx.q(data_140b158f0))\n1403f849f        (*(data_140b15928 + 0x10))(&data_140b15928, zmm1)\n1403f84c4        float zmm0_1\n1403f84c4        float zmm7_2\n1403f84c4        zmm0_1, zmm7_2 = sub_1403f6210(arg1, arg2, nullptr, 1)\n1403f84ea        return zmm7_2 + zmm0_1",
+  "fetched_at": "2026-04-26T17:25:28Z"
+}

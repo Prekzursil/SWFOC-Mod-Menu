@@ -1,0 +1,7 @@
+{
+  "addr": "0x14069d880",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall MarkupBlockStatus::vfunction2(MarkupBlockStatus *this,longlong param_1)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  \n  lVar1 = this->offset_0x10;\n  uVar2 = 0;\n  if ((longlong)this->offset_0x18 - lVar1 >> 3 != 0) {\n    do {\n      if (*(longlong *)(lVar1 + uVar2 * 8) == param_1) {\n        *(undefined8 *)(lVar1 + uVar2 * 8) = 0;\n      }\n      lVar1 = this->offset_0x10;\n      uVar2 = (ulonglong)((int)uVar2 + 1);\n    } while (uVar2 < (ulonglong)((longlong)this->offset_0x18 - lVar1 >> 3));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:00Z"
+}

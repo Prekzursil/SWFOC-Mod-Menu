@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5c70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a5c70        uint32_t result = *(arg1 + 0x1714)\n1407a5c7c        if (result == 0x10)\n1407a5c8d        *(zx.q(*(arg1 + 0x28)) + *(arg1 + 0x10)) = *(arg1 + 0x1710)\n1407a5c91        *(arg1 + 0x28) += 1\n1407a5ca3        *(zx.q(*(arg1 + 0x28)) + *(arg1 + 0x10)) = *(arg1 + 0x1711)\n1407a5ca6        *(arg1 + 0x28) += 1\n1407a5cac        *(arg1 + 0x1714) = 0\n1407a5cb3        *(arg1 + 0x1710) = 0\n1407a5cbb        return 0\n1407a5cbf        if (result s>= 8)\n1407a5cd0        *(zx.q(*(arg1 + 0x28)) + *(arg1 + 0x10)) = *(arg1 + 0x1710)\n1407a5cd3        *(arg1 + 0x28) += 1\n1407a5cd7        result = zx.d(*(arg1 + 0x1711))\n1407a5cdf        *(arg1 + 0x1714) -= 8\n1407a5ce7        *(arg1 + 0x1710) = result.w\n1407a5cef        return result",
+  "fetched_at": "2026-04-26T17:32:27Z"
+}

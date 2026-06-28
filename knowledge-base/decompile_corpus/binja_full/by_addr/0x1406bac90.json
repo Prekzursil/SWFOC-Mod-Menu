@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bac90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406baca3        *arg1 = &ReferenceListClass<class PlanBehaviorClass>::`vftable'{for `GenericMultiLinkedList'}\n1406bacb1        if (sub_14053bd80(arg1) != 0)\n1406bacdb        int64_t i\n1406bacbb        int64_t* arg_8\n1406bacbb        void* rax_1 = sub_14020ac80(arg1, &arg_8)\n1406bacc3        if (rax_1 != 0)\n1406baccd        (*(*(rax_1 + 0x10) + 8))(rax_1 + 0x10)\n1406bacd3        i = sub_14053bd80(arg1)\n1406bacdb        do while (i != 0)\n1406bace0        sub_14020a960(arg1)\n1406bace9        if ((arg2 & 1) != 0)\n1406bacf3        j_sub_1407864b8(arg1)\n1406bad05        return arg1",
+  "fetched_at": "2026-04-26T17:24:53Z"
+}

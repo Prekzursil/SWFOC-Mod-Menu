@@ -1,0 +1,7 @@
+{
+  "addr": "0x140594440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140594447        return \"SpawnSquadronBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:36:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073eef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14073ef0a        if (*(arg1 + 0x38) != 0)\n14073ef0c        int64_t* rbx_1 = *(arg3 + 0x10)\n14073ef17        int64_t r8_2 = (*(arg3 + 0x18) - rbx_1) s>> 3\n14073ef1f        if (r8_2 != 1)\n14073ef2b        sub_140248190(arg2, \"StoryEventWrapper::Set_Reward_Type -- invalid number of parameters.  Expected 1, got %d.\", r8_2)\n14073ef41        return 0\n14073ef42        int64_t* rbx_2 = *rbx_1\n14073ef48        if (rbx_2 != 0)\n14073ef50        void* i\n14073ef50        i, r8_2 = (*(*rbx_2 + 0x20))(rbx_2)\n14073ef56        while (i != 0)\n14073ef63        if (i == &data_140a157d0)\n14073ef95        (**rbx_2)(rbx_2)\n14073ef9c        void* rcx_4 = &rbx_2[2]\n14073efa0        if (rbx_2[5] u>= 0x10)\n14073efa2        rcx_4 = *rcx_4\n14073efae        *(*(arg1 + 0x38) + 0x3c) = sub_14045c3f0(rcx_4)\n14073efb7        (*(*rbx_2 + 8))(rbx_2)\n14073efcb        return 0\n14073ef65        i = *(i + 8)\n14073ef78        sub_140248190(arg2, \"StoryEventWrapper::Set_Reward_Type -- invalid type for parameter 1.  Expected string.\", r8_2)\n14073ef8e        return 0",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

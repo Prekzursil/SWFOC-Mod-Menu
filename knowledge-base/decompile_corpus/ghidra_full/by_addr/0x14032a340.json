@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032a340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14032a340(undefined8 param_1,undefined8 param_2,longlong param_3)\n\n{\n  longlong *plVar1;\n  undefined4 local_res18 [4];\n  \n  plVar1 = *(longlong **)(param_3 + 0x68);\n  if (0xf < (ulonglong)plVar1[3]) {\n    plVar1 = (longlong *)*plVar1;\n  }\n  FUN_140327b10(\"STORY - %s LOST LAND BATTLE\\r\\n\",plVar1);\n  local_res18[0] = 0;\n  FUN_14032e5f0(param_1,0x14,param_3,local_res18,param_2);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:42Z"
+}

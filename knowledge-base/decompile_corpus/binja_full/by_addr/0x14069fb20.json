@@ -1,0 +1,7 @@
+{
+  "addr": "0x14069fb20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14069fb38        *arg1 = &ReinforceBlockStatus::`vftable'{for `BlockingStatus'}\n14069fb45        arg1[6] = &ReinforceBlockStatus::`vftable'{for `SignalListenerClass'}\n14069fb49        sub_1406a1930(arg1)\n14069fb4e        int64_t* rcx = arg1[9]\n14069fb55        if (rcx != 0)\n14069fb5a        (*(*rcx + 8))(rcx)\n14069fb68        arg1[6] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14069fb6c        sub_14020a820(&arg1[6])\n14069fb71        int64_t* rcx_2 = arg1[5]\n14069fb78        if (rcx_2 != 0)\n14069fb7d        (*(*rcx_2 + 8))(rcx_2)\n14069fb83        sub_140249eb0(arg1)\n14069fb8c        if ((arg2 & 1) != 0)\n14069fb96        j_sub_1407864b8(arg1)\n14069fbad        return arg1",
+  "fetched_at": "2026-04-26T17:21:11Z"
+}

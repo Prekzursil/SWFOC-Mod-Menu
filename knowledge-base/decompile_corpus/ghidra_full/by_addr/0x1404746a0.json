@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404746a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404746a0(char *param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  undefined8 uVar3;\n  \n  if (*param_1 == '\\x01') {\n    lVar1 = *(longlong *)(param_1 + 0x30);\n    while (lVar1 != 0) {\n      lVar1 = **(longlong **)(param_1 + 0x28);\n      plVar2 = *(longlong **)(lVar1 + 0x28);\n      if (plVar2 != (longlong *)0x0) {\n        DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n        ::\n        DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>_Constructor_or_Destructor\n                  (plVar2);\n        thunk_FUN_1407864b8(plVar2,0x4d0);\n      }\n      uVar3 = FUN_140069ba0(param_1 + 0x28,lVar1);\n      thunk_FUN_1407864b8(uVar3,0x30);\n      lVar1 = *(longlong *)(param_1 + 0x30);\n    }\n    FUN_140471530(param_1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:24Z"
+}

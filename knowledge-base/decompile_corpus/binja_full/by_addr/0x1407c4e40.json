@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c4e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c4e56        int32_t i = arg3\n1407c4e59        void* r12 = arg2\n1407c4e5f        if (arg1[4].d == 0)\n1407c4f27        if (sub_1407c38e0(arg1[1], arg2, sx.q(arg4.d * i)).d != 0)\n1407c4f37        sub_1407bad30(*arg1, \"unexpected end of file in %s\", arg1[5])\n1407c4f37        noreturn\n1407c4e68        if (arg3 != 0)\n1407c4e80        r12 += arg4\n1407c4e83        i -= 1\n1407c4e86        int32_t j = arg4.d\n1407c4e89        char* rdi_1 = r12 - 1\n1407c4e91        if (arg4.d != 0)\n1407c4ea0        int64_t* rcx = arg1[1]\n1407c4ea4        j -= 1\n1407c4ea6        int64_t rdx = *rcx\n1407c4ead        *rcx = rdx - 1\n1407c4eb0        int64_t* rcx_1 = arg1[1]\n1407c4eb7        uint32_t rbx_1\n1407c4eb7        if (rdx == 0)\n1407c4ece        rbx_1 = sub_1407c37d0(rcx_1).d\n1407c4eb9        char* rax_2 = rcx_1[1]\n1407c4ebd        rbx_1 = zx.d(*rax_2)\n1407c4ec3        rcx_1[1] = &rax_2[1]\n1407c4ed3        if (rbx_1 == 0xffffffff)\n1407c4ee3        sub_1407bad30(*arg1, \"unexpected end of file in %s\", arg1[5])\n1407c4ee3        noreturn\n1407c4ee8        *rdi_1 = rbx_1.b\n1407c4eea        rdi_1 -= 1\n1407c4eef        do while (j != 0)\n1407c4ef4        do while (i != 0)\n1407c4f4b        return ",
+  "fetched_at": "2026-04-26T17:33:41Z"
+}

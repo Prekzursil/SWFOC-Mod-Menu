@@ -10,6 +10,12 @@ name: "SWFOC-Mod-Menu lean CodeQL config"
 # third-party libraries (Dear ImGui, MinHook) or one-shot RE
 # tooling reproduced verbatim. This is a reasoned, greppable exclusion — not a
 # suppression of a first-party finding.
+#
+# knowledge-base (RE notes + machine-generated decompile/data JSON) was
+# incorporated 2026-06-28 as a data tree; it contains no code. It is out of
+# scope for every other lean gate (ruff/basedpyright/gitleaks), so CodeQL is
+# scoped consistently here — the "0 code-scanning alerts" bar reflects
+# first-party code, not machine-generated RE data.
 paths-ignore:
   - bridge
   - swfoc_lua_bridge
@@ -18,3 +24,4 @@ paths-ignore:
   - ghidra_scripts
   - re-findings
   - docs
+  - knowledge-base

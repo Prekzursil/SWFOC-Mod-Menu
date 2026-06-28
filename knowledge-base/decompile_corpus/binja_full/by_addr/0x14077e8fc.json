@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077e8fc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077e913        if (arg2 == 1)\n14077e915        *(arg1 + 0x60)\n14077e91d        int16_t rax_1 = __crt_stdio_input::skip_whitespace<class __crt_stdio_input::string_input_adapter,wchar_t>(&arg1[8])\n14077e925        int64_t rax_2 = *(arg1 + 0x18)\n14077e93d        if (rax_2 != *(arg1 + 8) && (rax_2 != *(arg1 + 0x10) || rax_1 != 0xffff))\n14077e943        *(arg1 + 0x18) = rax_2 - 2\n14077e94b        int64_t rax_4 = __crt_stdio_input::format_string_parser<char>::length(&arg1[0x20])\n14077e954        if (rax_4 == 1)\n14077e977        return __crt_stdio_input::input_processor<char,wchar_t,class __crt_stdio_input::string_input_adapter<wchar_t> >::process_string_specifier_tchar<char>(arg1, arg2)\n14077e95a        if (rax_4 == 2)\n14077e968        return __crt_stdio_input::input_processor<wchar_t,wchar_t,class __crt_stdio_input::string_input_adapter<wchar_t> >::process_string_specifier_tchar<wchar_t>(arg1, arg2)\n14077e95c        void* result\n14077e95c        result.b = 0\n14077e98b        return result",
+  "fetched_at": "2026-04-26T17:31:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079ea48",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079ea48        int16_t arg_8 = arg1\n14079ea58        void arg_10\n14079ea58        if (__dcrt_lowio_ensure_console_output_initialized() != 0 && __dcrt_write_console_w(&arg_8, 1, &arg_10) != 0)\n14079ea72        return zx.q(arg_8)\n14079ea79        return 0xffff",
+  "fetched_at": "2026-04-26T17:32:17Z"
+}

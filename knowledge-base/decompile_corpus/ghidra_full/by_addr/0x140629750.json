@@ -1,0 +1,7 @@
+{
+  "addr": "0x140629750",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TreadScrollBehaviorClass * __thiscall\nTreadScrollBehaviorClass::vfunction4(TreadScrollBehaviorClass *this,int param_1)\n\n{\n  TreadScrollBehaviorClass *pTVar1;\n  \n  pTVar1 = (TreadScrollBehaviorClass *)0x0;\n  if (param_1 == 0x25) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

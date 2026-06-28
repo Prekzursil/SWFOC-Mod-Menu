@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e6f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e6f8a        struct DatabaseUIntConversionClass::DatabaseObjectManagerClass<class PlanDefinitionClass>::VTable** result = arg1\n1404e6f8d        sub_14023ae90(arg1, arg2)\n1404e6f9b        *result = &DatabaseObjectManagerClass<class PlanDefinitionClass>::`vftable'{for `DatabaseUIntConversionClass'}\n1404e6fa0        result[1].b = 0\n1404e6fa3        __builtin_memset(result + 0xc, 0, 0x14)\n1404e6fb1        int64_t* rax = operator new(0x38)\n1404e6fbd        *rax = rax\n1404e6fc0        rax[1] = rax\n1404e6fc4        result[2] = rax\n1404e6fc8        int64_t r8 = result[2]\n1404e6fcc        __builtin_memset(&result[4], 0, 0x18)\n1404e6fd7        result[7] = 7\n1404e6fdf        result[8] = 8\n1404e6fe7        *(result + 0xc) = 0x3f800000\n1404e6fee        sub_140048250(&result[4], 0x10, r8)\n1404e6ffa        *result = &PlanDefinitionManagerClass::`vftable'{for `DatabaseObjectManagerClass<class PlanDefinitionClass>'}\n1404e700a        return result",
+  "fetched_at": "2026-04-26T17:31:26Z"
+}

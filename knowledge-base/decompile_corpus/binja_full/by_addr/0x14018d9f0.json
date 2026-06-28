@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018d9f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018da18        int64_t* rcx = *(arg1 + 0x78)\n14018da1e        if (rcx != 0)\n14018da23        (*(*rcx + 0x10))(rcx)\n14018da26        int32_t* rsi = *(arg1 + 0x70)\n14018da2d        *(arg1 + 0x78) = 0\n14018da30        int32_t rbx = 1\n14018da4a        if (*(arg1 + 0x68) != 0)\n14018da4a        rbx = -1\n14018daa1        int32_t var_38\n14018daa1        int32_t rax_3 = D3DXCreateTextureFromFileInMemoryEx(sub_1401771a0(), *(rsi + 8), zx.q(rsi[4]), 0xffffffff, 0xffffffff, rbx, 0, 0, 1, 0xffffffff, (*rsi & 0x1f) << 0x1a | 5, 0, &var_38, 0, arg1 + 0x78)\n14018daac        int32_t r8_1 = var_38\n14018dab4        int32_t var_34\n14018dab4        int32_t rdx_1 = var_34\n14018dabb        int32_t i_2 = **(arg1 + 0x70)\n14018dabf        if (i_2 s> 0)\n14018dac1        uint64_t i_1 = zx.q(i_2)\n14018dacc        uint64_t i\n14018dac3        r8_1 s>>= 1\n14018dac6        rdx_1 s>>= 1\n14018dac8        i = i_1\n14018dac8        i_1 -= 1\n14018dacc        do while (i != 1)\n14018dae8        data_140a6e748 = data_140a6e748 f+ _mm_cvtepi32_ps(zx.o((rdx_1 * r8_1) << 2)).d\n14018daf2        if (rax_3 s< 0)\n14018dafe        OutputDebugStringA(sub_140001000(rax_3))\n14018db0b        OutputDebugStringA(&data_140819c5c)\n14018db14        sub_1401865b0(arg1)\n14018db3c        return zx.q(rax_3)",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

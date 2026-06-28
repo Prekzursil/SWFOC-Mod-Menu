@@ -1,0 +1,7 @@
+{
+  "addr": "0x140282190",
+  "tool": "binary_ninja",
+  "fact_id": "rva_auto_upgrade_tech",
+  "body": "140282190        int32_t result = *(arg1 + 0x84)\n14028219c        if (result s>= *(arg1 + 0x88))\n1402821ad        return result\n1402821a8        return sub_140288980(arg1, result + 1, 1, 1) __tailcall",
+  "fetched_at": "2026-04-26T16:43:09Z"
+}

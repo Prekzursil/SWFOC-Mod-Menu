@@ -1,0 +1,7 @@
+{
+  "addr": "0x14016f660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14016f664        float zmm3 = *arg2 + *arg3\n14016f671        *arg1 = zmm3\n14016f67b        float zmm2 = arg3[1] f+ arg2[1]\n14016f684        arg1[1] = zmm2\n14016f694        float zmm1 = arg2[2] f+ arg3[2]\n14016f698        *arg1 = zmm3 * 0.5f\n14016f6a0        arg1[1] = zmm2 * 0.5f\n14016f6a9        arg1[2] = zmm1 * 0.5f\n14016f6b3        zmm2 = *arg3 f- *arg2\n14016f6b7        arg1[3] = zmm2\n14016f6c2        float zmm0 = arg3[1] f- arg2[1]\n14016f6d5        arg1[4] = zmm0\n14016f6e0        zmm1 = arg3[2] f- arg2[2]\n14016f6e5        float arg_8 = zmm0\n14016f6eb        arg1[3] = zmm2 & 0x7fffffff\n14016f6ee        zmm0 = arg1[3]\n14016f6f7        int32_t rax_3 = arg_8 & 0x7fffffff\n14016f6fb        arg_8 = zmm1\n14016f701        arg1[4] = rax_3\n14016f704        zmm1 = arg1[4]\n14016f711        int32_t result = arg_8 & 0x7fffffff\n14016f715        arg1[5] = result\n14016f71c        arg1[3] = zmm0 * 0.5f\n14016f726        zmm0 = arg1[5] * 0.5f\n14016f72a        arg1[4] = zmm1 * 0.5f\n14016f72f        arg1[5] = zmm0\n14016f734        return result",
+  "fetched_at": "2026-04-26T17:22:54Z"
+}

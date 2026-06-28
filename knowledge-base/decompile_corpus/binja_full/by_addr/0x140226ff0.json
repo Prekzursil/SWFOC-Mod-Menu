@@ -1,0 +1,7 @@
+{
+  "addr": "0x140226ff0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140226ff0        int32_t r8 = 0\n140226ffa        int32_t i = 0x2710\n140227001        if (arg1 != 0x2710)\n140227003        void* const rdx_1 = &data_140853cc0\n140227009        while (i != 0xffffffff)\n14022700b        i = *(rdx_1 + 0x10)\n14022700e        rdx_1 += 0x10\n140227012        r8 += 1\n140227017        if (i == arg1)\n140227017        break\n140227024        return (&data_140853cc8)[sx.q(r8) * 2]",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

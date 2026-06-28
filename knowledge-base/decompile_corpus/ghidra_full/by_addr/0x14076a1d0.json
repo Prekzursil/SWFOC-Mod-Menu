@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a1d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14076a1d0(void)\n\n{\n  char cVar1;\n  int iVar2;\n  undefined8 uVar3;\n  undefined4 *puVar4;\n  ulonglong uVar5;\n  \n  FUN_14078d020(2);\n  iVar2 = FUN_14076abc8();\n  _set_fmode(iVar2);\n  uVar3 = DrawPrimitiveClass::vfunction19();\n  puVar4 = (undefined4 *)FUN_14078ec50();\n  *puVar4 = (int)uVar3;\n  cVar1 = FUN_140769d34(1);\n  if (cVar1 != '\\0') {\n    FUN_14076ac18();\n    atexit(FUN_14076ac54);\n    uVar5 = alD3dEffectParam<class_Vector2>::vfunction3();\n    iVar2 = _configure_narrow_argv(uVar5 & 0xffffffff);\n    if (iVar2 == 0) {\n      FUN_14076abd0();\n      iVar2 = FUN_14076abfc();\n      if (iVar2 != 0) {\n        FUN_14078d080(DrawPrimitiveClass::vfunction19);\n      }\n      _guard_check_icall();\n      _guard_check_icall();\n      uVar3 = DrawPrimitiveClass::vfunction19();\n      _configthreadlocale((int)uVar3);\n      cVar1 = alD3dResource::vfunction2();\n      if (cVar1 != '\\0') {\n        common_initialize_environment_nolock<char>();\n      }\n      DrawPrimitiveClass::vfunction19();\n      uVar3 = DrawPrimitiveClass::vfunction19();\n      if ((int)uVar3 == 0) {\n        return;\n      }\n    }\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_14076a8cc(7);\n}",
+  "fetched_at": "2026-04-26T18:09:59Z"
+}

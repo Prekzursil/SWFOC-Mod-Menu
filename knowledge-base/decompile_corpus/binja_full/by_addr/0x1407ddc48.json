@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddc48",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ddc64        return fread_s(arg1, -ffffffffffffffff, arg2, arg3, arg4)",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

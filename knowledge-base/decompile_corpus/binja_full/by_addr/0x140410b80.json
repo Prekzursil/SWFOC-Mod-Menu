@@ -1,0 +1,7 @@
+{
+  "addr": "0x140410b80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140410b91        sub_140410d80(arg1 + 0x10)\n140410b9a        sub_140410c60(arg1 + 0x10)\n140410b9f        int64_t rax = *(arg1 + 0x18)\n140410ba6        int64_t r8 = *(arg1 + 0x10)\n140410bb0        int32_t i = 0\n140410bb9        if (((rax - r8) s>> 3).d != 0)\n140410bc3        uint64_t i_1 = zx.q(i)\n140410bcd        void* const rax_3\n140410bcd        if (i_1 u>= (rax - r8) s>> 3)\n140410bd5        rax_3 = nullptr\n140410bcf        rax_3 = *(r8 + (i_1 << 3))\n140410bd8        void* rax_4 = *(rax_3 + 0xa8)\n140410be2        if (rax_4 != 0)\n140410be4        *(rax_4 + 0x1f0) = 0\n140410beb        rax = *(arg1 + 0x18)\n140410bef        i += 1\n140410bf2        r8 = *(arg1 + 0x10)\n140410c03        do while (i u< ((rax - r8) s>> 3).d)\n140410c09        *(arg1 + 0x18) = r8\n140410c0d        sub_140425990(arg1 + 0x28)\n140410c19        *(arg1 + 0xb8) = *(arg1 + 0xb0)\n140410c27        *(arg1 + 0xd0) = *(arg1 + 0xc8)\n140410c35        *(arg1 + 0xe8) = *(arg1 + 0xe0)\n140410c51        return sub_140220ef0(sub_140058570(), arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:26:02Z"
+}

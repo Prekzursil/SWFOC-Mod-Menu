@@ -1,0 +1,7 @@
+{
+  "addr": "0x140170a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140170a2a        uint32_t rbx = zx.d(arg3)\n140170a2e        int32_t r8 = *(arg1 + 0x28)\n140170a32        uint32_t rdi = zx.d(arg2.b)\n140170a38        uint64_t zmm0[0x2]\n140170a38        if (r8 != 0)\n140170a42        if (r8 == 1)\n140170a5d        zmm0 = arg7\n140170a6c        if (zmm0[0].d f== arg6)\n140170a5c        return zx.q(rdi.b)\n140170a6e        arg4[0].d = arg4[0].d f- arg6\n140170a72        zmm0[0].d = zmm0[0].d f- arg6\n140170a76        arg4[0].d = arg4[0].d f/ zmm0[0].d\n140170a7a        arg4[0].d = arg4[0].d f* 3.14159274f\n140170aa3        float zmm2 = (1f - cosf(arg4, arg2, arg5)) * 0.5f\n140170acd        return zx.q(int.d((1f - zmm2) * float.s(rdi) + float.s(rbx) * zmm2))\n140170a48        if (r8 == 2)\n140170a5c        return zx.q(rdi.b)\n140170ad4        arg5 = arg7\n140170add        if (not(arg5[0].d f== arg6))\n140170adf        zmm0 = zx.o(0)\n140170ae9        zmm0[0].d = float.s(rdi)\n140170aed        arg4[0].d = arg4[0].d f- arg6\n140170af1        float zmm1 = (arg5[0].d f- arg4[0].d) f* zmm0[0].d\n140170af5        arg5[0].d = arg5[0].d f- arg6\n140170af9        zmm0 = zx.o(0)\n140170afc        zmm0[0].d = float.s(rbx)\n140170b00        arg4[0].d = arg4[0].d f* zmm0[0].d\n140170b0c        rbx = int.d((zmm1 f+ arg4[0].d) f/ arg5[0].d)\n140170b1d        return zx.q(rbx.b)",
+  "fetched_at": "2026-04-26T17:22:57Z"
+}

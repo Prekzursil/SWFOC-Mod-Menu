@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400942f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400942f0(void)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = &DAT_140a11210;\n  if (0xf < DAT_140a11228) {\n    puVar1 = DAT_140a11210;\n  }\n  FUN_14044d920(&DAT_140b306dd,puVar1,0,FUN_1400942b0,1,0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:19Z"
+}

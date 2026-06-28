@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ecd8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcsncmp\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl wcsncmp(wchar_t *_Str1,wchar_t *_Str2,size_t _MaxCount)\n\n{\n  if (_MaxCount == 0) {\n    return 0;\n  }\n  for (; ((_MaxCount = _MaxCount - 1, _MaxCount != 0 && (*_Str1 != L'\\0')) && (*_Str1 == *_Str2));\n      _Str1 = _Str1 + 1) {\n    _Str2 = _Str2 + 1;\n  }\n  return (uint)(ushort)*_Str1 - (uint)(ushort)*_Str2;\n}",
+  "fetched_at": "2026-04-26T18:52:25Z"
+}

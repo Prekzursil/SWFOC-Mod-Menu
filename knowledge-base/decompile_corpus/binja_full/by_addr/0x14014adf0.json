@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014adf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014ae00        if (arg2 != 1)\n14014ae88        if (arg2 == 0 && *(arg1 + 0x120) != 0)\n14014ae8a        int64_t* rax = sub_14013fe60(arg1)\n14014ae92        if (rax != 0)\n14014ae97        rax = sub_140199c20(rax)\n14014ae9f        if (rax != 0)\n14014aeab        sub_140136ba0(rax, *(arg1 + 0x120))\n14014aeb0        int64_t* rcx_6 = *(arg1 + 0x120)\n14014aeba        if (rcx_6 != 0)\n14014aebf        (*(*rcx_6 + 8))(rcx_6)\n14014aec4        *(arg1 + 0x120) = 0\n14014ae0a        if (*(arg1 + 0x120) == 0)\n14014ae15        struct RefCountClass::alTerrainShadowBlob::VTable** rax_1 = operator new(0x148)\n14014ae1d        struct RefCountClass::alTerrainShadowBlob::VTable** rdi\n14014ae1d        if (rax_1 == 0)\n14014ae2c        rdi = nullptr\n14014ae27        rdi = sub_14012f3e0(rax_1)\n14014ae2e        struct RefCountClass::alTerrainShadowBlob::VTable** rcx_1 = *(arg1 + 0x120)\n14014ae38        if (rcx_1 != rdi)\n14014ae3d        if (rcx_1 != 0)\n14014ae42        (*rcx_1)->__offset(0x8).q(rcx_1)\n14014ae45        *(arg1 + 0x120) = rdi\n14014ae4c        rcx_1 = rdi\n14014ae52        if (rdi != 0)\n14014ae57        (*rdi)->__offset(0x0).q(rcx_1)\n14014ae59        rcx_1 = *(arg1 + 0x120)\n14014ae60        rcx_1[0x1c].d = 1\n14014ae77        return sub_14014b5b0(arg1) __tailcall\n14014aed5        return ",
+  "fetched_at": "2026-04-26T17:21:08Z"
+}

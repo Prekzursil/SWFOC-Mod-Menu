@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ea590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LobbingSuperweaponBehaviorClass * __thiscall\nLobbingSuperweaponBehaviorClass::vfunction4(LobbingSuperweaponBehaviorClass *this,int param_1)\n\n{\n  LobbingSuperweaponBehaviorClass *pLVar1;\n  \n  pLVar1 = (LobbingSuperweaponBehaviorClass *)0x0;\n  if (param_1 == 0x37) {\n    pLVar1 = this;\n  }\n  return pLVar1;\n}",
+  "fetched_at": "2026-04-26T18:16:52Z"
+}

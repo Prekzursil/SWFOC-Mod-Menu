@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060d040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14060d04d        if (*(arg1 + 8) != 0)\n14060d059        return 0x80670003\n14060d06b        void* rdi = arg1 + 0x80\n14060d072        *(arg1 + 8) = 1\n14060d076        int64_t i_1 = 2\n14060d079        *(arg1 + 0x3d) = 1\n14060d07f        *(arg1 + 0x10) = -1\n14060d087        *(arg1 + 0x18) = -1\n14060d08f        __builtin_memset(arg1 + 0x20, 0, 0x14)\n14060d09a        *(arg1 + 0x40) = 0xffffffff\n14060d0a1        *(arg1 + 0x48) = 0\n14060d0a5        *(arg1 + 0xa) = 0\n14060d0a9        *(arg1 + 0x34) = 0xffffffff\n14060d0c3        int64_t i\n14060d0b3        sub_14060c950(rdi)\n14060d0b8        rdi += 0xb8\n14060d0bf        i = i_1\n14060d0bf        i_1 -= 1\n14060d0c3        do while (i != 1)\n14060d0cf        *(arg1 + 0x50) = 0xffffffff\n14060d0d6        *(arg1 + 0x58) = 0\n14060d0e0        *(arg1 + 0x38) = data_140b0a320\n14060d0e9        int32_t rax_3 = *(arg1 + 0x1f0) + 1\n14060d0eb        *(arg1 + 0x3c) = 0\n14060d0ef        int32_t rax_4 = rax_3 & 0x80000007\n14060d0f4        if (rax_4 s< 0)\n14060d0fb        rax_4 = ((rax_4 - 1) | 0xfffffff8) + 1\n14060d0fd        *(arg1 + 0x1f0) = rax_4\n14060d109        *((sx.q(rax_4) << 5) + arg1 + 0x1f8) = 0\n14060d121        int64_t* rcx_3 = (sx.q(*(arg1 + 0x1f0)) + 0x10) << 5\n14060d129        *(rcx_3 + arg1 + 8) = *(rcx_3 + arg1)\n14060d135        return 0",
+  "fetched_at": "2026-04-26T17:23:05Z"
+}

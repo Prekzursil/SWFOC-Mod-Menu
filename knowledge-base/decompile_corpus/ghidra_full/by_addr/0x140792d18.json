@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792d18",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _mbsbtype_l\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl _mbsbtype_l(uchar *_Str,size_t _Pos,_locale_t _Locale)\n\n{\n  int _CType;\n  ulong *puVar1;\n  int iVar2;\n  bool bVar3;\n  longlong local_28;\n  localeinfo_struct local_20;\n  char local_10;\n  \n  if (_Str == (uchar *)0x0) {\n    puVar1 = __doserrno();\n    *puVar1 = 0x16;\n    FUN_1407711ac();\n    iVar2 = -1;\n  }\n  else {\n    _LocaleUpdate::_LocaleUpdate((_LocaleUpdate *)&local_28,(__crt_locale_pointers *)_Locale);\n    if ((local_20.mbcinfo)->ismbcodepage == 0) {\n      iVar2 = 0;\n    }\n    else {\n      _CType = -1;\n      do {\n        iVar2 = -1;\n        if ((_Pos == 0) && (*_Str == '\\0')) break;\n        if (*_Str == '\\0') {\n          puVar1 = __doserrno();\n          *puVar1 = 0x16;\n          FUN_1407711ac();\n          break;\n        }\n        _CType = _mbbtype_l(*_Str,_CType,&local_20);\n        _Str = _Str + 1;\n        bVar3 = _Pos != 0;\n        _Pos = _Pos - 1;\n        iVar2 = _CType;\n      } while (bVar3);\n    }\n    if (local_10 != '\\0') {\n      *(uint *)(local_28 + 0x3a8) = *(uint *)(local_28 + 0x3a8) & 0xfffffffd;\n    }\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:52:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564a10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCorruptSystemsDataPackClass::~CorruptSystemsDataPackClass(CorruptSystemsDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:20Z"
+}

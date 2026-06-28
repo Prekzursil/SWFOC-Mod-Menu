@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    isprint\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl isprint(int _C)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong *local_res10 [3];\n  \n  if (DAT_140b3c49c == 0) {\n    if (_C + 1U < 0x101) {\n      return *(ushort *)(PTR_DAT_140a44dc0 + (longlong)_C * 2) & 0x157;\n    }\n  }\n  else {\n    lVar2 = FUN_14078f07c();\n    local_res10[0] = *(longlong **)(lVar2 + 0x90);\n    __acrt_update_locale_info(lVar2,local_res10);\n    if (_C + 1U < 0x101) {\n      return *(ushort *)(*local_res10[0] + (longlong)_C * 2) & 0x157;\n    }\n    if (1 < (int)local_res10[0][1]) {\n      iVar1 = _isctype_l(_C,0x157,(_locale_t)0x0);\n      return iVar1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:51:05Z"
+}

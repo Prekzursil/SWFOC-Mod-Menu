@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791c54",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140791c59        int32_t* arg_20 = arg4\n140791c6b        __acrt_lowio_unlock_fh(*arg2)\n140791c74        int64_t rcx_1 = sx.q(**arg3)\n140791c98        int32_t rbx_1\n140791c98        if ((*((&data_140b3c4d0)[rcx_1 s>> 6] + (zx.q(rcx_1.d) & 0x3f) * 0x48 + 0x38) & 1) == 0)\n140791ca8        *_errno() = 9\n140791cae        rbx_1 = -1\n140791c9f        rbx_1 = _close_nolock(rcx_1.d)\n140791cb3        sub_1407990bc(*arg4)\n140791cc4        return zx.q(rbx_1)",
+  "fetched_at": "2026-04-26T17:31:46Z"
+}

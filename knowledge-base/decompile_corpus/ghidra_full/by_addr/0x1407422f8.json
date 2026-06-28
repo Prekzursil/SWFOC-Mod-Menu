@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407422f8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl std::_Locinfo::_Locinfo(char const * __ptr64) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\n_Locinfo * __thiscall std::_Locinfo::_Locinfo(_Locinfo *this,char *param_1)\n\n{\n  code *pcVar1;\n  _Locinfo *p_Var2;\n  \n  _Lockit::_Lockit((_Lockit *)this,0);\n  *(undefined8 *)(this + 8) = 0;\n  this[0x10] = (_Locinfo)0x0;\n  *(undefined8 *)(this + 0x18) = 0;\n  this[0x20] = (_Locinfo)0x0;\n  *(undefined8 *)(this + 0x28) = 0;\n  *(undefined2 *)(this + 0x30) = 0;\n  *(undefined8 *)(this + 0x38) = 0;\n  *(undefined2 *)(this + 0x40) = 0;\n  *(undefined8 *)(this + 0x48) = 0;\n  this[0x50] = (_Locinfo)0x0;\n  *(undefined8 *)(this + 0x58) = 0;\n  this[0x60] = (_Locinfo)0x0;\n  if (param_1 != (char *)0x0) {\n    _Locinfo_ctor(this,param_1);\n    return this;\n  }\n  FUN_140740924(\"bad locale name\");\n  pcVar1 = (code *)swi(3);\n  p_Var2 = (_Locinfo *)(*pcVar1)();\n  return p_Var2;\n}",
+  "fetched_at": "2026-04-26T18:04:30Z"
+}

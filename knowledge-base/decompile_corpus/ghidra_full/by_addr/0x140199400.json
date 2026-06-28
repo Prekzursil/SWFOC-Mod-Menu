@@ -1,0 +1,7 @@
+{
+  "addr": "0x140199400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTextureCube * __thiscall\nalD3dTextureCube::scalar_deleting_destructor(alD3dTextureCube *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: alD3dTextureCube::~alD3dTextureCube */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  if ((longlong *)this->offset_0x70 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)this->offset_0x70 + 0x10))();\n  }\n  this->offset_0x70 = 0;\n  alD3dTexture::~alD3dTexture((alD3dTexture *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x80);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:36:43Z"
+}

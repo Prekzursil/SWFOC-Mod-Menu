@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ad70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ad70(void)\n\n{\n  RemoteBombAbilityClass *this;\n  \n  this = (RemoteBombAbilityClass *)FUN_140769c58(0x1b8);\n  if (this != (RemoteBombAbilityClass *)0x0) {\n    RemoteBombAbilityClass::RemoteBombAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:24Z"
+}

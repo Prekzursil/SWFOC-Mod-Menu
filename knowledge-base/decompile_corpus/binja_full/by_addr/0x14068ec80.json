@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ec80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068ec94        *arg1 = &GalacticFreeStoreClass::`vftable'{for `AIFreeStoreClass'}\n14068eca0        arg1[5] = &GalacticFreeStoreClass::`vftable'{for `SignalListenerClass'}\n14068ecab        sub_1400466c0(&arg1[0x27])\n14068ecb3        sub_1404d2780(arg1)\n14068ecbb        if ((arg2 & 1) != 0)\n14068ecc5        j_sub_1407864b8(arg1)\n14068ecd7        return arg1",
+  "fetched_at": "2026-04-26T17:17:12Z"
+}

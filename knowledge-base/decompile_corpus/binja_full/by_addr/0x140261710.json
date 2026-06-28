@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140261714        void* rax = *(arg1 + 0x40)\n140261718        float zmm5 = arg2\n140261738        int128_t zmm6 = *(rax + 8) ^ 0x80000000\n140261745        int128_t zmm7 = *(rax + 0x18) ^ 0x80000000\n140261754        int128_t zmm8 = *(rax + 0x28) ^ 0x80000000\n14026175e        int128_t zmm9 = *(rax + 0x2c)\n14026176e        int128_t zmm10 = *(rax + 0xc)\n140261779        float zmm4 = zmm5 f- zmm9.d\n140261783        int128_t zmm11 = *(rax + 0x1c)\n140261791        arg3[2] = zmm5\n1402617a9        arg2 = 1f / (zmm9.d f+ zmm8.d f- zmm9.d)\n1402617ba        float zmm3 = (zmm10.d f+ zmm6.d f- zmm10.d) * arg2 * zmm4\n1402617be        float zmm2 = (zmm11.d f+ zmm7.d f- zmm11.d) * arg2 * zmm4\n1402617d2        *arg3 = zmm3 f+ zmm10.d\n1402617e7        arg3[1] = zmm2 f+ zmm11.d\n140261802        float arg_10 = (zmm9.d - zmm5) & 0x7fffffff\n140261810        float result = _mm_sqrt_ss(0, zmm2 * zmm2 + zmm3 * zmm3 + zmm4 * zmm4)\n140261817        if (not(result <= arg_10))\n140261819        zmm6.d = zmm6.d f* arg_10\n14026181d        zmm7.d = zmm7.d f* arg_10\n140261821        zmm8.d = zmm8.d f* arg_10\n140261826        zmm6.d = zmm6.d f+ zmm10.d\n14026182b        zmm7.d = zmm7.d f+ zmm11.d\n140261830        zmm8.d = zmm8.d f+ zmm9.d\n140261835        *arg3 = zmm6.d\n14026183a        arg3[1] = zmm7.d\n140261840        arg3[2] = zmm8.d\n14026186b        return result",
+  "fetched_at": "2026-04-26T17:31:16Z"
+}

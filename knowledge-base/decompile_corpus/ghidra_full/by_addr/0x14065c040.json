@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065c040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_14065c040(longlong param_1,longlong param_2,double *param_3)\n\n{\n  char cVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  int iVar4;\n  double dVar5;\n  double local_res18;\n  \n  iVar4 = 0;\n  *param_3 = 0.0;\n  lVar2 = DAT_140a16fd8 - DAT_140a16fd0 >> 3;\n  if (0 < (int)lVar2) {\n    do {\n      uVar3 = FUN_140294bc0(&DAT_140a16fd0,iVar4);\n      cVar1 = FUN_1402823e0(*(undefined8 *)(*(longlong *)(param_2 + 0x58) + 0x50),uVar3);\n      if (cVar1 == '\\0') {\n        uVar3 = FUN_140294bc0(&DAT_140a16fd0,iVar4);\n        cVar1 = FUN_1404e1dc0(*(undefined8 *)(param_1 + 0x98),&local_res18,uVar3,1);\n        if (cVar1 != '\\0') {\n          dVar5 = *param_3;\n          if (*param_3 <= local_res18) {\n            dVar5 = local_res18;\n          }\n          *param_3 = dVar5;\n        }\n      }\n      iVar4 = iVar4 + 1;\n      lVar2 = DAT_140a16fd8 - DAT_140a16fd0 >> 3;\n    } while (iVar4 < (int)lVar2);\n  }\n  return CONCAT71((int7)((ulonglong)lVar2 >> 8),1);\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:45Z"
+}

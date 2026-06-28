@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407235c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407235de        sub_1407d9080(arg1, arg2)\n1407235ec        *(arg1 + 0x48) = arg6\n1407235f4        *(arg1 + 0x80) = arg7\n1407235fa        *(arg1 + 0x7c) = 0\n140723604        if (arg1 + 0x50 != arg3)\n140723618        int32_t* r15_1 = *arg3\n14072361b        int32_t* r14_1 = *(arg1 + 0x50)\n14072361e        void* rbp_2 = arg3[1] - r15_1\n140723627        int64_t rdx_1 = rbp_2 s>> 2\n140723632        if (rdx_1 u> (*(arg1 + 0x60) - r14_1) s>> 2)\n140723637        sub_1401a4af0(arg1 + 0x50, rdx_1)\n14072363c        r14_1 = *(arg1 + 0x50)\n140723648        memcpy(r14_1, r15_1, rbp_2)\n14072365b        *(arg1 + 0x58) = r14_1 + rbp_2\n14072366b        arg5 - 9.99999984e+17f\n14072367c        *(arg1 + 0x68) = *arg4\n140723682        *(arg1 + 0x6c) = arg4[1]\n14072368e        *(arg1 + 0x70) = arg4[2]\n140723692        *(arg1 + 0x70) = 0\n14072369b        if (is_unordered.d(arg5, 9.99999984e+17f) || not(arg5 == 9.99999984e+17f))\n1407236a8        uint128_t zmm0\n1407236a8        zmm0.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f* arg5\n1407236b6        *(arg1 + 0x74) = int.d(zmm0.d) + data_140b0a320\n1407236c6        char result = sub_1404d8d10(data_140b15418, *(arg1 + 0x80), arg1 + 0x68)\n1407236cd        if (result != 0)\n1407236df        *(arg1 + 0x7c) = 2f * 500f\n1407236e9        return result",
+  "fetched_at": "2026-04-26T17:28:23Z"
+}

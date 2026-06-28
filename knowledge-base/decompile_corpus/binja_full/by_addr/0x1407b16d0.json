@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b16d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b16e7        uint64_t rsi = zx.q(arg2)\n1407b16ef        int64_t result = GetCurrentThreadId()\n1407b1704        if (result.d != data_140a155d0 || data_140a62740 == 0)\n1407b1714        result = (*(arg1 + 0x110) - *(arg1 + 0x108)) s>> 3\n1407b171a        if (rsi.d u< result.d)\n1407b1721        struct CollisionBodyClass::BoxCollisionBodyClass::VTable** rax_2 = operator new(0xf0)\n1407b1729        struct CollisionBodyClass::BoxCollisionBodyClass::VTable** rbx_1\n1407b1729        if (rax_2 == 0)\n1407b173e        rbx_1 = nullptr\n1407b1739        rbx_1 = sub_1407ae590(rax_2, arg3, arg4)\n1407b1740        result = *(arg1 + 0x108)\n1407b1747        int64_t* rcx_1 = *(result + (rsi << 3))\n1407b174b        int64_t rdi_1 = result + (rsi << 3)\n1407b1752        if (rcx_1 != rbx_1)\n1407b1757        if (rcx_1 != 0)\n1407b175c        result = (*(*rcx_1 + 8))(rcx_1)\n1407b175f        *rdi_1 = rbx_1\n1407b1765        if (rbx_1 != 0)\n1407b176d        return (*rbx_1)->vFunc_0(rbx_1)\n1407b1783        return result",
+  "fetched_at": "2026-04-26T17:32:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140549dfc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WeaponBehaviorClass::vfunction3(WeaponBehaviorClass *this,uint param_1)\n\n{\n  ~WeaponBehaviorClass((WeaponBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:37:31Z"
+}

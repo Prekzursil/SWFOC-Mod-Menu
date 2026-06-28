@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061b480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061b486        struct SpecialAbilityClass::HackSuperWeaponAbilityClass::VTable** result = arg1\n14061b489        sub_14048c780(arg1)\n14061b495        result[8].w = 1\n14061b49b        *result = &HackSuperWeaponAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14061b4a5        result[1] = &HackSuperWeaponAbilityClass::`vftable'{for `RefCountClass'}\n14061b4ac        *(result + 0x3c) = 6\n14061b4b8        return result",
+  "fetched_at": "2026-04-26T17:23:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ffb40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ffb46        struct SpecialAbilityClass::GarrisonUpgradeAbilityClass::VTable** result = arg1\n1406ffb49        sub_14048c780(arg1)\n1406ffb55        result[0x2f].b = 0\n1406ffb5c        *result = &GarrisonUpgradeAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406ffb6d        result[1] = &GarrisonUpgradeAbilityClass::`vftable'{for `RefCountClass'}\n1406ffb71        sub_1404c3ad0(&result[0x30])\n1406ffb7e        return result",
+  "fetched_at": "2026-04-26T17:26:57Z"
+}

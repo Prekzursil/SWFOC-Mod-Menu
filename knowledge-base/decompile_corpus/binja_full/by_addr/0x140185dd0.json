@@ -1,0 +1,7 @@
+{
+  "addr": "0x140185dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140185de1        arg1[1].d = 0\n140185de8        *arg1 = &alD3dTexture::`vftable'{for `alTexture'}\n140185df5        arg1[3] = 0\n140185dfd        arg1[2] = &alD3dTexture::`vftable'{for `MultiLinkedListMember'}\n140185e0c        sub_14001e680(&arg1[4], arg2 + 0x20)\n140185e1d        arg1[8] = *(arg2 + 0x40)\n140185e21        sub_14001e680(&arg1[9], arg2 + 0x48)\n140185e2f        arg1[0xd].b = *(arg2 + 0x68)\n140185e35        arg1[0xe] = 0\n140185e42        return arg1",
+  "fetched_at": "2026-04-26T17:23:59Z"
+}

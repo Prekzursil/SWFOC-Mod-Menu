@@ -1,0 +1,7 @@
+{
+  "addr": "0x140149b40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140149b4c        arg1[3] = 0xf\n140149b54        *arg1 = 0\n140149b5e        arg1[2] = 0\n140149b65        arg1[4] = 0\n140149b69        arg1[5] = 0\n140149b6d        arg1[6] = &DynamicVectorClass<class alRenderable* __ptr64>::`vftable'\n140149b78        arg1[7] = 0\n140149b7c        arg1[8] = 0\n140149b80        arg1[9] = &DynamicVectorClass<class alAnim* __ptr64>::`vftable'\n140149b8b        arg1[0xa] = 0\n140149b8f        arg1[0xb] = 0\n140149b93        arg1[0xc] = &DynamicVectorClass<class alEmitter* __ptr64>::`vftable'\n140149b97        arg1[0xd] = 0\n140149b9b        arg1[0xe] = 0\n140149b9f        int32_t rcx = *(arg1 + 0x44)\n140149baa        if (rcx * 2 s< 0x200)\n140149bc0        int64_t rax_2\n140149bc0        if (rcx s>> 0x1f == 0)\n140149be0        rax_2 = j_operator new(0x800)\n140149bd3        rax_2 = HeapAlloc(GetProcessHeap(), HEAP_NONE, 0x800)\n140149be5        arg1[7] = rax_2\n140149bee        arg1[8].d = 0\n140149c00        *(arg1 + 0x44) = (*(arg1 + 0x44) & 0x80000100) | 0x100\n140149c10        return arg1",
+  "fetched_at": "2026-04-26T17:20:44Z"
+}

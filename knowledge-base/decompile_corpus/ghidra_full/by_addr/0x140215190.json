@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140215190(void)\n\n{\n  char *pcVar1;\n  char cVar2;\n  DWORD DVar3;\n  undefined1 *puVar4;\n  longlong lVar5;\n  undefined1 uStack_339;\n  CHAR local_338 [272];\n  char local_228 [272];\n  char local_118 [272];\n  \n  DVar3 = GetModuleFileNameA((HMODULE)0x0,local_338,0x104);\n  if (DVar3 != 0) {\n    lVar5 = 0;\n    _splitpath(local_338,local_228,local_118,(char *)0x0,(char *)0x0);\n    do {\n      pcVar1 = local_228 + lVar5;\n      local_338[lVar5] = *pcVar1;\n      lVar5 = lVar5 + 1;\n    } while (*pcVar1 != '\\0');\n    puVar4 = &uStack_339;\n    do {\n      pcVar1 = puVar4 + 1;\n      puVar4 = puVar4 + 1;\n    } while (*pcVar1 != '\\0');\n    lVar5 = 0;\n    do {\n      cVar2 = local_118[lVar5];\n      puVar4[lVar5] = cVar2;\n      lVar5 = lVar5 + 1;\n    } while (cVar2 != '\\0');\n    SetCurrentDirectoryA(local_338);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c7380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402c7388        *(arg1 + 8) = 0\n1402c7390        int64_t* rbx = *(arg1 + 0x18)\n1402c7394        int32_t* rcx = *(arg1 + 0x18)\n1402c73a6        float var_48 = arg2[0]\n1402c73ab        int32_t var_44 = arg3.d\n1402c73b0        int32_t var_40 = 0\n1402c73bb        if (rcx == *(arg1 + 0x20))\n1402c7456        return sub_1402c2da0(arg1 + 0x10, rbx, &var_48)\n1402c73c0        if (rbx == rcx)\n1402c73c2        *rcx = arg2[0]\n1402c73c6        rcx[1] = arg3.d\n1402c73cb        rcx[2] = 0\n1402c73d2        *(arg1 + 0x18) += 0xc\n1402c73e4        return &__return_addr\n1402c73ed        int32_t rax = rcx[-1]\n1402c73f3        *rcx = *(rcx - 0xc)\n1402c73fb        rcx[2] = rax\n1402c7401        *(arg1 + 0x18) += 0xc\n1402c7409        int32_t result = 0\n1402c7411        memcpy(rcx - (rcx - rbx - 0xc), rbx, rcx - rbx - 0xc)\n1402c7420        *rbx = (_mm_unpacklo_ps(arg2, arg3.q)).q\n1402c7424        rbx[1].d = result\n1402c7436        return result",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

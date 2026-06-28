@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014fa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140014fa4        uint32_t rax = GetCurrentThreadId()\n140014faa        char const (* rcx)[0xc] = data_140a155c0\n140014fb1        data_140a155d0 = rax\n140014fb7        uint32_t var_10 = rax\n140014fc9        int32_t rax_2 = data_140a155a8\n140014fcf        int32_t rcx_2 = (data_140a155ac * 2) s>> 1\n140014fd3        if (rax_2 s>= rcx_2)\n140014fe7        int32_t rdx_3 = rcx_2 s/ 0xa\n140014ff0        if (rdx_3 s< 0xa)\n140014ff0        rdx_3 = 0xa\n140014fff        sub_14022eb30(&data_140a15598, rdx_3 + rcx_2, 0, 1)\n140015004        rax_2 = data_140a155a8\n14001501c        *(data_140a155a0 + sx.q(rax_2) * 0x10) = rcx.o\n140015020        data_140a155a8 += 1\n140015034        data_140a155b0 = &MainThreadClass::`vftable'{for `ThreadClass'}\n14001503f        return atexit(sub_1407edbc0) __tailcall",
+  "fetched_at": "2026-04-26T16:50:13Z"
+}

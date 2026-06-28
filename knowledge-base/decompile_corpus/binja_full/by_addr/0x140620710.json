@@ -1,0 +1,7 @@
+{
+  "addr": "0x140620710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062073b        float zmm0[0x4]\n14062073b        float zmm6_1[0x4]\n14062073b        zmm0, zmm6_1 = sub_140372560(*(arg1[5] + 0x298))\n140620740        void* rax = arg1[5]\n14062075c        float var_68 = *(rax + 0x84)\n14062076a        int32_t var_64 = *(rax + 0x88)\n140620778        float var_60 = *(rax + 0x8c)\n14062077e        float var_48\n14062077e        sub_14020b100(arg2, &var_48, &var_68)\n140620789        float var_40\n140620789        float zmm0_2 = sub_14020b6d0(var_40)\n14062078e        zmm0_2 - zmm6_1[0]\n140620793        if (is_unordered.d(zmm0_2, zmm6_1[0]) || not(zmm0_2 == zmm6_1[0]))\n14062079b        if (zmm0_2 <= zmm6_1[0])\n1406207aa        zmm6_1 = _mm_max_ss((zmm0 ^ data_140800860)[0], zmm0_2)\n14062079d        zmm6_1 = _mm_min_ss(zmm0[0], zmm0_2)\n1406207b7        float* rcx_4 = arg1[5] + 0x84\n1406207be        float var_50 = zmm6_1[0]\n1406207c9        int64_t var_58 = 0\n1406207d2        void var_38\n1406207d2        sub_14020b070(rcx_4, &var_38, &var_58)\n1406207e0        sub_1403a8710(arg1[5], &var_38)\n140620813        return (*(*arg1 + 0x2f8))(arg1, arg1[5] + 0x78)",
+  "fetched_at": "2026-04-26T17:23:42Z"
+}

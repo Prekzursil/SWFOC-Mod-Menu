@@ -1,0 +1,7 @@
+{
+  "addr": "0x140629f30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140629f3b        struct BehaviorClass::SquashBehaviorClass::VTable** result = operator new(0x40)\n140629f46        if (result == 0)\n140629f7e        return result\n140629f4b        sub_1404c32d0(result)\n140629f57        *result = &SquashBehaviorClass::`vftable'{for `BehaviorClass'}\n140629f61        result[1] = &SquashBehaviorClass::`vftable'{for `RefCountClass'}\n140629f6c        result[3] = &SquashBehaviorClass::`vftable'{for `SignalListenerClass'}\n140629f78        return result",
+  "fetched_at": "2026-04-26T17:23:59Z"
+}

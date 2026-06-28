@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fb60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018fb8c        char var_18 = arg6\n14018fb99        char var_20 = arg5\n14018fbac        sub_1401b62a0(*(*(arg1 + 0x20) + (sx.q(arg3 * *(arg1 + 0x10) + arg2) << 3)), *(arg1 + 8), arg2, arg3, arg4)\n14018fbd8        return sub_1401b7330(*(*(arg1 + 0x20) + (sx.q(arg2 + arg3 * *(arg1 + 0x10)) << 3)), *(arg1 + 0x118)) __tailcall",
+  "fetched_at": "2026-04-26T17:24:16Z"
+}

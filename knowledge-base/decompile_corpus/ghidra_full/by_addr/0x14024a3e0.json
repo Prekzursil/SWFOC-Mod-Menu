@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14024a3e0(void)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  undefined8 *puVar4;\n  longlong *plVar5;\n  int iVar6;\n  longlong lVar7;\n  \n  iVar6 = 0;\n  if (0 < (int)(DAT_140b09e20 - DAT_140b09e18 >> 5)) {\n    lVar7 = 0;\n    do {\n      lVar1 = lVar7 + DAT_140b09e18;\n      plVar5 = (longlong *)\n               FUN_1402456a0(*(undefined8 *)(lVar7 + DAT_140b09e18),\n                             *(undefined4 *)(lVar7 + 8 + DAT_140b09e18));\n      plVar2 = *(longlong **)(lVar1 + 0x10);\n      if (plVar2 == (longlong *)0x0) {\n        puVar4 = *(undefined8 **)(lVar1 + 0x18);\n        if (puVar4 != (undefined8 *)0x0) {\n          *puVar4 = plVar5;\n        }\n      }\n      else {\n        plVar3 = (longlong *)*plVar2;\n        if (plVar3 != plVar5) {\n          if (plVar3 != (longlong *)0x0) {\n            (**(code **)(*plVar3 + 8))();\n          }\n          *plVar2 = (longlong)plVar5;\n          if (plVar5 != (longlong *)0x0) {\n            (**(code **)*plVar5)(plVar5);\n          }\n        }\n      }\n      iVar6 = iVar6 + 1;\n      lVar7 = lVar7 + 0x20;\n    } while (iVar6 < (int)(DAT_140b09e20 - DAT_140b09e18 >> 5));\n  }\n  DAT_140b09e20 = DAT_140b09e18;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:10Z"
+}

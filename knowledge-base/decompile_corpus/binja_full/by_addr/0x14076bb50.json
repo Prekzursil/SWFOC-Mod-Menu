@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076bb50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076bb66        if (arg1 == *(__vcrt_getptd() + 0x58))\n14076bb6d        void* i_1 = *(__vcrt_getptd() + 0x58)\n14076bb74        if (i_1 != 0)\n14076bb85        void* i\n14076bb76        i = *(i_1 + 8)\n14076bb7d        if (arg1 == i_1)\n14076bb89        void* result = __vcrt_getptd()\n14076bb8e        *(result + 0x58) = i\n14076bb9c        return result\n14076bb7f        i_1 = i\n14076bb85        do while (i != 0)\n14076bb9d        abort()\n14076bb9d        noreturn",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

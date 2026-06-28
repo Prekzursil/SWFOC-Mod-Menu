@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d55f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d5610        int32_t rsi_1 = arg1[1] * *arg1\n1407d5613        int64_t rbx = sx.q(rsi_1)\n1407d5619        int32_t* rax = j_operator new(rbx)\n1407d561e        int32_t rcx_1 = arg1[2]\n1407d5624        int32_t* rbp = *(arg1 + 0x10)\n1407d562a        int32_t i_2 = rcx_1 s>> 1\n1407d5634        int32_t* rdi_2 = sx.q((rcx_1 - 1) * rsi_1) + rbp\n1407d5639        if (i_2 s> 0)\n1407d563b        uint64_t i_1 = zx.q(i_2)\n1407d5674        uint64_t i\n1407d5649        memcpy(rax, rbp, rbx)\n1407d5657        memcpy(rbp, rdi_2, rbx)\n1407d5665        memcpy(rdi_2, rax, rbx)\n1407d566a        rbp += rbx\n1407d566d        rdi_2 -= rbx\n1407d5670        i = i_1\n1407d5670        i_1 -= 1\n1407d5674        do while (i != 1)\n1407d5679        j_sub_1407864b8(rax)\n1407d5683        int64_t result\n1407d5683        result.b = 1\n1407d569a        return result",
+  "fetched_at": "2026-04-26T17:34:02Z"
+}

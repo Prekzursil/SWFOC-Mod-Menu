@@ -1,0 +1,7 @@
+{
+  "addr": "0x140240610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SignalGeneratorClass * __thiscall\nSignalGeneratorClass::SignalGeneratorClass(SignalGeneratorClass *this)\n\n{\n  (this->SignalGeneratorClass_data).offset_0x0 = '\\0';\n  this->vftablePtr = &vftable;\n  (this->SignalGeneratorClass_data).offset_0x4 = 0;\n  (this->SignalGeneratorClass_data).offset_0x8 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:09:33Z"
+}

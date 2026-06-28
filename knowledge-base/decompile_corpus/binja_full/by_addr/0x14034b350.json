@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034b350",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14034b37d        struct BaseComponentClass::SelectComponentClass::VTable** result = sub_14034b3e0(*(arg1 + 0x80))\n14034b38d        (*result)->__offset(0x8).q(result, 0)\n14034b39a        (*result)->__offset(0x78).q(result, zx.q(arg2))\n14034b3a6        result[9] = arg3\n14034b3af        result[0xa] = arg4\n14034b3bf        result[0x13] = *(arg1 + 0x98)\n14034b3cd        result[0x15].d = *(arg1 + 0xa8)\n14034b3de        return result",
+  "fetched_at": "2026-04-26T17:07:47Z"
+}

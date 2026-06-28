@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042a0d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042a0db        struct BehaviorClass::TacticalSuperWeaponBehaviorClass::VTable** result = operator new(0x40)\n14042a0e6        if (result == 0)\n14042a11e        return result\n14042a0eb        sub_1404c32d0(result)\n14042a0f7        *result = &TacticalSuperWeaponBehaviorClass::`vftable'{for `BehaviorClass'}\n14042a101        result[1] = &TacticalSuperWeaponBehaviorClass::`vftable'{for `RefCountClass'}\n14042a10c        result[3] = &TacticalSuperWeaponBehaviorClass::`vftable'{for `SignalListenerClass'}\n14042a118        return result",
+  "fetched_at": "2026-04-26T17:26:39Z"
+}

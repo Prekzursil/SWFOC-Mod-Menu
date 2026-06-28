@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638bc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall CombatantBehaviorClass::vfunction38(CombatantBehaviorClass *this)\n\n{\n  undefined **ppuVar1;\n  \n  ppuVar1 = this->offset_0x18;\n  if (ppuVar1 != (undefined **)0x0) {\n    FUN_1403a9e30(ppuVar1,1,*(undefined4 *)((longlong)ppuVar1 + 0x5c),0,0,0,0,0,1,0xffffffff,0,0,0,0\n                 );\n    ppuVar1 = this->offset_0x18;\n    if (((ulonglong)ppuVar1[0x74] & 0x40) == 0) {\n      FUN_1403a9e30(ppuVar1,1,*(undefined4 *)((longlong)ppuVar1 + 0x5c),0,0,0,0,0,1,0xffffffff,0,0,0\n                    ,0);\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:35Z"
+}

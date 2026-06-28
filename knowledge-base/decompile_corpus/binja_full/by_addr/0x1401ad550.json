@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ad550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ad55e        struct alD3dSimpleEngineParam::alD3dDistanceFadeParam::VTable** result = operator new(0x10)\n1401ad566        if (result == 0)\n1401ad581        return result\n1401ad56f        result[1] = arg1\n1401ad573        *result = &alD3dDistanceFadeParam::`vftable'{for `alD3dSimpleEngineParam'}\n1401ad57b        return result",
+  "fetched_at": "2026-04-26T17:25:28Z"
+}

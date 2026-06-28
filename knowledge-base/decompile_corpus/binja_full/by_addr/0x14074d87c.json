@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074d87c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074d899        char rsi = 0\n14074d89b        int32_t arg_8 = 0\n14074d8aa        if (arg1 != 0 && *arg1 == 0)\n14074d8af        struct std::locale::facet::std::num_get<uint16_t>::VTable** rax_1 = operator new(0x10)\n14074d8b4        struct std::locale::facet::std::num_get<uint16_t>::VTable** rbx_1 = rax_1\n14074d8b7        arg_8.q = rax_1\n14074d8c2        void var_78\n14074d8c2        if (rax_1 == 0)\n14074d902        rbx_1 = nullptr\n14074d8c4        void* rax_2 = *(arg2 + 8)\n14074d8cb        void* rdx\n14074d8cb        if (rax_2 == 0)\n14074d8dc        rdx = &data_1407ff8a8\n14074d8cd        rdx = *(rax_2 + 0x28)\n14074d8d4        if (rdx == 0)\n14074d8d6        rdx = rax_2 + 0x30\n14074d8e8        std::_Locinfo::_Locinfo(&var_78, rdx)\n14074d8ed        rsi = 1\n14074d8f2        rbx_1[1].d = 0\n14074d8fd        *rbx_1 = &std::num_get<uint16_t>::`vftable'{for `std::locale::facet'}\n14074d904        *arg1 = rbx_1\n14074d90b        if ((rsi & 1) != 0)\n14074d912        std::_Locinfo::~_Locinfo(&var_78)\n14074d934        return 4",
+  "fetched_at": "2026-04-26T17:29:46Z"
+}

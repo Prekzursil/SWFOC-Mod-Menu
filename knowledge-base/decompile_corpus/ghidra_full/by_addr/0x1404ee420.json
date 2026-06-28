@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LightEffectDataPackClass * __thiscall\nLightEffectDataPackClass::LightEffectDataPackClass(LightEffectDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_LightEffectDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_LightEffectDataPackClass,20,class_EmptyLockerClass>)0x0;\n  (this->LightEffectDataPackClass_data).offset_0x0 = 0;\n  (this->LightEffectDataPackClass_data).offset_0x8 = 0;\n  (this->LightEffectDataPackClass_data).offset_0x10 = 0;\n  (this->LightEffectDataPackClass_data).offset_0x18 = 0;\n  (this->LightEffectDataPackClass_data).offset_0x20 = 0;\n  (this->LightEffectDataPackClass_data).offset_0x28 = (longlong *)0x0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:17:27Z"
+}

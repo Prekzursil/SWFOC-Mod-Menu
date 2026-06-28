@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e4260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e4278        *arg1 = &GUIGadgetEditboxClass::`vftable'{for `GUIGadgetClass'}\n1401e427e        sub_1401e72f0(arg1)\n1401e4285        arg1[0x23].b = 0\n1401e428c        *(arg1 + 0x11c) = 0\n1401e4292        void* rax = &arg1[0x1e]\n1401e4299        *(arg1 + 0x114) = 0\n1401e429f        arg1[0x20] = 0\n1401e42ae        if (arg1[0x21] u>= 8)\n1401e42b0        rax = arg1[0x1e]\n1401e42b7        *rax = 0\n1401e42c1        arg1[0x24].d = 0xffffffff\n1401e42cb        sub_14026edd0(&arg1[0x48])\n1401e42d7        sub_14025b390(&arg1[0x2f])\n1401e42e3        sub_1401cb190(&arg1[0x2c])\n1401e42ef        sub_14001eb00(&arg1[0x28])\n1401e42fb        sub_14001eb00(&arg1[0x1e])\n1401e431f        sub_14001eb00(&arg1[0x13])\n1401e4327        sub_1401e3cb0(arg1)\n1401e4330        if ((arg2 & 1) != 0)\n1401e433a        j_sub_1407864b8(arg1)\n1401e4351        return arg1",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

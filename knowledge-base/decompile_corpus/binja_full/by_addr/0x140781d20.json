@@ -1,0 +1,7 @@
+{
+  "addr": "0x140781d20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140781d2b        if (data_140b3c49c != 0)\n140781d61        return _wcsicmp_l(arg1, arg2, nullptr) __tailcall\n140781d4f        if (arg1 != 0 && arg2 != 0)\n140781d55        return __ascii_wcsicmp(arg1, arg2) __tailcall\n140781d37        *_errno() = 0x16\n140781d3d        _invalid_parameter_noinfo()\n140781d4b        return 0x7fffffff",
+  "fetched_at": "2026-04-26T17:31:09Z"
+}

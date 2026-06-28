@@ -1,0 +1,7 @@
+{
+  "addr": "0x140582310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140582320        int64_t* rdi = arg4\n14058232c        if (arg2 != arg3)\n140582333        int64_t* rbx_1 = arg2 + 0x10\n14058233f        void* rsi_2 = arg4 - arg2\n140582342        int64_t* rcx = rbx_1[-2]\n140582346        *rdi = rcx\n14058234c        if (rcx != 0)\n140582351        (**rcx)()\n140582353        int64_t* rcx_1 = rbx_1[-1]\n140582357        *(rsi_2 + rbx_1 - 8) = rcx_1\n14058235f        if (rcx_1 != 0)\n140582364        (**rcx_1)()\n140582366        int64_t* rcx_2 = *rbx_1\n140582369        *(rsi_2 + rbx_1) = rcx_2\n140582370        if (rcx_2 != 0)\n140582375        (**rcx_2)()\n140582377        int64_t* rcx_3 = rbx_1[1]\n14058237b        *(rsi_2 + rbx_1 + 8) = rcx_3\n140582383        if (rcx_3 != 0)\n140582388        (**rcx_3)()\n14058238e        rdi = &rdi[5]\n140582392        *(rsi_2 + rbx_1 + 0x10) = rbx_1[2].b\n140582396        rbx_1 = &rbx_1[5]\n1405823a1        do while (&rbx_1[-2] != arg3)\n1405823c6        return sub_14056cf40(rdi, rdi) __tailcall",
+  "fetched_at": "2026-04-26T17:35:35Z"
+}

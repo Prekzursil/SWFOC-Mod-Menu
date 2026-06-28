@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff530",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ff550        int32_t rax_1\n1406ff550        if ((*(*arg1 + 0x28))().b != 0 && sub_140397450(arg2) != 0)\n1406ff57e        rax_1 = sub_1406ff5d0(arg1, arg2, sub_140294bc0(&data_140a16fd0, *(sub_1403956c0(arg2) + 4)))\n1406ff585        if (rax_1.b == 1)\n1406ff598        sub_14048cca0(arg1, arg2, arg3, rax_1.b, rax_1.b)\n1406ff59d        struct IRootClass::RootClass::VTable** rax_4\n1406ff59d        rax_4.b = 1\n1406ff5ae        return rax_4\n1406ff5b4        rax_1.b = 0\n1406ff5c0        return rax_1",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e0220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AIPerceptionSystemClass::vfunction8(AIPerceptionSystemClass *this)\n\n{\n  longlong *plVar1;\n  undefined8 *puVar2;\n  longlong *plVar3;\n  \n  plVar1 = (this->AIPerceptionSystemClass_data).offset_0x8;\n  plVar3 = (longlong *)*plVar1;\n  if (plVar3 != plVar1) {\n    do {\n      puVar2 = (undefined8 *)plVar3[3];\n      if (puVar2 != (undefined8 *)0x0) {\n        (**(code **)*puVar2)(puVar2,1);\n      }\n      plVar3 = (longlong *)*plVar3;\n    } while (plVar3 != (this->AIPerceptionSystemClass_data).offset_0x8);\n  }\n  FUN_1400db9f0(&this->AIPerceptionSystemClass_data);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:40Z"
+}

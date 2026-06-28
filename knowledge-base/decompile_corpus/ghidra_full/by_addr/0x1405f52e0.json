@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f52e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpacePerceptionSystemClass * __thiscall\nTacticalAIManagerClass::vfunction5(TacticalAIManagerClass *this)\n\n{\n  int iVar1;\n  SpacePerceptionSystemClass *pSVar2;\n  LandPerceptionSystemClass *pLVar3;\n  GalacticPerceptionSystemClass *pGVar4;\n  \n  iVar1 = *(int *)((longlong)&(this->TacticalAIManagerClass_data).offset_0x8 + 4);\n  if (iVar1 == 0) {\n    pGVar4 = (GalacticPerceptionSystemClass *)FUN_140769c58(0xf0);\n    if (pGVar4 != (GalacticPerceptionSystemClass *)0x0) {\n      pGVar4 = GalacticPerceptionSystemClass::GalacticPerceptionSystemClass(pGVar4,this);\n      return (SpacePerceptionSystemClass *)pGVar4;\n    }\n  }\n  else if (iVar1 == 1) {\n    pLVar3 = (LandPerceptionSystemClass *)FUN_140769c58(0x138);\n    if (pLVar3 != (LandPerceptionSystemClass *)0x0) {\n      pLVar3 = LandPerceptionSystemClass::LandPerceptionSystemClass(pLVar3,this);\n      return (SpacePerceptionSystemClass *)pLVar3;\n    }\n  }\n  else if (iVar1 == 2) {\n    pSVar2 = (SpacePerceptionSystemClass *)FUN_140769c58(0xf8);\n    if (pSVar2 != (SpacePerceptionSystemClass *)0x0) {\n      pSVar2 = SpacePerceptionSystemClass::SpacePerceptionSystemClass(pSVar2,this);\n      return pSVar2;\n    }\n  }\n  return (SpacePerceptionSystemClass *)0;\n}",
+  "fetched_at": "2026-04-26T17:23:05Z"
+}

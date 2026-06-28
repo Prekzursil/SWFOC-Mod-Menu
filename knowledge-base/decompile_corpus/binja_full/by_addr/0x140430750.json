@@ -1,0 +1,7 @@
+{
+  "addr": "0x140430750",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140430756        struct ScheduledEventClass::RepairHardpointEventClass::VTable** result = arg1\n140430759        sub_140512c50(arg1)\n140430765        result[9].d = 0x3fffff\n14043076c        *result = &RepairHardpointEventClass::`vftable'{for `ScheduledEventClass'}\n140430772        *(result + 0x4c) = -1\n14043077a        result[4].d = 0x2d\n140430786        return result",
+  "fetched_at": "2026-04-26T17:26:52Z"
+}

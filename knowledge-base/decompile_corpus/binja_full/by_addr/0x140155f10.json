@@ -1,0 +1,7 @@
+{
+  "addr": "0x140155f10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140155f20        uint32_t result = GetCurrentThreadId()\n140155f35        if (result == data_140a155d0 && data_140a62740 != 0)\n140155fb3        return result\n140155f3f        int32_t zmm1 = arg2[1]\n140155f49        int32_t var_18 = *arg2\n140155f54        int32_t var_10_1 = arg2[2]\n140155f5a        int32_t var_14_1 = zmm1\n140155f60        sub_14022fc80(arg1 + 0x20, &var_18)\n140155f6c        int32_t* rdx_1 = *(arg1 + 0x1b8)\n140155f7b        if (rdx_1 == *(arg1 + 0x1c0))\n140155f9c        std::vector<uint64_t const& __ptr64,uint64_t,class std::allocator<uint64_t> >::_Emplace_reallocate<uint64_t const& __ptr64>(arg1 + 0x1b0, rdx_1, arg1 + 0x1e0)\n140155fa4        return sub_140156720(arg1)\n140155f80        *rdx_1 = *(arg1 + 0x1e0)\n140155f86        *(arg1 + 0x1b8) = &rdx_1[1]\n140155f97        return sub_140156720(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:22:24Z"
+}

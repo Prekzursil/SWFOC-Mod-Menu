@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407872a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LPVOID _calloc_base(ulonglong param_1,ulonglong param_2)\n\n{\n  int iVar1;\n  LPVOID pvVar2;\n  ulong *puVar3;\n  size_t dwBytes;\n  \n  if ((param_1 == 0) || (param_2 <= 0xffffffffffffffe0 / param_1)) {\n    dwBytes = param_1 * param_2;\n    if (dwBytes == 0) {\n      dwBytes = 1;\n    }\n    do {\n      pvVar2 = HeapAlloc(DAT_140b3cc00,8,dwBytes);\n      if (pvVar2 != (LPVOID)0x0) {\n        return pvVar2;\n      }\n      iVar1 = FUN_14078ec1c();\n    } while ((iVar1 != 0) && (iVar1 = _callnewh(dwBytes), iVar1 != 0));\n  }\n  puVar3 = __doserrno();\n  *puVar3 = 0xc;\n  return (LPVOID)0x0;\n}",
+  "fetched_at": "2026-04-26T18:51:42Z"
+}

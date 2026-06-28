@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402418b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402418b6        arg1[1] = arg3\n1402418c2        *arg1 = arg2\n1402418e1        int32_t rdx = 0\n1402418e7        int32_t rcx = 0\n1402418f1        int32_t r8 = (int.q(fconvert.s(ceil(fconvert.d((arg3 - arg2) / arg4 - 1.1920929e-07f))) + 1f)).d\n1402418f9        if (r8 != 0)\n1402418fb        int32_t rax_1 = 1\n140241900        rcx += rax_1\n140241902        rdx += 1\n140241904        rax_1 = rol.d(rax_1, 1)\n140241909        do while (rcx u< r8)\n140241912        arg2 = arg1[1] - *arg1\n140241919        arg1[3] = rdx\n14024191c        double result\n14024191c        result.d = float.s(zx.q(rcx - 1))\n140241925        arg1[2] = arg2 f/ result.d\n14024192f        return result",
+  "fetched_at": "2026-04-26T17:30:14Z"
+}

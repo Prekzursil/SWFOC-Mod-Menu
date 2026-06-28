@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall JetPackLocomotorBehaviorClass::vfunction9(void)\n\n{\n  return \"JetPackLocomotorBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:04Z"
+}

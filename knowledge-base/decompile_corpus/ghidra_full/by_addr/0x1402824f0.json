@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402824f0",
+  "tool": "ghidra",
+  "fact_id": "rva_is_enemy_engine",
+  "body": "\nundefined8 FUN_1402824f0(longlong param_1,longlong param_2)\n\n{\n  return CONCAT71((int7)((ulonglong)*(longlong *)(param_1 + 0x370) >> 8),\n                  *(int *)(*(longlong *)(param_1 + 0x370) + (longlong)*(int *)(param_2 + 0x4c) * 4)\n                  == 1);\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f2250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nBountyOnFactionAbilityClass::vfunction30_for_IXMLLoadableClass(BountyOnFactionAbilityClass *this)\n\n{\n  undefined ***pppuVar1;\n  undefined1 local_108 [256];\n  \n  CorruptionAbilityClass::vfunction30_for_IXMLLoadableClass((CorruptionAbilityClass *)this);\n  if (*(float *)&(this->BountyOnFactionAbilityClass_data).offset_0x0 <= 0.0 &&\n      *(float *)&(this->BountyOnFactionAbilityClass_data).offset_0x0 != 0.0) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_108,\"Error: (%s) Bounty_Percentage cannot be less than zero.\",pppuVar1);\n    FUN_1402149d0(local_108);\n    *(undefined4 *)&(this->BountyOnFactionAbilityClass_data).offset_0x0 = 0;\n  }\n  if ((this->BountyOnFactionAbilityClass_data).offset_0x8 ==\n      (this->BountyOnFactionAbilityClass_data).offset_0x10) {\n    pppuVar1 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar1 = (undefined ***)*pppuVar1;\n    }\n    FUN_140048ec0(local_108,\n                  \"Warning: (%s) You must specify at least one faction for Target_Factions.\",\n                  pppuVar1);\n    FUN_1402149d0(local_108);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:47:37Z"
+}

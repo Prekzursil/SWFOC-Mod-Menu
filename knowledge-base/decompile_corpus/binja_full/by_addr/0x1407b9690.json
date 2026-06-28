@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9690",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_lessthan",
+  "body": "1407b9698        int64_t r11 = sx.q(arg3)\n1407b96a0        void* r9_2\n1407b96a0        if (arg2 s<= 0)\n1407b96c3        r9_2 = sub_1407b9f20(arg1, arg2)\n1407b96b1        r9_2 = *(arg1 + 0x18) - 0x10 + (sx.q(arg2) << 4)\n1407b96b8        if (r9_2 u>= *(arg1 + 0x10))\n1407b96b8        r9_2 = nullptr\n1407b96c9        void* rax_4\n1407b96c9        if (r11.d s<= 0)\n1407b96ed        rax_4 = sub_1407b9f20(arg1, r11.d)\n1407b96da        rax_4 = *(arg1 + 0x18) - 0x10 + (r11 << 4)\n1407b96e1        if (rax_4 u>= *(arg1 + 0x10))\n1407b96e1        rax_4 = nullptr\n1407b96fa        if (r9_2 != 0 && rax_4 != 0)\n1407b9707        return sub_1407c3650(r9_2, rax_4) __tailcall\n1407b9713        return 0",
+  "fetched_at": "2026-04-26T16:44:32Z"
+}

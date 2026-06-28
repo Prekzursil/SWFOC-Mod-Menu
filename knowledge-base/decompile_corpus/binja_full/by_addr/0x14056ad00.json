@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056ad00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056ad03        if (arg2 == 0)\n14056ad03        return \n14056ad0e        void* rcx = *(arg2 + 0x2a0)\n14056ad1b        if (rcx == 0 || sub_1402648b0(rcx) == 0)\n14056ad29        return \n14056ad40        int64_t* rax_1 = sub_1402648b0(*(arg2 + 0x2a0))\n14056ad4b        int32_t i = 0\n14056ad54        if (sub_14012d6d0(rax_1).d s<= 0)\n14056ad54        return \n14056adfe        int64_t* rax\n14056ad75        int64_t* rax_2 = sub_14012d6f0(rax_1, i)\n14056ad80        if (rax_2 != 0)\n14056ad82        int64_t rdx_1 = *rax_2\n14056ad88        void* j = (*(rdx_1 + 0x20))(rax_2, rdx_1)\n14056ad8e        while (j != 0)\n14056ad93        if (j == &data_140a12540)\n14056ada0        int32_t k = 0\n14056ada8        if (rax_2[0x1f].d s> 0)\n14056adaa        int64_t rsi_1 = 0\n14056adb7        int64_t* rcx_5 = *(rax_2[0x1e] + rsi_1 + 8)\n14056adbf        if (rcx_5 != 0 && _stricmp((*(*rcx_5 + 0x30))(rcx_5), data_140a43b00) == 0)\n14056addf        sub_14014d4a0(rax_2, k)\n14056ade4        k += 1\n14056ade6        rsi_1 += 0x10\n14056adf0        do while (k s< rax_2[0x1f].d)\n14056ada8        break\n14056ad95        j = *(j + 8)\n14056adf5        i += 1\n14056adf7        rax = sub_14012d6d0(rax_1)\n14056adfe        do while (i s< rax.d)\n14056ae22        return ",
+  "fetched_at": "2026-04-26T17:34:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140623530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8 __thiscall\nStarshipLocomotorBehaviorClass::vfunction27\n          (StarshipLocomotorBehaviorClass *this,undefined4 *param_1,longlong param_2)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  ulonglong in_RAX;\n  longlong lVar5;\n  float extraout_XMM0_Da;\n  float fVar6;\n  \n  lVar3 = *(longlong *)(param_2 + 0xa8);\n  if (lVar3 != 0) {\n    lVar5 = *(longlong *)(param_2 + 0x2b8);\n    fVar6 = (float)param_1[2];\n    plVar4 = *(longlong **)(lVar5 + 0x20);\n    uVar1 = *param_1;\n    uVar2 = param_1[1];\n    if (plVar4 != (longlong *)0x0) {\n      lVar5 = (**(code **)(*plVar4 + 0xe0))(plVar4);\n      if ((int)lVar5 == 1) {\n        if (plVar4[0x67] != 0) {\n          lVar5 = FUN_140135140(plVar4[0x67],*param_1,param_1[1]);\n          fVar6 = extraout_XMM0_Da;\n        }\n        fVar6 = fVar6 + _DAT_1408ae5d0;\n      }\n    }\n    *(undefined4 *)(lVar3 + 8) = uVar1;\n    *(undefined4 *)(lVar3 + 0xc) = uVar2;\n    *(float *)(lVar3 + 0x10) = fVar6;\n    *(undefined4 *)(lVar3 + 0x50) = 10;\n    return CONCAT71((int7)((ulonglong)lVar5 >> 8),1);\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:30:26Z"
+}

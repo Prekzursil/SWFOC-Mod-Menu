@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405180d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405180e8        void* result\n1405180e8        if (*(arg2 + 0x10) != 0)\n1405180f3        if (arg3[2] == 0)\n1405180f5        result.b = 1\n140518107        return result\n14051810d        if (*(arg2 + 0x18) u>= 0x10)\n14051810f        arg2 = *arg2\n140518117        char var_108[0x100]\n140518117        char* rcx = &var_108 - arg2\n14051812c        char i\n140518120        i = *arg2\n140518123        *(rcx + arg2) = i\n140518126        arg2 += 1\n14051812c        do while (i != 0)\n140518133        _strupr(&var_108)\n14051813d        int32_t arg_14 = 0\n140518148        int64_t rax = -1\n140518150        rax += 1\n140518157        do while (var_108[rax] != 0)\n140518186        int32_t arg_10 = sub_140215a30(&var_108, rax.d, 0)\n140518194        uint64_t (* var_118_1)(int32_t* arg1, int32_t* arg2) = sub_1405177c0\n140518199        result = bsearch(&arg_10, arg6, zx.q(arg7), 8, sub_1405177c0)\n1405181a1        if (result != 0)\n1405181c8        var_118_1.b = arg9\n1405181e1        return sub_14051a280(arg4, (zx.q(*(result + 4)) << 5) + arg5, arg3, arg8, 0xc0)\n1405181ea        result.b = 0\n1405181f4        return result",
+  "fetched_at": "2026-04-26T17:32:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140271c20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TextureClass * __thiscall\nTextureClass::scalar_deleting_destructor(TextureClass *this,ulonglong param_1)\n\n{\n  undefined **ppuVar1;\n  \n                    /* inlined destructor: TextureClass::~TextureClass */\n  this->vftablePtr = &vftable;\n  ppuVar1 = (this->RefCountClass_data).offset_0x8;\n  if (ppuVar1 != (undefined **)0x0) {\n    (**(code **)(*ppuVar1 + 8))();\n  }\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (TextureClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x20);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:19:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140687a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TerrainCollisionClass * __thiscall\nTerrainCollisionClass::scalar_deleting_destructor(TerrainCollisionClass *this,uint param_1)\n\n{\n                    /* inlined destructor: TerrainCollisionClass::~TerrainCollisionClass */\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  CollisionClass::~CollisionClass((CollisionClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x80);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:14:54Z"
+}

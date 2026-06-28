@@ -1,0 +1,7 @@
+{
+  "addr": "0x140334110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140334118        int64_t* rbx = arg1 + 0x130\n14033412d        if (rbx == 0)\n140334175        rbx = arg3\n14033413f        if (WaitForSingleObject(*rbx, 0x2710) == WAIT_OBJECT_0)\n14033416f        rbx[1] = \"BroadcasterClass::Find_Player_From_Address\"\n140334141        rbx[1]\n14033417a        int32_t rdi = 0\n140334187        int64_t result\n140334187        if (*(arg1 + 0xd8) s<= 0)\n1403341be        label_1403341be:\n1403341be        result = 0\n1403341a1        while (true)\n1403341a1        int64_t r14_1 = sx.q(rdi) * 0x1d8\n1403341b2        if (std::_String_const_iterator<class std::_String_val<struct std::_Simple_types<uint16_t> > >::operator==(*(arg1 + 0xd0) + 0x70 + r14_1, arg2) != 0)\n140334218        result = *(arg1 + 0xd0) + r14_1\n14033421b        break\n1403341b4        rdi += 1\n1403341bc        if (rdi s>= *(arg1 + 0xd8))\n1403341bc        goto label_1403341be\n1403341cd        if (rbx != 0)\n1403341cf        rbx[1]\n1403341d3        HANDLE hMutex = *rbx\n1403341d6        rbx[1] = 0\n1403341e6        if (ReleaseMutex(hMutex) == 0)\n1403341e8        GetLastError()\n140334210        return result",
+  "fetched_at": "2026-04-26T17:03:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406021a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* CombatantBehaviorClass member function inherited by BaseCombatantClass\n   CombatantBehaviorClass member function inherited by BaseCombatantClass\n   CombatantBehaviorClass member function inherited by SquadronCombatantClass\n   CombatantBehaviorClass member function inherited by SquadronCombatantClass\n   CombatantBehaviorClass member function inherited by CompanyCombatantClass\n   CombatantBehaviorClass member function inherited by CompanyCombatantClass */\n\nundefined ** __thiscall CombatantBehaviorClass::vfunction47(CombatantBehaviorClass *this)\n\n{\n  return this->offset_0x18;\n}",
+  "fetched_at": "2026-04-26T17:25:04Z"
+}

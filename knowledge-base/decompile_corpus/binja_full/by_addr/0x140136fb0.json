@@ -1,0 +1,7 @@
+{
+  "addr": "0x140136fb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140136fc8        struct alMesh::alD3dMesh::VTable** result = j_sub_140187650(arg2)\n140136fd3        if (result == 0)\n14013705e        return result\n140136fe0        (*result)->vFunc_0(result)\n140136fe8        struct alMesh::alD3dMesh::VTable** result_1 = result\n140136ff0        struct alMesh::alD3dMesh::VTable* rax_2 = *result\n140136ff3        int32_t rsi_1 = *(**arg2 + 0xe0)\n140136ff9        int32_t var_18 = rsi_1\n140136ffd        rax_2->vFunc_0(result)\n140136fff        int32_t* rdx_1 = *(arg1 + 0x160)\n14013700d        if (rdx_1 == *(arg1 + 0x168))\n140137033        sub_140137cc0(arg1 + 0x158, rdx_1, &var_18)\n14013700f        *rdx_1 = rsi_1\n140137014        *(rdx_1 + 8) = result\n14013701b        (*result)->vFunc_0(result)\n14013701d        *(arg1 + 0x160) += 0x10\n14013703e        (*result)->vFunc_1(result)\n140137047        return (*result)->vFunc_1(result)",
+  "fetched_at": "2026-04-26T17:11:39Z"
+}

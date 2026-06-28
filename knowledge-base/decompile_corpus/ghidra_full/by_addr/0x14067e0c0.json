@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067e0c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14067e0c0(longlong *param_1,ulonglong param_2,undefined1 param_3)\n\n{\n  ulonglong uVar1;\n  undefined1 local_res18 [16];\n  longlong local_38;\n  ulonglong uStack_30;\n  longlong local_28;\n  ulonglong uStack_20;\n  undefined1 local_18 [24];\n  \n  uVar1 = param_1[3];\n  local_res18[0] = param_3;\n  if (uVar1 < param_2) {\n    if (((longlong)uVar1 < 0) && (uVar1 != 0)) {\n      local_28 = -((~uVar1 >> 5) * 4 + 4);\n    }\n    else {\n      local_28 = (uVar1 >> 5) * 4;\n    }\n    local_28 = *param_1 + local_28;\n    uStack_20 = (ulonglong)((uint)uVar1 & 0x1f);\n    FUN_1403f2980(param_1,&local_38,&local_28,param_2 - uVar1,local_res18);\n    return;\n  }\n  if (param_2 < uVar1) {\n    if (((longlong)uVar1 < 0) && (uVar1 != 0)) {\n      local_38 = -((~uVar1 >> 5) * 4 + 4);\n    }\n    else {\n      local_38 = (uVar1 >> 5) * 4;\n    }\n    local_38 = *param_1 + local_38;\n    if (((longlong)param_2 < 0) && (param_2 != 0)) {\n      local_28 = -((~param_2 >> 5) * 4 + 4);\n    }\n    else {\n      local_28 = (param_2 >> 5) * 4;\n    }\n    local_28 = *param_1 + local_28;\n    uStack_30 = (ulonglong)((uint)uVar1 & 0x1f);\n    uStack_20 = (ulonglong)((uint)param_2 & 0x1f);\n    FUN_14067ddc0(param_1,local_18,&local_28,&local_38);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:49Z"
+}

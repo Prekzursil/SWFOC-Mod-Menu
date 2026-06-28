@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007bdf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007be02        if ((arg2 & 2) == 0)\n14007beb8        sub_14001eb00(&arg1[0x1b])\n14007bec4        sub_14001eb00(&arg1[0x13])\n14007becd        sub_14001eb00(&arg1[0xf])\n14007bed6        sub_14001eb00(&arg1[8])\n14007bedf        sub_14001eb00(&arg1[4])\n14007bee7        sub_14001eb00(arg1)\n14007bef0        if ((arg2 & 1) != 0)\n14007befa        j_sub_1407864b8(arg1)\n14007bf0c        return arg1\n14007be12        int64_t i_1 = arg1[-1]\n14007be22        void* rbx_1 = i_1 * 0x108 + arg1\n14007be28        if (i_1 != 0)\n14007be76        int64_t i\n14007be30        rbx_1 -= 0x108\n14007be3e        sub_14001eb00(rbx_1 + 0xd8)\n14007be4a        sub_14001eb00(rbx_1 + 0x98)\n14007be53        sub_14001eb00(rbx_1 + 0x78)\n14007be5c        sub_14001eb00(rbx_1 + 0x40)\n14007be65        sub_14001eb00(rbx_1 + 0x20)\n14007be6d        sub_14001eb00(rbx_1)\n14007be72        i = i_1\n14007be72        i_1 -= 1\n14007be76        do while (i != 1)\n14007be86        if ((arg2 & 1) != 0)\n14007be88        arg1[-1]\n14007be98        j_sub_1407864b8(&arg1[-1])\n14007beb0        return &arg1[-1]",
+  "fetched_at": "2026-04-26T16:56:58Z"
+}

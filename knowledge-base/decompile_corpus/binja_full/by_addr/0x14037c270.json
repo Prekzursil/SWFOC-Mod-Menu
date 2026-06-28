@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037c270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037c295        if ((*(*(arg1 + 0x10) + 0x3a0) & 0x80) == 0 && data_140b15490 != 1 && arg2 != 0)\n14037c29e        if (arg3 != 0)\n14037c2b3        label_14037c2b3:\n14037c2d1        switch (*(arg2 + 0x3c) - 1)\n14037c2d3        case 0\n14037c2d3        int64_t rax_2\n14037c2d3        rax_2.b = 1\n14037c2d9        return rax_2\n14037c2e4        case 1, 8, 9, 0xa\n14037c2e4        jump(*(*arg3 + 0xf0))\n14037c2f9        case 2, 5, 6, 7\n14037c2f9        int32_t rax_5\n14037c2f9        rax_5.b = (*(*arg3 + 0xe0))(arg3, &__dos_header) == 0\n14037c300        return rax_5\n14037c310        case 3\n14037c310        int32_t rax_7\n14037c310        rax_7.b = (*(*arg3 + 0xe0))(arg3, &__dos_header) == 2\n14037c317        return rax_7\n14037c327        case 4\n14037c327        int32_t rax_9\n14037c327        rax_9.b = (*(*arg3 + 0xe0))(arg3, &__dos_header) == 1\n14037c32e        return rax_9\n14037c33a        case 0xb\n14037c33a        return sub_14028afb0(&data_140b153e0) __tailcall\n14037c2a0        arg3 = data_140b15418\n14037c2aa        if (arg3 != 0)\n14037c2aa        goto label_14037c2b3\n14037c33f        uint64_t rax\n14037c33f        rax.b = 0\n14037c345        return rax",
+  "fetched_at": "2026-04-26T17:19:06Z"
+}

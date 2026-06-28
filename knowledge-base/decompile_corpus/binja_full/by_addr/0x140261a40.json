@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261a40",
+  "tool": "binary_ninja",
+  "fact_id": "rva_camera_get_position",
+  "body": "140261a40        void* result = *(arg1 + 0x40)\n140261a49        int32_t zmm1 = *(result + 0x1c)\n140261a4e        int32_t zmm2 = *(result + 0x2c)\n140261a53        *arg2 = *(result + 0xc)\n140261a57        arg2[1] = zmm1\n140261a5c        arg2[2] = zmm2\n140261a61        return result",
+  "fetched_at": "2026-04-26T16:42:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014acd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalLightSource::vfunction12_for_RefCountClass(alLightSource *this,undefined4 *param_1)\n\n{\n  alRenderable::vfunction12_for_RefCountClass((alRenderable *)this,param_1);\n  FUN_14014b660(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:06Z"
+}

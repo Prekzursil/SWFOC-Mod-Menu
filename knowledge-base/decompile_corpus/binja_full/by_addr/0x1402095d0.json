@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402095d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402095e0        *arg1 = &ReferenceListClass<class PacketClass>::`vftable'{for `GenericMultiLinkedList'}\n1402095eb        if (sub_140209670(arg1) != 0)\n140209621        int64_t i\n1402095f8        void arg_8\n1402095f8        void* rax_1 = sub_14020ac80(arg1, &arg_8)\n140209609        if (rax_1 != 0 && rax_1 != 0x50)\n140209613        (*(*(rax_1 + 0x10) + 8))(rax_1 + 0x10)\n140209619        i = sub_140209670(arg1)\n140209621        do while (i != 0)\n14020962b        return sub_14020a960(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:28:03Z"
+}

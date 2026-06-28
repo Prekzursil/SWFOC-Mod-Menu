@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406442d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall TransportLandingBehaviorClass::vfunction16(TransportLandingBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  \n  puVar1 = this->offset_0x18[0x19];\n  if ((puVar1 != (undefined *)0x0) && (*(int *)(puVar1 + 0xb0) != 0)) {\n    FUN_1406438a0(this,puVar1);\n    if (*(longlong *)(puVar1 + 0x58) != 0) {\n      FUN_1402a6280(*(undefined8 *)(DAT_140b15418 + 0x20),\n                    *(undefined4 *)(*(longlong *)(puVar1 + 0x58) + 0x50));\n      *(undefined8 *)(puVar1 + 0x58) = 0;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:37Z"
+}

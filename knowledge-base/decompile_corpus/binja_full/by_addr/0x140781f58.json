@@ -1,0 +1,7 @@
+{
+  "addr": "0x140781f58",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140781f7c        void* r10 = arg2\n140781f7f        int64_t rbx = 0\n140781f87        if (arg5 != 0)\n140781f8d        arg1 = neg.d(arg1)\n140781f8f        *arg2 = 0x2d\n140781f92        rbx = 1\n140781f95        r10 = &arg2[1]\n140781f99        void* r8 = r10\n140781fd0        void* rsi_1\n140781fd0        void* r9\n140781f9e        rsi_1 = r10 + 2\n140781fa4        r9 = r10\n140781fa7        uint32_t temp1_1 = modu.dp.d(0:arg1, arg4)\n140781fa9        arg1 = divu.dp.d(0:arg1, arg4)\n140781fae        int16_t rax_3 = 0x57\n140781fb7        if (temp1_1 u<= 9)\n140781fb7        rax_3 = 0x30\n140781fbc        rbx += 1\n140781fc2        *r10 = rax_3 + temp1_1.w\n140781fc8        if (arg1 == 0)\n140781fc8        break\n140781fca        r10 = rsi_1\n140781fd0        do while (rbx u< arg3)\n140781fd5        if (rbx u>= arg3)\n140781fd7        *arg2 = 0\n140781fe5        *_errno() = 0x22\n140781fe7        _invalid_parameter_noinfo()\n140781fec        return 0x22\n140781ff0        *rsi_1 = 0\n140781ff8        int16_t rcx = *r9\n140781ffc        *r9 = *r8\n140782000        r9 -= 2\n140782004        *r8 = rcx\n140782008        r8 += 2\n14078200f        do while (r8 u< r9)\n140782011        return 0",
+  "fetched_at": "2026-04-26T17:31:09Z"
+}

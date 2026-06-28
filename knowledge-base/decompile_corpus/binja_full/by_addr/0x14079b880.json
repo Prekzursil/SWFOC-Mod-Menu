@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b880",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079b893        void* rax = __acrt_getptd()\n14079b8c2        int32_t lCData\n14079b8c2        if (GetLocaleInfoW((arg1 & 0x3ff) | 0x400, 0x20000001, &lCData, 2) != 0)\n14079b8cc        int64_t rcx_4\n14079b8cc        int32_t r8_1\n14079b8cc        if (arg1 != lCData && arg2 != 0)\n14079b8ce        int16_t* r9_1 = *(rax + 0x98)\n14079b8d5        r8_1 = 0\n14079b8d8        int16_t rdx = *r9_1\n14079b8dc        void* rcx_3 = &r9_1[1]\n14079b8f1        while (rdx - 0x41 u<= 0x19 || rdx - 0x61 u<= 0x19)\n14079b8f3        rdx = *rcx_3\n14079b8f6        r8_1 += 1\n14079b8f9        rcx_3 += 2\n14079b8ff        rcx_4 = -1\n14079b903        rcx_4 += 1\n14079b90b        do while (r9_1[rcx_4] != 0)\n14079b910        if (arg1 == lCData || arg2 == 0 || r8_1 != rcx_4.d)\n14079b912        return 1\n14079b919        return 0",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

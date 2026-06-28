@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402051e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1402051e0(longlong param_1,int param_2)\n\n{\n  int iVar1;\n  \n  iVar1 = *(int *)(param_1 + 0x48) - *(int *)(param_1 + 0x10);\n  return CONCAT31((int3)((uint)iVar1 >> 8),param_2 < iVar1);\n}",
+  "fetched_at": "2026-04-26T17:56:35Z"
+}

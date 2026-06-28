@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062f680",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062f68f        void* rcx = arg1[8]\n14062f696        if (rcx != 0)\n14062f6aa        if (((arg1[0xa] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n14062f6ac        void* r8_1 = *(rcx - 8)\n14062f6bf        if (rcx - r8_1 - 8 u> 0x1f)\n14062f720        _invalid_parameter_noinfo_noreturn()\n14062f720        noreturn\n14062f6c1        rcx = r8_1\n14062f6c4        j_sub_1407864b8(rcx)\n14062f6cb        __builtin_memset(&arg1[8], 0, 0x18)\n14062f6e1        *arg1 = &LocomotorCommonClass::`vftable'{for `LocomotorInterfaceClass'}\n14062f6eb        arg1[1] = &LocomotorCommonClass::`vftable'{for `RefCountClass'}\n14062f6f6        arg1[3] = &LocomotorCommonClass::`vftable'{for `SignalListenerClass'}\n14062f6fa        sub_1404c3310(arg1)\n14062f703        if ((arg2 & 1) != 0)\n14062f70d        j_sub_1407864b8(arg1)\n14062f71f        return arg1",
+  "fetched_at": "2026-04-26T17:24:10Z"
+}

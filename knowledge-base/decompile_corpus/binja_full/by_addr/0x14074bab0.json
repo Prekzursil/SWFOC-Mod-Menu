@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074bab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074baca        int64_t rcx = *arg1\n14074bad0        if (rcx != arg2)\n14074bad7        if (rcx != 0)\n14074bad9        free(rcx)\n14074bade        *arg1 = 0\n14074bae4        if (arg2 != 0)\n14074bae6        int16_t* rbx_1 = arg2\n14074baec        if (*arg2 != 0)\n14074baee        rbx_1 = &rbx_1[1]\n14074baf5        do while (*rbx_1 != 0)\n14074bb01        int64_t rbx_5 = ((rbx_1 - arg2 + 2) s>> 1) * 2\n14074bb07        int32_t* rax_1 = j_sub_14078f364(rbx_5)\n14074bb0c        *arg1 = rax_1\n14074bb12        if (rax_1 != 0)\n14074bb1d        memcpy(rax_1, arg2, rbx_5)\n14074bb39        return arg1",
+  "fetched_at": "2026-04-26T17:29:37Z"
+}

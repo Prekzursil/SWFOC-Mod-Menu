@@ -1,0 +1,7 @@
+{
+  "addr": "0x140610a70",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_budgeted_category_struct_ctor",
+  "body": "\nBudgetedCategoryStruct * __thiscall\nAIBudgetClass::BudgetedCategoryStruct::BudgetedCategoryStruct\n          (BudgetedCategoryStruct *this,undefined8 param_1)\n\n{\n  AIDiagnosticsClass::AIDiagnosticsClass((AIDiagnosticsClass *)this);\n  (this->BudgetedCategoryStruct_data).offset_0x8 = param_1;\n  this->vftablePtr = &vftable;\n  (this->BudgetedCategoryStruct_data).offset_0x10 = 0;\n  (this->BudgetedCategoryStruct_data).offset_0x20 = 0;\n  (this->BudgetedCategoryStruct_data).offset_0x28 = 0;\n  (this->BudgetedCategoryStruct_data).offset_0x30 = 0;\n  (this->BudgetedCategoryStruct_data).offset_0x40 = 0;\n  (this->BudgetedCategoryStruct_data).offset_0x48 = 0;\n  (this->BudgetedCategoryStruct_data).offset_0x50 = 0;\n  (this->BudgetedCategoryStruct_data).offset_0x0 = 0xffffffff;\n  (this->BudgetedCategoryStruct_data).offset_0x18 = 1;\n  (this->BudgetedCategoryStruct_data).offset_0x38 = 1;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:05Z"
+}

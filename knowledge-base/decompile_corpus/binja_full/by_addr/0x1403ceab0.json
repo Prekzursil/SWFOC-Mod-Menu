@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ceab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ceac2        int64_t* rax = sub_140347b50(0x381)\n1403ceacd        char result = sub_14034ce60(rax)\n1403cead4        if (result != 0)\n1403ceb82        return result\n1403ceada        int64_t r8_1 = *rax\n1403ceadd        int64_t rdx\n1403ceadd        rdx.b = 1\n1403ceae2        (*(r8_1 + 0x80))(rax, rdx, r8_1)\n1403ceae9        int64_t r8_2 = *rax\n1403ceaec        int64_t rdx_1\n1403ceaec        rdx_1.b = 1\n1403ceaf1        (*(r8_2 + 0x78))(rax, rdx_1, r8_2)\n1403ceaf7        *(arg1 + 0x2b40) = 0x3fffff\n1403ceb06        *(arg1 + 0x2b38) = 0\n1403ceb0c        *(arg1 + 0x2b48) = 0\n1403ceb13        *(arg1 + 0x2b44) = 0\n1403ceb1a        int64_t* rax_1 = sub_140347b50(0x386)\n1403ceb22        if (rax_1 != 0)\n1403ceb24        int64_t r9_1 = *rax_1\n1403ceb2f        int64_t arg_10 = 0\n1403ceb37        (*(r9_1 + 0xa8))(rax_1, &arg_10, 0, r9_1)\n1403ceb3e        int64_t* rcx_4 = *(arg1 + 0x2b50)\n1403ceb48        if (rcx_4 != 0)\n1403ceb4d        (*(*rcx_4 + 8))(rcx_4)\n1403ceb50        *(arg1 + 0x2b50) = 0\n1403ceb57        *(arg1 + 0x2b58) = 0\n1403ceb73        return sub_14032edd0(data_140b15418 + 0xa0, \"close_corruption_dialog\")",
+  "fetched_at": "2026-04-26T17:24:53Z"
+}

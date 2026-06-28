@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c0e00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c0e10        float zmm1 = *arg2\n1404c0e14        float zmm0 = arg1[7].d f+ 0.00100000005f\n1404c0e18        float zmm3 = arg2[1]\n1404c0e20        if (not(zmm0 > zmm1))\n1404c0e2b        zmm0 = _mm_min_ss(arg1[8].d f- 0.00100000005f, zmm1)\n1404c0e2f        zmm1 - zmm0\n1404c0e34        char rax\n1404c0e34        if (is_unordered.d(zmm1, zmm0) || zmm1 != zmm0)\n1404c0e3a        rax = 1\n1404c0e36        rax = 0\n1404c0e41        zmm1 = *(arg1 + 0x3c) + 0.00100000005f\n1404c0e48        if (not(zmm1 > zmm3))\n1404c0e53        zmm1 = _mm_min_ss(*(arg1 + 0x34) - 0.00100000005f, zmm3)\n1404c0e57        zmm3 - zmm1\n1404c0e5c        char r9\n1404c0e5c        if (is_unordered.d(zmm3, zmm1) || zmm3 != zmm1)\n1404c0e63        r9 = 1\n1404c0e5e        r9 = 0\n1404c0e6b        r9 |= rax\n1404c0e6e        int32_t rax_1 = arg1[4].d\n1404c0e94        int32_t rdx_2 = int.d((*(arg1 + 0x34) - zmm1) f/ arg1[6].d) * *(arg1 + 0x24) + int.d((zmm0 f- arg1[7].d) f/ *(arg1 + 0x2c))\n1404c0e96        int32_t rcx_1 = rax_1 - 1\n1404c0e9b        if (rdx_2 s< rax_1)\n1404c0e9b        rcx_1 = rdx_2\n1404c0e9e        int32_t rax_2 = 0\n1404c0ea2        if (rcx_1 s>= 0)\n1404c0ea2        rax_2 = rcx_1\n1404c0ea9        if (r9 == 1)\n1404c0eaf        return zx.q(r9)\n1404c0eba        int64_t result\n1404c0eba        result.b = *(sx.q(rax_2) + *arg1) == 0\n1404c0ebd        return result",
+  "fetched_at": "2026-04-26T17:30:09Z"
+}

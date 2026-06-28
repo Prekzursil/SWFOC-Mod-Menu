@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017c2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017c2ff        int32_t rdx = data_140a12938\n14017c307        int32_t rbx = 0\n14017c30b        if (rdx s> 0)\n14017c30d        int64_t* rdi_1 = nullptr\n14017c317        int64_t* rcx_1 = *(rdi_1 + data_140a12930)\n14017c31e        if (rcx_1 != 0)\n14017c328        (**rcx_1)(rcx_1, 1)\n14017c32a        rdx = data_140a12938\n14017c330        rbx += 1\n14017c332        rdi_1 = &rdi_1[1]\n14017c338        do while (rbx s< rdx)\n14017c341        sub_140139170(&data_140a12928)\n14017c346        int32_t rdx_1 = data_140a12950\n14017c34c        int32_t rdi_2 = 0\n14017c350        if (rdx_1 s> 0)\n14017c352        int64_t* rbx_1 = nullptr\n14017c367        int64_t* rcx_2 = *(rbx_1 + data_140a12948)\n14017c36e        if (rcx_2 != 0)\n14017c373        (*(*rcx_2 + 0x10))(rcx_2)\n14017c37d        *(rbx_1 + data_140a12948) = 0\n14017c381        rdx_1 = data_140a12950\n14017c387        rdi_2 += 1\n14017c389        rbx_1 = &rbx_1[1]\n14017c38f        do while (rdi_2 s< rdx_1)\n14017c3a7        return sub_140139170(&data_140a12940) __tailcall",
+  "fetched_at": "2026-04-26T17:23:34Z"
+}

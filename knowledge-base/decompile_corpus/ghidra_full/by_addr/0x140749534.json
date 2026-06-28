@@ -1,0 +1,7 @@
+{
+  "addr": "0x140749534",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    unsigned __int64 __cdecl std::_LStrxfrm<unsigned short>(unsigned short * __ptr64,unsigned short\n   * __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64,struct _Collvec const *\n   __ptr64)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\n__uint64 __cdecl\nstd::_LStrxfrm<unsigned_short>\n          (ushort *param_1,ushort *param_2,ushort *param_3,ushort *param_4,_Collvec *param_5)\n\n{\n  __uint64 _Var1;\n  \n  _Var1 = (longlong)param_4 - (longlong)param_3 >> 1;\n  if ((longlong)_Var1 <= (longlong)param_2 - (longlong)param_1 >> 1) {\n    FUN_14076bd80(param_1,param_3,_Var1 * 2);\n  }\n  return _Var1;\n}",
+  "fetched_at": "2026-04-26T18:05:45Z"
+}

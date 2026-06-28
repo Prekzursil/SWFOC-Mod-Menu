@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013ff58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alRenderable::vfunction1_for_MultiLinkedListMember(alRenderable *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alRenderable *)&this[-1].alRenderable_data.offset_0x20,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407825f4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_1407825f4(void)\n\n{\n  longlong lVar1;\n  uint uVar2;\n  \n  lVar1 = FUN_14078f07c();\n  uVar2 = *(int *)(lVar1 + 0x28) * 0x343fd + 0x269ec3;\n  *(uint *)(lVar1 + 0x28) = uVar2;\n  return uVar2 >> 0x10 & 0x7fff;\n}",
+  "fetched_at": "2026-04-26T18:51:12Z"
+}

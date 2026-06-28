@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b8748        int64_t* result = sub_1407bf7e0(arg1, 0, 0, 0xd0)\n1407b8759        sub_1407bca30(arg1, result, 8)\n1407b8760        *(result + 0x8d) = 1\n1407b8769        result[0xd] = 0\n1407b8770        result[0xe].d = 0\n1407b8776        result[0x18] = 0\n1407b8784        *(result + 0x8c) = 0\n1407b878a        __builtin_memset(&result[0x12], 0, 0x14)\n1407b8791        result[0x16] = 0\n1407b8798        result[0x11].d = 0\n1407b87a2        result[0x10] = 0\n1407b87a9        result[0x19] = 0\n1407b87b4        __builtin_memset(&result[5], 0, 0x38)\n1407b87d2        result[4] = arg1[4]\n1407b87d6        sub_1407b8a20(result, arg1)\n1407b87e1        result[0x14].d = arg1[0x14].d\n1407b87ee        result[0x15] = arg1[0x15]\n1407b87f5        void* rdx_2 = arg1[4]\n1407b87f9        int32_t rcx_2 = *(rdx_2 + 0x64)\n1407b8802        if (rcx_2 == 0)\n1407b8804        *(rdx_2 + 0x64) = 0x10\n1407b882b        *(arg1[4] + 0x58) = sub_1407bf7e0(arg1, 0, 0, *(arg1[4] + 0x64) << 3)\n1407b8838        if (*(rdx_2 + 0x60) + 1 s> rcx_2)\n1407b8864        *(arg1[4] + 0x58) = sub_1407bf6f0(arg1, *(rdx_2 + 0x58), rdx_2 + 0x64, 8, 0x7ffffffd, \"Thread table size overflow\")\n1407b8868        void* rcx_7 = arg1[4]\n1407b886f        *(rcx_7 + 0x60) += 1\n1407b8872        void* rcx_8 = arg1[4]\n1407b8883        *(*(rcx_8 + 0x58) + (sx.q(*(rcx_8 + 0x60)) << 3) - 8) = result\n1407b888d        return result",
+  "fetched_at": "2026-04-26T17:33:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140404124",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TeamBehaviorClass::vfunction1(TeamBehaviorClass *this,uint param_1)\n\n{\n  ~TeamBehaviorClass((TeamBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:47Z"
+}

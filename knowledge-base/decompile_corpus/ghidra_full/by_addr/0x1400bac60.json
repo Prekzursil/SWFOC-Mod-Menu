@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400bac60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_1400bac60(undefined8 *param_1,short *param_2)\n\n{\n  short *psVar1;\n  longlong lVar2;\n  undefined8 *puVar3;\n  longlong lVar4;\n  \n  psVar1 = param_2;\n  if (7 < *(ulonglong *)(param_2 + 0xc)) {\n    psVar1 = *(short **)param_2;\n  }\n  puVar3 = param_1;\n  if (7 < (ulonglong)param_1[3]) {\n    puVar3 = (undefined8 *)*param_1;\n  }\n  lVar2 = param_1[2];\n  if (lVar2 != *(longlong *)(param_2 + 8)) {\n    return 0;\n  }\n  if (lVar2 != 0) {\n    lVar4 = (longlong)puVar3 - (longlong)psVar1;\n    do {\n      if (*(short *)(lVar4 + (longlong)psVar1) != *psVar1) {\n        return 0;\n      }\n      psVar1 = psVar1 + 1;\n      lVar2 = lVar2 + -1;\n    } while (lVar2 != 0);\n  }\n  return 1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:02Z"
+}

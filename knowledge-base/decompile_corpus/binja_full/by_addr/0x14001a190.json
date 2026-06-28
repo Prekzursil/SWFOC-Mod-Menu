@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001a19c        return sub_140689200(9, \"Ground_Conflict_End\") __tailcall",
+  "fetched_at": "2026-04-26T16:51:05Z"
+}

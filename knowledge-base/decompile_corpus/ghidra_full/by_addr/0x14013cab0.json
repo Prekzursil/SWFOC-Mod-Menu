@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013cab0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 * __thiscall alEmitter::vfunction7_for_RefCountClass(alEmitter *this)\n\n{\n  return &(this->alEmitter_data).field_0x10;\n}",
+  "fetched_at": "2026-04-26T17:15:16Z"
+}

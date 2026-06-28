@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a440(void)\n\n{\n  EarthquakeAttackAbilityClass *this;\n  \n  this = (EarthquakeAttackAbilityClass *)FUN_140769c58(400);\n  if (this != (EarthquakeAttackAbilityClass *)0x0) {\n    EarthquakeAttackAbilityClass::EarthquakeAttackAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:46Z"
+}

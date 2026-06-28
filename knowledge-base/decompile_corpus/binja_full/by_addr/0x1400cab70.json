@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400cab70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400cab74        bool cond:0 = data_140a62010 == 0\n1400cab7b        data_140a7c479 = 0\n1400cab82        if (not(cond:0))\n1400cab94        sub_1401c1d20(&data_140a78510, data_140a118f8, 1)\n1400cab99        data_140a118f8 = 0xffffffff\n1400caba3        data_140a62010 = 0\n1400cabaa        int32_t rax = data_140a118fc\n1400cabb3        if (rax == 1)\n1400cabb9        return sub_1400b1240() __tailcall\n1400cabc1        if (rax != 4)\n1400cac5d        return sub_140207c70(&data_140a7c4e0) __tailcall\n1400cabcf        if (data_1409cf0b0 == 0)\n1400cabd4        int32_t* rax_2 = operator new(zx.q(rax + 0xc))\n1400cabdc        if (rax_2 == 0)\n1400cabef        data_1409cf0b0 = 0\n1400cabe6        data_1409cf0b0 = sub_140025b30(rax_2)\n1400cabfa        int32_t* rdx_3 = data_140a7bc10\n1400cac08        bool cond:1_1 = rdx_3 == data_140a7bc18\n1400cac0f        void** arg_8 = &data_1409cf0a8\n1400cac14        if (not(cond:1_1))\n1400cac16        *rdx_3 = &data_1409cf0a8\n1400cac19        data_140a7bc10 += 8\n1400cac2c        return sub_140025b60(data_1409cf0b0) __tailcall\n1400cac3d        sub_14001ded0(&data_140a7bc08, rdx_3, &arg_8)\n1400cac4d        return sub_140025b60(data_1409cf0b0) __tailcall",
+  "fetched_at": "2026-04-26T17:01:09Z"
+}

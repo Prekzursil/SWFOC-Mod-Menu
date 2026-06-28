@@ -1,0 +1,7 @@
+{
+  "addr": "0x140278360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TeletypeTextClass * __thiscall\nTeletypeTextClass::vfunction1_for_DrawPrimitiveClass(TeletypeTextClass *this,uint param_1)\n\n{\n  DrawPrimitiveClass::~DrawPrimitiveClass\n            ((DrawPrimitiveClass *)&(this->TeletypeTextClass_data).offset_0x58);\n  FID_conflict__Tidy_deallocate(&(this->TeletypeTextClass_data).offset_0x38);\n  FUN_1401f9440(&(this->TeletypeTextClass_data).field_0x24);\n  FUN_1401f9440(&(this->TeletypeTextClass_data).field_0x14);\n  DrawTextClass::~DrawTextClass((DrawTextClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x168);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:20:53Z"
+}

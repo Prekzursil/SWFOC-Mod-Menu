@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079adac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079adc0        int16_t* rbx = arg1\n14079adcf        int32_t rax_1\n14079adcf        if (arg1 != 0 && *arg1 != 0)\n14079addc        rax_1 = wcscmp(arg1, &data_1408daac8)\n14079ade3        uint32_t rdx\n14079ade3        if (arg1 == 0 || *arg1 == 0 || rax_1 == 0)\n14079ae6a        rdx = 0x20001004\n14079ae39        label_14079ae39:\n14079ae40        int32_t result_1\n14079ae40        if (__acrt_GetLocaleInfoEx(arg2 + 0x258, rdx, &result_1, 2) == 0)\n14079ae71        return 0\n14079ae42        int32_t result = result_1\n14079ae49        if (result s>= 3)\n14079ae5f        return result\n14079adfa        if (_wcsicmp(rbx, u\"utf8\") != 0 && _wcsicmp(rbx, u\"utf-8\") != 0)\n14079ae20        if (wcscmp(rbx, &data_1408daae0) != 0)\n14079ae63        return sub_140775f58(rbx)\n14079ae22        rdx = 0x2000000b\n14079ae20        goto label_14079ae39\n14079ae4b        return 0xfde9",
+  "fetched_at": "2026-04-26T17:32:08Z"
+}

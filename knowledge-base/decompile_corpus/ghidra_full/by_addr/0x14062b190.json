@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LureBehaviorClass::vfunction24(LureBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  longlong lVar2;\n  undefined **ppuVar3;\n  undefined **ppuVar4;\n  undefined4 uVar5;\n  \n  puVar1 = this->offset_0x18[0x3b];\n  if (puVar1 != (undefined *)0x0) {\n    if (DAT_140b15418 == 0) {\n      uVar5 = 0;\n    }\n    else {\n      uVar5 = *(undefined4 *)(DAT_140b15418 + 0x10);\n    }\n    lVar2 = FUN_140397d90(this->offset_0x18,10);\n    if (lVar2 == 0) {\n      FUN_1402149d0(\n                   \"Object is trying to activate LURE behavior but does not have LURE unit ability!\"\n                   );\n      return;\n    }\n    BehaviorClass::vfunction24((BehaviorClass *)this);\n    *(undefined4 *)(puVar1 + 8) = 0;\n    *(undefined4 *)(puVar1 + 0xc) = uVar5;\n    ppuVar3 = (undefined **)this->offset_0x18[0x56];\n    ppuVar4 = this->offset_0x18;\n    if (ppuVar3 != (undefined **)0x0) {\n      ppuVar4 = ppuVar3;\n    }\n    if ((*(char *)(ppuVar4 + 0x69) == -1) ||\n       ((ppuVar4[0x22] != (undefined *)0x0 &&\n        (ppuVar3 = (undefined **)FUN_1404ec820(), this->offset_0x18 == ppuVar3)))) {\n      FUN_14062af80(this);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:12Z"
+}

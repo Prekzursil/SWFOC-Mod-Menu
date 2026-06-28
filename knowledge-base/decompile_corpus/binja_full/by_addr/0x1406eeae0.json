@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eeae0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_arc_sweep",
+  "body": "1406eeae6        struct SpecialAbilityClass::ArcSweepAttackAbilityClass::VTable** result = arg1\n1406eeae9        sub_14048c780(arg1)\n1406eeaf5        result[0x2f] = 0x3f800000\n1406eeb00        *result = &ArcSweepAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406eeb0a        result[1] = &ArcSweepAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406eeb10        result[0x30] = 0\n1406eeb17        result[0x31].d = 0\n1406eeb20        *(result + 0x18c) = 1\n1406eeb2a        result[0x32].d = 0xffffffff\n1406eeb34        *(result + 0x194) = 0x3f800000\n1406eeb3e        result[0x33].d = 0xffffffff\n1406eeb48        *(result + 0x19c) = 0x42b40000\n1406eeb52        result[0x34].d = 0x41200000\n1406eeb5c        *(result + 0x1a4) = 0x42b40000\n1406eeb66        result[0x35] = 0x3f800000\n1406eeb71        result[0x36].b = 1\n1406eeb78        result[8].w = 1\n1406eeb7e        *(result + 0x3c) = 9\n1406eeb8a        return result",
+  "fetched_at": "2026-04-26T16:44:15Z"
+}

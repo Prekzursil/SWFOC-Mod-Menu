@@ -1,0 +1,7 @@
+{
+  "addr": "0x140477ab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140477ac7        int32_t rax = sub_140477b70(arg1, arg3)\n140477aee        return sub_140477b00(arg1, sub_140477b70(arg1, arg2) & rax) __tailcall",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

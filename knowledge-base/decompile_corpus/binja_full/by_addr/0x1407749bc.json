@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407749bc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407749c9        int64_t var_48 = arg5\n1407749cd        int64_t arg_10 = arg4\n1407749d1        int64_t arg_20 = arg3\n1407749d5        int64_t arg_8 = arg2\n1407749d9        int64_t arg_18 = arg1\n1407749fa        if (arg2 == 0 || arg3 == 0)\n1407749e7        *_errno() = 0x16\n1407749ed        _invalid_parameter_noinfo()\n1407749f2        return 0xffffffff\n140774a00        int64_t var_40 = arg2\n140774a04        int64_t* var_30 = &arg_8\n140774a10        int64_t var_38 = arg2\n140774a14        int64_t* var_28_1 = &arg_10\n140774a20        int64_t* var_20_1 = &arg_18\n140774a2c        int64_t* var_18_1 = &arg_20\n140774a38        int64_t* var_10_1 = &var_48\n140774a3c        return __crt_seh_guarded_call<class <lambda_c01e8233c1997d6cc4b8f1fd672e07e5>,class <lambda_3a6204444a8bad05601fdaf7664f6f17>& __ptr64,class <lambda_b6ae1896c9cebd71befa8310523e5efb>,int32_t>::operator()<class <lambda_c01e8233c1997d6cc4b8f1fd672e07e5>,class <lambda_3a6204444a8bad05601fdaf7664f6f17>& __ptr64,class <lambda_b6ae1896c9cebd71befa8310523e5efb> >(&arg5, &var_38, &var_30, &var_40)",
+  "fetched_at": "2026-04-26T17:30:50Z"
+}

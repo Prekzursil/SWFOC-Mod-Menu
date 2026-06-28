@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015e020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015e02c        *arg1 = &alRenderTask::`vftable'{for `MultiLinkedListMember'}\n14015e034        arg1[0xa] = 0\n14015e038        arg1[4] = arg5\n14015e03c        arg1[1] = 0\n14015e040        arg1[5].d = 0\n14015e044        arg1[0xb] = 0\n14015e048        arg1[0xc].d = 0\n14015e04c        arg1[2] = arg3\n14015e050        arg1[3] = arg4\n14015e05b        int64_t rcx_1 = sx.q(*(arg2 + 0x1c4)) * 2\n14015e065        *(arg1 + 0x2c) = *(arg2 + (rcx_1 << 3) + 0xa4)\n14015e070        arg1[6].d = *(arg2 + (rcx_1 << 3) + 0xa8)\n14015e07b        *(arg1 + 0x34) = *(arg2 + (rcx_1 << 3) + 0xac)\n14015e086        arg1[7].d = *(arg2 + (rcx_1 << 3) + 0xb0)\n14015e09c        arg1[0xa] = *(arg2 + (sx.q(*(arg2 + 0x2d0)) << 3) + 0x248)\n14015e0a0        return arg1",
+  "fetched_at": "2026-04-26T17:22:35Z"
+}

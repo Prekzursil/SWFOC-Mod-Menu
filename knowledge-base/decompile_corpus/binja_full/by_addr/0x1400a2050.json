@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a2050",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400a2054        bool cond:0 = data_140b15418 == 0\n1400a2071        float zmm6[0x4] = zx.o(0)\n1400a2078        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(data_140b153b4))\n1400a2084        if (cond:0 || data_140b155c4 != 0)\n1400a208e        zmm0 = _mm_cvtepi32_ps(zx.o(data_140a7c398))\n1400a2094        if (arg1 != 0xffffffff)\n1400a209a        zmm0 = _mm_cvtepi32_ps(zx.o(arg1))\n1400a209d        zmm0.d = zmm0.d f- 0f\n1400a20a1        zmm0.d = zmm0.d f/ (4f - 0f)\n1400a20a8        if (not(0f f> zmm0.d))\n1400a20b2        zmm6 = _mm_min_ss(0x3f800000, zmm0.d)\n1400a20bb        void* rax = operator new(0x20)\n1400a20c7        int64_t var_28 = 0x15\n1400a20d5        int64_t var_20 = 0x1f\n1400a20e1        __builtin_strncpy(rax, \"IDC_GAME_SPEED_SLIDER\", 0x16)\n1400a2102        int32_t rdx = data_140a113c0\n1400a2108        void* var_38 = rax\n1400a210d        int64_t result = sub_1401c9080(&data_140a78510, rdx, &var_38, zmm6)\n1400a211b        if (var_20 u< 0x10)\n1400a2154        return result\n1400a211d        void* rcx = var_38\n1400a2125        void* rax_1 = rcx\n1400a212f        if (var_20 + 1 u>= 0x1000)\n1400a2131        rcx = *(rcx - 8)\n1400a2144        if (rax_1 - rcx - 8 u> 0x1f)\n1400a2155        _invalid_parameter_noinfo_noreturn()\n1400a2155        noreturn\n1400a2146        return j_sub_1407864b8(rcx)",
+  "fetched_at": "2026-04-26T16:58:49Z"
+}

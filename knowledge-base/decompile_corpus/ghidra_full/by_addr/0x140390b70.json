@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390b70(longlong param_1)\n\n{\n  MarkerDataPackClass *pMVar1;\n  \n  if (*(longlong *)(param_1 + 0x1b8) == 0) {\n    pMVar1 = (MarkerDataPackClass *)FUN_140769c58(0x28);\n    if (pMVar1 != (MarkerDataPackClass *)0x0) {\n      pMVar1 = MarkerDataPackClass::MarkerDataPackClass(pMVar1);\n      *(MarkerDataPackClass **)(param_1 + 0x1b8) = pMVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x1b8) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:55Z"
+}

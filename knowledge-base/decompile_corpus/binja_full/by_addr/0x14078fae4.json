@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078fae4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078fb02        int64_t rax = arg5\n14078fb21        if (zx.q(arg6 + 2) + 1 u< rax)\n14078fb21        rax = zx.q(arg6 + 2) + 1\n14078fb29        int32_t var_18\n14078fb29        int32_t rax_1 = sub_14079be44(*arg1, arg6 + 1, &var_18, arg4, rax)\n14078fb43        int64_t r8_1\n14078fb43        r8_1.b = var_18 == 0x2d\n14078fb4d        int64_t var_38\n14078fb4d        var_38.d = rax_1\n14078fb59        void* rcx_1\n14078fb59        rcx_1.b = arg6 s> 0\n14078fb5f        void* rdx_3 = arg3 - rcx_1 - r8_1\n14078fb66        if (arg3 == -1)\n14078fb66        rdx_3 = arg3\n14078fb74        int32_t result = __acrt_fp_strflt_to_string(rcx_1 + r8_1 + arg2, rdx_3, arg6 + 1, &var_18, var_38.d, arg10)\n14078fb7b        if (result != 0)\n14078fb7d        *arg2 = 0\n14078fbd3        return result\n14078fbaa        int32_t var_30\n14078fbaa        var_30.q = &var_18\n14078fbb6        var_38.d = arg8\n14078fbba        return fp_format_e_internal(arg2, arg3, arg6, arg7, var_38.d, var_30, 0, arg9)",
+  "fetched_at": "2026-04-26T17:31:41Z"
+}

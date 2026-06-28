@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d5fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1401d5fd0(float param_1,float param_2,float param_3,int param_4)\n\n{\n  return (float)(int)((param_3 - param_2) * (param_1 + DAT_140815de4) * (float)param_4) /\n         (float)param_4 + param_2;\n}",
+  "fetched_at": "2026-04-26T17:50:03Z"
+}

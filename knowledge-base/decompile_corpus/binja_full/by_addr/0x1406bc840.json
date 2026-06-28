@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bc840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406bc84f        void* rdi = *arg1\n1406bc866        if (arg1[1] == 0xaaaaaaaaaaaaaaa)\n1406bc8a6        std::_Xruntime_error(\"list too long\")\n1406bc8a6        noreturn\n1406bc86d        void** result = operator new(0x18)\n1406bc87a        result[2] = *arg2\n1406bc87e        arg1[1] += 1\n1406bc882        void** rcx_1 = *(rdi + 8)\n1406bc88b        *result = rdi\n1406bc88e        result[1] = rcx_1\n1406bc892        *(rdi + 8) = result\n1406bc896        *rcx_1 = result\n1406bc89e        return result",
+  "fetched_at": "2026-04-26T17:24:55Z"
+}

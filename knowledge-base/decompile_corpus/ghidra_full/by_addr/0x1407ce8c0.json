@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ce8c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1407ce8c0(undefined8 param_1,undefined4 param_2,longlong param_3,longlong *param_4)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  longlong lVar3;\n  undefined8 uVar4;\n  undefined8 uVar5;\n  \n  iVar1 = FUN_1407b9e00();\n  if (iVar1 < 1) {\n    if (param_4 != (longlong *)0x0) {\n      if (param_3 == 0) {\n        *param_4 = 0;\n      }\n      else {\n        lVar3 = -1;\n        do {\n          lVar3 = lVar3 + 1;\n        } while (*(char *)(param_3 + lVar3) != '\\0');\n        *param_4 = lVar3;\n      }\n    }\n  }\n  else {\n    param_3 = FUN_1407b9cc0(param_1,param_2);\n    if (param_3 == 0) {\n      uVar4 = FUN_1407b9e40(param_1,4);\n      uVar2 = FUN_1407b9e00(param_1,param_2);\n      uVar5 = FUN_1407b9e40(param_1,uVar2);\n      uVar4 = FUN_1407b93f0(param_1,\"%s expected, got %s\",uVar4,uVar5);\n      FUN_1407cdf80(param_1,param_2,uVar4);\n    }\n    if (param_4 != (longlong *)0x0) {\n      lVar3 = FUN_1407b9b10(param_1,param_2);\n      *param_4 = lVar3;\n    }\n  }\n  return param_3;\n}",
+  "fetched_at": "2026-04-26T18:57:43Z"
+}

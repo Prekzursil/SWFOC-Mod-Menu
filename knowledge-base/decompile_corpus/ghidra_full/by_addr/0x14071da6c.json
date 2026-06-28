@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071da6c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpawnAbilityClass::vfunction3_for_RefCountClass(SpawnAbilityClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor\n            ((SpawnAbilityClass *)&this[-1].SpawnAbilityClass_data.field_0x48,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:25Z"
+}

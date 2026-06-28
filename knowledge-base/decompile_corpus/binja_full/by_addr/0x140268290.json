@@ -1,0 +1,7 @@
+{
+  "addr": "0x140268290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140268297        *arg1 = &FillRectClass::`vftable'{for `DrawPrimitiveClass'}\n1402682a1        arg1[8] = &RefCountClass::`vftable'{for `IRefCountClass'}\n1402682a5        return sub_14026edd0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

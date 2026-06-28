@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c3160",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404c3160(void)\n\n{\n  CombatantBehaviorClass *this;\n  \n  this = (CombatantBehaviorClass *)FUN_140769c58(0x40);\n  if (this != (CombatantBehaviorClass *)0x0) {\n    CombatantBehaviorClass::CombatantBehaviorClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:16Z"
+}

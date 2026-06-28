@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050b820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14050b820        int32_t arg_10 = arg2\n14050b83b        return (sub_14050c550(arg1, &arg_10) u>> 0x11).b & 1",
+  "fetched_at": "2026-04-26T17:32:06Z"
+}

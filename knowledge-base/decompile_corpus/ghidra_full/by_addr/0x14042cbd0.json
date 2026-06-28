@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042cbd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* LocomotorCommonClass member function inherited by LandTeamContainerLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by FighterLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by WalkLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by StarshipLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by SimpleSpaceLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by TeamLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by BikeLocomotorBehaviorClass */\n\nulonglong __thiscall LocomotorCommonClass::vfunction57(LocomotorCommonClass *this)\n\n{\n  ulonglong uVar1;\n  \n  if (this->offset_0x18[0x15] == (undefined *)0x0) {\n    return (ulonglong)this->offset_0x18 & 0xffffffffffffff00;\n  }\n  uVar1 = FUN_1405569f0();\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T17:49:27Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140612fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nAIBudgetDiagnosticsNodeClass::vfunction5(AIBudgetDiagnosticsNodeClass *this,undefined8 *param_1)\n\n{\n  *param_1 = 0;\n  param_1[3] = 0xf;\n  param_1[2] = 6;\n  FUN_14076bd80(param_1,\"Budget\",6);\n  *(undefined1 *)((longlong)param_1 + 6) = 0;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:27:36Z"
+}

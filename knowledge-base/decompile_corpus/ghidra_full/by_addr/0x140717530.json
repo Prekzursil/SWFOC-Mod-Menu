@@ -1,0 +1,7 @@
+{
+  "addr": "0x140717530",
+  "tool": "ghidra",
+  "fact_id": "rva_ability_leech_shields",
+  "body": "\nLeechShieldsAbilityClass * __thiscall\nLeechShieldsAbilityClass::LeechShieldsAbilityClass(LeechShieldsAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->LeechShieldsAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->LeechShieldsAbilityClass_data).offset_0x8 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->LeechShieldsAbilityClass_data).offset_0x10 = 0;\n  FUN_1401f93e0(&(this->LeechShieldsAbilityClass_data).field_0x14,0,0,0,0xff);\n  (this->LeechShieldsAbilityClass_data).offset_0x28 = 0;\n  (this->LeechShieldsAbilityClass_data).offset_0x38 = 0;\n  (this->LeechShieldsAbilityClass_data).offset_0x40 = 0xf;\n  (this->LeechShieldsAbilityClass_data).offset_0x48 = 0;\n  (this->LeechShieldsAbilityClass_data).offset_0x50 = 0;\n  (this->LeechShieldsAbilityClass_data).offset_0x60 = 0;\n  (this->LeechShieldsAbilityClass_data).offset_0x68 = 0xf;\n  (this->LeechShieldsAbilityClass_data).offset_0x70 = 0;\n  (this->LeechShieldsAbilityClass_data).offset_0x80 = 0;\n  (this->LeechShieldsAbilityClass_data).offset_0x88 = 0xf;\n  FUN_1404c3df0(&(this->LeechShieldsAbilityClass_data).field_0x90);\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 9;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c72c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: virtual void * __ptr64 __cdecl Concurrency::details::UMSFreeThreadProxyFactory::`scalar\n   deleting destructor'(unsigned int) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release\n   ***** Removed Bad FID Symbol ***** */\n\nvoid * __thiscall\nCubicInterpolator::scalar_deleting_destructor(CubicInterpolator *this,uint param_1)\n\n{\n                    /* inlined destructor: CubicInterpolator::~CubicInterpolator */\n  this->vftablePtr = &vftable;\n  FUN_1401415b0(this + 2);\n                    /* inlined destructor: Interpolator::~Interpolator */\n  this->vftablePtr = (CubicInterpolator_vftable *)&Interpolator::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x28);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:29:10Z"
+}

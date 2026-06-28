@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405622e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405622e7        arg1[1].b = 0\n1405622eb        *arg1 = &TacticalSuperWeaponDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405622f0        arg1[2] = 0\n1405622f4        arg1[3] = 0\n1405622f8        __builtin_memset(arg1 + 0x24, 0, 0x28)\n14056230c        arg1[4].d = 0xffffffff\n140562313        return 0",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

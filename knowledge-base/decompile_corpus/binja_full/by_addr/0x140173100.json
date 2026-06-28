@@ -1,0 +1,7 @@
+{
+  "addr": "0x140173100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140173110        int64_t result = GetCurrentThreadId()\n140173125        if (result.d != data_140a155d0 || data_140a62740 == 0)\n14017312e        int32_t r8_1 = 0\n140173138        result = (*(arg1 + 0xd8) - *(arg1 + 0xd0)) s>> 3\n14017313f        if (result != 0)\n140173141        uint64_t rcx = 0\n140173157        r8_1 += 1\n14017315e        void* rax_3 = *(*(*(arg1 + 0xd0) + (rcx << 3)) + 0x118)\n140173165        rcx = zx.q(r8_1)\n140173168        *(rax_3 + 0x414) = arg2\n14017317d        result = (*(arg1 + 0xd8) - *(arg1 + 0xd0)) s>> 3\n140173184        do while (rcx u< result)\n140173190        return result",
+  "fetched_at": "2026-04-26T17:23:03Z"
+}

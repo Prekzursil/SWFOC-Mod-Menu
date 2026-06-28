@@ -1,0 +1,7 @@
+{
+  "addr": "0x140684660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall\nMovingVsStoppedCollisionClass::vfunction9_for_SignalListenerClass\n          (MovingVsStoppedCollisionClass *this,longlong param_2,undefined1 *param_3)\n\n{\n  char cVar1;\n  longlong lVar2;\n  undefined4 uVar3;\n  \n  *param_3 = *(undefined1 *)((longlong)&this->offset_0x70 + 4);\n  if (param_2 == 0) {\n    return 0;\n  }\n  uVar3 = FUN_140370f00(*(undefined8 *)(param_2 + 0x298));\n  if (((*(int *)(param_2 + 0x50) == *(int *)&this->field_0x7c) &&\n      (lVar2 = FUN_1405c7100(this,param_2), lVar2 != 0)) &&\n     (cVar1 = FUN_1405c8900(param_2,lVar2), cVar1 == '\\0')) {\n    if (*(int *)&this->offset_0x68 == 7) {\n      return 0;\n    }\n    if (*(int *)&this->offset_0x68 == 1) {\n      uVar3 = FUN_1405c69f0(this,param_2);\n      return uVar3;\n    }\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T17:14:28Z"
+}

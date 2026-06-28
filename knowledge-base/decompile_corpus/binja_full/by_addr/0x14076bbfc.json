@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076bbfc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076bc10        int64_t rbx = _ExceptionRecord[1]\n14076bc1a        EXCEPTION_REGISTRATION_RECORD* ExceptionRegistrationFrame_1 = ExceptionRegistrationFrame\n14076bc26        *(__vcrt_getptd() + 0x60) = rbx\n14076bc33        *(__vcrt_getptd() + 0x68) = rec->ExceptionInformation[3]\n14076bc37        void* rax_2 = __vcrt_getptd()\n14076bc81        return sub_14076f4b0(rec, &ExceptionRegistrationFrame_1, context, _ExceptionRecord, _ExceptionRecord[7]->Next + *(rax_2 + 0x60), 0, 0, 0)",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

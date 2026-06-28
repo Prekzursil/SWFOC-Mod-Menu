@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034d460",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ModelComponentClass::vfunction76(void *this,undefined1 param_2)\n\n{\n  *(undefined1 *)(*(longlong *)((longlong)this + 200) + 0x1f) = param_2;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:34Z"
+}

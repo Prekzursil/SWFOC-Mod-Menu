@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064abf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064ac10        void* rcx = *(arg1 + 0xc8)\n14064ac20        if (rcx != 0)\n14064ac2a        (*(*(rcx + 0x10) + 8))(rcx + 0x10)\n14064ac2d        *(arg1 + 0xc8) = 0\n14064ac34        *(arg1 + 0x78) = arg3\n14064ac3a        void* rbx_1 = arg2 + 0x38\n14064ac3e        *(arg1 + 0x70) = arg2\n14064ac42        if (arg2 == 0)\n14064ac42        rbx_1 = nullptr\n14064ac5b        sub_140220e90(sub_140058570(), rbx_1, arg1 + 0x40, 2)\n14064ac60        void* rax_3 = *(arg1 + 0x70)\n14064ac67        void* rbx_2 = rax_3 + 0x38\n14064ac6b        if (rax_3 == 0)\n14064ac6b        rbx_2 = nullptr\n14064ac84        sub_140220e90(sub_140058570(), rbx_2, arg1 + 0x40, 4)\n14064ac89        void* rax_5 = *(arg1 + 0x70)\n14064ac90        void* rbx_3 = rax_5 + 0x38\n14064ac94        if (rax_5 == 0)\n14064ac94        rbx_3 = nullptr\n14064acad        sub_140220e90(sub_140058570(), rbx_3, arg1 + 0x40, 3)\n14064acc0        uint128_t zmm1 = zx.o(sub_1403711c0(*(arg1 + 0x88), nullptr))\n14064acc4        void* rax_8 = *(arg1 + 0xa0)\n14064accb        zmm1 = _mm_cvtepi32_ps(zmm1)\n14064acf6        return sub_140693170(*(*(rax_8 + 0xf0) + 0x88), zmm1) __tailcall",
+  "fetched_at": "2026-04-26T17:04:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140566c80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall TargetingBehaviorClass::vfunction43(TargetingBehaviorClass *this,int param_1)\n\n{\n  undefined *puVar1;\n  \n  if ((this->offset_0x18 == (undefined **)0x0) ||\n     (puVar1 = this->offset_0x18[0x53], *(int *)(puVar1 + 0xc48) <= param_1)) {\n    return 0;\n  }\n  if ((-1 < param_1) && (param_1 < *(int *)(puVar1 + 0xc48))) {\n    return *(undefined8 *)(*(longlong *)(puVar1 + 0xc40) + 8 + (longlong)param_1 * 0x10);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:39:34Z"
+}

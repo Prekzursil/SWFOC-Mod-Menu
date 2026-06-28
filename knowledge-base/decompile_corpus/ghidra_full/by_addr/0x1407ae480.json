@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ae480",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1407ae480(longlong param_1)\n\n{\n  float fVar1;\n  longlong lVar2;\n  float *pfVar3;\n  float *pfVar4;\n  int iVar5;\n  longlong *plVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  \n  plVar6 = *(longlong **)(param_1 + 0x30);\n  fVar9 = (float)(ulonglong)(*(longlong *)(param_1 + 0x38) - (longlong)plVar6 >> 3);\n  if (fVar9 == 0.0) {\n    return DAT_1407ffaf8;\n  }\n  iVar5 = 0;\n  fVar10 = 0.0;\n  if (0.0 < fVar9) {\n    do {\n      lVar2 = *plVar6;\n      pfVar3 = *(float **)(lVar2 + 8);\n      fVar7 = DAT_1407ffaf8;\n      if ((pfVar3 != (float *)0x0) && (pfVar4 = *(float **)(lVar2 + 0x10), pfVar4 != (float *)0x0))\n      {\n        fVar1 = *(float *)(lVar2 + 0x18);\n        fVar8 = (pfVar3[1] - pfVar4[1]) * (pfVar3[1] - pfVar4[1]) +\n                (*pfVar3 - *pfVar4) * (*pfVar3 - *pfVar4) +\n                (pfVar3[2] - pfVar4[2]) * (pfVar3[2] - pfVar4[2]);\n        if (fVar8 == 0.0) {\n          if (fVar1 != 0.0) {\n            fVar7 = 0.0;\n          }\n        }\n        else {\n          fVar7 = (fVar1 * fVar1) / fVar8;\n        }\n      }\n      iVar5 = iVar5 + 1;\n      fVar10 = fVar10 + fVar7;\n      plVar6 = plVar6 + 1;\n    } while ((float)iVar5 < fVar9);\n  }\n  return fVar10 / fVar9;\n}",
+  "fetched_at": "2026-04-26T18:55:24Z"
+}

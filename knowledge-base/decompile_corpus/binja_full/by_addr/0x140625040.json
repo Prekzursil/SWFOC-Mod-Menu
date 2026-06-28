@@ -1,0 +1,7 @@
+{
+  "addr": "0x140625040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140625046        int64_t* rdx = *(arg1 + 0x28)\n140625050        if (rdx == 0)\n140625052        int512_t zmm0\n140625052        zmm0.o = zx.o(0)\n14062505a        return \n140625060        void* rdi = rdx[0x53]\n14062506a        int64_t rax\n14062506a        float zmm0_1\n14062506a        zmm0_1, rax = sub_140373080(rdi, rdx)\n140625072        zmm0_1 - 0f\n140625077        if (not(is_unordered.d(zmm0_1, 0f)) && not(zmm0_1 != 0f))\n140625080        sub_140370f00(rdi, *(arg1 + 0x28))\n14062508f        return ",
+  "fetched_at": "2026-04-26T17:23:52Z"
+}

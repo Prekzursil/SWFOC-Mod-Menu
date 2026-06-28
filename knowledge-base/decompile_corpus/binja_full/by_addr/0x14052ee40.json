@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052ee40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14052ee5d        void* r8 = -ffffffffffffffff\n14052ee67        char* var_38 = nullptr\n14052ee6c        int64_t var_28 = 0\n14052ee71        int64_t var_20 = 0xf\n14052ee80        r8 += 1\n14052ee87        do while (*(arg2 + r8) != 0)\n14052ee8e        sub_140022730(&var_38, arg2, r8)\n14052ee93        int64_t* result = *(arg1 + 0x20)\n14052ee9c        char* rsi = var_38\n14052eea1        void** i = *result\n14052eea7        if (i != result)\n14052eec0        void* rdi_1 = i[3]\n14052eec7        if (rdi_1 != 0)\n14052eed1        void* rdx = rdi_1 + 0x2e0\n14052eed8        if (*(rdi_1 + 0x2f8) u>= 0x10)\n14052eeda        rdx = *(rdi_1 + 0x2e0)\n14052eee5        char* rcx_1 = &var_38\n14052eeea        if (var_20 u>= 0x10)\n14052eeea        rcx_1 = rsi\n14052eef5        if (var_28 == *(rdi_1 + 0x2f0))\n14052eefa        result = memcmp(rcx_1, rdx, var_28)\n14052ef01        if (result.d == 0)\n14052ef03        *(rdi_1 + 0x4f) = arg3\n14052ef07        i = *i\n14052ef0e        do while (i != *(arg1 + 0x20))\n14052ef2d        if (var_20 u< 0x10)\n14052ef63        return result\n14052ef33        char* rax = rsi\n14052ef3d        if (var_20 + 1 u>= 0x1000)\n14052ef3f        rsi = *(rsi - 8)\n14052ef52        if (rax - rsi - 8 u> 0x1f)\n14052ef64        _invalid_parameter_noinfo_noreturn()\n14052ef64        noreturn\n14052ef57        return j_sub_1407864b8(rsi)",
+  "fetched_at": "2026-04-26T17:33:29Z"
+}

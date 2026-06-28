@@ -1,0 +1,7 @@
+{
+  "addr": "0x140216490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140216499        int64_t performanceCount\n140216499        QueryPerformanceCounter(&performanceCount)\n1402164a8        return performanceCount",
+  "fetched_at": "2026-04-26T17:28:33Z"
+}

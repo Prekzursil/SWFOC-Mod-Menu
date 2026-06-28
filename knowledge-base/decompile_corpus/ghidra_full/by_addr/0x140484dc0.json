@@ -1,0 +1,7 @@
+{
+  "addr": "0x140484dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDifficultyAdjustmentManagerClass::vfunction4\n          (DifficultyAdjustmentManagerClass *this,longlong *param_1)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  if (param_1 != (longlong *)0x0) {\n    uVar1 = param_1[3];\n    if (0xf < uVar1) {\n      lVar2 = *param_1;\n      lVar3 = lVar2;\n      if (0xfff < uVar1 + 1) {\n        lVar3 = *(longlong *)(lVar2 + -8);\n        if (0x1f < (lVar2 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n          FUN_1407711cc(lVar2 - lVar3,uVar1 + 0x28);\n        }\n      }\n      thunk_FUN_1407864b8(lVar3);\n    }\n    param_1[2] = 0;\n    param_1[3] = 0xf;\n    *(undefined1 *)param_1 = 0;\n    thunk_FUN_1407864b8(param_1,0x58);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:39Z"
+}

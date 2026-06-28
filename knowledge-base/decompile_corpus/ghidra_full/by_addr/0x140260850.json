@@ -1,0 +1,7 @@
+{
+  "addr": "0x140260850",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140260850(longlong *param_1,float param_2)\n\n{\n  int iVar1;\n  uint uVar2;\n  int iVar3;\n  undefined1 auVar4 [16];\n  undefined1 auVar5 [16];\n  \n  iVar1 = FUN_14025e960();\n  auVar5._0_4_ = (float)iVar1 * param_2 + DAT_1408007c0;\n  auVar4 = ZEXT416((uint)auVar5._0_4_);\n  iVar3 = (int)auVar5._0_4_;\n  if ((iVar3 != -0x80000000) && ((float)iVar3 != auVar5._0_4_)) {\n    auVar5._4_4_ = auVar5._0_4_;\n    auVar5._8_8_ = 0;\n    uVar2 = movmskps(iVar1,auVar5);\n    auVar4 = ZEXT416((uint)(float)(int)(iVar3 - (uVar2 & 1)));\n  }\n  auVar4._0_4_ = (auVar4._0_4_ - DAT_1408007c0) / (float)iVar1 -\n                 *(float *)((longlong)param_1 + 0x1c);\n                    /* WARNING: Could not recover jumptable at 0x0001402608cc. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*param_1 + 0x20))(param_1,auVar4._0_8_);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140794ccc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140794cde        _fileno(arg2)\n140794ce8        if (((*(arg2 + 0x14)).b & 6) == 0)\n140794cef        *_errno() = 9\n140794d07        if (((*(arg2 + 0x14) u>> 0xc).b & 1) == 0)\n140794d1b        if (((*(arg2 + 0x14)).b & 1) == 0)\n140794d1b        goto label_140794d39\n140794d20        char rax_7 = stream_is_at_end_of_file_nolock(arg2)\n140794d25        arg2[2].d = 0\n140794d2b        if (rax_7 != 0)\n140794d31        *arg2 = arg2[1]\n140794d34        *(arg2 + 0x14) &= 0xfffffffe\n140794d39        label_140794d39:\n140794d39        *(arg2 + 0x14) |= 2\n140794d3e        *(arg2 + 0x14) &= 0xfffffff7\n140794d43        arg2[2].d = 0\n140794d4f        if ((*(arg2 + 0x14) & 0x4c0) == 0 && __acrt_should_use_temporary_buffer(arg2) == 0)\n140794d60        __acrt_stdio_allocate_buffer_nolock(arg2)\n140794d72        if (write_buffer_nolock<char>(arg1, arg2) != 0)\n140794d74        return zx.q(arg1)\n140794d0e        *_errno() = 0x22\n140794cf5        *(arg2 + 0x14) |= 0x10\n140794cfa        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fa10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14021fa10(undefined8 *param_1,LPCSTR param_2,undefined8 *param_3,undefined8 *param_4)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  DWORD local_res8 [2];\n  short local_808 [1024];\n  \n  local_808[0] = 0;\n  if ((param_4 != (undefined8 *)0x0) && (param_3 != param_4)) {\n    puVar1 = param_4;\n    if (7 < (ulonglong)param_4[3]) {\n      puVar1 = (undefined8 *)*param_4;\n    }\n    FUN_1400228a0(param_3,puVar1,param_4[2]);\n  }\n  local_res8[0] = 0x800;\n  if ((HKEY)*param_1 != (HKEY)0x0) {\n    RegQueryValueExA((HKEY)*param_1,param_2,(LPDWORD)0x0,(LPDWORD)0x0,(LPBYTE)local_808,local_res8);\n    lVar2 = -1;\n    do {\n      lVar2 = lVar2 + 1;\n    } while (local_808[lVar2] != 0);\n    if (lVar2 != 0) {\n      FUN_1400228a0(param_3,local_808);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:56Z"
+}

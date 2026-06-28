@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078202c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140782058        void* rax_1\n140782058        int32_t rbx\n140782058        if (arg2 != 0 && arg3 != 0)\n14078205a        uint64_t rcx = zx.q(arg5)\n14078205f        *arg2 = 0\n140782069        if (arg3 u> rcx + 1)\n140782082        if (arg4 - 2 u<= 0x22)\n140782090        return common_xtox<unsigned long,wchar_t>(arg1, arg2, arg3, arg4, rcx.b) __tailcall\n14078203c        rax_1 = _errno()\n140782041        rbx = 0x16\n14078206b        rax_1 = _errno()\n140782070        rbx = 0x22\n14078203c        rax_1 = _errno()\n140782041        rbx = 0x16\n140782046        *rax_1 = rbx\n140782048        _invalid_parameter_noinfo()\n140782054        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:31:09Z"
+}

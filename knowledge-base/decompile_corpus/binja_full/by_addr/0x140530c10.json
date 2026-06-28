@@ -1,0 +1,7 @@
+{
+  "addr": "0x140530c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140530c23        *arg1 = &MainLogWindow::`vftable'{for `LogWindowItem'}\n140530c2b        arg1[1].d = 0\n140530c2e        data_140a7c7a8 = 0\n140530c35        data_140b39080 = 0\n140530c3c        sub_140530aa0(arg1)\n140530c44        if ((arg2 & 1) != 0)\n140530c4e        j_sub_1407864b8(arg1)\n140530c60        return arg1",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

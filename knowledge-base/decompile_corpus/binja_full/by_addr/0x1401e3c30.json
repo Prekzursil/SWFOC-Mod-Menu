@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e3c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e3c32        arg1[0xe] = 7\n1401e3c3a        arg1[0xb] = 0\n1401e3c45        *arg1 = &GUIGadgetClass::`vftable'\n1401e3c48        void* rax = &arg1[0xb]\n1401e3c4c        arg1[2] = 0\n1401e3c50        arg1[5] = 0xf\n1401e3c58        *(arg1 + 0x44) = 0\n1401e3c5c        *(arg1 + 0x4c) = 0\n1401e3c60        arg1[4] = 0\n1401e3c64        arg1[1].d = 0xffffffff\n1401e3c6b        arg1[6].d = 0xffffffff\n1401e3c72        *(rax + 0x10) = 0\n1401e3c7b        if (*(rax + 0x18) u>= 8)\n1401e3c7d        rax = *rax\n1401e3c80        *rax = 0\n1401e3c86        arg1[0xf].w = 0x101\n1401e3c93        __builtin_memset(&arg1[0x10], 0, 0x13)\n1401e3ca7        return arg1",
+  "fetched_at": "2026-04-26T17:26:55Z"
+}

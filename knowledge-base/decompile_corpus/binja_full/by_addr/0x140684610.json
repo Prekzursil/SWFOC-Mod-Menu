@@ -1,0 +1,7 @@
+{
+  "addr": "0x140684610",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140684618        arg2[3] = 0xf\n140684623        *arg2 = 0\n140684626        arg2[2] = 0\n140684638        sub_140022730(arg2, \"Moving Vs Stopped\", 0x11)\n140684645        return arg2",
+  "fetched_at": "2026-04-26T17:14:26Z"
+}

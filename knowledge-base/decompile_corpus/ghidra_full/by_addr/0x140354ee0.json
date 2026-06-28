@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ShellComponentClass::vfunction1(ShellComponentClass *this)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = (this->ShellComponentClass_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    FUN_1402ff200(&DAT_140b27f60,plVar1,0,0);\n  }\n  plVar1 = (this->ShellComponentClass_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->ShellComponentClass_data).offset_0x0 = (longlong *)0x0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:02Z"
+}

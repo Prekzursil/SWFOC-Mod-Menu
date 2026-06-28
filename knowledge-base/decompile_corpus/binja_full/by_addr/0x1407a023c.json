@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a023c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a0254        int64_t arg_8 = 0\n1407a025f        fegetenv(&arg_8)\n1407a0277        if (*arg1 == arg_8.d && arg1[1] == arg_8:4.d)\n1407a0279        return 0\n1407a027d        return 1",
+  "fetched_at": "2026-04-26T17:32:19Z"
+}

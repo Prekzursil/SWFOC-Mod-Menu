@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd868",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd890        return RtlUnwind(arg1, arg2, nullptr, nullptr)",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

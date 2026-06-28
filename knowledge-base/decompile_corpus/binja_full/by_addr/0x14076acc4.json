@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076acc4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076acc4        uint64_t stack_cookie_1 = stack_cookie\n14076acda        if (IsProcessorFeaturePresent(PF_FASTFAIL_AVAILABLE) != 0)\n14076ace1        trap(0xd)\n14076acea        capture_previous_context(&data_140b3ba70)\n14076acf4        data_140b3bb68 = __return_addr\n14076ad04        data_140b3bb08 = &stack_cookie_1\n14076ad12        data_140b3b9e0 = data_140b3bb68\n14076ad1e        data_140b3baf0 = stack_cookie_1\n14076ad25        data_140b3b9d0 = 0xc0000409\n14076ad2f        data_140b3b9d4 = 1\n14076ad39        data_140b3b9e8 = 1\n14076ad53        data_140b3b9f0 = 2\n14076ad6b        uint64_t __security_cookie_1 = __security_cookie\n14076ad80        int64_t var_10 = data_140a44b90\n14076ad8c        __raise_securityfailure(&data_1408d0c28)\n14076ad8c        noreturn",
+  "fetched_at": "2026-04-26T17:30:20Z"
+}

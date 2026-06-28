@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cd010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402cd01d        *(arg1 + 0x350) = 1\n1402cd024        *(arg1 + 0x3a8) = arg2\n1402cd02a        int32_t rdi = 0\n1402cd031        CURSORINFO pci\n1402cd031        pci.cbSize = 0x18\n1402cd031        pci.flags = 0\n1402cd042        int64_t rax_1\n1402cd042        if (GetCursorInfo(&pci) == 0)\n1402cd054        rax_1 = 0\n1402cd044        rax_1.d = pci.ptScreenPos.x\n1402cd044        rax_1:4.d = pci.ptScreenPos.y\n1402cd04e        rdi = rax_1:4.d\n1402cd061        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(rax_1.d))\n1402cd064        uint128_t zmm1 = _mm_cvtepi32_ps(zx.o(rdi))\n1402cd067        *(arg1 + 0x390) = zmm0.d\n1402cd06f        *(arg1 + 0x394) = zmm1.d\n1402cd07d        *(arg1 + 0x398) = *(arg1 + 0x390)\n1402cd089        *(arg1 + 0x39c) = *(arg1 + 0x394)\n1402cd08f        char result = sub_1402cc780(arg1)\n1402cd096        if (result != 0)\n1402cd098        *(arg1 + 0x37c) = 3\n1402cd0a2        *(arg1 + 0x34a) = 1\n1402cd0a9        *(arg1 + 0x348) = 1\n1402cd0ba        return result",
+  "fetched_at": "2026-04-26T17:33:43Z"
+}

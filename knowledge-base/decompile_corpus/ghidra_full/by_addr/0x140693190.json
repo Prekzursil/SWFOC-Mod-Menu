@@ -1,0 +1,7 @@
+{
+  "addr": "0x140693190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nInstantiatedGoalClass::vfunction2_for_SignalListenerClass(InstantiatedGoalClass *this)\n\n{\n  undefined8 uVar1;\n  \n  this->offset_0x40 = 0;\n  FUN_140693750(&this[-1].offset_0x80);\n  if (&this[-1].offset_0x80 == (undefined8 *)0x0) {\n    this = (InstantiatedGoalClass *)0x0;\n  }\n  uVar1 = FUN_140058570();\n  FUN_140220ef0(uVar1,this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:24Z"
+}

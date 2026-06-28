@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b6260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b6274        sub_14026ce70(&arg1[2])\n1406b6282        *arg1 = &Draw3DTextCrawlDataClass::`vftable'{for `RefCountClass'}\n1406b628c        arg1[1].d = 0\n1406b628f        arg1[0xe] = 0\n1406b6293        arg1[0xf] = 0\n1406b6297        arg1[0xd] = &DynamicVectorClass<class std::string>::`vftable'\n1406b629b        arg1[0x10] = 0\n1406b62a2        arg1[0x12] = 0\n1406b62a9        arg1[0x17] = 0\n1406b62b0        arg1[0x18] = 0\n1406b62b7        arg1[0x13] = 0xf\n1406b62c2        arg1[0x16] = &DynamicVectorClass<class std::string>::`vftable'\n1406b62c9        arg1[0x19] = 0\n1406b62d0        arg1[0x1b] = 0\n1406b62d7        arg1[0x1f] = 0\n1406b62de        arg1[0x21] = 0\n1406b62e5        arg1[0x23] = 0\n1406b62ec        arg1[0x25] = 0\n1406b62f3        arg1[0x27] = 0\n1406b62fa        arg1[0x29] = 0\n1406b6301        arg1[0x2b] = 0\n1406b6308        arg1[0x2d] = 0\n1406b6312        arg1[0x1c] = 0xf\n1406b631d        arg1[0x22] = 0xf\n1406b6328        arg1[0x26] = 0xf\n1406b6333        arg1[0x2a] = 0xf\n1406b633e        arg1[0x2e] = 0xf\n1406b6349        sub_1406b6c90(arg1)\n1406b6351        if (arg2 != 0)\n1406b6359        sub_1406b6970(arg1, arg2)\n1406b636b        return arg1",
+  "fetched_at": "2026-04-26T17:24:43Z"
+}

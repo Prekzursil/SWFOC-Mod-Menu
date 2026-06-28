@@ -1,0 +1,7 @@
+{
+  "addr": "0x140542d60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall LuaIsMultiplayerMode::vfunction11(void)\n\n{\n  undefined8 *puVar1;\n  char cVar2;\n  undefined1 uVar3;\n  longlong *plVar4;\n  longlong *plVar5;\n  longlong *local_res20;\n  \n  plVar4 = (longlong *)FUN_140769c58(0x18);\n  if (plVar4 != (longlong *)0x0) {\n    cVar2 = FUN_14028af60(&DAT_140b153e0);\n    if ((cVar2 != '\\0') || (uVar3 = 0, DAT_140b1574e != '\\0')) {\n      uVar3 = 1;\n    }\n    *(undefined4 *)(plVar4 + 1) = 0;\n    *plVar4 = (longlong)&LuaValue<bool,5>::vftable;\n    *(undefined1 *)(plVar4 + 2) = uVar3;\n    plVar5 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n             ::\n             ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                       ();\n    local_res20 = plVar4;\n    (**(code **)*plVar4)(plVar4);\n    puVar1 = (undefined8 *)plVar5[3];\n    if (puVar1 == (undefined8 *)plVar5[4]) {\n      FUN_140144900(plVar5 + 2,puVar1,&local_res20);\n    }\n    else {\n      *puVar1 = plVar4;\n      (**(code **)*plVar4)(plVar4);\n      plVar5[3] = plVar5[3] + 8;\n    }\n    (**(code **)(*plVar4 + 8))(plVar4);\n    return plVar5;\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:35:17Z"
+}

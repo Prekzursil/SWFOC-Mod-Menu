@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402136f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021371f        if (arg2 != 0 && arg3 u<= 1 && (*(*arg1 + 0x58))() != 1 && arg1[2] == -1 && arg1[8] == -1 && arg1[1].d == 0xffffffff)\n14021375a        void* var_28 = nullptr\n14021375f        void* rbx_1 = -ffffffffffffffff\n140213766        int64_t var_18_1 = 0\n14021376b        int64_t var_10_1 = 0xf\n140213774        rbx_1 += 1\n14021377a        do while (*(arg2 + rbx_1) != 0)\n14021377c        int64_t* rcx = &var_28\n140213785        if (rbx_1 u> 0xf)\n1402137ac        sub_14004f860(rcx, rbx_1, 0, arg2, rbx_1)\n14021378a        void* var_18_2 = rbx_1\n140213792        memcpy(rcx, arg2, rbx_1)\n140213797        *(&var_28 + rbx_1) = 0\n1402137c8        void* var_38\n1402137c8        var_38.b = arg5\n1402137cf        char result = (*(*arg1 + 0x18))(arg1, &var_28, zx.q(arg3), zx.q(arg4), var_38)\n1402137df        if (var_10_1 u>= 0x10)\n1402137e1        void* rcx_2 = var_28\n1402137e9        void* rax_3 = rcx_2\n1402137f3        if (var_10_1 + 1 u>= 0x1000)\n1402137f5        rcx_2 = *(rcx_2 - 8)\n140213808        if (rax_3 - rcx_2 - 8 u> 0x1f)\n140213831        _invalid_parameter_noinfo_noreturn()\n140213831        noreturn\n14021380a        j_sub_1407864b8(rcx_2)\n14021380f        return result\n14021382d        return 0",
+  "fetched_at": "2026-04-26T17:28:25Z"
+}

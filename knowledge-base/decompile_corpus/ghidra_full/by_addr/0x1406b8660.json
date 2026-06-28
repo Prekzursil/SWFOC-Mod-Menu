@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nGalacticGoalSystemClass::vfunction11(GalacticGoalSystemClass *this,longlong param_1)\n\n{\n  char cVar1;\n  float fVar2;\n  \n  cVar1 = FUN_1406bae50(*(undefined8 *)((this->ServicedAISystemClass_data).offset_0x0 + 0x48));\n  if (cVar1 != '\\0') {\n    fVar2 = (float)FUN_140692860(param_1);\n    if ((fVar2 <= 0.0) || (*(float *)(param_1 + 0x7c) <= fVar2)) {\n      cVar1 = FUN_1406139f0(&(this->AIGoalSystemClass_data).field_0x158,param_1);\n      if (cVar1 != '\\0') {\n        return 1;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:37:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064adb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064adca        int128_t zmm7 = arg2\n14064addb        int128_t zmm0 = sub_140692780(*(*(*(arg1 + 0xa0) + 0xf0) + 0x88))\n14064ae07        if (int.d(sub_140692ca0(*(*(*(arg1 + 0xa0) + 0xf0) + 0x88)) f- zmm7.d) s< 0)\n14064ae88        if (not(zmm7.d f<= zmm0.d))\n14064ae91        zmm7.d = zmm7.d f- zmm0.d\n14064aea6        sub_140693170(*(*(*(arg1 + 0xa0) + 0xf0) + 0x88), zmm7)\n14064aeb0        int32_t rax_2\n14064aeb0        rax_2.b = 0\n14064aebc        return rax_2\n14064ae1e        int128_t zmm0_2 = sub_140692ca0(*(*(*(arg1 + 0xa0) + 0xf0) + 0x88))\n14064ae26        if (not(zmm0_2.d f> zmm7.d))\n14064ae28        zmm7 = zmm0_2\n14064ae51        float zmm7_1 = sub_14027f370(sub_1405f7020(*(*(arg1 + 0xa0) + 0xf0)), zmm7 ^ data_140800860, 0)\n14064ae6e        sub_1406939c0(*(*(*(arg1 + 0xa0) + 0xf0) + 0x88), zmm7_1)\n14064ae73        void* rax_6\n14064ae73        rax_6.b = 1\n14064ae84        return rax_6",
+  "fetched_at": "2026-04-26T17:04:50Z"
+}

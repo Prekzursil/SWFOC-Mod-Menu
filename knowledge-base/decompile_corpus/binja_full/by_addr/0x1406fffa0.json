@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fffa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fffac        int64_t result = sub_14048f2c0(arg1)\n1406fffb8        if (*(arg1 + 0x190) != 0)\n1406fffeb        return result\n1406fffbf        void* r8_1 = arg1 + 0x18\n1406fffc3        if (*(arg1 + 0x30) u>= 0x10)\n1406fffc5        r8_1 = *r8_1\n1406fffd4        char var_108[0x100]\n1406fffd4        sscanf_s(&var_108, \"Warning: (%s) You should really specify a value for Additional_Garrison_Units\\n otherwise this ability has no effect.\", r8_1)\n1406fffde        return sub_1402149d0(&var_108)",
+  "fetched_at": "2026-04-26T17:26:59Z"
+}

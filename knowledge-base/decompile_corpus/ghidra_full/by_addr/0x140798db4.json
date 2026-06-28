@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798db4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcscat_s\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nerrno_t __cdecl wcscat_s(wchar_t *_Dst,rsize_t _SizeInWords,wchar_t *_Src)\n\n{\n  wchar_t wVar1;\n  ulong *puVar2;\n  wchar_t *pwVar3;\n  ulong uVar4;\n  longlong lVar5;\n  \n  if ((_Dst != (wchar_t *)0x0) && (_SizeInWords != 0)) {\n    pwVar3 = _Dst;\n    if (_Src == (wchar_t *)0x0) {\n      *_Dst = L'\\0';\n    }\n    else {\n      do {\n        if (*pwVar3 == L'\\0') break;\n        pwVar3 = pwVar3 + 1;\n        _SizeInWords = _SizeInWords - 1;\n      } while (_SizeInWords != 0);\n      if (_SizeInWords != 0) {\n        lVar5 = (longlong)_Src - (longlong)pwVar3;\n        do {\n          wVar1 = *(wchar_t *)(lVar5 + (longlong)pwVar3);\n          *pwVar3 = wVar1;\n          pwVar3 = pwVar3 + 1;\n          if (wVar1 == L'\\0') break;\n          _SizeInWords = _SizeInWords - 1;\n        } while (_SizeInWords != 0);\n        if (_SizeInWords != 0) {\n          return 0;\n        }\n        *_Dst = L'\\0';\n        puVar2 = __doserrno();\n        uVar4 = 0x22;\n        goto LAB_140798ddb;\n      }\n      *_Dst = L'\\0';\n    }\n  }\n  puVar2 = __doserrno();\n  uVar4 = 0x16;\nLAB_140798ddb:\n  *puVar2 = uVar4;\n  FUN_1407711ac();\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T18:53:37Z"
+}

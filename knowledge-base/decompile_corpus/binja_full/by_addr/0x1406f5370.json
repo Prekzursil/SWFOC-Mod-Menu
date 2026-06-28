@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f5370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f539a        if ((*(*arg1 + 0x28))() != 0 && arg2[0x20] != 0)\n1406f53a4        void* rax_2 = sub_140397d90(arg2, 0x25)\n1406f53ac        char const* const rcx_1\n1406f53ac        if (rax_2 == 0)\n1406f53ae        rcx_1 = \"Object is trying to activate CONCENTRATE_FIRE ability but does not have CONCENTRATE_FIRE unit ability!\"\n1406f53d3        if (0f f< *(rax_2 + 0x28))\n1406f53e5        if (arg2[0x6f].b != 0xff)\n1406f53f9        sub_1406f5550(arg1, arg2, arg3)\n1406f5403        struct DynamicVectorClass<class GameObjectClass* __ptr64>::VTable* result\n1406f5403        result.b = 1\n1406f540f        return result\n1406f53e7        rcx_1 = \"Object is trying to activate CONCENTRATE_FIRE ability but does not have ABILITY_COUNTDOWN behavior!\"\n1406f53d5        rcx_1 = \"Object is trying to activate CONCENTRATE_FIRE ability but its CONCENTRATE_FIRE unit ability does not have \"expiration_seconds\"!\"\n1406f53b5        sub_1402149d0(rcx_1)\n1406f53cb        return 0",
+  "fetched_at": "2026-04-26T17:26:34Z"
+}

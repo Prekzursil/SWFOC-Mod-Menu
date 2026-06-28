@@ -1,0 +1,7 @@
+{
+  "addr": "0x140772058",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077206a        void* rbx = *(arg1 + 0x10)\n140772077        if (rbx == 0)\n140772079        void* rax_1 = _errno()\n14077207e        rbx = rax_1\n140772081        *(arg1 + 0x10) = rax_1\n140772085        int32_t rbp = *rbx\n14077208c        *rbx = 0\n14077208f        char rsi = 1\n140772094        int64_t rcx = *(arg1 + 0x18)\n140772098        void* result_1 = nullptr\n1407720aa        *arg2 = strtol(rcx - 1, &result_1, 0xa)\n1407720ad        void* result = *(arg1 + 0x10)\n1407720b4        if (result == 0)\n1407720b6        result = _errno()\n1407720bb        *(arg1 + 0x10) = result\n1407720c2        if (*result == 0x22)\n1407720d5        rsi = 0\n1407720c4        result = result_1\n1407720cd        if (result u< *(arg1 + 0x18))\n1407720d5        rsi = 0\n1407720cf        *(arg1 + 0x18) = result\n1407720df        if (*rbx == 0 && rbp != 0)\n1407720e1        *rbx = rbp\n1407720e8        result.b = rsi\n1407720f8        return result",
+  "fetched_at": "2026-04-26T17:30:44Z"
+}

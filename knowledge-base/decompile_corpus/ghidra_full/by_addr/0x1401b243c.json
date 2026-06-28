@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b243c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dTransitionEffectAlphaFade::vfunction1_for_MultiLinkedListMember\n          (alD3dTransitionEffectAlphaFade *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor((alD3dTransitionEffectAlphaFade *)&this[-1].offset_0x80,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:39Z"
+}

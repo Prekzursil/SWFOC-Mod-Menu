@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ace90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ace9b        struct ScheduledEventClass::MoveToPositionEventClass::VTable** result = operator new(0x60)\n1403acea6        if (result == 0)\n1403aceda        return result\n1403aceab        sub_140512c50(result)\n1403aceb7        *(result + 0x54) = 0\n1403acebe        *result = &MoveToPositionEventClass::`vftable'{for `ScheduledEventClass'}\n1403acec4        result[4].d = 1\n1403acecb        result[0xb].b = 0\n1403aced4        return result",
+  "fetched_at": "2026-04-26T17:24:11Z"
+}

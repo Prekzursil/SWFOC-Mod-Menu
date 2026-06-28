@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ac20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ac20(void)\n\n{\n  PoliticalTransitionBonusAbilityClass *this;\n  \n  this = (PoliticalTransitionBonusAbilityClass *)FUN_140769c58(0x180);\n  if (this != (PoliticalTransitionBonusAbilityClass *)0x0) {\n    PoliticalTransitionBonusAbilityClass::PoliticalTransitionBonusAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:19Z"
+}

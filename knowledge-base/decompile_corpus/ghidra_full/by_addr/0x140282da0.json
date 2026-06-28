@@ -1,0 +1,7 @@
+{
+  "addr": "0x140282da0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140282da0(longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  byte bVar2;\n  int iVar3;\n  ulonglong in_RAX;\n  longlong lVar4;\n  byte bVar5;\n  \n  if (param_2 == 0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  bVar5 = 1;\n  cVar1 = FUN_1402204a0(param_2);\n  do {\n    if (cVar1 == '\\0') {\n      return (ulonglong)bVar5;\n    }\n    iVar3 = FUN_1402205a0(param_2);\n    if (iVar3 == 0) {\n      cVar1 = FUN_140220610(param_2);\n      while (cVar1 != '\\0') {\n        iVar3 = FUN_140220710(param_2);\n        lVar4 = param_1;\n        if (iVar3 == 0) {\nLAB_140282e35:\n          FUN_140220730(param_2,lVar4,4);\n        }\n        else {\n          if (iVar3 == 1) {\n            lVar4 = param_1 + 4;\n            goto LAB_140282e35;\n          }\n          if (iVar3 == 2) {\n            lVar4 = param_1 + 8;\n            goto LAB_140282e35;\n          }\n        }\n        bVar2 = FUN_1402206a0(param_2);\n        bVar5 = bVar5 & bVar2;\n        cVar1 = FUN_140220610(param_2);\n      }\n    }\n    else if (iVar3 == 1) {\n      bVar2 = FUN_1404ad5b0(param_1 + 0x10,param_2);\n      bVar5 = bVar5 & bVar2;\n    }\n    bVar2 = FUN_140220520(param_2);\n    bVar5 = bVar5 & bVar2;\n    cVar1 = FUN_1402204a0(param_2);\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:22:46Z"
+}

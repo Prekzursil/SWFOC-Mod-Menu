@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407912a5        int32_t mxcsr\n1407912a5        int32_t rax = _get_fpsr(mxcsr)\n1407912ac        int32_t arg_10 = rax\n1407912c0        int32_t arg_8 = ((not.d(arg2) | 0xffff807f) & rax) | (arg1 & arg2)\n1407912c4        data_140a44f80\n14079130b        return zx.q(rax)",
+  "fetched_at": "2026-04-26T17:31:44Z"
+}

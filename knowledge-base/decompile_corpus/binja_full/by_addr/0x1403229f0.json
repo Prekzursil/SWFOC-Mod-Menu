@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403229f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403229fa        int64_t lpMem = arg1[1]\n1403229fe        struct DynamicVectorClass<class WeatherSFXEventClass>::VTable* const result = &DynamicVectorClass<class WeatherSFXEventClass>::`vftable'\n140322a05        *arg1 = &DynamicVectorClass<class WeatherSFXEventClass>::`vftable'\n140322a0e        if (lpMem != 0)\n140322a17        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n140322a32        j_sub_1407864b8(lpMem)\n140322a27        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140322a37        result = nullptr\n140322a39        *(arg1 + 0x14) &= 0x80000000\n140322a40        arg1[1] = 0\n140322a44        arg1[2].d = 0\n140322a51        return result",
+  "fetched_at": "2026-04-26T17:00:22Z"
+}

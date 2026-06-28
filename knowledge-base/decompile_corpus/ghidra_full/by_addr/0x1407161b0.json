@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407161b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nLaserDefenseAbilityClass::vfunction31_for_IXMLLoadableClass\n          (LaserDefenseAbilityClass *this,ulonglong param_1)\n\n{\n  float fVar1;\n  longlong lVar2;\n  int iVar3;\n  float fVar4;\n  \n  if ((param_1 != 0) && (lVar2 = *(longlong *)(param_1 + 0x100), lVar2 != 0)) {\n    FUN_1403a9840(param_1,0x38);\n    fVar4 = (float)DAT_140b0a340;\n    fVar1 = (float)(this->LaserDefenseAbilityClass_data).offset_0x0;\n    *(undefined4 *)(lVar2 + 0x31c) = 0;\n    iVar3 = (int)(fVar4 * fVar1);\n    *(int *)(lVar2 + 0x318) = iVar3;\n    return CONCAT71((uint7)(uint3)((uint)iVar3 >> 8),1);\n  }\n  return param_1 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:56:39Z"
+}

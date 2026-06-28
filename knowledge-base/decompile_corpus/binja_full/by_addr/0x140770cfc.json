@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770cfc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770d1c        int64_t rax = try_get_function(0, \"FlsAlloc\", &data_1408d1cb8, \"FlsAlloc\")\n140770d24        if (rax == 0)\n140770d3a        return TlsAlloc() __tailcall\n140770d2e        return rax(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:30:40Z"
+}

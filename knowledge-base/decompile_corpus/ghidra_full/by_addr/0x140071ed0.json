@@ -1,0 +1,7 @@
+{
+  "addr": "0x140071ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140071ed0(void)\n\n{\n  longlong lVar1;\n  \n  lVar1 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n                    /* WARNING: Could not recover jumptable at 0x000140071ef3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(**(longlong **)(lVar1 + 0x10) + 0xf0))\n            (*(longlong **)(lVar1 + 0x10),\"http://www.petroglyphgames.com/\");\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:30Z"
+}

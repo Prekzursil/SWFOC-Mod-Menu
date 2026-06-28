@@ -1,0 +1,7 @@
+{
+  "addr": "0x14009c7e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14009c7e0(void)\n\n{\n  int iVar1;\n  int iVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  int iVar5;\n  \n  iVar5 = 0;\n  if ((int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3) < 1) {\n    return;\n  }\n  do {\n    lVar3 = FUN_140294bc0(&DAT_140a16fd0,iVar5);\n    if ((*(char *)(lVar3 + 0x62) != '\\0') && (*(char *)(lVar3 + 0x180) != '\\0')) {\n      iVar1 = FUN_140490750(&PTR_vftable_140a2aaa0,3,*(undefined4 *)(lVar3 + 0x4c));\n      iVar2 = FUN_140294b80(&DAT_140a16fd0);\n      if (iVar2 + -1 <= iVar1) {\n        plVar4 = (longlong *)(lVar3 + 0x28);\n        if (7 < *(ulonglong *)(lVar3 + 0x40)) {\n          plVar4 = (longlong *)*plVar4;\n        }\n        FUN_140025760(\"Kicking player %ls from the game due to voting\\n\",plVar4);\n        FUN_1404994c0(iVar5);\n        FUN_14005f6b0(0);\n        FUN_14009b9f0();\n        return;\n      }\n    }\n    iVar5 = iVar5 + 1;\n  } while (iVar5 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3));\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:40Z"
+}

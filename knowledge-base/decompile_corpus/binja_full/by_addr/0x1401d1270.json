@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d1270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d128f        if (*(arg1 + 0xc8) == 0 || arg2[2] == 0)\n1401d128f        return \n1401d12a7        int32_t rbp_1 = 0\n1401d12aa        int32_t rsi_1 = 0\n1401d12b4        if (*(arg1 + 0x198) s<= 0)\n1401d12b4        return \n1401d12bf        int64_t r14_1 = 0\n1401d1304        int32_t rcx_2\n1401d12c7        int64_t* rdx = arg2\n1401d12ca        if (arg2[3] u>= 8)\n1401d12cc        rdx = *arg2\n1401d12da        int16_t* rcx_1 = *(*(*(arg1 + 0xa8) + r14_1) + 0x98)\n1401d12e6        if (*(rcx_1 + 0x18) u>= 8)\n1401d12e8        rcx_1 = *rcx_1\n1401d12eb        int32_t rax = _wcsicmp(rcx_1, rdx)\n1401d12f0        rcx_2 = *(arg1 + 0x198)\n1401d12f8        if (rax == 0)\n1401d1308        int32_t rdx_1 = *(arg1 + 0x9c)\n1401d130e        *(arg1 + 0xc1) = 1\n1401d1315        *(arg1 + 0xc4) = rbp_1\n1401d131b        *(arg1 + 0x98) = rbp_1\n1401d1326        if (rdx_1 + rbp_1 s>= rcx_2)\n1401d1328        int32_t rcx_3 = rcx_2 - rdx_1\n1401d132c        if (rcx_3 s<= 0)\n1401d132c        rcx_3 = 0\n1401d1330        *(arg1 + 0x98) = rcx_3\n1401d1339        sub_1401d02a0(arg1)\n1401d1341        sub_1401d01e0(arg1)\n1401d1341        break\n1401d12fa        rbp_1 += 1\n1401d12fc        rsi_1 += 1\n1401d12fe        r14_1 += 8\n1401d1304        do while (rsi_1 s< rcx_2)\n1401d1360        return ",
+  "fetched_at": "2026-04-26T17:26:40Z"
+}

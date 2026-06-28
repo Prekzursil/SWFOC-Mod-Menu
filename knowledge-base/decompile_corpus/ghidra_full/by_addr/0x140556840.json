@@ -1,0 +1,7 @@
+{
+  "addr": "0x140556840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_140556840(longlong param_1,undefined4 *param_2)\n\n{\n  undefined4 *puVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  uint uVar4;\n  float fVar5;\n  float fVar6;\n  undefined4 local_28;\n  undefined4 local_24;\n  undefined4 local_20;\n  \n  local_28 = *param_2;\n  local_24 = param_2[1];\n  local_20 = param_2[2];\n  fVar6 = 0.0;\n  uVar2 = (*(longlong *)(param_1 + 0x140) - *(longlong *)(param_1 + 0x138)) / 0x70;\n  if ((int)uVar2 == 0) {\n    return 0.0;\n  }\n  do {\n    uVar4 = (int)uVar2 - 1;\n    lVar3 = (ulonglong)uVar4 * 0x70 + *(longlong *)(param_1 + 0x138);\n    fVar5 = (float)FUN_1405c5530(lVar3,&local_28);\n    fVar6 = fVar6 + fVar5;\n    puVar1 = (undefined4 *)\n             FUN_14054fe50((longlong *)(lVar3 + 0x18),\n                           (int)((*(longlong *)(lVar3 + 0x20) - *(longlong *)(lVar3 + 0x18)) / 0x34)\n                           + -1);\n    uVar2 = (ulonglong)uVar4;\n    local_28 = *puVar1;\n    local_24 = puVar1[1];\n    local_20 = puVar1[2];\n  } while (uVar4 != 0);\n  return fVar6;\n}",
+  "fetched_at": "2026-04-26T18:38:24Z"
+}

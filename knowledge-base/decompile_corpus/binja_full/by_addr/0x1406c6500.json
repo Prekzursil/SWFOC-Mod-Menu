@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c6500",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_produce_force_block_status_ctor",
+  "body": "1406c6506        struct BlockingStatus::ProduceForceBlockStatus::VTable** result = arg1\n1406c6509        sub_1407d8d80(arg1)\n1406c6517        *result = &ProduceForceBlockStatus::`vftable'{for `BlockingStatus'}\n1406c6521        result[6] = &ProduceForceBlockStatus::`vftable'{for `SignalListenerClass'}\n1406c6528        __builtin_memset(&result[7], 0, 0x20)\n1406c653d        return result",
+  "fetched_at": "2026-04-26T16:44:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013de10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013de1c        struct alD3dTexture::alD3dTextureCube::VTable** result = nullptr\n14013de23        char string1[0x110]\n14013de23        lstrcpyA(&string1, arg1)\n14013de35        strtok(&string1, U\".\")\n14013de46        lstrcatA(&string1, \".dds\")\n14013de4c        int64_t rcx_3 = 0\n14013de62        char var_228[0x110]\n14013de62        char i\n14013de50        i = string1[rcx_3]\n14013de55        var_228[rcx_3] = i\n14013de5c        rcx_3 += 1\n14013de62        do while (i != 0)\n14013de64        int64_t rax_1 = 0\n14013de82        char var_118[0x110]\n14013de82        char i_1\n14013de70        i_1 = string1[rax_1]\n14013de75        var_118[rax_1] = i_1\n14013de7c        rax_1 += 1\n14013de82        do while (i_1 != 0)\n14013dea0        if (sub_14013f450(&string1, &var_228, &var_118) != 0)\n14013dea7        struct alTexture::alD3dTexture::VTable** rax_3 = operator new(0x80)\n14013deaf        if (rax_3 != 0)\n14013deb9        result = sub_140198de0(rax_3)\n14013ded7        sub_140198ec0(result, &var_118, &var_228, 0, 1)\n14013dee7        return result",
+  "fetched_at": "2026-04-26T17:16:19Z"
+}

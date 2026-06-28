@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall FileClass::vfunction2(FileClass *this,uint param_1,undefined1 param_2)\n\n{\n  char cVar1;\n  ulonglong in_RAX;\n  undefined7 extraout_var;\n  ulonglong uVar2;\n  undefined1 **ppuVar3;\n  \n  if (param_1 < 2) {\n    cVar1 = (*this->vftablePtr->vfunction12)(this);\n    in_RAX = CONCAT71(extraout_var,cVar1);\n    if ((((cVar1 != '\\x01') && ((this->FileClass_data).offset_0x8 == (HANDLE)0xffffffffffffffff)) &&\n        ((this->FileClass_data).offset_0x38 == -1)) &&\n       (((this->FileClass_data).offset_0x0 == -1 && ((this->FileClass_data).offset_0x28 != 0)))) {\n      ppuVar3 = &(this->FileClass_data).offset_0x18;\n      if (0xf < (this->FileClass_data).offset_0x30) {\n        ppuVar3 = (undefined1 **)*ppuVar3;\n      }\n      uVar2 = (*this->vftablePtr->vfunction3)(this,(longlong)ppuVar3,param_1,param_2,0);\n      return uVar2;\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:00:02Z"
+}

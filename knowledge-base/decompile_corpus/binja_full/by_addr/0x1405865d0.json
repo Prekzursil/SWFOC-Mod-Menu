@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405865d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405865e9        *arg1 = &AILearningSystemDiagnosticsNodeClass::`vftable'{for `AIDiagnosticsNodeClass'}\n1405865ee        int64_t* rcx = arg1[2]\n1405865f5        if (rcx != 0)\n1405865ff        (**rcx)(rcx, 1)\n140586601        int64_t* rcx_1 = arg1[3]\n140586607        arg1[2] = 0\n14058660e        if (rcx_1 != 0)\n140586616        (**rcx_1)(rcx_1, 1)\n140586618        int64_t* rcx_2 = arg1[4]\n14058661c        arg1[3] = 0\n140586623        if (rcx_2 != 0)\n14058662d        (**rcx_2)(rcx_2, 1)\n14058662f        int64_t* rcx_3 = arg1[5]\n140586633        arg1[4] = 0\n14058663a        if (rcx_3 != 0)\n140586644        (**rcx_3)(rcx_3, 1)\n140586646        int64_t* rcx_4 = arg1[6]\n14058664a        arg1[5] = 0\n140586651        if (rcx_4 != 0)\n14058665b        (**rcx_4)(rcx_4, 1)\n14058665d        arg1[6] = 0\n140586668        *arg1 = &AIDiagnosticsNodeClass::`vftable'\n14058666f        if ((arg2 & 1) != 0)\n140586679        j_sub_1407864b8(arg1)\n140586690        return arg1",
+  "fetched_at": "2026-04-26T17:36:05Z"
+}

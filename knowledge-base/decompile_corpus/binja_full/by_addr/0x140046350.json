@@ -1,0 +1,7 @@
+{
+  "addr": "0x140046350",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14004635f        struct alRenderable::LineSubClass::VTable** rdi = nullptr\n140046364        __builtin_memset(arg1, 0, 0x19)\n14004637a        struct RefCountClass::alRenderable::VTable** rax = operator new(0x990)\n140046382        if (rax != 0)\n14004638e        rdi = sub_14037e3a0(rax, arg2)\n140046391        int64_t* rcx_1 = *arg1\n140046397        if (rcx_1 != rdi)\n14004639c        if (rcx_1 != 0)\n1400463a1        (*(*rcx_1 + 8))(rcx_1)\n1400463a4        *arg1 = rdi\n1400463aa        if (rdi != 0)\n1400463b2        (*rdi)->__offset(0x0).q(rdi)\n1400463c6        return arg1",
+  "fetched_at": "2026-04-26T16:53:42Z"
+}

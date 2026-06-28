@@ -1,0 +1,7 @@
+{
+  "addr": "0x140485340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TheGameScoringManagerClass * __thiscall\nTheGameScoringManagerClass::TheGameScoringManagerClass(TheGameScoringManagerClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  *(undefined8 *)&this->field_0x8 = 0;\n  this->Singleton<class_TheGameScoringManagerClass> =\n       (Singleton<class_TheGameScoringManagerClass>)0x0;\n  (this->TheGameScoringManagerClass_data).offset_0x0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:00:41Z"
+}

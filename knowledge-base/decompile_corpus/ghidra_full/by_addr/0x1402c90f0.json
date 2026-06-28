@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c90f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402c90f0(longlong param_1)\n\n{\n  FUN_140025840(param_1 + 0x1660,*(undefined8 *)(param_1 + 0x1660),*(undefined8 *)(param_1 + 0x1668)\n               );\n  *(undefined8 *)(param_1 + 0x1668) = *(undefined8 *)(param_1 + 0x1660);\n  FUN_140025840(param_1 + 0x1678,*(undefined8 *)(param_1 + 0x1678),*(undefined8 *)(param_1 + 0x1680)\n               );\n  *(undefined8 *)(param_1 + 0x1680) = *(undefined8 *)(param_1 + 0x1678);\n  FUN_1402cb610(param_1 + 0x1690,*(undefined8 *)(param_1 + 0x1690),*(undefined8 *)(param_1 + 0x1698)\n               );\n  *(undefined8 *)(param_1 + 0x1698) = *(undefined8 *)(param_1 + 0x1690);\n  *(undefined8 *)(param_1 + 0x16b8) = *(undefined8 *)(param_1 + 0x16b0);\n  *(undefined4 *)(param_1 + 0x16a8) = 0;\n  *(undefined4 *)(param_1 + 0x16c8) = 0;\n  *(undefined8 *)(param_1 + 0x16d8) = *(undefined8 *)(param_1 + 0x16d0);\n  FUN_14076c430(param_1 + 0x16e8,0,0x10000);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:48Z"
+}

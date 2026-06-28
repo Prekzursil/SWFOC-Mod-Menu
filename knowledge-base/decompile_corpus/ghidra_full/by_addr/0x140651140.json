@@ -1,0 +1,7 @@
+{
+  "addr": "0x140651140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nGameObjectTypePerceptualEvaluatorClass * FUN_140651140(longlong param_1)\n\n{\n  char cVar1;\n  GameObjectTypePerceptualEvaluatorClass *this;\n  \n  if (param_1 != 0) {\n    cVar1 = FUN_140370320(param_1,3,0xffffffff);\n    if (cVar1 != '\\0') {\n      this = (GameObjectTypePerceptualEvaluatorClass *)FUN_140769c58(0x90);\n      if (this != (GameObjectTypePerceptualEvaluatorClass *)0x0) {\n                    /* inlined constructor:\n                       PlanetTypePerceptualEvaluatorClass::PlanetTypePerceptualEvaluatorClass */\n        GameObjectTypePerceptualEvaluatorClass::GameObjectTypePerceptualEvaluatorClass(this);\n        this->vftablePtr =\n             (GameObjectTypePerceptualEvaluatorClass_vftable_for_SignalGeneratorClass *)\n             &PlanetTypePerceptualEvaluatorClass::vftable;\n        this->vftablePtr =\n             (GameObjectTypePerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)\n             &PlanetTypePerceptualEvaluatorClass::vftable;\n        (this->GameObjectTypePerceptualEvaluatorClass_data).offset_0x0 = param_1;\n        (*(code *)\n          PTR__VisiblePerceptualEvaluatorClass<class_PlanetTypePerceptualEvaluatorClass>_1408b4318)\n                  (this);\n        return this;\n      }\n    }\n  }\n  return (GameObjectTypePerceptualEvaluatorClass *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:15Z"
+}

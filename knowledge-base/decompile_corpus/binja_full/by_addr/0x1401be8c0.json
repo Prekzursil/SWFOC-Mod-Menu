@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401be8c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401be8c0        int64_t arg_8 = arg1\n1401be8c5        int64_t arg_10 = arg2\n1401be8ca        int64_t r8\n1401be8ca        int64_t arg_18 = r8\n1401be8cf        int64_t r9\n1401be8cf        int64_t arg_20 = r9\n1401be8e8        void* rax = sub_140784a34(1)\n1401be912        return __stdio_common_vfprintf(data_140a60d90, rax, arg1, 0, &arg_10)",
+  "fetched_at": "2026-04-26T17:26:02Z"
+}

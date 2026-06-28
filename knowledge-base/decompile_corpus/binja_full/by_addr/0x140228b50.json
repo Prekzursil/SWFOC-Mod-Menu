@@ -1,0 +1,7 @@
+{
+  "addr": "0x140228b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140228b5d        void* rbx_2 = (sx.q(arg2) << 6) + arg1\n140228b64        if (*(rbx_2 + 0x31) == 1)\n140228b66        int64_t rax\n140228b66        rax.b = 0\n140228b6d        return rax\n140228b72        AIL_stop_sample(*(rbx_2 + 0x28))\n140228b78        int64_t rax_1\n140228b78        rax_1.b = 1\n140228b7a        *(rbx_2 + 0x31) = 1\n140228b83        return rax_1",
+  "fetched_at": "2026-04-26T17:29:28Z"
+}

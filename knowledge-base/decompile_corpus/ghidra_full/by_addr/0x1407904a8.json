@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407904a8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _fileno\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl _fileno(FILE *_File)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  \n  if (_File == (FILE *)0x0) {\n    puVar2 = __doserrno();\n    *puVar2 = 0x16;\n    FUN_1407711ac();\n    iVar1 = -1;\n  }\n  else {\n    iVar1 = _File->_flag;\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:36Z"
+}

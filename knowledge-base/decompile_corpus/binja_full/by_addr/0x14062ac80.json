@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062ac80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062ac87        return \"DebrisBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:24:02Z"
+}

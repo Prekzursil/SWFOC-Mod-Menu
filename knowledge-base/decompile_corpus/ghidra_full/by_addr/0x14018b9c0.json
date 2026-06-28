@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018b9c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dEffectInstance::vfunction24_for_RefCountClass\n          (alD3dEffectInstance *this,int param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n  FUN_14018cfb0();\n  lVar1 = *(longlong *)(*(longlong *)&this->field_0x38 + (longlong)param_1 * 8);\n  plVar2 = *(longlong **)(lVar1 + 0x18);\n  if (plVar2 != param_2) {\n    if (plVar2 != (longlong *)0x0) {\n      (**(code **)(*plVar2 + 8))();\n    }\n    *(longlong **)(lVar1 + 0x18) = param_2;\n    if (param_2 != (longlong *)0x0) {\n      (**(code **)*param_2)(param_2);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:12Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a60a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nfloat * FUN_1401a60a0(longlong param_1,float *param_2)\n\n{\n  float fVar1;\n  uint uVar2;\n  float fVar3;\n  undefined8 local_48;\n  undefined8 uStack_40;\n  undefined4 local_38;\n  float fStack_34;\n  undefined4 uStack_30;\n  float fStack_2c;\n  undefined8 local_28;\n  undefined8 uStack_20;\n  \n  if (*(char *)(param_1 + 0x2c) == '\\0') {\n    DAT_140a13e20 = DAT_140851168 * DAT_140a13e20 + DAT_14085116c;\n    fVar3 = (float)(DAT_140a13e20 >> 10 & 0x7fff) * DAT_140819b28 * *(float *)(param_1 + 0x28);\n  }\n  else {\n    fVar3 = *(float *)(param_1 + 0x28);\n  }\n  local_48 = _DAT_140800820;\n  uStack_40 = _UNK_140800828;\n  local_38 = _DAT_140800830;\n  fStack_34 = _UNK_140800834;\n  uStack_30 = _UNK_140800838;\n  fStack_2c = _UNK_14080083c;\n  uVar2 = DAT_140851168 * DAT_140a13e20 + DAT_14085116c;\n  local_28 = _DAT_140800840;\n  uStack_20 = _UNK_140800848;\n  DAT_140a13e20 = uVar2;\n  FUN_1400480f0(&local_48,(float)(uVar2 >> 10 & 0x7fff) * _DAT_14081bf58);\n  fVar1 = *(float *)(param_1 + 0x30);\n  DAT_140a13e20 = uVar2 * DAT_140851168 + DAT_14085116c;\n  uVar2 = DAT_140a13e20 >> 10;\n  *param_2 = fVar3 * local_48._4_4_ + uStack_40._4_4_;\n  param_2[1] = fVar3 * fStack_34 + fStack_2c;\n  param_2[2] = (float)(uVar2 & 0x7fff) * DAT_140819b28 * fVar1;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:39:21Z"
+}

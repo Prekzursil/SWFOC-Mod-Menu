@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406df370",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RootLookupPerceptualEvaluatorClass * __thiscall\nRootLookupPerceptualEvaluatorClass::vfunction1_for_SignalGeneratorClass\n          (RootLookupPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  uVar1 = this[1].AIDiagnosticsClass_data.offset_0x0;\n  if (0xf < uVar1) {\n    lVar2 = *(longlong *)&this[1].SignalGeneratorClass_data;\n    lVar3 = lVar2;\n    if (0xfff < uVar1 + 1) {\n      lVar3 = *(longlong *)(lVar2 + -8);\n      if (0x1f < (lVar2 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar2 - lVar3,uVar1 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar3);\n  }\n  this[1].vftablePtr = (RootLookupPerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)0x0;\n  this[1].AIDiagnosticsClass_data.offset_0x0 = 0xf;\n  this[1].SignalGeneratorClass_data.offset_0x0 = '\\0';\n  PerceptualEvaluatorClass::~PerceptualEvaluatorClass((PerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xb0);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:44:49Z"
+}

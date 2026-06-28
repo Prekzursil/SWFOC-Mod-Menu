@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ca64",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __dcrt_uninitialize_environments_nolock\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __dcrt_uninitialize_environments_nolock(void)\n\n{\n  uninitialize_environment_internal<>(&DAT_140b3c438);\n  uninitialize_environment_internal<>(&DAT_140b3c440);\n  free_environment<>(DAT_140b3c450);\n  free_environment<>(DAT_140b3c448);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:05Z"
+}

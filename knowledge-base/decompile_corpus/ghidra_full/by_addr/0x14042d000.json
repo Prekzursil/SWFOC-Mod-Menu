@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042d000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* LocomotorCommonClass member function inherited by LandTeamContainerLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by FighterLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by WalkLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by StarshipLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by SimpleSpaceLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LandTeamInfantryLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by TeamLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by BikeLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by FlyingLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by JetPackLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LandBomberLocomotorBehaviorClass */\n\nvoid __thiscall LocomotorCommonClass::vfunction65(LocomotorCommonClass *this)\n\n{\n  undefined *puVar1;\n  \n  puVar1 = this->offset_0x18[0x15];\n  if ((puVar1 != (undefined *)0x0) && (puVar1[0x260] == '\\0')) {\n    FUN_1405591b0(puVar1);\n    FUN_140559230(puVar1,1);\n    FUN_14027d160(0x40,\"GO:%d suspending loco\\n\",*(undefined4 *)(this->offset_0x18 + 10));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:38Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070a280",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_reduce_production_price",
+  "body": "14070a286        struct SpecialAbilityClass::ReduceProductionPriceAbilityClass::VTable** result = arg1\n14070a289        sub_14048c780(arg1)\n14070a295        result[8].w = 1\n14070a29b        *result = &ReduceProductionPriceAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070a2a5        result[1] = &ReduceProductionPriceAbilityClass::`vftable'{for `RefCountClass'}\n14070a2ab        result[0x2f] = 0\n14070a2b2        result[0x30].b = 0\n14070a2bb        *(result + 0x3c) = 3\n14070a2c7        return result",
+  "fetched_at": "2026-04-26T16:44:19Z"
+}

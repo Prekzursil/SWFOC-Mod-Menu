@@ -1,0 +1,7 @@
+{
+  "addr": "0x140281400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14028140a        int32_t rdx = *(arg1 + 0x4c)\n140281414        int64_t result = 0\n140281416        struct DynamicVectorClass<class PlayerClass* __ptr64>::VTable* const var_28 = &DynamicVectorClass<class PlayerClass* __ptr64>::`vftable'\n140281422        int64_t* lpMem = nullptr\n14028142c        int64_t var_18 = 0\n140281431        sub_140294910(&data_140a16fd0, rdx, &var_28)\n14028143f        if (var_18.d s> 0)\n140281441        result = *lpMem\n140281444        var_28 = &DynamicVectorClass<class PlayerClass* __ptr64>::`vftable'\n14028144c        if (lpMem != 0)\n140281456        if ((var_18:4.d & 0x80000000) != 0)\n140281468        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14028147b        return result\n14028147c        j_sub_1407864b8(lpMem)\n14028148e        return result",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

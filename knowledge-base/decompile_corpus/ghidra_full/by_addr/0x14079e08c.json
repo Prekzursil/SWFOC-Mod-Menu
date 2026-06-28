@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079e08c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Different Base Names\n    _sopen_s\n    _wsopen_s\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nerrno_t __cdecl\nFID_conflict__sopen_s\n          (int *_FileHandle,char *_Filename,int _OpenFlag,int _ShareFlag,int _PermissionMode)\n\n{\n  int iVar1;\n  \n  iVar1 = common_sopen_dispatch<char>(_Filename,_OpenFlag,_ShareFlag,_PermissionMode,_FileHandle,1);\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:54:04Z"
+}

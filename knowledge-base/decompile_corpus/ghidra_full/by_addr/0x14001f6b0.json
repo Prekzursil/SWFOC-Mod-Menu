@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001f6b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<class_std::basic_string<wchar_t,struct_std::char_traits<wchar_t>,class_std::allocator<wchar_t>_>_>\n* __thiscall\nDynamicVectorClass<class_std::basic_string<wchar_t,struct_std::char_traits<wchar_t>,class_std::allocator<wchar_t>_>_>\n::scalar_deleting_destructor\n          (DynamicVectorClass<class_std::basic_string<wchar_t,struct_std::char_traits<wchar_t>,class_std::allocator<wchar_t>_>_>\n           *this,uint param_1)\n\n{\n  ~DynamicVectorClass<class_std::basic_string<wchar_t,struct_std::char_traits<wchar_t>,class_std::allocator<wchar_t>_>_>\n            (this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:41Z"
+}

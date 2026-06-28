@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a9e30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a9e3f        void* rdi = *(arg1 + 0x18)\n1401a9e4b        if (rdi != 0)\n1401a9e50        CBitVect32GSI::~CBitVect32GSI(rdi)\n1401a9e5d        j_sub_1407864b8(rdi)\n1401a9e62        void* rdi_1 = *(arg1 + 0x20)\n1401a9e69        if (rdi_1 != 0)\n1401a9e6e        CBitVect32GSI::~CBitVect32GSI(rdi_1)\n1401a9e7b        j_sub_1407864b8(rdi_1)\n1401a9e80        void* rdi_2 = *(arg1 + 0x28)\n1401a9e87        if (rdi_2 != 0)\n1401a9e8c        CBitVect32GSI::~CBitVect32GSI(rdi_2)\n1401a9e99        j_sub_1407864b8(rdi_2)\n1401a9e9e        void* rdi_3 = *(arg1 + 0x30)\n1401a9ea5        if (rdi_3 != 0)\n1401a9eaa        CBitVect32GSI::~CBitVect32GSI(rdi_3)\n1401a9eb7        j_sub_1407864b8(rdi_3)\n1401a9ebc        void* rdi_4 = *(arg1 + 0x38)\n1401a9ec3        if (rdi_4 != 0)\n1401a9ec8        CBitVect32GSI::~CBitVect32GSI(rdi_4)\n1401a9ed5        j_sub_1407864b8(rdi_4)\n1401a9eda        void* rdi_5 = *(arg1 + 0x40)\n1401a9ee1        if (rdi_5 != 0)\n1401a9ee6        CBitVect32GSI::~CBitVect32GSI(rdi_5)\n1401a9ef3        j_sub_1407864b8(rdi_5)\n1401a9efc        if ((arg2 & 1) != 0)\n1401a9f06        j_sub_1407864b8(arg1)\n1401a9f1d        return arg1",
+  "fetched_at": "2026-04-26T17:25:21Z"
+}

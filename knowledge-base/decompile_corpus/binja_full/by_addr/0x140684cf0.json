@@ -1,0 +1,7 @@
+{
+  "addr": "0x140684cf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140684cfa        int32_t rax = *(arg1 + 0x70)\n140684d0c        if (rax != 0 && data_140b0a320 u>= rax)\n140684d0e        *(arg1 + 0x70) = 0\n140684d11        sub_1405c6970(arg1)\n140684d16        *(arg1 + 0x78) = 0\n140684d3b        jump(&__dos_header.e_magic[zx.q(*((sx.q(*(arg1 + 0x78)) << 2) + 0x140684f64))])",
+  "fetched_at": "2026-04-26T17:14:33Z"
+}

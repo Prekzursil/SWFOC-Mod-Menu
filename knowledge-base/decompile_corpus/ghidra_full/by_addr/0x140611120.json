@@ -1,0 +1,7 @@
+{
+  "addr": "0x140611120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AIBudgetDiagnosticsNodeClass::vfunction4(AIBudgetDiagnosticsNodeClass *this)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  AIDiagnosticsManagerClass *this_00;\n  longlong *plVar3;\n  undefined **local_res8;\n  \n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  plVar2 = *(longlong **)(lVar1 + 0x30);\n  plVar3 = (longlong *)*plVar2;\n  if (plVar3 != plVar2) {\n    do {\n      if (DAT_140a10970 == (AIDiagnosticsManagerClass *)0x0) {\n        this_00 = (AIDiagnosticsManagerClass *)FUN_140769c58(0xc0);\n        if (this_00 == (AIDiagnosticsManagerClass *)0x0) {\n          DAT_140a10970 = (AIDiagnosticsManagerClass *)0x0;\n        }\n        else {\n          DAT_140a10970 = AIDiagnosticsManagerClass::~AIDiagnosticsManagerClass(this_00);\n        }\n        local_res8 = &PTR_vftable_140a10968;\n        if (DAT_140a7bc10 == DAT_140a7bc18) {\n          FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,&local_res8);\n        }\n        else {\n          *DAT_140a7bc10 = &PTR_vftable_140a10968;\n          DAT_140a7bc10 = DAT_140a7bc10 + 1;\n        }\n      }\n      FUN_140475af0(DAT_140a10970,plVar3[3]);\n      plVar3 = (longlong *)*plVar3;\n    } while (plVar3 != (longlong *)*(longlong *)(lVar1 + 0x30));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140467640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140467652        int64_t* rbx = arg2\n140467658        if (arg2[3] u>= 0x10)\n14046765a        arg2 = *arg2\n140467662        char var_108[0x100]\n140467662        char* r8 = &var_108 - arg2\n14046767d        char i\n140467670        i = *arg2\n140467673        *(r8 + arg2) = i\n140467677        arg2 += 1\n14046767d        do while (i != 0)\n140467684        _strupr(&var_108)\n14046768e        int64_t rax_1 = -1\n140467695        rax_1 += 1\n14046769c        do while (var_108[rax_1] != 0)\n1404676a8        int32_t rax_2 = sub_140215a30(&var_108, rax_1.d, 0)\n1404676ad        void** rdx_1 = *(arg1 + 0x30)\n1404676b1        void** r8_1 = rdx_1\n1404676b4        void** rcx_2 = rdx_1[1]\n1404676bc        while (*(rcx_2 + 0x19) == 0)\n1404676c3        if (rcx_2[4].d u>= rax_2)\n1404676cb        rdx_1 = rcx_2\n1404676ce        rcx_2 = *rcx_2\n1404676c5        rcx_2 = rcx_2[2]\n1404676e5        if (*(rdx_1 + 0x19) == 0 && rax_2 u>= rdx_1[4].d && rdx_1 != r8_1)\n1404676e7        void* rcx_3 = rdx_1[5]\n1404676ee        if (rcx_3 != 0)\n140467705        return sub_1405c29e0(rcx_3)\n14046770b        if (rbx[3] u>= 0x10)\n14046770d        *rbx\n140467731        return 0",
+  "fetched_at": "2026-04-26T17:27:59Z"
+}

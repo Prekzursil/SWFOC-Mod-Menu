@@ -1,0 +1,7 @@
+{
+  "addr": "0x140796e34",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __tzset\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl __tzset(void)\n\n{\n  if (DAT_140b3caf4 == 0) {\n    __acrt_lock(6);\n    if (DAT_140b3caf4 == 0) {\n      tzset_nolock();\n      LOCK();\n      DAT_140b3caf4 = DAT_140b3caf4 + 1;\n      UNLOCK();\n    }\n    __acrt_unlock(6);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:26Z"
+}

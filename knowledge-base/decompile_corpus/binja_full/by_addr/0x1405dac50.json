@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405dac50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405dac60        while (true)\n1405dac60        *(arg1 + 0xe8) = 0\n1405dac67        void** result_1 = *(arg1 + 0xd8)\n1405dac6e        void** result_2 = result_1\n1405dac71        void** result = result_1[1]\n1405dac79        while (*(result + 0x19) == 0)\n1405dac83        if (result[4].d s>= arg2)\n1405dac8b        result_1 = result\n1405dac8e        result = *result\n1405dac85        result = result[2]\n1405daca6        if (*(result_1 + 0x19) == 0 && arg2 s>= result_1[4].d && result_1 != result_2)\n1405dacb1        result = result_1[5]\n1405dacb5        *(arg1 + 0xe8) = result\n1405dacbc        return result\n1405dacaa        if (arg2 == 0)\n1405dacbc        return result\n1405dacac        arg2 = 0",
+  "fetched_at": "2026-04-26T17:38:20Z"
+}

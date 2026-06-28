@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401805b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401805c6        int32_t rsi = arg7\n1401805cd        int32_t rbp = arg4\n1401805e2        int64_t r12 = sx.q(arg3)\n1401805f2        sub_140182ac0(zx.q(rsi), zx.q(arg8), zx.q(arg9), zx.q(arg10))\n1401805f7        char rax = sub_140196a60()\n140180602        sub_140196a40(0)\n14018060e        sub_140177a30(0x89, 0)\n140180613        int32_t* rbx = data_140a6fe70\n14018061a        int64_t r14\n14018061a        r14.b = 0\n14018061f        sub_140177db0(zx.q(*rbx))\n14018063a        sub_140177df0(0, **(*(rbx + 8) + (sx.q(arg1) << 3)), 0, 0x18)\n140180643        int32_t r8_1\n140180643        if (r12.d != 0xffffffff)\n14018064c        r14.b = 1\n140180659        sub_140177e50(**(*data_140a6fe68 + (r12 << 3)))\n14018065e        r8_1 = arg6\n1401806c5        if (rsi != 4)\n14018065e        r8_1 = arg6\n1401806ce        sub_140177e50(data_140a6fe88)\n1401806da        rbp = 0\n1401806dc        rsi = 0\n1401806de        r14.b = 1\n1401806e1        r8_1 = arg6 * 2\n14018067b        int64_t rcx_7 = sx.q(data_140a6e740) * 6\n14018068f        *((rcx_7 << 3) + &data_140a6e750:4) = *((rcx_7 << 3) + &data_140a6e750:4) + 1f\n140180698        int32_t rcx_8 = (&data_140a129e0)[sx.q(rsi)]\n1401806a5        if (r14.b == 0)\n1401806ea        sub_140177e90(rcx_8, arg2, r8_1)\n1401806bb        sub_140177ee0(rcx_8, arg2, 0, arg5, rbp, r8_1)\n140180700        sub_140183260(zx.q(rsi), arg8)\n140180720        return sub_140196a40(rax) __tailcall",
+  "fetched_at": "2026-04-26T17:23:52Z"
+}

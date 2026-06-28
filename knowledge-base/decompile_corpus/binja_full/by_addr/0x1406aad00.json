@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406aad00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406aad18        *arg1 = &ActionDrivenHeroClashClass::`vftable'{for `HeroClashInterface'}\n1406aad1e        sub_1406aae00(arg1)\n1406aad23        void* rcx = arg1[6]\n1406aad29        arg1[7] = rcx\n1406aad2d        arg1[9] = 0\n1406aad34        if (rcx == 0)\n1406aad34        goto label_1406aad77\n1406aad48        if (((arg1[8] - rcx) & 0xfffffffffffffff8) u< 0x1000)\n1406aad48        goto label_1406aad66\n1406aad4a        void* r8_1 = *(rcx - 8)\n1406aad5d        if (rcx - r8_1 - 8 u<= 0x1f)\n1406aad63        rcx = r8_1\n1406aad66        label_1406aad66:\n1406aad66        j_sub_1407864b8(rcx)\n1406aad6b        __builtin_memset(&arg1[6], 0, 0x18)\n1406aad77        label_1406aad77:\n1406aad77        void* rcx_3 = arg1[3]\n1406aad7e        if (rcx_3 == 0)\n1406aad7e        goto label_1406aadc0\n1406aad92        if (((arg1[5] - rcx_3) & 0xfffffffffffffff0) u< 0x1000)\n1406aad92        goto label_1406aadac\n1406aad94        void* r8_2 = *(rcx_3 - 8)\n1406aada7        if (rcx_3 - r8_2 - 8 u<= 0x1f)\n1406aada9        rcx_3 = r8_2\n1406aadac        label_1406aadac:\n1406aadac        j_sub_1407864b8(rcx_3)\n1406aadb1        __builtin_memset(&arg1[3], 0, 0x18)\n1406aadc0        label_1406aadc0:\n1406aadc0        sub_1407247e0(arg1)\n1406aadc9        if ((arg2 & 1) != 0)\n1406aadd3        j_sub_1407864b8(arg1)\n1406aadea        return arg1\n1406aadeb        _invalid_parameter_noinfo_noreturn()\n1406aadeb        noreturn",
+  "fetched_at": "2026-04-26T17:24:29Z"
+}

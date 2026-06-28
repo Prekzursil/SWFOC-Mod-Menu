@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401dc0c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nEnumConversionClass<enum_GUIGadgetType>::vfunction3\n          (EnumConversionClass<enum_GUIGadgetType> *this,undefined8 param_1)\n\n{\n  FUN_1401dc0e0();\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:50:23Z"
+}

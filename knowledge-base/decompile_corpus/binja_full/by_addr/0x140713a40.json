@@ -1,0 +1,7 @@
+{
+  "addr": "0x140713a40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140713a53        *arg1 = &ForceSightAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140713a60        arg1[1] = &ForceSightAbilityClass::`vftable'{for `RefCountClass'}\n140713a64        sub_14048c8d0(arg1)\n140713a6c        if ((arg2 & 1) != 0)\n140713a76        j_sub_1407864b8(arg1)\n140713a88        return arg1",
+  "fetched_at": "2026-04-26T17:27:49Z"
+}

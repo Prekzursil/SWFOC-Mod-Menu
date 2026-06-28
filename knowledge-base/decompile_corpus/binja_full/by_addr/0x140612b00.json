@@ -1,0 +1,7 @@
+{
+  "addr": "0x140612b00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140612b00        void* r9 = *(arg1 + 0x78)\n140612b07        void* result = *(r9 + 0x28)\n140612b13        if (*(*(result + 0x28) + 0x62) == 0)\n140612b19        int64_t* rdx_1 = *(arg1 + 0x30)\n140612b20        int32_t zmm4 = (zx.o(0)).d\n140612b23        void** i = *rdx_1\n140612b29        if (i != rdx_1)\n140612b30        void* rcx = i[3]\n140612b42        if (not(0f f>= *(rcx + 0x5c)) && not(*(rcx + 0x44) <= 0f))\n140612b49        float zmm0 = *(rcx + 0x5c) f* *(rcx + 0x44)\n140612b51        float zmm2\n140612b51        if (0f <= zmm0)\n140612b5d        zmm2 = _mm_min_ss(*(rcx + 0x44), zmm0)\n140612b53        zmm2 = (zx.o(0)).d\n140612b66        zmm4 = zmm4 f+ zmm2\n140612b73        float zmm1 = *(rcx + 0x4c) - zmm2\n140612b77        *(rcx + 0x44) = *(rcx + 0x44) - zmm2\n140612b7c        *(rcx + 0x4c) = zmm1\n140612b81        i = *i\n140612b88        do while (i != *(arg1 + 0x30))\n140612b8a        r9 = *(arg1 + 0x78)\n140612b9f        *(arg1 + 0x88) = *(*(*(r9 + 0x28) + 0x28) + 0x70) f- zmm4\n140612ba8        result = *(r9 + 0x28)\n140612bb0        *(*(result + 0x28) + 0x70) = zmm4\n140612bb5        *(arg1 + 0x8c) = 0\n140612bc0        *(arg1 + 0x84) = 1\n140612bc8        return result",
+  "fetched_at": "2026-04-26T17:23:18Z"
+}

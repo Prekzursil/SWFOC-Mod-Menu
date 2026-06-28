@@ -1,0 +1,7 @@
+{
+  "addr": "0x140716730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140716733        if (arg2 == 0)\n140716733        return \n14071674b        void* rbx_1 = *(arg2 + 0x100)\n140716758        if (rbx_1 == 0)\n140716758        return \n14071675e        int32_t rax = *(rbx_1 + 0x318)\n140716766        if (rax == 0)\n140716766        return \n14071676d        *(arg1 + 0x1dc)\n14071676d        int32_t temp1_1 = mods.dp.d(sx.q(rax), *(arg1 + 0x1dc))\n140716775        if (temp1_1 != 0)\n140716775        goto label_140716791\n14071677d        if (*(rbx_1 + 0x338) s>= temp1_1)\n140716782        sub_140716640(arg1, arg2)\n140716787        *(rbx_1 + 0x338) = 0xffffffff\n140716791        label_140716791:\n140716798        if (*(rbx_1 + 0x338) s>= 0)\n1407167a0        sub_140716850(arg1, arg2)\n1407167a5        int32_t rax_3 = *(rbx_1 + 0x31c)\n1407167ad        if (rax_3 s> 0)\n1407167d3        rax = rax_3 - 1\n1407167b5        sub_140716230(arg1, arg2)\n1407167c5        uint128_t zmm0_1\n1407167c5        zmm0_1.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f* arg1[0x45].d\n1407167cd        rax = int.d(zmm0_1.d)\n1407167d5        *(rbx_1 + 0x31c) = rax\n1407167db        *(rbx_1 + 0x318) -= 1\n1407167e8        if (*(rbx_1 + 0x318) s<= 0)\n1407167f9        (*(*arg1 + 0x78))(arg1, arg2, 3)\n14071680b        return ",
+  "fetched_at": "2026-04-26T17:27:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140208b10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_140208b10(void)\n\n{\n  uint uVar1;\n  int iVar2;\n  undefined8 *puVar3;\n  \n  if (DAT_140a14b78 == 0) {\n    FUN_140208bd0();\n  }\n  iVar2 = 0;\n  puVar3 = DAT_140a14b70;\n  if (0 < DAT_140a14b78) {\n    do {\n      if ((uint *)*puVar3 != (uint *)0x0) {\n        uVar1 = *(uint *)*puVar3;\n        if ((uVar1 & 0xff000000) == 0xa000000) {\nLAB_140208b73:\n          return *(undefined4 *)DAT_140a14b70[iVar2];\n        }\n        if ((uVar1 & 0xff000000) == 0xac000000) {\n          if ((uVar1 & 0xff0000) - 0x100000 < 0xf0001) goto LAB_140208b73;\n        }\n        else if ((uVar1 & 0xffff0000) == 0xc0a80000) goto LAB_140208b73;\n      }\n      iVar2 = iVar2 + 1;\n      puVar3 = puVar3 + 1;\n    } while (iVar2 < DAT_140a14b78);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:57:39Z"
+}

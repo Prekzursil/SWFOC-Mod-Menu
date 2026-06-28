@@ -1,0 +1,7 @@
+{
+  "addr": "0x140633a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140633a27        return \"TargetingBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:24:22Z"
+}

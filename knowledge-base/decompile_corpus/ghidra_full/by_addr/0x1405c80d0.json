@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c80d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* CollisionClass member function inherited by StoppedVsStoppedCollisionClass */\n\nvoid __thiscall CollisionClass::vfunction5_for_SignalListenerClass(CollisionClass *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x0001405c80d3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->_guard_check_icall)();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:57Z"
+}

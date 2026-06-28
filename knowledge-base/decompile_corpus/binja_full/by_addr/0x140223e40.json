@@ -1,0 +1,7 @@
+{
+  "addr": "0x140223e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140223e5f        int32_t rbx_1 = timeGetTime() - data_140a7bec0\n140223e65        int32_t result = sub_140226b30(arg1)\n140223e6c        while (result.b != 0)\n140223e7c        result = timeGetTime() - data_140a7bec0 - rbx_1\n140223e80        if (result u>= arg2)\n140223e80        break\n140223e87        Sleep(5)\n140223e90        result = sub_140226b30(arg1)\n140223ea8        return result",
+  "fetched_at": "2026-04-26T17:29:17Z"
+}

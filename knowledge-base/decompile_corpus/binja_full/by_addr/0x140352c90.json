@@ -1,0 +1,7 @@
+{
+  "addr": "0x140352c90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140352c96        *(arg1 + 0x7c4) = arg2\n140352ca1        if (arg2 != 0)\n140352ca3        sub_1403509e0(arg1)\n140352ca8        void* rax = arg1[0x10]\n140352caf        *(arg1 + 0x7d4) = 1\n140352cb9        int32_t zmm0_1\n140352cb9        if (rax == 0)\n140352cc5        zmm0_1 = (zx.o(0)).d\n140352cbb        zmm0_1 = *(rax + 0x39c)\n140352ccf        arg1[0xfa].d = zmm0_1\n140352ce1        if (&arg1[0xc9] != &arg1[0xc1])\n140352cec        int32_t* rdx = &arg1[0xc1]\n140352cef        if (arg1[0xc4] u>= 8)\n140352cf1        rdx = arg1[0xc1]\n140352cfd        return sub_1400228a0(&arg1[0xc9], rdx, arg1[0xc3]) __tailcall\n140352d0a        if (arg1[0xc3] == 0)\n140352d22        if (&arg1[0xc1] != &arg1[0xc9])\n140352d29        int32_t* rdx_2 = &arg1[0xc9]\n140352d2c        if (arg1[0xcc] u>= 8)\n140352d2e        rdx_2 = arg1[0xc9]\n140352d38        sub_1400228a0(&arg1[0xc1], rdx_2, arg1[0xcb])\n140352d43        void* r8_4\n140352d43        r8_4.b = 1\n140352d4c        (*(*arg1 + 0x148))(arg1, &arg1[0xc1], r8_4, 0)\n140352d5e        int64_t rdx_4 = *(arg1[0x13] + 0x30)\n140352d65        if (rdx_4 != 0)\n140352d6f        jump(rdx_4)\n140352d77        return ",
+  "fetched_at": "2026-04-26T17:10:17Z"
+}
