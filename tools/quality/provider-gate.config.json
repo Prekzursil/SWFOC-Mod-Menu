@@ -36,16 +36,6 @@
       ],
       "countJsonPath": "total"
     },
-    "deepscan": {
-      "method": "GET",
-      "url": "${DEEPSCAN_ZERO_BACKLOG_URL}",
-      "authScheme": "",
-      "tokenEnv": "",
-      "requiredEnv": [
-        "DEEPSCAN_ZERO_BACKLOG_URL"
-      ],
-      "countJsonPath": "data.lastUnresolvedIssueCount"
-    },
     "applitools": {
       "method": "GET",
       "url": "https://eyesapi.applitools.com/api/sessions/batches",
