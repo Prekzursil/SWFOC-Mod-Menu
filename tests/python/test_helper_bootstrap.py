@@ -20,7 +20,6 @@ SCRIPTS_DIR = str(REPO_ROOT / "scripts")
 
 MODULES = [
     "scripts/quality/check_codacy_zero.py",
-    "scripts/quality/check_deepscan_zero.py",
     "scripts/quality/check_sentry_zero.py",
     "scripts/quality/check_sonar_zero.py",
 ]

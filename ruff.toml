@@ -38,9 +38,8 @@ ignore = ["E501"]
 # E402 (module-level import not at top): these SaaS-zero check scripts insert the
 # repo's helper dir onto sys.path before importing security_helpers — a
 # deliberate bootstrap pattern. The scripts are slated for removal in the lean-
-# gate migration runbook (they back the deleted Sonar/Sentry/Codacy/DeepScan
+# gate migration runbook (they back the deleted Sonar/Sentry/Codacy
 # gates); ignoring E402 here avoids churning soon-to-be-deleted code.
 "scripts/quality/check_sentry_zero.py" = ["E402"]
 "scripts/quality/check_sonar_zero.py" = ["E402"]
 "scripts/quality/check_codacy_zero.py" = ["E402"]
-"scripts/quality/check_deepscan_zero.py" = ["E402"]

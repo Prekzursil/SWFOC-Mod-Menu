@@ -13,7 +13,6 @@ import pytest
 from conftest import load_script_module
 
 codacy = load_script_module("scripts/quality/check_codacy_zero.py", "check_codacy_zero_net")
-deepscan = load_script_module("scripts/quality/check_deepscan_zero.py", "check_deepscan_zero_net")
 sentry = load_script_module("scripts/quality/check_sentry_zero.py", "check_sentry_zero_net")
 sonar = load_script_module("scripts/quality/check_sonar_zero.py", "check_sonar_zero_net")
 required = load_script_module(
@@ -58,11 +57,6 @@ def test_codacy_request_json_post_with_data(monkeypatch) -> None:
     out = codacy._request_json("https://api.codacy.com/x", "tok", method="POST", data={"a": 1})
     assert out == {"ok": 1}
     assert captured[0].data is not None
-
-
-def test_deepscan_request_json(monkeypatch) -> None:
-    _patch_urlopen(monkeypatch, deepscan, _Resp(json.dumps({"count": 0}).encode()))
-    assert deepscan._request_json("https://api.deepscan.io/x", "tok") == {"count": 0}
 
 
 def test_sonar_request_json(monkeypatch) -> None:
