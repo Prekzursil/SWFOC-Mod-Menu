@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>SwfocTrainer.Benchmarks</RootNamespace>
+    <!--
+      Performance benchmark project per Ralph orchestrator perf-benchmarker spec.
+      The perf-benchmarker hat runs `dotnet run -c Release` against this
+      project, parses BenchmarkDotNet JSON output, and compares against
+      the perf-benchmarker baseline file. Regressions > 10% block the loop.
+
+      Scaffolded 2026-05-20; new benchmarks added by editor-polish iters
+      that introduce or refactor public hot-path API.
+
+      MUST be built in Release for meaningful measurements. Debug builds
+      have no JIT optimization and trip the BDN warmup detector.
+    -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SwfocTrainer.Core\SwfocTrainer.Core.csproj" />
+  </ItemGroup>
+
+</Project>

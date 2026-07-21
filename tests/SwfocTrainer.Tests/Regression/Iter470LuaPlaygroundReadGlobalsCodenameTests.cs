@@ -122,26 +122,98 @@ public sealed class Iter470LuaPlaygroundReadGlobalsCodenameTests
     }
 
     [Fact]
-    public void PresetMenu_Iter181WriteSideStaysAsCodename_NotRecategorised()
+    public void PresetMenu_Iter181WriteSideNotInReadCluster()
     {
-        // Defensive pin: the iter-181 SFXManager "Disable unit VO" preset is
-        // a WRITE/mutation wire (SFXManager.Allow_Unit_Reponse_VO = false),
-        // not a read. It MUST NOT be swept into the [read] cluster by an
-        // overzealous relabel pass. This pins the codename-as-prefix on the
-        // mutation entry so the iter-470 sweep does not accidentally widen
-        // its scope to mutations.
+        // iter-181 is a mutation wire (SFXManager.Allow_Unit_Reponse_VO =
+        // false); defensive pin against accidental absorption into [read]
+        // cluster. Future [write]/[mut] cluster can land in a later iter
+        // and update this pin accordingly. Tracking entry:
+        // knowledge-base/polish_backlog_2026-05-20.md::iter_181_write_mut
+        // (deferred until a [write]/[mut] semantic-prefix cluster lands —
+        // no current cluster to migrate into; see backlog entry for
+        // promotion criteria, per iter-474 6dbe73e LOW finding).
         //
-        // Acceptable future behaviour: a separate semantic prefix for
-        // mutations (e.g. [write] or [mut]) could land in a later iter with
-        // its own dedicated regression-guard test. Until then, [181] stays.
+        // 2026-05-20 (iter 471): inverted from `Contains("[181]")` to
+        // `NotStartWith("[read] " / "[disc] ")`. The old shape pinned an
+        // iter-388-violating [NNN] codename in the production label as the
+        // expected state, which the adversarial reviewer flagged: it inverts
+        // the regression-guard discipline ("fails on old broken form AND
+        // passes on new form") because the label is the broken form.
+        //
+        // 2026-05-20 (iter 472): strengthened per c083bc3a adversarial
+        // review (3 backlog findings — 2 MEDIUM + 1 LOW):
+        //   (a) `NotStartWith` slip-through: added positive `Contain("Disable")`
+        //       to catch sweeps that BOTH recluster AND rewrite the verb
+        //       (e.g. `[read] Unit VO state`).
+        //   (b) Preset lookup via full `Script ==` string couples to the
+        //       engine-typo `Reponse`. Switched to `Label.Contains("Reponse")`
+        //       — the typo IS the durable lookup signature, and the 3rd
+        //       `Contain("typo")` assertion independently pins it, so they
+        //       fall together with a coherent failure mode.
+        //
+        // 2026-05-20 (iter 473): added `NotMatchRegex` per 6dbe73e adversarial
+        // review (HIGH finding). The iter-472 docstring overclaimed that
+        // `Contain("Disable")` covered ALL prefix-variation slip-throughs —
+        // but the verb survives PREFIX-PREPEND relabels (`[read] Disable
+        // unit VO`, `[query] Disable VO`, `  [read] Disable VO`,
+        // `Disable VO [read]`), so those bypass every iter-472 assertion.
+        // The verb-only guard catches verb-REWRITING relabels (`[read] Unit
+        // VO state`), not prefix-prepend ones. Honest coverage matrix:
+        //   - `NotStartWith("[read] ")` / `NotStartWith("[disc] ")` —
+        //     trailing-space prefix forms (iter-471 shape).
+        //   - `NotMatchRegex(@"(?i)^\s*\[(read|disc|query|get)\]")` —
+        //     covers the 4 prefix-prepend slip-throughs the iter-472
+        //     docstring claimed but didn't implement: leading whitespace
+        //     (`  [read] ...`), no trailing space (`[read]Disable...`),
+        //     case variants (`[READ]...`), and 2 additional cluster
+        //     keywords (`[query]`, `[get]`).
+        //   - `Contain("Disable")` — verb-rewriting relabels only.
+        //   - `Contain("typo")` — paired with `Label.Contains("Reponse")`
+        //     lookup; coherent fail on engine-typo fix.
+        // The suffix-form `Disable VO [read]` remains unguarded (low-
+        // probability future state); filed in polish_backlog if it surfaces.
+        //
+        // 2026-05-20 (iter 474): hardened preset lookup per 6dbe73e MEDIUM
+        // finding. iter-472 swapped `Script == "return SWFOC_..."` for
+        // `Label.Contains("Reponse")` — but that lookup is now coupled to
+        // the `Contain("typo")` assertion (both correlate on the engine-typo
+        // `Reponse`). A future paired read-side wire e.g. `[disc] Read
+        // Allow_Unit_Reponse_VO state` would also match `Label.Contains
+        // ("Reponse")` and cause `SingleOrDefault` to throw with a less-
+        // actionable multi-match error. Conjunction adds `Script.Contains
+        // ("SFXAllowUnitReponseVoLua")` — the SWFOC_ wrapper symbol present
+        // verbatim in this preset's script. Note: the 6dbe73e reviewer's
+        // literal suggestion was `Script.Contains("Allow_Unit_Reponse_VO")`
+        // (the engine STATE field name) — but that string is only in the
+        // dispatcher's BridgeAssertion / comments, not in the preset's
+        // script body. Using the wrapper symbol (the closest equivalent
+        // that's actually present in `Script`) preserves the reviewer's
+        // intent: survive label-typo-fix (wrapper still matches), survive
+        // script-arg-rewrite that keeps the wrapper (`('true')`/`('1')`
+        // etc.), AND disambiguate from a hypothetical paired read-side
+        // preset that returns the state via a DIFFERENT Lua surface (e.g.
+        // `Find_Object_Type` + `SFXManager.Allow_Unit_Reponse_VO` direct
+        // field read, no SWFOC_ wrapper involved).
         var (sim, vm) = CreateVm();
         using (sim)
         {
             var preset = vm.Iter100to113Presets.SingleOrDefault(
-                p => p.Script == "return SWFOC_SFXAllowUnitReponseVoLua('false')");
-            preset.Should().NotBeNull("[181] Disable unit VO preset survives iter-470 sweep");
-            preset!.Label.Should().Contain("[181]",
-                "the iter-181 mutation wire keeps its [NNN] codename — iter-470 only touched the Read-verb entries");
+                p => p.Label.Contains("Reponse")
+                    && p.Script.Contains("SFXAllowUnitReponseVoLua"));
+            preset.Should().NotBeNull("the iter-181 mutation preset survives iter-470 sweep");
+            preset!.Label.Should().NotStartWith("[read] ",
+                "iter-181 mutation wire is not a read; defensive pin against accidental [read] cluster sweep")
+                .And.NotStartWith("[disc] ",
+                "iter-181 mutation wire is not discovery either; defensive pin against accidental [disc] cluster sweep");
+            preset.Label.Should().NotMatchRegex(@"(?i)^\s*\[(read|disc|query|get)\]",
+                "iter-473: regex guard covers prefix-prepend slip-throughs that NotStartWith and " +
+                "Contain('Disable') do not catch — leading whitespace `  [read] Disable VO`, " +
+                "no-space `[read]Disable VO`, case variants `[READ] ...`, and the 2 additional " +
+                "cluster keywords [query]/[get] enumerated in the iter-472 docstring");
+            preset.Label.Should().Contain("Disable",
+                "iter-472 verb-rewriting guard: 'Disable' is the mutation-describing signature. " +
+                "Catches relabels that REWRITE the verb (e.g. `[read] Unit VO state`); " +
+                "prefix-prepend variants that keep the verb are caught by the NotMatchRegex above");
             preset.Label.Should().Contain("typo",
                 "the iter-181 mutation wire still flags the engine typo 'Reponse'");
         }

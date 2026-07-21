@@ -204,7 +204,6 @@ public sealed class CapabilityCatalogReverseOrphanTests
         // helpers via interpolated $"return SWFOC_X(...)" form — regex matches.
         "SWFOC_CombinedGodOHK",        // composite — Combat tab uses individual toggles
         "SWFOC_DiagGameTick",          // tick counter probe — diagnostics tab doesn't fire it
-        "SWFOC_EnumerateUnits",        // tactical-unit enumerator — Tactical Units tab uses ListTacticalUnits instead
         "SWFOC_GetAiBrain",            // read-only AI-brain probe — VM doesn't surface it yet
         "SWFOC_FreezeAI",              // legacy Phase-2 AI-freeze helper — UI uses LIVE SWFOC_SuspendAiLua instead
         "SWFOC_SetHeroRespawnTimer",   // per-hero timer still Phase-2 — UI uses LIVE global SWFOC_SetHeroRespawn instead
@@ -216,7 +215,11 @@ public sealed class CapabilityCatalogReverseOrphanTests
         "SWFOC_GetPlanetTechAndBuildings", // iter 326 DEPRECATED ORPHAN — superseded by iter-296 SWFOC_GetPlanets (galactic-mode planet enumeration with name;faction;tech CSV); buildings genuinely deferred per iter-326 audit
         "SWFOC_GetSelectedUnits",      // plural variant of GetSelectedUnit
         "SWFOC_GetUnitShield",         // iter 131 LIVE pair-flip with iter-129 SetUnitShield writer (FrontShield_Read @ 0x3963C0); regex-invisible because used via service-layer wrapper
-        "SWFOC_ListFactions",          // editor derives faction list from GetAllPlayers
+        // iter 467 dropped: SWFOC_EnumerateUnits + SWFOC_ListFactions now wired in
+        // LuaPlaygroundTabViewModel.cs Iter100to113Presets via literal
+        // `return SWFOC_X(...)` form (LuaPlaygroundTabViewModel.cs:461 + :463 — the
+        // iter-467 "[disc] List factions" + "[disc] Enumerate Rebel-owned units"
+        // discovery+diagnostics preset group). Regex-visible from iter-467 forward.
         // iter 239 dropped: SWFOC_GetCameraPos now wired in BridgeCameraDebugDispatcher
         // via `return SWFOC_GetCameraPos()` literal (regex-visible). Camera & Debug tab
         // UX surfaces it via the new "Read camera pos (LIVE)" button.

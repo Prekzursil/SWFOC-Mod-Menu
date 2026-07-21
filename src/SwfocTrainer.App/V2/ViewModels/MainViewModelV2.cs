@@ -115,6 +115,13 @@ public sealed class MainViewModelV2 : ObservableBase, IDisposable
         // with per-save health cards + corruption signals + mock galaxy
         // mini-map placeholder (real planet rendering needs 0x3EA RE).
         GalaxyVisualizer = new GalaxyVisualizerTabViewModel();
+        // 2026-05-22 (iter-561, savegame-editor spec follow-up): Savegame Editor
+        // tab — the editor-polish wiring step the savegame hat deferred at
+        // iter-289b/289c. The view-model + UserControl were built and tested in
+        // SwfocTrainer.Savegame scope; this registration makes the tab reachable
+        // in the savegame-mode tab strip. Parameterless ctor — pure local-file
+        // work, no bridge dependency, so no composition-root signature change.
+        SavegameEditor = new SavegameEditorTabViewModel();
 
         // 2026-05-07 (iter 312, Thread D arc post-finale 2/2): live-update
         // the Spawning tab's resolver when operator changes Settings.IconsRoot.
@@ -446,6 +453,16 @@ public sealed class MainViewModelV2 : ObservableBase, IDisposable
     /// mini-map placeholder.
     /// </summary>
     public GalaxyVisualizerTabViewModel GalaxyVisualizer { get; }
+
+    /// <summary>
+    /// 2026-05-22 (iter-561, savegame-editor spec follow-up): operator surface
+    /// over the <c>SwfocTrainer.Savegame</c> engine — load a
+    /// <c>.PetroglyphFoC64Save</c> file, walk its chunk tree, edit / delete
+    /// micro-chunks, validate and re-anchor the embedded mod hash, write back.
+    /// LIVE; offline; no bridge dependency. The host <c>TabItem</c> for this
+    /// view-model lives in the savegame-mode tab strip in <c>MainWindowV2.xaml</c>.
+    /// </summary>
+    public SavegameEditorTabViewModel SavegameEditor { get; }
 
     /// <summary>
     /// 2026-05-07 (iter 469, Mode switcher): operator-visible mode flag.
