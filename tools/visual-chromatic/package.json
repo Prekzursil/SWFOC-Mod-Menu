@@ -6,12 +6,12 @@
     "e2e:chromatic": "playwright test --config ./playwright.chromatic.config.js ./e2e/visual-pack.pw.js"
   },
   "devDependencies": {
-    "@chromatic-com/playwright": "^0.12.3",
-    "@playwright/test": "1.58.2",
-    "chromatic": "^16.0.0"
+    "@chromatic-com/playwright": "^0.14.10",
+    "@playwright/test": "1.61.1",
+    "chromatic": "^16.10.1"
   },
   "overrides": {
-    "brace-expansion": ">=5.0.8 <6",
+    "esbuild": ">=0.28.1 <0.29",
     "fast-uri": ">=4.1.1 <5",
     "postcss": ">=8.5.18 <9",
     "qs": ">=6.15.2",
