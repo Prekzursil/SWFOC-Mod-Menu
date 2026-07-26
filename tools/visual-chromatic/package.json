@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "@chromatic-com/playwright": "^0.14.10",
-    "@playwright/test": "1.61.1",
+    "@playwright/test": "1.62.0",
     "chromatic": "^16.10.1"
   },
   "overrides": {
