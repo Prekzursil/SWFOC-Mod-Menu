@@ -106,10 +106,10 @@ def deploy_dll() -> bool:
 def launch_game() -> bool:
     """Launch the game via Steam."""
     print(f"[*] Launching game via Steam (AppID {STEAM_APP_ID})...")
-    subprocess.Popen(
-        ["cmd", "/c", f"start steam://rungameid/{STEAM_APP_ID}"],
-        shell=True
-    )
+    # `start` hands the steam:// URL to its registered handler. cmd is named
+    # explicitly, so no shell=True is needed; the empty argument is the
+    # window title `start` expects before its target.
+    subprocess.Popen(["cmd", "/c", "start", "", f"steam://rungameid/{STEAM_APP_ID}"])
     return True
 
 
