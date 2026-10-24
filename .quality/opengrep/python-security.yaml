@@ -1,0 +1,119 @@
+# Curated Python security rules for the lean gate-4 (opengrep / Semgrep CE).
+# Covers ALL Python in this repo (scripts/, tools/, bridge/, swfoc_toolkit/,
+# swfoc_lua_bridge/, tests/python/) -- deliberately WIDER than ruff.toml's
+# extend-exclude, because a security lane should not inherit a style lane's
+# scope. See README.md.
+rules:
+  - id: python-exec-use
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Use of exec() detected. Executing dynamically-built code is dangerous and
+      can lead to arbitrary code execution. Use explicit dispatch.
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code"
+    patterns:
+      - pattern: exec(...)
+
+  - id: python-eval-use
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Use of eval() detected. eval on untrusted input enables code injection.
+      Use ast.literal_eval or an explicit parser instead.
+    metadata:
+      category: security
+      cwe: "CWE-95"
+    patterns:
+      - pattern: eval(...)
+
+  - id: python-subprocess-shell-true
+    languages: [python]
+    severity: ERROR
+    message: >-
+      subprocess called with shell=True. If any argument is attacker-influenced
+      this allows command injection. Pass an argument list and shell=False.
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+    patterns:
+      - pattern: subprocess.$F(..., shell=True, ...)
+
+  - id: python-os-system
+    languages: [python]
+    severity: ERROR
+    message: >-
+      os.system()/os.popen() invokes a shell and is prone to command injection.
+      Use subprocess with an argument list instead.
+    metadata:
+      category: security
+      cwe: "CWE-78"
+    patterns:
+      - pattern-either:
+          - pattern: os.system(...)
+          - pattern: os.popen(...)
+
+  - id: python-yaml-unsafe-load
+    languages: [python]
+    severity: ERROR
+    message: >-
+      yaml.load without SafeLoader (or yaml.unsafe_load) can construct arbitrary
+      Python objects. Use yaml.safe_load().
+    metadata:
+      category: security
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+    patterns:
+      - pattern-either:
+          - pattern: yaml.load($X)
+          - pattern: yaml.unsafe_load(...)
+          - pattern: yaml.load(..., Loader=yaml.Loader, ...)
+          - pattern: yaml.load(..., Loader=yaml.UnsafeLoader, ...)
+
+  - id: python-pickle-loads
+    languages: [python]
+    severity: ERROR
+    message: >-
+      pickle/marshal deserialization of untrusted data enables arbitrary code
+      execution. Use a safe format (JSON) for anything crossing a trust boundary.
+    metadata:
+      category: security
+      cwe: "CWE-502"
+    patterns:
+      - pattern-either:
+          - pattern: pickle.loads(...)
+          - pattern: pickle.load(...)
+          - pattern: cPickle.loads(...)
+          - pattern: marshal.loads(...)
+
+  - id: python-weak-hash-md5-sha1
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Weak hash algorithm (md5/sha1) used. For security contexts use sha256+.
+      If this is non-security content hashing, pass usedforsecurity=False to
+      make the intent explicit.
+    metadata:
+      category: security
+      cwe: "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.md5($X)
+          - pattern: hashlib.sha1($X)
+          - pattern: hashlib.new("md5", ...)
+          - pattern: hashlib.new("sha1", ...)
+
+  - id: python-tls-verification-disabled
+    languages: [python]
+    severity: ERROR
+    message: >-
+      TLS certificate verification disabled. This permits man-in-the-middle
+      attacks. Keep verification enabled.
+    metadata:
+      category: security
+      cwe: "CWE-295: Improper Certificate Validation"
+    patterns:
+      - pattern-either:
+          - pattern: requests.$F(..., verify=False, ...)
+          - pattern: ssl._create_unverified_context(...)
+          - pattern: ssl._create_default_https_context = ssl._create_unverified_context

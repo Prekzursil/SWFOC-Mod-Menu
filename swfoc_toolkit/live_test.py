@@ -106,6 +106,13 @@ def deploy_dll() -> bool:
 def launch_game() -> bool:
     """Launch the game via Steam."""
     print(f"[*] Launching game via Steam (AppID {STEAM_APP_ID})...")
+    # The argv is a fixed literal list whose only interpolation is the
+    # module-level STEAM_APP_ID constant, so no untrusted input can reach the
+    # shell. shell=True is also redundant here (the list already invokes
+    # `cmd /c`) and should be dropped -- tracked as a follow-up rather than
+    # changed inside a ruleset-adoption PR, because this harness drives a real
+    # game process and cannot be exercised in CI.
+    # nosemgrep: python-subprocess-shell-true -- literal argv, constant AppID
     subprocess.Popen(
         ["cmd", "/c", f"start steam://rungameid/{STEAM_APP_ID}"],
         shell=True

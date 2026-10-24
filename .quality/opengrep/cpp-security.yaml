@@ -1,0 +1,79 @@
+# Curated C / C++ security rules for the lean gate-4 (opengrep / Semgrep CE).
+# Covers this repo's FIRST-PARTY native code: swfoc_lua_bridge/ (the injected
+# Lua bridge DLL), swfoc_overlay/ (the ImGui overlay) and native/.
+#
+# VENDORED third-party trees are excluded per-rule and are named explicitly:
+#   swfoc_overlay/imgui/**        Dear ImGui (MIT, (c) 2014-2024 Omar Cornut)
+#   swfoc_lua_bridge/minhook/**   MinHook  ((c) 2009-2017 Tsuda Kageyu)
+# Both carry their upstream LICENSE.txt in-tree. This mirrors the DevExtreme
+# ruleset's `vendor/` exclusion; it is not used to hide a first-party hit.
+rules:
+  - id: cpp-unsafe-unbounded-string-copy
+    languages: [c, cpp]
+    severity: ERROR
+    message: >-
+      Unbounded string operation with a non-literal source (strcpy/strcat/
+      sprintf/gets/scanf %s). The destination size is not consulted, so a longer
+      source overflows it. Use snprintf / strncpy+explicit NUL / std::string.
+    metadata:
+      category: security
+      cwe: "CWE-120: Buffer Copy without Checking Size of Input"
+    paths:
+      exclude:
+        - "swfoc_overlay/imgui/**"
+        - "swfoc_lua_bridge/minhook/**"
+    patterns:
+      - pattern-either:
+          - pattern: strcpy($DST, $SRC)
+          - pattern: std::strcpy($DST, $SRC)
+          - pattern: strcat($DST, $SRC)
+          - pattern: std::strcat($DST, $SRC)
+          - pattern: sprintf($DST, $SRC, ...)
+          - pattern: gets($DST)
+      - pattern-not: strcpy($DST, "...")
+      - pattern-not: std::strcpy($DST, "...")
+      - pattern-not: strcat($DST, "...")
+      - pattern-not: std::strcat($DST, "...")
+
+  - id: cpp-shell-command-execution
+    languages: [c, cpp]
+    severity: ERROR
+    message: >-
+      system()/popen()/_wsystem() spawns a shell. In an injected in-process DLL
+      this is both a command-injection sink and a red flag for AV. Use
+      CreateProcess with an explicit argument vector.
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+    paths:
+      exclude:
+        - "swfoc_overlay/imgui/**"
+        - "swfoc_lua_bridge/minhook/**"
+    patterns:
+      - pattern-either:
+          - pattern: system($CMD)
+          - pattern: std::system($CMD)
+          - pattern: popen($CMD, ...)
+          - pattern: _popen($CMD, ...)
+          - pattern: _wsystem($CMD)
+
+  - id: cpp-insecure-temp-file
+    languages: [c, cpp]
+    severity: ERROR
+    message: >-
+      tmpnam/mktemp/tempnam return a name, not an open handle, so the file can
+      be replaced between the name being chosen and the open (TOCTOU symlink
+      attack). Use mkstemp / GetTempFileName + exclusive create.
+    metadata:
+      category: security
+      cwe: "CWE-377: Insecure Temporary File"
+    paths:
+      exclude:
+        - "swfoc_overlay/imgui/**"
+        - "swfoc_lua_bridge/minhook/**"
+    patterns:
+      - pattern-either:
+          - pattern: tmpnam(...)
+          - pattern: std::tmpnam(...)
+          - pattern: mktemp(...)
+          - pattern: tempnam(...)

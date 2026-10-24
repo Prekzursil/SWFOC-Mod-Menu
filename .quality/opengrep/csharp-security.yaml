@@ -1,0 +1,118 @@
+# Curated C# security rules for the lean gate-4 (opengrep / Semgrep CE).
+# Scoped to this repo's .NET surface: src/ (Runtime/Catalog/UI) + tests/.
+# See README.md.
+rules:
+  - id: csharp-binaryformatter-deserialize
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      BinaryFormatter/SoapFormatter/NetDataContractSerializer deserialization is
+      insecure by design and cannot be made safe (it is obsolete and removed in
+      .NET 9). Use System.Text.Json or a contract-bound serializer.
+    metadata:
+      category: security
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+    patterns:
+      - pattern-either:
+          - pattern: new BinaryFormatter(...)
+          - pattern: new SoapFormatter(...)
+          - pattern: new NetDataContractSerializer(...)
+          - pattern: new LosFormatter(...)
+
+  - id: csharp-json-typenamehandling
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      Newtonsoft TypeNameHandling other than None lets the payload choose the
+      CLR type to instantiate, which is a remote-code-execution gadget chain.
+      Use TypeNameHandling.None (the default) or a SerializationBinder.
+    metadata:
+      category: security
+      cwe: "CWE-502"
+    patterns:
+      - pattern-either:
+          - pattern: TypeNameHandling.All
+          - pattern: TypeNameHandling.Auto
+          - pattern: TypeNameHandling.Objects
+          - pattern: TypeNameHandling.Arrays
+
+  - id: csharp-cert-validation-always-true
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      The TLS certificate validation callback unconditionally returns true, so
+      every certificate is accepted (MITM). Remove the override.
+    metadata:
+      category: security
+      cwe: "CWE-295: Improper Certificate Validation"
+    patterns:
+      - pattern-either:
+          - pattern: $X.ServerCertificateValidationCallback = (...) => true;
+          - pattern: $X.ServerCertificateCustomValidationCallback = (...) => true;
+          - pattern: ServicePointManager.ServerCertificateValidationCallback = (...) => true;
+          - pattern: $X.RemoteCertificateValidationCallback = (...) => true;
+
+  - id: csharp-weak-hash-md5-sha1
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      Weak hash algorithm (MD5/SHA-1). For any security purpose use SHA-256+.
+      For non-security content hashing prefer a non-crypto hash so intent is
+      explicit.
+    metadata:
+      category: security
+      cwe: "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+    patterns:
+      - pattern-either:
+          - pattern: MD5.Create(...)
+          - pattern: SHA1.Create(...)
+          - pattern: new MD5CryptoServiceProvider(...)
+          - pattern: new SHA1CryptoServiceProvider(...)
+          - pattern: new MD5Managed(...)
+          - pattern: new SHA1Managed(...)
+          - pattern: HashAlgorithm.Create("MD5")
+          - pattern: HashAlgorithm.Create("SHA1")
+
+  - id: csharp-process-start-dynamic-command
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      Process.Start called with a command string built at runtime
+      (interpolation / concatenation / string.Format). Pass a ProcessStartInfo
+      with a literal FileName and an explicit ArgumentList instead.
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+    # Written as a flat pattern-either on purpose. The equivalent
+    # `pattern: Process.Start($CMD, ...)` + `metavariable-pattern` form TIMED OUT
+    # (opengrep default 5s/rule/file) on src/SwfocTrainer.Runtime/Services/
+    # RuntimeAdapter.cs (6187 lines / 230 KB), which opengrep reports as a
+    # *warning* while still exiting 0 -- i.e. the rule silently stopped covering
+    # that file. Keep this shape cheap.
+    patterns:
+      - pattern-either:
+          - pattern: Process.Start($A + $B, ...)
+          - pattern: Process.Start(string.Format(...), ...)
+          - pattern: Process.Start(String.Format(...), ...)
+          - pattern: Process.Start($"...", ...)
+
+  - id: csharp-assembly-load-dynamic
+    languages: [csharp]
+    severity: ERROR
+    message: >-
+      Assembly loaded from a runtime-computed path/byte array. Anything that can
+      write that path gains code execution in this process. Load only from a
+      fixed, verified location.
+    metadata:
+      category: security
+      cwe: "CWE-829: Inclusion of Functionality from Untrusted Control Sphere"
+    patterns:
+      - pattern-either:
+          - pattern: Assembly.Load($X)
+          - pattern: Assembly.LoadFrom($X)
+          - pattern: Assembly.LoadFile($X)
+          - pattern: Assembly.UnsafeLoadFrom($X)
+      - pattern-not: Assembly.Load("...")
+      - pattern-not: Assembly.LoadFrom("...")
+      - pattern-not: Assembly.LoadFile("...")
+      - pattern-not: Assembly.UnsafeLoadFrom("...")
