@@ -45,6 +45,35 @@ dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj `
 
 Optional live tests require a running target process.
 
+Local verification of the lean gate (runs the QZP preflight at the exact
+commit `.github/workflows/quality.yml` pins):
+
+```bash
+bash scripts/verify
+```
+
+## Measured Coverage Scope (QZP lean gate 3)
+
+The lean gate enforces STRICT 100% line AND branch coverage on each declared
+scope. The declared scopes and documented omissions are:
+
+- **Python** (`src/`, `scripts/`, tooling) — measured by the gate's pytest
+  lane at 100% line+branch.
+- **C++ `swfoc_overlay` header units** — `scripts/coverage-gate.sh` compiles
+  every `swfoc_overlay/*_test.cpp` with `g++ --coverage`, runs it, and
+  asserts 100% line+branch over the `swfoc_overlay/*.h` headers those tests
+  exercise (`coverage/cpp/`).
+- **Declared out of the Linux-measured scope** (Win32/MinGW-only code that
+  cannot link on the ubuntu runner — reasoned, never a silent pass):
+  `swfoc_lua_bridge/` (needs `<windows.h>` + MinHook +
+  `x86_64-w64-mingw32-g++`; built and run on Windows by its own `.bat`
+  scripts) and the `swfoc_overlay` DLL translation units that need
+  ImGui/D3D9/Win32 (`dllmain.cpp`, `overlay.cpp`, `hud_state.cpp`,
+  `overlay_action_worker.cpp`; built by `swfoc_overlay/build.bat`). Their
+  logic lives in the header units measured above.
+- **JS/TS** (`tools/visual-chromatic`) — no test files by design; the gate
+  skips it as no-test-surface.
+
 ## Pull Request Requirements
 
 Each PR should include:
