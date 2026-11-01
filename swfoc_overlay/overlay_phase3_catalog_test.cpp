@@ -224,6 +224,14 @@ int main()
         BuildChangeUnitOwnerCommand("Find_First_Object(\"Empire_AT_AT\")",
                                     "REBEL"));
 
+
+    // Gate edge coverage: the defensive default of an out-of-range
+    // enumerator (every real enumerator is pinned above).
+    ExpectEqStr("phase3 badge: unknown widget status falls back",
+                swfoc_overlay::WidgetStatusBadge(
+                    static_cast<swfoc_overlay::WidgetStatus>(99)),
+                "[?]");
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

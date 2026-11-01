@@ -22,6 +22,7 @@
 #include "overlay_actions.h"
 
 #include <cstdio>
+#include <limits>
 #include <string>
 
 namespace
@@ -195,6 +196,19 @@ int main()
         BuildSpawnUnitCommand("REBEL", "Bad\nName", 0, 0, 0);
     ExpectNotContains("boundary: no raw newline in spawn command",
                       garbled, std::string(1, '\n'));
+
+
+    // Gate edge coverage: FormatCoord's trim loops, dot-free literal and
+    // "-0" normalisation, exercised directly (the spawn-command tests only
+    // reach it indirectly).
+    ExpectEq("FormatCoord whole number trims to 2",
+             swfoc_overlay::FormatCoord(2.0f), "2");
+    ExpectEq("FormatCoord fractional keeps 1.5",
+             swfoc_overlay::FormatCoord(1.5f), "1.5");
+    ExpectEq("FormatCoord negative zero normalises to 0",
+             swfoc_overlay::FormatCoord(-0.0004f), "0");
+    ExpectEq("FormatCoord infinity literal has no dot",
+             swfoc_overlay::FormatCoord(std::numeric_limits<float>::infinity()), "inf");
 
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;

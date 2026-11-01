@@ -76,8 +76,13 @@ namespace swfoc_overlay
         std::string s(buf);
         if (s.find('.') != std::string::npos)
         {
+            // GCOV_EXCL_START — the !s.empty() guards are unreachable: a
+            // "%.3f" literal inside this block always retains its '.', so
+            // trimming halts at the dot before the string can empty. The
+            // trim behavior is pinned by the FormatCoord tests.
             while (!s.empty() && s.back() == '0') s.pop_back();
             if (!s.empty() && s.back() == '.') s.pop_back();
+            // GCOV_EXCL_STOP
         }
         if (s == "-0") s = "0";
         return s;

@@ -487,6 +487,27 @@ int main()
                    !PickUnitInSet(click, snap).hit);
     }
 
+
+    // Gate edge coverage: defensive count guards — append to a full set,
+    // append with a corrupt negative count, and find through a set whose
+    // count exceeds capacity (walk is clamped, never reads past the array).
+    {
+        const swfoc_overlay::Aabb unitBox{ swfoc_overlay::Vec3{ 0, 0, 0 },
+                                           swfoc_overlay::Vec3{ 1, 1, 1 } };
+        swfoc_overlay::UnitAabbSet full{};
+        full.count = swfoc_overlay::kMaxRaycastUnits;
+        ExpectInt("aabb: append to a full set is rejected",
+                  swfoc_overlay::AppendUnitAabb(full, 7u, unitBox) ? 1 : 0, 0);
+        swfoc_overlay::UnitAabbSet negative{};
+        negative.count = -1;
+        ExpectInt("aabb: append with a negative count is rejected",
+                  swfoc_overlay::AppendUnitAabb(negative, 7u, unitBox) ? 1 : 0, 0);
+        swfoc_overlay::UnitAabbSet corrupt{};
+        corrupt.count = swfoc_overlay::kMaxRaycastUnits + 1;
+        ExpectInt("aabb: find through a corrupt count finds nothing",
+                  swfoc_overlay::FindUnitAabb(corrupt, 12345u) == nullptr ? 0 : 1, 0);
+    }
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

@@ -303,6 +303,14 @@ int main()
                      st, SpawnGateStatus::Allowed);
     }
 
+
+    // Gate edge coverage: the defensive default of an out-of-range
+    // enumerator (every real enumerator is pinned above).
+    ExpectStrEq("spawn gate badge: unknown status falls back",
+                swfoc_overlay::SpawnGateBadgeText(
+                    static_cast<swfoc_overlay::SpawnGateStatus>(99)),
+                "Unknown local player");
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

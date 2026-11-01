@@ -412,6 +412,18 @@ int main()
                        f8.label, "F8");
     }
 
+
+    // Gate edge coverage: Clear() with an out-of-range slot must be a no-op.
+    {
+        swfoc_overlay::CameraBookmarks bm;
+        bm.Save(1, 10.0f, 20.0f, 30.0f);
+        bm.Clear(999);
+        ExpectTrue("bookmarks: out-of-range Clear leaves the slot set",
+                   bm.IsSet(1));
+        bm.Clear(1);
+        ExpectTrue("bookmarks: in-range Clear frees the slot", !bm.IsSet(1));
+    }
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

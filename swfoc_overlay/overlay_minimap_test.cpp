@@ -372,6 +372,26 @@ int main()
                    Contains(cmd, "Create_Position(2000, -2000, 0)"));
     }
 
+
+    // Gate edge coverage: the onMap conjunction — a point failing exactly
+    // one bound (y beyond the extent while x is inside, then the mirror).
+    ExpectTrue("minimap: y beyond extent is off-map",
+               !swfoc_overlay::WorldToMinimap(0.0f, 99999.0f,
+                                              swfoc_overlay::kMinimapSizePx,
+                                              swfoc_overlay::kMinimapHalfExtent).onMap);
+    ExpectTrue("minimap: x beyond extent is off-map",
+               !swfoc_overlay::WorldToMinimap(-99999.0f, 0.0f,
+                                              swfoc_overlay::kMinimapSizePx,
+                                              swfoc_overlay::kMinimapHalfExtent).onMap);
+    ExpectTrue("minimap: x beyond the right bound is off-map",
+               !swfoc_overlay::WorldToMinimap(99999.0f, 0.0f,
+                                              swfoc_overlay::kMinimapSizePx,
+                                              swfoc_overlay::kMinimapHalfExtent).onMap);
+    ExpectTrue("minimap: y beyond the top bound is off-map",
+               !swfoc_overlay::WorldToMinimap(0.0f, -99999.0f,
+                                              swfoc_overlay::kMinimapSizePx,
+                                              swfoc_overlay::kMinimapHalfExtent).onMap);
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }
