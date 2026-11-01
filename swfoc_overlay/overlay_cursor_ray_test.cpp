@@ -694,6 +694,23 @@ int main()
                       back.sy, kVh * 0.5f, 1.0f);
     }
 
+
+    // Gate edge coverage: the unprojected-point-at-infinity guard. P is the
+    // self-inverse permutation swapping the x and w axes (P * P = I), so
+    // invVP = P and the homogeneous w of both unprojected points is ndc.x —
+    // exactly 0 at the screen centre, taking the w == 0 early return.
+    {
+        swfoc_overlay::Mat4 P{};
+        P.m[3]  = 1.0f;  // row 0 = (0,0,0,1)
+        P.m[5]  = 1.0f;  // row 1 = (0,1,0,0)
+        P.m[10] = 1.0f;  // row 2 = (0,0,1,0)
+        P.m[12] = 1.0f;  // row 3 = (1,0,0,0)
+        const swfoc_overlay::WorldRay atInfinity =
+            swfoc_overlay::CursorRay(kVw * 0.5f, kVh * 0.5f, kVw, kVh, P);
+        ExpectTrue("cursor ray: w == 0 point at infinity is invalid",
+                   !atInfinity.valid);
+    }
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

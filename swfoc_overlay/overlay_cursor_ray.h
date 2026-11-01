@@ -395,10 +395,15 @@ namespace swfoc_overlay
                          farH.z / farH.w };
 
         const Vec3 dir = Vec3Sub(farW, nearW);
+        // GCOV_EXCL_START — unreachable through an invertible viewProj: near
+        // and far differ by the inverse's z-column, so as projective points
+        // they are always distinct and dir cannot be exactly zero. Kept as a
+        // NaN/rounding defense for corrupt matrices.
         if (Vec3Length(dir) <= 0.0f)
         {
             return ray;  // near and far coincide — no ray
         }
+        // GCOV_EXCL_STOP
 
         ray.origin    = nearW;
         ray.direction = Vec3Normalize(dir);

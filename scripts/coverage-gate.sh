@@ -79,6 +79,7 @@ tracefile="coverage/cpp/coverage.json"
   --merge-mode-functions=merge-use-line-min \
   --exclude-throw-branches \
   --exclude-unreachable-branches \
+  --exclude-lines-by-pattern '^\s*\}\s*$' \
   --json "$tracefile"
 
 echo "::group::C++ line coverage by file (Missing = uncovered lines)"

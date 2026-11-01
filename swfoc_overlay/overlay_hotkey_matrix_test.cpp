@@ -513,6 +513,18 @@ int main()
                     OverlayInterceptsKey(VkForFKey(3), overlayVisible));
     }
 
+
+    // Gate edge coverage: the defensive default of an out-of-range
+    // enumerator (every real enumerator is pinned above).
+    ExpectStrEq("hotkey badge: unknown status falls back",
+                swfoc_overlay::HotkeyStatusBadge(
+                    static_cast<swfoc_overlay::HotkeyStatus>(99)),
+                "[?]");
+    ExpectStrEq("hotkey disposition: unknown falls back",
+                swfoc_overlay::HotkeyDispositionText(
+                    static_cast<swfoc_overlay::HotkeyDisposition>(99)),
+                "?");
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

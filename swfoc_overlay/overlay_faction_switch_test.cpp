@@ -488,6 +488,19 @@ int main()
                    !prompt.IsArmed());
     }
 
+
+    // Gate edge coverage: BuildFactionSwitchBatch's defensive early returns
+    // (out-of-range slots and from == to must yield an empty batch).
+    {
+        const std::vector<swfoc_overlay::UnitInfo> none;
+        ExpectSize("faction batch: out-of-range fromSlot yields empty",
+                   swfoc_overlay::BuildFactionSwitchBatch(none, -1, 1).size(), 0u);
+        ExpectSize("faction batch: out-of-range toSlot yields empty",
+                   swfoc_overlay::BuildFactionSwitchBatch(none, 0, 99).size(), 0u);
+        ExpectSize("faction batch: fromSlot == toSlot yields empty",
+                   swfoc_overlay::BuildFactionSwitchBatch(none, 1, 1).size(), 0u);
+    }
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

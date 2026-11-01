@@ -601,6 +601,22 @@ int main()
                    !gone.visible);
     }
 
+
+    // Gate edge coverage: null buffer and non-positive capacity are no-ops;
+    // max <= 0 renders "n/a".
+    {
+        char buf[64];
+        swfoc_overlay::FormatHealthLabel(nullptr, 16, 100.0f, 200.0f);
+        swfoc_overlay::FormatHealthLabel(buf, 0, 100.0f, 200.0f);
+        swfoc_overlay::FormatHealthLabel(buf, static_cast<int>(sizeof(buf)),
+                                         100.0f, -1.0f);
+        ExpectStr("health label: max <= 0 reads n/a", buf, "n/a");
+        swfoc_overlay::FormatPositionLabel(nullptr, 16,
+                                           swfoc_overlay::Vec3{ 1, 2, 3 });
+        swfoc_overlay::FormatPositionLabel(buf, 0,
+                                           swfoc_overlay::Vec3{ 1, 2, 3 });
+    }
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }
