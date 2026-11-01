@@ -383,6 +383,14 @@ int main()
                !swfoc_overlay::WorldToMinimap(-99999.0f, 0.0f,
                                               swfoc_overlay::kMinimapSizePx,
                                               swfoc_overlay::kMinimapHalfExtent).onMap);
+    ExpectTrue("minimap: x beyond the right bound is off-map",
+               !swfoc_overlay::WorldToMinimap(99999.0f, 0.0f,
+                                              swfoc_overlay::kMinimapSizePx,
+                                              swfoc_overlay::kMinimapHalfExtent).onMap);
+    ExpectTrue("minimap: y beyond the top bound is off-map",
+               !swfoc_overlay::WorldToMinimap(0.0f, -99999.0f,
+                                              swfoc_overlay::kMinimapSizePx,
+                                              swfoc_overlay::kMinimapHalfExtent).onMap);
 
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;

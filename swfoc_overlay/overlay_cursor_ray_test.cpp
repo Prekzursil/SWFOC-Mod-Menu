@@ -711,6 +711,22 @@ int main()
                    !atInfinity.valid);
     }
 
+    // Gate edge coverage: the guard's other operand — the FAR point alone at
+    // infinity (near w != 0, far w == 0). V = diag(1,1,-1,1) is its own
+    // inverse, and the homogeneous w is 1 - z, so the near point (z = 0)
+    // keeps w = 1 while the far point (z = 1) lands on w == 0.
+    {
+        swfoc_overlay::Mat4 V{};
+        V.m[0]  = 1.0f;
+        V.m[5]  = 1.0f;
+        V.m[10] = -1.0f;
+        V.m[15] = 1.0f;
+        const swfoc_overlay::WorldRay farAtInfinity =
+            swfoc_overlay::CursorRay(kVw * 0.5f, kVh * 0.5f, kVw, kVh, V);
+        ExpectTrue("cursor ray: far-only w == 0 is invalid",
+                   !farAtInfinity.valid);
+    }
+
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
     return g_failures == 0 ? 0 : 1;
 }

@@ -499,6 +499,10 @@ int main()
                    swfoc_overlay::BuildFactionSwitchBatch(none, 0, 99).size(), 0u);
         ExpectSize("faction batch: fromSlot == toSlot yields empty",
                    swfoc_overlay::BuildFactionSwitchBatch(none, 1, 1).size(), 0u);
+        ExpectSize("faction batch: too-large fromSlot yields empty",
+                   swfoc_overlay::BuildFactionSwitchBatch(none, 5, 1).size(), 0u);
+        ExpectSize("faction batch: negative toSlot yields empty",
+                   swfoc_overlay::BuildFactionSwitchBatch(none, 0, -1).size(), 0u);
     }
 
     std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
