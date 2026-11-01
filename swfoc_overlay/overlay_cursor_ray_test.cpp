@@ -712,14 +712,17 @@ int main()
     }
 
     // Gate edge coverage: the guard's other operand — the FAR point alone at
-    // infinity (near w != 0, far w == 0). V = diag(1,1,-1,1) is its own
-    // inverse, and the homogeneous w is 1 - z, so the near point (z = 0)
-    // keeps w = 1 while the far point (z = 1) lands on w == 0.
+    // infinity (near w != 0, far w == 0). V is the identity plus m[11] = 1
+    // (an elementary matrix); Mat4Inverse turns it into the identity with
+    // m[11] = -1, whose homogeneous w row (m[3], m[7], m[11], m[15]) gives
+    // w = 1 - z: the near point (z = 0) keeps w = 1 while the far point
+    // (z = 1) lands on w == 0.
     {
         swfoc_overlay::Mat4 V{};
         V.m[0]  = 1.0f;
         V.m[5]  = 1.0f;
-        V.m[10] = -1.0f;
+        V.m[10] = 1.0f;
+        V.m[11] = 1.0f;
         V.m[15] = 1.0f;
         const swfoc_overlay::WorldRay farAtInfinity =
             swfoc_overlay::CursorRay(kVw * 0.5f, kVh * 0.5f, kVw, kVh, V);
