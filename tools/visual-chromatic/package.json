@@ -6,7 +6,7 @@
     "e2e:chromatic": "playwright test --config ./playwright.chromatic.config.js ./e2e/visual-pack.pw.js"
   },
   "devDependencies": {
-    "@chromatic-com/playwright": "^0.15.0",
+    "@chromatic-com/playwright": "^1.0.0",
     "@playwright/test": "1.64.1",
     "chromatic": "^16.10.1"
   },
