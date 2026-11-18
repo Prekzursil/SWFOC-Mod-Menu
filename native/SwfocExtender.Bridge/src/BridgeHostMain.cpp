@@ -541,7 +541,8 @@ BridgeResult HandleBridgeCommand(
 // S1874: replace deprecated std::getenv with MSVC-safe _dupenv_s
 std::string GetEnvSafe(const char* name) {
     char* val = nullptr;
-    if (std::size_t len = 0; _dupenv_s(&val, &len, name) != 0 || val == nullptr) {
+    std::size_t len = 0;
+    if (_dupenv_s(&val, &len, name) != 0 || val == nullptr) {
         return {};
     }
     auto guard = std::unique_ptr<char, decltype(&free)>(val, &free);
