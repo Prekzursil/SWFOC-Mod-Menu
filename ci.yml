@@ -1,0 +1,44 @@
+name: .NET WPF CI
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+concurrency:
+  group: dotnet-wpf-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Restore
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+      - name: Test with coverage
+        shell: bash
+        run: |
+          pwsh -ExecutionPolicy Bypass -File ./tools/quality/collect-dotnet-coverage.ps1 -Configuration Release -DeterministicOnly
+$candidates = @(
+  (Join-Path (Get-Location) 'TestResults/coverage/cobertura.xml'),
+  (Join-Path (Get-Location) 'tests/SwfocTrainer.Tests/TestResults/coverage.cobertura.xml'),
+  (Join-Path (Get-Location) 'TestResults/coverage.cobertura.xml')
+)
+$resolved = $candidates | Where-Object { Test-Path -Path $_ } | Select-Object -First 1
+if (-not $resolved) {
+  throw "Coverage report not found. Checked: $($candidates -join '; ')"
+}
+Write-Host "Using coverage report: $resolved"
