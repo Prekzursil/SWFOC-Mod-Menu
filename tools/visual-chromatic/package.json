@@ -8,7 +8,7 @@
   "devDependencies": {
     "@chromatic-com/playwright": "^1.0.0",
     "@playwright/test": "1.65.1",
-    "chromatic": "^18.14.4"
+    "chromatic": "^18.15.0"
   },
   "overrides": {
     "esbuild": ">=0.28.1 <0.29",
